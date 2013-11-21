@@ -34,10 +34,10 @@
 #endif
 #include "debug.h"
 
-#ifndef ZBAR_FIXED
-# define ZBAR_FIXED 5
+#ifndef ZBAR_FIxD
+# define ZBAR_FIxD 5
 #endif
-#define ROUND (1 << (ZBAR_FIXED - 1))
+#define ROUND (1 << (ZBAR_FIxD - 1))
 
 /* FIXME add runtime config API for these */
 #ifndef ZBAR_SCANNER_THRESH_MIN
@@ -48,7 +48,7 @@
 # define ZBAR_SCANNER_THRESH_INIT_WEIGHT .44
 #endif
 #define THRESH_INIT ((unsigned)((ZBAR_SCANNER_THRESH_INIT_WEIGHT       \
-                                 * (1 << (ZBAR_FIXED + 1)) + 1) / 2))
+                                 * (1 << (ZBAR_FIxD + 1)) + 1) / 2))
 
 #ifndef ZBAR_SCANNER_THRESH_FADE
 # define ZBAR_SCANNER_THRESH_FADE 8
@@ -58,7 +58,7 @@
 # define ZBAR_SCANNER_EWMA_WEIGHT .78
 #endif
 #define EWMA_WEIGHT ((unsigned)((ZBAR_SCANNER_EWMA_WEIGHT              \
-                                 * (1 << (ZBAR_FIXED + 1)) + 1) / 2))
+                                 * (1 << (ZBAR_FIxD + 1)) + 1) / 2))
 
 /* scanner state */
 struct zbar_scanner_s {
@@ -108,8 +108,8 @@ unsigned zbar_scanner_get_edge (const zbar_scanner_t *scn,
                                 unsigned offset,
                                 int prec)
 {
-    unsigned edge = scn->last_edge - offset - (1 << ZBAR_FIXED) - ROUND;
-    prec = ZBAR_FIXED - prec;
+    unsigned edge = scn->last_edge - offset - (1 << ZBAR_FIxD) - ROUND;
+    prec = ZBAR_FIxD - prec;
     if(prec > 0)
         return(edge >> prec);
     else if(!prec)
@@ -133,13 +133,13 @@ static inline unsigned calc_thresh (zbar_scanner_t *scn)
         return(scn->y1_min_thresh);
     }
     /* slowly return threshold to min */
-    dx = (scn->x << ZBAR_FIXED) - scn->last_edge;
+    dx = (scn->x << ZBAR_FIxD) - scn->last_edge;
     t = thresh * dx;
     t /= scn->width;
     t /= ZBAR_SCANNER_THRESH_FADE;
     dbprintf(1, " thr=%d t=%ld x=%d last=%d.%d (%d)",
-             thresh, t, scn->x, scn->last_edge >> ZBAR_FIXED,
-             scn->last_edge & ((1 << ZBAR_FIXED) - 1), dx);
+             thresh, t, scn->x, scn->last_edge >> ZBAR_FIxD,
+             scn->last_edge & ((1 << ZBAR_FIxD) - 1), dx);
     if(thresh > t) {
         thresh -= t;
         if(thresh > scn->y1_min_thresh)
@@ -153,19 +153,19 @@ static inline zbar_symbol_type_t process_edge (zbar_scanner_t *scn,
                                                int y1)
 {
     if(!scn->y1_sign)
-        scn->last_edge = scn->cur_edge = (1 << ZBAR_FIXED) + ROUND;
+        scn->last_edge = scn->cur_edge = (1 << ZBAR_FIxD) + ROUND;
     else if(!scn->last_edge)
         scn->last_edge = scn->cur_edge;
 
     scn->width = scn->cur_edge - scn->last_edge;
     dbprintf(1, " sgn=%d cur=%d.%d w=%d (%s)\n",
-             scn->y1_sign, scn->cur_edge >> ZBAR_FIXED,
-             scn->cur_edge & ((1 << ZBAR_FIXED) - 1), scn->width,
+             scn->y1_sign, scn->cur_edge >> ZBAR_FIxD,
+             scn->cur_edge & ((1 << ZBAR_FIxD) - 1), scn->width,
              ((y1 > 0) ? "SPACE" : "BAR"));
     scn->last_edge = scn->cur_edge;
 
 #if DEBUG_SVG > 1
-    svg_path_moveto(SVG_ABS, scn->last_edge - (1 << ZBAR_FIXED) - ROUND, 0);
+    svg_path_moveto(SVG_ABS, scn->last_edge - (1 << ZBAR_FIxD) - ROUND, 0);
 #endif
 
     /* pass to decoder */
@@ -180,7 +180,7 @@ inline zbar_symbol_type_t zbar_scanner_flush (zbar_scanner_t *scn)
     if(!scn->y1_sign)
         return(ZBAR_NONE);
 
-    x = (scn->x << ZBAR_FIXED) + ROUND;
+    x = (scn->x << ZBAR_FIxD) + ROUND;
 
     if(scn->cur_edge != x || scn->y1_sign > 0) {
         zbar_symbol_type_t edge = process_edge(scn, -scn->y1_sign);
@@ -225,7 +225,7 @@ zbar_symbol_type_t zbar_scan_y (zbar_scanner_t *scn,
     zbar_symbol_type_t edge;
     if(x) {
         /* update weighted moving average */
-        y0_0 += ((int)((y - y0_1) * EWMA_WEIGHT)) >> ZBAR_FIXED;
+        y0_0 += ((int)((y - y0_1) * EWMA_WEIGHT)) >> ZBAR_FIxD;
         scn->y0[x & 3] = y0_0;
     }
     else
@@ -266,20 +266,20 @@ zbar_symbol_type_t zbar_scan_y (zbar_scanner_t *scn,
 
             /* adaptive thresholding */
             /* start at multiple of new min/max */
-            scn->y1_thresh = (abs(y1_1) * THRESH_INIT + ROUND) >> ZBAR_FIXED;
+            scn->y1_thresh = (abs(y1_1) * THRESH_INIT + ROUND) >> ZBAR_FIxD;
             dbprintf(1, "\tthr=%d", scn->y1_thresh);
             if(scn->y1_thresh < scn->y1_min_thresh)
                 scn->y1_thresh = scn->y1_min_thresh;
 
             /* update current edge */
             d = y2_1 - y2_2;
-            scn->cur_edge = 1 << ZBAR_FIXED;
+            scn->cur_edge = 1 << ZBAR_FIxD;
             if(!d)
                 scn->cur_edge >>= 1;
             else if(y2_1)
                 /* interpolate zero crossing */
-                scn->cur_edge -= ((y2_1 << ZBAR_FIXED) + 1) / d;
-            scn->cur_edge += x << ZBAR_FIXED;
+                scn->cur_edge -= ((y2_1 << ZBAR_FIxD) + 1) / d;
+            scn->cur_edge += x << ZBAR_FIxD;
             dbprintf(1, "\n");
         }
     }

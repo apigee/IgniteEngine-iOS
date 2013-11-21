@@ -960,7 +960,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     [self setNeedsDisplay];
 }
 
-// Fixes crash when loading from a UIStoryboard
+// FIxs crash when loading from a UIStoryboard
 - (UIColor *)textColor {
 	UIColor *color = [super textColor];
 	if (!color) {

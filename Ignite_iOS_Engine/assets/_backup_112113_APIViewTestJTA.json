@@ -33,7 +33,7 @@
                 },
                 "properties": {
                     "id": "menuData",
-                    "data_location": "https://ixe.usergrid.com",
+                    "data_location": "https://Ix.usergrid.com",
                     "path_pattern": "/guidesmob/spartanapp/:name",
                     "objects_path": "/guidesmob/spartanapp/menu_items",
                     "key_path": null,
@@ -337,7 +337,7 @@
                             "height": "320",
                             "id": "myBrowser",
                             "mode": "modal",
-                            "url": "http://ixegee.com",
+                            "url": "http://Ixgee.com",
                             "width": "320"
                         },
                         "type": "Browser"

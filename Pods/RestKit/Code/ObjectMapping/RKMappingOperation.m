@@ -481,7 +481,7 @@ static NSString * const RKRootKeyPathPrefix = @"@root.";
      See issue & pull request: https://github.com/RestKit/RestKit/pull/436
      */
     if (*value == [NSNull null]) {
-        RKLogWarning(@"Coercing NSNull value to nil in shouldSetValue:atKeyPath: -- should be fixed.");
+        RKLogWarning(@"Coercing NSNull value to nil in shouldSetValue:atKeyPath: -- should be fIxd.");
         *value = nil;
     }
 

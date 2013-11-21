@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>77E5DD43-D8CE-4CCC-95B4-5E34D86FEBF6</string>
+	<string>9259165C-5BD9-4000-9555-FEF41E502795</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Ignite_iOS_Engine</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>F5ACEECF-99FB-421C-BF95-F0DDA491B88C</key>
-		<string>https://github.com/ApigeeIgnite/iOS.git</string>
+		<key>396C34E6-1F23-43F3-9E0D-07AE113E317C</key>
+		<string>https://github.com/ApigeeIgnite/ignite-iOS-engine.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Ignite_iOS_Engine/Apigee_iOS_Engine/Ignite_iOS_Engine.xcworkspace</string>
+	<string>Ignite_iOS_Engine.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>F5ACEECF-99FB-421C-BF95-F0DDA491B88C</key>
-		<string>../../..</string>
+		<key>396C34E6-1F23-43F3-9E0D-07AE113E317C</key>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/ApigeeIgnite/iOS.git</string>
+	<string>https://github.com/ApigeeIgnite/ignite-iOS-engine.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>F5ACEECF-99FB-421C-BF95-F0DDA491B88C</string>
+	<string>396C34E6-1F23-43F3-9E0D-07AE113E317C</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>F5ACEECF-99FB-421C-BF95-F0DDA491B88C</string>
+			<string>396C34E6-1F23-43F3-9E0D-07AE113E317C</string>
 			<key>IDESourceControlWCCName</key>
-			<string>iOS</string>
+			<string>ignite-iOS-engine</string>
 		</dict>
 	</array>
 </dict>

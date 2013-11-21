@@ -21,7 +21,7 @@
  *
  * Code information from strings into objects and vice versa.
  *
- * A pattern is a string with parameter names prefixed by colons (":").
+ * A pattern is a string with parameter names prefIxd by colons (":").
  * An example of a pattern string with one parameter named :username is:
  * api.github.com/users/:username/gists
  *
@@ -133,7 +133,7 @@
  *                            this string are used as the arguments when performing the selector
  *                            on the object.
  *      @returns The initialized, autoreleased object if the selector is an initializer
- *               (prefixed with "init") and object is a Class, otherwise the return value from
+ *               (prefIxd with "init") and object is a Class, otherwise the return value from
  *               invoking the selector.
  */
 - (id)performSelector:(SEL)selector onObject:(id)object sourceString:(NSString *)sourceString;

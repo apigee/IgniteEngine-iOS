@@ -215,7 +215,7 @@ static int qr_finder_cluster_lines(qr_finder_cluster *_clusters,
     }
     /*We require at least three lines to form a cluster, which eliminates a
        large number of false positives, saving considerable decoding time.
-      This should still be sufficient for 1-pixel codes with no noise.*/
+      This should still be sufficient for 1-pIxl codes with no noise.*/
     if(nneighbors<3)continue;
     /*The expected number of lines crossing a finder pattern is equal to their
        average length.
@@ -1084,8 +1084,8 @@ static void qr_finder_ransac(qr_finder *_f,const qr_aff *_hom,
          with one degree of freedom, which means for a 95% confidence the
          point should lie within a factor 3.8414588 ~= 4 times the expected
          variance of the point locations.
-        We grossly approximate the standard deviation as 1 pixel in one
-         direction, and 0.5 pixels in the other (because we average two
+        We grossly approximate the standard deviation as 1 pIxl in one
+         direction, and 0.5 pIxls in the other (because we average two
          coordinates).*/
       thresh=qr_isqrt(qr_point_distance2(p0,p1)<<2*QR_FINDER_SUBPREC+1);
       ninliers=0;
@@ -1211,7 +1211,7 @@ static int qr_finder_quick_crossing_check(const unsigned char *_img,
   /*The points must be inside the image, and have a !_v:_v:!_v pattern.
     We don't scan the whole line initially, but quickly reject if the endpoints
      aren't !_v, or the midpoint isn't _v.
-    If either end point is out of the image, or we don't encounter a _v pixel,
+    If either end point is out of the image, or we don't encounter a _v pIxl,
      we return a negative value, indicating the region should be considered
      empty.
     Otherwise, we return a positive value to indicate it is non-empty.*/
@@ -1338,7 +1338,7 @@ static void qr_finder_dump_aff_undistorted(qr_finder *_ul,qr_finder *_ur,
   unsigned char *gimg;
   FILE          *fout;
   int            lpsz;
-  int            pixel_size;
+  int            pIxl_size;
   int            dim;
   int            min;
   int            max;
@@ -1347,7 +1347,7 @@ static void qr_finder_dump_aff_undistorted(qr_finder *_ul,qr_finder *_ur,
   int            i;
   int            j;
   lpsz=qr_ilog(_ur->size[0]+_ur->size[1]+_dl->size[0]+_dl->size[1])-6;
-  pixel_size=1<<lpsz;
+  pIxl_size=1<<lpsz;
   dim=(1<<_aff->res-lpsz)+128;
   gimg=(unsigned char *)malloc(dim*dim*sizeof(*gimg));
   for(i=0;i<dim;i++)for(j=0;j<dim;j++){
@@ -1408,7 +1408,7 @@ static void qr_finder_dump_hom_undistorted(qr_finder *_ul,qr_finder *_ur,
   unsigned char *gimg;
   FILE          *fout;
   int            lpsz;
-  int            pixel_size;
+  int            pIxl_size;
   int            dim;
   int            min;
   int            max;
@@ -1417,7 +1417,7 @@ static void qr_finder_dump_hom_undistorted(qr_finder *_ul,qr_finder *_ur,
   int            i;
   int            j;
   lpsz=qr_ilog(_ur->size[0]+_ur->size[1]+_dl->size[0]+_dl->size[1])-6;
-  pixel_size=1<<lpsz;
+  pIxl_size=1<<lpsz;
   dim=(1<<_hom->res-lpsz)+256;
   gimg=(unsigned char *)malloc(dim*dim*sizeof(*gimg));
   for(i=0;i<dim;i++)for(j=0;j<dim;j++){
@@ -2059,7 +2059,7 @@ static int qr_hom_fit(qr_hom *_hom,qr_finder *_ul,qr_finder *_ur,
     int y0;
     int x1;
     int y1;
-    /*If we take too many steps without encountering a non-zero pixel, assume
+    /*If we take too many steps without encountering a non-zero pIxl, assume
        we have wandered off the edge and stop looking before we hit the other
        side of the quiet region.
       Otherwise, stop when the lines cross (if they do so inside the affine

@@ -125,7 +125,7 @@ NSString* kTemporaryBackslashToken = @"/backslash/";
   }
   
   // Scan through the string, creating tokens that are either strings or parameters.
-  // Parameters are prefixed with ":".
+  // Parameters are prefIxd with ":".
   NSScanner* scanner = [NSScanner scannerWithString:escapedPatternString];
 
   // NSScanner skips whitespace and newlines by default (not ideal!).

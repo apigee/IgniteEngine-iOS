@@ -49,11 +49,11 @@ static const CGDataProviderDirectCallbacks asyncProvider = {
 
 @implementation ZBarCVImage
 
-@synthesize pixelBuffer, rgbBuffer;
+@synthesize pIxlBuffer, rgbBuffer;
 
 - (void) dealloc
 {
-    self.pixelBuffer = NULL;
+    self.pIxlBuffer = NULL;
     if(rgbBuffer) {
         free(rgbBuffer);
         rgbBuffer = NULL;
@@ -65,10 +65,10 @@ static const CGDataProviderDirectCallbacks asyncProvider = {
 
 - (void) setPixelBuffer: (CVPixelBufferRef) newbuf
 {
-    CVPixelBufferRef oldbuf = pixelBuffer;
+    CVPixelBufferRef oldbuf = pIxlBuffer;
     if(newbuf)
         CVPixelBufferRetain(newbuf);
-    pixelBuffer = newbuf;
+    pIxlBuffer = newbuf;
     if(oldbuf)
         CVPixelBufferRelease(oldbuf);
 }
@@ -137,13 +137,13 @@ static const CGDataProviderDirectCallbacks asyncProvider = {
     if(format != zbar_fourcc('C','V','2','P'))
         return;
 
-    CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-    int w = CVPixelBufferGetWidth(pixelBuffer);
-    int h = CVPixelBufferGetHeight(pixelBuffer);
-    int dy = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
-    int duv = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1);
-    uint8_t *py = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    uint8_t *puv = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+    CVPixelBufferLockBaseAddress(pIxlBuffer, kCVPixelBufferLock_ReadOnly);
+    int w = CVPixelBufferGetWidth(pIxlBuffer);
+    int h = CVPixelBufferGetHeight(pIxlBuffer);
+    int dy = CVPixelBufferGetBytesPerRowOfPlane(pIxlBuffer, 0);
+    int duv = CVPixelBufferGetBytesPerRowOfPlane(pIxlBuffer, 1);
+    uint8_t *py = CVPixelBufferGetBaseAddressOfPlane(pIxlBuffer, 0);
+    uint8_t *puv = CVPixelBufferGetBaseAddressOfPlane(pIxlBuffer, 1);
     if(!py || !puv || dy < w || duv < w)
         goto error;
 
@@ -183,11 +183,11 @@ static const CGDataProviderDirectCallbacks asyncProvider = {
     }
 
 error:
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+    CVPixelBufferUnlockBaseAddress(pIxlBuffer, kCVPixelBufferLock_ReadOnly);
     zlog(@"convert time %gs", timer_elapsed(t_start, timer_now()));
 
     // release buffer as soon as conversion is complete
-    self.pixelBuffer = NULL;
+    self.pIxlBuffer = NULL;
 
     conversion = nil;
 }

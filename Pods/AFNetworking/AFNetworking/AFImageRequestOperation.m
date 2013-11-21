@@ -257,9 +257,9 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
 #elif defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
 - (NSImage *)responseImage {
     if (!_responseImage && [self.responseData length] > 0 && [self isFinished]) {
-        // Ensure that the image is set to it's correct pixel width and height
+        // Ensure that the image is set to it's correct pIxl width and height
         NSBitmapImageRep *bitimage = [[NSBitmapImageRep alloc] initWithData:self.responseData];
-        self.responseImage = [[NSImage alloc] initWithSize:NSMakeSize([bitimage pixelsWide], [bitimage pixelsHigh])];
+        self.responseImage = [[NSImage alloc] initWithSize:NSMakeSize([bitimage pIxlsWide], [bitimage pIxlsHigh])];
         [self.responseImage addRepresentation:bitimage];
     }
 

@@ -30,14 +30,14 @@
 @interface ZBarCVImage
     : ZBarImage
 {
-    CVPixelBufferRef pixelBuffer;
+    CVPixelBufferRef pIxlBuffer;
     void *rgbBuffer;
     NSInvocationOperation *conversion;
 }
 
 - (void) waitUntilConverted;
 
-@property (nonatomic) CVPixelBufferRef pixelBuffer;
+@property (nonatomic) CVPixelBufferRef pIxlBuffer;
 @property (nonatomic, readonly) void *rgbBuffer;
 
 @end

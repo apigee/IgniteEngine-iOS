@@ -665,7 +665,7 @@ match_segment (zbar_decoder_t *dcode,
 
 static inline unsigned
 lookup_sequence (databar_segment_t *seg,
-                 int fixed,
+                 int fIxd,
                  int seq[22])
 {
     unsigned n = seg->data / 211, i;
@@ -676,7 +676,7 @@ lookup_sequence (databar_segment_t *seg,
     dbprintf(2, " {%d,%d:", i, n);
     p = exp_sequences + i;
 
-    fixed >>= 1;
+    fIxd >>= 1;
     seq[0] = 0;
     seq[1] = 1;
     for(i = 2; i < n; ) {
@@ -687,8 +687,8 @@ lookup_sequence (databar_segment_t *seg,
         }
         else
             s &= 0xf;
-        if(s == fixed)
-            fixed = -1;
+        if(s == fIxd)
+            fIxd = -1;
         s <<= 1;
         dbprintf(2, "%x", s);
         seq[i++] = s++;
@@ -696,7 +696,7 @@ lookup_sequence (databar_segment_t *seg,
     }
     dbprintf(2, "}");
     seq[n] = -1;
-    return(fixed < 1);
+    return(fIxd < 1);
 }
 
 #define IDX(s) \
@@ -709,14 +709,14 @@ match_segment_exp (zbar_decoder_t *dcode,
 {
     databar_decoder_t *db = &dcode->databar;
     int bestsegs[22], i = 0, segs[22], seq[22];
-    int ifixed = seg - db->segs, fixed = IDX(seg), maxcnt = 0;
+    int ifIxd = seg - db->segs, fIxd = IDX(seg), maxcnt = 0;
     int iseg[DATABAR_MAX_SEGMENTS];
     unsigned csegs = db->csegs, width = seg->width, maxage = 0x7fff;
 
     bestsegs[0] = segs[0] = seq[1] = -1;
     seq[0] = 0;
 
-    dbprintf(2, "\n    fixed=%d@%d: ", fixed, ifixed);
+    dbprintf(2, "\n    fIxd=%d@%d: ", fIxd, ifIxd);
     for(i = csegs, seg = db->segs + csegs - 1; --i >= 0; seg--) {
         if(seg->exp && seg->finder >= 0 &&
            (!seg->partial || seg->count >= 4))
@@ -733,11 +733,11 @@ match_segment_exp (zbar_decoder_t *dcode,
             int j;
             dbprintf(2, " [%d]%d", i, seq[i]);
 
-            if(seq[i] == fixed) {
-                seg = db->segs + ifixed;
+            if(seq[i] == fIxd) {
+                seg = db->segs + ifIxd;
                 if(segs[i] < 0 && check_width(width, seg->width, 14)) {
                     dbprintf(2, "*");
-                    j = ifixed;
+                    j = ifIxd;
                 }
                 else
                     continue;
@@ -755,7 +755,7 @@ match_segment_exp (zbar_decoder_t *dcode,
             }
 
             if(!i) {
-                if(!lookup_sequence(seg, fixed, seq)) {
+                if(!lookup_sequence(seg, fIxd, seq)) {
                     dbprintf(2, "[nf]");
                     continue;
                 }
@@ -817,7 +817,7 @@ match_segment_exp (zbar_decoder_t *dcode,
     }
 
     for(i = 0; bestsegs[i] >= 0; i++)
-        if(bestsegs[i] != ifixed) {
+        if(bestsegs[i] != ifIxd) {
             seg = db->segs + bestsegs[i];
             if(!--seg->count)
                 seg->finder = -1;

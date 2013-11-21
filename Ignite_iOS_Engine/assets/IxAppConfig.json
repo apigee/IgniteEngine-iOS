@@ -1,0 +1,32 @@
+{
+   "app":{
+      "properties":{
+         "mode":"dev",
+         "id":"CLIENT-13",
+         "shows_navigation_bar":"NO",
+         "title" :[
+                        {
+                            "if" : "'NO'=='NO'",
+                            "orientation" : "portrait",
+                            "value" : "IxModules POOP"
+                        },
+                        {
+                            "if" : "'NO'=='YES'",
+                            "orientation" : "landscape",
+                            "value" : "poop2"
+                        },
+                        {
+                            "if" : "'YES'=='YES'",
+                            "orientation" : "landscape",
+                            "value" : "poop3"
+                        }
+          ],
+         "default_view":"IxAppConfigChild.json",
+      }
+   },
+   "session_defaults":{
+      "timezone":"<objective-c timezone syntax>",
+      "language":"en-us",
+      "latest_view":"myOtherUniqueViewId"
+   }
+}

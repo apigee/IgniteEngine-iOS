@@ -170,7 +170,7 @@ static inline unsigned calc_s (const zbar_decoder_t *dcode,
     return(s);
 }
 
-/* fixed character width decode assist
+/* fIxd character width decode assist
  * bar+space width are compared as a fraction of the reference dimension "x"
  *   - +/- 1/2 x tolerance
  *   - measured total character width (s) compared to symbology baseline (n)

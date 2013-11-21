@@ -354,8 +354,8 @@ void _zbar_image_scanner_add_sym(zbar_image_scanner_t *iscn,
 #ifdef ENABLE_QRCODE
 extern qr_finder_line *_zbar_decoder_get_qr_finder_line(zbar_decoder_t*);
 
-# define QR_FIXED(v, rnd) ((((v) << 1) + (rnd)) << (QR_FINDER_SUBPREC - 1))
-# define PRINT_FIXED(val, prec) \
+# define QR_FIxD(v, rnd) ((((v) << 1) + (rnd)) << (QR_FINDER_SUBPREC - 1))
+# define PRINT_FIxD(val, prec) \
     ((val) >> (prec)),         \
         (1000 * ((val) & ((1 << (prec)) - 1)) / (1 << (prec)))
 
@@ -375,7 +375,7 @@ static inline void qr_handler (zbar_image_scanner_t *iscn)
                                         QR_FINDER_SUBPREC) - line->len;
     line->len -= u;
 
-    u = QR_FIXED(iscn->umin, 0) + iscn->du * u;
+    u = QR_FIxD(iscn->umin, 0) + iscn->du * u;
     if(iscn->du < 0) {
         int tmp = line->boffs;
         line->boffs = line->eoffs;
@@ -384,7 +384,7 @@ static inline void qr_handler (zbar_image_scanner_t *iscn)
     }
     vert = !iscn->dx;
     line->pos[vert] = u;
-    line->pos[!vert] = QR_FIXED(iscn->v, 1);
+    line->pos[!vert] = QR_FIxD(iscn->v, 1);
 
     _zbar_qr_found_line(iscn->qr, vert, line);
 }
