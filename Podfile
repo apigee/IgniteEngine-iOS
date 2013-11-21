@@ -1,0 +1,10 @@
+platform :ios, '7.0' 
+
+pod 'ALMoviePlayerController', '~> 0.3.0'
+pod 'ColorUtils', '~> 1.1.1'
+pod 'JASidePanels', '~> 1.3.2'
+pod 'RestKit', '~> 0.20.0'
+pod 'SDWebImage', '~> 3.5'
+pod 'SVPulsingAnnotationView', '~> 0.3.0'
+pod 'SVWebViewController', '~> 1.0'
+pod 'ZBarSDK', '~> 1.3.1'
