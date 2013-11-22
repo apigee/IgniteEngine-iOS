@@ -146,7 +146,6 @@
                     }
                     else
                     {
-                        
                         NSLog(@"WARNING: property value for %@ not a string or dictionary of values %@",key,[subObj description]);
                     }
                 }];

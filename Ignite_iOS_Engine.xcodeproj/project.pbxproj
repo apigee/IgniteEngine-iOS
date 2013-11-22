@@ -70,6 +70,7 @@
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
+		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -186,6 +187,8 @@
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6324BF531835931C00748F27 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6324BF681835931D00748F27 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
+		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +356,8 @@
 				13033F78183ED8F200C29157 /* IXAppShortCode.m */,
 				13033F79183ED8F200C29157 /* IXBaseShortCode.h */,
 				13033F7A183ED8F200C29157 /* IXBaseShortCode.m */,
+				63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */,
+				63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */,
 			);
 			path = ShortCodes;
 			sourceTree = "<group>";
@@ -595,6 +600,7 @@
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,
 				13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
+				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
 				13033F95183ED8F200C29157 /* IXModifyAction.m in Sources */,
 				13033FB3183ED8F200C29157 /* IXAppShortCode.m in Sources */,
