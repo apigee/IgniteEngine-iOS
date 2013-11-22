@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "702A219C236A4D05BA59FE66"
+               BlueprintIdentifier = "2771FCF5AE31497EBB396799"
                BuildableName = "libPods-JASidePanels.a"
                BlueprintName = "Pods-JASidePanels"
                ReferencedContainer = "container:Pods.xcodeproj">
