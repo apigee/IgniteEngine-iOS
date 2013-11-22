@@ -14,7 +14,7 @@
 
 @interface IXProperty ()
 
-@property (nonatomic,copy) NSString* propertyValue;
+@property (nonatomic,copy) NSString *propertyValue;
 
 @end
 
@@ -35,6 +35,7 @@
     self = [super init];
     if( self != nil )
     {
+        _readonly = NO;
         _propertyContainer = nil;
         
         _originalString = [rawValue copy];
@@ -46,9 +47,22 @@
     return self;
 }
 
+-(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
+{
+    _propertyContainer = propertyContainer;
+    
+    for( IXBaseShortCode *shortCode in [self shortCodes] )
+    {
+        for( IXProperty *property in [shortCode parameters] )
+        {
+            [property setPropertyContainer:propertyContainer];
+        }
+    }
+}
+
 -(id)copyWithZone:(NSZone *)zone
 {
-    IXProperty* copiedProperty = [[[self class] allocWithZone:zone] init];
+    IXProperty *copiedProperty = [[[self class] allocWithZone:zone] init];
     
     [copiedProperty setPropertyContainer:[self propertyContainer]];
     [copiedProperty setRawValue:[self rawValue]];
@@ -61,10 +75,23 @@
 
 -(NSString*)getPropertyValue
 {
-    // FIXME: We need to get the shortcode values and add them back into the static text then return that value.
-    // ALSO: Could actually override this method in some subclasses so we dont have to evaluate. (or check if we need to everytime)
+    if( [self rawValue] == nil || [[self rawValue] length] == 0 )
+        return @"";
     
-    return [self rawValue];
+    __block NSMutableString *returnString = [NSMutableString stringWithString:[self staticText]];
+    
+    if( [[self shortCodes] count] > 0 )
+    {
+        __block NSInteger newCharsAdded = 0;
+        [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
+            NSRange shortCodeRange = [[[self shortCodeRanges] objectAtIndex:idx] rangeValue];
+            NSString *shortCodesValue = [shortCode evaluate];
+            [returnString insertString:shortCodesValue atIndex:shortCodeRange.location + newCharsAdded];
+            newCharsAdded += [shortCodesValue length] - shortCodeRange.length;
+        }];
+    }
+    
+    return returnString;
 }
 
 @end

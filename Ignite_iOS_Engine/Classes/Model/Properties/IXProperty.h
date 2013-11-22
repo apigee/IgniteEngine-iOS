@@ -14,15 +14,13 @@
 
 @property (nonatomic,weak) IXPropertyContainer* propertyContainer;
 
+@property (nonatomic,assign,getter = isReadonly) BOOL readonly;
 @property (nonatomic,copy) NSString* originalString;
 @property (nonatomic,copy) NSString* rawValue;
 @property (nonatomic,copy) NSString* propertyName;
 @property (nonatomic,copy) NSString* staticText;
-@property (nonatomic,strong) NSMutableArray* shortCodes; // TODO: make copy after implementing it
-@property (nonatomic,strong) NSMutableArray* shortCodeRanges; // TODO: make copy after implementing it
-
-
-#warning METHODS NOT DONE YET
+@property (nonatomic,strong) NSArray* shortCodes; // TODO: make copy after implementing it
+@property (nonatomic,strong) NSArray* shortCodeRanges; // TODO: make copy after implementing it
 
 -(instancetype)initWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
 +(instancetype)propertyWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;

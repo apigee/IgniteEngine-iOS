@@ -15,13 +15,19 @@ static NSString* const kIXShortcodeMainComponents = @"^\\[([\\w-]+?)\\.([\\w-]+?
 static NSString* const kIXShortcodeMainComponentsNoParams = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\(\\)\\]$";
 static NSString* const kIXLegacyShortcodeMainComponents = @"^\\[([\\w-]+?):(.+?)\\]$";
 static NSString* const kIXLegacyShortcodeDataComponents = @"^([^\\(]+?)?\\(['\"]?(.*?)['\"]?\\)(?:\\-\\>([^\\]]+?))?$";
-static NSString* const kIXParamComponent = @"^\"(.+?)\"$";
+static NSString* const kIXParamComponent = @"^'(.+?)'$";
 
 static NSRegularExpression* sIXShortCodeMainComponentsRegex = nil;
 static NSRegularExpression* sIXShortCodeMainComponentsNoParamsRegex = nil;
 static NSRegularExpression* sIXShortCodeLegacyMainComponentsRegex = nil;
 static NSRegularExpression* sIXShortCodeLegacyDataComponentsRegex = nil;
 static NSRegularExpression* sIXShortCodeParamRegex = nil;
+
+static NSString* const kIXOpenBracketString = @"[";
+static NSString* const kIXCloseBracketString = @"]";
+static NSString* const kIXEscapeBracketString = @"\\";
+static NSString* const kIXSingleQuoteString = @"'";
+static NSString* const kIXCommaString = @",";
 
 @interface IXPropertyParser ()
 
@@ -50,9 +56,132 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
                                                                                     error:nil];
 }
 
++(NSArray*)parseMethodParametersFromString:(NSString*)string
+{
+    NSMutableArray* parametersArray = nil;
+
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSArray* rangesOfParameters = [IXPropertyParser topLevelParameterRangesFromString:string];
+
+    if( [rangesOfParameters count] == 0 )
+    {
+        NSTextCheckingResult* parameterComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeParamRegex
+                                                                                    fromShortCodeString:string];
+        if( [parameterComponents numberOfRanges] > 1 )
+        {
+            NSString* parameterString = [string substringWithRange:[parameterComponents rangeAtIndex:1]];
+            IXProperty* parameterProperty = [[IXProperty alloc] initWithPropertyName:nil rawValue:parameterString];
+            if( parameterProperty != nil )
+            {
+                parametersArray = [NSMutableArray arrayWithObject:parameterProperty];
+            }
+        }
+    }
+    else
+    {
+        parametersArray = [[NSMutableArray alloc] init];
+        
+        for( NSValue* rangeValue in rangesOfParameters )
+        {
+            NSRange parameterRange = [rangeValue rangeValue];
+            NSString* parameterString = [string substringWithRange:parameterRange];
+            
+            NSTextCheckingResult* parameterComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeParamRegex
+                                                                                        fromShortCodeString:parameterString];
+            if( [parameterComponents numberOfRanges] > 1 )
+            {
+                parameterString = [parameterString substringWithRange:[parameterComponents rangeAtIndex:1]];
+                IXProperty* parameterProperty = [[IXProperty alloc] initWithPropertyName:nil rawValue:parameterString];
+                if( parameterProperty != nil )
+                {
+                    [parametersArray addObject:parameterProperty];
+                }
+            }
+        }
+    }
+    
+    return parametersArray;
+}
+
++(NSArray*)topLevelParameterRangesFromString:(NSString*)string
+{
+    NSMutableArray* parameterRanges = nil;
+    
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSUInteger stringLength = [string length];
+    if( string != nil && stringLength > 0 )
+    {
+        parameterRanges = [[NSMutableArray alloc] init];
+        
+        __block NSUInteger numberOfSingleQuotesFound = 0;
+        __block NSUInteger numberOfBracketsFound = 0;
+        __block NSUInteger startOfParameter = -1;
+        __block NSUInteger endOfParameter = -1;
+        
+        [string enumerateSubstringsInRange:NSMakeRange(0, [string length])
+                                   options:NSStringEnumerationByComposedCharacterSequences
+                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                    
+                                    if( [substring isEqualToString:kIXSingleQuoteString] )
+                                    {
+                                        if( startOfParameter == -1 )
+                                        {
+                                            startOfParameter = substringRange.location;
+                                        }
+                                        
+                                        endOfParameter = substringRange.location;
+                                        numberOfSingleQuotesFound++;
+                                    }
+                                    else if( [substring isEqualToString:kIXOpenBracketString] || [substring isEqualToString:kIXCloseBracketString] )
+                                    {
+                                        if( [substring isEqualToString:kIXOpenBracketString] )
+                                            numberOfBracketsFound++;
+                                        else
+                                            numberOfBracketsFound--;
+                                    }
+                                    else if( [substring isEqualToString:kIXCommaString] )
+                                    {
+                                        if( (numberOfSingleQuotesFound % 2) == 0 && numberOfBracketsFound == 0 )
+                                        {
+                                            NSUInteger lengthOfParam = endOfParameter - startOfParameter + 1;
+                                            NSRange rangeOfParam = NSMakeRange(startOfParameter, lengthOfParam);
+                                            [parameterRanges addObject:[NSValue valueWithRange:rangeOfParam]];
+                                                
+                                            startOfParameter = -1;
+                                            endOfParameter = -1;
+                                            numberOfSingleQuotesFound = 0;
+                                            numberOfBracketsFound = 0;
+                                        }
+                                    }
+        }];
+        
+        
+        if( [parameterRanges count] == 0 || (startOfParameter != -1 && endOfParameter != -1 && numberOfBracketsFound == 0) )
+        {
+            NSRange rangeOfParameter;
+            if( startOfParameter == -1 || endOfParameter == -1 )
+            {
+                rangeOfParameter = NSMakeRange(0, 0);
+            }
+            else
+            {
+                NSUInteger lengthOfParam = endOfParameter - startOfParameter + 1;
+                rangeOfParameter = NSMakeRange(startOfParameter, lengthOfParam);
+            }
+            [parameterRanges addObject:[NSValue valueWithRange:rangeOfParameter]];
+        }
+    }
+    
+    return parameterRanges;
+}
+
 +(NSArray*)topLevelShortcodeRangesFromString:(NSString*)string
 {
     NSMutableArray* shortcodeRanges = nil;
+    
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSUInteger stringLength = [string length];
     if( string != nil || stringLength > 0 )
@@ -67,10 +196,10 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
                                    options:NSStringEnumerationByComposedCharacterSequences
                                 usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
                             
-                                    if( [substring isEqualToString:@"["] || [substring isEqualToString:@"]"] )
+                                    if( [substring isEqualToString:kIXOpenBracketString] || [substring isEqualToString:kIXCloseBracketString] )
                                     {
                                         // Is this an escaped bracket?
-                                        if( substringRange.location > 0 && [previousString isEqualToString:@"\\"] )
+                                        if( substringRange.location > 0 && [previousString isEqualToString:kIXEscapeBracketString] )
                                         {
                                             if( openBrackets == 0 )
                                             {
@@ -79,7 +208,7 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
                                             }
                                         }
                                         // Is this a starting bracket?
-                                        else if( [substring isEqualToString:@"["] )
+                                        else if( [substring isEqualToString:kIXOpenBracketString] )
                                         {
                                             if( openBrackets == 0 )
                                             {
@@ -88,7 +217,7 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
                                             openBrackets++;
                                         }
                                         // Is this an ending bracket and do we have an opening one already?
-                                        else if( openBrackets > 0 && [substring isEqualToString:@"]"] )
+                                        else if( openBrackets > 0 && [substring isEqualToString:kIXCloseBracketString] )
                                         {
                                             openBrackets--;
                                             
@@ -198,7 +327,27 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
         }
         else
         {
+            NSUInteger rangeCount = [shortCodeComponents numberOfRanges];
             
+            if( rangeCount >= 3 )
+            {
+                NSString* shortCodesRawValue = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                               withRange:[shortCodeComponents rangeAtIndex:0]];
+                NSString* shortCodesType = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                           withRange:[shortCodeComponents rangeAtIndex:1]];
+                NSString* shortCodesMethod = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                             withRange:[shortCodeComponents rangeAtIndex:2]];
+                NSArray* shortCodeParameters = nil;
+                
+                if( rangeCount >= 4 )
+                {
+                    NSString* shortCodesParametersString = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                                           withRange:[shortCodeComponents rangeAtIndex:3]];
+                    shortCodeParameters = [IXPropertyParser parseMethodParametersFromString:shortCodesParametersString];
+                }
+                
+                returnShortCode = [IXBaseShortCode shortCodeWithRawValue:shortCodesRawValue objectID:shortCodesType methodName:shortCodesMethod parameters:shortCodeParameters];
+            }
         }
     }
     
@@ -208,14 +357,17 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
 +(void)parseIXPropertyIntoComponents:(IXProperty*)property
 {
     NSArray* shortCodeRanges = [IXPropertyParser topLevelShortcodeRangesFromString:[property originalString]];
-    
+   
+    NSMutableArray* propertiesShortCodes = nil;
+    NSMutableArray* propertiesShortCodeRanges = nil;
+    NSMutableString* propertiesStaticText = [[NSMutableString alloc] initWithString:[property originalString]];
+
     if( [shortCodeRanges count] > 0 )
     {
-        property.shortCodes = [[NSMutableArray alloc] init];
-        property.shortCodeRanges = [[NSMutableArray alloc] init];
+        propertiesShortCodes = [[NSMutableArray alloc] init];
+        propertiesShortCodeRanges = [[NSMutableArray alloc] init];
         
         NSUInteger numberOfCharactersRemoved = 0;
-        NSMutableString* staticTextWithoutShortcodes = [[NSMutableString alloc] initWithString:[property originalString]];
         
         for( NSValue* shortCodeRangeAsValue in shortCodeRanges )
         {
@@ -228,17 +380,28 @@ static NSRegularExpression* sIXShortCodeParamRegex = nil;
                 {
                     NSString* stringToUseForReplace = ([shortCodeAsString isEqualToString:@"\\["]) ? @"[" : @"]";
                     shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;
-                    [staticTextWithoutShortcodes replaceCharactersInRange:shortCodeRange withString:stringToUseForReplace];
+                    [propertiesStaticText replaceCharactersInRange:shortCodeRange withString:stringToUseForReplace];
                     numberOfCharactersRemoved++;
                 }
                 else
                 {
                     IXBaseShortCode* shortCode = [IXPropertyParser getShortCodeFromShortCodeString:shortCodeAsString];
+                    [shortCode setProperty:property];
+                    
+                    shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;
+                    [propertiesStaticText replaceCharactersInRange:shortCodeRange withString:@""];
+                    numberOfCharactersRemoved += shortCodeRange.length;
+                    
+                    [propertiesShortCodes addObject:shortCode];
+                    [propertiesShortCodeRanges addObject:shortCodeRangeAsValue];
                 }
             }
         }
     }
     
+    [property setStaticText:propertiesStaticText];
+    [property setShortCodes:propertiesShortCodes];
+    [property setShortCodeRanges:propertiesShortCodeRanges];
 }
 
 @end

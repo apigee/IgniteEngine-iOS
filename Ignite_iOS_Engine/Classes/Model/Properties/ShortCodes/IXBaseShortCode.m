@@ -7,37 +7,45 @@
 //
 
 #import "IXBaseShortCode.h"
+#import "IXProperty.h"
 
 @implementation IXBaseShortCode
 
--(id)init
-{
-    return [self initWithRawValue:nil];
-}
-
-+(instancetype)shortCodeWithRawValue:(NSString*)rawValue;
-{
-    return [[self alloc] initWithRawValue:rawValue];
-}
-
--(id)initWithRawValue:(NSString*)rawValue
+-(instancetype)init
 {
     self = [super init];
     if( self )
     {
-        _rawValue = [rawValue copy];
+        
     }
     return self;
 }
 
--(void)parseRawValue
++(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
+                                 objectID:(NSString*)objectID
+                               methodName:(NSString*)methodName
+                               parameters:(NSArray*)parameters
 {
-    if( [self rawValue] == nil )
-        return;
-    
-    
-    
-    // Do parse here and set the methodName and parameters
+    IXBaseShortCode* shortCode = nil;
+    NSString* shortCodeClassName = [NSString stringWithFormat:@"IX%@ShortCode",[methodName capitalizedString]];
+    Class shortCodeClass = NSClassFromString(shortCodeClassName);
+    if( shortCodeClass != nil )
+    {
+        shortCode = [[shortCodeClass alloc] init];
+        [shortCode setRawValue:rawValue];
+        [shortCode setObjectID:objectID];
+        [shortCode setMethodName:methodName];
+        [shortCode setParameters:parameters];
+    }
+    return shortCode;
+}
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    return [IXBaseShortCode shortCodeWithRawValue:[self rawValue]
+                                          objectID:[self objectID]
+                                        methodName:[self methodName]
+                                        parameters:[self parameters]];
 }
 
 -(NSString*)evaluate

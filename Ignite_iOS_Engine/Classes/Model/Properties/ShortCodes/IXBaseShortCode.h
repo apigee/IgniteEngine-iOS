@@ -8,15 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IXBaseShortCode : NSObject
+@class IXProperty;
 
-@property (nonatomic,strong) NSString* rawValue;
-@property (nonatomic,strong) NSString* methodName;
-@property (nonatomic,strong) NSMutableArray* parametersProperties;
+@interface IXBaseShortCode : NSObject <NSCopying>
 
--(instancetype)initWithRawValue:(NSString*)rawValue;
-+(instancetype)shortCodeWithRawValue:(NSString*)rawValue;
+@property (nonatomic,weak) IXProperty* property;
+@property (nonatomic,copy) NSString* rawValue;
+@property (nonatomic,copy) NSString* objectID;
+@property (nonatomic,copy) NSString* methodName;
+@property (nonatomic,copy) NSArray* parameters;
 
--(NSValue*)evaluate;
++(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
+                                 objectID:(NSString*)objectID
+                               methodName:(NSString*)methodName
+                               parameters:(NSArray*)parameters;
+
+-(NSString*)evaluate;
 
 @end
