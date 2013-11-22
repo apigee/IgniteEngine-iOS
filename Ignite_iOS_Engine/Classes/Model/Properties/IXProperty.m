@@ -84,8 +84,13 @@
     {
         __block NSInteger newCharsAdded = 0;
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
+            
             NSRange shortCodeRange = [[[self shortCodeRanges] objectAtIndex:idx] rangeValue];
             NSString *shortCodesValue = [shortCode evaluate];
+            if( shortCodesValue == nil )
+            {
+                shortCodesValue = @"";
+            }            
             [returnString insertString:shortCodesValue atIndex:shortCodeRange.location + newCharsAdded];
             newCharsAdded += [shortCodesValue length] - shortCodeRange.length;
         }];

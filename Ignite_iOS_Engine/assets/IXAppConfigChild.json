@@ -12,7 +12,7 @@
                                   "type": "email"
                                   },
                                   "layout_type": "relative",
-                                  "placeholder_text": "text input as child of light blue layout",
+                                  "placeholder_text": "[textInput.get('keyboard.return_key')]",
                                   "width": "100%"
                                   },
                                   "type": "TextInput"

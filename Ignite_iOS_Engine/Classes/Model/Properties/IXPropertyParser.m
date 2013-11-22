@@ -325,12 +325,15 @@ static NSString* const kIXCommaString = @",";
                     IXBaseShortCode* shortCode = [IXPropertyParser getShortCodeFromShortCodeString:shortCodeAsString];
                     [shortCode setProperty:property];
                     
-                    shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;
-                    [propertiesStaticText replaceCharactersInRange:shortCodeRange withString:@""];
-                    numberOfCharactersRemoved += shortCodeRange.length;
-                    
-                    [propertiesShortCodes addObject:shortCode];
-                    [propertiesShortCodeRanges addObject:shortCodeRangeAsValue];
+                    if( shortCode != nil )
+                    {
+                        [propertiesShortCodes addObject:shortCode];
+                        [propertiesShortCodeRanges addObject:shortCodeRangeAsValue];
+                        
+                        shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;
+                        [propertiesStaticText replaceCharactersInRange:shortCodeRange withString:@""];
+                        numberOfCharactersRemoved += shortCodeRange.length;
+                    }
                 }
             }
         }
