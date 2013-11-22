@@ -7,14 +7,18 @@
 //
 
 #import "IXLayout.h"
-
 #import "IXClickableScrollView.h"
 #import "IXLayoutEngine.h"
 #import "IXStructs.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
+
 
 @interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,strong) UITapGestureRecognizer* doubleTapZoomRecognizer;
+
 
 -(void)doubleTapZoomRecognized:(id)sender;
 
@@ -53,23 +57,7 @@
     [_scrollView addSubview:_scrollViewContentView];
     
     
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-
-    CGColorRef topColor = [[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6] CGColor];
-    CGColorRef bottomColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.6] CGColor];
-
-    BOOL gradientVisible = [[self propertyContainer] getBoolPropertyValue:@"gradient_visible" defaultValue:true];
- 
-    if (gradientVisible)
-    {
-        CGRect gradientFrame = self.scrollView.bounds;
-        gradientFrame.size.width = [[self propertyContainer] getFloatPropertyValue:@"width" defaultValue:320.0f];
-        gradientFrame.size.height = [[self propertyContainer] getFloatPropertyValue:@"height" defaultValue:37.0f];
-        gradient.frame = gradientFrame;
-        gradient.colors = [NSArray arrayWithObjects: (id)CFBridgingRelease(topColor), (id)CFBridgingRelease(bottomColor), nil];
-        [_scrollView.layer addSublayer:gradient];
-    }
-
+    
     
     [[self contentView] addSubview:_scrollView];
 }
@@ -140,6 +128,35 @@
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
     [super layoutControlContentsInRect:rect];
+    
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    
+    UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_top" defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
+    //CGColorRef topColor = [[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6] CGColor];
+    UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_bottom" defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
+    //CGColorRef bottomColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.6] CGColor];
+    
+    CGColorRef topColor = [topUIColor CGColor];
+    CGColorRef bottomColor = [bottomUIColor CGColor];
+    
+    BOOL showGradient = [[self propertyContainer] propertyExistsForPropertyNamed:@"color.gradient_top"];
+    
+    NSLog(showGradient ? @"Is the gradient visible? Yes" : @"Is the gradient visible? No");
+    
+    if (showGradient)
+    {
+        CGRect gradientFrame = self.scrollView.bounds;
+        gradientFrame.size.width = rect.size.width;
+        gradientFrame.size.height = rect.size.height;
+        gradient.frame = gradientFrame;
+        gradient.colors = [NSArray arrayWithObjects: (id)CFBridgingRelease(topColor), (id)CFBridgingRelease(bottomColor), nil];
+        
+        [_scrollView.layer insertSublayer:gradient atIndex:0];
+    }
+    
+    
+    
     
     [IXLayoutEngine layoutControl:self inRect:rect];
 }

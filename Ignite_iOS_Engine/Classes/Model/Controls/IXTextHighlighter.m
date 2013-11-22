@@ -6,10 +6,9 @@
 //  Copyright (c) 2013 All rights reserved.
 //
 
-
+#import "IXBaseControl.h"
 #import "IXTextHighlighter.h"
 #import "TTTAttributedLabel.h"
-#import "IXBaseControl.h"
 
 static NSString* lastHashTagTouched = nil;
 static NSString* lastAccountTouched = nil;
@@ -166,7 +165,7 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents
 {
     [super buildView];
     
-    _attributedLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    _attributedLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
     _attributedLabel.textColor = [UIColor colorWithRed:0.286 green:0.286 blue:0.286 alpha:1.0];
     _attributedLabel.lineBreakMode = UILineBreakModeWordWrap;
     _attributedLabel.numberOfLines = 0;
@@ -178,7 +177,6 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents
     _attributedLabel.dataDetectorTypes = UIDataDetectorTypeAll; // Automatically detect links when the label text is subsequently changed
     _attributedLabel.delegate = self; // Delegate methods are called when the user taps on a link (see `TTTAttributedLabelDelegate` protocol)
     
-    NSString* text = [[self propertyContainer] getStringPropertyValue:@"text" defaultValue:@""];
     
     [[self contentView] addSubview:_attributedLabel];
 }
@@ -190,17 +188,19 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return size;
-}
+    return [_attributedLabel sizeThatFits:size];
 
+}
 
 -(void)applySettings
 {
     [super applySettings];
 
-    
+    NSString* text = [[self propertyContainer] getStringPropertyValue:@"text" defaultValue:@""];
+
     UIColor* textColor = [[self propertyContainer] getColorPropertyValue:@"text_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
     [_attributedLabel setTextColor:textColor];
+    [_attributedLabel setText:text];
     
     // LINK
     NSMutableDictionary *mutableLinkAttributes = [NSMutableDictionary dictionary];
@@ -239,7 +239,6 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents
     
     
     
-    NSString* text = [[self propertyContainer] getStringPropertyValue:@"text" defaultValue:@""];
     //UIColor* linkColor = [self.settings getColorSetting:@"link-color" orDefaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
 
     //    UIColor* textColor = [self.settings getColorSetting:@"text-color" orDefaultValue:[UIColor whiteColor]];

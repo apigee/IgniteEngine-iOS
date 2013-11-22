@@ -85,6 +85,7 @@ static CGSize kbSize;
     [super applySettings];
     
     // Keyboard Appearance
+        
     
     NSString* keyboardAppearance = [[self propertyContainer] getStringPropertyValue:@"keyboard.appearance" defaultValue:@"default"];
     

@@ -45,7 +45,6 @@
 		13033FB4183ED8F200C29157 /* IXBaseShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7A183ED8F200C29157 /* IXBaseShortCode.m */; };
 		13033FB5183ED8F200C29157 /* IXControlLayoutInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */; };
 		13033FB6183ED8F200C29157 /* IXLayoutEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7F183ED8F200C29157 /* IXLayoutEngine.m */; };
-		13033FB7183ED8F200C29157 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F83183ED8F200C29157 /* TTTAttributedLabel.m */; };
 		13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F86183ED8F200C29157 /* IXClickableScrollView.m */; };
 		13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F88183ED8F200C29157 /* IXControlContentView.m */; };
 		13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F8A183ED8F200C29157 /* IXNavigationViewController.m */; };
@@ -154,8 +153,6 @@
 		13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXControlLayoutInfo.m; sourceTree = "<group>"; };
 		13033F7E183ED8F200C29157 /* IXLayoutEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLayoutEngine.h; sourceTree = "<group>"; };
 		13033F7F183ED8F200C29157 /* IXLayoutEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLayoutEngine.m; sourceTree = "<group>"; };
-		13033F82183ED8F200C29157 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
-		13033F83183ED8F200C29157 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		13033F85183ED8F200C29157 /* IXClickableScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXClickableScrollView.h; sourceTree = "<group>"; };
 		13033F86183ED8F200C29157 /* IXClickableScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXClickableScrollView.m; sourceTree = "<group>"; };
 		13033F87183ED8F200C29157 /* IXControlContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXControlContentView.h; sourceTree = "<group>"; };
@@ -234,7 +231,6 @@
 				13033F2A183ED8F200C29157 /* IXJSONParser.m */,
 				13033F2B183ED8F200C29157 /* IXStructs.h */,
 				13033F2C183ED8F200C29157 /* Model */,
-				13033F80183ED8F200C29157 /* ThirdParty */,
 				13033F84183ED8F200C29157 /* View */,
 			);
 			name = Classes;
@@ -370,23 +366,6 @@
 				13033F7F183ED8F200C29157 /* IXLayoutEngine.m */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		13033F80183ED8F200C29157 /* ThirdParty */ = {
-			isa = PBXGroup;
-			children = (
-				13033F81183ED8F200C29157 /* TTTAttributedLabel */,
-			);
-			path = ThirdParty;
-			sourceTree = "<group>";
-		};
-		13033F81183ED8F200C29157 /* TTTAttributedLabel */ = {
-			isa = PBXGroup;
-			children = (
-				13033F82183ED8F200C29157 /* TTTAttributedLabel.h */,
-				13033F83183ED8F200C29157 /* TTTAttributedLabel.m */,
-			);
-			path = TTTAttributedLabel;
 			sourceTree = "<group>";
 		};
 		13033F84183ED8F200C29157 /* View */ = {
@@ -628,7 +607,6 @@
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
 				13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */,
 				13033F9E183ED8F200C29157 /* IXLayout.m in Sources */,
-				13033FB7183ED8F200C29157 /* TTTAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
