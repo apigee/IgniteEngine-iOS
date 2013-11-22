@@ -8,7 +8,7 @@
 
 /*
  
- WIDGET
+ CONTROL
  /--------------------/
  - TYPE : "IXVideoControl"
  - DESCRIPTION: "IXVideoControl Description."

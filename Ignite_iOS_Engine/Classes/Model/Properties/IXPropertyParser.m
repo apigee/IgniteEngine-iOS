@@ -13,8 +13,6 @@
 
 static NSString* const kIXShortcodeMainComponents = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\((.+?)\\)\\]$";
 static NSString* const kIXShortcodeMainComponentsNoParams = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\(\\)\\]$";
-static NSString* const kIXLegacyShortcodeMainComponents = @"^\\[([\\w-]+?):(.+?)\\]$";
-static NSString* const kIXLegacyShortcodeDataComponents = @"^([^\\(]+?)?\\(['\"]?(.*?)['\"]?\\)(?:\\-\\>([^\\]]+?))?$";
 static NSString* const kIXParamComponent = @"^'(.+?)'$";
 
 static NSRegularExpression* sIXShortCodeMainComponentsRegex = nil;
@@ -48,12 +46,6 @@ static NSString* const kIXCommaString = @",";
     sIXShortCodeMainComponentsNoParamsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponentsNoParams
                                                                                     options:NSRegularExpressionDotMatchesLineSeparators
                                                                                       error:nil];
-    sIXShortCodeLegacyMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXLegacyShortcodeMainComponents
-                                                                                  options:NSRegularExpressionDotMatchesLineSeparators
-                                                                                    error:nil];
-    sIXShortCodeLegacyDataComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXLegacyShortcodeDataComponents
-                                                                                  options:NSRegularExpressionDotMatchesLineSeparators
-                                                                                    error:nil];
 }
 
 +(NSArray*)parseMethodParametersFromString:(NSString*)string
@@ -117,8 +109,8 @@ static NSString* const kIXCommaString = @",";
         
         __block NSUInteger numberOfSingleQuotesFound = 0;
         __block NSUInteger numberOfBracketsFound = 0;
-        __block NSUInteger startOfParameter = -1;
-        __block NSUInteger endOfParameter = -1;
+        __block NSInteger startOfParameter = -1;
+        __block NSInteger endOfParameter = -1;
         
         [string enumerateSubstringsInRange:NSMakeRange(0, [string length])
                                    options:NSStringEnumerationByComposedCharacterSequences
@@ -261,93 +253,38 @@ static NSString* const kIXCommaString = @",";
 {
     IXBaseShortCode* returnShortCode = nil;
     
-    // First try to match with the legacy way
-    NSTextCheckingResult* shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeLegacyMainComponentsRegex
-                                                                                fromShortCodeString:shortCodeString];
+    NSTextCheckingResult* shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeMainComponentsRegex
+                                                                               fromShortCodeString:shortCodeString];
     
-    BOOL isLegacyShortcode = [shortCodeComponents numberOfRanges] > 0;
-    if( !isLegacyShortcode )
+    if( [shortCodeComponents numberOfRanges] <= 0 )
     {
-        shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeMainComponentsRegex
-                                                              fromShortCodeString:shortCodeString];
-        
-        if( [shortCodeComponents numberOfRanges] <= 0 )
-        {
-            shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeMainComponentsNoParamsRegex
-                                                                  fromShortCodeString:shortCodeString];
-        }
+        shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeMainComponentsNoParamsRegex
+                                                             fromShortCodeString:shortCodeString];
     }
     
     NSUInteger numberOfRangesInMainComponents = [shortCodeComponents numberOfRanges];
     if( numberOfRangesInMainComponents > 0 )
     {
-        if( isLegacyShortcode )
+        NSUInteger rangeCount = [shortCodeComponents numberOfRanges];
+        
+        if( rangeCount >= 3 )
         {
-            if( numberOfRangesInMainComponents >= 3 )
-            {
-                NSString* shortCodesRawValue = [IXPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:0]];
-                NSString* shortCodesType = [IXPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:1]];
-                NSString* shortCodesMethodName = nil;
-                NSMutableArray* shortCodesParameters = nil;
-                
-                NSString* shortCodesData = [IXPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:2]];
-                
-                NSTextCheckingResult* shortCodeDataComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeLegacyDataComponentsRegex
-                                                                                                fromShortCodeString:shortCodesData];
-                
-                NSUInteger numberOfRangesInDataComponents = [shortCodeDataComponents numberOfRanges];
-                if( numberOfRangesInDataComponents <= 0 )
-                {
-                    shortCodesMethodName = shortCodesData;
-                }
-                else
-                {
-                    shortCodesMethodName = [IXPropertyParser getSubstringFromString:shortCodesData withRange:[shortCodeDataComponents rangeAtIndex:1]];
-                    
-                    if( numberOfRangesInDataComponents > 3 )
-                    {
-                        NSString* parameterString = [IXPropertyParser getSubstringFromString:shortCodesData withRange:[shortCodeDataComponents rangeAtIndex:1]];
-                        if( parameterString != nil )
-                        {
-                            // TODO: CHECK THIS
-                            IXProperty* property = [[IXProperty alloc] initWithPropertyName:nil rawValue:parameterString];
-                            shortCodesParameters = [[NSMutableArray alloc] initWithObjects:property, nil];
-                        }
-                        
-                        if( numberOfRangesInDataComponents > 4 )
-                        {
-                            
-                        }
-                    }
-                    
-                }
-                
-                
-            }
-        }
-        else
-        {
-            NSUInteger rangeCount = [shortCodeComponents numberOfRanges];
+            NSString* shortCodesRawValue = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                           withRange:[shortCodeComponents rangeAtIndex:0]];
+            NSString* shortCodesType = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                       withRange:[shortCodeComponents rangeAtIndex:1]];
+            NSString* shortCodesMethod = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                         withRange:[shortCodeComponents rangeAtIndex:2]];
+            NSArray* shortCodeParameters = nil;
             
-            if( rangeCount >= 3 )
+            if( rangeCount >= 4 )
             {
-                NSString* shortCodesRawValue = [IXPropertyParser getSubstringFromString:shortCodeString
-                                                                               withRange:[shortCodeComponents rangeAtIndex:0]];
-                NSString* shortCodesType = [IXPropertyParser getSubstringFromString:shortCodeString
-                                                                           withRange:[shortCodeComponents rangeAtIndex:1]];
-                NSString* shortCodesMethod = [IXPropertyParser getSubstringFromString:shortCodeString
-                                                                             withRange:[shortCodeComponents rangeAtIndex:2]];
-                NSArray* shortCodeParameters = nil;
-                
-                if( rangeCount >= 4 )
-                {
-                    NSString* shortCodesParametersString = [IXPropertyParser getSubstringFromString:shortCodeString
-                                                                                           withRange:[shortCodeComponents rangeAtIndex:3]];
-                    shortCodeParameters = [IXPropertyParser parseMethodParametersFromString:shortCodesParametersString];
-                }
-                
-                returnShortCode = [IXBaseShortCode shortCodeWithRawValue:shortCodesRawValue objectID:shortCodesType methodName:shortCodesMethod parameters:shortCodeParameters];
+                NSString* shortCodesParametersString = [IXPropertyParser getSubstringFromString:shortCodeString
+                                                                                       withRange:[shortCodeComponents rangeAtIndex:3]];
+                shortCodeParameters = [IXPropertyParser parseMethodParametersFromString:shortCodesParametersString];
             }
+            
+            returnShortCode = [IXBaseShortCode shortCodeWithRawValue:shortCodesRawValue objectID:shortCodesType methodName:shortCodesMethod parameters:shortCodeParameters];
         }
     }
     

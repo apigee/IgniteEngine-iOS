@@ -1,5 +1,5 @@
 //
-//  IXWidgetLayoutInfo.h
+//  IXControlLayoutInfo.h
 //  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/23.

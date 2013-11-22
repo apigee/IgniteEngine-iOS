@@ -8,7 +8,7 @@
  //
 /*
  
- WIDGET
+ CONTROL
  /--------------------/
  - TYPE : "IXBrowserControl"
  - DESCRIPTION: "IXBrowserControl Description."

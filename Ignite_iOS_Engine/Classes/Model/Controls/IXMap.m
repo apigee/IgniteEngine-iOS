@@ -8,7 +8,7 @@
 
 /*
  
- WIDGET
+ CONTROL
  
  - TYPE : "Map"
  
