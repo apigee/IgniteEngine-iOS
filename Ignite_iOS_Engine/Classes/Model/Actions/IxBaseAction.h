@@ -1,25 +1,25 @@
 //
-//  IxBaseAction.h
-//  Ignite iOS Engine (Ix)
+//  IXBaseAction.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseConditionalObject.h"
+#import "IXBaseConditionalObject.h"
 
-@class IxProperty;
-@class IxActionContainer;
-@class IxPropertyContainer;
+@class IXProperty;
+@class IXActionContainer;
+@class IXPropertyContainer;
 
-@interface IxBaseAction : IxBaseConditionalObject
+@interface IXBaseAction : IXBaseConditionalObject
 
-@property (nonatomic,weak) IxActionContainer* actionContainer;
+@property (nonatomic,weak) IXActionContainer* actionContainer;
 
 @property (nonatomic,copy) NSString* eventName;
-@property (nonatomic,strong) IxPropertyContainer* actionProperties;
-@property (nonatomic,strong) IxPropertyContainer* parameterProperties;
-@property (nonatomic,strong) IxActionContainer* subActionContainer;
+@property (nonatomic,strong) IXPropertyContainer* actionProperties;
+@property (nonatomic,strong) IXPropertyContainer* parameterProperties;
+@property (nonatomic,strong) IXActionContainer* subActionContainer;
 
 // NOT DONE YET
 #warning METHODS NOT DONE YET

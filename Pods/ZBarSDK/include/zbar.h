@@ -656,7 +656,7 @@ extern void zbar_image_set_format(zbar_image_t *image,
 extern void zbar_image_set_sequence(zbar_image_t *image,
                                     unsigned sequence_num);
 
-/** specify the pIxl size of the image.
+/** specify the pIXl size of the image.
  * @note this also resets the crop rectangle to the full image
  * (0, 0, width, height)
  * @note this does not affect the data!
@@ -702,7 +702,7 @@ extern void zbar_image_set_userdata(zbar_image_t *image,
 extern void *zbar_image_get_userdata(const zbar_image_t *image);
 
 /** dump raw image data to a file for debug.
- * the data will be prefIxd with a 16 byte header consisting of:
+ * the data will be prefIXd with a 16 byte header consisting of:
  *   - 4 bytes uint = 0x676d697a ("zimg")
  *   - 4 bytes format fourcc
  *   - 2 bytes width

@@ -1,20 +1,20 @@
 //
-//  IxFunctionAction.m
-//  Ixgee_iOS_Engine
+//  IXFunctionAction.m
+//  IXgee_iOS_Engine
 //
 //  Created by Robert Walsh on 11/17.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxFunctionAction.h"
+#import "IXFunctionAction.h"
 
-#import "IxPropertyContainer.h"
-#import "IxSandbox.h"
-#import "IxBaseControl.h"
-#import "IxActionContainer.h"
-#import "IxBaseDataprovider.h"
+#import "IXPropertyContainer.h"
+#import "IXSandbox.h"
+#import "IXBaseControl.h"
+#import "IXActionContainer.h"
+#import "IXBaseDataprovider.h"
 
-@implementation IxFunctionAction
+@implementation IXFunctionAction
 
 -(void)execute
 {
@@ -24,13 +24,13 @@
     if( objectID != nil && functionName != nil )
     {
         NSArray* controlsToFireFunctionOn = [[[[self actionContainer] sandbox] containerControl] childrenWithID:objectID];        
-        for( IxBaseControl* control in controlsToFireFunctionOn )
+        for( IXBaseControl* control in controlsToFireFunctionOn )
         {
             [control applyFunction:functionName withParameters:[self parameterProperties]];
         }
         
         NSArray* dataSourcesToFireFunctionOn = nil;
-        for( IxBaseDataprovider* dataProvider in dataSourcesToFireFunctionOn )
+        for( IXBaseDataprovider* dataProvider in dataSourcesToFireFunctionOn )
         {
             [dataProvider applyFunction:functionName withParameters:[self parameterProperties]];
         }

@@ -1,13 +1,13 @@
 //
-//  IxPanelControl.h
-//  Ignite iOS Engine (Ix)
+//  IXPanelControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by ___ on ___.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
-@interface IxPanel : IxBaseControl
+@interface IXPanel : IXBaseControl
 
 @end

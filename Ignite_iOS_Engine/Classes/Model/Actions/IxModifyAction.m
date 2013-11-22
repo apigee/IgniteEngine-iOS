@@ -1,18 +1,18 @@
 //
-//  IxModifyAction.m
-//  Ignite iOS Engine (Ix)
+//  IXModifyAction.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxModifyAction.h"
+#import "IXModifyAction.h"
 
-#import "IxSandbox.h"
-#import "IxBaseObject.h"
-#import "IxActionContainer.h"
+#import "IXSandbox.h"
+#import "IXBaseObject.h"
+#import "IXActionContainer.h"
 
-@implementation IxModifyAction
+@implementation IXModifyAction
 
 -(void)execute
 {
@@ -21,7 +21,7 @@
     if( objectID != nil && [self parameterProperties] != nil )
     {
         NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
-        for( IxBaseObject* baseObject in objectsWithID )
+        for( IXBaseObject* baseObject in objectsWithID )
         {
             [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
         }

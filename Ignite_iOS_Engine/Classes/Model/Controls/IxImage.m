@@ -1,16 +1,16 @@
 //
-//  IxImageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXImageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxImage.h"
+#import "IXImage.h"
 
 #import "UIImageView+WebCache.h"
 
-@interface IxImage ()
+@interface IXImage ()
 
 @property (nonatomic,strong) UIImageView* imageView;
 @property (nonatomic,strong) NSString* imagePath;
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation IxImage
+@implementation IXImage
 
 -(void)buildView
 {

@@ -1,6 +1,6 @@
 //
-//  IxVideoControl.m
-//  Ignite iOS Engine (Ix)
+//  IXVideoControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16.
 //  Copyright (c) 2013 All rights reserved.
@@ -10,8 +10,8 @@
  
  WIDGET
  /--------------------/
- - TYPE : "IxVideoControl"
- - DESCRIPTION: "IxVideoControl Description."
+ - TYPE : "IXVideoControl"
+ - DESCRIPTION: "IXVideoControl Description."
  /--------------------/
  - PROPERTIES
  /--------------------/
@@ -49,15 +49,15 @@
  /--------------------/
  */
 
-#import "IxMediaPlayer.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXMediaPlayer.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 
 #import "ALMoviePlayerController.h"
 
 
-@interface  IxMediaPlayer()
+@interface  IXMediaPlayer()
 
 @property (nonatomic, strong) ALMoviePlayerController *moviePlayer;
 @property NSInteger *controls;
@@ -65,7 +65,7 @@
 
 @end
 
-@implementation IxMediaPlayer
+@implementation IXMediaPlayer
 
 
 
@@ -157,7 +157,7 @@
     
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
     if( _moviePlayer != nil )

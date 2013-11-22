@@ -1,13 +1,13 @@
 //
-//  IxControl.h
-//  Ignite iOS Engine (Ix)
+//  IXControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16/2013.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
-@interface IxMediaSource : IxBaseControl
+@interface IXMediaSource : IXBaseControl
 
 @end

@@ -1,6 +1,6 @@
 //
-//  IxImageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXImageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/15.
 //  Copyright (c) 2013 All rights reserved.
@@ -20,16 +20,16 @@
   
  */
 
-#import "IxToggle.h"
+#import "IXToggle.h"
 
-@interface  IxToggle()
+@interface  IXToggle()
 
 @property (nonatomic,strong) NSString* imagePath;
 @property (nonatomic,strong) NSString* touchedImagePath;
 
 @end
 
-@implementation IxToggle
+@implementation IXToggle
 
 -(void)buildView
 {

@@ -1,34 +1,34 @@
 //
-//  IxStructs.h
-//  Ignite iOS Engine (Ix)
+//  IXStructs.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/21.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxEnums.h"
+#import "IXEnums.h"
 
-typedef struct IxFrameAndOffset
+typedef struct IXFrameAndOffset
 {
     CGRect frame;
     CGFloat offset;
     
-} IxFrameAndOffset;
+} IXFrameAndOffset;
 
-static const IxFrameAndOffset IxFrameAndOffsetZero = {
+static const IXFrameAndOffset IXFrameAndOffsetZero = {
     
     .frame   = { {0.0f,0.0f},{0.0f,0.0f} },
     .offset  = 0.0f
 };
 
-typedef struct IxSizeAndPosition
+typedef struct IXSizeAndPosition
 {
     CGSize size;
     CGPoint position;
     
-} IxSizeAndPosition;
+} IXSizeAndPosition;
 
-static const IxSizeAndPosition IxSizeAndPositionZero = {
+static const IXSizeAndPosition IXSizeAndPositionZero = {
     
     .size   = { .width = 0.0f, .height = 0.0f },
     .position  = { .x = 0.0f, .y = 0.0f }

@@ -1,25 +1,25 @@
 //
-//  IxJSONParser.m
-//  Ignite iOS Engine (Ix)
+//  IXJSONParser.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/10.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxJSONParser.h"
+#import "IXJSONParser.h"
 
-#import "IxPropertyContainer.h"
-#import "IxProperty.h"
-#import "IxViewController.h"
-#import "IxBaseControl.h"
-#import "IxLayout.h"
-#import "IxBaseAction.h"
-#import "IxTextInput.h"
-#import "IxActionContainer.h"
-#import "IxBaseDataprovider.h"
-#import "IxEntityContainer.h"
+#import "IXPropertyContainer.h"
+#import "IXProperty.h"
+#import "IXViewController.h"
+#import "IXBaseControl.h"
+#import "IXLayout.h"
+#import "IXBaseAction.h"
+#import "IXTextInput.h"
+#import "IXActionContainer.h"
+#import "IXBaseDataprovider.h"
+#import "IXEntityContainer.h"
 
-@implementation IxJSONParser
+@implementation IXJSONParser
 
 +(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue
 {
@@ -38,19 +38,19 @@
     return mask;
 }
 
-+(IxProperty*)conditionalPropertyForConditionalValue:(id)conditionalValue
++(IXProperty*)conditionalPropertyForConditionalValue:(id)conditionalValue
 {
-    IxProperty* conditionalProperty = nil;
+    IXProperty* conditionalProperty = nil;
     if( [conditionalValue isKindOfClass:[NSString class]] )
     {
-        conditionalProperty = [[IxProperty alloc] initWithPropertyName:@"if" rawValue:conditionalValue];
+        conditionalProperty = [[IXProperty alloc] initWithPropertyName:@"if" rawValue:conditionalValue];
     }
     return conditionalProperty;
 }
 
-+(IxProperty*)propertyWithPropertyName:(NSString*)propertyName propertyValueDict:(NSDictionary*)propertyValueDict
++(IXProperty*)propertyWithPropertyName:(NSString*)propertyName propertyValueDict:(NSDictionary*)propertyValueDict
 {
-    IxProperty* property = nil;
+    IXProperty* property = nil;
     if( propertyValueDict != nil && [[propertyValueDict allKeys] count] > 0 )
     {
         id propertyValue = [propertyValueDict objectForKey:@"value"];
@@ -60,16 +60,16 @@
             {
                 propertyValue = nil;
             }
-            property = [[IxProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
+            property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
         }
         
         if( property != nil )
         {
             id orientation = [propertyValueDict objectForKey:@"orientation"];
-            [property setInterfaceOrientationMask:[IxJSONParser orientationMaskForValue:orientation]];
+            [property setInterfaceOrientationMask:[IXJSONParser orientationMaskForValue:orientation]];
             
             id conditional = [propertyValueDict objectForKey:@"if"];
-            [property setConditionalProperty:[IxJSONParser conditionalPropertyForConditionalValue:conditional]];
+            [property setConditionalProperty:[IXJSONParser conditionalPropertyForConditionalValue:conditional]];
         }
     }
     return property;
@@ -83,7 +83,7 @@
         if( [propertyValueObject isKindOfClass:[NSDictionary class]] )
         {
             NSDictionary* propertyValueDict = (NSDictionary*) propertyValueObject;
-            IxProperty* property = [IxJSONParser propertyWithPropertyName:propertyName propertyValueDict:propertyValueDict];
+            IXProperty* property = [IXJSONParser propertyWithPropertyName:propertyName propertyValueDict:propertyValueDict];
             if( property != nil )
             {
                 [propertyArray addObject:property];
@@ -97,29 +97,29 @@
     return propertyArray;
 }
 
-+(IxPropertyContainer*)propertyContainerWithPropertyDictionary:(NSDictionary*)propertDictionary
++(IXPropertyContainer*)propertyContainerWithPropertyDictionary:(NSDictionary*)propertDictionary
 {
-    IxPropertyContainer* propertyContainer = nil;
+    IXPropertyContainer* propertyContainer = nil;
     if( propertDictionary != nil && [propertDictionary isKindOfClass:[NSDictionary class]] && [[propertDictionary allValues] count] > 0 )
     {
-        propertyContainer = [[IxPropertyContainer alloc] init];
+        propertyContainer = [[IXPropertyContainer alloc] init];
         [propertDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if( [obj isKindOfClass:[NSArray class]] )
             {
-                NSArray* properties = [IxJSONParser propertiesWithPropertyName:key propertyValueArray:obj];
-                for( IxProperty* property in properties )
+                NSArray* properties = [IXJSONParser propertiesWithPropertyName:key propertyValueArray:obj];
+                for( IXProperty* property in properties )
                 {
                     [propertyContainer addProperty:property];
                 }
             }
             else if( [obj isKindOfClass:[NSString class]] )
             {
-                IxProperty* property = [[IxProperty alloc] initWithPropertyName:key rawValue:obj];
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:obj];
                 [propertyContainer addProperty:property];
             }
             else if( [obj isKindOfClass:[NSNumber class]] )
             {
-                IxProperty* property = [[IxProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
                 [propertyContainer addProperty:property];
             }
             else if( [obj isKindOfClass:[NSDictionary class]] )
@@ -128,20 +128,20 @@
                     subKey = [NSString stringWithFormat:@"%@.%@",key,subKey];
                     if( [subObj isKindOfClass:[NSArray class]] )
                     {
-                        NSArray* properties = [IxJSONParser propertiesWithPropertyName:subKey propertyValueArray:subObj];
-                        for( IxProperty* property in properties )
+                        NSArray* properties = [IXJSONParser propertiesWithPropertyName:subKey propertyValueArray:subObj];
+                        for( IXProperty* property in properties )
                         {
                             [propertyContainer addProperty:property];
                         }
                     }
                     else if( [subObj isKindOfClass:[NSString class]] )
                     {
-                        IxProperty* property = [[IxProperty alloc] initWithPropertyName:subKey rawValue:subObj];
+                        IXProperty* property = [[IXProperty alloc] initWithPropertyName:subKey rawValue:subObj];
                         [propertyContainer addProperty:property];
                     }
                     else if( [obj isKindOfClass:[NSNumber class]] )
                     {
-                        IxProperty* property = [[IxProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
+                        IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
                         [propertyContainer addProperty:property];
                     }
                     else
@@ -160,9 +160,9 @@
     return propertyContainer;
 }
 
-+(IxBaseAction*)actionWithValueDictionary:(NSDictionary*)actionValueDict
++(IXBaseAction*)actionWithValueDictionary:(NSDictionary*)actionValueDict
 {
-    IxBaseAction* action = nil;
+    IXBaseAction* action = nil;
     if( [actionValueDict allKeys] > 0 )
     {
         id eventName = [actionValueDict objectForKey:@"on"];
@@ -171,7 +171,7 @@
             id type = [actionValueDict objectForKey:@"type"];
             if( [type isKindOfClass:[NSString class]] )
             {
-                NSString* actionClassString = [NSString stringWithFormat:@"Ix%@Action",[type capitalizedString]];
+                NSString* actionClassString = [NSString stringWithFormat:@"IX%@Action",[type capitalizedString]];
                 action = [[NSClassFromString(actionClassString) alloc] init];
             }
             
@@ -180,21 +180,21 @@
                 [action setEventName:eventName];
                 
                 id orientation = [actionValueDict objectForKey:@"orientation"];
-                [action setInterfaceOrientationMask:[IxJSONParser orientationMaskForValue:orientation]];
+                [action setInterfaceOrientationMask:[IXJSONParser orientationMaskForValue:orientation]];
                 
                 id conditional = [actionValueDict objectForKey:@"if"];
-                [action setConditionalProperty:[IxJSONParser conditionalPropertyForConditionalValue:conditional]];
+                [action setConditionalProperty:[IXJSONParser conditionalPropertyForConditionalValue:conditional]];
                 
                 id propertiesDict = [actionValueDict objectForKey:@"properties"];
-                IxPropertyContainer* propertyContainer = [IxJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
+                IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [action setActionProperties:propertyContainer];
                 
                 id parametersDict = [actionValueDict objectForKey:@"parameters"];
-                IxPropertyContainer* parameterContainer = [IxJSONParser propertyContainerWithPropertyDictionary:parametersDict];
+                IXPropertyContainer* parameterContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
                 [action setParameterProperties:parameterContainer];
                 
                 id actionsDict = [actionValueDict objectForKey:@"actions"];
-                IxActionContainer* subActionContainer = [IxJSONParser actionContainerWithJSONActionsArray:actionsDict];
+                IXActionContainer* subActionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsDict];
                 [action setSubActionContainer:subActionContainer];
             }
         }
@@ -202,17 +202,17 @@
     return action;
 }
 
-+(IxActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray
++(IXActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray
 {
-    IxActionContainer* actionContainer = nil;
+    IXActionContainer* actionContainer = nil;
     if( [actionsArray isKindOfClass:[NSArray class]] )
     {
-        actionContainer = [[IxActionContainer alloc] init];
+        actionContainer = [[IXActionContainer alloc] init];
         for( id actionValueDict in actionsArray )
         {
             if( [actionValueDict isKindOfClass:[NSDictionary class]] )
             {
-                IxBaseAction* action = [IxJSONParser actionWithValueDictionary:actionValueDict];
+                IXBaseAction* action = [IXJSONParser actionWithValueDictionary:actionValueDict];
                 if( action != nil )
                 {
                     [actionContainer addAction:action];
@@ -223,13 +223,13 @@
     return actionContainer;
 }
 
-+(IxBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict
++(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict
 {
-    IxBaseControl* control = nil;
+    IXBaseControl* control = nil;
     if( [controlValueDict allKeys] > 0 )
     {
         NSString* controlType = [controlValueDict objectForKey:@"type"];
-        NSString* controlClassString = [NSString stringWithFormat:@"Ix%@",controlType];
+        NSString* controlClassString = [NSString stringWithFormat:@"IX%@",controlType];
         
         Class controlClass = NSClassFromString(controlClassString);
         control = [[controlClass alloc] init];
@@ -238,15 +238,15 @@
             id propertiesDict = [controlValueDict objectForKey:@"properties"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
-                IxPropertyContainer* propertyContainer = [IxJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
+                IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [control setPropertyContainer:propertyContainer];
                 
                 id actionsArray = [controlValueDict objectForKey:@"actions"];
-                IxActionContainer* actionContainer = [IxJSONParser actionContainerWithJSONActionsArray:actionsArray];
+                IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
                 [control setActionContainer:actionContainer];
                 
                 NSArray* controlsValueArray = [controlValueDict objectForKey:@"controls"];
-                NSArray* controls = [IxJSONParser controlsWithJSONControlArray:controlsValueArray];
+                NSArray* controls = [IXJSONParser controlsWithJSONControlArray:controlsValueArray];
                 [control addChildObjects:controls];
             }
         }
@@ -268,7 +268,7 @@
         {
             if( [controlValueDict isKindOfClass:[NSDictionary class]] )
             {
-                IxBaseControl* control = [IxJSONParser controlWithValueDictionary:controlValueDict];
+                IXBaseControl* control = [IXJSONParser controlWithValueDictionary:controlValueDict];
                 if( control != nil )
                 {
                     [controlArray addObject:control];
@@ -279,13 +279,13 @@
     return controlArray;
 }
 
-+(IxBaseDataprovider*)dataProviderWithValueDictionary:(NSDictionary*)dataProviderValueDict
++(IXBaseDataprovider*)dataProviderWithValueDictionary:(NSDictionary*)dataProviderValueDict
 {
-    IxBaseDataprovider* dataProvider = nil;
+    IXBaseDataprovider* dataProvider = nil;
     if( [dataProviderValueDict allKeys] > 0 )
     {
         NSString* dataProviderType = [dataProviderValueDict objectForKey:@"type"];
-        NSString* dataProviderClassString = [NSString stringWithFormat:@"Ix%@Dataprovider",dataProviderType];
+        NSString* dataProviderClassString = [NSString stringWithFormat:@"IX%@Dataprovider",dataProviderType];
         
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
         dataProvider = [[dataProviderClass alloc] init];
@@ -294,27 +294,27 @@
             id propertiesDict = [dataProviderValueDict objectForKey:@"properties"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
-                IxPropertyContainer* propertyContainer = [IxJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
+                IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [dataProvider setPropertyContainer:propertyContainer];
                 
                 id entitiesDict = [dataProviderValueDict objectForKey:@"entity"];
-                IxEntityContainer* entityContainer = [IxJSONParser entityContainerWithJSONEntityDict:entitiesDict];
+                IXEntityContainer* entityContainer = [IXJSONParser entityContainerWithJSONEntityDict:entitiesDict];
                 [dataProvider setEntityContainer:entityContainer];
 
                 id parametersDict = [dataProviderValueDict objectForKey:@"parameters"];
-                IxPropertyContainer* parametersPropertyContainer = [IxJSONParser propertyContainerWithPropertyDictionary:parametersDict];
+                IXPropertyContainer* parametersPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
                 [dataProvider setRequestParameterProperties:parametersPropertyContainer];
                 
                 id headersDict = [dataProviderValueDict objectForKey:@"headers"];
-                IxPropertyContainer* headersPropertyContainer = [IxJSONParser propertyContainerWithPropertyDictionary:headersDict];
+                IXPropertyContainer* headersPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:headersDict];
                 [dataProvider setRequestHeaderProperties:headersPropertyContainer];
 
                 id attachmentsDict = [dataProviderValueDict objectForKey:@"attachments"];
-                IxPropertyContainer* attachmentsPropertyContainer = [IxJSONParser propertyContainerWithPropertyDictionary:attachmentsDict];
+                IXPropertyContainer* attachmentsPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:attachmentsDict];
                 [dataProvider setFileAttachmentProperties:attachmentsPropertyContainer];
                 
                 id actionsArray = [dataProviderValueDict objectForKey:@"actions"];
-                IxActionContainer* actionContainer = [IxJSONParser actionContainerWithJSONActionsArray:actionsArray];
+                IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
                 [dataProvider setActionContainer:actionContainer];            
             }
         }
@@ -326,29 +326,29 @@
     return dataProvider;
 }
 
-+(IxEntityContainer*)entityContainerWithJSONEntityDict:(NSDictionary*)entityDict
++(IXEntityContainer*)entityContainerWithJSONEntityDict:(NSDictionary*)entityDict
 {
-    IxEntityContainer* entity = nil;
+    IXEntityContainer* entity = nil;
     if( [entityDict isKindOfClass:[NSDictionary class]] )
     {
-        entity = [[IxEntityContainer alloc] init];
+        entity = [[IXEntityContainer alloc] init];
         
         [entityDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if( [obj isKindOfClass:[NSString class]] )
             {
-                IxProperty* property = [[IxProperty alloc] initWithPropertyName:key rawValue:obj];
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:obj];
                 [[entity entityProperties] addProperty:property];
             }
             else if( [obj isKindOfClass:[NSNumber class]] )
             {
-                IxProperty* property = [[IxProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
                 [[entity entityProperties] addProperty:property];
             }
             else if( [obj isKindOfClass:[NSArray class]] && [key isEqualToString:@"sub_entities"] )
             {
                 for( NSDictionary* subEntityDict in obj )
                 {
-                    IxEntityContainer* subEntityContainer = [IxJSONParser entityContainerWithJSONEntityDict:subEntityDict];
+                    IXEntityContainer* subEntityContainer = [IXJSONParser entityContainerWithJSONEntityDict:subEntityDict];
                     if( subEntityContainer != nil )
                         [[entity subEntities] addObject:subEntityContainer];
                 }
@@ -368,7 +368,7 @@
         {
             if( [dataProviderValueDict isKindOfClass:[NSDictionary class]] )
             {
-                IxBaseDataprovider* dataProvider = [IxJSONParser dataProviderWithValueDictionary:dataProviderValueDict];
+                IXBaseDataprovider* dataProvider = [IXJSONParser dataProviderWithValueDictionary:dataProviderValueDict];
                 if( dataProvider != nil )
                 {
                     [dataProviderArray addObject:dataProvider];
@@ -380,25 +380,25 @@
 }
 
 
-+(IxViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary
++(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary
 {
-    IxViewController* viewController = [[IxViewController alloc] init];
+    IXViewController* viewController = [[IXViewController alloc] init];
     
     NSDictionary* viewPropertyDictionary = [viewDictionary objectForKey:@"properties"];
     
     // FIXME: Setting the properties for the view on the viewControllers containerControl.  Might need to change this not sure yet!
-    [[viewController containerControl] setPropertyContainer:[IxJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary]];
+    [[viewController containerControl] setPropertyContainer:[IXJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary]];
     
     NSArray* dataProviderArray = [viewDictionary objectForKey:@"data_providers"];
-    NSArray* dataProviders = [IxJSONParser dataProvidersWithJSONDataProviderArray:dataProviderArray];
+    NSArray* dataProviders = [IXJSONParser dataProvidersWithJSONDataProviderArray:dataProviderArray];
     [[viewController sandbox] addDataProviders:dataProviders];
     
     NSArray* controlsValueArray = [viewDictionary objectForKey:@"controls"];
-    NSArray* controls = [IxJSONParser controlsWithJSONControlArray:controlsValueArray];
+    NSArray* controls = [IXJSONParser controlsWithJSONControlArray:controlsValueArray];
     [[viewController containerControl] addChildObjects:controls];
     
     NSArray* actionsArray = [viewDictionary objectForKey:@"actions"];
-    IxActionContainer* actionContainer = [IxJSONParser actionContainerWithJSONActionsArray:actionsArray];
+    IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
     [[viewController containerControl] setActionContainer:actionContainer];
     
     return viewController;

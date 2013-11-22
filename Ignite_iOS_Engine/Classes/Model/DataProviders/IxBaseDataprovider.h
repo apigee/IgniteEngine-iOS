@@ -1,28 +1,28 @@
 //
-//  IxBaseDataprovider.h
-//  Ignite iOS Engine (Ix)
+//  IXBaseDataprovider.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseObject.h"
-#import "IxConstants.h"
+#import "IXBaseObject.h"
+#import "IXConstants.h"
 #import <RestKit/CoreData.h>
 
-@class IxTableView;
-@class IxPropertyContainer;
-@class IxEntityContainer;
+@class IXTableView;
+@class IXPropertyContainer;
+@class IXEntityContainer;
 
-@interface IxBaseDataprovider : IxBaseObject
+@interface IXBaseDataprovider : IXBaseObject
 
-@property (nonatomic,weak) IxTableView* controlListener;
+@property (nonatomic,weak) IXTableView* controlListener;
 @property (nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
 
-@property (nonatomic,strong) IxPropertyContainer* requestParameterProperties;
-@property (nonatomic,strong) IxPropertyContainer* requestHeaderProperties;
-@property (nonatomic,strong) IxPropertyContainer* fileAttachmentProperties;
-@property (nonatomic,strong) IxEntityContainer* entityContainer;
+@property (nonatomic,strong) IXPropertyContainer* requestParameterProperties;
+@property (nonatomic,strong) IXPropertyContainer* requestHeaderProperties;
+@property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
+@property (nonatomic,strong) IXEntityContainer* entityContainer;
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 

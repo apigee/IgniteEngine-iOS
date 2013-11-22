@@ -1,6 +1,6 @@
 //
-//  IxScannerControl.m
-//  Ignite iOS Engine (Ix)
+//  IXScannerControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/17.
 //  Copyright (c) 2013 All rights reserved.
@@ -32,11 +32,11 @@
  /--------------------/
  */
 
-#import "IxScanner.h"
+#import "IXScanner.h"
 #import "ZBarSDK.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 
 
 
@@ -45,11 +45,11 @@
 static ZBarReaderViewController* readerView = nil;
 static ZBarCameraSimulator *cameraSim;
 
-@interface  IxScanner() <ZBarReaderDelegate>
+@interface  IXScanner() <ZBarReaderDelegate>
 
 @end
 
-@implementation IxScanner
+@implementation IXScanner
 
 -(void)buildView
 {
@@ -122,7 +122,7 @@ static ZBarCameraSimulator *cameraSim;
     [readerView setReaderDelegate:self];
 //    [readerView setCameraOverlayView:[self overlayControl]];
     
-    [[[IxAppManager sharedInstance] rootViewController] presentViewController:readerView animated:YES completion:nil];
+    [[[IXAppManager sharedInstance] rootViewController] presentViewController:readerView animated:YES completion:nil];
 
     
 //    [self.window.rootViewController presentViewController:readerView animated:YES completion:nil];
@@ -166,7 +166,7 @@ static ZBarCameraSimulator *cameraSim;
  The dogs current trackPosition
  */
 
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
     if( [functionName compare:@"start"] == NSOrderedSame )

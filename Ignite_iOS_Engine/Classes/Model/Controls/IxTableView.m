@@ -1,26 +1,26 @@
 //
-//  IxTableViewControl.m
-//  Ixgee_iOS_Engine
+//  IXTableViewControl.m
+//  IXgee_iOS_Engine
 //
 //  Created by Robert Walsh on 11/18.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxTableView.h"
-#import "IxBaseDataprovider.h"
-#import "IxSandbox.h"
+#import "IXTableView.h"
+#import "IXBaseDataprovider.h"
+#import "IXSandbox.h"
 #import <RestKit/CoreData.h>
 
 
-@interface IxTableView () <UITableViewDataSource,UITableViewDelegate>
+@interface IXTableView () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, strong) IxBaseDataprovider* dataProvider;
+@property (nonatomic, strong) IXBaseDataprovider* dataProvider;
 
 @end
 
-@implementation IxTableView
+@implementation IXTableView
 
 -(void)dealloc
 {

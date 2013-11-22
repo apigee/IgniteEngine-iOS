@@ -1,6 +1,6 @@
 //
-//  IxImageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXImageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/14.
 //  Copyright (c) 2013 All rights reserved.
@@ -18,16 +18,16 @@
   
  */
 
-#import "IxActivityIndicator.h"
+#import "IXActivityIndicator.h"
 
-@interface IxActivityIndicator ()
+@interface IXActivityIndicator ()
 
 @property (nonatomic,strong) NSString* imagePath;
 @property (nonatomic,strong) NSString* touchedImagePath;
 
 @end
 
-@implementation IxActivityIndicator
+@implementation IXActivityIndicator
 
 -(void)buildView
 {

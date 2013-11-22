@@ -1,6 +1,6 @@
 //
-//  IxPropertyBag.h
-//  Ignite iOS Engine (Ix)
+//  IXPropertyBag.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/7.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,21 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-#import "IxConstants.h"
+#import "IXConstants.h"
 
-@class IxProperty;
-@class IxBaseObject;
-@class IxSandbox;
-@class IxSizePercentageContainer;
+@class IXProperty;
+@class IXBaseObject;
+@class IXSandbox;
+@class IXSizePercentageContainer;
 
-@interface IxPropertyContainer : NSObject
+@interface IXPropertyContainer : NSObject
 
-@property (nonatomic,weak) IxSandbox* sandbox;
+@property (nonatomic,weak) IXSandbox* sandbox;
 
-// FINISHED - But unuseable until finish the IxProperty class.
+// FINISHED - But unuseable until finish the IXProperty class.
 
--(void)addProperty:(IxProperty*)property;
--(void)addPropertiesFromPropertyContainer:(IxPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding;
+-(void)addProperty:(IXProperty*)property;
+-(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding;
 -(NSDictionary*)getAllPropertiesStringValues;
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName;
 
@@ -30,7 +30,7 @@
 -(BOOL)getBoolPropertyValue:(NSString*)propertyName defaultValue:(BOOL)defaultValue;
 -(int)getIntPropertyValue:(NSString*)propertyName defaultValue:(int)defaultValue;
 -(float)getFloatPropertyValue:(NSString*)propertyName defaultValue:(float)defaultValue;
--(IxSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue;
+-(IXSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue;
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue;
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
 

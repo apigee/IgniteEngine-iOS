@@ -1,6 +1,6 @@
 //
-//  IxBaseObject.h
-//  Ignite iOS Engine (Ix)
+//  IXBaseObject.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,27 +8,27 @@
 
 #import <Foundation/Foundation.h>
 
-#import "IxSandbox.h"
-#import "IxActionContainer.h"
-#import "IxPropertyContainer.h"
+#import "IXSandbox.h"
+#import "IXActionContainer.h"
+#import "IXPropertyContainer.h"
 
-@class IxBaseAction;
+@class IXBaseAction;
 
-@interface IxBaseObject : NSObject
+@interface IXBaseObject : NSObject
 
-@property (nonatomic,weak) IxBaseObject* parentObject;
-@property (nonatomic,weak) IxSandbox* sandbox;
+@property (nonatomic,weak) IXBaseObject* parentObject;
+@property (nonatomic,weak) IXSandbox* sandbox;
 
 @property (nonatomic,strong) NSString* ID;
 @property (nonatomic,strong) NSMutableArray* childObjects;
-@property (nonatomic,strong) IxActionContainer* actionContainer;
-@property (nonatomic,strong) IxPropertyContainer* propertyContainer;
+@property (nonatomic,strong) IXActionContainer* actionContainer;
+@property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 
--(void)addChildObject:(IxBaseObject*)childObject;
+-(void)addChildObject:(IXBaseObject*)childObject;
 -(void)addChildObjects:(NSArray*)childObjects;
 -(NSArray*)childrenWithID:(NSString*)childObjectID;
 
 -(void)applySettings;
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer;
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer;
 
 @end

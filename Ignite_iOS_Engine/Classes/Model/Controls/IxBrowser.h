@@ -1,12 +1,12 @@
 //
-//  IxBrowserControl.h
-//  Ignite iOS Engine (Ix)
+//  IXBrowserControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16/2013.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
 /** This object is used to display HTML & websites.
  
@@ -25,7 +25,7 @@
         "properties": {
             "id": "myBrowser",
             "mode": "default",
-            "url": "http://Ixgee.com",
+            "url": "http://IXgee.com",
             "width": 320,
             "height": 320
         }
@@ -33,6 +33,6 @@
  */
 
 
-@interface IxBrowser : IxBaseControl
+@interface IXBrowser : IXBaseControl
 
 @end

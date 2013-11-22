@@ -1,21 +1,21 @@
 //
-//  IxAlertAction.m
-//  Ignite iOS Engine (Ix)
+//  IXAlertAction.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxAlertAction.h"
+#import "IXAlertAction.h"
 
-#import "IxActionContainer.h"
-#import "IxPropertyContainer.h"
+#import "IXActionContainer.h"
+#import "IXPropertyContainer.h"
 
-@interface IxAlertAction () <UIAlertViewDelegate>
+@interface IXAlertAction () <UIAlertViewDelegate>
 @property (nonatomic,strong) UIAlertView* alertView;
 @end
 
-@implementation IxAlertAction
+@implementation IXAlertAction
 
 -(void)dealloc
 {
@@ -26,15 +26,15 @@
 {
     [super execute];
     
-    IxPropertyContainer* actionProperties = [self actionProperties];
+    IXPropertyContainer* actionProperties = [self actionProperties];
     
-    NSString* title = [actionProperties getStringPropertyValue:kIx_TITLE defaultValue:nil];
-    NSString* subTitle = [actionProperties getStringPropertyValue:kIx_SUB_TITLE defaultValue:nil];
-    NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:@"confirm_button_title" defaultValue:kIx_OK];
+    NSString* title = [actionProperties getStringPropertyValue:kIX_TITLE defaultValue:nil];
+    NSString* subTitle = [actionProperties getStringPropertyValue:kIX_SUB_TITLE defaultValue:nil];
+    NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:@"confirm_button_title" defaultValue:kIX_OK];
     
     NSString* cancelButtonTitle = nil;
     if( [actionProperties getBoolPropertyValue:@"shows_cancel_button" defaultValue:NO] )
-        cancelButtonTitle = [actionProperties getStringPropertyValue:@"cancel_button_title" defaultValue:kIx_CANCEL];
+        cancelButtonTitle = [actionProperties getStringPropertyValue:@"cancel_button_title" defaultValue:kIX_CANCEL];
     
     [[self alertView] setDelegate:nil];
     [self setAlertView:[[UIAlertView alloc] initWithTitle:title

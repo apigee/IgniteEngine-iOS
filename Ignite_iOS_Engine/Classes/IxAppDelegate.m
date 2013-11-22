@@ -1,18 +1,18 @@
 //
-//  IxAppDelegate.m
-//  Ignite iOS Engine (Ix)
+//  IXAppDelegate.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxAppDelegate.h"
+#import "IXAppDelegate.h"
 
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
 #import "JASidePanelController.h"
 
-@implementation IxAppDelegate
+@implementation IXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -28,12 +28,12 @@
     
     [controller setLeftPanel:vc1];
     [controller setRightPanel:vc2];
-    [controller setCenterPanel:[[IxAppManager sharedInstance] rootViewController]];
+    [controller setCenterPanel:[[IXAppManager sharedInstance] rootViewController]];
     
     [[self window] setRootViewController:controller];
-//    [[self window] setRootViewController:[[IxAppManager sharedInstance] rootViewController]];
+//    [[self window] setRootViewController:[[IXAppManager sharedInstance] rootViewController]];
     
-    [[IxAppManager sharedInstance] startApplication];
+    [[IXAppManager sharedInstance] startApplication];
     [self.window makeKeyAndVisible];
 
     return YES;

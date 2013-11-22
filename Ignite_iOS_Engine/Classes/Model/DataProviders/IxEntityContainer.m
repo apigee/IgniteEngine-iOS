@@ -1,23 +1,23 @@
 //
-//  IxEntityContainer.m
-//  Ixgee_iOS_Engine
+//  IXEntityContainer.m
+//  IXgee_iOS_Engine
 //
 //  Created by Robert Walsh on 11/19.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxEntityContainer.h"
+#import "IXEntityContainer.h"
 
-#import "IxPropertyContainer.h"
+#import "IXPropertyContainer.h"
 
-@implementation IxEntityContainer
+@implementation IXEntityContainer
 
 -(instancetype)init
 {
     self = [super init];
     if( self )
     {
-        _entityProperties = [[IxPropertyContainer alloc] init];
+        _entityProperties = [[IXPropertyContainer alloc] init];
         _subEntities = [[NSMutableArray alloc] init];
     }
     return self;

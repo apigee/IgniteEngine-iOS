@@ -1,6 +1,6 @@
 //
-//  Ix  Control.m
-//  Ignite iOS Engine (Ix)
+//  IX  Control.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/18.
 //  Copyright (c) 2013 All rights reserved.
@@ -32,20 +32,20 @@
  /--------------------/
  */
 
-#import "IxPanel.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXPanel.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 #import "JASidePanelController.h"
 
 #import "UIViewController+JASidePanel.h"
 
 
-@interface  IxPanel()
+@interface  IXPanel()
 
 @end
 
-@implementation IxPanel
+@implementation IXPanel
 
 -(void)buildView
 {
@@ -61,7 +61,7 @@
 -(void)applySettings
 {
     [super applySettings];
-    //[[IxAppManager sharedInstance] rootViewController]]
+    //[[IXAppManager sharedInstance] rootViewController]]
     /*
      
      JASidePanelController* controller = [[JASidePanelController alloc] init];
@@ -73,7 +73,7 @@
      
      [controller setLeftPanel:vc1];
      [controller setRightPanel:vc2];
-     [controller setCenterPanel:[[IxAppManager sharedInstance] rootViewController]];
+     [controller setCenterPanel:[[IXAppManager sharedInstance] rootViewController]];
 
      
      */

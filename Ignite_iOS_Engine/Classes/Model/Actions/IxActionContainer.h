@@ -1,6 +1,6 @@
 //
-//  IxActionContainer.h
-//  Ignite iOS Engine (Ix)
+//  IXActionContainer.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class IxSandbox;
-@class IxBaseObject;
-@class IxBaseAction;
+@class IXSandbox;
+@class IXBaseObject;
+@class IXBaseAction;
 
-@interface IxActionContainer : NSObject
+@interface IXActionContainer : NSObject
 
-@property (nonatomic,weak) IxSandbox* sandbox;
-@property (nonatomic,weak) IxBaseObject* actionContainerOwner;
+@property (nonatomic,weak) IXSandbox* sandbox;
+@property (nonatomic,weak) IXBaseObject* actionContainerOwner;
 
--(void)addAction:(IxBaseAction*)action;
+-(void)addAction:(IXBaseAction*)action;
 -(void)addActions:(NSArray*)actions;
 
 -(BOOL)hasActionsForEvent:(NSString*)eventName;

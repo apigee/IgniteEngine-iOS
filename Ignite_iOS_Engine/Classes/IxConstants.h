@@ -1,6 +1,6 @@
 //
-//  IxConstants.h
-//  Ignite iOS Engine (Ix)
+//  IXConstants.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
@@ -9,19 +9,19 @@
 #import <Foundation/Foundation.h>
 
 // SPECIAL
-extern NSString* const kIx_DUMMY_DATA_MODEL_ENTITY_NAME;
+extern NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME;
 
 // ACTION TYPES
-extern NSString* const kIx_ALERT;
-extern NSString* const kIx_MODIFY;
-extern NSString* const kIx_REFRESH;
-extern NSString* const kIx_SET;
-extern NSString* const kIx_FUNCTION;
+extern NSString* const kIX_ALERT;
+extern NSString* const kIX_MODIFY;
+extern NSString* const kIX_REFRESH;
+extern NSString* const kIX_SET;
+extern NSString* const kIX_FUNCTION;
 
 // RANDOMS
-extern NSString* const kIx_TITLE;
-extern NSString* const kIx_SUB_TITLE;
-extern NSString* const kIx_STYLE;
-extern NSString* const kIx_OK;
-extern NSString* const kIx_CANCEL;
-extern NSString* const kIx_TOUCH;
+extern NSString* const kIX_TITLE;
+extern NSString* const kIX_SUB_TITLE;
+extern NSString* const kIX_STYLE;
+extern NSString* const kIX_OK;
+extern NSString* const kIX_CANCEL;
+extern NSString* const kIX_TOUCH;

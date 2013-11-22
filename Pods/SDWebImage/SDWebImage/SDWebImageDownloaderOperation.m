@@ -300,7 +300,7 @@
             
             if (CGSizeEqualToSize(image.size, CGSizeZero))
             {
-                completionBlock(nil, nil, [NSError errorWithDomain:@"SDWebImageErrorDomain" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Downloaded image has 0 pIxls"}], YES);
+                completionBlock(nil, nil, [NSError errorWithDomain:@"SDWebImageErrorDomain" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Downloaded image has 0 pIXls"}], YES);
             }
             else
             {

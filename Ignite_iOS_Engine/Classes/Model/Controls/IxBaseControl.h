@@ -1,6 +1,6 @@
 //
-//  IxBaseControl.h
-//  Ignite iOS Engine (Ix)
+//  IXBaseControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
@@ -9,26 +9,26 @@
 
 /*
  
- IxBaseControl
+ IXBaseControl
  
- IxControlsBase
+ IXControlsBase
  
- IxScannerControl
+ IXScannerControl
  
  
  
  */
 
-#import "IxBaseObject.h"
-#import "IxControlContentView.h"
+#import "IXBaseObject.h"
+#import "IXControlContentView.h"
 
-@class IxSandbox;
-@class IxControlLayoutInfo;
+@class IXSandbox;
+@class IXControlLayoutInfo;
 
-@interface IxBaseControl : IxBaseObject  <IxControlContentViewTouchDelegate>
+@interface IXBaseControl : IXBaseObject  <IXControlContentViewTouchDelegate>
 
-@property (nonatomic,strong,readonly) IxControlContentView* contentView;
-@property (nonatomic,strong,readonly) IxControlLayoutInfo* layoutInfo;
+@property (nonatomic,strong,readonly) IXControlContentView* contentView;
+@property (nonatomic,strong,readonly) IXControlLayoutInfo* layoutInfo;
 
 -(void)buildView;
 

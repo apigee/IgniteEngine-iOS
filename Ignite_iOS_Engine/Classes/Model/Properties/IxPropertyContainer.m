@@ -1,26 +1,26 @@
 //
-//  IxPropertyBag.m
-//  Ignite iOS Engine (Ix)
+//  IXPropertyBag.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/7.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxPropertyContainer.h"
+#import "IXPropertyContainer.h"
 
-#import "IxAppManager.h"
-#import "IxProperty.h"
-#import "IxControlLayoutInfo.h"
+#import "IXAppManager.h"
+#import "IXProperty.h"
+#import "IXControlLayoutInfo.h"
 
 #import "ColorUtils.h"
 
-@interface IxPropertyContainer ()
+@interface IXPropertyContainer ()
 
 @property (nonatomic,strong) NSMutableDictionary* propertiesDict;
 
 @end
 
-@implementation IxPropertyContainer
+@implementation IXPropertyContainer
 
 -(id)init
 {
@@ -43,7 +43,7 @@
     return ([self getPropertyToEvaluate:propertyName] != nil);
 }
 
--(void)addProperty:(IxProperty*)property
+-(void)addProperty:(IXProperty*)property
 {
     NSString* propertyName = [property propertyName];
     if( property == nil || propertyName == nil )
@@ -66,7 +66,7 @@
     }
 }
 
--(void)addPropertiesFromPropertyContainer:(IxPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding
+-(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding
 {
     if( evaluateBeforeAdding )
     {
@@ -74,7 +74,7 @@
         for( NSString* propertyName in propertyNames )
         {
             NSString* propertyValue = [propertyContainer getStringPropertyValue:propertyName defaultValue:@""];
-            IxProperty* property = [[IxProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
+            IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
             [self addProperty:property];
         }
     }
@@ -85,7 +85,7 @@
         for( NSString* propertyName in propertyNames )
         {
             NSArray* propertyArray = [propertyContainer propertiesForPropertyNamed:propertyName];
-            for( IxProperty* property in propertyArray )
+            for( IXProperty* property in propertyArray )
             {
                 [self addProperty:property];
             }
@@ -108,17 +108,17 @@
     return returnDictionary;
 }
 
--(IxProperty*)getPropertyToEvaluate:(NSString*)propertyName
+-(IXProperty*)getPropertyToEvaluate:(NSString*)propertyName
 {
     if( propertyName == nil )
         return nil;
     
-    IxProperty* propertyToEvaluate = nil;
+    IXProperty* propertyToEvaluate = nil;
     NSArray* propertyArray = [self propertiesForPropertyNamed:propertyName];
     if( propertyArray != nil || [propertyArray count] > 0 )
     {
-        UIInterfaceOrientation currentOrientation = [IxAppManager currentInterfaceOrientation];
-        for( IxProperty* property in [[propertyArray reverseObjectEnumerator] allObjects] )
+        UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
+        for( IXProperty* property in [[propertyArray reverseObjectEnumerator] allObjects] )
         {
             if( [property areConditionalAndOrientationMaskValid:currentOrientation] )
             {
@@ -132,7 +132,7 @@
 
 -(NSString*)getStringPropertyValue:(NSString*)propertyName defaultValue:(NSString*)defaultValue
 {
-    IxProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyName];
+    IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyName];
     NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue] : defaultValue;
     return returnValue;
 }
@@ -169,10 +169,10 @@
     return returnValue;
 }
 
--(IxSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue
+-(IXSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue
 {
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
-    return [IxSizePercentageContainer sizeAndPercentageContainerWithStringValue:stringValue orDefaultValue:defaultValue];
+    return [IXSizePercentageContainer sizeAndPercentageContainerWithStringValue:stringValue orDefaultValue:defaultValue];
 }
 
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue

@@ -1,18 +1,18 @@
 //
-//  IxProperty.h
-//  Ignite iOS Engine (Ix)
+//  IXProperty.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/7.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseConditionalObject.h"
+#import "IXBaseConditionalObject.h"
 
-@class IxPropertyContainer;
+@class IXPropertyContainer;
 
-@interface IxProperty : IxBaseConditionalObject <NSCopying>
+@interface IXProperty : IXBaseConditionalObject <NSCopying>
 
-@property (nonatomic,weak) IxPropertyContainer* propertyContainer;
+@property (nonatomic,weak) IXPropertyContainer* propertyContainer;
 
 @property (nonatomic,copy) NSString* originalString;
 @property (nonatomic,copy) NSString* rawValue;

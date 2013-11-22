@@ -1,17 +1,17 @@
 //
-//  IxBaseConditionalObject.m
-//  Ignite iOS Engine (Ix)
+//  IXBaseConditionalObject.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseConditionalObject.h"
+#import "IXBaseConditionalObject.h"
 
-#import "IxAppManager.h"
-#import "IxProperty.h"
+#import "IXAppManager.h"
+#import "IXProperty.h"
 
-@implementation IxBaseConditionalObject
+@implementation IXBaseConditionalObject
 
 -(id)init
 {
@@ -51,7 +51,7 @@
         NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue];
         if( conditionalPropertyValue && [conditionalPropertyValue length] > 0 )
         {
-            NSString* conditionalPropertyValueReturned = [[IxAppManager sharedInstance] evaluateJavascript:conditionalPropertyValue];
+            NSString* conditionalPropertyValueReturned = [[IXAppManager sharedInstance] evaluateJavascript:conditionalPropertyValue];
             
             conditionalPropertyIsValid = !( conditionalPropertyValueReturned == nil || [conditionalPropertyValueReturned length] <= 0 || [conditionalPropertyValueReturned isEqualToString:@"0"] || [conditionalPropertyValueReturned isEqualToString:@"false"] );
         }

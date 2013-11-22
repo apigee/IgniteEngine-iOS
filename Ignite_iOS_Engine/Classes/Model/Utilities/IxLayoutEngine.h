@@ -1,6 +1,6 @@
 //
-//  IxLayoutEngine.h
-//  Ignite iOS Engine (Ix)
+//  IXLayoutEngine.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/21.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class IxBaseControl;
-@class IxLayout;
+@class IXBaseControl;
+@class IXLayout;
 
-@interface IxLayoutEngine : NSObject
+@interface IXLayoutEngine : NSObject
 
-+(void)layoutControl:(IxLayout*)layoutControl inRect:(CGRect)layoutRect;
-+(CGSize)getPreferredSizeForLayoutControl:(IxLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize;
-+(CGRect)getInternalLayoutRectForControl:(IxBaseControl*)control forOuterLayoutRect:(CGRect)outerLayoutRect;
++(void)layoutControl:(IXLayout*)layoutControl inRect:(CGRect)layoutRect;
++(CGSize)getPreferredSizeForLayoutControl:(IXLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize;
++(CGRect)getInternalLayoutRectForControl:(IXBaseControl*)control forOuterLayoutRect:(CGRect)outerLayoutRect;
 
 @end

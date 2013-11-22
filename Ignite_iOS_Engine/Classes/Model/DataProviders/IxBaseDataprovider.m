@@ -1,20 +1,20 @@
 //
-//  IxBaseDataprovider.m
-//  Ignite iOS Engine (Ix)
+//  IXBaseDataprovider.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseDataprovider.h"
+#import "IXBaseDataprovider.h"
 
-#import "IxPropertyContainer.h"
-#import "IxTableView.h"
-#import "IxEntityContainer.h"
+#import "IXPropertyContainer.h"
+#import "IXTableView.h"
+#import "IXEntityContainer.h"
 
 #import <RestKit/RestKit.h>
 
-@interface IxBaseDataprovider () <NSFetchedResultsControllerDelegate>
+@interface IXBaseDataprovider () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) RKObjectManager* objectManager;
 @property (nonatomic,assign) BOOL sortAscending;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation IxBaseDataprovider
+@implementation IXBaseDataprovider
 
 +(void)initialize
 {
@@ -48,14 +48,14 @@
     self = [super init];
     if( self )
     {
-        _requestParameterProperties = [[IxPropertyContainer alloc] init];
-        _requestHeaderProperties = [[IxPropertyContainer alloc] init];
-        _fileAttachmentProperties = [[IxPropertyContainer alloc] init];
+        _requestParameterProperties = [[IXPropertyContainer alloc] init];
+        _requestHeaderProperties = [[IXPropertyContainer alloc] init];
+        _fileAttachmentProperties = [[IXPropertyContainer alloc] init];
     }
     return self;
 }
 
--(void)setSandbox:(IxSandbox *)sandbox
+-(void)setSandbox:(IXSandbox *)sandbox
 {
     [super setSandbox:sandbox];
     
@@ -133,7 +133,7 @@
     [[self objectManager] setManagedObjectStore:managedObjectStore];
 }
 
--(NSEntityDescription*)createEntityFromIxEntityContainer:(IxEntityContainer*)entityContainer addToMapping:(RKEntityMapping*)entityMapping
+-(NSEntityDescription*)createEntityFromIXEntityContainer:(IXEntityContainer*)entityContainer addToMapping:(RKEntityMapping*)entityMapping
 {
     NSEntityDescription* entity = nil;
     @try
@@ -141,7 +141,7 @@
         RKManagedObjectStore *managedObjectStore = [[self objectManager] managedObjectStore];
         NSManagedObjectModel *managedObjectModel = [managedObjectStore managedObjectModel];
         
-        entity = [[[managedObjectModel entitiesByName] objectForKey:kIx_DUMMY_DATA_MODEL_ENTITY_NAME] copy];
+        entity = [[[managedObjectModel entitiesByName] objectForKey:kIX_DUMMY_DATA_MODEL_ENTITY_NAME] copy];
         [entity setName:[[entityContainer entityProperties] getStringPropertyValue:@"entity_name" defaultValue:nil]];
         
         NSString* entityAttributesString = [[entityContainer entityProperties] getStringPropertyValue:@"entity_attributes" defaultValue:nil];
@@ -177,9 +177,9 @@
                                                                                         withMapping:mapping]];
         }
         
-        for( IxEntityContainer* subEntityContainer in [entityContainer subEntities] )
+        for( IXEntityContainer* subEntityContainer in [entityContainer subEntities] )
         {
-            NSEntityDescription* subEntity = [self createEntityFromIxEntityContainer:subEntityContainer addToMapping:mapping];
+            NSEntityDescription* subEntity = [self createEntityFromIXEntityContainer:subEntityContainer addToMapping:mapping];
             if( subEntity != nil )
             {
                 NSInteger parentMinCount = 0;
@@ -237,7 +237,7 @@
 {
     @try
     {
-        [self createEntityFromIxEntityContainer:[self entityContainer] addToMapping:nil];
+        [self createEntityFromIXEntityContainer:[self entityContainer] addToMapping:nil];
         
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:_entityMapping
                                                                                                 method:RKRequestMethodGET

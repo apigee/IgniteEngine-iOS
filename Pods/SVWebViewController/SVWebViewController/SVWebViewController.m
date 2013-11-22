@@ -178,21 +178,21 @@
     
     UIBarButtonItem *refreshStopBarButtonItem = self.self.webView.isLoading ? self.stopBarButtonItem : self.refreshBarButtonItem;
     
-    UIBarButtonItem *fIxdSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *fIXdSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGFloat toolbarWidth = 250.0f;
-        fIxdSpace.width = 35.0f;
+        fIXdSpace.width = 35.0f;
 
         NSArray *items = [NSArray arrayWithObjects:
-                          fIxdSpace,
+                          fIXdSpace,
                           refreshStopBarButtonItem,
-                          fIxdSpace,
+                          fIXdSpace,
                           self.backBarButtonItem,
-                          fIxdSpace,
+                          fIXdSpace,
                           self.forwardBarButtonItem,
-                          fIxdSpace,
+                          fIXdSpace,
                           self.actionBarButtonItem,
                           nil];
         
@@ -205,7 +205,7 @@
     
     else {
         NSArray *items = [NSArray arrayWithObjects:
-                          fIxdSpace,
+                          fIXdSpace,
                           self.backBarButtonItem,
                           flexibleSpace,
                           self.forwardBarButtonItem,
@@ -213,7 +213,7 @@
                           refreshStopBarButtonItem,
                           flexibleSpace,
                           self.actionBarButtonItem,
-                          fIxdSpace,
+                          fIXdSpace,
                           nil];
         
         self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;

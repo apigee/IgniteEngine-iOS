@@ -1,6 +1,6 @@
 //
-//  IxMessageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXMessageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16.
 //  Copyright (c) 2013 All rights reserved.
@@ -45,18 +45,18 @@
  
  */
 
-#import "IxSocial.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXSocial.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 
-@interface  IxSocial()
+@interface  IXSocial()
 
 @property (nonatomic, strong) SLComposeViewController* SLComposeViewController;
 
 @end
 
-@implementation IxSocial
+@implementation IXSocial
 
 -(void)buildView
 {
@@ -76,12 +76,12 @@
         case SLComposeViewControllerResultCancelled:
             NSLog(@"Share was cancelled");
             [[self actionContainer] executeActionsForEventNamed:@"share_cancelled"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case SLComposeViewControllerResultDone:
             NSLog(@"Share failed");
             [[self actionContainer] executeActionsForEventNamed:@"share_failed"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         default:
             break;
@@ -112,7 +112,7 @@
     
     // Twitter, Facebook, Weibo
 
-    NSString* sharePlatform = [IxSocial getServiceType:[[self propertyContainer] getStringPropertyValue:@"share.platform" defaultValue:@""]];
+    NSString* sharePlatform = [IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:@"share.platform" defaultValue:@""]];
     
     if( sharePlatform != nil )
     {
@@ -124,7 +124,7 @@
             [controller addURL:[NSURL URLWithString:[[self propertyContainer] getStringPropertyValue:@"share.url" defaultValue:nil]]];
             [controller addImage:[UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:@"share.image" defaultValue:nil]]];
 
-            [[[IxAppManager sharedInstance] rootViewController] presentViewController:controller animated:YES completion:nil];
+            [[[IXAppManager sharedInstance] rootViewController] presentViewController:controller animated:YES completion:nil];
         }
         else
         {
@@ -137,12 +137,12 @@
                 case SLComposeViewControllerResultDone:
                     NSLog(@"Share done");
                     [[self actionContainer] executeActionsForEventNamed:@"share_done"];
-                    [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+                    [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
                     break;
                 case SLComposeViewControllerResultCancelled:
                     NSLog(@"Share was cancelled");
                     [[self actionContainer] executeActionsForEventNamed:@"share_cancelled"];
-                    [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+                    [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
                     break;
                 default:
                     break;

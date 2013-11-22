@@ -1,17 +1,17 @@
 //
-//  IxClickableScrollView.m
-//  Ignite iOS Engine (Ix)
+//  IXClickableScrollView.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/21.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxClickableScrollView.h"
+#import "IXClickableScrollView.h"
 
-#import "IxBaseControl.h"
-#import "IxActionContainer.h"
+#import "IXBaseControl.h"
+#import "IXActionContainer.h"
 
-@implementation IxClickableScrollView
+@implementation IXClickableScrollView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -26,7 +26,7 @@
 
 -(UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    IxBaseControl* parentControl = [self parentControl];
+    IXBaseControl* parentControl = [self parentControl];
     UIControl* parentContentView = [parentControl contentView];
     if( parentContentView != nil && ![parentContentView isHidden] && [parentContentView isEnabled] )
     {

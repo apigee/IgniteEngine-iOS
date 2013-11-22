@@ -1,16 +1,16 @@
 //
-//  IxControlContentView.m
-//  Ignite iOS Engine (Ix)
+//  IXControlContentView.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/22.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxControlContentView.h"
+#import "IXControlContentView.h"
 
-@implementation IxControlContentView
+@implementation IXControlContentView
 
--(id)initWithFrame:(CGRect)frame viewTouchDelegate:(id<IxControlContentViewTouchDelegate>)touchDelegate
+-(id)initWithFrame:(CGRect)frame viewTouchDelegate:(id<IXControlContentViewTouchDelegate>)touchDelegate
 {
     self = [super initWithFrame:frame];
     if( self != nil )

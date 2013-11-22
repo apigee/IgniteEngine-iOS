@@ -1,18 +1,18 @@
 //
-//  IxBaseAction.m
-//  Ignite iOS Engine (Ix)
+//  IXBaseAction.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseAction.h"
+#import "IXBaseAction.h"
 
-#import "IxPropertyContainer.h"
-#import "IxProperty.h"
-#import "IxActionContainer.h"
+#import "IXPropertyContainer.h"
+#import "IXProperty.h"
+#import "IXActionContainer.h"
 
-@implementation IxBaseAction
+@implementation IXBaseAction
 
 -(id)init
 {
@@ -20,11 +20,11 @@
     if( self )
     {
         _eventName = nil;
-        _actionProperties = [[IxPropertyContainer alloc] init];
-        _parameterProperties = [[IxPropertyContainer alloc] init];
+        _actionProperties = [[IXPropertyContainer alloc] init];
+        _parameterProperties = [[IXPropertyContainer alloc] init];
         
 #warning NEED TO CHECK THIS LATER ON
-        _subActionContainer = [[IxActionContainer alloc] init];
+        _subActionContainer = [[IXActionContainer alloc] init];
         [_subActionContainer setActionContainerOwner:[[self actionContainer] actionContainerOwner]];
     }
     return self;

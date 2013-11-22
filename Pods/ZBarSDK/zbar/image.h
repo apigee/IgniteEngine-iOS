@@ -84,7 +84,7 @@ typedef struct zbar_format_def_s {
     union {
         uint8_t gen[4];                 /* raw bytes */
         struct {
-            uint8_t bpp;                /* bits per pIxl */
+            uint8_t bpp;                /* bits per pIXl */
             uint8_t red, green, blue;   /* size/location a la RGB_BITS() */
         } rgb;
         struct {

@@ -1,6 +1,6 @@
 //
-//  IxBrowserControl.m
-//  Ignite iOS Engine (Ix)
+//  IXBrowserControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16.
 //  Copyright (c) 2013 All rights reserved.
@@ -10,8 +10,8 @@
  
  WIDGET
  /--------------------/
- - TYPE : "IxBrowserControl"
- - DESCRIPTION: "IxBrowserControl Description."
+ - TYPE : "IXBrowserControl"
+ - DESCRIPTION: "IXBrowserControl Description."
  /--------------------/
  - PROPERTIES
  /--------------------/
@@ -42,15 +42,15 @@
 
 
 
-#import "IxBrowser.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXBrowser.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 
 #import "SVWebViewController.h"
 
 
-@interface  IxBrowser()
+@interface  IXBrowser()
 
 @property UIWebView *webview;
 
@@ -58,7 +58,7 @@
 
 @end
 
-@implementation IxBrowser
+@implementation IXBrowser
 
 
 
@@ -89,7 +89,7 @@
     
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
     NSLog(@"modal, bitches!");
@@ -98,7 +98,7 @@
 
 
 
-//-(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+//-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 //{
 //    
 //    if( [functionName compare:@"modal"] == NSOrderedSame )
@@ -108,7 +108,7 @@
 //        NSURL *URL = [NSURL URLWithString:url];
 //        //
 //        _modalWebViewController = [[SVModalWebViewController alloc] initWithURL:URL];
-//        [[[IxAppManager sharedInstance] rootViewController] presentViewController:_modalWebViewController animated:YES completion:NULL];
+//        [[[IXAppManager sharedInstance] rootViewController] presentViewController:_modalWebViewController animated:YES completion:NULL];
 //    }
 //    
 //}

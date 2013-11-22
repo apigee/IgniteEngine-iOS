@@ -1,12 +1,12 @@
 //
-//  IxScannerControl.h
-//  Ignite iOS Engine (Ix)
+//  IXScannerControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by ___ on ___.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 #import <UIKit/UIKit.h>
 
 /** This is some sample documentation
@@ -34,6 +34,6 @@
  | cell    | cell    | cell    |
  */
 
-@interface IxScanner : IxBaseControl
+@interface IXScanner : IXBaseControl
 
 @end

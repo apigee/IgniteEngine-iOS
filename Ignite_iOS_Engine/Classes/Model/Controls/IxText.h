@@ -1,13 +1,13 @@
 //
-//  IxTextControl.h
-//  Ignite iOS Engine (Ix)
+//  IXTextControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
-@interface IxText : IxBaseControl
+@interface IXText : IXBaseControl
 
 @end

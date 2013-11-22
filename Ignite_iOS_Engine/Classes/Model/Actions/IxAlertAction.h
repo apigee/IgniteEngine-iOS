@@ -1,6 +1,6 @@
 //
-//  IxAlertAction.h
-//  Ignite iOS Engine (Ix)
+//  IXAlertAction.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
@@ -27,8 +27,8 @@
  
  */
 
-#import "IxBaseAction.h"
+#import "IXBaseAction.h"
 
-@interface IxAlertAction : IxBaseAction
+@interface IXAlertAction : IXBaseAction
 
 @end

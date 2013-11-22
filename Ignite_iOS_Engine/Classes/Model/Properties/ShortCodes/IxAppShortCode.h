@@ -1,13 +1,13 @@
 //
-//  IxAppShortCode.h
-//  Ignite iOS Engine (Ix)
+//  IXAppShortCode.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/7.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseShortCode.h"
+#import "IXBaseShortCode.h"
 
-@interface IxAppShortCode : IxBaseShortCode
+@interface IXAppShortCode : IXBaseShortCode
 
 @end

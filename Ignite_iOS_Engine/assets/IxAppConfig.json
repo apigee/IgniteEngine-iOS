@@ -8,7 +8,7 @@
                         {
                             "if" : "'NO'=='NO'",
                             "orientation" : "portrait",
-                            "value" : "IxModules POOP"
+                            "value" : "IXModules POOP"
                         },
                         {
                             "if" : "'NO'=='YES'",
@@ -21,7 +21,7 @@
                             "value" : "poop3"
                         }
           ],
-         "default_view":"IxAppConfigChild.json",
+         "default_view":"IXAppConfigChild.json",
       }
    },
    "session_defaults":{

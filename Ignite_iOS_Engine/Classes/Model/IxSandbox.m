@@ -1,24 +1,24 @@
 //
-//  IxSandbox.m
-//  Ignite iOS Engine (Ix)
+//  IXSandbox.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxSandbox.h"
+#import "IXSandbox.h"
 
-#import "IxBaseObject.h"
-#import "IxBaseControl.h"
-#import "IxBaseDataprovider.h"
+#import "IXBaseObject.h"
+#import "IXBaseControl.h"
+#import "IXBaseDataprovider.h"
 
-@interface IxSandbox ()
+@interface IXSandbox ()
 
 @property (nonatomic,strong) NSMutableDictionary* dataProviders;
 
 @end
 
-@implementation IxSandbox
+@implementation IXSandbox
 
 @synthesize containerControl = _containerControl;
 
@@ -32,12 +32,12 @@
     return self;
 }
 
--(IxBaseControl*)containerControl
+-(IXBaseControl*)containerControl
 {
     return _containerControl;
 }
 
--(void)setContainerControl:(IxBaseControl *)containerControl
+-(void)setContainerControl:(IXBaseControl *)containerControl
 {
     _containerControl = containerControl;
     [_containerControl setSandbox:self];
@@ -58,13 +58,13 @@
 
 -(void)addDataProviders:(NSArray*)dataProviders
 {
-    for( IxBaseDataprovider* dataProvider in dataProviders )
+    for( IXBaseDataprovider* dataProvider in dataProviders )
     {
         [self addDataProvider:dataProvider];
     }
 }
 
--(BOOL)addDataProvider:(IxBaseDataprovider*)dataProvider
+-(BOOL)addDataProvider:(IXBaseDataprovider*)dataProvider
 {
     BOOL didAddDataProvider = NO;
     
@@ -98,7 +98,7 @@
 
 -(void)loadAllDataProviders
 {
-    for( IxBaseDataprovider* dataProvider in [[self dataProviders] allValues] )
+    for( IXBaseDataprovider* dataProvider in [[self dataProviders] allValues] )
     {
         [dataProvider applySettings];
         if( [dataProvider shouldAutoLoad] )
@@ -108,7 +108,7 @@
     }
 }
 
--(IxBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID
+-(IXBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID
 {
     return [[self dataProviders] objectForKey:dataProviderID];
 }

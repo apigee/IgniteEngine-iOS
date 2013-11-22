@@ -1,6 +1,6 @@
 //
-//  IxAppManager.h
-//  Ignite iOS Engine (Ix)
+//  IXAppManager.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/8.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,41 +8,41 @@
 
 #import <Foundation/Foundation.h>
 
-@class IxBaseControl;
-@class IxSandbox;
-@class IxViewController;
-@class IxPropertyContainer;
-@class IxNavigationViewController;
+@class IXBaseControl;
+@class IXSandbox;
+@class IXViewController;
+@class IXPropertyContainer;
+@class IXNavigationViewController;
 @class JASidePanelController;
 
-@interface IxAppManager : NSObject
+@interface IXAppManager : NSObject
 
-@property (nonatomic,strong) IxBaseControl* testControl;
+@property (nonatomic,strong) IXBaseControl* testControl;
 
 @property (nonatomic,strong) JASidePanelController* sidePanelController;
-@property (nonatomic,strong) IxNavigationViewController* rootViewController;
-@property (nonatomic,strong) IxViewController* rightPanel;
-@property (nonatomic,strong) IxViewController* leftPanel;
+@property (nonatomic,strong) IXNavigationViewController* rootViewController;
+@property (nonatomic,strong) IXViewController* rightPanel;
+@property (nonatomic,strong) IXViewController* leftPanel;
 
 @property (nonatomic,copy) NSString* appConfigPath;
 @property (nonatomic,copy) NSString* appDefaultViewPath;
 @property (nonatomic,copy) NSString* appMode;
 
-@property (nonatomic,strong) IxPropertyContainer* appProperties;
-@property (nonatomic,strong) IxPropertyContainer* sessionProperties;
+@property (nonatomic,strong) IXPropertyContainer* appProperties;
+@property (nonatomic,strong) IXPropertyContainer* sessionProperties;
 
 @property (nonatomic,strong) NSString* appID;
 @property (nonatomic,strong) NSString* bundleID;
 @property (nonatomic,strong) NSString* versionNumberMajor;
 @property (nonatomic,strong) NSString* versionNumberMinor;
 
-@property (nonatomic,strong) IxSandbox* applicationSandbox;
+@property (nonatomic,strong) IXSandbox* applicationSandbox;
 
 @property (nonatomic,assign,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
 
-+(IxAppManager*)sharedInstance;
++(IXAppManager*)sharedInstance;
 -(void)startApplication;
--(IxViewController*)currentIxViewController;
+-(IXViewController*)currentIXViewController;
 
 -(void)runAlertTest;
 

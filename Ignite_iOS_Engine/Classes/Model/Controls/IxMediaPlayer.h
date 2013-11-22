@@ -1,12 +1,12 @@
 //
-//  IxVideoControl.h
-//  Ignite iOS Engine (Ix)
+//  IXVideoControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16/2013.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
 /** This object is used to display video files, including .mov .mp4 .mpv .3gp.
  
@@ -45,6 +45,6 @@
      }
  */
 
-@interface IxMediaPlayer : IxBaseControl
+@interface IXMediaPlayer : IXBaseControl
 
 @end

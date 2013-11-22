@@ -1,6 +1,6 @@
 //
-//  IxMediaControl.m
-//  Ignite iOS Engine (Ix)
+//  IXMediaControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16.
 //  Copyright (c) 2013 All rights reserved.
@@ -40,20 +40,20 @@
  /--------------------/
  */
 
-#import "IxMediaSource.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXMediaSource.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 
-@interface  IxMediaSource()
+@interface  IXMediaSource()
 
 @property NSInteger* sourceType;
 
 @end
 
-@implementation IxMediaSource
+@implementation IXMediaSource
 
 
 
@@ -94,7 +94,7 @@
     }
     
     
-    [[[IxAppManager sharedInstance] rootViewController] presentViewController:picker animated:YES completion:nil];
+    [[[IXAppManager sharedInstance] rootViewController] presentViewController:picker animated:YES completion:nil];
     
 }
 
@@ -102,7 +102,7 @@
 {
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     
-    [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+    [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
     
     // Handle a movie capture
     if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {

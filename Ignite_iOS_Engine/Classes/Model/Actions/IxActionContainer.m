@@ -1,30 +1,30 @@
 //
-//  IxActionContainer.m
-//  Ignite iOS Engine (Ix)
+//  IXActionContainer.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxActionContainer.h"
+#import "IXActionContainer.h"
 
-#import "IxAppManager.h"
-#import "IxSandbox.h"
-#import "IxBaseAction.h"
-#import "IxViewController.h"
-#import "IxNavigationViewController.h"
-#import "IxBaseControl.h"
-#import "IxLayout.h"
-#import "IxPropertyContainer.h"
-#import "IxAlertAction.h"
+#import "IXAppManager.h"
+#import "IXSandbox.h"
+#import "IXBaseAction.h"
+#import "IXViewController.h"
+#import "IXNavigationViewController.h"
+#import "IXBaseControl.h"
+#import "IXLayout.h"
+#import "IXPropertyContainer.h"
+#import "IXAlertAction.h"
 
-@interface IxActionContainer ()
+@interface IXActionContainer ()
 
 @property (nonatomic,strong) NSMutableDictionary* actionsDict;
 
 @end
 
-@implementation IxActionContainer
+@implementation IXActionContainer
 
 -(id)init
 {
@@ -53,13 +53,13 @@
 
 -(void)addActions:(NSArray*)actions
 {
-    for( IxBaseAction* action in actions )
+    for( IXBaseAction* action in actions )
     {
         [self addAction:action];
     }
 }
 
--(void)addAction:(IxBaseAction*)action
+-(void)addAction:(IXBaseAction*)action
 {
     NSString* actionEventName = [action eventName];
     if( action == nil || actionEventName == nil )
@@ -88,14 +88,14 @@
     if( actionsForEventName == nil )
         return;
     
-    UIInterfaceOrientation currentOrientation = [IxAppManager currentInterfaceOrientation];
+    UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
     BOOL firedAnAction = NO;
-    for( IxBaseAction* action in actionsForEventName )
+    for( IXBaseAction* action in actionsForEventName )
     {
         BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
-            if( ![action isKindOfClass:[IxAlertAction class]] )
+            if( ![action isKindOfClass:[IXAlertAction class]] )
                 firedAnAction = YES;
             
             [action execute];
@@ -104,8 +104,8 @@
     
     if( firedAnAction )
     {
-        [[[[IxAppManager sharedInstance] currentIxViewController] containerControl] applySettings];
-        [[[[IxAppManager sharedInstance] currentIxViewController] containerControl] layoutControl];
+        [[[[IXAppManager sharedInstance] currentIXViewController] containerControl] applySettings];
+        [[[[IXAppManager sharedInstance] currentIXViewController] containerControl] layoutControl];
     }
 }
 

@@ -1,6 +1,6 @@
 //
-//  IxPropertyParser.h
-//  Ignite iOS Engine (Ix)
+//  IXPropertyParser.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/24.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@class IxProperty;
+@class IXProperty;
 
-@interface IxPropertyParser : NSObject
+@interface IXPropertyParser : NSObject
 
-+(void)parseIxPropertyIntoComponents:(IxProperty*)property;
++(void)parseIXPropertyIntoComponents:(IXProperty*)property;
 
 @end

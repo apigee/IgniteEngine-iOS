@@ -1,13 +1,13 @@
 //
-//  IxModifyAction.h
-//  Ignite iOS Engine (Ix)
+//  IXModifyAction.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseAction.h"
+#import "IXBaseAction.h"
 
-@interface IxModifyAction : IxBaseAction
+@interface IXModifyAction : IXBaseAction
 
 @end

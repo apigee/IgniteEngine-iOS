@@ -1,6 +1,6 @@
 //
-//  IxBaseConditionalObject.h
-//  Ignite iOS Engine (Ix)
+//  IXBaseConditionalObject.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/9.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class IxProperty;
+@class IXProperty;
 
-@interface IxBaseConditionalObject : NSObject
+@interface IXBaseConditionalObject : NSObject
 
 @property (nonatomic,assign) UIInterfaceOrientationMask interfaceOrientationMask;
-@property (nonatomic,strong) IxProperty* conditionalProperty;
+@property (nonatomic,strong) IXProperty* conditionalProperty;
 
 -(BOOL)isConditionalValid;
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation;

@@ -1,21 +1,21 @@
 //
-//  IxImageControl.h
-//  Ignite iOS Engine (Ix)
+//  IXImageControl.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/15.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
 
-@interface IxMap : IxBaseControl
+@interface IXMap : IXBaseControl
 {
     MKMapView* _mapView;
 }
-@property (nonatomic, strong) NSArray *mIxtemList;
+@property (nonatomic, strong) NSArray *mIXtemList;
 @property (nonatomic, assign) MKCoordinateRegion boundingRegion;
 @property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
 @property (nonatomic, copy) NSString *title;

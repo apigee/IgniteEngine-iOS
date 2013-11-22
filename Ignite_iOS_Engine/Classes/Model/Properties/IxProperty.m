@@ -1,24 +1,24 @@
 //
-//  IxProperty.m
-//  Ignite iOS Engine (Ix)
+//  IXProperty.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/7.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxProperty.h"
+#import "IXProperty.h"
 
-#import "IxPropertyContainer.h"
-#import "IxBaseShortCode.h"
-#import "IxPropertyParser.h"
+#import "IXPropertyContainer.h"
+#import "IXBaseShortCode.h"
+#import "IXPropertyParser.h"
 
-@interface IxProperty ()
+@interface IXProperty ()
 
 @property (nonatomic,copy) NSString* propertyValue;
 
 @end
 
-@implementation IxProperty
+@implementation IXProperty
 
 -(instancetype)init
 {
@@ -41,14 +41,14 @@
         _rawValue = [rawValue copy];
         _propertyName = [propertyName copy];
         
-        [IxPropertyParser parseIxPropertyIntoComponents:self];
+        [IXPropertyParser parseIXPropertyIntoComponents:self];
     }
     return self;
 }
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    IxProperty* copiedProperty = [[[self class] allocWithZone:zone] init];
+    IXProperty* copiedProperty = [[[self class] allocWithZone:zone] init];
     
     [copiedProperty setPropertyContainer:[self propertyContainer]];
     [copiedProperty setRawValue:[self rawValue]];

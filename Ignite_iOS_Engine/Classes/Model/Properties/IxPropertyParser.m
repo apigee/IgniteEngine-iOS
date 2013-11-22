@@ -1,51 +1,51 @@
 //
-//  IxPropertyParser.m
-//  Ignite iOS Engine (Ix)
+//  IXPropertyParser.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/24.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxPropertyParser.h"
+#import "IXPropertyParser.h"
 
-#import "IxProperty.h"
-#import "IxBaseShortCode.h"
+#import "IXProperty.h"
+#import "IXBaseShortCode.h"
 
-static NSString* const kIxShortcodeMainComponents = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\((.+?)\\)\\]$";
-static NSString* const kIxShortcodeMainComponentsNoParams = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\(\\)\\]$";
-static NSString* const kIxLegacyShortcodeMainComponents = @"^\\[([\\w-]+?):(.+?)\\]$";
-static NSString* const kIxLegacyShortcodeDataComponents = @"^([^\\(]+?)?\\(['\"]?(.*?)['\"]?\\)(?:\\-\\>([^\\]]+?))?$";
-static NSString* const kIxParamComponent = @"^\"(.+?)\"$";
+static NSString* const kIXShortcodeMainComponents = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\((.+?)\\)\\]$";
+static NSString* const kIXShortcodeMainComponentsNoParams = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\(\\)\\]$";
+static NSString* const kIXLegacyShortcodeMainComponents = @"^\\[([\\w-]+?):(.+?)\\]$";
+static NSString* const kIXLegacyShortcodeDataComponents = @"^([^\\(]+?)?\\(['\"]?(.*?)['\"]?\\)(?:\\-\\>([^\\]]+?))?$";
+static NSString* const kIXParamComponent = @"^\"(.+?)\"$";
 
-static NSRegularExpression* sIxShortCodeMainComponentsRegex = nil;
-static NSRegularExpression* sIxShortCodeMainComponentsNoParamsRegex = nil;
-static NSRegularExpression* sIxShortCodeLegacyMainComponentsRegex = nil;
-static NSRegularExpression* sIxShortCodeLegacyDataComponentsRegex = nil;
-static NSRegularExpression* sIxShortCodeParamRegex = nil;
+static NSRegularExpression* sIXShortCodeMainComponentsRegex = nil;
+static NSRegularExpression* sIXShortCodeMainComponentsNoParamsRegex = nil;
+static NSRegularExpression* sIXShortCodeLegacyMainComponentsRegex = nil;
+static NSRegularExpression* sIXShortCodeLegacyDataComponentsRegex = nil;
+static NSRegularExpression* sIXShortCodeParamRegex = nil;
 
-@interface IxPropertyParser ()
+@interface IXPropertyParser ()
 
 +(NSArray*)topLevelShortcodeRangesFromString:(NSString*)string;
 
 @end
 
-@implementation IxPropertyParser
+@implementation IXPropertyParser
 
 +(void)initialize
 {
-    sIxShortCodeParamRegex = [[NSRegularExpression alloc] initWithPattern:kIxParamComponent
+    sIXShortCodeParamRegex = [[NSRegularExpression alloc] initWithPattern:kIXParamComponent
                                                                    options:NSRegularExpressionDotMatchesLineSeparators
                                                                      error:nil];
-    sIxShortCodeMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIxShortcodeMainComponents
+    sIXShortCodeMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponents
                                                                             options:NSRegularExpressionDotMatchesLineSeparators
                                                                               error:nil];
-    sIxShortCodeMainComponentsNoParamsRegex = [[NSRegularExpression alloc] initWithPattern:kIxShortcodeMainComponentsNoParams
+    sIXShortCodeMainComponentsNoParamsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponentsNoParams
                                                                                     options:NSRegularExpressionDotMatchesLineSeparators
                                                                                       error:nil];
-    sIxShortCodeLegacyMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIxLegacyShortcodeMainComponents
+    sIXShortCodeLegacyMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXLegacyShortcodeMainComponents
                                                                                   options:NSRegularExpressionDotMatchesLineSeparators
                                                                                     error:nil];
-    sIxShortCodeLegacyDataComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIxLegacyShortcodeDataComponents
+    sIXShortCodeLegacyDataComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXLegacyShortcodeDataComponents
                                                                                   options:NSRegularExpressionDotMatchesLineSeparators
                                                                                     error:nil];
 }
@@ -128,23 +128,23 @@ static NSRegularExpression* sIxShortCodeParamRegex = nil;
     return returnString;
 }
 
-+(IxBaseShortCode*)getShortCodeFromShortCodeString:(NSString*)shortCodeString
++(IXBaseShortCode*)getShortCodeFromShortCodeString:(NSString*)shortCodeString
 {
-    IxBaseShortCode* returnShortCode = nil;
+    IXBaseShortCode* returnShortCode = nil;
     
     // First try to match with the legacy way
-    NSTextCheckingResult* shortCodeComponents = [IxPropertyParser getShortCodeComponentsUsingRegex:sIxShortCodeLegacyMainComponentsRegex
+    NSTextCheckingResult* shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeLegacyMainComponentsRegex
                                                                                 fromShortCodeString:shortCodeString];
     
     BOOL isLegacyShortcode = [shortCodeComponents numberOfRanges] > 0;
     if( !isLegacyShortcode )
     {
-        shortCodeComponents = [IxPropertyParser getShortCodeComponentsUsingRegex:sIxShortCodeMainComponentsRegex
+        shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeMainComponentsRegex
                                                               fromShortCodeString:shortCodeString];
         
         if( [shortCodeComponents numberOfRanges] <= 0 )
         {
-            shortCodeComponents = [IxPropertyParser getShortCodeComponentsUsingRegex:sIxShortCodeMainComponentsNoParamsRegex
+            shortCodeComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeMainComponentsNoParamsRegex
                                                                   fromShortCodeString:shortCodeString];
         }
     }
@@ -156,14 +156,14 @@ static NSRegularExpression* sIxShortCodeParamRegex = nil;
         {
             if( numberOfRangesInMainComponents >= 3 )
             {
-                NSString* shortCodesRawValue = [IxPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:0]];
-                NSString* shortCodesType = [IxPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:1]];
+                NSString* shortCodesRawValue = [IXPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:0]];
+                NSString* shortCodesType = [IXPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:1]];
                 NSString* shortCodesMethodName = nil;
                 NSMutableArray* shortCodesParameters = nil;
                 
-                NSString* shortCodesData = [IxPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:2]];
+                NSString* shortCodesData = [IXPropertyParser getSubstringFromString:shortCodeString withRange:[shortCodeComponents rangeAtIndex:2]];
                 
-                NSTextCheckingResult* shortCodeDataComponents = [IxPropertyParser getShortCodeComponentsUsingRegex:sIxShortCodeLegacyDataComponentsRegex
+                NSTextCheckingResult* shortCodeDataComponents = [IXPropertyParser getShortCodeComponentsUsingRegex:sIXShortCodeLegacyDataComponentsRegex
                                                                                                 fromShortCodeString:shortCodesData];
                 
                 NSUInteger numberOfRangesInDataComponents = [shortCodeDataComponents numberOfRanges];
@@ -173,15 +173,15 @@ static NSRegularExpression* sIxShortCodeParamRegex = nil;
                 }
                 else
                 {
-                    shortCodesMethodName = [IxPropertyParser getSubstringFromString:shortCodesData withRange:[shortCodeDataComponents rangeAtIndex:1]];
+                    shortCodesMethodName = [IXPropertyParser getSubstringFromString:shortCodesData withRange:[shortCodeDataComponents rangeAtIndex:1]];
                     
                     if( numberOfRangesInDataComponents > 3 )
                     {
-                        NSString* parameterString = [IxPropertyParser getSubstringFromString:shortCodesData withRange:[shortCodeDataComponents rangeAtIndex:1]];
+                        NSString* parameterString = [IXPropertyParser getSubstringFromString:shortCodesData withRange:[shortCodeDataComponents rangeAtIndex:1]];
                         if( parameterString != nil )
                         {
                             // TODO: CHECK THIS
-                            IxProperty* property = [[IxProperty alloc] initWithPropertyName:nil rawValue:parameterString];
+                            IXProperty* property = [[IXProperty alloc] initWithPropertyName:nil rawValue:parameterString];
                             shortCodesParameters = [[NSMutableArray alloc] initWithObjects:property, nil];
                         }
                         
@@ -205,9 +205,9 @@ static NSRegularExpression* sIxShortCodeParamRegex = nil;
     return returnShortCode;
 }
 
-+(void)parseIxPropertyIntoComponents:(IxProperty*)property
++(void)parseIXPropertyIntoComponents:(IXProperty*)property
 {
-    NSArray* shortCodeRanges = [IxPropertyParser topLevelShortcodeRangesFromString:[property originalString]];
+    NSArray* shortCodeRanges = [IXPropertyParser topLevelShortcodeRangesFromString:[property originalString]];
     
     if( [shortCodeRanges count] > 0 )
     {
@@ -233,7 +233,7 @@ static NSRegularExpression* sIxShortCodeParamRegex = nil;
                 }
                 else
                 {
-                    IxBaseShortCode* shortCode = [IxPropertyParser getShortCodeFromShortCodeString:shortCodeAsString];
+                    IXBaseShortCode* shortCode = [IXPropertyParser getShortCodeFromShortCodeString:shortCodeAsString];
                 }
             }
         }

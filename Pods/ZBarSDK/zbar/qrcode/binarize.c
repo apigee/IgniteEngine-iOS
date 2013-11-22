@@ -319,7 +319,7 @@ static void qr_sauvola_mask(unsigned char *_mask,unsigned *_b,int *_nb,
 
 /*Interpolates a background image given the source and a conservative
    foreground mask.
-  If the current window contains no foreground pIxls, the average background
+  If the current window contains no foreground pIXls, the average background
    value over the whole image is used.
   Note on dynamic range: we assume _width*_height<=0x8000000 (23 bits).
   Returns the average difference between the foreground and the interpolated
@@ -508,7 +508,7 @@ void qr_binarize(unsigned char *_img,int _width,int _height){
   However, it also tends to over-shrink isolated black dots inside the code,
    making them easy to miss with even slight mis-alignment.
   Since the Gatos method uses Sauvola as input to its background interpolation
-   method, it cannot possibly mark any pIxls as foreground which Sauvola
+   method, it cannot possibly mark any pIXls as foreground which Sauvola
    classified as background, and thus suffers from the same problem.
   The following simple adaptive threshold method does not have this problem,
    though it produces essentially random noise outside the QR code region.
@@ -518,7 +518,7 @@ void qr_binarize(unsigned char *_img,int _width,int _height){
    methods.*/
 
 /*A simplified adaptive thresholder.
-  This compares the current pIxl value to the mean value of a (large) window
+  This compares the current pIXl value to the mean value of a (large) window
    surrounding it.*/
 unsigned char *qr_binarize(const unsigned char *_img,int _width,int _height){
   unsigned char *mask = NULL;

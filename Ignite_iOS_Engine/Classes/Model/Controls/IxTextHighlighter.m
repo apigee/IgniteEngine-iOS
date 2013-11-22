@@ -1,15 +1,15 @@
 //
-//  IxImageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXImageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
 //
 
 
-#import "IxTextHighlighter.h"
+#import "IXTextHighlighter.h"
 #import "TTTAttributedLabel.h"
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
 static NSString* lastHashTagTouched = nil;
 static NSString* lastAccountTouched = nil;
@@ -18,13 +18,13 @@ static NSString* lastLinkTouched = nil;
 static NSString* lastDateTouched = nil;
 static NSString* lastPhoneTouched = nil;
 
-@interface IxTextHighlighter ()
+@interface IXTextHighlighter ()
 
 @property (nonatomic, strong) TTTAttributedLabel* attributedLabel;
 
 @end
 
-@implementation IxTextHighlighter
+@implementation IXTextHighlighter
 
 @synthesize attributedLabel = _attributedLabel;
 

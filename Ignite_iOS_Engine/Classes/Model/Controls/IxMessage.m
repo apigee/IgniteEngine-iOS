@@ -1,6 +1,6 @@
 //
-//  IxMessageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXMessageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/16.
 //  Copyright (c) 2013 All rights reserved.
@@ -48,14 +48,14 @@
  
  */
 
-#import "IxMessage.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
+#import "IXMessage.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
 #import <MessageUI/MessageUI.h>
 
 
-@interface  IxMessage() <MFMessageComposeViewControllerDelegate>
+@interface  IXMessage() <MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic,strong) NSString *messageType;
 @property (nonatomic,strong) MFMessageComposeViewController *textMessage;
@@ -63,7 +63,7 @@
 
 @end
 
-@implementation IxMessage
+@implementation IXMessage
 
 -(void)buildView
 {
@@ -78,17 +78,17 @@
         case MessageComposeResultCancelled:
             NSLog(@"Message was cancelled");
             [[self actionContainer] executeActionsForEventNamed:@"message_cancelled"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case MessageComposeResultFailed:
             NSLog(@"Message failed");
             [[self actionContainer] executeActionsForEventNamed:@"message_failed"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case MessageComposeResultSent:
             NSLog(@"Message was sent");
             [[self actionContainer] executeActionsForEventNamed:@"message_sent"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         default:
             break;
@@ -102,17 +102,17 @@
         case MessageComposeResultCancelled:
             NSLog(@"Message was cancelled");
             [[self actionContainer] executeActionsForEventNamed:@"message_cancelled"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case MessageComposeResultFailed:
             NSLog(@"Message failed");
             [[self actionContainer] executeActionsForEventNamed:@"message_failed"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case MessageComposeResultSent:
             NSLog(@"Message was sent");
             [[self actionContainer] executeActionsForEventNamed:@"message_sent"];
-            [[[IxAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         default:
             break;
@@ -166,7 +166,7 @@
 
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
     if( [functionName compare:@"text"] == NSOrderedSame )
@@ -174,7 +174,7 @@
         NSLog(@"text, bitches!");
         if([MFMessageComposeViewController canSendText])
         {
-            [[[IxAppManager sharedInstance] rootViewController] presentViewController:_textMessage animated:YES completion:nil];
+            [[[IXAppManager sharedInstance] rootViewController] presentViewController:_textMessage animated:YES completion:nil];
         }
     }
     if( [functionName compare:@"email"] == NSOrderedSame )
@@ -182,7 +182,7 @@
         NSLog(@"email, bitches!");
         if([MFMailComposeViewController canSendMail])
         {
-            [[[IxAppManager sharedInstance] rootViewController] presentViewController:_emailMessage animated:YES completion:nil];
+            [[[IXAppManager sharedInstance] rootViewController] presentViewController:_emailMessage animated:YES completion:nil];
         }
     }
 }

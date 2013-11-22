@@ -1,6 +1,6 @@
 //
-//  IxImageControl.m
-//  Ignite iOS Engine (Ix)
+//  IXImageControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/15.
 //  Copyright (c) 2013 All rights reserved.
@@ -23,12 +23,12 @@
  
  */
 
-#import "IxMap.h"
+#import "IXMap.h"
 #import "SVPulsingAnnotationView.h"
 #import "SVAnnotation.h"
 
 
-@interface IxMap ()
+@interface IXMap ()
 
 @property (nonatomic,strong) MKMapView* mapView;
 
@@ -43,7 +43,7 @@
 }
 
 @end
-@implementation IxMap
+@implementation IXMap
 
 -(void)buildView
 {

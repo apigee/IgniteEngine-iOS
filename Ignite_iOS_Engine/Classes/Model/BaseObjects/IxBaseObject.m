@@ -1,17 +1,17 @@
 //
-//  IxBaseObject.m
-//  Ignite iOS Engine (Ix)
+//  IXBaseObject.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseObject.h"
-#import "IxBaseAction.h"
-#import "IxPropertyContainer.h"
-#import "IxActionContainer.h"
+#import "IXBaseObject.h"
+#import "IXBaseAction.h"
+#import "IXPropertyContainer.h"
+#import "IXActionContainer.h"
 
-@implementation IxBaseObject
+@implementation IXBaseObject
 
 @synthesize sandbox = _sandbox;
 @synthesize propertyContainer = _propertyContainer;
@@ -25,47 +25,47 @@
         _ID = nil;
         _parentObject = nil;
         _childObjects = [[NSMutableArray alloc] init];
-        _actionContainer = [[IxActionContainer alloc] init];
-        _propertyContainer = [[IxPropertyContainer alloc] init];
+        _actionContainer = [[IXActionContainer alloc] init];
+        _propertyContainer = [[IXPropertyContainer alloc] init];
     }
     return self;
 }
 
--(IxSandbox*)sandbox
+-(IXSandbox*)sandbox
 {
     return _sandbox;
 }
 
--(IxPropertyContainer*)propertyContainer
+-(IXPropertyContainer*)propertyContainer
 {
     return _propertyContainer;
 }
 
--(IxActionContainer*)actionContainer
+-(IXActionContainer*)actionContainer
 {
     return _actionContainer;
 }
 
--(void)setSandbox:(IxSandbox *)sandbox
+-(void)setSandbox:(IXSandbox *)sandbox
 {
     _sandbox = sandbox;
     
     [_actionContainer setSandbox:_sandbox];
     [_propertyContainer setSandbox:_sandbox];
     
-    for( IxBaseObject* child in [self childObjects] )
+    for( IXBaseObject* child in [self childObjects] )
     {
         [child setSandbox:_sandbox];
     }
 }
 
--(void)setPropertyContainer:(IxPropertyContainer *)propertyContainer
+-(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
 {
     _propertyContainer = propertyContainer;
     [_propertyContainer setSandbox:[self sandbox]];
 }
 
--(void)setActionContainer:(IxActionContainer *)actionContainer
+-(void)setActionContainer:(IXActionContainer *)actionContainer
 {
     _actionContainer = actionContainer;
     [_actionContainer setSandbox:[self sandbox]];
@@ -73,13 +73,13 @@
 
 -(void)addChildObjects:(NSArray*)childObjects
 {
-    for( IxBaseObject* childObject in childObjects )
+    for( IXBaseObject* childObject in childObjects )
     {
         [self addChildObject:childObject];
     }
 }
 
--(void)addChildObject:(IxBaseObject*)childObject
+-(void)addChildObject:(IXBaseObject*)childObject
 {
     [childObject setParentObject:self];
     [childObject setSandbox:[self sandbox]];
@@ -103,7 +103,7 @@
     if( [[self ID] isEqualToString:childObjectID] )
         [childObjectsFound addObject:self];
         
-    for( IxBaseObject* childObject in [self childObjects] )
+    for( IXBaseObject* childObject in [self childObjects] )
     {
         [childObjectsFound addObjectsFromArray:[childObject childrenWithID:childObjectID]];
     }
@@ -116,7 +116,7 @@
     [self setID:[[self propertyContainer] getStringPropertyValue:@"id" defaultValue:[self ID]]];
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
 }

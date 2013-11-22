@@ -1,6 +1,6 @@
 //
-//  IxEnums.h
-//  Ignite iOS Engine (Ix)
+//  IXEnums.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/21.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,14 +8,14 @@
 
 typedef enum
 {
-    IxLayoutVerticalAlignmentTop,
-    IxLayoutVerticalAlignmentMiddle,
-    IxLayoutVerticalAlignmentBottom
-} IxLayoutVerticalAlignment;
+    IXLayoutVerticalAlignmentTop,
+    IXLayoutVerticalAlignmentMiddle,
+    IXLayoutVerticalAlignmentBottom
+} IXLayoutVerticalAlignment;
 
 typedef enum
 {
-    IxLayoutHorizontalAlignmentRight,
-    IxLayoutHorizontalAlignmentCenter,
-    IxLayoutHorizontalAlignmentLeft
-} IxLayoutHorizontalAlignment;
+    IXLayoutHorizontalAlignmentRight,
+    IXLayoutHorizontalAlignmentCenter,
+    IXLayoutHorizontalAlignmentLeft
+} IXLayoutHorizontalAlignment;

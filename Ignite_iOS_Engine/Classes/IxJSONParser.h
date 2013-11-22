@@ -1,6 +1,6 @@
 //
-//  IxJSONParser.h
-//  Ignite iOS Engine (Ix)
+//  IXJSONParser.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/10.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,28 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
-@class IxProperty;
-@class IxBaseAction;
-@class IxBaseControl;
-@class IxViewController;
-@class IxActionContainer;
-@class IxPropertyContainer;
+@class IXProperty;
+@class IXBaseAction;
+@class IXBaseControl;
+@class IXViewController;
+@class IXActionContainer;
+@class IXPropertyContainer;
 
-@interface IxJSONParser : NSObject
+@interface IXJSONParser : NSObject
 
 +(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue;
-+(IxProperty*)conditionalPropertyForConditionalValue:(id)conditionalValue;
++(IXProperty*)conditionalPropertyForConditionalValue:(id)conditionalValue;
 
-+(IxPropertyContainer*)propertyContainerWithPropertyDictionary:(NSDictionary*)propertDictionary;
++(IXPropertyContainer*)propertyContainerWithPropertyDictionary:(NSDictionary*)propertDictionary;
 +(NSArray*)propertiesWithPropertyName:(NSString*)propertyName propertyValueArray:(NSArray*)propertyValueArray;
-+(IxProperty*)propertyWithPropertyName:(NSString*)propertyName propertyValueDict:(NSDictionary*)propertyValueDict;
++(IXProperty*)propertyWithPropertyName:(NSString*)propertyName propertyValueDict:(NSDictionary*)propertyValueDict;
 
-+(IxActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray;
-+(IxBaseAction*)actionWithValueDictionary:(NSDictionary*)actionValueDict;
++(IXActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray;
++(IXBaseAction*)actionWithValueDictionary:(NSDictionary*)actionValueDict;
 
 +(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray;
-+(IxBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict;
++(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict;
 
-+(IxViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary;
++(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary;
 
 @end

@@ -1,24 +1,24 @@
 //
-//  IxBaseControl.m
-//  Ignite iOS Engine (Ix)
+//  IXBaseControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxBaseControl.h"
+#import "IXBaseControl.h"
 
-#import "IxAppManager.h"
-#import "IxPropertyContainer.h"
+#import "IXAppManager.h"
+#import "IXPropertyContainer.h"
 #import "ColorUtils.h"
-#import "IxLayoutEngine.h"
-#import "IxControlLayoutInfo.h"
+#import "IXLayoutEngine.h"
+#import "IXControlLayoutInfo.h"
 
-@interface IxBaseControl ()
+@interface IXBaseControl ()
 
 @end
 
-@implementation IxBaseControl
+@implementation IXBaseControl
 
 -(id)init
 {
@@ -36,7 +36,7 @@
 //
 -(void)buildView
 {
-    _contentView = [[IxControlContentView alloc] initWithFrame:CGRectZero viewTouchDelegate:self];
+    _contentView = [[IXControlContentView alloc] initWithFrame:CGRectZero viewTouchDelegate:self];
     [_contentView setClipsToBounds:NO];
 }
 
@@ -52,7 +52,7 @@
 
 -(void)layoutControl
 {
-    CGRect internalLayoutRect = [IxLayoutEngine getInternalLayoutRectForControl:self forOuterLayoutRect:[[self contentView] bounds]];
+    CGRect internalLayoutRect = [IXLayoutEngine getInternalLayoutRectForControl:self forOuterLayoutRect:[[self contentView] bounds]];
     [self layoutControlContentsInRect:internalLayoutRect];
 }
 
@@ -65,7 +65,7 @@
     
     float borderWidth = [[self propertyContainer] getFloatPropertyValue:@"border_width" defaultValue:0.0f];
     UIColor* borderColor = [[self propertyContainer] getColorPropertyValue:@"border_color" defaultValue:[UIColor blackColor]];
-    if( [[IxAppManager sharedInstance] isLayoutDebuggingEnabled] )
+    if( [[IXAppManager sharedInstance] isLayoutDebuggingEnabled] )
     {
         if( borderWidth == 0.0f )
         {
@@ -112,7 +112,7 @@
     {
         if( _layoutInfo == nil )
         {
-            _layoutInfo = [[IxControlLayoutInfo alloc] initWithPropertyContainer:[self propertyContainer]];
+            _layoutInfo = [[IXControlLayoutInfo alloc] initWithPropertyContainer:[self propertyContainer]];
         }
         else
         {
@@ -122,7 +122,7 @@
         [self applyContentViewSettings];
     }
     
-    for( IxBaseControl* baseControl in [self childObjects] )
+    for( IXBaseControl* baseControl in [self childObjects] )
     {
         [baseControl applySettings];
     }
@@ -149,7 +149,7 @@
 }
 
 
--(void)executeControlSpecificFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameters
+-(void)executeControlSpecificFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameters
 {
     
 }

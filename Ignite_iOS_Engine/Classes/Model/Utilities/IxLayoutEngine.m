@@ -1,37 +1,37 @@
 //
-//  IxLayoutEngine.m
-//  Ignite iOS Engine (Ix)
+//  IXLayoutEngine.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/21.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxLayoutEngine.h"
+#import "IXLayoutEngine.h"
 
-#import "IxLayout.h"
-#import "IxControlLayoutInfo.h"
-#import "IxClickableScrollView.h"
+#import "IXLayout.h"
+#import "IXControlLayoutInfo.h"
+#import "IXClickableScrollView.h"
 
-@interface IxLayoutEngine ()
+@interface IXLayoutEngine ()
 
-+(void)addLayoutChildrenToViewHeirarchy:(IxLayout*)layoutControl;
++(void)addLayoutChildrenToViewHeirarchy:(IXLayout*)layoutControl;
 
-+(CGFloat)calculateEqualWidthForUnclaimedControls:(IxLayout*)layoutControl
++(CGFloat)calculateEqualWidthForUnclaimedControls:(IXLayout*)layoutControl
                                         forWidth:(CGFloat)totalWidthAvailable;
 
-+(CGPoint)getControlPosition:(IxBaseControl*)control
++(CGPoint)getControlPosition:(IXBaseControl*)control
               forControlSize:(CGSize)controlSize
               forLayoutRect:(CGRect)layoutRect;
 
-+(CGSize)getControlSize:(IxBaseControl*)control
++(CGSize)getControlSize:(IXBaseControl*)control
          forLayoutSize:(CGSize)layoutSize;
 
-+(CGSize)calculateRemainingSizeForControlLayoutInfo:(IxControlLayoutInfo*)controlLayoutInfo
++(CGSize)calculateRemainingSizeForControlLayoutInfo:(IXControlLayoutInfo*)controlLayoutInfo
                                            forRect:(CGRect)rect controlSize:(CGSize)controlSize
                                     controlPosition:(CGPoint)controlPositiong;
 
-+(IxFrameAndOffset)getControlFrame:(IxBaseControl*)control
-                   forLayoutControl:(IxLayout*)layoutControl
++(IXFrameAndOffset)getControlFrame:(IXBaseControl*)control
+                   forLayoutControl:(IXLayout*)layoutControl
                      forLayoutRect:(CGRect)layoutRect
                      currentOffset:(CGFloat)currentOffset
              fixOffsetToLayoutRect:(BOOL)fixOffsetToLayoutRect
@@ -39,17 +39,17 @@
 
 @end
 
-@implementation IxLayoutEngine
+@implementation IXLayoutEngine
 
-+(CGFloat)calculateEqualWidthForUnclaimedControls:(IxLayout*)layoutControl forWidth:(CGFloat)totalWidthAvailable
++(CGFloat)calculateEqualWidthForUnclaimedControls:(IXLayout*)layoutControl forWidth:(CGFloat)totalWidthAvailable
 {
     CGFloat equalWidthForRemainingUnclaimedControls = 0.0f;
     
     CGFloat unclaimedWidth = totalWidthAvailable;
     int totalUnclaimedControls = 0;
-    for( IxBaseControl* control in [layoutControl childObjects] )
+    for( IXBaseControl* control in [layoutControl childObjects] )
     {
-        IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+        IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
         if( [control contentView] == nil || [controlLayoutInfo isHidden] || [controlLayoutInfo isAbsolutePositioned] )
         {
             continue;
@@ -68,11 +68,11 @@
     return equalWidthForRemainingUnclaimedControls;
 }
 
-+(CGPoint)getControlPosition:(IxBaseControl*)control forControlSize:(CGSize)controlSize forLayoutRect:(CGRect)layoutRect
++(CGPoint)getControlPosition:(IXBaseControl*)control forControlSize:(CGSize)controlSize forLayoutRect:(CGRect)layoutRect
 {
     CGPoint returnPosition = CGPointZero;
     
-    IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+    IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
     
     UIEdgeInsets controlMarginInsets = [[controlLayoutInfo marginInsets] evaluateEdgeInsetsUsingMaxSize:layoutRect.size];
     
@@ -84,18 +84,18 @@
     {
         switch ( [controlLayoutInfo horizontalAlignment] )
         {
-            case IxLayoutHorizontalAlignmentCenter:
+            case IXLayoutHorizontalAlignmentCenter:
             {
                 returnPosition.x = (layoutRect.size.width - controlSize.width) * 0.5f;
                 break;
             }
-            case IxLayoutHorizontalAlignmentLeft:
+            case IXLayoutHorizontalAlignmentLeft:
             {
                 // TODO: CHECK THAT ITS ACTUALLY THE RIGHT INSET TO USE!!!
                 returnPosition.x = layoutRect.size.width - controlSize.width - controlMarginInsets.right;
                 break;
             }
-            case IxLayoutHorizontalAlignmentRight:
+            case IXLayoutHorizontalAlignmentRight:
             default:
             {
                 returnPosition.x = controlMarginInsets.left;
@@ -112,17 +112,17 @@
     {
         switch ( [controlLayoutInfo verticalAlignment] )
         {
-            case IxLayoutVerticalAlignmentMiddle:
+            case IXLayoutVerticalAlignmentMiddle:
             {
                 returnPosition.y = (layoutRect.size.height - controlSize.height) * 0.5f;
                 break;
             }
-            case IxLayoutVerticalAlignmentBottom:
+            case IXLayoutVerticalAlignmentBottom:
             {
                 returnPosition.y = layoutRect.size.height - controlSize.height - controlMarginInsets.bottom;
                 break;
             }
-            case IxLayoutVerticalAlignmentTop:
+            case IXLayoutVerticalAlignmentTop:
             default:
             {
                 returnPosition.y = controlMarginInsets.top;
@@ -139,11 +139,11 @@
     return returnPosition;
 }
 
-+(CGSize)getControlSize:(IxBaseControl*)control forLayoutSize:(CGSize)layoutSize
++(CGSize)getControlSize:(IXBaseControl*)control forLayoutSize:(CGSize)layoutSize
 {
     CGSize returnSize = CGSizeZero;
  
-    IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+    IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
     
     BOOL heightWasDefined = [controlLayoutInfo heightWasDefined];
     BOOL widthWasDefined = [controlLayoutInfo widthWasDefined];
@@ -189,7 +189,7 @@
     return returnSize;
 }
 
-+(CGSize)calculateRemainingSizeForControlLayoutInfo:(IxControlLayoutInfo*)controlLayoutInfo forRect:(CGRect)rect controlSize:(CGSize)controlSize controlPosition:(CGPoint)controlPositiong
++(CGSize)calculateRemainingSizeForControlLayoutInfo:(IXControlLayoutInfo*)controlLayoutInfo forRect:(CGRect)rect controlSize:(CGSize)controlSize controlPosition:(CGPoint)controlPositiong
 {
     CGSize returnSize = controlSize;
     if( [controlLayoutInfo fillRemainingWidth] )
@@ -211,7 +211,7 @@
     return returnSize;
 }
 
-+(CGRect)getInternalLayoutRectForControl:(IxBaseControl*)control forOuterLayoutRect:(CGRect)outerLayoutRect
++(CGRect)getInternalLayoutRectForControl:(IXBaseControl*)control forOuterLayoutRect:(CGRect)outerLayoutRect
 {
     CGRect returnRect = outerLayoutRect;
     
@@ -225,20 +225,20 @@
     return returnRect;
 }
 
-+(IxFrameAndOffset)getControlFrame:(IxBaseControl*)control forLayoutControl:(IxLayout*)layoutControl forLayoutRect:(CGRect)layoutRect currentOffset:(CGFloat)currentOffset fixOffsetToLayoutRect:(BOOL)fixOffsetToLayoutRect allowOffAxisAlignment:(BOOL)allowOffAxisAlignment
++(IXFrameAndOffset)getControlFrame:(IXBaseControl*)control forLayoutControl:(IXLayout*)layoutControl forLayoutRect:(CGRect)layoutRect currentOffset:(CGFloat)currentOffset fixOffsetToLayoutRect:(BOOL)fixOffsetToLayoutRect allowOffAxisAlignment:(BOOL)allowOffAxisAlignment
 {
-    IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+    IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
     
     UIEdgeInsets controlMarginInsets = [[controlLayoutInfo marginInsets] evaluateEdgeInsetsUsingMaxSize:layoutRect.size];
     
-    IxSizeAndPosition sizeAndPosition = IxSizeAndPositionZero;
+    IXSizeAndPosition sizeAndPosition = IXSizeAndPositionZero;
     
     if( [layoutControl isLayoutFlowVertical] || [controlLayoutInfo isAbsolutePositioned] )
     {
         CGRect verticalLayoutRect = layoutRect;
         verticalLayoutRect.origin.y += currentOffset;
         
-        sizeAndPosition.size = [IxLayoutEngine getControlSize:control
+        sizeAndPosition.size = [IXLayoutEngine getControlSize:control
                                                 forLayoutSize:verticalLayoutRect.size];
         
         if( ![controlLayoutInfo isAbsolutePositioned] )
@@ -253,11 +253,11 @@
             }
         }
         
-        sizeAndPosition.position = [IxLayoutEngine getControlPosition:control
+        sizeAndPosition.position = [IXLayoutEngine getControlPosition:control
                                                         forControlSize:sizeAndPosition.size
                                                         forLayoutRect:verticalLayoutRect];
         
-        sizeAndPosition.size = [IxLayoutEngine calculateRemainingSizeForControlLayoutInfo:controlLayoutInfo
+        sizeAndPosition.size = [IXLayoutEngine calculateRemainingSizeForControlLayoutInfo:controlLayoutInfo
                                                                                   forRect:layoutRect
                                                                                controlSize:sizeAndPosition.size
                                                                            controlPosition:sizeAndPosition.position];
@@ -278,7 +278,7 @@
             horizontalLayoutRect.size.width = FLT_MAX;
         }
         
-        sizeAndPosition.size = [IxLayoutEngine getControlSize:control
+        sizeAndPosition.size = [IXLayoutEngine getControlSize:control
                                                 forLayoutSize:horizontalLayoutRect.size];
         
         if( !fixOffsetToLayoutRect )
@@ -296,11 +296,11 @@
             horizontalLayoutRect.size.width = layoutRect.size.width;
         }
         
-        sizeAndPosition.position = [IxLayoutEngine getControlPosition:control
+        sizeAndPosition.position = [IXLayoutEngine getControlPosition:control
                                                         forControlSize:sizeAndPosition.size
                                                         forLayoutRect:horizontalLayoutRect];
         
-        sizeAndPosition.size = [IxLayoutEngine calculateRemainingSizeForControlLayoutInfo:controlLayoutInfo
+        sizeAndPosition.size = [IXLayoutEngine calculateRemainingSizeForControlLayoutInfo:controlLayoutInfo
                                                                                   forRect:layoutRect
                                                                                controlSize:sizeAndPosition.size
                                                                            controlPosition:sizeAndPosition.position];
@@ -312,7 +312,7 @@
         currentOffset += ( fixOffsetToLayoutRect ) ? fmaxf(layoutRect.size.width, sizeAndPosition.size.width) : sizeAndPosition.size.width;
     }
     
-    IxFrameAndOffset returnFrameAndOffset = IxFrameAndOffsetZero;
+    IXFrameAndOffset returnFrameAndOffset = IXFrameAndOffsetZero;
     returnFrameAndOffset.frame = CGRectMake(round(sizeAndPosition.position.x),
                                             round(sizeAndPosition.position.y),
                                             round(sizeAndPosition.size.width),
@@ -322,19 +322,19 @@
     return returnFrameAndOffset;
 }
 
-+(void)addLayoutChildrenToViewHeirarchy:(IxLayout*)layoutControl
++(void)addLayoutChildrenToViewHeirarchy:(IXLayout*)layoutControl
 {
     int nonFloatIndex = 0;
     int floatIndex = 1; // Float index starts at 1 to account for scrollView inside of the layoutControl
     
-    for( IxBaseControl* control in [layoutControl childObjects] )
+    for( IXBaseControl* control in [layoutControl childObjects] )
     {
         if( [control contentView] == nil )
         {
             continue;
         }
         
-        IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+        IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
         if( [controlLayoutInfo isFloatPositioned] )
         {
             if( [[control contentView] superview] != [layoutControl contentView] )
@@ -354,9 +354,9 @@
     }
 }
 
-+(void)layoutControl:(IxLayout*)layoutControl inRect:(CGRect)layoutRect
++(void)layoutControl:(IXLayout*)layoutControl inRect:(CGRect)layoutRect
 {
-    [IxLayoutEngine addLayoutChildrenToViewHeirarchy:layoutControl];
+    [IXLayoutEngine addLayoutChildrenToViewHeirarchy:layoutControl];
     
     UIControl* layoutsView = [layoutControl contentView];
     UIScrollView* layoutScrollView = [layoutControl scrollView];
@@ -371,7 +371,7 @@
     BOOL processEqualHorizontalLayout = (![layoutControl isLayoutFlowVertical] && [[layoutControl layoutInfo] widthWasDefined] );
     if( processEqualHorizontalLayout )
     {
-        equalWidthForRemainingUnclaimedControls = [IxLayoutEngine calculateEqualWidthForUnclaimedControls:layoutControl
+        equalWidthForRemainingUnclaimedControls = [IXLayoutEngine calculateEqualWidthForUnclaimedControls:layoutControl
                                                                                                 forWidth:relativeLayoutRect.size.width];
     }
     
@@ -380,9 +380,9 @@
     BOOL addXPaddingToScroll = YES;
     BOOL addYPaddingToScroll = YES;
     
-    for( IxBaseControl* control in [layoutControl childObjects] )
+    for( IXBaseControl* control in [layoutControl childObjects] )
     {
-        IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+        IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
         [controlLayoutInfo setHasSeenLayout:YES];
         
         if( [control contentView] == nil || [controlLayoutInfo isHidden] )
@@ -402,7 +402,7 @@
             }
         }
         
-        IxFrameAndOffset frameAndOffset = [IxLayoutEngine getControlFrame:control
+        IXFrameAndOffset frameAndOffset = [IXLayoutEngine getControlFrame:control
                                                            forLayoutControl:layoutControl
                                                              forLayoutRect:layoutRectToCalculateControlFrame
                                                              currentOffset:(controlIsAbsolutePositioned) ? 0.0f : currentOffset
@@ -457,7 +457,7 @@
         
         [[control contentView] setFrame:[controlLayoutInfo layoutRect]];
         
-        CGRect internalControlRect = [IxLayoutEngine getInternalLayoutRectForControl:control
+        CGRect internalControlRect = [IXLayoutEngine getInternalLayoutRectForControl:control
                                                                  forOuterLayoutRect:[[control contentView] bounds]];
         
         [control layoutControlContentsInRect:CGRectIntegral(internalControlRect)];
@@ -511,11 +511,11 @@
     }
 }
 
-+(CGSize)getPreferredSizeForLayoutControl:(IxLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize
++(CGSize)getPreferredSizeForLayoutControl:(IXLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize
 {
     CGSize returnSize = CGSizeZero;
 
-    IxControlLayoutInfo* layoutControlsLayoutInfo = [layoutControl layoutInfo];
+    IXControlLayoutInfo* layoutControlsLayoutInfo = [layoutControl layoutInfo];
     UIEdgeInsets layoutControlPaddingInsets = [[layoutControlsLayoutInfo paddingInsets] evaluateEdgeInsetsUsingMaxSize:suggestedSize];
     
     if( [layoutControlsLayoutInfo widthWasDefined] )
@@ -538,15 +538,15 @@
     BOOL processEqualHorizontalLayout = (![layoutControl isLayoutFlowVertical] && [[layoutControl layoutInfo] widthWasDefined] );
     if( processEqualHorizontalLayout )
     {
-        equalWidthForRemainingUnclaimedControls = [IxLayoutEngine calculateEqualWidthForUnclaimedControls:layoutControl
+        equalWidthForRemainingUnclaimedControls = [IXLayoutEngine calculateEqualWidthForUnclaimedControls:layoutControl
                                                                                                 forWidth:relativeLayoutRect.size.width];
     }
     
     CGFloat currentOffset = 0.0f;
     
-    for( IxBaseControl* control in [layoutControl childObjects] )
+    for( IXBaseControl* control in [layoutControl childObjects] )
     {
-        IxControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
+        IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
         
         if( [control contentView] == nil || [controlLayoutInfo isHidden] )
             continue;
@@ -565,7 +565,7 @@
             }
         }
         
-        IxFrameAndOffset frameAndOffset = [IxLayoutEngine getControlFrame:control
+        IXFrameAndOffset frameAndOffset = [IXLayoutEngine getControlFrame:control
                                                            forLayoutControl:layoutControl
                                                              forLayoutRect:layoutRectToCalculateControlFrame
                                                              currentOffset:(controlIsAbsolutePositioned) ? 0.0f : currentOffset

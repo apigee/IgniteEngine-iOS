@@ -1,6 +1,6 @@
 //
-//  IxTextInputControl.m
-//  Ignite iOS Engine (Ix)
+//  IXTextInputControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
@@ -26,17 +26,17 @@
  */
 
 
-#import "IxTextInput.h"
+#import "IXTextInput.h"
 
-#import "IxLayout.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxViewController.h"
-#import "IxClickableScrollView.h"
+#import "IXLayout.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXViewController.h"
+#import "IXClickableScrollView.h"
 
 static UITextField* activeTextField = nil;
 static CGSize kbSize;
-@interface IxTextInput () <UITextFieldDelegate>
+@interface IXTextInput () <UITextFieldDelegate>
 
 @property (nonatomic,assign) BOOL needsToRegisterForKeyboardNotifications;
 @property (nonatomic,strong) UITextField* textField;
@@ -44,7 +44,7 @@ static CGSize kbSize;
 
 @end
 
-@implementation IxTextInput
+@implementation IXTextInput
 
 -(void)dealloc
 {
@@ -261,11 +261,11 @@ static CGSize kbSize;
     double animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     UIScrollView* scrollView = nil;
-    UIViewController* visibleVC = [[[IxAppManager sharedInstance] rootViewController] visibleViewController];
-    if( [visibleVC isKindOfClass:[IxViewController class]] )
+    UIViewController* visibleVC = [[[IXAppManager sharedInstance] rootViewController] visibleViewController];
+    if( [visibleVC isKindOfClass:[IXViewController class]] )
     {
-        IxViewController* IxVC = (IxViewController*) visibleVC;
-        scrollView = [[IxVC containerControl] scrollView];
+        IXViewController* IXVC = (IXViewController*) visibleVC;
+        scrollView = [[IXVC containerControl] scrollView];
     }
     [UIView animateWithDuration:animationDuration
                      animations:^{
@@ -284,11 +284,11 @@ static CGSize kbSize;
     CGFloat keyboardHeight = fmin(kbSize.height,kbSize.width);
     
     UIScrollView* scrollView = nil;
-    UIViewController* visibleVC = [[[IxAppManager sharedInstance] rootViewController] visibleViewController];
-    if( [visibleVC isKindOfClass:[IxViewController class]] )
+    UIViewController* visibleVC = [[[IXAppManager sharedInstance] rootViewController] visibleViewController];
+    if( [visibleVC isKindOfClass:[IXViewController class]] )
     {
-        IxViewController* IxVC = (IxViewController*) visibleVC;
-        scrollView = [[IxVC containerControl] scrollView];
+        IXViewController* IXVC = (IXViewController*) visibleVC;
+        scrollView = [[IXVC containerControl] scrollView];
     }
     
     [UIView animateWithDuration:animationDuration
@@ -336,7 +336,7 @@ static CGSize kbSize;
 }
 
 
--(void)applyFunction:(NSString*)functionName withParameters:(IxPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
     if( [functionName compare:@"keyboard.hide"] == NSOrderedSame )

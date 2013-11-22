@@ -1,6 +1,6 @@
 //
-//  IxNavigationViewController.h
-//  Ignite iOS Engine (Ix)
+//  IXNavigationViewController.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IxNavigationViewController : UINavigationController
+@interface IXNavigationViewController : UINavigationController
 
 @end

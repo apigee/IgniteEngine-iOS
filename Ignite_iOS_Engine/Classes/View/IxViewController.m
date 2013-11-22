@@ -1,27 +1,27 @@
 //
-//  IxViewController.m
-//  Ignite iOS Engine (Ix)
+//  IXViewController.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxViewController.h"
+#import "IXViewController.h"
 
-#import "IxSandbox.h"
-#import "IxAppManager.h"
-#import "IxNavigationViewController.h"
-#import "IxPropertyContainer.h"
-#import "IxActionContainer.h"
-#import "IxLayout.h"
-#import "IxTextInput.h"
-#import "IxClickableScrollView.h"
+#import "IXSandbox.h"
+#import "IXAppManager.h"
+#import "IXNavigationViewController.h"
+#import "IXPropertyContainer.h"
+#import "IXActionContainer.h"
+#import "IXLayout.h"
+#import "IXTextInput.h"
+#import "IXClickableScrollView.h"
 
-@interface IxViewController ()
+@interface IXViewController ()
 
 @end
 
-@implementation IxViewController
+@implementation IXViewController
 
 -(id)init
 {
@@ -33,13 +33,13 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if( self != nil )
     {
-        _sandbox = [[IxSandbox alloc] init];
+        _sandbox = [[IXSandbox alloc] init];
         [_sandbox setViewController:self];
         
-        _propertyContainer = [[IxPropertyContainer alloc] init];
+        _propertyContainer = [[IXPropertyContainer alloc] init];
         [_propertyContainer setSandbox:_sandbox];
         
-        _containerControl = [[IxLayout alloc] init];
+        _containerControl = [[IXLayout alloc] init];
         [_containerControl setID:@"view"];
         [_containerControl setSandbox:_sandbox];
         
@@ -61,7 +61,7 @@
     [self setWantsFullScreenLayout:YES];
     [[self view] setClipsToBounds:YES];
     
-    [self setAutomaticallyAdjustsScrollViewInsets:![[[IxAppManager sharedInstance] rootViewController] isNavigationBarHidden]];
+    [self setAutomaticallyAdjustsScrollViewInsets:![[[IXAppManager sharedInstance] rootViewController] isNavigationBarHidden]];
     [[self view] addSubview:[_containerControl contentView]];
     // FIXME: need to set some default values here for the container control and add the view properties to it.
 }

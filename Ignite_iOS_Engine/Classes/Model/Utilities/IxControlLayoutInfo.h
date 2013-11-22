@@ -1,6 +1,6 @@
 //
-//  IxWidgetLayoutInfo.h
-//  Ignite iOS Engine (Ix)
+//  IXWidgetLayoutInfo.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/23.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "IxStructs.h"
+#import "IXStructs.h"
 
-@class IxPropertyContainer;
+@class IXPropertyContainer;
 
-@interface IxSizePercentageContainer : NSObject
+@interface IXSizePercentageContainer : NSObject
 
 @property (nonatomic,assign) CGFloat value;
 @property (nonatomic,assign) BOOL isPercentage;
@@ -28,33 +28,33 @@
 
 @end
 
-@interface IxEdgeInsets : NSObject
+@interface IXEdgeInsets : NSObject
 
-@property (nonatomic,strong) IxSizePercentageContainer* defaultValue;
-@property (nonatomic,strong) IxSizePercentageContainer* top;
-@property (nonatomic,strong) IxSizePercentageContainer* left;
-@property (nonatomic,strong) IxSizePercentageContainer* bottom;
-@property (nonatomic,strong) IxSizePercentageContainer* right;
+@property (nonatomic,strong) IXSizePercentageContainer* defaultValue;
+@property (nonatomic,strong) IXSizePercentageContainer* top;
+@property (nonatomic,strong) IXSizePercentageContainer* left;
+@property (nonatomic,strong) IXSizePercentageContainer* bottom;
+@property (nonatomic,strong) IXSizePercentageContainer* right;
 
--(instancetype)initWithDefaultValue:(IxSizePercentageContainer*)defaultValue
-                                top:(IxSizePercentageContainer*)top
-                               left:(IxSizePercentageContainer*)left
-                             bottom:(IxSizePercentageContainer*)bottom
-                              right:(IxSizePercentageContainer*)right;
+-(instancetype)initWithDefaultValue:(IXSizePercentageContainer*)defaultValue
+                                top:(IXSizePercentageContainer*)top
+                               left:(IXSizePercentageContainer*)left
+                             bottom:(IXSizePercentageContainer*)bottom
+                              right:(IXSizePercentageContainer*)right;
 
-+(instancetype)edgeInsetsWithDefaultValue:(IxSizePercentageContainer*)defaultValue
-                                      top:(IxSizePercentageContainer*)top
-                                     left:(IxSizePercentageContainer*)left
-                                   bottom:(IxSizePercentageContainer*)bottom
-                                    right:(IxSizePercentageContainer*)right;
++(instancetype)edgeInsetsWithDefaultValue:(IXSizePercentageContainer*)defaultValue
+                                      top:(IXSizePercentageContainer*)top
+                                     left:(IXSizePercentageContainer*)left
+                                   bottom:(IXSizePercentageContainer*)bottom
+                                    right:(IXSizePercentageContainer*)right;
 
 -(UIEdgeInsets)evaluateEdgeInsetsUsingMaxSize:(CGSize)maxSize;
 
 @end
 
-@interface IxControlLayoutInfo : NSObject
+@interface IXControlLayoutInfo : NSObject
 
-@property (nonatomic,weak,readonly) IxPropertyContainer* propertyContainer;
+@property (nonatomic,weak,readonly) IXPropertyContainer* propertyContainer;
 
 @property (nonatomic,assign) CGRect layoutRect;
 @property (nonatomic,assign) BOOL hasSeenLayout;
@@ -66,23 +66,23 @@
 @property (nonatomic,assign,readonly) BOOL isFloatPositioned;
 @property (nonatomic,assign,readonly) BOOL isAbsolutePositioned;
 
-@property (nonatomic,assign,readonly) IxLayoutVerticalAlignment verticalAlignment;
-@property (nonatomic,assign,readonly) IxLayoutHorizontalAlignment horizontalAlignment;
+@property (nonatomic,assign,readonly) IXLayoutVerticalAlignment verticalAlignment;
+@property (nonatomic,assign,readonly) IXLayoutHorizontalAlignment horizontalAlignment;
 
 @property (nonatomic,assign,readonly) BOOL widthWasDefined;
-@property (nonatomic,strong,readonly) IxSizePercentageContainer* width;
+@property (nonatomic,strong,readonly) IXSizePercentageContainer* width;
 @property (nonatomic,assign,readonly) BOOL heightWasDefined;
-@property (nonatomic,strong,readonly) IxSizePercentageContainer* height;
+@property (nonatomic,strong,readonly) IXSizePercentageContainer* height;
 @property (nonatomic,assign,readonly) BOOL topPositionWasDefined;
-@property (nonatomic,strong,readonly) IxSizePercentageContainer* topPosition;
+@property (nonatomic,strong,readonly) IXSizePercentageContainer* topPosition;
 @property (nonatomic,assign,readonly) BOOL leftPositionWasDefined;
-@property (nonatomic,strong,readonly) IxSizePercentageContainer* leftPosition;
+@property (nonatomic,strong,readonly) IXSizePercentageContainer* leftPosition;
 
-@property (nonatomic,strong,readonly) IxEdgeInsets* marginInsets;
-@property (nonatomic,strong,readonly) IxEdgeInsets* paddingInsets;
+@property (nonatomic,strong,readonly) IXEdgeInsets* marginInsets;
+@property (nonatomic,strong,readonly) IXEdgeInsets* paddingInsets;
 
--(instancetype)initWithPropertyContainer:(IxPropertyContainer*)propertyContainer;
-+(instancetype)controlLayoutInfoWithPropertyContainer:(IxPropertyContainer*)propertyContainer;
+-(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
++(instancetype)controlLayoutInfoWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
 
 -(void)refreshLayoutInfo;
 

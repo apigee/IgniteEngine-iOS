@@ -70,7 +70,7 @@ enum {
     captureOutput = [AVCaptureVideoDataOutput new];
     captureOutput.alwaysDiscardsLateVideoFrames = YES;
 
-#ifdef FIxD_8697526
+#ifdef FIXD_8697526
     /* iOS 4.2 introduced a bug that causes [session startRunning] to
      * hang if the session has a preview layer and this property is
      * specified at the output.  As this happens to be the default
@@ -339,7 +339,7 @@ enum {
             if(ngood || (_state & CAPTURE)) {
                 // copy image data so we can release the buffer
                 result.size = CGSizeMake(w, h);
-                result.pIxlBuffer = buf;
+                result.pIXlBuffer = buf;
                 result.symbols = syms;
                 t_scan = now;
                 OSAtomicXor32Barrier((_state & CAPTURE) | PAUSED, &state);

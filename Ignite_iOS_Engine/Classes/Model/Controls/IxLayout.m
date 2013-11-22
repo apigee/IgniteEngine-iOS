@@ -1,18 +1,18 @@
 //
-//  IxLayoutControl.m
-//  Ignite iOS Engine (Ix)
+//  IXLayoutControl.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013. All rights reserved.
 //
 
-#import "IxLayout.h"
+#import "IXLayout.h"
 
-#import "IxClickableScrollView.h"
-#import "IxLayoutEngine.h"
-#import "IxStructs.h"
+#import "IXClickableScrollView.h"
+#import "IXLayoutEngine.h"
+#import "IXStructs.h"
 
-@interface IxLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
+@interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,strong) UITapGestureRecognizer* doubleTapZoomRecognizer;
 
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation IxLayout
+@implementation IXLayout
 
 -(void)dealloc
 {
@@ -36,7 +36,7 @@
     _verticalScrollEnabled = YES;
     _horizontalScrollEnabled = YES;
     
-    _scrollView = [[IxClickableScrollView alloc] initWithFrame:CGRectZero];
+    _scrollView = [[IXClickableScrollView alloc] initWithFrame:CGRectZero];
     [_scrollView setDelegate:self];
     [_scrollView setParentControl:self];
     [_scrollView setOpaque:YES];
@@ -141,12 +141,12 @@
 {
     [super layoutControlContentsInRect:rect];
     
-    [IxLayoutEngine layoutControl:self inRect:rect];
+    [IXLayoutEngine layoutControl:self inRect:rect];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return [IxLayoutEngine getPreferredSizeForLayoutControl:self forSuggestedSize:size];
+    return [IXLayoutEngine getPreferredSizeForLayoutControl:self forSuggestedSize:size];
 }
 
 @end

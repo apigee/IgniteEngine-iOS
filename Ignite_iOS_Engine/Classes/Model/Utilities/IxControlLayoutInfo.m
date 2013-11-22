@@ -1,15 +1,15 @@
 //
-//  IxControlLayoutInfo.m
-//  Ignite iOS Engine (Ix)
+//  IXControlLayoutInfo.m
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/23.
 //  Copyright (c) 2013 All rights reserved.
 //
 
-#import "IxControlLayoutInfo.h"
-#import "IxPropertyContainer.h"
+#import "IXControlLayoutInfo.h"
+#import "IXPropertyContainer.h"
 
-@implementation IxSizePercentageContainer
+@implementation IXSizePercentageContainer
 
 -(instancetype)init
 {
@@ -61,27 +61,27 @@
 
 @end
 
-@implementation IxEdgeInsets
+@implementation IXEdgeInsets
 
 -(instancetype)init
 {
     return [self initWithDefaultValue:nil top:nil left:nil bottom:nil right:nil];
 }
 
-+(instancetype)edgeInsetsWithDefaultValue:(IxSizePercentageContainer*)defaultValue
-                                      top:(IxSizePercentageContainer*)top
-                                     left:(IxSizePercentageContainer*)left
-                                   bottom:(IxSizePercentageContainer*)bottom
-                                    right:(IxSizePercentageContainer*)right
++(instancetype)edgeInsetsWithDefaultValue:(IXSizePercentageContainer*)defaultValue
+                                      top:(IXSizePercentageContainer*)top
+                                     left:(IXSizePercentageContainer*)left
+                                   bottom:(IXSizePercentageContainer*)bottom
+                                    right:(IXSizePercentageContainer*)right
 {
     return [[[self class] alloc] initWithDefaultValue:defaultValue top:top left:left bottom:bottom right:right];
 }
 
--(instancetype)initWithDefaultValue:(IxSizePercentageContainer*)defaultValue
-                                top:(IxSizePercentageContainer*)top
-                               left:(IxSizePercentageContainer*)left
-                             bottom:(IxSizePercentageContainer*)bottom
-                              right:(IxSizePercentageContainer*)right
+-(instancetype)initWithDefaultValue:(IXSizePercentageContainer*)defaultValue
+                                top:(IXSizePercentageContainer*)top
+                               left:(IXSizePercentageContainer*)left
+                             bottom:(IXSizePercentageContainer*)bottom
+                              right:(IXSizePercentageContainer*)right
 {
     self = [super init];
     if( self != nil )
@@ -105,7 +105,7 @@
 
 @end
 
-@implementation IxControlLayoutInfo
+@implementation IXControlLayoutInfo
 
 @synthesize propertyContainer = _propertyContainer;
 
@@ -114,12 +114,12 @@
     return [self initWithPropertyContainer:nil];
 }
 
-+(instancetype)controlLayoutInfoWithPropertyContainer:(IxPropertyContainer*)propertyContainer
++(instancetype)controlLayoutInfoWithPropertyContainer:(IXPropertyContainer*)propertyContainer
 {
     return [[[self class] alloc] initWithPropertyContainer:propertyContainer];
 }
 
--(instancetype)initWithPropertyContainer:(IxPropertyContainer *)propertyContainer
+-(instancetype)initWithPropertyContainer:(IXPropertyContainer *)propertyContainer
 {
     self = [super init];
     if( self != nil )
@@ -146,19 +146,19 @@
     
     NSString* verticalAlignment = [[self propertyContainer] getStringPropertyValue:@"vertical_alignment" defaultValue:@"top"];
     if( [verticalAlignment isEqualToString:@"top"] )
-        _verticalAlignment = IxLayoutVerticalAlignmentTop;
+        _verticalAlignment = IXLayoutVerticalAlignmentTop;
     else if( [verticalAlignment isEqualToString:@"middle"] )
-        _verticalAlignment = IxLayoutVerticalAlignmentMiddle;
+        _verticalAlignment = IXLayoutVerticalAlignmentMiddle;
     else if( [verticalAlignment isEqualToString:@"bottom"] )
-        _verticalAlignment = IxLayoutVerticalAlignmentBottom;
+        _verticalAlignment = IXLayoutVerticalAlignmentBottom;
     
     NSString* horizontalAlignment = [[self propertyContainer] getStringPropertyValue:@"horizontal_alignment" defaultValue:@"left"];
     if( [horizontalAlignment isEqualToString:@"left"] )
-        _horizontalAlignment = IxLayoutHorizontalAlignmentLeft;
+        _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     else if( [horizontalAlignment isEqualToString:@"center"] )
-        _horizontalAlignment = IxLayoutHorizontalAlignmentCenter;
+        _horizontalAlignment = IXLayoutHorizontalAlignmentCenter;
     else if( [horizontalAlignment isEqualToString:@"right"] )
-        _horizontalAlignment = IxLayoutHorizontalAlignmentRight;
+        _horizontalAlignment = IXLayoutHorizontalAlignmentRight;
     
     _width = [[self propertyContainer] getSizePercentageContainer:@"width" defaultValue:0.0f];
     _widthWasDefined = [_width propertyWasDefined];
@@ -170,10 +170,10 @@
     _leftPosition = [[self propertyContainer] getSizePercentageContainer:@"left_position" defaultValue:0.0f];
     _leftPositionWasDefined = [_leftPosition propertyWasDefined];
     
-    IxSizePercentageContainer* defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding" defaultValue:0.0f];
-    IxSizePercentageContainer* defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin" defaultValue:0.0f];
+    IXSizePercentageContainer* defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding" defaultValue:0.0f];
+    IXSizePercentageContainer* defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin" defaultValue:0.0f];
     
-    _paddingInsets = [[IxEdgeInsets alloc] initWithDefaultValue:defaultPadding
+    _paddingInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
                                                              top:[[self propertyContainer] getSizePercentageContainer:@"top_padding"
                                                                                                    defaultValue:defaultPadding.value]
                                                             left:[[self propertyContainer] getSizePercentageContainer:@"left_padding"
@@ -183,7 +183,7 @@
                                                            right:[[self propertyContainer] getSizePercentageContainer:@"right_padding"
                                                                                                    defaultValue:defaultPadding.value]];
     
-    _marginInsets = [[IxEdgeInsets alloc] initWithDefaultValue:defaultPadding
+    _marginInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
                                                             top:[[self propertyContainer] getSizePercentageContainer:@"top_margin"
                                                                                                  defaultValue:defaultMargin.value]
                                                            left:[[self propertyContainer] getSizePercentageContainer:@"left_margin"

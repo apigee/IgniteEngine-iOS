@@ -1,6 +1,6 @@
 //
-//  IxControlContentView.h
-//  Ignite iOS Engine (Ix)
+//  IXControlContentView.h
+//  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/22.
 //  Copyright (c) 2013 All rights reserved.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class IxBaseControl;
+@class IXBaseControl;
 
-@protocol IxControlContentViewTouchDelegate <NSObject>
+@protocol IXControlContentViewTouchDelegate <NSObject>
 
 @optional
 
@@ -21,10 +21,10 @@
 
 @end
 
-@interface IxControlContentView : UIControl
+@interface IXControlContentView : UIControl
 
-@property (nonatomic,weak) id<IxControlContentViewTouchDelegate> controlContentViewTouchDelegate;
+@property (nonatomic,weak) id<IXControlContentViewTouchDelegate> controlContentViewTouchDelegate;
 
--(id)initWithFrame:(CGRect)frame viewTouchDelegate:(id<IxControlContentViewTouchDelegate>)touchDelegate;
+-(id)initWithFrame:(CGRect)frame viewTouchDelegate:(id<IXControlContentViewTouchDelegate>)touchDelegate;
 
 @end
