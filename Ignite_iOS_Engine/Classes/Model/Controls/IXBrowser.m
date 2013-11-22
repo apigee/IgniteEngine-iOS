@@ -2,8 +2,8 @@
 //  IXBrowserControl.m
 //  Ignite iOS Engine (IX)
 //
-//  Created by Jeremy Anticouni on 11/16.
-//  Copyright (c) 2013 All rights reserved.
+//  Created by Jeremy Anticouni on 11/16/13.
+//  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
  //
 /*
