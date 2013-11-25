@@ -16,13 +16,17 @@
 @property (nonatomic,copy) NSString* rawValue;
 @property (nonatomic,copy) NSString* objectID;
 @property (nonatomic,copy) NSString* methodName;
-@property (nonatomic,copy) NSArray* parameters;
+@property (nonatomic,strong) NSArray* parameters;
+
+-(instancetype)initWithRawValue:(NSString*)rawValue
+                       objectID:(NSString*)objectID
+                     methodName:(NSString*)methodName
+                     parameters:(NSArray*)parameters;
 
 +(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
-                                 objectID:(NSString*)objectID
-                               methodName:(NSString*)methodName
-                               parameters:(NSArray*)parameters;
-
+                                objectID:(NSString*)objectID
+                              methodName:(NSString*)methodName
+                              parameters:(NSArray*)parameters;
 -(NSString*)evaluate;
 
 @end

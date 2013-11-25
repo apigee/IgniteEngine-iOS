@@ -38,9 +38,9 @@
         _readonly = NO;
         _propertyContainer = nil;
         
-        _originalString = [rawValue copy];
-        _rawValue = [rawValue copy];
-        _propertyName = [propertyName copy];
+        _originalString = rawValue;
+        _rawValue = rawValue;
+        _propertyName = propertyName;
         
         [IXPropertyParser parseIXPropertyIntoComponents:self];
     }
@@ -78,20 +78,23 @@
     if( [self rawValue] == nil || [[self rawValue] length] == 0 )
         return @"";
     
-    __block NSMutableString *returnString = [NSMutableString stringWithString:[self staticText]];
+    NSMutableString *returnString = [[NSMutableString alloc] initWithString:[self staticText]];
     
     if( [[self shortCodes] count] > 0 )
     {
         __block NSInteger newCharsAdded = 0;
+        __block IXProperty* weakSelf = self;
+        __weak NSMutableString* weakString = returnString;
+        
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
             
-            NSRange shortCodeRange = [[[self shortCodeRanges] objectAtIndex:idx] rangeValue];
+            NSRange shortCodeRange = [[[weakSelf shortCodeRanges] objectAtIndex:idx] rangeValue];
             NSString *shortCodesValue = [shortCode evaluate];
             if( shortCodesValue == nil )
             {
                 shortCodesValue = @"";
             }            
-            [returnString insertString:shortCodesValue atIndex:shortCodeRange.location + newCharsAdded];
+            [weakString insertString:shortCodesValue atIndex:shortCodeRange.location + newCharsAdded];
             newCharsAdded += [shortCodesValue length] - shortCodeRange.length;
         }];
     }

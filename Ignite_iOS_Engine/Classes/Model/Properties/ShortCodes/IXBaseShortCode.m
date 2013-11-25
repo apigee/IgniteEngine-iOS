@@ -21,31 +21,36 @@
     return self;
 }
 
-+(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
-                                 objectID:(NSString*)objectID
-                               methodName:(NSString*)methodName
-                               parameters:(NSArray*)parameters
+-(instancetype)initWithRawValue:(NSString*)rawValue
+                       objectID:(NSString*)objectID
+                     methodName:(NSString*)methodName
+                     parameters:(NSArray*)parameters
 {
-    IXBaseShortCode* shortCode = nil;
-    NSString* shortCodeClassName = [NSString stringWithFormat:@"IX%@ShortCode",[methodName capitalizedString]];
-    Class shortCodeClass = NSClassFromString(shortCodeClassName);
-    if( shortCodeClass != nil )
+    self = [self init];
+    if( self )
     {
-        shortCode = [[shortCodeClass alloc] init];
-        [shortCode setRawValue:rawValue];
-        [shortCode setObjectID:objectID];
-        [shortCode setMethodName:methodName];
-        [shortCode setParameters:parameters];
+        _rawValue = [rawValue copy];
+        _objectID = [objectID copy];
+        _methodName = [methodName copy];
+        _parameters = parameters;
     }
-    return shortCode;
+    return self;
+}
+
++(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
+                                objectID:(NSString*)objectID
+                              methodName:(NSString*)methodName
+                              parameters:(NSArray*)parameters
+{
+    return [[[self class] alloc] initWithRawValue:rawValue objectID:objectID methodName:methodName parameters:parameters];
 }
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    return [IXBaseShortCode shortCodeWithRawValue:[self rawValue]
-                                          objectID:[self objectID]
-                                        methodName:[self methodName]
-                                        parameters:[self parameters]];
+    return [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
+                                                      objectID:[self objectID]
+                                                    methodName:[self methodName]
+                                                    parameters:[self parameters]];
 }
 
 -(NSString*)evaluate

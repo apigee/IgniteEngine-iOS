@@ -12,6 +12,7 @@
 #import "IXProperty.h"
 #import "IXPropertyContainer.h"
 #import "IXSandbox.h"
+#import "IXViewController.h"
 #import "IXAppManager.h"
 
 @implementation IXGetShortCode
@@ -20,7 +21,13 @@
 {
     NSString* returnValue = nil;
     
-    NSString* propertyName = [[[self parameters] firstObject] getPropertyValue];
+    NSString* propertyName = [self methodName];
+    if( !propertyName )
+    {
+        IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
+        propertyName = [parameterProperty getPropertyValue];
+    }
+    
     if( [[self objectID] isEqualToString:@"app"] )
     {
         returnValue = [[[IXAppManager sharedInstance] appProperties] getStringPropertyValue:propertyName defaultValue:nil];
@@ -32,6 +39,12 @@
     else if( [[self objectID] isEqualToString:@"form"] )
     {
         returnValue = nil;
+    }
+    else if( [[self objectID] isEqualToString:@"view"] )
+    {
+        IXSandbox* sandbox = [[[self property] propertyContainer] sandbox];
+        IXViewController* viewController = [sandbox viewController];
+        returnValue = [[viewController propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
     }
     else
     {

@@ -15,10 +15,10 @@
 @property (nonatomic,weak) IXPropertyContainer* propertyContainer;
 
 @property (nonatomic,assign,getter = isReadonly) BOOL readonly;
-@property (nonatomic,copy) NSString* originalString;
-@property (nonatomic,copy) NSString* rawValue;
-@property (nonatomic,copy) NSString* propertyName;
-@property (nonatomic,copy) NSString* staticText;
+@property (nonatomic,strong) NSString* originalString;
+@property (nonatomic,strong) NSString* rawValue;
+@property (nonatomic,strong) NSString* propertyName;
+@property (nonatomic,strong) NSString* staticText;
 @property (nonatomic,strong) NSArray* shortCodes; // TODO: make copy after implementing it
 @property (nonatomic,strong) NSArray* shortCodeRanges; // TODO: make copy after implementing it
 

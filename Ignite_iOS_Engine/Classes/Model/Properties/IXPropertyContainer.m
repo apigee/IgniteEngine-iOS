@@ -158,7 +158,7 @@
 -(int)getIntPropertyValue:(NSString*)propertyName defaultValue:(int)defaultValue
 {
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
-    int returnValue =  ( stringValue != nil ) ? [stringValue integerValue] : defaultValue;
+    int returnValue =  ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
     return returnValue;
 }
 
