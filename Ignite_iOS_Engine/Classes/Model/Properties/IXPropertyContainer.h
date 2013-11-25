@@ -22,6 +22,7 @@
 // FINISHED - But unuseable until finish the IXProperty class.
 
 -(void)addProperty:(IXProperty*)property;
+-(void)addProperties:(NSArray*)properties;
 -(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding;
 -(NSDictionary*)getAllPropertiesStringValues;
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName;

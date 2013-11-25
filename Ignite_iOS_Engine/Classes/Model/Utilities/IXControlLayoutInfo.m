@@ -170,27 +170,27 @@
     _leftPosition = [[self propertyContainer] getSizePercentageContainer:@"left_position" defaultValue:0.0f];
     _leftPositionWasDefined = [_leftPosition propertyWasDefined];
     
-    IXSizePercentageContainer* defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding" defaultValue:0.0f];
-    IXSizePercentageContainer* defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin" defaultValue:0.0f];
+    IXSizePercentageContainer* defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.default" defaultValue:0.0f];
+    IXSizePercentageContainer* defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.default" defaultValue:0.0f];
     
     _paddingInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
-                                                             top:[[self propertyContainer] getSizePercentageContainer:@"top_padding"
+                                                             top:[[self propertyContainer] getSizePercentageContainer:@"padding.top"
                                                                                                    defaultValue:defaultPadding.value]
-                                                            left:[[self propertyContainer] getSizePercentageContainer:@"left_padding"
+                                                            left:[[self propertyContainer] getSizePercentageContainer:@"padding.left"
                                                                                                    defaultValue:defaultPadding.value]
-                                                          bottom:[[self propertyContainer] getSizePercentageContainer:@"bottom_padding"
+                                                          bottom:[[self propertyContainer] getSizePercentageContainer:@"padding.bottom"
                                                                                                    defaultValue:defaultPadding.value]
-                                                           right:[[self propertyContainer] getSizePercentageContainer:@"right_padding"
+                                                           right:[[self propertyContainer] getSizePercentageContainer:@"padding.right"
                                                                                                    defaultValue:defaultPadding.value]];
     
     _marginInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
-                                                            top:[[self propertyContainer] getSizePercentageContainer:@"top_margin"
+                                                            top:[[self propertyContainer] getSizePercentageContainer:@"margin.top"
                                                                                                  defaultValue:defaultMargin.value]
-                                                           left:[[self propertyContainer] getSizePercentageContainer:@"left_margin"
+                                                           left:[[self propertyContainer] getSizePercentageContainer:@"margin.left"
                                                                                                  defaultValue:defaultMargin.value]
-                                                         bottom:[[self propertyContainer] getSizePercentageContainer:@"bottom_margin"
+                                                         bottom:[[self propertyContainer] getSizePercentageContainer:@"margin.bottom"
                                                                                                  defaultValue:defaultMargin.value]
-                                                          right:[[self propertyContainer] getSizePercentageContainer:@"right_padding"
+                                                          right:[[self propertyContainer] getSizePercentageContainer:@"margin.right"
                                                                                                  defaultValue:defaultMargin.value]];
     
 }

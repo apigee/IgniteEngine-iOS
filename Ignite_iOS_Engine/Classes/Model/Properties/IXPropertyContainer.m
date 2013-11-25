@@ -43,6 +43,14 @@
     return ([self getPropertyToEvaluate:propertyName] != nil);
 }
 
+-(void)addProperties:(NSArray*)properties
+{
+    for( IXProperty* property in properties )
+    {
+        [self addProperty:property];
+    }
+}
+
 -(void)addProperty:(IXProperty*)property
 {
     NSString* propertyName = [property propertyName];

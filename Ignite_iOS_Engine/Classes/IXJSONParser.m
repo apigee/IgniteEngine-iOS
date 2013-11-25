@@ -97,64 +97,54 @@
     return propertyArray;
 }
 
-+(IXPropertyContainer*)propertyContainerWithPropertyDictionary:(NSDictionary*)propertDictionary
++(void)populatePropertyContainer:(IXPropertyContainer*)propertyContainer withPropertyDict:(NSDictionary*)propertyDictionary keyPrefix:(NSString*)keyPrefix
+{
+    [propertyDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+       
+        NSString* propertiesKey = key;
+        if( [keyPrefix length] > 0 )
+        {
+            propertiesKey = [NSString stringWithFormat:@"%@.%@",keyPrefix,key];
+        }
+        
+        if( [obj isKindOfClass:[NSArray class]] )
+        {
+            NSArray* properties = [IXJSONParser propertiesWithPropertyName:propertiesKey propertyValueArray:obj];
+            [propertyContainer addProperties:properties];
+        }
+        else if( [obj isKindOfClass:[NSString class]] )
+        {
+            IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertiesKey rawValue:obj];
+            [propertyContainer addProperty:property];
+        }
+        else if( [obj isKindOfClass:[NSNumber class]] )
+        {
+            IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertiesKey rawValue:[obj stringValue]];
+            [propertyContainer addProperty:property];
+        }
+        else if( [obj isKindOfClass:[NSNull class]] )
+        {
+            IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertiesKey rawValue:nil];
+            [propertyContainer addProperty:property];
+        }
+        else if( [obj isKindOfClass:[NSDictionary class]] )
+        {
+            [IXJSONParser populatePropertyContainer:propertyContainer withPropertyDict:obj keyPrefix:propertiesKey];
+        }
+        else
+        {
+            NSLog(@"WARNING: property value for %@ not a valid object",key);
+        }
+    }];
+}
+
++(IXPropertyContainer*)propertyContainerWithPropertyDictionary:(NSDictionary*)propertyDictionary
 {
     IXPropertyContainer* propertyContainer = nil;
-    if( propertDictionary != nil && [propertDictionary isKindOfClass:[NSDictionary class]] && [[propertDictionary allValues] count] > 0 )
+    if( propertyDictionary != nil && [propertyDictionary isKindOfClass:[NSDictionary class]] && [[propertyDictionary allValues] count] > 0 )
     {
         propertyContainer = [[IXPropertyContainer alloc] init];
-        [propertDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if( [obj isKindOfClass:[NSArray class]] )
-            {
-                NSArray* properties = [IXJSONParser propertiesWithPropertyName:key propertyValueArray:obj];
-                for( IXProperty* property in properties )
-                {
-                    [propertyContainer addProperty:property];
-                }
-            }
-            else if( [obj isKindOfClass:[NSString class]] )
-            {
-                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:obj];
-                [propertyContainer addProperty:property];
-            }
-            else if( [obj isKindOfClass:[NSNumber class]] )
-            {
-                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
-                [propertyContainer addProperty:property];
-            }
-            else if( [obj isKindOfClass:[NSDictionary class]] )
-            {
-                [obj enumerateKeysAndObjectsUsingBlock:^(id subKey, id subObj, BOOL *stop) {
-                    subKey = [NSString stringWithFormat:@"%@.%@",key,subKey];
-                    if( [subObj isKindOfClass:[NSArray class]] )
-                    {
-                        NSArray* properties = [IXJSONParser propertiesWithPropertyName:subKey propertyValueArray:subObj];
-                        for( IXProperty* property in properties )
-                        {
-                            [propertyContainer addProperty:property];
-                        }
-                    }
-                    else if( [subObj isKindOfClass:[NSString class]] )
-                    {
-                        IXProperty* property = [[IXProperty alloc] initWithPropertyName:subKey rawValue:subObj];
-                        [propertyContainer addProperty:property];
-                    }
-                    else if( [obj isKindOfClass:[NSNumber class]] )
-                    {
-                        IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
-                        [propertyContainer addProperty:property];
-                    }
-                    else
-                    {
-                        NSLog(@"WARNING: property value for %@ not a string or dictionary of values %@",key,[subObj description]);
-                    }
-                }];
-            }
-            else
-            {
-                NSLog(@"WARNING: property value for %@ not a string or dictionary of values",key);
-            }
-        }];
+        [IXJSONParser populatePropertyContainer:propertyContainer withPropertyDict:propertyDictionary keyPrefix:nil];
     }
     return propertyContainer;
 }

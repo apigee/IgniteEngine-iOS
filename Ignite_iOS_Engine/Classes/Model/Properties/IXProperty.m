@@ -42,7 +42,10 @@
         _rawValue = rawValue;
         _propertyName = propertyName;
         
-        [IXPropertyParser parseIXPropertyIntoComponents:self];
+        if( rawValue != nil )
+        {
+            [IXPropertyParser parseIXPropertyIntoComponents:self];
+        }
     }
     return self;
 }

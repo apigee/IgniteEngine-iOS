@@ -19,8 +19,8 @@
 @property (nonatomic,strong) NSString* rawValue;
 @property (nonatomic,strong) NSString* propertyName;
 @property (nonatomic,strong) NSString* staticText;
-@property (nonatomic,strong) NSArray* shortCodes; // TODO: make copy after implementing it
-@property (nonatomic,strong) NSArray* shortCodeRanges; // TODO: make copy after implementing it
+@property (nonatomic,strong) NSArray* shortCodes;
+@property (nonatomic,strong) NSArray* shortCodeRanges; 
 
 -(instancetype)initWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
 +(instancetype)propertyWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
