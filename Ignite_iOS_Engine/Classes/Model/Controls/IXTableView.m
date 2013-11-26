@@ -70,7 +70,6 @@
 {
 //    id<NSFetchedResultsSectionInfo> sectionInfo = [self.dataProvider.fetchedResultsController fetchedObjects];
 //    int a = [sectionInfo numberOfObjects];
-    int a=   [[self.dataProvider.fetchedResultsController fetchedObjects] count];
 
     return  [[self.dataProvider.fetchedResultsController fetchedObjects] count];
 }

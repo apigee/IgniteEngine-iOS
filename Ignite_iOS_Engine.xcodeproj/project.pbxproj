@@ -63,13 +63,13 @@
 		136928E01835FC6F00E28BBC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136928DF1835FC6F00E28BBC /* MapKit.framework */; };
 		136928E21835FC7A00E28BBC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136928E11835FC7A00E28BBC /* CoreLocation.framework */; };
 		136928F11836108300E28BBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136928F01836108300E28BBC /* QuartzCore.framework */; };
-		13BF0467183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */; };
 		13BF0468183EBE7E00894760 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13BF0465183EBE7E00894760 /* Images.xcassets */; };
 		13BF0469183EBE7E00894760 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BF0466183EBE7E00894760 /* main.m */; };
 		13ECEA5F183EBF39004BC638 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 13ECEA5E183EBF38004BC638 /* assets */; };
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
+		63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BC718442F270048C668 /* UITextField+IXAdditions.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
@@ -188,6 +188,8 @@
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6324BF531835931C00748F27 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6324BF681835931D00748F27 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		63311BC618442F270048C668 /* UITextField+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+IXAdditions.h"; sourceTree = "<group>"; };
+		63311BC718442F270048C668 /* UITextField+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+IXAdditions.m"; sourceTree = "<group>"; };
 		635614F51842FC3000B7C95F /* IXFormatShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFormatShortCode.h; sourceTree = "<group>"; };
 		635614F61842FC3000B7C95F /* IXFormatShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFormatShortCode.m; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 		13033F2C183ED8F200C29157 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				63311BC518442F070048C668 /* Categories */,
 				13033F2D183ED8F200C29157 /* Actions */,
 				13033F38183ED8F200C29157 /* BaseObjects */,
 				13033F3D183ED8F200C29157 /* Controls */,
@@ -467,6 +470,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		63311BC518442F070048C668 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				63311BC618442F270048C668 /* UITextField+IXAdditions.h */,
+				63311BC718442F270048C668 /* UITextField+IXAdditions.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -530,7 +542,6 @@
 			files = (
 				13BF0468183EBE7E00894760 /* Images.xcassets in Resources */,
 				13ECEA5F183EBF39004BC638 /* assets in Resources */,
-				13BF0467183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +617,7 @@
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,
 				13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
+				63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
 				13033F95183ED8F200C29157 /* IXModifyAction.m in Sources */,
@@ -714,10 +726,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Ignite_iOS_Engine/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/jeremyanticouni/Development/IgniteEngine/Classes/ThirdParty/ZBarSDK,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -742,10 +751,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Ignite_iOS_Engine/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/jeremyanticouni/Development/IgniteEngine/Classes/ThirdParty/ZBarSDK,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",

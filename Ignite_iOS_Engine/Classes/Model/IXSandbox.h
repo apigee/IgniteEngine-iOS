@@ -35,13 +35,12 @@
 @property (nonatomic,strong) NSString* basePath;
 @property (nonatomic,strong) NSString* rootPath;
 
-#warning IMPLEMENT THIS METHOD
--(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID;
 -(void)addDataProviders:(NSArray*)dataProviders;
 -(BOOL)addDataProvider:(IXBaseDataprovider*)dataProvider;
+
+-(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID;
 -(IXBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID;
 -(NSArray*)getDataProvidersWithID:(NSString*)dataProviderID;
-
 
 -(void)loadAllDataProviders;
 

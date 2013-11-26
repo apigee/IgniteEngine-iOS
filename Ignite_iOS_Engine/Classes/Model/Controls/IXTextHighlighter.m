@@ -17,7 +17,7 @@ static NSString* lastLinkTouched = nil;
 static NSString* lastDateTouched = nil;
 static NSString* lastPhoneTouched = nil;
 
-@interface IXTextHighlighter ()
+@interface IXTextHighlighter () <TTTAttributedLabelDelegate>
 
 @property (nonatomic, strong) TTTAttributedLabel* attributedLabel;
 
@@ -29,8 +29,110 @@ static NSString* lastPhoneTouched = nil;
 
 -(void)dealloc
 {
-    _attributedLabel = nil;
+    [_attributedLabel setDelegate:nil];
+}
+
+-(void)buildView
+{
+    [super buildView];
     
+    _attributedLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    [_attributedLabel setDelegate:self];
+    [_attributedLabel setDataDetectorTypes:UIDataDetectorTypeAll];
+    [_attributedLabel setTextColor:[UIColor colorWithRed:0.286 green:0.286 blue:0.286 alpha:1.0]];
+    [_attributedLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [_attributedLabel setNumberOfLines:0];
+    [_attributedLabel setHighlightedTextColor:[UIColor whiteColor]];
+    [_attributedLabel setShadowColor:[UIColor colorWithWhite:0.87f alpha:0.0f]];
+    [_attributedLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+    [_attributedLabel setVerticalAlignment:TTTAttributedLabelVerticalAlignmentTop];
+    
+    [[self contentView] addSubview:_attributedLabel];
+}
+
+-(void)layoutControlContentsInRect:(CGRect)rect
+{
+    [_attributedLabel setFrame:rect];
+}
+
+-(CGSize)preferredSizeForSuggestedSize:(CGSize)size
+{
+    return [_attributedLabel sizeThatFits:size];
+}
+
+-(void)applySettings
+{
+    [super applySettings];
+    
+    NSString* text = [[self propertyContainer] getStringPropertyValue:@"text" defaultValue:@""];
+    UIColor* textColor = [[self propertyContainer] getColorPropertyValue:@"text_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
+    
+    [[self attributedLabel] setTextColor:textColor];
+    [[self attributedLabel] setText:text];
+    
+    // LINK
+    NSMutableDictionary *mutableLinkAttributes = [[NSMutableDictionary alloc] init];
+    
+    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getColorPropertyValue:@"link_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]] forKey:(NSString *)kCTForegroundColorAttributeName];
+    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:13]] forKey:(NSString *)kCTFontAttributeName];
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    
+    [[self attributedLabel] setLinkAttributes:mutableLinkAttributes];
+    
+    // @ACCOUNT
+    mutableLinkAttributes = [[NSMutableDictionary alloc] init];
+    
+    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getColorPropertyValue:@"account_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]] forKey:(NSString *)kCTForegroundColorAttributeName];
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    
+    [[self attributedLabel] setAccountAttributes:mutableLinkAttributes];
+    [[self attributedLabel] setHashtagAttributes:mutableLinkAttributes];
+    [[self attributedLabel] setDateAttributes:mutableLinkAttributes];
+    [[self attributedLabel] setPhoneNumberAttributes:mutableLinkAttributes];
+    [[self attributedLabel] setAddressAttributes:mutableLinkAttributes];
+    [[self attributedLabel] setEmailAttributes:mutableLinkAttributes];
+    
+    //HASHTAG
+    mutableLinkAttributes = [[NSMutableDictionary alloc] init];
+    
+    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:13]] forKey:(NSString *)kCTFontAttributeName];
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    
+    [[self attributedLabel] setHashtagAttributes:mutableLinkAttributes];
+    
+    mutableLinkAttributes = [[NSMutableDictionary alloc] init];
+    
+    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getColorPropertyValue:@"hashtag_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]] forKey:(NSString *)kCTForegroundColorAttributeName];
+    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:13]] forKey:(NSString *)kCTFontAttributeName];
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.1f] CGColor] forKey:(NSString *)kTTTBackgroundFillColorAttributeName];
+    [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.25f] CGColor] forKey:(NSString *)kTTTBackgroundStrokeColorAttributeName];
+    [mutableLinkAttributes setValue:(id)[NSNumber numberWithFloat:1.0f] forKey:(NSString *)kTTTBackgroundLineWidthAttributeName];
+    [mutableLinkAttributes setValue:(id)[NSNumber numberWithFloat:2.0f] forKey:(NSString *)kTTTBackgroundCornerRadiusAttributeName];
+    
+    [[self attributedLabel] setActiveLinkAttributes:mutableLinkAttributes];
+    
+    //UIColor* linkColor = [self.settings getColorSetting:@"link-color" orDefaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
+    
+    //    UIColor* textColor = [self.settings getColorSetting:@"text-color" orDefaultValue:[UIColor whiteColor]];
+    
+    //
+    //    UIColor* emailColor = [self.settings getColorSetting:@"email-color" orDefaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
+    //    [_attributedLabel setColorEmail:emailColor];
+    //
+    //    UIColor* accountColor = [self.settings getColorSetting:@"account-color" orDefaultValue:[UIColor colorWithWhite:100.0f/255.0f alpha:1.0f]];
+    //    [_attributedLabel setColorAccount:accountColor];
+    //
+    //    UIColor* hashTagColor = [self.settings getColorSetting:@"hashtag-color" orDefaultValue:[UIColor colorWithWhite:170.0f/255.0f alpha:1.0f]];
+    //    [_attributedLabel setColorHashtag:hashTagColor];
+    //
+    //    if([self.settings getBoolSetting:@"enable-shadow" orDefaultValue:NO])
+    //    {
+    //        UIColor* shadowColor = [_settings getColorSetting:@"shadow-color" orDefaultValue:[UIColor blackColor]];
+    //
+    //        _attributedLabel.shadowColor = shadowColor;
+    //        _attributedLabel.shadowOffset = CGSizeMake([_settings getFloatSetting:@"shadow-offset-right" orDefaultValue:2.0], [_settings getFloatSetting:@"shadow-offset-down" orDefaultValue:2.0]);
+    //    }
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label
@@ -161,108 +263,5 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents
 //    [self processActionsOn:@"address-touched"];
 }
 
--(void)buildView
-{
-    [super buildView];
-    
-    _attributedLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-    _attributedLabel.textColor = [UIColor colorWithRed:0.286 green:0.286 blue:0.286 alpha:1.0];
-    _attributedLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _attributedLabel.numberOfLines = 0;
-    _attributedLabel.highlightedTextColor = [UIColor whiteColor];
-    _attributedLabel.shadowColor = [UIColor colorWithWhite:0.87f alpha:0.0f];
-    _attributedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    _attributedLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-    
-    _attributedLabel.dataDetectorTypes = UIDataDetectorTypeAll; // Automatically detect links when the label text is subsequently changed
-    _attributedLabel.delegate = self; // Delegate methods are called when the user taps on a link (see `TTTAttributedLabelDelegate` protocol)
-    
-    
-    [[self contentView] addSubview:_attributedLabel];
-}
-
--(void)layoutControlContentsInRect:(CGRect)rect
-{
-    [_attributedLabel setFrame:rect];
-}
-
--(CGSize)preferredSizeForSuggestedSize:(CGSize)size
-{
-    return [_attributedLabel sizeThatFits:size];
-
-}
-
--(void)applySettings
-{
-    [super applySettings];
-
-    NSString* text = [[self propertyContainer] getStringPropertyValue:@"text" defaultValue:@""];
-
-    UIColor* textColor = [[self propertyContainer] getColorPropertyValue:@"text_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
-    [_attributedLabel setTextColor:textColor];
-    [_attributedLabel setText:text];
-    
-    // LINK
-    NSMutableDictionary *mutableLinkAttributes = [NSMutableDictionary dictionary];
-    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getColorPropertyValue:@"link_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]] forKey:(NSString *)kCTForegroundColorAttributeName];
-    
-    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:13]] forKey:(NSString *)kCTFontAttributeName];
-    
-    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-    _attributedLabel.linkAttributes = mutableLinkAttributes;
-    
-    // @ACCOUNT
-    mutableLinkAttributes = [NSMutableDictionary dictionary];
-    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getColorPropertyValue:@"account_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]] forKey:(NSString *)kCTForegroundColorAttributeName];
-    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-    _attributedLabel.accountAttributes = mutableLinkAttributes;
-    _attributedLabel.hashtagAttributes = mutableLinkAttributes;
-    _attributedLabel.dateAttributes = mutableLinkAttributes;
-    _attributedLabel.phoneNumberAttributes = mutableLinkAttributes;
-    _attributedLabel.addressAttributes = mutableLinkAttributes;
-    _attributedLabel.emailAttributes = mutableLinkAttributes;
-    
-    //HASHTAG
-    mutableLinkAttributes = [NSMutableDictionary dictionary];
-    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:13]] forKey:(NSString *)kCTFontAttributeName];
-    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-    _attributedLabel.hashtagAttributes = mutableLinkAttributes;
-    NSMutableDictionary *mutableActiveLinkAttributes = [NSMutableDictionary dictionary];
-    [mutableLinkAttributes setValue:(id)[[self propertyContainer] getColorPropertyValue:@"hashtag_color" defaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]] forKey:(NSString *)kCTForegroundColorAttributeName];
-    [mutableActiveLinkAttributes setValue:(id)[[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:13]] forKey:(NSString *)kCTFontAttributeName];
-    [mutableActiveLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-    [mutableActiveLinkAttributes setValue:(id)[[UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.1f] CGColor] forKey:(NSString *)kTTTBackgroundFillColorAttributeName];
-    [mutableActiveLinkAttributes setValue:(id)[[UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.25f] CGColor] forKey:(NSString *)kTTTBackgroundStrokeColorAttributeName];
-    [mutableActiveLinkAttributes setValue:(id)[NSNumber numberWithFloat:1.0f] forKey:(NSString *)kTTTBackgroundLineWidthAttributeName];
-    [mutableActiveLinkAttributes setValue:(id)[NSNumber numberWithFloat:2.0f] forKey:(NSString *)kTTTBackgroundCornerRadiusAttributeName];
-    _attributedLabel.activeLinkAttributes = mutableActiveLinkAttributes;
-    
-    
-    
-    //UIColor* linkColor = [self.settings getColorSetting:@"link-color" orDefaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
-
-    //    UIColor* textColor = [self.settings getColorSetting:@"text-color" orDefaultValue:[UIColor whiteColor]];
-
-//    
-//    UIColor* emailColor = [self.settings getColorSetting:@"email-color" orDefaultValue:[UIColor colorWithRed:129.0f/255.0f green:171.0f/255.0f blue:193.0f/255.0f alpha:1.0f]];
-//    [_attributedLabel setColorEmail:emailColor];
-//    
-//    UIColor* accountColor = [self.settings getColorSetting:@"account-color" orDefaultValue:[UIColor colorWithWhite:100.0f/255.0f alpha:1.0f]];
-//    [_attributedLabel setColorAccount:accountColor];
-//    
-//    UIColor* hashTagColor = [self.settings getColorSetting:@"hashtag-color" orDefaultValue:[UIColor colorWithWhite:170.0f/255.0f alpha:1.0f]];
-//    [_attributedLabel setColorHashtag:hashTagColor];
-//    
-//    if([self.settings getBoolSetting:@"enable-shadow" orDefaultValue:NO])
-//    {
-//        UIColor* shadowColor = [_settings getColorSetting:@"shadow-color" orDefaultValue:[UIColor blackColor]];
-//        
-//        _attributedLabel.shadowColor = shadowColor;
-//        _attributedLabel.shadowOffset = CGSizeMake([_settings getFloatSetting:@"shadow-offset-right" orDefaultValue:2.0], [_settings getFloatSetting:@"shadow-offset-down" orDefaultValue:2.0]);
-//    }
-
-    [_attributedLabel setText:text];
-
-}
 
 @end
