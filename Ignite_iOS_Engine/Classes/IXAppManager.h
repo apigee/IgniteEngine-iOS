@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IXEnums.h"
 
 @class IXBaseControl;
 @class IXSandbox;
@@ -19,6 +20,8 @@
 
 @property (nonatomic,strong) IXBaseControl* testControl;
 
+@property (nonatomic,assign) IXAppMode appMode;
+
 @property (nonatomic,strong) JASidePanelController* sidePanelController;
 @property (nonatomic,strong) IXNavigationViewController* rootViewController;
 @property (nonatomic,strong) IXViewController* rightPanel;
@@ -26,7 +29,6 @@
 
 @property (nonatomic,copy) NSString* appConfigPath;
 @property (nonatomic,copy) NSString* appDefaultViewPath;
-@property (nonatomic,copy) NSString* appMode;
 
 @property (nonatomic,strong) IXPropertyContainer* appProperties;
 @property (nonatomic,strong) IXPropertyContainer* sessionProperties;

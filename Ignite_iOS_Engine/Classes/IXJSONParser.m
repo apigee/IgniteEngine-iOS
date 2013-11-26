@@ -18,6 +18,7 @@
 #import "IXActionContainer.h"
 #import "IXBaseDataprovider.h"
 #import "IXEntityContainer.h"
+#import "IXAppManager.h"
 
 @implementation IXJSONParser
 
@@ -41,9 +42,17 @@
 +(IXProperty*)conditionalPropertyForConditionalValue:(id)conditionalValue
 {
     IXProperty* conditionalProperty = nil;
-    if( [conditionalValue isKindOfClass:[NSString class]] )
+    if( [conditionalValue isKindOfClass:[NSString class]] || [conditionalValue isKindOfClass:[NSNull class]] )
     {
-        conditionalProperty = [[IXProperty alloc] initWithPropertyName:@"if" rawValue:conditionalValue];
+        if( [conditionalValue isKindOfClass:[NSNull class]] )
+        {
+            conditionalValue = nil;
+        }
+        conditionalProperty = [[IXProperty alloc] initWithPropertyName:nil rawValue:conditionalValue];
+    }
+    else if( [conditionalValue isKindOfClass:[NSNumber class]] )
+    {
+        conditionalProperty = [[IXProperty alloc] initWithPropertyName:nil rawValue:[conditionalValue stringValue]];
     }
     return conditionalProperty;
 }
@@ -62,6 +71,11 @@
             }
             property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
         }
+        else if( [propertyValue isKindOfClass:[NSNumber class]] )
+        {
+            property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:[propertyValue stringValue]];
+        }
+
         
         if( property != nil )
         {
@@ -154,6 +168,12 @@
     IXBaseAction* action = nil;
     if( [actionValueDict allKeys] > 0 )
     {
+        BOOL debugMode = [[actionValueDict objectForKey:@"debug"] boolValue];
+        if( debugMode && [[IXAppManager sharedInstance] appMode] != IXDebugMode )
+        {
+            return nil;
+        }
+        
         id eventName = [actionValueDict objectForKey:@"on"];
         if( [eventName isKindOfClass:[NSString class]] )
         {

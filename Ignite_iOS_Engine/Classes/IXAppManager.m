@@ -103,7 +103,15 @@
         }
     }
     
-    [self setAppMode:[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"]];
+    if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] )
+    {
+        [self setAppMode:IXDebugMode];
+    }
+    else
+    {
+        [self setAppMode:IXReleaseMode];
+    }
+    
     [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:@"enable_layout_debugging" defaultValue:YES]];
     [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolPropertyValue:@"shows_navigation_bar" defaultValue:YES] animated:YES];
 

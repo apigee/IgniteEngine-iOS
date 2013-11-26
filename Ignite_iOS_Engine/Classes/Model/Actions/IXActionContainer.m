@@ -93,6 +93,7 @@
     [action setActionContainer:self];
     [[action actionProperties] setSandbox:[self sandbox]];
     [[action parameterProperties] setSandbox:[self sandbox]];
+    [[action subActionContainer] setSandbox:[self sandbox]];
 
     NSMutableArray* actionsForType = [self actionsForEvent:actionEventName];
     if( actionsForType == nil )
