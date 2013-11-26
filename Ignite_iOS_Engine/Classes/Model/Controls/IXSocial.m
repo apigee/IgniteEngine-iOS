@@ -49,12 +49,16 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
+
+#import "UIViewController+IXAdditions.h"
+#import "NSString+IXAdditions.h"
+
 #import "SDWebImageManager.h"
 
 @interface  IXSocial ()
 
 @property (nonatomic,strong) SLComposeViewController* composeViewController;
-@property (nonatomic,copy) SLComposeViewControllerCompletionHandler completionHandler;
+@property (nonatomic,copy) SLComposeViewControllerCompletionHandler composeViewControllerCompletionBlock;
 @property (nonatomic,assign) BOOL isPresentingComposeController;
 
 @property (nonatomic,strong) NSString* shareServiceType;
@@ -68,16 +72,13 @@
 
 -(void)dealloc
 {
-    if( [self isPresentingComposeController] )
-    {
-        [self dismissComposeViewController:NO];
-    }
+    [self dismissComposeViewController:NO];
 }
 
 -(void)buildView
 {
     __weak IXSocial* weakSelf = self;
-    [self setCompletionHandler:^(SLComposeViewControllerResult result){
+    [self setComposeViewControllerCompletionBlock:^(SLComposeViewControllerResult result){
         switch (result)
         {
             case SLComposeViewControllerResultDone:
@@ -119,18 +120,38 @@
 {
     if( [functionName isEqualToString:@"present_share_controller"] )
     {
-        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
-        [self presentComposeViewController:animated];
+        [self presentComposeViewController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
     }
     else if( [functionName isEqualToString:@"dismiss_share_controller"] )
     {
-        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
-        [self dismissComposeViewController:animated];
+        [self dismissComposeViewController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
     }
     else
     {
         [super applyFunction:functionName withParameters:parameterContainer];
     }
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:@"facebook_available"] )
+    {
+        returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]];
+    }
+    else if( [propertyName isEqualToString:@"twitter_available"] )
+    {
+        returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]];
+    }
+    else if( [propertyName isEqualToString:@"sina_weibo_available"] )
+    {
+        returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
 }
 
 +(NSString*)getServiceType:(NSString*)typeSetting
@@ -139,14 +160,14 @@
         return SLServiceTypeTwitter;
     else if( [typeSetting isEqualToString:@"facebook"] )
         return SLServiceTypeFacebook;
-    else if( [typeSetting isEqualToString:@"weibo"] )
+    else if( [typeSetting isEqualToString:@"sina_weibo"] )
         return SLServiceTypeSinaWeibo;
     return nil;
 }
 
 -(void)dismissComposeViewController:(BOOL)animated
 {
-    if( ![[self composeViewController] isBeingPresented] && ![[self composeViewController] isBeingDismissed] && [[self composeViewController] presentingViewController] )
+    if( [UIViewController isOkToDismissViewController:[self composeViewController]] )
     {
         [[self composeViewController] dismissViewControllerAnimated:animated completion:nil];
     }
@@ -156,16 +177,16 @@
 {
     if( [self composeViewController] )
     {
-        [self dismissComposeViewController:YES];
+        [self dismissComposeViewController:NO];
         [self setComposeViewController:nil];
     }
-    
+
     if( [SLComposeViewController isAvailableForServiceType:[self shareServiceType]] )
     {
         [self setComposeViewController:[SLComposeViewController composeViewControllerForServiceType:[self shareServiceType]]];
         if( [self composeViewController] )
         {
-            [[self composeViewController] setCompletionHandler:[self completionHandler]];
+            [[self composeViewController] setCompletionHandler:[self composeViewControllerCompletionBlock]];
             [[self composeViewController] setInitialText:[self shareInitialText]];
             [[self composeViewController] addImage:[self shareImage]];
             
@@ -173,6 +194,5 @@
         }
     }
 }
-
 
 @end

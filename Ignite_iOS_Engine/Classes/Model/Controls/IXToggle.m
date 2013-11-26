@@ -22,10 +22,12 @@
 
 #import "IXToggle.h"
 
-@interface  IXToggle()
+#import "NSString+IXAdditions.h"
 
-@property (nonatomic,strong) NSString* imagePath;
-@property (nonatomic,strong) NSString* touchedImagePath;
+@interface  IXToggle ()
+
+@property (nonatomic,assign) BOOL hasAppliedSettings;
+@property (nonatomic,strong) UISwitch *toggleSwitch;
 
 @end
 
@@ -34,50 +36,77 @@
 -(void)buildView
 {
     [super buildView];
-    toggleSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-    [toggleSwitch addTarget:self action:@selector(eventSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     
+    _hasAppliedSettings = NO;
     
-    [toggleSwitch setOn:[[self propertyContainer] getBoolPropertyValue:@"selected" defaultValue:NO]];
+    _toggleSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+    [_toggleSwitch addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventValueChanged];
     
-    [[self contentView] addSubview:toggleSwitch];
+    [[self contentView] addSubview:_toggleSwitch];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return CGSizeMake(toggleSwitch.frame.size.width, toggleSwitch.frame.size.height);
+    return CGSizeMake([self toggleSwitch].frame.size.width, [self toggleSwitch].frame.size.height);
 }
 
 -(void)applySettings
 {
     [super applySettings];
     
-
+    if( ![self hasAppliedSettings] )
+    {
+        [self setHasAppliedSettings:YES];
+        [[self toggleSwitch] setOn:[[self propertyContainer] getBoolPropertyValue:@"initally_selected" defaultValue:NO] animated:NO];
+    }
 }
 
-- (void)eventSwitchChanged: (id)sender
+-(void)switchToggled:(UISwitch*)sender
 {
-    if (![sender isKindOfClass: [UISwitch class]])
+    if( [[self toggleSwitch] isOn] )
     {
-        //error handling
-        return;
-    }
-    
-    if (toggleSwitch.on){
-        
-//        [self.settings setSetting:@"selected" value:@"YES"];
         [[self actionContainer] executeActionsForEventNamed:@"toggle"];
         [[self actionContainer] executeActionsForEventNamed:@"toggle_on"];
-        
     }
-    else {
-        
-//        [self.settings setSetting:@"selected" value:@"NO"];
+    else
+    {        
         [[self actionContainer] executeActionsForEventNamed:@"toggle"];
         [[self actionContainer] executeActionsForEventNamed:@"toggle_off"];
-        
     }
-    
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:@"toggle"] )
+    {
+        [[self toggleSwitch] setOn:![[self toggleSwitch] isOn] animated:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+    }
+    else if( [functionName isEqualToString:@"toggle_on"] )
+    {
+        [[self toggleSwitch] setOn:YES animated:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+    }
+    else if( [functionName isEqualToString:@"toggle_off"] )
+    {
+        [[self toggleSwitch] setOn:NO animated:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:@"is_on"] )
+    {
+        returnValue = [NSString stringFromBOOL:[[self toggleSwitch] isOn]];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
 }
 
 @end

@@ -52,9 +52,12 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
+
+#import "UIViewController+IXAdditions.h"
+
 #import <MessageUI/MessageUI.h>
 
-@interface  IXMessage() <MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
+@interface  IXMessage () <MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
 
 @property (nonatomic,strong) NSString *messageSubject;
 @property (nonatomic,strong) NSString *messageBody;
@@ -72,12 +75,10 @@
 -(void)dealloc
 {
     [_textMessage setMessageComposeDelegate:nil];
-    if( [_textMessage presentingViewController] && ![_textMessage isBeingDismissed] )
-       [_textMessage dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewController:[self textMessage] animated:NO];
     
     [_emailMessage setMailComposeDelegate:nil];
-    if( [_emailMessage presentingViewController] && ![_emailMessage isBeingDismissed] )
-        [_emailMessage dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewController:[self emailMessage] animated:NO];
 }
 
 -(void)buildView
@@ -100,49 +101,67 @@
 {
     if( [functionName isEqualToString:@"present_text_message_controller"] )
     {
-        if( [MFMessageComposeViewController canSendText] )
-        {
-            if( [self textMessage] == nil || ![[self textMessage] isBeingPresented] )
-            {
-                [[self textMessage] setMessageComposeDelegate:nil];
-                [self setTextMessage:nil];
-                
-                MFMessageComposeViewController* messageComposeViewController = [[MFMessageComposeViewController alloc] init];
-                [messageComposeViewController setMessageComposeDelegate:self];
-                [messageComposeViewController setSubject:[self messageSubject]];
-                [messageComposeViewController setRecipients:[self messageToRecipients]];
-                [messageComposeViewController setBody:[self messageBody]];
-                [self setTextMessage:messageComposeViewController];
-                
-                [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self textMessage] animated:YES completion:nil];
-            }
-        }
+        [self presentEmailController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
     }
     else if( [functionName isEqualToString:@"present_email_controller"] )
     {
-        if( [MFMailComposeViewController canSendMail] )
-        {
-            if( [self emailMessage] == nil || ![[self emailMessage] isBeingPresented] )
-            {
-                [[self emailMessage] setMailComposeDelegate:nil];
-                [self setEmailMessage:nil];
-                
-                MFMailComposeViewController* mailComposeViewController = [[MFMailComposeViewController alloc] init];
-                [mailComposeViewController setMailComposeDelegate:self];
-                [mailComposeViewController setSubject:[self messageSubject]];
-                [mailComposeViewController setToRecipients:[self messageToRecipients]];
-                [mailComposeViewController setCcRecipients:[self messageCCRecipients]];
-                [mailComposeViewController setBccRecipients:[self messageBCCRecipients]];
-                [mailComposeViewController setMessageBody:[self messageBody] isHTML:YES];
-                [self setEmailMessage:mailComposeViewController];
-                
-                [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self emailMessage] animated:YES completion:nil];
-            }
-        }
+        [self presentTextMessageController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
     }
     else
     {
         [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
+
+-(void)presentEmailController:(BOOL)animated
+{
+    if( [MFMailComposeViewController canSendMail] )
+    {
+        if( [UIViewController isOkToPresentViewController:[self emailMessage]] )
+        {
+            [[self emailMessage] setMailComposeDelegate:nil];
+            [self setEmailMessage:nil];
+            
+            MFMailComposeViewController* mailComposeViewController = [[MFMailComposeViewController alloc] init];
+            [mailComposeViewController setMailComposeDelegate:self];
+            [mailComposeViewController setSubject:[self messageSubject]];
+            [mailComposeViewController setToRecipients:[self messageToRecipients]];
+            [mailComposeViewController setCcRecipients:[self messageCCRecipients]];
+            [mailComposeViewController setBccRecipients:[self messageBCCRecipients]];
+            [mailComposeViewController setMessageBody:[self messageBody] isHTML:YES];
+            [self setEmailMessage:mailComposeViewController];
+            
+            [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self emailMessage] animated:animated completion:nil];
+        }
+    }
+}
+
+-(void)presentTextMessageController:(BOOL)animated
+{
+    if( [MFMessageComposeViewController canSendText] )
+    {
+        if( [UIViewController isOkToPresentViewController:[self textMessage]] )
+        {
+            [[self textMessage] setMessageComposeDelegate:nil];
+            [self setTextMessage:nil];
+            
+            MFMessageComposeViewController* messageComposeViewController = [[MFMessageComposeViewController alloc] init];
+            [messageComposeViewController setMessageComposeDelegate:self];
+            [messageComposeViewController setSubject:[self messageSubject]];
+            [messageComposeViewController setRecipients:[self messageToRecipients]];
+            [messageComposeViewController setBody:[self messageBody]];
+            [self setTextMessage:messageComposeViewController];
+            
+            [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self textMessage] animated:YES completion:nil];
+        }
+    }
+}
+
+-(void)dismissViewController:(UIViewController*)viewController animated:(BOOL)animated
+{
+    if( [UIViewController isOkToDismissViewController:viewController] )
+    {
+        [viewController dismissViewControllerAnimated:animated completion:nil];
     }
 }
 
@@ -162,7 +181,7 @@
         default:
             break;
     }
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewController:controller animated:YES];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -181,7 +200,7 @@
         default:
             break;
     }
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewController:controller animated:YES];
 }
 
 @end

@@ -53,7 +53,11 @@
         IXBaseObject* baseObject = [objectWithIDArray firstObject];
         if( baseObject != nil )
         {
-            returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
+            returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
+            if( returnValue == nil )
+            {
+                returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
+            }
         }
     }
     return returnValue;

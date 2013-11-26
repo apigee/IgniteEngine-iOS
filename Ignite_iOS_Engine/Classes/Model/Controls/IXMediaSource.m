@@ -44,58 +44,91 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
+
+#import "UIImagePickerController+IXAdditions.h"
+#import "UIViewController+IXAdditions.h"
+
 #import <MobileCoreServices/MobileCoreServices.h>
 
+@interface  IXMediaSource() <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
-@interface  IXMediaSource()
-
-@property NSInteger* sourceType;
+@property (nonatomic,strong) NSString* sourceTypeString;
+@property (nonatomic,assign) UIImagePickerControllerSourceType pickerSourceType;
+@property (nonatomic,strong) UIImagePickerController* imagePickerController;
 
 @end
 
 @implementation IXMediaSource
 
-
+-(void)dealloc
+{
+    [_imagePickerController setDelegate:nil];
+    [self dismissPickerController:NO];
+}
 
 -(void)buildView
 {
-    [super buildView];
-
-}
-
--(CGSize)preferredSizeForSuggestedSize:(CGSize)size
-{
-    return CGSizeZero;
+    _imagePickerController = [[UIImagePickerController alloc] init];
+    [_imagePickerController setDelegate:self];
 }
 
 -(void)applySettings
 {
     [super applySettings];
     
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    
-    NSString* mediaSource = [[self propertyContainer] getStringPropertyValue:@"source" defaultValue:@"camera"];
-    
-    if([mediaSource compare:@"camera"] == NSOrderedSame)
-    {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    else if([mediaSource compare:@"library"] == NSOrderedSame)
-    {
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self setSourceTypeString:[[self propertyContainer] getStringPropertyValue:@"source" defaultValue:@"camera"]];
+    [self setPickerSourceType:[UIImagePickerController stringToSourceType:[self sourceTypeString]]];
+}
 
-    }
-    else if([mediaSource compare:@"video"] == NSOrderedSame)
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:@"present_picker"] )
     {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        picker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString *)kUTTypeMovie, nil];
-        picker.allowsEditing = NO;
+        if( [[self imagePickerController] presentingViewController] == nil )
+        {
+            [self configurePickerController];
+            [self presentPickerController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        }
     }
-    
-    
-    [[[IXAppManager sharedInstance] rootViewController] presentViewController:picker animated:YES completion:nil];
-    
+    else if( [functionName isEqualToString:@"dismiss_picker"] )
+    {
+        [self dismissPickerController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
+
+-(void)configurePickerController
+{
+    if( [UIImagePickerController isSourceTypeAvailable:[self pickerSourceType]] && [[self imagePickerController] presentingViewController] == nil )
+    {
+        [[self imagePickerController] setSourceType:[self pickerSourceType]];
+        if( [[self sourceTypeString] isEqualToString:@"video"] )
+        {
+            [[self imagePickerController] setAllowsEditing:NO];
+            [[self imagePickerController] setMediaTypes:@[(NSString*)kUTTypeMovie]];
+        }
+    }
+}
+
+-(void)presentPickerController:(BOOL)animated
+{
+    if( [UIViewController isOkToPresentViewController:[self imagePickerController]] )
+    {
+        [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self imagePickerController]
+                                                                         animated:animated
+                                                                       completion:nil];
+    }
+}
+
+-(void)dismissPickerController:(BOOL)animated
+{
+    if( [UIViewController isOkToDismissViewController:[self imagePickerController]] )
+    {
+        [_imagePickerController dismissViewControllerAnimated:animated completion:nil];
+    }
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info

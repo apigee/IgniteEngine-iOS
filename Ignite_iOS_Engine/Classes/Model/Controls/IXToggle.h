@@ -10,8 +10,4 @@
 
 @interface IXToggle : IXBaseControl
 
-{
-    UISwitch *toggleSwitch;
-}
-
 @end

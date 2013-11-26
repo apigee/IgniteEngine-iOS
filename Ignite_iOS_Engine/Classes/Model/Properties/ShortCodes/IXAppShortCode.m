@@ -8,13 +8,11 @@
 
 #import "IXAppShortCode.h"
 
-#define RF_NSStringFromBOOL(aBOOL) aBOOL? @"YES" : @"NO"
-
 @implementation IXAppShortCode
 
 -(NSString*)evaluate
 {
-    return RF_NSStringFromBOOL(NO);
+    return @"";
 }
 
 -(BOOL)valueIsNeverGoingToChange

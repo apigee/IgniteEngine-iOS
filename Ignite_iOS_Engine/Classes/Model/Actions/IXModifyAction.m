@@ -11,6 +11,7 @@
 #import "IXSandbox.h"
 #import "IXBaseObject.h"
 #import "IXActionContainer.h"
+#import "IXAppManager.h"
 
 @implementation IXModifyAction
 
@@ -20,10 +21,18 @@
     
     if( objectID != nil && [self parameterProperties] != nil )
     {
-        NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
-        for( IXBaseObject* baseObject in objectsWithID )
+        if( [objectID isEqualToString:@"session"] )
         {
-            [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
+            IXPropertyContainer* sessionProperties = [[IXAppManager sharedInstance] sessionProperties];
+            [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
+        }
+        else
+        {
+            NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
+            for( IXBaseObject* baseObject in objectsWithID )
+            {
+                [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
+            }
         }
     }
 }

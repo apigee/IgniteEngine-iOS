@@ -121,4 +121,9 @@
     
 }
 
+-(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
+{
+    return nil;
+}
+
 @end

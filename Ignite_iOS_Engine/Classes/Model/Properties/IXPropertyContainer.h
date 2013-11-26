@@ -27,6 +27,7 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(void)addProperty:(IXProperty*)property;
 -(void)addProperties:(NSArray*)properties;
 -(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding;
+
 -(NSDictionary*)getAllPropertiesStringValues;
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName;
 

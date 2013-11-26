@@ -30,5 +30,6 @@
 
 -(void)applySettings;
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer;
+-(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName;
 
 @end

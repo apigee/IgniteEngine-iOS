@@ -26,6 +26,8 @@
 
 @implementation IXActionContainer
 
+@synthesize sandbox = _sandbox;
+
 -(id)init
 {
     self = [super init];
@@ -35,6 +37,26 @@
         _actionsDict = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+-(IXSandbox*)sandbox
+{
+    return _sandbox;
+}
+
+-(void)setSandbox:(IXSandbox *)sandbox
+{
+    _sandbox = sandbox;
+    
+    for( NSArray* actionArray in [[self actionsDict] allValues] )
+    {
+        for( IXBaseAction* action in actionArray )
+        {
+            [[action actionProperties] setSandbox:sandbox];
+            [[action parameterProperties] setSandbox:sandbox];
+            [[action subActionContainer] setSandbox:sandbox];
+        }
+    }
 }
 
 -(NSMutableArray*)actionsForEvent:(NSString*)eventName
@@ -69,7 +91,9 @@
     }
 
     [action setActionContainer:self];
-    
+    [[action actionProperties] setSandbox:[self sandbox]];
+    [[action parameterProperties] setSandbox:[self sandbox]];
+
     NSMutableArray* actionsForType = [self actionsForEvent:actionEventName];
     if( actionsForType == nil )
     {
