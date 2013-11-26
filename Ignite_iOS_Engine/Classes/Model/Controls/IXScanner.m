@@ -38,95 +38,80 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 
-
-
-
-
-static ZBarReaderViewController* readerView = nil;
-static ZBarCameraSimulator *cameraSim;
+static ZBarReaderViewController* sReaderViewController = nil;
 
 @interface  IXScanner() <ZBarReaderDelegate>
+
+@property (nonatomic,assign,getter = shouldAutoClose) BOOL autoClose;
 
 @end
 
 @implementation IXScanner
 
+-(void)dealloc
+{
+    [self closeReader:NO];
+}
+
 -(void)buildView
 {
-    [super buildView];
-    // the delegate receives decode results
-    readerView.readerDelegate = self;
-    
-    // you can use this to support the simulator
-    if(TARGET_IPHONE_SIMULATOR) {
-        cameraSim = [[ZBarCameraSimulator alloc]
-                     initWithViewController: self];
-        cameraSim.readerView = readerView;
-    }
-}
-
-
-+(void)load
-{
-    if(readerView == nil)
+    if( !sReaderViewController )
     {
-        
-        
-        readerView = [ZBarReaderViewController new];
-        readerView.tracksSymbols = YES;
-        readerView.takesPicture = NO;
-        readerView.showsZBarControls = YES;
-        readerView.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
-        [readerView.scanner setSymbology: ZBAR_I25
-                               config: ZBAR_CFG_ENABLE
-                                   to: 0];
-//        // you can use this to support the simulator
-//        if(TARGET_IPHONE_SIMULATOR) {
-//            cameraSim = [[ZBarCameraSimulator alloc]
-//                         initWithViewController: self];
-//            cameraSim.readerView = readerView;
-//        }
-        
+        sReaderViewController = [ZBarReaderViewController new];
+        [sReaderViewController setTakesPicture:NO];
+        [sReaderViewController setTracksSymbols:YES];
+        [sReaderViewController setShowsZBarControls:YES];
+        [sReaderViewController setCameraFlashMode:UIImagePickerControllerCameraFlashModeOff];
+        [[sReaderViewController scanner] setSymbology:ZBAR_I25
+                                               config:ZBAR_CFG_ENABLE
+                                                   to:0];
     }
-}
-
--(void)closeReader
-{
-    if(readerView != nil)
-    {
-        if( ![readerView isBeingDismissed] )
-            [readerView dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
--(CGSize)preferredSizeForSuggestedSize:(CGSize)size
-{
-    return CGSizeZero;
 }
 
 -(void)applySettings
 {
     [super applySettings];
     
-    
-    // the delegate receives decode results
-    readerView.readerDelegate = self;
-    
-    // ensure initial camera orientation is correctly set
-    UIApplication *app = [UIApplication sharedApplication];
-    [readerView willRotateToInterfaceOrientation: app.statusBarOrientation
-                                        duration: 0];
-    
-   
+    [self setAutoClose:[[self propertyContainer] getBoolPropertyValue:@"auto_close" defaultValue:YES]];
+}
 
-    [readerView setReaderDelegate:self];
-//    [readerView setCameraOverlayView:[self overlayControl]];
-    
-    [[[IXAppManager sharedInstance] rootViewController] presentViewController:readerView animated:YES completion:nil];
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+{
+    if( [functionName isEqualToString:@"present_reader"] )
+    {
+        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
+        [self presentReader:animated];
+    }
+    else if( [functionName isEqualToString:@"dismiss_reader"] )
+    {
+        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
+        [self closeReader:animated];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
 
-    
-//    [self.window.rootViewController presentViewController:readerView animated:YES completion:nil];
-//    [readerView start];
+-(void)closeReader:(BOOL)animated
+{
+    if( [sReaderViewController readerDelegate] == self )
+    {
+        [sReaderViewController setReaderDelegate:nil];
+        if( ![sReaderViewController isBeingPresented] && ![sReaderViewController isBeingDismissed] && [sReaderViewController presentingViewController] )
+        {
+            [sReaderViewController dismissViewControllerAnimated:animated completion:nil];
+        }
+    }
+}
+
+-(void)presentReader:(BOOL)animated
+{
+    if( ![sReaderViewController isBeingPresented] && ![sReaderViewController isBeingDismissed] && ![sReaderViewController presentingViewController] )
+    {
+        [sReaderViewController setReaderDelegate:self];
+        [[[IXAppManager sharedInstance] rootViewController] presentViewController:sReaderViewController animated:animated completion:nil];
+    }
 }
 
 - (void)imagePickerController: (UIImagePickerController*)reader didFinishPickingMediaWithInfo: (NSDictionary*) info
@@ -134,7 +119,6 @@ static ZBarCameraSimulator *cameraSim;
     if(info != nil)
     {
         ZBarSymbolSet* symbols = [info objectForKey:ZBarReaderControllerResults];
-        
         if(symbols != nil)
         {
             for(ZBarSymbol *symbol in symbols)
@@ -151,30 +135,15 @@ static ZBarCameraSimulator *cameraSim;
         }
     }
     
-    if([[self propertyContainer] getBoolPropertyValue:@"auto_close" defaultValue:YES])
+    if([self shouldAutoClose])
     {
-        [self closeReader];
+        [self closeReader:YES];
     }
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController*)picker
 {
-    [self closeReader];
+    [self closeReader:YES];
 }
-
-/**
- The dogs current trackPosition
- */
-
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
-{
-    
-    if( [functionName compare:@"start"] == NSOrderedSame )
-    {
-        NSLog(@"start, bitches!");
-        
-    }
-}
-
 
 @end

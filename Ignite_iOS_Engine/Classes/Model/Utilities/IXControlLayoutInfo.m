@@ -28,9 +28,9 @@
     {
         if( stringValue != nil )
         {
-            _propertyWasDefined = YES;
-            _isPercentage = [stringValue hasSuffix:@"\%"];
-            if( _isPercentage )
+            _propertyDefined = YES;
+            _percentage = [stringValue hasSuffix:@"\%"];
+            if( _percentage )
             {
                 _value = [[stringValue stringByReplacingOccurrencesOfString:@"\%" withString:@""] floatValue] / 100.0f;
             }
@@ -41,8 +41,8 @@
         }
         else
         {
-            _propertyWasDefined = NO;
-            _isPercentage = NO;
+            _propertyDefined = NO;
+            _percentage = NO;
             _value = defaultValue;
         }
     }

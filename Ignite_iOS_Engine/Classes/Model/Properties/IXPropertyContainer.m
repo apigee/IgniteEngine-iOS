@@ -13,6 +13,7 @@
 #import "IXControlLayoutInfo.h"
 
 #import "ColorUtils.h"
+#import "SDWebImageManager.h"
 
 @interface IXPropertyContainer ()
 
@@ -190,12 +191,51 @@
     return returnValue;
 }
 
+-(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock
+{
+    NSString* imagePath = [self getPathPropertyValue:propertyName basePath:nil defaultValue:nil];
+    if( imagePath != nil )
+    {
+        NSURL *imageURL = nil;
+        if( [IXAppManager pathIsLocal:imagePath] )
+        {
+            imageURL = [[NSBundle mainBundle] URLForResource:imagePath withExtension:nil];
+        }
+        else
+        {
+            imageURL = [NSURL URLWithString:imagePath];
+        }
+        
+        if( imageURL )
+        {
+            [[SDWebImageManager sharedManager] downloadWithURL:imageURL
+                                                       options:0
+                                                      progress:nil
+                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
+                                                         if (image) {
+                                                             successBlock(image);
+                                                         } else {
+                                                             if( failBlock )
+                                                                failBlock(error);
+                                                         }
+                                                     }];
+        }
+    }
+    else
+    {
+        if( failBlock != nil )
+        {
+            failBlock(nil);
+        }
+    }
+}
+
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
     // Use this to get IMAGE paths. Then set up a image loader singleton that loads all the images for you.
     // Same with other FILE paths. When a control needs the data from a file use this to get the path to the image and set up a data loader singleton.
     
-    return nil;
+    return [self getStringPropertyValue:propertyName defaultValue:defaultValue];
 }
 
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue

@@ -54,10 +54,14 @@
 #import "IXViewController.h"
 #import <MessageUI/MessageUI.h>
 
+@interface  IXMessage() <MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
 
-@interface  IXMessage() <MFMessageComposeViewControllerDelegate>
+@property (nonatomic,strong) NSString *messageSubject;
+@property (nonatomic,strong) NSString *messageBody;
+@property (nonatomic,strong) NSArray *messageToRecipients;
+@property (nonatomic,strong) NSArray *messageCCRecipients;
+@property (nonatomic,strong) NSArray *messageBCCRecipients;
 
-@property (nonatomic,strong) NSString *messageType;
 @property (nonatomic,strong) MFMessageComposeViewController *textMessage;
 @property (nonatomic,strong) MFMailComposeViewController *emailMessage;
 
@@ -65,10 +69,76 @@
 
 @implementation IXMessage
 
--(void)buildView
+-(void)dealloc
 {
-    [super buildView];
+    [_textMessage setMessageComposeDelegate:nil];
+    if( [_textMessage presentingViewController] && ![_textMessage isBeingDismissed] )
+       [_textMessage dismissViewControllerAnimated:NO completion:nil];
+    
+    [_emailMessage setMailComposeDelegate:nil];
+    if( [_emailMessage presentingViewController] && ![_emailMessage isBeingDismissed] )
+        [_emailMessage dismissViewControllerAnimated:NO completion:nil];
+}
 
+-(void)applySettings
+{
+    [super applySettings];
+    
+    [self setMessageSubject:[[self propertyContainer] getStringPropertyValue:@"message.subject" defaultValue:nil]];
+    [self setMessageBody:[[self propertyContainer] getStringPropertyValue:@"message.body" defaultValue:nil]];
+    [self setMessageToRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:@"message.to" defaultValue:nil]];
+    [self setMessageCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:@"message.cc" defaultValue:nil]];
+    [self setMessageBCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:@"message.bcc" defaultValue:nil]];
+}
+
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+{
+    if( [functionName isEqualToString:@"present_text_message_controller"] )
+    {
+        if( [MFMessageComposeViewController canSendText] )
+        {
+            if( [self textMessage] == nil || ![[self textMessage] isBeingPresented] )
+            {
+                [[self textMessage] setMessageComposeDelegate:nil];
+                [self setTextMessage:nil];
+                
+                MFMessageComposeViewController* messageComposeViewController = [[MFMessageComposeViewController alloc] init];
+                [messageComposeViewController setMessageComposeDelegate:self];
+                [messageComposeViewController setSubject:[self messageSubject]];
+                [messageComposeViewController setRecipients:[self messageToRecipients]];
+                [messageComposeViewController setBody:[self messageBody]];
+                [self setTextMessage:messageComposeViewController];
+                
+                [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self textMessage] animated:YES completion:nil];
+            }
+        }
+    }
+    else if( [functionName isEqualToString:@"present_email_controller"] )
+    {
+        if( [MFMailComposeViewController canSendMail] )
+        {
+            if( [self emailMessage] == nil || ![[self emailMessage] isBeingPresented] )
+            {
+                [[self emailMessage] setMailComposeDelegate:nil];
+                [self setEmailMessage:nil];
+                
+                MFMailComposeViewController* mailComposeViewController = [[MFMailComposeViewController alloc] init];
+                [mailComposeViewController setMailComposeDelegate:self];
+                [mailComposeViewController setSubject:[self messageSubject]];
+                [mailComposeViewController setToRecipients:[self messageToRecipients]];
+                [mailComposeViewController setCcRecipients:[self messageCCRecipients]];
+                [mailComposeViewController setBccRecipients:[self messageBCCRecipients]];
+                [mailComposeViewController setMessageBody:[self messageBody] isHTML:YES];
+                [self setEmailMessage:mailComposeViewController];
+                
+                [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self emailMessage] animated:YES completion:nil];
+            }
+        }
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
@@ -76,115 +146,37 @@
     switch (result)
     {
         case MessageComposeResultCancelled:
-            NSLog(@"Message was cancelled");
             [[self actionContainer] executeActionsForEventNamed:@"message_cancelled"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case MessageComposeResultFailed:
-            NSLog(@"Message failed");
             [[self actionContainer] executeActionsForEventNamed:@"message_failed"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         case MessageComposeResultSent:
-            NSLog(@"Message was sent");
             [[self actionContainer] executeActionsForEventNamed:@"message_sent"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         default:
             break;
     }
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     switch (result)
     {
-        case MessageComposeResultCancelled:
-            NSLog(@"Message was cancelled");
+        case MFMailComposeResultCancelled:
             [[self actionContainer] executeActionsForEventNamed:@"message_cancelled"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
-        case MessageComposeResultFailed:
-            NSLog(@"Message failed");
+        case MFMailComposeResultFailed:
             [[self actionContainer] executeActionsForEventNamed:@"message_failed"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
-        case MessageComposeResultSent:
-            NSLog(@"Message was sent");
+        case MFMailComposeResultSent:
             [[self actionContainer] executeActionsForEventNamed:@"message_sent"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
             break;
         default:
             break;
     }
-}
-
-
--(CGSize)preferredSizeForSuggestedSize:(CGSize)size
-{
-    return CGSizeZero;
-}
-
-
-
--(void)applySettings
-{
-    [super applySettings];
-    
-    //NOTES:
-    /*
-    */
-    
-    _messageType = [[self propertyContainer] getStringPropertyValue:@"message.type" defaultValue:@""];
-    
-    if( _messageType != nil )
-    {
-        if([_messageType compare:@"text"] == NSOrderedSame)
-        {
-            // SMS/iMessage
-            _textMessage = [[MFMessageComposeViewController alloc] init];
-            _textMessage.body = [[self propertyContainer] getStringPropertyValue:@"message.body" defaultValue:nil];
-
-            // Need to add ability to specify multiple recipients:
-            _textMessage.recipients = @[[[self propertyContainer] getStringPropertyValue:@"message.to" defaultValue:nil]];
-            
-            _textMessage.messageComposeDelegate = self;
-            
-        }
-        else if([_messageType compare:@"email"] == NSOrderedSame)
-        {
-            _emailMessage = [[MFMailComposeViewController alloc] init];
-            _emailMessage.mailComposeDelegate  = self;
-            [_emailMessage setToRecipients:@[[[self propertyContainer] getStringPropertyValue:@"message.to" defaultValue:nil]]];
-            //[messageVC setCcRecipients:@[[[self propertyContainer] getStringPropertyValue:@"message.cc" defaultValue:nil]]];
-            //[messageVC setBccRecipients:@[[[self propertyContainer] getStringPropertyValue:@"message.bcc" defaultValue:nil]]];
-            [_emailMessage setSubject:@"subject"];
-            [_emailMessage setMessageBody:@"body" isHTML:YES];
-                        
-        }
-    }
-
-}
-
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
-{
-    
-    if( [functionName compare:@"text"] == NSOrderedSame )
-    {
-        NSLog(@"text, bitches!");
-        if([MFMessageComposeViewController canSendText])
-        {
-            [[[IXAppManager sharedInstance] rootViewController] presentViewController:_textMessage animated:YES completion:nil];
-        }
-    }
-    if( [functionName compare:@"email"] == NSOrderedSame )
-    {
-        NSLog(@"email, bitches!");
-        if([MFMailComposeViewController canSendMail])
-        {
-            [[[IXAppManager sharedInstance] rootViewController] presentViewController:_emailMessage animated:YES completion:nil];
-        }
-    }
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

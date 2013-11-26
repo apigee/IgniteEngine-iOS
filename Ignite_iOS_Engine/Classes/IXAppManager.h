@@ -47,6 +47,7 @@
 -(void)runAlertTest;
 
 +(UIInterfaceOrientation)currentInterfaceOrientation;
++(BOOL)pathIsLocal:(NSString*)path;
 -(NSString*)evaluateJavascript:(NSString*)javascript;
 
 @end

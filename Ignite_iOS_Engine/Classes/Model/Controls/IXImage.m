@@ -13,8 +13,10 @@
 @interface IXImage ()
 
 @property (nonatomic,strong) UIImageView* imageView;
-@property (nonatomic,strong) NSString* imagePath;
+@property (nonatomic,strong) NSString* defaultImagePath;
+@property (nonatomic,strong) UIImage* defaultImage;
 @property (nonatomic,strong) NSString* touchedImagePath;
+@property (nonatomic,strong) UIImage* touchedImage;
 
 @end
 
@@ -41,54 +43,41 @@
 -(void)applySettings
 {
     [super applySettings];
+
+    __weak IXImage* weakSelf = self;
+    [[self propertyContainer] getImageProperty:@"images.default"
+                                  successBlock:^(UIImage *image) {
+                                      [weakSelf setDefaultImage:image];
+                                      [[weakSelf imageView] setImage:image];
+                                  } failBlock:^(NSError *error) {
+                                  }];
     
-    [self setImagePath:[[self propertyContainer] getStringPropertyValue:@"images.default" defaultValue:nil]];
-    [self setTouchedImagePath:[[self propertyContainer] getStringPropertyValue:@"images.touch" defaultValue:nil]];
-    
-    NSURL *url = [[NSBundle mainBundle] URLForResource:[self imagePath] withExtension:nil];
-    [[self imageView] setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) { }];
+    [[self propertyContainer] getImageProperty:@"images.touch"
+                                  successBlock:^(UIImage *image) {
+                                      [weakSelf setTouchedImage:image];
+                                  } failBlock:^(NSError *error) {
+                                  }];    
 }
 
 -(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesBegan:touches withEvent:event];
-    
-    if( [self touchedImagePath] )
+    if( [self touchedImage] )
     {
-        NSURL *url = [[NSBundle mainBundle] URLForResource:[self touchedImagePath] withExtension:nil];
-        if( url != nil )
-        {
-            [[self imageView] setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) { }];
-        }
+        [[self imageView] setImage:[self touchedImage]];
     }
 }
 
 -(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesEnded:touches withEvent:event];
-    
-    if( [self imagePath] )
-    {
-        NSURL *url = [[NSBundle mainBundle] URLForResource:[self imagePath] withExtension:nil];
-        if( url != nil )
-        {
-            [[self imageView] setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) { }];
-        }
-    }
+    [[self imageView] setImage:[self defaultImage]];
 }
 
 -(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesEnded:touches withEvent:event];
-    
-    if( [self imagePath] )
-    {
-        NSURL *url = [[NSBundle mainBundle] URLForResource:[self imagePath] withExtension:nil];
-        if( url != nil )
-        {
-            [[self imageView] setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) { }];
-        }
-    }
+    [[self imageView] setImage:[self defaultImage]];
 }
 
 @end

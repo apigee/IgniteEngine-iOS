@@ -140,6 +140,11 @@
     return [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] interfaceOrientation];
 }
 
++(BOOL)pathIsLocal:(NSString*)path
+{
+    return ![path hasPrefix:@"http://"] && ![path hasPrefix:@"https://"];
+}
+
 -(NSString*)evaluateJavascript:(NSString*)javascript
 {
     if( javascript == nil )

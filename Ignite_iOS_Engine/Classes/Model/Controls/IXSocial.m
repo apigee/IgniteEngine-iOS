@@ -49,45 +49,89 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
+#import "SDWebImageManager.h"
 
-@interface  IXSocial()
+@interface  IXSocial ()
 
-@property (nonatomic, strong) SLComposeViewController* SLComposeViewController;
+@property (nonatomic,strong) SLComposeViewController* composeViewController;
+@property (nonatomic,copy) SLComposeViewControllerCompletionHandler completionHandler;
+@property (nonatomic,assign) BOOL isPresentingComposeController;
+
+@property (nonatomic,strong) NSString* shareServiceType;
+@property (nonatomic,strong) NSString* shareInitialText;
+@property (nonatomic,strong) NSString* shareImagePath;
+@property (nonatomic,strong) UIImage* shareImage;
 
 @end
 
 @implementation IXSocial
 
--(void)buildView
+-(void)dealloc
 {
-    [super buildView];
-
-}
-
--(CGSize)preferredSizeForSuggestedSize:(CGSize)size
-{
-    return CGSizeZero;
-}
-
-- (void)socialComposeController:(SLComposeViewController *)controller didFinishWithResult:(SLComposeViewControllerResult)result error:(NSError *)error
-{
-    switch (result)
+    if( [self isPresentingComposeController] )
     {
-        case SLComposeViewControllerResultCancelled:
-            NSLog(@"Share was cancelled");
-            [[self actionContainer] executeActionsForEventNamed:@"share_cancelled"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
-            break;
-        case SLComposeViewControllerResultDone:
-            NSLog(@"Share failed");
-            [[self actionContainer] executeActionsForEventNamed:@"share_failed"];
-            [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
-            break;
-        default:
-            break;
+        [self dismissComposeViewController:NO];
     }
 }
 
+-(void)buildView
+{
+    __weak IXSocial* weakSelf = self;
+    [self setCompletionHandler:^(SLComposeViewControllerResult result){
+        switch (result)
+        {
+            case SLComposeViewControllerResultDone:
+            {
+                [[weakSelf actionContainer] executeActionsForEventNamed:@"share_done"];
+                break;
+            }
+            case SLComposeViewControllerResultCancelled:
+            {
+                [[weakSelf actionContainer] executeActionsForEventNamed:@"share_cancelled"];
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        [weakSelf dismissComposeViewController:YES];
+    }];
+}
+
+-(void)applySettings
+{
+    [super applySettings];
+    
+    [self setShareServiceType:[IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:@"share.platform" defaultValue:nil]]];
+    [self setShareInitialText:[[self propertyContainer] getStringPropertyValue:@"share.text" defaultValue:nil]];
+    [self setShareImagePath:[[self propertyContainer] getStringPropertyValue:@"share.image" defaultValue:nil]];
+
+    __weak IXSocial* weakSelf = self;
+    [[self propertyContainer] getImageProperty:@"share.image"
+                                  successBlock:^(UIImage *image) {
+                                      [weakSelf setShareImage:image];
+                                  } failBlock:^(NSError *error) {
+                                  }];
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:@"present_share_controller"] )
+    {
+        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
+        [self presentComposeViewController:animated];
+    }
+    else if( [functionName isEqualToString:@"dismiss_share_controller"] )
+    {
+        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
+        [self dismissComposeViewController:animated];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
 
 +(NSString*)getServiceType:(NSString*)typeSetting
 {
@@ -100,57 +144,34 @@
     return nil;
 }
 
--(void)applySettings
+-(void)dismissComposeViewController:(BOOL)animated
 {
-    [super applySettings];
-    
-    //NOTES:
-    /*
-        If no accounts are configured, it should pop the alert stating this.
-        Completion handler doesn't work :|
-    */
-    
-    // Twitter, Facebook, Weibo
-
-    NSString* sharePlatform = [IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:@"share.platform" defaultValue:@""]];
-    
-    if( sharePlatform != nil )
+    if( ![[self composeViewController] isBeingPresented] && ![[self composeViewController] isBeingDismissed] && [[self composeViewController] presentingViewController] )
     {
-        if( [SLComposeViewController isAvailableForServiceType:sharePlatform] )
-        {
-            SLComposeViewController *controller = [SLComposeViewController
-                                                   composeViewControllerForServiceType:sharePlatform];
-            [controller setInitialText:[[self propertyContainer] getStringPropertyValue:@"share.text" defaultValue:nil]];
-            [controller addURL:[NSURL URLWithString:[[self propertyContainer] getStringPropertyValue:@"share.url" defaultValue:nil]]];
-            [controller addImage:[UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:@"share.image" defaultValue:nil]]];
+        [[self composeViewController] dismissViewControllerAnimated:animated completion:nil];
+    }
+}
 
-            [[[IXAppManager sharedInstance] rootViewController] presentViewController:controller animated:YES completion:nil];
-        }
-        else
-        {
-            NSLog(@"Network not available: %@",sharePlatform);
-        }
-       
-        [[self SLComposeViewController] setCompletionHandler:^(SLComposeViewControllerResult result){
-            
-            switch (result) {
-                case SLComposeViewControllerResultDone:
-                    NSLog(@"Share done");
-                    [[self actionContainer] executeActionsForEventNamed:@"share_done"];
-                    [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
-                    break;
-                case SLComposeViewControllerResultCancelled:
-                    NSLog(@"Share was cancelled");
-                    [[self actionContainer] executeActionsForEventNamed:@"share_cancelled"];
-                    [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
-                    break;
-                default:
-                    break;
-            }
-            
-        }];
+-(void)presentComposeViewController:(BOOL)animated
+{
+    if( [self composeViewController] )
+    {
+        [self dismissComposeViewController:YES];
+        [self setComposeViewController:nil];
     }
     
+    if( [SLComposeViewController isAvailableForServiceType:[self shareServiceType]] )
+    {
+        [self setComposeViewController:[SLComposeViewController composeViewControllerForServiceType:[self shareServiceType]]];
+        if( [self composeViewController] )
+        {
+            [[self composeViewController] setCompletionHandler:[self completionHandler]];
+            [[self composeViewController] setInitialText:[self shareInitialText]];
+            [[self composeViewController] addImage:[self shareImage]];
+            
+            [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self composeViewController] animated:animated completion:nil];
+        }
+    }
 }
 
 

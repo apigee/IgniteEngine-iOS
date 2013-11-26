@@ -15,6 +15,9 @@
 @class IXSandbox;
 @class IXSizePercentageContainer;
 
+typedef void(^IXPropertyContainerImageSuccessCompletedBlock)(UIImage *image);
+typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
+
 @interface IXPropertyContainer : NSObject
 
 @property (nonatomic,weak) IXSandbox* sandbox;
@@ -34,6 +37,7 @@
 -(IXSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue;
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue;
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
+-(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock;
 
 #warning METHODS NOT DONE YET
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;

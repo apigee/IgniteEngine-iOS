@@ -15,8 +15,8 @@
 @interface IXSizePercentageContainer : NSObject
 
 @property (nonatomic,assign) CGFloat value;
-@property (nonatomic,assign) BOOL isPercentage;
-@property (nonatomic,assign) BOOL propertyWasDefined;
+@property (nonatomic,assign,getter = isPercentage) BOOL percentage;
+@property (nonatomic,assign,getter = propertyWasDefined) BOOL propertyDefined;
 
 -(instancetype)initWithStringValue:(NSString*)stringValue
                     orDefaultValue:(CGFloat)defaultValue;
