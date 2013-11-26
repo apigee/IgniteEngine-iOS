@@ -80,6 +80,11 @@
         [_emailMessage dismissViewControllerAnimated:NO completion:nil];
 }
 
+-(void)buildView
+{
+    // Overriden without super call because we don't want/need a view for this widget.
+}
+
 -(void)applySettings
 {
     [super applySettings];

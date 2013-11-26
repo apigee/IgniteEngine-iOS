@@ -55,6 +55,8 @@ static ZBarReaderViewController* sReaderViewController = nil;
 
 -(void)buildView
 {
+    // Overriden without super call because we don't want/need a view for this widget.
+
     if( !sReaderViewController )
     {
         sReaderViewController = [ZBarReaderViewController new];
