@@ -112,7 +112,7 @@ static ZBarReaderViewController* sReaderViewController = nil;
     if( ![sReaderViewController isBeingPresented] && ![sReaderViewController isBeingDismissed] && ![sReaderViewController presentingViewController] )
     {
         [sReaderViewController setReaderDelegate:self];
-        [[[IXAppManager sharedInstance] rootViewController] presentViewController:sReaderViewController animated:animated completion:nil];
+        [[[IXAppManager sharedAppManager] rootViewController] presentViewController:sReaderViewController animated:animated completion:nil];
     }
 }
 

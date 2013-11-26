@@ -30,11 +30,11 @@
     
     if( [[self objectID] isEqualToString:@"app"] )
     {
-        returnValue = [[[IXAppManager sharedInstance] appProperties] getStringPropertyValue:propertyName defaultValue:nil];
+        returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }
     else if( [[self objectID] isEqualToString:@"session"] )
     {
-        returnValue = [[[IXAppManager sharedInstance] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
+        returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }
     else if( [[self objectID] isEqualToString:@"form"] )
     {

@@ -169,7 +169,7 @@
     if( [actionValueDict allKeys] > 0 )
     {
         BOOL debugMode = [[actionValueDict objectForKey:@"debug"] boolValue];
-        if( debugMode && [[IXAppManager sharedInstance] appMode] != IXDebugMode )
+        if( debugMode && [[IXAppManager sharedAppManager] appMode] != IXDebugMode )
         {
             return nil;
         }

@@ -190,7 +190,7 @@
             [[self composeViewController] setInitialText:[self shareInitialText]];
             [[self composeViewController] addImage:[self shareImage]];
             
-            [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self composeViewController] animated:animated completion:nil];
+            [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self composeViewController] animated:animated completion:nil];
         }
     }
 }

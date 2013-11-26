@@ -42,11 +42,9 @@
 
 @property (nonatomic,assign,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
 
-+(IXAppManager*)sharedInstance;
++(IXAppManager*)sharedAppManager;
 -(void)startApplication;
 -(IXViewController*)currentIXViewController;
-
--(void)runAlertTest;
 
 +(UIInterfaceOrientation)currentInterfaceOrientation;
 +(BOOL)pathIsLocal:(NSString*)path;

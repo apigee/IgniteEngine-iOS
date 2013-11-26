@@ -163,7 +163,7 @@ static CGSize sIXKBSize;
     double animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     UIScrollView* scrollView = nil;
-    UIViewController* visibleVC = [[[IXAppManager sharedInstance] rootViewController] visibleViewController];
+    UIViewController* visibleVC = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController];
     if( [visibleVC isKindOfClass:[IXViewController class]] )
     {
         IXViewController* IXVC = (IXViewController*) visibleVC;
@@ -186,7 +186,7 @@ static CGSize sIXKBSize;
     CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
     
     UIScrollView* scrollView = nil;
-    UIViewController* visibleVC = [[[IXAppManager sharedInstance] rootViewController] visibleViewController];
+    UIViewController* visibleVC = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController];
     if( [visibleVC isKindOfClass:[IXViewController class]] )
     {
         IXViewController* IXVC = (IXViewController*) visibleVC;

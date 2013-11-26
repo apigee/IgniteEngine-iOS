@@ -51,7 +51,7 @@
         NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue];
         if( conditionalPropertyValue && [conditionalPropertyValue length] > 0 )
         {
-            NSString* conditionalPropertyValueReturned = [[IXAppManager sharedInstance] evaluateJavascript:conditionalPropertyValue];
+            NSString* conditionalPropertyValueReturned = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];
             
             conditionalPropertyIsValid = !( conditionalPropertyValueReturned == nil || [conditionalPropertyValueReturned length] <= 0 || [conditionalPropertyValueReturned isEqualToString:@"0"] || [conditionalPropertyValueReturned isEqualToString:@"false"] );
         }

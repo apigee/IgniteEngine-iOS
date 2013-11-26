@@ -23,7 +23,7 @@
     {
         if( [objectID isEqualToString:@"session"] )
         {
-            IXPropertyContainer* sessionProperties = [[IXAppManager sharedInstance] sessionProperties];
+            IXPropertyContainer* sessionProperties = [[IXAppManager sharedAppManager] sessionProperties];
             [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
         }
         else

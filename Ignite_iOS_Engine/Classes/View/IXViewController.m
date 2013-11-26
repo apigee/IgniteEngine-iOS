@@ -61,7 +61,7 @@
     [self setWantsFullScreenLayout:YES];
     [[self view] setClipsToBounds:YES];
     
-    [self setAutomaticallyAdjustsScrollViewInsets:![[[IXAppManager sharedInstance] rootViewController] isNavigationBarHidden]];
+    [self setAutomaticallyAdjustsScrollViewInsets:![[[IXAppManager sharedAppManager] rootViewController] isNavigationBarHidden]];
     [[self view] addSubview:[_containerControl contentView]];
     // FIXME: need to set some default values here for the container control and add the view properties to it.
 }

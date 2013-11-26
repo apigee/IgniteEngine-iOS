@@ -117,7 +117,7 @@
 {
     if( [UIViewController isOkToPresentViewController:[self imagePickerController]] )
     {
-        [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self imagePickerController]
+        [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self imagePickerController]
                                                                          animated:animated
                                                                        completion:nil];
     }
@@ -135,7 +135,7 @@
 {
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     
-    [[[IXAppManager sharedInstance] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+    [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
     
     // Handle a movie capture
     if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {

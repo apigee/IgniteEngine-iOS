@@ -131,7 +131,7 @@
             [mailComposeViewController setMessageBody:[self messageBody] isHTML:YES];
             [self setEmailMessage:mailComposeViewController];
             
-            [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self emailMessage] animated:animated completion:nil];
+            [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self emailMessage] animated:animated completion:nil];
         }
     }
 }
@@ -152,7 +152,7 @@
             [messageComposeViewController setBody:[self messageBody]];
             [self setTextMessage:messageComposeViewController];
             
-            [[[IXAppManager sharedInstance] rootViewController] presentViewController:[self textMessage] animated:YES completion:nil];
+            [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self textMessage] animated:YES completion:nil];
         }
     }
 }

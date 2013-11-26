@@ -65,7 +65,7 @@
     
     float borderWidth = [[self propertyContainer] getFloatPropertyValue:@"border_width" defaultValue:0.0f];
     UIColor* borderColor = [[self propertyContainer] getColorPropertyValue:@"border_color" defaultValue:[UIColor blackColor]];
-    if( [[IXAppManager sharedInstance] isLayoutDebuggingEnabled] )
+    if( [[IXAppManager sharedAppManager] isLayoutDebuggingEnabled] )
     {
         if( borderWidth == 0.0f )
         {

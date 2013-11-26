@@ -23,16 +23,10 @@
     
     if( objectID != nil && functionName != nil )
     {
-        NSArray* controlsToFireFunctionOn = [[[[self actionContainer] sandbox] containerControl] childrenWithID:objectID];        
-        for( IXBaseControl* control in controlsToFireFunctionOn )
+        NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
+        for( IXBaseObject* baseObject in objectsWithID )
         {
-            [control applyFunction:functionName withParameters:[self parameterProperties]];
-        }
-        
-        NSArray* dataSourcesToFireFunctionOn = nil;
-        for( IXBaseDataprovider* dataProvider in dataSourcesToFireFunctionOn )
-        {
-            [dataProvider applyFunction:functionName withParameters:[self parameterProperties]];
+            [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
         }
     }
 }

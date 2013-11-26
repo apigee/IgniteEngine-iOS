@@ -129,8 +129,8 @@
     
     if( firedAnAction )
     {
-        [[[[IXAppManager sharedInstance] currentIXViewController] containerControl] applySettings];
-        [[[[IXAppManager sharedInstance] currentIXViewController] containerControl] layoutControl];
+        [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] applySettings];
+        [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
     }
 }
 

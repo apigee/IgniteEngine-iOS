@@ -28,12 +28,12 @@
     
     [controller setLeftPanel:vc1];
     [controller setRightPanel:vc2];
-    [controller setCenterPanel:[[IXAppManager sharedInstance] rootViewController]];
+    [controller setCenterPanel:[[IXAppManager sharedAppManager] rootViewController]];
     
     [[self window] setRootViewController:controller];
 //    [[self window] setRootViewController:[[IXAppManager sharedInstance] rootViewController]];
     
-    [[IXAppManager sharedInstance] startApplication];
+    [[IXAppManager sharedAppManager] startApplication];
     [self.window makeKeyAndVisible];
 
     return YES;

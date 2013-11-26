@@ -53,7 +53,7 @@
     return self;
 }
 
-+(IXAppManager*)sharedInstance
++(IXAppManager*)sharedAppManager
 {
     static IXAppManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -66,11 +66,6 @@
 -(IXViewController*)currentIXViewController
 {
     return (IXViewController*) [[self rootViewController] topViewController];
-}
-
--(void)runAlertTest
-{
-    [self testAlertAction];
 }
 
 -(void)startApplication
@@ -159,36 +154,6 @@
         return nil;
     
     return [[self webViewForJS] stringByEvaluatingJavaScriptFromString:javascript];
-}
-
--(void)testAlertAction
-{
-    IXBaseControl* baseControl = [[IXBaseControl alloc] init];
-    
-    IXAlertAction* alertAction = [[IXAlertAction alloc] init];
-    alertAction.eventName = kIX_TOUCH;
-    
-    IXProperty* titleProperty = [[IXProperty alloc] initWithPropertyName:kIX_TITLE rawValue:@"SOME TITLE"];
-    IXProperty* titleProperty2 = [[IXProperty alloc] initWithPropertyName:kIX_TITLE rawValue:@"SOME TITLE 2"];
-    IXProperty* titleProperty3 = [[IXProperty alloc] initWithPropertyName:kIX_TITLE rawValue:@"SOME TITLE POOOOPPPPP"];
-    
-    IXProperty* subTitleProperty = [[IXProperty alloc] initWithPropertyName:kIX_SUB_TITLE rawValue:@"SOME SUB TITLE"];
-    IXProperty* subTitleProperty2 = [[IXProperty alloc] initWithPropertyName:kIX_SUB_TITLE rawValue:@"SOME SUB TITLE2"];
-
-    [[alertAction actionProperties] addProperty:titleProperty];
-    [[alertAction actionProperties] addProperty:subTitleProperty];
-    
-    IXAlertAction* alertAction2 = [[IXAlertAction alloc] init];
-    alertAction2.eventName = kIX_TOUCH;
-    
-    [[alertAction2 actionProperties] addProperty:titleProperty2];
-    [[alertAction2 actionProperties] addProperty:titleProperty3];
-    [[alertAction2 actionProperties] addProperty:subTitleProperty2];
-    
-    [[baseControl actionContainer] addAction:alertAction];
-    [[baseControl actionContainer] addAction:alertAction2];
-    
-    [[baseControl actionContainer] executeActionsForEventNamed:kIX_TOUCH];
 }
 
 @end
