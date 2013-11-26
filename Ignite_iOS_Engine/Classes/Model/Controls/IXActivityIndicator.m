@@ -22,8 +22,7 @@
 
 @interface IXActivityIndicator ()
 
-@property (nonatomic,strong) NSString* imagePath;
-@property (nonatomic,strong) NSString* touchedImagePath;
+@property (nonatomic,strong) UIActivityIndicatorView* activityIndicator;
 
 @end
 
@@ -34,41 +33,40 @@
     [super buildView];
 }
 
+-(void)configureActivityIndicatorWithStyle:(UIActivityIndicatorViewStyle)style
+{
+    UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+    [activityIndicatorView setHidesWhenStopped:NO];
+    [activityIndicatorView setCenter:CGPointMake([self activityIndicator].frame.size.height/2, [self activityIndicator].frame.size.width/2)];
+    [activityIndicatorView startAnimating];
+    
+    [[self activityIndicator] stopAnimating];
+    [[self activityIndicator] removeFromSuperview];
+    
+    [self setActivityIndicator:activityIndicatorView];
+    [[self contentView] addSubview:[self activityIndicator]];
+}
+
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return CGSizeMake(_Spinner.frame.size.width, _Spinner.frame.size.height);
+    return CGSizeMake([self activityIndicator].frame.size.width, [self activityIndicator].frame.size.height);
 }
 
 -(void)applySettings
 {
-     [_Spinner removeFromSuperview];
     [super applySettings];
-    NSString* spinnerStyle = [[self propertyContainer] getStringPropertyValue:@"style" defaultValue:@"white"];
     
-    if([spinnerStyle compare:@"white"] == NSOrderedSame)
+    UIActivityIndicatorViewStyle activityIndicatorStyle = UIActivityIndicatorViewStyleWhite;
+    NSString* spinnerStyleString = [[self propertyContainer] getStringPropertyValue:@"style" defaultValue:@"white"];
+    if( [spinnerStyleString isEqualToString:@"gray"] )
     {
-        _Spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicatorStyle = UIActivityIndicatorViewStyleGray;
     }
-    else if([spinnerStyle compare:@"gray"] == NSOrderedSame)
+    else if( [spinnerStyleString isEqualToString:@"large"] )
     {
-        _Spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityIndicatorStyle = UIActivityIndicatorViewStyleWhiteLarge;
     }
-    if([spinnerStyle compare:@"large"] == NSOrderedSame)
-    {
-        _Spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    }
-    else
-    {
-    }
-    
-    _Spinner.center = CGPointMake(_Spinner.frame.size.height/2, _Spinner.frame.size.width/2);
-    _Spinner.hidesWhenStopped = NO;
-    [_Spinner startAnimating];
-    [[self contentView] addSubview:_Spinner];
-    
-
+    [self configureActivityIndicatorWithStyle:activityIndicatorStyle];
 }
-
-
 
 @end

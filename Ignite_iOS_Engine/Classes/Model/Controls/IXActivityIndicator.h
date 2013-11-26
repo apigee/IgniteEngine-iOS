@@ -10,8 +10,4 @@
 
 @interface IXActivityIndicator : IXBaseControl
 
-{
-    UIActivityIndicatorView* _Spinner;
-}
-
 @end
