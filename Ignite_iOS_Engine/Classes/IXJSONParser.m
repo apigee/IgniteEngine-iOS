@@ -247,6 +247,12 @@
             id propertiesDict = [controlValueDict objectForKey:@"properties"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
+                id controlID = [controlValueDict objectForKey:@"id"];
+                if( controlID )
+                {
+                    [propertiesDict setObject:controlID forKey:@"id"];
+                }
+                
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [control setPropertyContainer:propertyContainer];
                 
@@ -303,6 +309,12 @@
             id propertiesDict = [dataProviderValueDict objectForKey:@"properties"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
+                id controlID = [dataProviderValueDict objectForKey:@"id"];
+                if( controlID )
+                {
+                    [propertiesDict setObject:controlID forKey:@"id"];
+                }
+                
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [dataProvider setPropertyContainer:propertyContainer];
                 

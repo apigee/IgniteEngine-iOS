@@ -76,7 +76,7 @@
         NSData* jsonData = [NSData dataWithContentsOfFile:[self appConfigPath]];
         if( jsonData != nil )
         {
-            id jsonValue = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+            id jsonValue = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
             
             id appDictJSONValue = [jsonValue objectForKey:@"app"];
             if( [appDictJSONValue isKindOfClass:[NSDictionary class]] )
@@ -119,7 +119,7 @@
         NSData* jsonData = [NSData dataWithContentsOfFile:[self appDefaultViewPath]];
         if( jsonData != nil )
         {
-            id jsonValue = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+            id jsonValue = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
             id viewDictJSONValue = [jsonValue objectForKey:@"view"];
             if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
             {
