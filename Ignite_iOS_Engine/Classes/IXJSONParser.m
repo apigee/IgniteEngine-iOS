@@ -194,7 +194,7 @@
                 id conditional = [actionValueDict objectForKey:@"if"];
                 [action setConditionalProperty:[IXJSONParser conditionalPropertyForConditionalValue:conditional]];
                 
-                id propertiesDict = [actionValueDict objectForKey:@"properties"];
+                id propertiesDict = [actionValueDict objectForKey:@"attributes"];
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [action setActionProperties:propertyContainer];
                 
@@ -244,7 +244,7 @@
         control = [[controlClass alloc] init];
         if( control != nil )
         {
-            id propertiesDict = [controlValueDict objectForKey:@"properties"];
+            id propertiesDict = [controlValueDict objectForKey:@"attributes"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
                 id controlID = [controlValueDict objectForKey:@"id"];
@@ -307,7 +307,7 @@
         dataProvider = [[dataProviderClass alloc] init];
         if( dataProviderType != nil )
         {
-            id propertiesDict = [dataProviderValueDict objectForKey:@"properties"];
+            id propertiesDict = [dataProviderValueDict objectForKey:@"attributes"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
                 id controlID = [dataProviderValueDict objectForKey:@"id"];
@@ -407,7 +407,7 @@
 {
     IXViewController* viewController = [[IXViewController alloc] init];
     
-    NSDictionary* viewPropertyDictionary = [viewDictionary objectForKey:@"properties"];
+    NSDictionary* viewPropertyDictionary = [viewDictionary objectForKey:@"attributes"];
     
     // FIXME: Setting the properties for the view on the viewControllers containerControl.  Might need to change this not sure yet!
     [[viewController containerControl] setPropertyContainer:[IXJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary]];

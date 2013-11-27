@@ -82,7 +82,7 @@
                                             }
                                             else
                                             {
-                                                NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.properties"];
+                                                NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.attributes"];
                                                 [self setAppProperties:[IXJSONParser propertyContainerWithPropertyDictionary:appConfigPropertiesJSONDict]];
                                                 
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];

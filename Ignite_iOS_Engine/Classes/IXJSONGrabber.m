@@ -46,7 +46,7 @@
 {
     if( [path length] <= 0 )
     {
-        grabCompletionBlock(nil,nil);
+        grabCompletionBlock(nil,[NSError errorWithDomain:@"Path Parameter is nil" code:0 userInfo:nil]);
         return;
     }
     
