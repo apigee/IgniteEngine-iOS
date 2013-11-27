@@ -44,6 +44,12 @@
                  asynch:(BOOL)asynch
         completionBlock:(IXJSONGrabCompletedBlock)grabCompletionBlock
 {
+    if( [path length] <= 0 )
+    {
+        grabCompletionBlock(nil,nil);
+        return;
+    }
+    
     id jsonObject = [[self jsonCache] objectForKey:path];
     if( jsonObject )
     {
