@@ -250,6 +250,7 @@
                 id controlID = [controlValueDict objectForKey:@"id"];
                 if( controlID )
                 {
+                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     [propertiesDict setObject:controlID forKey:@"id"];
                 }
                 
@@ -312,6 +313,7 @@
                 id controlID = [dataProviderValueDict objectForKey:@"id"];
                 if( controlID )
                 {
+                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     [propertiesDict setObject:controlID forKey:@"id"];
                 }
                 

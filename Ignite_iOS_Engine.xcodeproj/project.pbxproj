@@ -73,8 +73,11 @@
 		63311BCB1844439E0048C668 /* UIViewController+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BCA1844439E0048C668 /* UIViewController+IXAdditions.m */; };
 		63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */; };
 		63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD018444D600048C668 /* NSString+IXAdditions.m */; };
+		63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD6184581EE0048C668 /* IXJSONGrabber.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
+		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
+		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -199,10 +202,15 @@
 		63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImagePickerController+IXAdditions.m"; sourceTree = "<group>"; };
 		63311BCF18444D600048C668 /* NSString+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IXAdditions.h"; sourceTree = "<group>"; };
 		63311BD018444D600048C668 /* NSString+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IXAdditions.m"; sourceTree = "<group>"; };
+		63311BD5184581EE0048C668 /* IXJSONGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONGrabber.h; sourceTree = "<group>"; };
+		63311BD6184581EE0048C668 /* IXJSONGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONGrabber.m; sourceTree = "<group>"; };
 		635614F51842FC3000B7C95F /* IXFormatShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFormatShortCode.h; sourceTree = "<group>"; };
 		635614F61842FC3000B7C95F /* IXFormatShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFormatShortCode.m; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
+		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
+		63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFJSONRequestOperation.h; sourceTree = "<group>"; };
+		63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFJSONRequestOperation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +252,8 @@
 				13033F26183ED8F200C29157 /* IXConstants.h */,
 				13033F27183ED8F200C29157 /* IXConstants.m */,
 				13033F28183ED8F200C29157 /* IXEnums.h */,
+				63311BD5184581EE0048C668 /* IXJSONGrabber.h */,
+				63311BD6184581EE0048C668 /* IXJSONGrabber.m */,
 				13033F29183ED8F200C29157 /* IXJSONParser.h */,
 				13033F2A183ED8F200C29157 /* IXJSONParser.m */,
 				13033F2B183ED8F200C29157 /* IXStructs.h */,
@@ -257,6 +267,7 @@
 		13033F2C183ED8F200C29157 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				63D23AB11845B3A800C93BC7 /* Other */,
 				63311BC518442F070048C668 /* Categories */,
 				13033F2D183ED8F200C29157 /* Actions */,
 				13033F38183ED8F200C29157 /* BaseObjects */,
@@ -416,6 +427,7 @@
 			isa = PBXGroup;
 			children = (
 				6324BF551835931C00748F27 /* Ignite_iOS_Engine */,
+				63D23AB01845B35100C93BC7 /* DataModel */,
 				6324BF4E1835931C00748F27 /* Frameworks */,
 				6324BF4D1835931C00748F27 /* Products */,
 				2A47E3A147B84D9DB0C78D60 /* Pods.xcconfig */,
@@ -492,6 +504,23 @@
 				63311BCA1844439E0048C668 /* UIViewController+IXAdditions.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		63D23AB01845B35100C93BC7 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
+		63D23AB11845B3A800C93BC7 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */,
+				63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -613,6 +642,7 @@
 				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
 				13033F9F183ED8F200C29157 /* IXMap.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
+				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
 				13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */,
 				13033FB2183ED8F200C29157 /* IXPropertyParser.m in Sources */,
 				63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */,
@@ -638,6 +668,7 @@
 				63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
+				63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */,
 				13033F95183ED8F200C29157 /* IXModifyAction.m in Sources */,
 				13033FB3183ED8F200C29157 /* IXAppShortCode.m in Sources */,
 				13033FB4183ED8F200C29157 /* IXBaseShortCode.m in Sources */,
@@ -649,6 +680,7 @@
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
 				13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */,
 				13033F9E183ED8F200C29157 /* IXLayout.m in Sources */,
+				63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,6 +833,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */,
+			);
+			currentVersion = 63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */;
+			path = IXDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6324BF441835931C00748F27 /* Project object */;
 }

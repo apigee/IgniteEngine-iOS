@@ -23,7 +23,7 @@
 #import "ColorUtils.h"
 #import "IXViewController.h"
 #import "IXNavigationViewController.h"
-
+#import "IXJSONGrabber.h"
 
 @interface IXAppManager ()
 
@@ -71,71 +71,73 @@
 -(void)startApplication
 {
     [self setAppConfigPath:[[NSBundle mainBundle] pathForResource:@"assets/IXAppConfig" ofType:@"json"]];
-    if( [[NSFileManager defaultManager] fileExistsAtPath:[self appConfigPath]] )
-    {
-        NSData* jsonData = [NSData dataWithContentsOfFile:[self appConfigPath]];
-        if( jsonData != nil )
-        {
-            id jsonValue = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-            
-            id appDictJSONValue = [jsonValue objectForKey:@"app"];
-            if( [appDictJSONValue isKindOfClass:[NSDictionary class]] )
-            {
-                id appPropertiesJSONValue = (NSDictionary*)[appDictJSONValue objectForKey:@"properties"];
-                if( [appPropertiesJSONValue isKindOfClass:[NSDictionary class]] )
-                {
-                    NSDictionary* appConfigPropertiesJSONDict = (NSDictionary*)appPropertiesJSONValue;
-                    [self setAppProperties:[IXJSONParser propertyContainerWithPropertyDictionary:appConfigPropertiesJSONDict]];
-                    NSLog(@"\n%@",[[self appProperties] description]);
-                }
-            }
-            id sessionDefaultsJSONValue = [jsonValue objectForKey:@"session_defaults"];
-            if( [sessionDefaultsJSONValue isKindOfClass:[NSDictionary class]] )
-            {
-                NSDictionary* sessionDefaultsPropertiesJSONDict = (NSDictionary*)sessionDefaultsJSONValue;
-                [self setSessionProperties:[IXJSONParser propertyContainerWithPropertyDictionary:sessionDefaultsPropertiesJSONDict]];
-            }
-        }
-    }
     
-    if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] )
-    {
+    [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
+                                                 asynch:NO
+                                        completionBlock:^(id jsonObject, NSError *error) {
+                                            
+                                            if( jsonObject == nil )
+                                            {
+                                                [self showJSONAlertWithName:@"APP CONFIG" error:error];
+                                            }
+                                            else
+                                            {
+                                                NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.properties"];
+                                                [self setAppProperties:[IXJSONParser propertyContainerWithPropertyDictionary:appConfigPropertiesJSONDict]];
+                                                
+                                                NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
+                                                [self setSessionProperties:[IXJSONParser propertyContainerWithPropertyDictionary:sessionDefaultsPropertiesJSONDict]];
+                                                
+                                                [self applyAppProperties];
+                                                [self loadApplicationDefaultView];
+                                            }
+                                        }];
+}
+
+-(void)applyAppProperties
+{
+    if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] ) {
         [self setAppMode:IXDebugMode];
-    }
-    else
-    {
+    } else {
         [self setAppMode:IXReleaseMode];
     }
     
     [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:@"enable_layout_debugging" defaultValue:YES]];
     [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolPropertyValue:@"shows_navigation_bar" defaultValue:YES] animated:YES];
-
-    IXViewController* viewController = nil;
+    
     NSString* defaultViewProperty = [[self appProperties] getStringPropertyValue:@"default_view" defaultValue:nil];
     [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
-    
-    if( [[NSFileManager defaultManager] fileExistsAtPath:[self appDefaultViewPath]] )
-    {
-        NSData* jsonData = [NSData dataWithContentsOfFile:[self appDefaultViewPath]];
-        if( jsonData != nil )
-        {
-            id jsonValue = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-            id viewDictJSONValue = [jsonValue objectForKey:@"view"];
-            if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
-            {
-                viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue];
-            }
-        }
-    }
-    
-    if( viewController != nil )
-    {
-        [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
-    }
-    else
-    {
-        [[[UIAlertView alloc] initWithTitle:@"JSON IS PROBABLY BROKE SUCKER" message:@"fix it..." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    }
+}
+
+-(void)loadApplicationDefaultView
+{
+    [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appDefaultViewPath]
+                                                 asynch:NO
+                                        completionBlock:^(id jsonObject, NSError *error) {
+                                            
+                                            if( jsonObject == nil )
+                                            {
+                                                [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
+                                            }
+                                            else
+                                            {
+                                                IXViewController* viewController = nil;
+                                                id viewDictJSONValue = [jsonObject objectForKey:@"view"];
+                                                if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
+                                                {
+                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue];
+                                                }
+                                                
+                                                if( viewController != nil )
+                                                {
+                                                    [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
+                                                }
+                                                else
+                                                {
+                                                    [self showJSONAlertWithName:@"" error:nil];
+                                                }
+                                            }
+                                        }];
 }
 
 +(UIInterfaceOrientation)currentInterfaceOrientation
@@ -154,6 +156,15 @@
         return nil;
     
     return [[self webViewForJS] stringByEvaluatingJavaScriptFromString:javascript];
+}
+
+-(void)showJSONAlertWithName:(NSString*)name error:(NSError*)error
+{
+    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ JSON IS PROBABLY BROKE SUCKER ERROR: %@",name,[error description]]
+                                message:@"fix it..."
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
 }
 
 @end

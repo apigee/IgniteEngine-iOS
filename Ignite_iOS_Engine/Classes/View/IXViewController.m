@@ -19,6 +19,8 @@
 
 @interface IXViewController ()
 
+@property (nonatomic,assign) BOOL hasAppeared;
+
 @end
 
 @implementation IXViewController
@@ -33,6 +35,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if( self != nil )
     {
+        _hasAppeared = NO;
+        
         _sandbox = [[IXSandbox alloc] init];
         [_sandbox setViewController:self];
         
@@ -70,9 +74,15 @@
 {
     [super viewWillAppear:animated];
     
+    if( ![self hasAppeared] )
+    {
+        [self setHasAppeared:YES];
+        [[self sandbox] loadAllDataProviders];
+        [[[self containerControl] actionContainer] executeActionsForEventNamed:@"will_first_appear"];
+    }
+    
     [self applySettings];
     [self layoutControls];
-    [[self sandbox] loadAllDataProviders];
 
     [[[self containerControl] actionContainer] executeActionsForEventNamed:@"will_appear"];
 }

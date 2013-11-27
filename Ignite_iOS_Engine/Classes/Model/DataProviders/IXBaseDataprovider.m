@@ -239,7 +239,7 @@
     {
         [self createEntityFromIXEntityContainer:[self entityContainer] addToMapping:nil];
         
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:_entityMapping
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                                                                 method:RKRequestMethodGET
                                                                                            pathPattern:[self pathPattern]
                                                                                                keyPath:[self keyPath]
