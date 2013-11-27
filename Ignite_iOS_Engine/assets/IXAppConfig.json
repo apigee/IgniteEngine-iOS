@@ -1,6 +1,6 @@
 {
    "app":{
-      "properties":{
+      "attributes":{
          "mode":"dev",
          "id":"CLIENT-13",
          "shows_navigation_bar":"NO",
