@@ -21,7 +21,7 @@
                             "value" : "poop3"
                         }
           ],
-         "default_view":"IXAppConfigChild_parsed.json",
+         "default_view":"IXAppConfigParseTest_parsed.json",
       }
    },
    "session_defaults":{
