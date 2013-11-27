@@ -1,0 +1,64 @@
+{
+    "view": {
+        "attributes": {
+            "*** ALERT ***": "Padding & margin need to be changed to use this format:",
+            "color": {
+                "background": "#cdcdcd"
+            },
+            "margin": {
+                "bottom": 0,
+                "left": 0,
+                "right": 0,
+                "top": 0
+            }
+        },
+        "controls": [
+            {
+                "attributes": {
+                    "keyboard": {
+                        "return_key": "google",
+                        "style": "light",
+                        "type": "email"
+                    },
+                    "layout_type": "relative",
+                    "padding": {
+                        "top": 40,
+                        "right": 40,
+                        "bottom": 40,
+                        "left": 40
+                    },
+                    "placeholder_text": "come on people",
+                    "width": "100%"
+                },
+                "controls": [
+                    {
+                        "margin": {
+                            "bottom": 0,
+                            "left": 0,
+                            "right": 0,
+                            "top": 0
+                        },
+                        "position": "absolute",
+                        "id": "button1"
+                    }
+                ],
+                "type": "TextInput",
+                "id": "textInput1"
+            },
+            {
+                "attributes": {
+                    "keyboard": {
+                        "return_key": "google",
+                        "style": "dark",
+                        "type": "email"
+                    },
+                    "layout_type": "relative",
+                    "placeholder_text": "text input as child of [textInput2.get('placeholder_text')] blue layout",
+                    "width": "100%"
+                },
+                "type": "TextInput",
+                "id": "textInput2"
+            }
+        ]
+    }
+}

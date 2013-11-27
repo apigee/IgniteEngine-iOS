@@ -535,6 +535,7 @@
 				6324BF491835931C00748F27 /* Frameworks */,
 				6324BF4A1835931C00748F27 /* Resources */,
 				094C015EBD9C43B6AB3EEB74 /* Copy Pods Resources */,
+				13B36BB01845944500B9E24E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -606,6 +607,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		13B36BB01845944500B9E24E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = Preparser/process.sh;
 		};
 		174B3967FD5446A9BFBB4B95 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
