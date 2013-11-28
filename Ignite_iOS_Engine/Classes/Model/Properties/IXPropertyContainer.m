@@ -235,7 +235,20 @@
     // Use this to get IMAGE paths. Then set up a image loader singleton that loads all the images for you.
     // Same with other FILE paths. When a control needs the data from a file use this to get the path to the image and set up a data loader singleton.
     
-    return [self getStringPropertyValue:propertyName defaultValue:defaultValue];
+    NSString* returnPath = defaultValue;
+    NSString* pathStringSetting = [self getStringPropertyValue:propertyName defaultValue:defaultValue];
+    if( pathStringSetting != nil )
+    {
+        if( basePath == nil )
+        {
+            returnPath = pathStringSetting;
+        }
+        else
+        {
+            returnPath = [NSString stringWithFormat:@"%@/%@",basePath,pathStringSetting];
+        }
+    }
+    return returnPath;
 }
 
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue

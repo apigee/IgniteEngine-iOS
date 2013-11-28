@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class IXViewController;
+
 @interface IXNavigationViewController : UINavigationController
+
+-(IXViewController*)viewControllerWithID:(NSString*)viewControllerID;
 
 @end

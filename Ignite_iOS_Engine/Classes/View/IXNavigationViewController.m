@@ -8,6 +8,9 @@
 
 #import "IXNavigationViewController.h"
 
+#import "IXViewController.h"
+#import "IXLayout.h"
+
 @implementation IXNavigationViewController
 
 -(id)init
@@ -39,6 +42,34 @@
     [super viewDidLoad];
 
     [[self view] setBackgroundColor:[UIColor blackColor]];
+}
+
+-(IXViewController*)viewControllerWithID:(NSString*)viewControllerID
+{
+    IXViewController* viewControllerWithID = nil;
+    if( [viewControllerID length] > 0 )
+    {
+        if( [viewControllerID isEqualToString:@"root"] )
+        {
+            viewControllerWithID = [[self viewControllers] firstObject];
+        }
+        else
+        {
+            for( UIViewController* viewController in [[[self viewControllers] reverseObjectEnumerator] allObjects] )
+            {
+                if( [viewController isKindOfClass:[IXViewController class]] )
+                {
+                    IXViewController* ixViewController = (IXViewController*)viewController;
+                    if( [[[ixViewController containerControl] ID] isEqualToString:viewControllerID] )
+                    {
+                        viewControllerWithID = ixViewController;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return viewControllerWithID;
 }
 
 @end

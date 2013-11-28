@@ -66,6 +66,7 @@
 		13BF0468183EBE7E00894760 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13BF0465183EBE7E00894760 /* Images.xcassets */; };
 		13BF0469183EBE7E00894760 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BF0466183EBE7E00894760 /* main.m */; };
 		13ECEA5F183EBF39004BC638 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 13ECEA5E183EBF38004BC638 /* assets */; };
+		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
@@ -189,6 +190,8 @@
 		13BF0466183EBE7E00894760 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ignite_iOS_Engine/main.m; sourceTree = SOURCE_ROOT; };
 		13ECEA5E183EBF38004BC638 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = Ignite_iOS_Engine/assets; sourceTree = SOURCE_ROOT; };
 		2A47E3A147B84D9DB0C78D60 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
+		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
 		6324BF4C1835931C00748F27 /* Ignite_iOS_Engine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ignite_iOS_Engine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6324BF4F1835931C00748F27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -294,6 +297,8 @@
 				13033F35183ED8F200C29157 /* IXFunctionAction.m */,
 				13033F36183ED8F200C29157 /* IXModifyAction.h */,
 				13033F37183ED8F200C29157 /* IXModifyAction.m */,
+				6314B51B1846B7A700C14F96 /* IXNavigateAction.h */,
+				6314B51C1846B7A700C14F96 /* IXNavigateAction.m */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -669,6 +674,7 @@
 				13033F9C183ED8F200C29157 /* IXBrowser.m in Sources */,
 				13033FB5183ED8F200C29157 /* IXControlLayoutInfo.m in Sources */,
 				635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */,
+				6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */,
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				13033FA3183ED8F200C29157 /* IXPanel.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
