@@ -10,54 +10,53 @@
                 "left": 0,
                 "right": 0,
                 "top": 0
-            }
+            },
+            "padding": {
+                "bottom": 0,
+                "left": 0,
+                "right": 0,
+                "top": 40
+            },
+            "top_padding": 40
         },
         "controls": [
             {
                 "attributes": {
-                    "keyboard": {
-                        "return_key": "google",
-                        "style": "light",
-                        "type": "email"
+                    "color": {
+                        "background": "#FFFFFF",
+                        "bottom": 0,
+                        "gradient.top": "#FF00FF",
+                        "left": 0
                     },
-                    "layout_type": "relative",
+                    "enable_scrolls_to_top": true,
+                    "gradient_visible": true,
+                    "height": "100%",
                     "padding": {
-                        "top": 40,
-                        "right": 40,
-                        "bottom": 40,
-                        "left": 40
+                        "bottom": 0,
+                        "left": 0,
+                        "right": 0,
+                        "top": 20
                     },
-                    "placeholder_text": "come on people",
                     "width": "100%"
                 },
                 "controls": [
                     {
-                        "margin": {
-                            "bottom": 0,
-                            "left": 0,
-                            "right": 0,
-                            "top": 0
+                        "attributes": {
+                            "keyboard": {
+                                "return_key": "google",
+                                "style": "dark",
+                                "type": "email"
+                            },
+                            "layout_type": "relative",
+                            "placeholder_text": "text input as child of [mylayoutcontrol.set('color.gradient.top = value')] blue layout",
+                            "width": "100%"
                         },
-                        "position": "absolute",
-                        "id": 0
+                        "type": "TextInput",
+                        "id": "textInput"
                     }
                 ],
-                "type": "TextInput",
-                "id": 0
-            },
-            {
-                "attributes": {
-                    "keyboard": {
-                        "return_key": "google",
-                        "style": "dark",
-                        "type": "email"
-                    },
-                    "layout_type": "relative",
-                    "placeholder_text": "text input as child of [textInput2.get('placeholder_text')] blue layout",
-                    "width": "100%"
-                },
-                "type": "TextInput",
-                "id": 1
+                "type": "Layout",
+                "id": "mylayoutcontrol"
             }
         ]
     }

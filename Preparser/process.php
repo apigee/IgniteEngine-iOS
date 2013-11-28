@@ -22,6 +22,10 @@ function remap($array)
 
 function process($value, $key)
 {
+	if (in_array($value, ['Yes', 'YES', 'yes', 'true', 'True', 'TRUE']))
+		return true;
+	if (in_array($value, ['No', 'NO', 'no', 'false', 'False', 'FALSE']))
+		return false;
 	if (is_numeric($value))
 	{
 		if (in_array($key, array("padding", "margin")))
