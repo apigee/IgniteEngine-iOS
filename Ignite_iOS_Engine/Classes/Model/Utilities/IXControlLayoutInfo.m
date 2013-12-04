@@ -59,6 +59,11 @@
     return returnFloat;
 }
 
+-(BOOL)isEqual:(IXSizePercentageContainer*)object
+{
+    return ( ( self == object ) || ( ([object propertyWasDefined] == _propertyDefined) && ([object isPercentage] == _percentage) && ([object value] == _value) ) );
+}
+
 @end
 
 @implementation IXEdgeInsets
@@ -125,6 +130,9 @@
     if( self != nil )
     {
         _propertyContainer = propertyContainer;
+        _marginInsets = [[IXEdgeInsets alloc] init];
+        _paddingInsets = [[IXEdgeInsets alloc] init];
+        
         [self refreshLayoutInfo];
     }
     return self;
@@ -160,39 +168,133 @@
     else if( [horizontalAlignment isEqualToString:@"right"] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentRight;
     
-    _width = [[self propertyContainer] getSizePercentageContainer:@"width" defaultValue:0.0f];
-    _widthWasDefined = [_width propertyWasDefined];
-    _height = [[self propertyContainer] getSizePercentageContainer:@"height" defaultValue:0.0f];
-    _heightWasDefined = [_height propertyWasDefined];
+    IXSizePercentageContainer *width = [[self propertyContainer] getSizePercentageContainer:@"width" defaultValue:0.0f];
+    if( ! [[self width] isEqual:width] )
+    {
+        _width = width;
+        _widthWasDefined = [_width propertyWasDefined];
+        _needsToRelayout = YES;
+    }
+    IXSizePercentageContainer *height = [[self propertyContainer] getSizePercentageContainer:@"height" defaultValue:0.0f];
+    if( ! [[self height] isEqual:height] )
+    {
+        _height = height;
+        _heightWasDefined = [_height propertyWasDefined];
+        _needsToRelayout = YES;
+    }
+    IXSizePercentageContainer *topPosition = [[self propertyContainer] getSizePercentageContainer:@"top_position" defaultValue:0.0f];
+    if( ! [[self topPosition] isEqual:topPosition] )
+    {
+        _topPosition = topPosition;
+        _topPositionWasDefined = [_topPosition propertyWasDefined];
+        _needsToRelayout = YES;
+    }
+    IXSizePercentageContainer *leftPosition = [[self propertyContainer] getSizePercentageContainer:@"left_position" defaultValue:0.0f];
+    if( ! [[self leftPosition] isEqual:leftPosition] )
+    {
+        _leftPosition = leftPosition;
+        _leftPositionWasDefined = [_leftPosition propertyWasDefined];
+        _needsToRelayout = YES;
+    }
     
-    _topPosition = [[self propertyContainer] getSizePercentageContainer:@"top_position" defaultValue:0.0f];
-    _topPositionWasDefined = [_topPosition propertyWasDefined];
-    _leftPosition = [[self propertyContainer] getSizePercentageContainer:@"left_position" defaultValue:0.0f];
-    _leftPositionWasDefined = [_leftPosition propertyWasDefined];
+    IXSizePercentageContainer *defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.default" defaultValue:0.0f];
+    if( [self paddingInsets] == nil )
+    {
+        _needsToRelayout = YES;
+        _paddingInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
+                                                                top:[[self propertyContainer] getSizePercentageContainer:@"padding.top"
+                                                                                                            defaultValue:defaultPadding.value]
+                                                               left:[[self propertyContainer] getSizePercentageContainer:@"padding.left"
+                                                                                                            defaultValue:defaultPadding.value]
+                                                             bottom:[[self propertyContainer] getSizePercentageContainer:@"padding.bottom"
+                                                                                                            defaultValue:defaultPadding.value]
+                                                              right:[[self propertyContainer] getSizePercentageContainer:@"padding.right"
+                                                                                                            defaultValue:defaultPadding.value]];
+    }
+    else
+    {
+        if( ![[_paddingInsets defaultValue] isEqual:defaultPadding] )
+        {
+            [_paddingInsets setDefaultValue:defaultPadding];
+            _needsToRelayout = YES;
+        }
+        
+        CGFloat defaultPaddingsValue = [[_paddingInsets defaultValue] value];
+        IXSizePercentageContainer *topPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.top" defaultValue:defaultPaddingsValue];
+        if( ![[_paddingInsets top] isEqual:topPadding] )
+        {
+            [_paddingInsets setTop:topPadding];
+            _needsToRelayout = YES;
+        }
+        IXSizePercentageContainer *bottomPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.bottom" defaultValue:defaultPaddingsValue];
+        if( ![[_paddingInsets bottom] isEqual:bottomPadding] )
+        {
+            [_paddingInsets setBottom:bottomPadding];
+            _needsToRelayout = YES;
+        }
+        IXSizePercentageContainer *leftPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.left" defaultValue:defaultPaddingsValue];
+        if( ![[_paddingInsets left] isEqual:leftPadding] )
+        {
+            [_paddingInsets setLeft:leftPadding];
+            _needsToRelayout = YES;
+        }
+        IXSizePercentageContainer *rightPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.right" defaultValue:defaultPaddingsValue];
+        if( ![[_paddingInsets right] isEqual:rightPadding] )
+        {
+            [_paddingInsets setRight:rightPadding];
+            _needsToRelayout = YES;
+        }
+    }
     
-    IXSizePercentageContainer* defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.default" defaultValue:0.0f];
-    IXSizePercentageContainer* defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.default" defaultValue:0.0f];
-    
-    _paddingInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
-                                                             top:[[self propertyContainer] getSizePercentageContainer:@"padding.top"
-                                                                                                   defaultValue:defaultPadding.value]
-                                                            left:[[self propertyContainer] getSizePercentageContainer:@"padding.left"
-                                                                                                   defaultValue:defaultPadding.value]
-                                                          bottom:[[self propertyContainer] getSizePercentageContainer:@"padding.bottom"
-                                                                                                   defaultValue:defaultPadding.value]
-                                                           right:[[self propertyContainer] getSizePercentageContainer:@"padding.right"
-                                                                                                   defaultValue:defaultPadding.value]];
-    
-    _marginInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
-                                                            top:[[self propertyContainer] getSizePercentageContainer:@"margin.top"
-                                                                                                 defaultValue:defaultMargin.value]
-                                                           left:[[self propertyContainer] getSizePercentageContainer:@"margin.left"
-                                                                                                 defaultValue:defaultMargin.value]
-                                                         bottom:[[self propertyContainer] getSizePercentageContainer:@"margin.bottom"
-                                                                                                 defaultValue:defaultMargin.value]
-                                                          right:[[self propertyContainer] getSizePercentageContainer:@"margin.right"
-                                                                                                 defaultValue:defaultMargin.value]];
-    
+    IXSizePercentageContainer *defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.default" defaultValue:0.0f];
+    if( [self marginInsets] == nil )
+    {
+        _needsToRelayout = YES;
+        _marginInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultMargin
+                                                               top:[[self propertyContainer] getSizePercentageContainer:@"margin.top"
+                                                                                                           defaultValue:defaultMargin.value]
+                                                              left:[[self propertyContainer] getSizePercentageContainer:@"margin.left"
+                                                                                                           defaultValue:defaultMargin.value]
+                                                            bottom:[[self propertyContainer] getSizePercentageContainer:@"margin.bottom"
+                                                                                                           defaultValue:defaultMargin.value]
+                                                             right:[[self propertyContainer] getSizePercentageContainer:@"margin.right"
+                                                                                                           defaultValue:defaultMargin.value]];
+        
+    }
+    else
+    {
+        if( ![[_marginInsets defaultValue] isEqual:defaultMargin] )
+        {
+            [_marginInsets setDefaultValue:defaultMargin];
+            _needsToRelayout = YES;
+        }
+        
+        CGFloat defaultMarginsValue = [[_marginInsets defaultValue] value];
+        IXSizePercentageContainer *topMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.top" defaultValue:defaultMarginsValue];
+        if( ![[_marginInsets top] isEqual:topMargin] )
+        {
+            [_marginInsets setTop:topMargin];
+            _needsToRelayout = YES;
+        }
+        IXSizePercentageContainer *bottomMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.bottom" defaultValue:defaultMarginsValue];
+        if( ![[_marginInsets bottom] isEqual:bottomMargin] )
+        {
+            [_marginInsets setBottom:bottomMargin];
+            _needsToRelayout = YES;
+        }
+        IXSizePercentageContainer *leftMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.left" defaultValue:defaultMarginsValue];
+        if( ![[_marginInsets left] isEqual:leftMargin] )
+        {
+            [_marginInsets setLeft:leftMargin];
+            _needsToRelayout = YES;
+        }
+        IXSizePercentageContainer *rightMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.right" defaultValue:defaultMarginsValue];
+        if( ![[_marginInsets right] isEqual:rightMargin] )
+        {
+            [_marginInsets setRight:rightMargin];
+            _needsToRelayout = YES;
+        }
+    }
 }
 
 @end

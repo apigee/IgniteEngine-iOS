@@ -19,24 +19,30 @@
 #import "IXAlertAction.h"
 
 @interface IXActionContainer ()
-
 @property (nonatomic,strong) NSMutableDictionary* actionsDict;
-
 @end
 
 @implementation IXActionContainer
 
 @synthesize sandbox = _sandbox;
 
--(id)init
+-(instancetype)init
 {
     self = [super init];
     if( self )
     {
-        _actionContainerOwner = nil;
         _actionsDict = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXActionContainer* actionContainerCopy = [[[self class] allocWithZone:zone] init];
+    [actionContainerCopy setSandbox:[self sandbox]];
+    [actionContainerCopy setActionContainerOwner:[self actionContainerOwner]];
+    [actionContainerCopy setActionsDict:[[NSMutableDictionary alloc] initWithDictionary:[self actionsDict] copyItems:YES]];
+    return actionContainerCopy;
 }
 
 -(IXSandbox*)sandbox
@@ -47,14 +53,13 @@
 -(void)setSandbox:(IXSandbox *)sandbox
 {
     _sandbox = sandbox;
-    
     for( NSArray* actionArray in [[self actionsDict] allValues] )
     {
         for( IXBaseAction* action in actionArray )
         {
-            [[action actionProperties] setSandbox:sandbox];
-            [[action parameterProperties] setSandbox:sandbox];
-            [[action subActionContainer] setSandbox:sandbox];
+            [[action actionProperties] setSandbox:_sandbox];
+            [[action parameterProperties] setSandbox:_sandbox];
+            [[action subActionContainer] setSandbox:_sandbox];
         }
     }
 }
@@ -114,23 +119,13 @@
         return;
     
     UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
-    BOOL firedAnAction = NO;
     for( IXBaseAction* action in actionsForEventName )
     {
         BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
-            if( ![action isKindOfClass:[IXAlertAction class]] )
-                firedAnAction = YES;
-            
             [action execute];
         }
-    }
-    
-    if( firedAnAction )
-    {
-        [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] applySettings];
-        [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
     }
 }
 

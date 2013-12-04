@@ -14,20 +14,40 @@
 
 @implementation IXBaseAction
 
--(id)init
+-(instancetype)init
+{
+    return [self initWithEventName:nil
+                  actionProperties:[[IXPropertyContainer alloc] init]
+               parameterProperties:[[IXPropertyContainer alloc] init]
+                subActionContainer:[[IXActionContainer alloc] init]];
+}
+
+-(instancetype)initWithEventName:(NSString*)eventName
+                actionProperties:(IXPropertyContainer*)actionProperties
+             parameterProperties:(IXPropertyContainer*)parameterProperties
+              subActionContainer:(IXActionContainer*)subActionContainer
 {
     self = [super init];
     if( self )
     {
-        _eventName = nil;
-        _actionProperties = [[IXPropertyContainer alloc] init];
-        _parameterProperties = [[IXPropertyContainer alloc] init];
-        
-#warning NEED TO CHECK THIS LATER ON
-        _subActionContainer = [[IXActionContainer alloc] init];
-        [_subActionContainer setActionContainerOwner:[[self actionContainer] actionContainerOwner]];
+        _actionContainer = nil;
+        _eventName = eventName;
+        _actionProperties = actionProperties;
+        _parameterProperties = parameterProperties;
+        _subActionContainer = subActionContainer;
     }
     return self;
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXBaseAction* actionCopy = [[[self class] allocWithZone:zone] init];
+    [actionCopy setActionContainer:[self actionContainer]];
+    [actionCopy setEventName:[self eventName]];
+    [actionCopy setActionProperties:[[self actionProperties] copy]];
+    [actionCopy setParameterProperties:[[self parameterProperties] copy]];
+    [actionCopy setSubActionContainer:[[self subActionContainer] copy]];
+    return actionCopy;
 }
 
 -(void)execute

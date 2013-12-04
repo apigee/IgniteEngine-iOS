@@ -12,7 +12,7 @@
 @class IXActionContainer;
 @class IXPropertyContainer;
 
-@interface IXBaseAction : IXBaseConditionalObject
+@interface IXBaseAction : IXBaseConditionalObject <NSCopying>
 
 @property (nonatomic,weak) IXActionContainer* actionContainer;
 
@@ -21,8 +21,11 @@
 @property (nonatomic,strong) IXPropertyContainer* parameterProperties;
 @property (nonatomic,strong) IXActionContainer* subActionContainer;
 
-// NOT DONE YET
-#warning METHODS NOT DONE YET
+-(instancetype)initWithEventName:(NSString*)eventName
+                actionProperties:(IXPropertyContainer*)actionProperties
+             parameterProperties:(IXPropertyContainer*)parameterProperties
+              subActionContainer:(IXActionContainer*)subActionContainer;
+
 -(void)execute;
 
 @end

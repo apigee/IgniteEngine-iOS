@@ -11,6 +11,7 @@
 #import "IXBaseObject.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataprovider.h"
+#import "IXAppManager.h"
 
 @interface IXSandbox ()
 
@@ -22,7 +23,7 @@
 
 @synthesize containerControl = _containerControl;
 
--(id)init
+-(instancetype)init
 {
     self = [super init];
     if( self )
@@ -50,8 +51,11 @@
     NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
     [returnArray addObjectsFromArray:controlsWithObjectID];
 
-    NSArray* dataProvidersWithObjectID = [self getDataProvidersWithID:objectID];
-    [returnArray addObjectsFromArray:dataProvidersWithObjectID];
+    IXBaseDataprovider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
+    if( dataProviderWithObjectID )
+    {
+        [returnArray addObject:dataProviderWithObjectID];
+    }
     
     return returnArray;
 }
@@ -110,12 +114,12 @@
 
 -(IXBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID
 {
-    return [[self dataProviders] objectForKey:dataProviderID];
-}
-
--(NSArray*)getDataProvidersWithID:(NSString*)dataProviderID
-{
-    return [[self dataProviders] objectForKey:dataProviderID];
+    IXBaseDataprovider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
+    if( returnDataProvider == nil )
+    {
+        returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
+    }
+    return returnDataProvider;
 }
 
 @end

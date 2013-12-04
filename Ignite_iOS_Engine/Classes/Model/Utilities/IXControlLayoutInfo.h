@@ -57,6 +57,7 @@
 @property (nonatomic,weak,readonly) IXPropertyContainer* propertyContainer;
 
 @property (nonatomic,assign) CGRect layoutRect;
+@property (nonatomic,assign) BOOL needsToRelayout;
 @property (nonatomic,assign) BOOL hasSeenLayout;
 
 @property (nonatomic,assign,readonly) BOOL isHidden;

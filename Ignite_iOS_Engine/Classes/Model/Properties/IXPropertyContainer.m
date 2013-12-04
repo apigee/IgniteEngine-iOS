@@ -23,7 +23,7 @@
 
 @implementation IXPropertyContainer
 
--(id)init
+-(instancetype)init
 {
     self = [super init];
     if( self )
@@ -32,6 +32,14 @@
         _propertiesDict = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXPropertyContainer* propertyContainerCopy = [[[self class] allocWithZone:zone] init];
+    [propertyContainerCopy setSandbox:[self sandbox]];
+    [propertyContainerCopy setPropertiesDict:[[NSMutableDictionary alloc] initWithDictionary:[self propertiesDict] copyItems:YES]];
+    return propertyContainerCopy;
 }
 
 -(NSMutableArray*)propertiesForPropertyNamed:(NSString*)propertyName

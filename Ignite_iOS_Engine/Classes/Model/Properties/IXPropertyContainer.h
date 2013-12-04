@@ -18,7 +18,7 @@
 typedef void(^IXPropertyContainerImageSuccessCompletedBlock)(UIImage *image);
 typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 
-@interface IXPropertyContainer : NSObject
+@interface IXPropertyContainer : NSObject <NSCopying>
 
 @property (nonatomic,weak) IXSandbox* sandbox;
 

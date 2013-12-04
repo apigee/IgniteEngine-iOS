@@ -13,7 +13,7 @@
 @interface IXBaseConditionalObject : NSObject
 
 @property (nonatomic,assign) UIInterfaceOrientationMask interfaceOrientationMask;
-@property (nonatomic,strong) IXProperty* conditionalProperty;
+@property (nonatomic,copy) IXProperty* conditionalProperty;
 
 -(BOOL)isConditionalValid;
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation;

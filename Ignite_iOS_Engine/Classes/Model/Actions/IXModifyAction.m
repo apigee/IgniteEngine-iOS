@@ -12,6 +12,11 @@
 #import "IXBaseObject.h"
 #import "IXActionContainer.h"
 #import "IXAppManager.h"
+#import "IXViewController.h"
+#import "IXNavigationViewController.h"
+#import "IXLayout.h"
+#import "IXBaseControl.h"
+#import "IXBaseDataprovider.h"
 
 @implementation IXModifyAction
 
@@ -32,6 +37,26 @@
             for( IXBaseObject* baseObject in objectsWithID )
             {
                 [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
+            }
+            
+            BOOL needsToLayout = NO;
+            for( IXBaseObject* baseObject in objectsWithID )
+            {
+                [baseObject applySettings];
+                
+                if( [baseObject isKindOfClass:[IXBaseControl class]] )
+                {
+                    needsToLayout = YES;
+                }
+                else if( [baseObject isKindOfClass:[IXBaseDataprovider class]] )
+                {
+                    [((IXBaseDataprovider*)baseObject) loadData];
+                }
+            }
+            
+            if( needsToLayout )
+            {
+                [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
             }
         }
     }

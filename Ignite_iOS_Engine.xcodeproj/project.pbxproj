@@ -70,6 +70,7 @@
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
+		632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 632B7285184E9E760077D603 /* IXRefreshAction.m */; };
 		63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BC718442F270048C668 /* UITextField+IXAdditions.m */; };
 		63311BCB1844439E0048C668 /* UIViewController+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BCA1844439E0048C668 /* UIViewController+IXAdditions.m */; };
 		63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */; };
@@ -197,6 +198,8 @@
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6324BF531835931C00748F27 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6324BF681835931D00748F27 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		632B7284184E9E760077D603 /* IXRefreshAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXRefreshAction.h; sourceTree = "<group>"; };
+		632B7285184E9E760077D603 /* IXRefreshAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXRefreshAction.m; sourceTree = "<group>"; };
 		63311BC618442F270048C668 /* UITextField+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+IXAdditions.h"; sourceTree = "<group>"; };
 		63311BC718442F270048C668 /* UITextField+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+IXAdditions.m"; sourceTree = "<group>"; };
 		63311BC91844439E0048C668 /* UIViewController+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IXAdditions.h"; sourceTree = "<group>"; };
@@ -299,6 +302,8 @@
 				13033F37183ED8F200C29157 /* IXModifyAction.m */,
 				6314B51B1846B7A700C14F96 /* IXNavigateAction.h */,
 				6314B51C1846B7A700C14F96 /* IXNavigateAction.m */,
+				632B7284184E9E760077D603 /* IXRefreshAction.h */,
+				632B7285184E9E760077D603 /* IXRefreshAction.m */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -679,6 +684,7 @@
 				13033FA3183ED8F200C29157 /* IXPanel.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
+				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,
 				13033F92183ED8F200C29157 /* IXAlertAction.m in Sources */,
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,

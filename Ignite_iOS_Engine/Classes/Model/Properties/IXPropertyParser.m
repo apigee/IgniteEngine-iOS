@@ -327,7 +327,7 @@ static NSString* const kIXEmptyString = @"";
             
             if( shortCodeAsString != nil )
             {
-                if( [shortCodeAsString isEqualToString:@"\\[["] || [shortCodeAsString isEqualToString:@"\\]]"] )
+                if( [shortCodeAsString isEqualToString:@"\\["] || [shortCodeAsString isEqualToString:@"\\]"] )
                 {
                     NSString* stringToUseForReplace = ([shortCodeAsString isEqualToString:@"\\[["]) ? kIXDoubleOpenBracketString : kIXDoubleCloseBracketString;
                     shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;

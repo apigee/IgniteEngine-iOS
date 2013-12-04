@@ -40,7 +40,6 @@
 
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID;
 -(IXBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID;
--(NSArray*)getDataProvidersWithID:(NSString*)dataProviderID;
 
 -(void)loadAllDataProviders;
 

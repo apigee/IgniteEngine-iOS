@@ -39,7 +39,6 @@
         _propertyContainer = nil;
         
         _originalString = rawValue;
-        _rawValue = rawValue;
         _propertyName = propertyName;
         
         if( rawValue != nil )
@@ -50,44 +49,46 @@
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXProperty *copiedProperty = [[[self class] allocWithZone:zone] init];
+    [copiedProperty setPropertyContainer:[self propertyContainer]];
+    [copiedProperty setReadonly:[self isReadonly]];
+    [copiedProperty setPropertyName:[self propertyName]];
+    [copiedProperty setOriginalString:[self originalString]];
+    [copiedProperty setStaticText:[self staticText]];
+    [copiedProperty setPropertyValue:[self propertyValue]];
+    [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
+    [copiedProperty setShortCodeRanges:[[NSMutableArray alloc] initWithArray:[self shortCodeRanges] copyItems:YES]];
+    return copiedProperty;
+}
+
 -(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
 {
     _propertyContainer = propertyContainer;
-    
     for( IXBaseShortCode *shortCode in [self shortCodes] )
     {
         for( IXProperty *property in [shortCode parameters] )
         {
-            [property setPropertyContainer:propertyContainer];
+            [property setPropertyContainer:_propertyContainer];
         }
     }
 }
 
--(id)copyWithZone:(NSZone *)zone
-{
-    IXProperty *copiedProperty = [[[self class] allocWithZone:zone] init];
-    
-    [copiedProperty setPropertyContainer:[self propertyContainer]];
-    [copiedProperty setRawValue:[self rawValue]];
-    [copiedProperty setStaticText:[self staticText]];
-    [copiedProperty setPropertyValue:[self propertyValue]];
-    [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
-
-    return copiedProperty;
-}
-
 -(NSString*)getPropertyValue
 {
-    if( [self rawValue] == nil || [[self rawValue] length] == 0 )
+    if( [self originalString] == nil || [[self originalString] length] == 0 )
         return @"";
     
-    NSMutableString *returnString = [[NSMutableString alloc] initWithString:[self staticText]];
+    NSString* returnString = ([self staticText] == nil) ? @"" : [self staticText];
     
     if( [[self shortCodes] count] > 0 )
     {
+        returnString = [[NSMutableString alloc] initWithString:returnString];
+        
         __block NSInteger newCharsAdded = 0;
         __block IXProperty* weakSelf = self;
-        __weak NSMutableString* weakString = returnString;
+        __weak NSMutableString* weakString = (NSMutableString*)returnString;
         
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
             
