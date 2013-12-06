@@ -302,7 +302,7 @@
     if( [dataProviderValueDict allKeys] > 0 )
     {
         NSString* dataProviderType = [dataProviderValueDict objectForKey:@"type"];
-        NSString* dataProviderClassString = [NSString stringWithFormat:@"IX%@Dataprovider",dataProviderType];
+        NSString* dataProviderClassString = [NSString stringWithFormat:@"IX%@DataProvider",dataProviderType];
         
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
         dataProvider = [[dataProviderClass alloc] init];

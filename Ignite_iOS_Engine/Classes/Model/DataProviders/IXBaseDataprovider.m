@@ -1,5 +1,5 @@
 //
-//  IXBaseDataprovider.m
+//  IXBaseDataProvider.m
 //  Ignite iOS Engine (IX)
 //
 //  Created by Robert Walsh on 10/3/13.
