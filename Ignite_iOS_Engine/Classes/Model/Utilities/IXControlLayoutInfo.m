@@ -49,6 +49,15 @@
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXSizePercentageContainer* containerCopy = [[[self class] allocWithZone:zone] init];
+    [containerCopy setValue:[self value]];
+    [containerCopy setPercentage:[self isPercentage]];
+    [containerCopy setPropertyDefined:[self propertyWasDefined]];
+    return containerCopy;
+}
+
 -(CGFloat)evaluteForMaxValue:(CGFloat)maxValue
 {
     float returnFloat = [self value];
@@ -100,6 +109,15 @@
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    return [[[self class] allocWithZone:zone] initWithDefaultValue:[[self defaultValue] copy]
+                                                               top:[[self top] copy]
+                                                              left:[[self left] copy]
+                                                            bottom:[[self bottom] copy]
+                                                             right:[[self right] copy]];
+}
+
 -(UIEdgeInsets)evaluateEdgeInsetsUsingMaxSize:(CGSize)maxSize
 {
     return UIEdgeInsetsMake([[self top] evaluteForMaxValue:maxSize.height],
@@ -107,6 +125,34 @@
                             [[self bottom] evaluteForMaxValue:maxSize.height],
                             [[self right] evaluteForMaxValue:maxSize.width]);
 }
+
+@end
+
+@interface IXControlLayoutInfo ()
+
+@property (nonatomic,weak) IXPropertyContainer* propertyContainer;
+
+@property (nonatomic,assign) BOOL isHidden;
+@property (nonatomic,assign) BOOL fillRemainingWidth;
+@property (nonatomic,assign) BOOL fillRemainingHeight;
+@property (nonatomic,assign) BOOL canPushParentsBounds;
+@property (nonatomic,assign) BOOL isFloatPositioned;
+@property (nonatomic,assign) BOOL isAbsolutePositioned;
+
+@property (nonatomic,assign) IXLayoutVerticalAlignment verticalAlignment;
+@property (nonatomic,assign) IXLayoutHorizontalAlignment horizontalAlignment;
+
+@property (nonatomic,assign) BOOL widthWasDefined;
+@property (nonatomic,copy) IXSizePercentageContainer* width;
+@property (nonatomic,assign) BOOL heightWasDefined;
+@property (nonatomic,copy) IXSizePercentageContainer* height;
+@property (nonatomic,assign) BOOL topPositionWasDefined;
+@property (nonatomic,copy) IXSizePercentageContainer* topPosition;
+@property (nonatomic,assign) BOOL leftPositionWasDefined;
+@property (nonatomic,copy) IXSizePercentageContainer* leftPosition;
+
+@property (nonatomic,copy) IXEdgeInsets* marginInsets;
+@property (nonatomic,copy) IXEdgeInsets* paddingInsets;
 
 @end
 
@@ -130,44 +176,117 @@
     if( self != nil )
     {
         _propertyContainer = propertyContainer;
-        _marginInsets = [[IXEdgeInsets alloc] init];
-        _paddingInsets = [[IXEdgeInsets alloc] init];
-        
         [self refreshLayoutInfo];
     }
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXControlLayoutInfo* layoutInfoCopy = [[[self class] allocWithZone:zone] init];
+    [layoutInfoCopy setPropertyContainer:_propertyContainer];
+    [layoutInfoCopy setNeedsToRelayout:YES];
+    [layoutInfoCopy setHasSeenLayout:NO];
+    [layoutInfoCopy setLayoutRect:CGRectZero];
+    [layoutInfoCopy setFillRemainingHeight:_fillRemainingHeight];
+    [layoutInfoCopy setFillRemainingWidth:_fillRemainingWidth];
+    [layoutInfoCopy setCanPushParentsBounds:_canPushParentsBounds];
+    [layoutInfoCopy setIsFloatPositioned:_isFloatPositioned];
+    [layoutInfoCopy setIsAbsolutePositioned:_isAbsolutePositioned];
+    [layoutInfoCopy setVerticalAlignment:_verticalAlignment];
+    [layoutInfoCopy setHorizontalAlignment:_horizontalAlignment];
+    [layoutInfoCopy setWidth:_width];
+    [layoutInfoCopy setWidthWasDefined:_widthWasDefined];
+    [layoutInfoCopy setHeight:_height];
+    [layoutInfoCopy setHeightWasDefined:_heightWasDefined];
+    [layoutInfoCopy setTopPosition:_topPosition];
+    [layoutInfoCopy setTopPositionWasDefined:_topPositionWasDefined];
+    [layoutInfoCopy setLeftPosition:_leftPosition];
+    [layoutInfoCopy setLeftPositionWasDefined:_leftPositionWasDefined];
+    [layoutInfoCopy setPaddingInsets:_paddingInsets];
+    [layoutInfoCopy setMarginInsets:_marginInsets];
+    return layoutInfoCopy;
+}
+
 -(void)refreshLayoutInfo
 {
+    _needsToRelayout = NO;
     _hasSeenLayout = NO;
     _layoutRect = CGRectZero;
     
-    _isHidden = ![[self propertyContainer] getBoolPropertyValue:@"visible" defaultValue:YES];
-    _fillRemainingWidth = [[self propertyContainer] getBoolPropertyValue:@"fill_remaining_width" defaultValue:NO];
-    _fillRemainingHeight = [[self propertyContainer] getBoolPropertyValue:@"fill_remaining_height" defaultValue:NO];
-    _canPushParentsBounds = [[self propertyContainer] getBoolPropertyValue:@"include_in_parent_autosize" defaultValue:YES];
+    BOOL isHidden = ![[self propertyContainer] getBoolPropertyValue:@"visible" defaultValue:YES];
+    if( _isHidden != isHidden )
+    {
+        _isHidden = isHidden;
+        _needsToRelayout = YES;
+    }
     
+    BOOL fillRemainingWidth = [[self propertyContainer] getBoolPropertyValue:@"fill_remaining_width" defaultValue:NO];
+    if( _fillRemainingWidth != fillRemainingWidth )
+    {
+        _fillRemainingWidth = fillRemainingWidth;
+        _needsToRelayout = YES;
+    }
+    
+    BOOL fillRemainingHeight = [[self propertyContainer] getBoolPropertyValue:@"fill_remaining_height" defaultValue:NO];
+    if( _fillRemainingHeight != fillRemainingHeight )
+    {
+        _fillRemainingHeight = fillRemainingHeight;
+        _needsToRelayout = YES;
+    }
+
+    BOOL canPushParentsBounds = [[self propertyContainer] getBoolPropertyValue:@"include_in_parent_autosize" defaultValue:YES];
+    if( _canPushParentsBounds != canPushParentsBounds )
+    {
+        _canPushParentsBounds = canPushParentsBounds;
+        _needsToRelayout = YES;
+    }
+
     NSString* layoutType = [[self propertyContainer] getStringPropertyValue:@"layout_type" defaultValue:@"relative"];
-    _isFloatPositioned = [layoutType isEqualToString:@"float"];
-    _isAbsolutePositioned = [layoutType isEqualToString:@"absolute"] || _isFloatPositioned;
+    BOOL isFloatPositioned = [layoutType isEqualToString:@"float"];
+    BOOL isAbsolutePositioned = [layoutType isEqualToString:@"absolute"] || _isFloatPositioned;
+    if( _isFloatPositioned != isFloatPositioned )
+    {
+        _isFloatPositioned = isFloatPositioned;
+        _needsToRelayout = YES;
+    }
+    if( _isAbsolutePositioned != isAbsolutePositioned )
+    {
+        _isAbsolutePositioned = isAbsolutePositioned;
+        _needsToRelayout = YES;
+    }
     
-    NSString* verticalAlignment = [[self propertyContainer] getStringPropertyValue:@"vertical_alignment" defaultValue:@"top"];
-    if( [verticalAlignment isEqualToString:@"top"] )
-        _verticalAlignment = IXLayoutVerticalAlignmentTop;
-    else if( [verticalAlignment isEqualToString:@"middle"] )
-        _verticalAlignment = IXLayoutVerticalAlignmentMiddle;
-    else if( [verticalAlignment isEqualToString:@"bottom"] )
-        _verticalAlignment = IXLayoutVerticalAlignmentBottom;
+    NSString* verticalAlignmentString = [[self propertyContainer] getStringPropertyValue:@"vertical_alignment" defaultValue:@"top"];
+    NSString* horizontalAlignmentString = [[self propertyContainer] getStringPropertyValue:@"horizontal_alignment" defaultValue:@"left"];
     
-    NSString* horizontalAlignment = [[self propertyContainer] getStringPropertyValue:@"horizontal_alignment" defaultValue:@"left"];
-    if( [horizontalAlignment isEqualToString:@"left"] )
-        _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
-    else if( [horizontalAlignment isEqualToString:@"center"] )
-        _horizontalAlignment = IXLayoutHorizontalAlignmentCenter;
-    else if( [horizontalAlignment isEqualToString:@"right"] )
-        _horizontalAlignment = IXLayoutHorizontalAlignmentRight;
+    IXLayoutVerticalAlignment verticalAlignment = IXLayoutVerticalAlignmentTop;
+    IXLayoutHorizontalAlignment horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
+
+    if( [verticalAlignmentString isEqualToString:@"top"] )
+        verticalAlignment = IXLayoutVerticalAlignmentTop;
+    else if( [verticalAlignmentString isEqualToString:@"middle"] )
+        verticalAlignment = IXLayoutVerticalAlignmentMiddle;
+    else if( [verticalAlignmentString isEqualToString:@"bottom"] )
+        verticalAlignment = IXLayoutVerticalAlignmentBottom;
     
+    if( [horizontalAlignmentString isEqualToString:@"left"] )
+        horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
+    else if( [horizontalAlignmentString isEqualToString:@"center"] )
+        horizontalAlignment = IXLayoutHorizontalAlignmentCenter;
+    else if( [horizontalAlignmentString isEqualToString:@"right"] )
+        horizontalAlignment = IXLayoutHorizontalAlignmentRight;
+    
+    if( _verticalAlignment != verticalAlignment )
+    {
+        _verticalAlignment = verticalAlignment;
+        _needsToRelayout = YES;
+    }
+    if( _horizontalAlignment != horizontalAlignment )
+    {
+        _horizontalAlignment = horizontalAlignment;
+        _needsToRelayout = YES;
+    }
+
     IXSizePercentageContainer *width = [[self propertyContainer] getSizePercentageContainer:@"width" defaultValue:0.0f];
     if( ! [[self width] isEqual:width] )
     {

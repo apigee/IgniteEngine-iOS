@@ -10,7 +10,7 @@
 
 #import "IXConstants.h"
 #import "IXBaseControl.h"
-#import "IXBaseDataprovider.h"
+#import "IXBaseDataProvider.h"
 #import "IXBaseObject.h"
 #import "IXBaseConditionalObject.h"
 #import "IXBaseAction.h"

@@ -25,7 +25,7 @@
 @class IXBaseObject;
 @class IXViewController;
 @class IXBaseControl;
-@class IXBaseDataprovider;
+@class IXBaseDataProvider;
 
 @interface IXSandbox : NSObject
 
@@ -36,10 +36,10 @@
 @property (nonatomic,strong) NSString* rootPath;
 
 -(void)addDataProviders:(NSArray*)dataProviders;
--(BOOL)addDataProvider:(IXBaseDataprovider*)dataProvider;
+-(BOOL)addDataProvider:(IXBaseDataProvider*)dataProvider;
 
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID;
--(IXBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID;
+-(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID;
 
 -(void)loadAllDataProviders;
 

@@ -7,24 +7,15 @@
 //
 
 #import "IXBaseObject.h"
-#import "IXConstants.h"
-#import <RestKit/CoreData.h>
 
-@class IXTableView;
-@class IXPropertyContainer;
-@class IXEntityContainer;
-
-@interface IXBaseDataprovider : IXBaseObject
-
-@property (nonatomic,weak) IXTableView* controlListener;
-@property (nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
+@interface IXBaseDataProvider : IXBaseObject
 
 @property (nonatomic,strong) IXPropertyContainer* requestParameterProperties;
 @property (nonatomic,strong) IXPropertyContainer* requestHeaderProperties;
 @property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
-@property (nonatomic,strong) IXEntityContainer* entityContainer;
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
+@property (nonatomic,copy) NSString* dataLocation;
 
 -(void)loadData;
 

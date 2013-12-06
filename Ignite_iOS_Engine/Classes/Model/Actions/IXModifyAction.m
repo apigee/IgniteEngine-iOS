@@ -16,7 +16,7 @@
 #import "IXNavigationViewController.h"
 #import "IXLayout.h"
 #import "IXBaseControl.h"
-#import "IXBaseDataprovider.h"
+#import "IXBaseDataProvider.h"
 
 @implementation IXModifyAction
 
@@ -48,9 +48,9 @@
                 {
                     needsToLayout = YES;
                 }
-                else if( [baseObject isKindOfClass:[IXBaseDataprovider class]] )
+                else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
                 {
-                    [((IXBaseDataprovider*)baseObject) loadData];
+                    [((IXBaseDataProvider*)baseObject) loadData];
                 }
             }
             

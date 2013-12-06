@@ -35,7 +35,7 @@
 		13033FA8183ED8F200C29157 /* IXTextHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5F183ED8F200C29157 /* IXTextHighlighter.m */; };
 		13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F61183ED8F200C29157 /* IXTextInput.m */; };
 		13033FAA183ED8F200C29157 /* IXToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F63183ED8F200C29157 /* IXToggle.m */; };
-		13033FAD183ED8F200C29157 /* IXBaseDataprovider.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6A183ED8F200C29157 /* IXBaseDataprovider.m */; };
+		13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */; };
 		13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6C183ED8F200C29157 /* IXEntityContainer.m */; };
 		13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6E183ED8F200C29157 /* IXSandbox.m */; };
 		13033FB0183ED8F200C29157 /* IXProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F71183ED8F200C29157 /* IXProperty.m */; };
@@ -77,6 +77,8 @@
 		63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD018444D600048C668 /* NSString+IXAdditions.m */; };
 		63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD6184581EE0048C668 /* IXJSONGrabber.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
+		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
+		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
@@ -143,8 +145,8 @@
 		13033F61183ED8F200C29157 /* IXTextInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTextInput.m; sourceTree = "<group>"; };
 		13033F62183ED8F200C29157 /* IXToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXToggle.h; sourceTree = "<group>"; };
 		13033F63183ED8F200C29157 /* IXToggle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXToggle.m; sourceTree = "<group>"; };
-		13033F69183ED8F200C29157 /* IXBaseDataprovider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseDataprovider.h; sourceTree = "<group>"; };
-		13033F6A183ED8F200C29157 /* IXBaseDataprovider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXBaseDataprovider.m; sourceTree = "<group>"; };
+		13033F69183ED8F200C29157 /* IXBaseDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseDataProvider.h; sourceTree = "<group>"; };
+		13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXBaseDataProvider.m; sourceTree = "<group>"; };
 		13033F6B183ED8F200C29157 /* IXEntityContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEntityContainer.h; sourceTree = "<group>"; };
 		13033F6C183ED8F200C29157 /* IXEntityContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEntityContainer.m; sourceTree = "<group>"; };
 		13033F6D183ED8F200C29157 /* IXSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSandbox.h; sourceTree = "<group>"; };
@@ -212,6 +214,10 @@
 		63311BD6184581EE0048C668 /* IXJSONGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONGrabber.m; sourceTree = "<group>"; };
 		635614F51842FC3000B7C95F /* IXFormatShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFormatShortCode.h; sourceTree = "<group>"; };
 		635614F61842FC3000B7C95F /* IXFormatShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFormatShortCode.m; sourceTree = "<group>"; };
+		635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONDataProvider.h; sourceTree = "<group>"; };
+		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
+		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
+		635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCoreDataDataProvider.m; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -363,10 +369,14 @@
 		13033F68183ED8F200C29157 /* DataProviders */ = {
 			isa = PBXGroup;
 			children = (
-				13033F69183ED8F200C29157 /* IXBaseDataprovider.h */,
-				13033F6A183ED8F200C29157 /* IXBaseDataprovider.m */,
+				13033F69183ED8F200C29157 /* IXBaseDataProvider.h */,
+				13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */,
 				13033F6B183ED8F200C29157 /* IXEntityContainer.h */,
 				13033F6C183ED8F200C29157 /* IXEntityContainer.m */,
+				635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */,
+				635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */,
+				635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */,
+				635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */,
 			);
 			path = DataProviders;
 			sourceTree = "<group>";
@@ -672,7 +682,8 @@
 				63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */,
 				13033F93183ED8F200C29157 /* IXBaseAction.m in Sources */,
 				13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */,
-				13033FAD183ED8F200C29157 /* IXBaseDataprovider.m in Sources */,
+				13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */,
+				635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */,
 				13033FA5183ED8F200C29157 /* IXSocial.m in Sources */,
 				13033FA6183ED8F200C29157 /* IXTableView.m in Sources */,
 				13033F9B183ED8F200C29157 /* IXBaseControl.m in Sources */,
@@ -686,6 +697,7 @@
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
 				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,
+				635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */,
 				13033F92183ED8F200C29157 /* IXAlertAction.m in Sources */,
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,

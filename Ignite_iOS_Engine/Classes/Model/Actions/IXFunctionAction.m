@@ -12,7 +12,7 @@
 #import "IXSandbox.h"
 #import "IXBaseControl.h"
 #import "IXActionContainer.h"
-#import "IXBaseDataprovider.h"
+#import "IXBaseDataProvider.h"
 
 @implementation IXFunctionAction
 

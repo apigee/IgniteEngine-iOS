@@ -129,4 +129,17 @@
     }
 }
 
+-(NSString*)description
+{
+    NSMutableString* description = [NSMutableString string];
+    [[self actionsDict] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [description appendFormat:@"\nEvents For %@:\n",key];
+        for( IXBaseAction* action in obj )
+        {
+            [description appendString:[action description]];
+        }
+    }];
+    return description;
+}
+
 @end

@@ -70,10 +70,10 @@
         if( borderWidth == 0.0f )
         {
             borderWidth = 1.0f;
-            CGFloat hue = ( arc4random() % 256 / 256.0 );
-            CGFloat saturation = ( arc4random() % 128 / 256.0 ) + 0.5;
-            CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5;
-            borderColor = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+            CGFloat hue = ( arc4random() % 256 / 256.0f );
+            CGFloat saturation = ( arc4random() % 128 / 256.0f ) + 0.5f;
+            CGFloat brightness = ( arc4random() % 128 / 256.0f ) + 0.5f;
+            borderColor = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1.0f];
         }
     }
     [[[self contentView] layer] setBorderWidth:borderWidth];

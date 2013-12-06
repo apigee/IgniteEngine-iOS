@@ -16,7 +16,7 @@
 #import "IXBaseAction.h"
 #import "IXTextInput.h"
 #import "IXActionContainer.h"
-#import "IXBaseDataprovider.h"
+#import "IXBaseDataProvider.h"
 #import "IXEntityContainer.h"
 #import "IXAppManager.h"
 
@@ -295,9 +295,9 @@
     return controlArray;
 }
 
-+(IXBaseDataprovider*)dataProviderWithValueDictionary:(NSDictionary*)dataProviderValueDict
++(IXBaseDataProvider*)dataProviderWithValueDictionary:(NSDictionary*)dataProviderValueDict
 {
-    IXBaseDataprovider* dataProvider = nil;
+    IXBaseDataProvider* dataProvider = nil;
     if( [dataProviderValueDict allKeys] > 0 )
     {
         NSString* dataProviderType = [dataProviderValueDict objectForKey:@"type"];
@@ -391,7 +391,7 @@
         {
             if( [dataProviderValueDict isKindOfClass:[NSDictionary class]] )
             {
-                IXBaseDataprovider* dataProvider = [IXJSONParser dataProviderWithValueDictionary:dataProviderValueDict];
+                IXBaseDataProvider* dataProvider = [IXJSONParser dataProviderWithValueDictionary:dataProviderValueDict];
                 if( dataProvider != nil )
                 {
                     [dataProviderArray addObject:dataProvider];

@@ -10,7 +10,7 @@
 
 #import "IXBaseObject.h"
 #import "IXBaseControl.h"
-#import "IXBaseDataprovider.h"
+#import "IXBaseDataProvider.h"
 #import "IXAppManager.h"
 
 @interface IXSandbox ()
@@ -51,7 +51,7 @@
     NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
     [returnArray addObjectsFromArray:controlsWithObjectID];
 
-    IXBaseDataprovider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
+    IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
     if( dataProviderWithObjectID )
     {
         [returnArray addObject:dataProviderWithObjectID];
@@ -62,13 +62,13 @@
 
 -(void)addDataProviders:(NSArray*)dataProviders
 {
-    for( IXBaseDataprovider* dataProvider in dataProviders )
+    for( IXBaseDataProvider* dataProvider in dataProviders )
     {
         [self addDataProvider:dataProvider];
     }
 }
 
--(BOOL)addDataProvider:(IXBaseDataprovider*)dataProvider
+-(BOOL)addDataProvider:(IXBaseDataProvider*)dataProvider
 {
     BOOL didAddDataProvider = NO;
     
@@ -102,7 +102,7 @@
 
 -(void)loadAllDataProviders
 {
-    for( IXBaseDataprovider* dataProvider in [[self dataProviders] allValues] )
+    for( IXBaseDataProvider* dataProvider in [[self dataProviders] allValues] )
     {
         [dataProvider applySettings];
         if( [dataProvider shouldAutoLoad] )
@@ -112,9 +112,9 @@
     }
 }
 
--(IXBaseDataprovider*)getDataProviderWithID:(NSString*)dataProviderID
+-(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
-    IXBaseDataprovider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
+    IXBaseDataProvider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
     if( returnDataProvider == nil )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];

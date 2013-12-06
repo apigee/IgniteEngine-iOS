@@ -3,6 +3,7 @@ PODS:
   - ALMoviePlayerController (0.3.0)
   - ColorUtils (1.1.1)
   - JASidePanels (1.3.2)
+  - Masonry (0.3.0)
   - RestKit (0.20.3):
     - RestKit/Core
   - RestKit/Core (0.20.3):
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - ALMoviePlayerController (~> 0.3.0)
   - ColorUtils (~> 1.1.1)
   - JASidePanels (~> 1.3.2)
+  - Masonry
   - RestKit (~> 0.20.0)
   - SDWebImage (~> 3.5)
   - SVPulsingAnnotationView (~> 0.3.0)
@@ -48,6 +50,7 @@ SPEC CHECKSUMS:
   ALMoviePlayerController: e4a22e60340ffe429711a71e6dfb813fd38f10d2
   ColorUtils: 668e0b61f291793ba1323347e3bb2cdbbcf1f222
   JASidePanels: c0e642a7311ec9cc9adfa616fa4a795e4e169f20
+  Masonry: f7e7e5692c9133b7ee44d1a17b1c64ad423cd64e
   RestKit: 1f181c180105a92f11ec4f6cd7de37625e516d83
   SDWebImage: f1a72472f8a2d54445f1fedafe2090593d9caf7f
   SOCKit: 2f3bc4d07910de12dcc202815e07db68a3802581

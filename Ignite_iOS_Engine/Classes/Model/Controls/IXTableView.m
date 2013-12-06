@@ -7,7 +7,7 @@
 //
 
 #import "IXTableView.h"
-#import "IXBaseDataprovider.h"
+#import "IXCoreDataDataProvider.h"
 #import "IXSandbox.h"
 #import <RestKit/CoreData.h>
 
@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, strong) IXBaseDataprovider* dataProvider;
+@property (nonatomic, strong) IXCoreDataDataProvider* dataProvider;
 
 @end
 

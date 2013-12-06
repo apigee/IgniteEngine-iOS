@@ -17,9 +17,9 @@
 -(instancetype)init
 {
     return [self initWithEventName:nil
-                  actionProperties:[[IXPropertyContainer alloc] init]
-               parameterProperties:[[IXPropertyContainer alloc] init]
-                subActionContainer:[[IXActionContainer alloc] init]];
+                  actionProperties:nil
+               parameterProperties:nil
+                subActionContainer:nil];
 }
 
 -(instancetype)initWithEventName:(NSString*)eventName
@@ -53,6 +53,21 @@
 -(void)execute
 {
     // Base action does nothing.
+}
+
+-(NSString*)description
+{
+    NSMutableString* description = [NSMutableString stringWithFormat:@"\n%@ on %@:",[self class],[self eventName]];
+    [description appendFormat:@"\n\nProperties:\n%@ ",[[self actionProperties] description]];
+    if( [self parameterProperties] )
+    {
+        [description appendFormat:@"\nParameters:\n%@ ",[[self parameterProperties] description]];
+    }
+    if( [self subActionContainer] )
+    {
+        [description appendFormat:@"\nSub Actions:\n%@ ",[[self subActionContainer] description]];
+    }
+    return description;
 }
 
 @end
