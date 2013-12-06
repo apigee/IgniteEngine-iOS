@@ -17,6 +17,7 @@
 #import "IXTextInput.h"
 #import "IXActionContainer.h"
 #import "IXBaseDataProvider.h"
+#import "IXCoreDataDataProvider.h"
 #import "IXEntityContainer.h"
 #import "IXAppManager.h"
 
@@ -320,10 +321,13 @@
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [dataProvider setPropertyContainer:propertyContainer];
                 
-                id entitiesDict = [dataProviderValueDict objectForKey:@"entity"];
-                IXEntityContainer* entityContainer = [IXJSONParser entityContainerWithJSONEntityDict:entitiesDict];
-                [dataProvider setEntityContainer:entityContainer];
-
+                if( [dataProvider isKindOfClass:[IXCoreDataDataProvider class]] )
+                {
+                    id entitiesDict = [dataProviderValueDict objectForKey:@"entity"];
+                    IXEntityContainer* entityContainer = [IXJSONParser entityContainerWithJSONEntityDict:entitiesDict];
+                    [((IXCoreDataDataProvider*)dataProvider) setEntityContainer:entityContainer];
+                }
+                
                 id parametersDict = [dataProviderValueDict objectForKey:@"parameters"];
                 IXPropertyContainer* parametersPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
                 [dataProvider setRequestParameterProperties:parametersPropertyContainer];

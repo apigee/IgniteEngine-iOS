@@ -7,6 +7,7 @@
 //
 
 #import "IXTableView.h"
+#import "IXBaseDataProvider.h"
 #import "IXCoreDataDataProvider.h"
 #import "IXSandbox.h"
 #import <RestKit/CoreData.h>
@@ -16,7 +17,7 @@
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, strong) IXCoreDataDataProvider* dataProvider;
+@property (nonatomic, strong) IXBaseDataProvider* dataProvider;
 
 @end
 
@@ -54,7 +55,10 @@
     
     [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:@"dataprovider_id" defaultValue:nil]];
     [self setDataProvider:[[self sandbox] getDataProviderWithID:[self dataSourceID]]];
-    [[self dataProvider] setControlListener:self];
+    if( [[self dataProvider] isKindOfClass:[IXCoreDataDataProvider class]] )
+    {
+        [((IXCoreDataDataProvider*)[self dataProvider]) setControlListener:self];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,8 +74,12 @@
 {
 //    id<NSFetchedResultsSectionInfo> sectionInfo = [self.dataProvider.fetchedResultsController fetchedObjects];
 //    int a = [sectionInfo numberOfObjects];
-
-    return  [[self.dataProvider.fetchedResultsController fetchedObjects] count];
+    NSInteger count = 0;
+    if( [[self dataProvider] isKindOfClass:[IXCoreDataDataProvider class]] )
+    {
+        count = [[[((IXCoreDataDataProvider*)[self dataProvider]) fetchedResultsController] fetchedObjects] count];
+    }
+    return count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -104,7 +112,10 @@
     
     @try {
         NSString* key = [[self propertyContainer] getStringPropertyValue:@"data_row_text_path" defaultValue:nil];
-        [cell.textLabel setText:[[self.dataProvider.fetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:key]];
+        if( [[self dataProvider] isKindOfClass:[IXCoreDataDataProvider class]] )
+        {
+            [cell.textLabel setText:[[[((IXCoreDataDataProvider*)[self dataProvider]) fetchedResultsController] objectAtIndexPath:indexPath] valueForKeyPath:key]];
+        }
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
