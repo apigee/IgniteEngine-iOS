@@ -244,7 +244,7 @@
 
     NSString* layoutType = [[self propertyContainer] getStringPropertyValue:@"layout_type" defaultValue:@"relative"];
     BOOL isFloatPositioned = [layoutType isEqualToString:@"float"];
-    BOOL isAbsolutePositioned = [layoutType isEqualToString:@"absolute"] || _isFloatPositioned;
+    BOOL isAbsolutePositioned = ([layoutType isEqualToString:@"absolute"] || isFloatPositioned);
     if( _isFloatPositioned != isFloatPositioned )
     {
         _isFloatPositioned = isFloatPositioned;
@@ -270,11 +270,11 @@
         verticalAlignment = IXLayoutVerticalAlignmentBottom;
     
     if( [horizontalAlignmentString isEqualToString:@"left"] )
-        horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
+        horizontalAlignment = IXLayoutHorizontalAlignmentRight;
     else if( [horizontalAlignmentString isEqualToString:@"center"] )
         horizontalAlignment = IXLayoutHorizontalAlignmentCenter;
     else if( [horizontalAlignmentString isEqualToString:@"right"] )
-        horizontalAlignment = IXLayoutHorizontalAlignmentRight;
+        horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
     if( _verticalAlignment != verticalAlignment )
     {

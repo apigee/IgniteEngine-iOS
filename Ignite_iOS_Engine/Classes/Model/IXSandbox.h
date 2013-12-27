@@ -21,16 +21,22 @@
  
 
 #import <Foundation/Foundation.h>
+#import <RestKit/CoreData.h>
 
 @class IXBaseObject;
 @class IXViewController;
 @class IXBaseControl;
 @class IXBaseDataProvider;
+@class IXCoreDataDataProvider;
 
 @interface IXSandbox : NSObject
 
 @property (nonatomic,weak) IXViewController* viewController;
 @property (nonatomic,weak) IXBaseControl* containerControl;
+
+@property (nonatomic,strong) NSManagedObject* dataProviderManagedObjectForRowData;
+@property (nonatomic,weak) IXCoreDataDataProvider* dataProviderForRowData;
+@property (nonatomic,strong) NSIndexPath* indexPathForRowData;
 
 @property (nonatomic,strong) NSString* basePath;
 @property (nonatomic,strong) NSString* rootPath;

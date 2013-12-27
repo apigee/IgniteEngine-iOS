@@ -19,7 +19,9 @@
 #import "IXAlertAction.h"
 
 @interface IXActionContainer ()
+
 @property (nonatomic,strong) NSMutableDictionary* actionsDict;
+
 @end
 
 @implementation IXActionContainer
@@ -36,12 +38,18 @@
     return self;
 }
 
--(instancetype)copyWithZone:(NSZone *)zone
+-(instancetype)copyWithZone:(NSZone*)zone
 {
     IXActionContainer* actionContainerCopy = [[[self class] allocWithZone:zone] init];
-    [actionContainerCopy setSandbox:[self sandbox]];
-    [actionContainerCopy setActionContainerOwner:[self actionContainerOwner]];
-    [actionContainerCopy setActionsDict:[[NSMutableDictionary alloc] initWithDictionary:[self actionsDict] copyItems:YES]];
+    if( actionContainerCopy )
+    {
+        [actionContainerCopy setSandbox:[self sandbox]];
+        [actionContainerCopy setActionContainerOwner:[self actionContainerOwner]];
+        [[self actionsDict] enumerateKeysAndObjectsUsingBlock:^(NSString* actionName, NSArray* actionArray, BOOL *stop) {
+            NSMutableArray* actionArrayCopy = [[NSMutableArray alloc] initWithArray:actionArray copyItems:YES];
+            [actionContainerCopy addActions:actionArrayCopy];
+        }];
+    }
     return actionContainerCopy;
 }
 

@@ -38,7 +38,10 @@
 {
     IXPropertyContainer* propertyContainerCopy = [[[self class] allocWithZone:zone] init];
     [propertyContainerCopy setSandbox:[self sandbox]];
-    [propertyContainerCopy setPropertiesDict:[[NSMutableDictionary alloc] initWithDictionary:[self propertiesDict] copyItems:YES]];
+    [[self propertiesDict] enumerateKeysAndObjectsUsingBlock:^(NSString* propertyName, NSArray* propertyArray, BOOL *stop) {
+        NSMutableArray* propertyArrayCopy = [[NSMutableArray alloc] initWithArray:propertyArray copyItems:YES];
+        [propertyContainerCopy addProperties:propertyArrayCopy];
+    }];
     return propertyContainerCopy;
 }
 
@@ -183,6 +186,13 @@
 {
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
     float returnValue =  ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
+    return returnValue;
+}
+
+-(float)getSizeValue:(NSString*)propertyName maximumSize:(float)maxSize defaultValue:(float)defaultValue
+{
+    IXSizePercentageContainer* sizePercentageContainer = [self getSizePercentageContainer:propertyName defaultValue:defaultValue];
+    float returnValue = [sizePercentageContainer evaluteForMaxValue:maxSize];
     return returnValue;
 }
 

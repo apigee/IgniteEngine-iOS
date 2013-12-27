@@ -142,7 +142,7 @@
     
     BOOL showGradient = [[self propertyContainer] propertyExistsForPropertyNamed:@"color.gradient_top"];
     
-    NSLog(showGradient ? @"Is the gradient visible? Yes" : @"Is the gradient visible? No");
+//    NSLog(showGradient ? @"Is the gradient visible? Yes" : @"Is the gradient visible? No");
     
     if (showGradient)
     {

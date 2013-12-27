@@ -24,6 +24,17 @@
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXBaseConditionalObject* baseConditionalObjectCopy = [[[self class] allocWithZone:zone] init];
+    if( baseConditionalObjectCopy )
+    {
+        [baseConditionalObjectCopy setConditionalProperty:[self conditionalProperty]];
+        [baseConditionalObjectCopy setInterfaceOrientationMask:[self interfaceOrientationMask]];
+    }
+    return baseConditionalObjectCopy;
+}
+
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     BOOL orientationIsValid = YES;

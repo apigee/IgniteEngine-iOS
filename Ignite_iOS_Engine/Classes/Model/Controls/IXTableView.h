@@ -10,6 +10,4 @@
 
 @interface IXTableView : IXBaseControl
 
--(void)reloadTableView;
-
 @end

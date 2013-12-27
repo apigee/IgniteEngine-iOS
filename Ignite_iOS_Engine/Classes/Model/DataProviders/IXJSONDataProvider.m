@@ -30,7 +30,7 @@
         jsonXPath = [jsonXPath substringFromIndex:1];
     }
     
-    NSString *currentKey = [[jsonXPath componentsSeparatedByString:@"/"] objectAtIndex:0];
+    NSString *currentKey = [[jsonXPath componentsSeparatedByString:@"/"] firstObject];
     
     NSObject *nextNode;
     // if dict -> get value

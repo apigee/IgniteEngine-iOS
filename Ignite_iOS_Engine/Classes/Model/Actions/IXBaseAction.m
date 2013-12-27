@@ -41,7 +41,7 @@
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    IXBaseAction* actionCopy = [[[self class] allocWithZone:zone] init];
+    IXBaseAction* actionCopy = [super copyWithZone:zone];
     [actionCopy setActionContainer:[self actionContainer]];
     [actionCopy setEventName:[self eventName]];
     [actionCopy setActionProperties:[[self actionProperties] copy]];

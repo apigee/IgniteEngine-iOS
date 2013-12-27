@@ -25,10 +25,11 @@
 @class IXSandbox;
 @class IXControlLayoutInfo;
 
-@interface IXBaseControl : IXBaseObject  <IXControlContentViewTouchDelegate>
+@interface IXBaseControl : IXBaseObject  <NSCopying,IXControlContentViewTouchDelegate>
 
 @property (nonatomic,strong,readonly) IXControlContentView* contentView;
 @property (nonatomic,strong,readonly) IXControlLayoutInfo* layoutInfo;
+@property (nonatomic,assign,getter = shouldNotifyParentOfLayoutUpdates) BOOL notifyParentOfLayoutUpdates;
 
 -(void)buildView;
 

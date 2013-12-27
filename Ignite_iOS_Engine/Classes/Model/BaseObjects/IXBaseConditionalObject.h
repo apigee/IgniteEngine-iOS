@@ -10,10 +10,10 @@
 
 @class IXProperty;
 
-@interface IXBaseConditionalObject : NSObject
+@interface IXBaseConditionalObject : NSObject <NSCopying>
 
 @property (nonatomic,assign) UIInterfaceOrientationMask interfaceOrientationMask;
-@property (nonatomic,copy) IXProperty* conditionalProperty;
+@property (nonatomic,strong) IXProperty* conditionalProperty;
 
 -(BOOL)isConditionalValid;
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation;

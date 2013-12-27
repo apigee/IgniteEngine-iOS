@@ -24,11 +24,11 @@
     if( self != nil )
     {
         [[self navigationBar] setBackgroundColor:[UIColor clearColor]];
-        [self setNavigationBarHidden:NO animated:NO];
-        [self setToolbarHidden:YES animated:NO];
+//        [self setNavigationBarHidden:NO animated:NO];
+//        [self setToolbarHidden:YES animated:NO];
         
-//        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-//        [self setAutomaticallyAdjustsScrollViewInsets:NO];
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+        [self setAutomaticallyAdjustsScrollViewInsets:NO];
 //        [[UINavigationBar appearance] ]
 //        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"picture.png"] forBarMetrics:UIBarMetricsDefault];
 //        [[UINavigationBar appearance] setBackgroundColor:[UIColor blackColor]];

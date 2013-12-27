@@ -31,6 +31,19 @@
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXBaseObject* baseObjectCopy = [[[self class] allocWithZone:zone] init];
+    if( baseObjectCopy )
+    {
+        [baseObjectCopy setID:[[self ID] copy]];
+        [baseObjectCopy setChildObjects:[[NSMutableArray alloc] initWithArray:[self childObjects] copyItems:YES]];
+        [baseObjectCopy setActionContainer:[[self actionContainer] copy]];
+        [baseObjectCopy setPropertyContainer:[[self propertyContainer] copy]];
+    }
+    return baseObjectCopy;
+}
+
 -(IXSandbox*)sandbox
 {
     return _sandbox;

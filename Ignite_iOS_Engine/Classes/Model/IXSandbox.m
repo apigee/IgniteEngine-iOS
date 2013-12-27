@@ -41,7 +41,6 @@
 -(void)setContainerControl:(IXBaseControl *)containerControl
 {
     _containerControl = containerControl;
-    [_containerControl setSandbox:self];
 }
 
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID
@@ -115,7 +114,7 @@
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
     IXBaseDataProvider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
-    if( returnDataProvider == nil )
+    if( returnDataProvider == nil && [self isEqual:[[IXAppManager sharedAppManager] applicationSandbox]] )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
     }

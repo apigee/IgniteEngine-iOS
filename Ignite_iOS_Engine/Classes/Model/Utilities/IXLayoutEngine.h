@@ -14,6 +14,7 @@
 @interface IXLayoutEngine : NSObject
 
 +(void)layoutControl:(IXLayout*)layoutControl inRect:(CGRect)layoutRect;
++(CGSize)getControlSize:(IXBaseControl*)control forLayoutSize:(CGSize)layoutSize;
 +(CGSize)getPreferredSizeForLayoutControl:(IXLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize;
 +(CGRect)getInternalLayoutRectForControl:(IXBaseControl*)control forOuterLayoutRect:(CGRect)outerLayoutRect;
 

@@ -76,9 +76,13 @@
 		63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */; };
 		63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD018444D600048C668 /* NSString+IXAdditions.m */; };
 		63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD6184581EE0048C668 /* IXJSONGrabber.m */; };
+		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
+		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
+		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
+		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
@@ -212,12 +216,20 @@
 		63311BD018444D600048C668 /* NSString+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IXAdditions.m"; sourceTree = "<group>"; };
 		63311BD5184581EE0048C668 /* IXJSONGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONGrabber.h; sourceTree = "<group>"; };
 		63311BD6184581EE0048C668 /* IXJSONGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONGrabber.m; sourceTree = "<group>"; };
+		634895041863637A008C3760 /* UILabel+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+IXAdditions.h"; sourceTree = "<group>"; };
+		634895051863637A008C3760 /* UILabel+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+IXAdditions.m"; sourceTree = "<group>"; };
+		6348950718637B4F008C3760 /* IXUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUITableViewCell.h; sourceTree = "<group>"; };
+		6348950818637B4F008C3760 /* IXUITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUITableViewCell.m; sourceTree = "<group>"; };
 		635614F51842FC3000B7C95F /* IXFormatShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFormatShortCode.h; sourceTree = "<group>"; };
 		635614F61842FC3000B7C95F /* IXFormatShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFormatShortCode.m; sourceTree = "<group>"; };
 		635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONDataProvider.h; sourceTree = "<group>"; };
 		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
 		635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCoreDataDataProvider.m; sourceTree = "<group>"; };
+		638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDatarowShortCode.h; sourceTree = "<group>"; };
+		638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDatarowShortCode.m; sourceTree = "<group>"; };
+		638DE47D1860E80D00F2E36A /* UIView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IXAdditions.h"; sourceTree = "<group>"; };
+		638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IXAdditions.m"; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -398,10 +410,12 @@
 		13033F76183ED8F200C29157 /* ShortCodes */ = {
 			isa = PBXGroup;
 			children = (
-				13033F77183ED8F200C29157 /* IXAppShortCode.h */,
-				13033F78183ED8F200C29157 /* IXAppShortCode.m */,
 				13033F79183ED8F200C29157 /* IXBaseShortCode.h */,
 				13033F7A183ED8F200C29157 /* IXBaseShortCode.m */,
+				13033F77183ED8F200C29157 /* IXAppShortCode.h */,
+				13033F78183ED8F200C29157 /* IXAppShortCode.m */,
+				638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */,
+				638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */,
 				63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */,
 				63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */,
 				635614F51842FC3000B7C95F /* IXFormatShortCode.h */,
@@ -430,6 +444,8 @@
 				13033F88183ED8F200C29157 /* IXControlContentView.m */,
 				13033F89183ED8F200C29157 /* IXNavigationViewController.h */,
 				13033F8A183ED8F200C29157 /* IXNavigationViewController.m */,
+				6348950718637B4F008C3760 /* IXUITableViewCell.h */,
+				6348950818637B4F008C3760 /* IXUITableViewCell.m */,
 				13033F8B183ED8F200C29157 /* IXViewController.h */,
 				13033F8C183ED8F200C29157 /* IXViewController.m */,
 			);
@@ -518,8 +534,12 @@
 				63311BD018444D600048C668 /* NSString+IXAdditions.m */,
 				63311BCC184445060048C668 /* UIImagePickerController+IXAdditions.h */,
 				63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */,
+				634895041863637A008C3760 /* UILabel+IXAdditions.h */,
+				634895051863637A008C3760 /* UILabel+IXAdditions.m */,
 				63311BC618442F270048C668 /* UITextField+IXAdditions.h */,
 				63311BC718442F270048C668 /* UITextField+IXAdditions.m */,
+				638DE47D1860E80D00F2E36A /* UIView+IXAdditions.h */,
+				638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */,
 				63311BC91844439E0048C668 /* UIViewController+IXAdditions.h */,
 				63311BCA1844439E0048C668 /* UIViewController+IXAdditions.m */,
 			);
@@ -676,6 +696,7 @@
 				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
 				13033F9F183ED8F200C29157 /* IXMap.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
+				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
 				13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */,
 				13033FB2183ED8F200C29157 /* IXPropertyParser.m in Sources */,
@@ -694,12 +715,14 @@
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				13033FA3183ED8F200C29157 /* IXPanel.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
+				634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */,
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
 				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,
 				635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */,
 				13033F92183ED8F200C29157 /* IXAlertAction.m in Sources */,
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,
+				638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */,
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,
 				13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
@@ -710,6 +733,7 @@
 				13033F95183ED8F200C29157 /* IXModifyAction.m in Sources */,
 				13033FB3183ED8F200C29157 /* IXAppShortCode.m in Sources */,
 				13033FB4183ED8F200C29157 /* IXBaseShortCode.m in Sources */,
+				6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */,
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,

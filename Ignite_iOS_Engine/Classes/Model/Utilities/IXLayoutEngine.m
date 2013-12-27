@@ -91,7 +91,6 @@
             }
             case IXLayoutHorizontalAlignmentLeft:
             {
-                // TODO: CHECK THAT ITS ACTUALLY THE RIGHT INSET TO USE!!!
                 returnPosition.x = layoutRect.size.width - controlSize.width - controlMarginInsets.right;
                 break;
             }
@@ -403,11 +402,11 @@
         }
         
         IXFrameAndOffset frameAndOffset = [IXLayoutEngine getControlFrame:control
-                                                           forLayoutControl:layoutControl
-                                                             forLayoutRect:layoutRectToCalculateControlFrame
-                                                             currentOffset:(controlIsAbsolutePositioned) ? 0.0f : currentOffset
-                                                     fixOffsetToLayoutRect:fixOffsetToLayoutRect
-                                                     allowOffAxisAlignment:YES];
+                                                         forLayoutControl:layoutControl
+                                                            forLayoutRect:layoutRectToCalculateControlFrame
+                                                            currentOffset:(controlIsAbsolutePositioned) ? 0.0f : currentOffset
+                                                    fixOffsetToLayoutRect:fixOffsetToLayoutRect
+                                            allowOffAxisAlignment:YES];
         
         [controlLayoutInfo setLayoutRect:frameAndOffset.frame];
         if( !controlIsAbsolutePositioned )

@@ -25,9 +25,23 @@
     self = [super init];
     if( self )
     {
+        _contentView = nil;
+        _layoutInfo = nil;
+        _notifyParentOfLayoutUpdates = YES;
+        
         [self buildView];
     }
     return self;
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXBaseControl* baseControl = [super copyWithZone:zone];
+    if( baseControl )
+    {
+        [baseControl buildView];        
+    }
+    return baseControl;
 }
 
 //

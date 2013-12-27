@@ -238,7 +238,7 @@ static NSString* const kIXEmptyString = @"";
             NSString* objectIDWithMethodString = [shortCodeString substringWithRange:shortCodeObjectIDWithMethodRange];
             NSMutableArray* objectIDWithMethodStringComponents = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIXPeriodString]];
             
-            if( [objectIDWithMethodStringComponents count] > 1 )
+            if( [objectIDWithMethodStringComponents count] >= 1 )
             {
                 NSString* type = (validRangesCount == 3) ? [objectIDWithMethodStringComponents lastObject] : @"Get";
                 Class shortCodeClass = NSClassFromString([NSString stringWithFormat:@"IX%@ShortCode",[type capitalizedString]]);

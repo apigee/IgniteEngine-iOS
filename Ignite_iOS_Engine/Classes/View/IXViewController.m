@@ -56,17 +56,19 @@
 {
     [super viewDidLoad];
     
+    [self setView:[_containerControl contentView]];
+
     // To change the frame to underlap the status bar
-    //    CGRect frame = [[self view] frame];
-    //    frame.origin = CGPointMake(0, -[[UIApplication sharedApplication] statusBarFrame].size.height);
-    //    [[self view] setFrame:frame];
+//    CGRect frame = [[self view] frame];
+//    frame.origin = CGPointMake(0, -[[UIApplication sharedApplication] statusBarFrame].size.height);
+//    [[self view] setFrame:frame];
     
     
-    [self setWantsFullScreenLayout:YES];
+//    [self setWantsFullScreenLayout:YES];
     [[self view] setClipsToBounds:YES];
     
-    [self setAutomaticallyAdjustsScrollViewInsets:![[[IXAppManager sharedAppManager] rootViewController] isNavigationBarHidden]];
-    [[self view] addSubview:[_containerControl contentView]];
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];//![[[IXAppManager sharedAppManager] rootViewController] isNavigationBarHidden]];
+//    [[self view] addSubview:[_containerControl contentView]];
     // FIXME: need to set some default values here for the container control and add the view properties to it.
 }
 
@@ -108,10 +110,27 @@
     [[[self containerControl] actionContainer] executeActionsForEventNamed:@"did_disappear"];
 }
 
+- (void) viewDidLayoutSubviews {
+    // only works for iOS 7+
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CGRect viewBounds = self.view.bounds;
+        CGFloat topBarOffset = self.topLayoutGuide.length;
+        
+        // snaps the view under the status bar (iOS 6 style)
+        viewBounds.origin.y = topBarOffset * -1;
+        
+        // shrink the bounds of your view to compensate for the offset
+        viewBounds.size.height = viewBounds.size.height + (topBarOffset * -1);
+//        self.view.bounds = viewBounds;
+    }
+}
+
 -(void)layoutControls
 {
-    [[_containerControl contentView] setFrame:[[self view] bounds]];
-    [_containerControl layoutControl];
+//    CGRect frame = [[self view] frame];
+//    CGRect bounds = [[self view] bounds];
+//    [[[self containerControl] contentView] setFrame:[[self view] bounds]];
+    [[self containerControl] layoutControl];
 }
 
 -(void)applySettings
@@ -119,7 +138,7 @@
     UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
 
-    [_containerControl applySettings];
+    [[self containerControl] applySettings];
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

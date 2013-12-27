@@ -51,14 +51,17 @@
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    IXProperty *copiedProperty = [[[self class] allocWithZone:zone] init];
-    [copiedProperty setPropertyContainer:[self propertyContainer]];
+    IXProperty *copiedProperty = [super copyWithZone:zone];
     [copiedProperty setReadonly:[self isReadonly]];
     [copiedProperty setPropertyName:[self propertyName]];
     [copiedProperty setOriginalString:[self originalString]];
     [copiedProperty setStaticText:[self staticText]];
     [copiedProperty setPropertyValue:[self propertyValue]];
     [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
+    for( IXBaseShortCode* copiedShortCode in [copiedProperty shortCodes] )
+    {
+        [copiedShortCode setProperty:copiedProperty];
+    }
     [copiedProperty setShortCodeRanges:[[NSMutableArray alloc] initWithArray:[self shortCodeRanges] copyItems:YES]];
     return copiedProperty;
 }

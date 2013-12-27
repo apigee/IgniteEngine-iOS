@@ -16,6 +16,8 @@
 
 @interface IXCoreDataDataProvider () <NSFetchedResultsControllerDelegate>
 
+@property (nonatomic,strong) NSMutableArray* delegates;
+
 @property (nonatomic, strong) RKObjectManager* objectManager;
 @property (nonatomic,assign) BOOL sortAscending;
 
@@ -36,6 +38,36 @@
     [_fetchedResultsController setDelegate:nil];
 }
 
+-(id)init
+{
+    self = [super init];
+    if( self )
+    {
+        _delegates = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+-(void)addDelegate:(id<IXCoreDataDataProviderDelegate>)delegate
+{
+    if( delegate )
+        [[self delegates] addObject:delegate];
+}
+
+-(void)removeDelegate:(id<IXCoreDataDataProviderDelegate>)delegate
+{
+    if( delegate )
+        [[self delegates] removeObject:delegate];
+}
+
+-(void)notifyAllDelegates
+{
+    for( id<IXCoreDataDataProviderDelegate> delegate in [self delegates] )
+    {
+        [delegate coreDataProvider:self didUpdateWithResultsController:[self fetchedResultsController]];
+    }
+}
+
 -(void)setSandbox:(IXSandbox *)sandbox
 {
     [super setSandbox:sandbox];
@@ -53,8 +85,8 @@
     
     NSString* pathPattern = [[self propertyContainer] getStringPropertyValue:@"path_pattern" defaultValue:nil];
     NSString* objectsPath = [[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil];
-    NSString* sortDescriptorKey = [[self propertyContainer] getStringPropertyValue:@"sort_descriptor_key" defaultValue:nil];
-    BOOL sortAscending = [[self propertyContainer] getBoolPropertyValue:@"sort_ascending" defaultValue:YES];
+    NSString* sortDescriptorKey = [[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil];
+    BOOL sortAscending = [[self propertyContainer] getBoolPropertyValue:@"fetch_sort_ascending" defaultValue:YES];
     
     BOOL needsToRecreateEverything = NO;
     if( ![[self dataLocation] isEqualToString:previousDataLocation] )
@@ -285,7 +317,9 @@
         
         if( [self sortDescriptorKey] != nil && ![[self sortDescriptorKey] isEqualToString:@""] )
         {
-            NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey] ascending:[self sortAscending]];
+            NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
+                                                                         ascending:[self sortAscending]
+                                                                          selector:@selector(localizedCaseInsensitiveCompare:)];
             fetchRequest.sortDescriptors = @[descriptor];
         }
         
@@ -317,7 +351,7 @@
         NSArray* fetchedObjects = [[self fetchedResultsController] fetchedObjects];
         if( fetchedObjects != nil && [fetchedObjects count] > 0 )
         {
-            [[self controlListener] reloadTableView];
+            [self notifyAllDelegates];
         }
         
         [[self objectManager] getObjectsAtPath:[self objectsPath]
@@ -338,7 +372,12 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [[self controlListener] reloadTableView];
+    [self notifyAllDelegates];
+}
+
+-(NSInteger)getRowCount
+{
+    return [[[self fetchedResultsController] fetchedObjects] count];
 }
 
 @end

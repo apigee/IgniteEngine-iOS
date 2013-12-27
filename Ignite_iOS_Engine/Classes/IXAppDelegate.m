@@ -26,6 +26,7 @@
     UIViewController* vc2 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     [vc2.view setBackgroundColor:[UIColor blueColor]];
     
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [controller setLeftPanel:vc1];
     [controller setRightPanel:vc2];
     [controller setCenterPanel:[[IXAppManager sharedAppManager] rootViewController]];
