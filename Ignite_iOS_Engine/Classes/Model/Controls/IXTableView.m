@@ -24,7 +24,6 @@
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
 @property (nonatomic, strong) IXCoreDataDataProvider* dataProvider;
-@property (nonatomic, strong) NSMutableDictionary* rowSandboxes;
 @property (nonatomic, strong) NSMutableDictionary* sectionNumbersAndRowCount;
 
 @property (nonatomic, assign) NSInteger currentRowCount;
@@ -49,17 +48,9 @@
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     
-    _rowSandboxes = [[NSMutableDictionary alloc] init];
     _sectionNumbersAndRowCount = nil;
     
     [[self contentView] addSubview:_tableView];
-}
-
--(NSString*)getValueForDataRowIndexPath:(NSIndexPath*)indexPath forKeyPath:(NSString*)keyPath
-{
-    IXCoreDataDataProvider* dp = [self dataProvider];
-    id value = [[[dp fetchedResultsController] objectAtIndexPath:indexPath] valueForKeyPath:@"name"];
-    return value;
 }
 
 -(void)layoutControlContentsInRect:(CGRect)rect
@@ -95,23 +86,6 @@
                       [[self propertyContainer] getSizeValue:@"item_height" maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
 }
 
--(NSInteger)getColumCount
-{
-    NSInteger columnCount = 1;
-    if( [self currentRowCount] > 0 )
-    {
-        CGFloat tableViewsWidth = [[self tableView] bounds].size.width;
-        CGFloat itemsWidth = [self getItemSize].width;
-        if( itemsWidth > 0 )
-        {
-            columnCount = floor(tableViewsWidth/itemsWidth);
-            if( columnCount * itemsWidth > tableViewsWidth )
-                columnCount = 1;
-        }
-    }
-    return columnCount;
-}
-
 -(void)coreDataProvider:(IXCoreDataDataProvider *)coreDataProvider didUpdateWithResultsController:(NSFetchedResultsController *)resultsController
 {
     [self setCurrentRowCount:[[self dataProvider] getRowCount]];
@@ -142,7 +116,7 @@
     return [[[[self dataProvider] fetchedResultsController] sections] count];
 }
 
--(IXLayout*)layoutForCellContentView
+-(IXLayout*)layoutForCell:(IXUITableViewCell*)cell
 {
     IXLayout* layoutControl = [[IXLayout alloc] init];
     [[layoutControl contentView] setClipsToBounds:NO];
@@ -161,7 +135,9 @@
     [rowSandbox setContainerControl:[[self sandbox] containerControl]];
     [rowSandbox setBasePath:[[self sandbox] basePath]];
     [rowSandbox setRootPath:[[self sandbox] rootPath]];
-    
+
+    // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
+    [cell setCellSandbox:rowSandbox];
     [layoutControl setSandbox:rowSandbox];
     [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self childObjects] copyItems:YES]];
     
@@ -186,9 +162,12 @@
             [[cell contentView] removeAllSubviews];
             [[cell contentView] setBackgroundColor:[UIColor clearColor]];
             
-            IXLayout *layoutControlForCellContentView = [self layoutForCellContentView];
-            [cell setLayoutControl:layoutControlForCellContentView];
-            [[cell contentView] addSubview:[layoutControlForCellContentView contentView]];
+            if( [cell layoutControl] == nil )
+            {
+                IXLayout *layoutControlForCellContentView = [self layoutForCell:cell];
+                [cell setLayoutControl:layoutControlForCellContentView];
+                [[cell contentView] addSubview:[layoutControlForCellContentView contentView]];
+            }
         }
     }
     

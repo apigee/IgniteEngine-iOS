@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @class IXLayout;
+@class IXSandbox;
 
 @interface IXUITableViewCell : UITableViewCell
 
 @property (nonatomic,assign) BOOL forceSize;
 @property (nonatomic,assign) CGSize forcedSize;
+@property (nonatomic,strong) IXSandbox* cellSandbox;
 @property (nonatomic,strong) IXLayout* layoutControl;
 
 @end
