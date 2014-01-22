@@ -86,6 +86,8 @@
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
+		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
+		63F8A402187368BC00250994 /* IXCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F8A401187368BC00250994 /* IXCollection.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -235,6 +237,10 @@
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
 		63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFJSONRequestOperation.h; sourceTree = "<group>"; };
 		63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFJSONRequestOperation.m; sourceTree = "<group>"; };
+		63DFD9E6188F1A3200C5941E /* IXUICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUICollectionViewCell.h; sourceTree = "<group>"; };
+		63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUICollectionViewCell.m; sourceTree = "<group>"; };
+		63F8A400187368BC00250994 /* IXCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCollection.h; sourceTree = "<group>"; };
+		63F8A401187368BC00250994 /* IXCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCollection.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,6 +352,8 @@
 				13033F45183ED8F200C29157 /* IXBaseControl.m */,
 				13033F46183ED8F200C29157 /* IXBrowser.h */,
 				13033F47183ED8F200C29157 /* IXBrowser.m */,
+				63F8A400187368BC00250994 /* IXCollection.h */,
+				63F8A401187368BC00250994 /* IXCollection.m */,
 				13033F48183ED8F200C29157 /* IXImage.h */,
 				13033F49183ED8F200C29157 /* IXImage.m */,
 				13033F4A183ED8F200C29157 /* IXLayout.h */,
@@ -440,6 +448,8 @@
 			children = (
 				13033F85183ED8F200C29157 /* IXClickableScrollView.h */,
 				13033F86183ED8F200C29157 /* IXClickableScrollView.m */,
+				63DFD9E6188F1A3200C5941E /* IXUICollectionViewCell.h */,
+				63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */,
 				13033F87183ED8F200C29157 /* IXControlContentView.h */,
 				13033F88183ED8F200C29157 /* IXControlContentView.m */,
 				13033F89183ED8F200C29157 /* IXNavigationViewController.h */,
@@ -691,6 +701,7 @@
 				13033F90183ED8F200C29157 /* IXJSONParser.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
+				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,
 				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
@@ -723,6 +734,7 @@
 				13033F92183ED8F200C29157 /* IXAlertAction.m in Sources */,
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,
 				638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */,
+				63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */,
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,
 				13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,

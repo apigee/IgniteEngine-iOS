@@ -26,6 +26,7 @@
 @property (nonatomic, strong) IXCoreDataDataProvider* dataProvider;
 @property (nonatomic, strong) NSMutableDictionary* sectionNumbersAndRowCount;
 
+@property (nonatomic, assign) CGSize itemSize;
 @property (nonatomic, assign) NSInteger currentRowCount;
 @property (nonatomic, assign) BOOL keepRowHighlightedOnSelect;
 
@@ -44,10 +45,11 @@
 {
     [super buildView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
-    
+    [_tableView setSeparatorInset:UIEdgeInsetsZero];
+
     _sectionNumbersAndRowCount = nil;
     
     [[self contentView] addSubview:_tableView];
@@ -73,9 +75,23 @@
     [self setDataProvider:((IXCoreDataDataProvider*)[[self sandbox] getDataProviderWithID:[self dataSourceID]])];
     [[self dataProvider] addDelegate:self];
     
+    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator_style" defaultValue:@"default"];
+    if( [seperatorStyle isEqualToString:@"none"] ) {
+        [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    } else {
+        [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+        [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:@"seperator_color" defaultValue:[UIColor grayColor]]];
+    }
+    
     [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
     [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:@"keep_row_highlighted_on_select" defaultValue:NO]];
 
+    [self startTableViewReload];
+}
+
+-(void)startTableViewReload
+{
+    [self setItemSize:[self getItemSize]];
     [[self tableView] reloadData];
 }
 
@@ -89,7 +105,7 @@
 -(void)coreDataProvider:(IXCoreDataDataProvider *)coreDataProvider didUpdateWithResultsController:(NSFetchedResultsController *)resultsController
 {
     [self setCurrentRowCount:[[self dataProvider] getRowCount]];
-    [[self tableView] reloadData];
+    [self startTableViewReload];
 }
 
 #pragma mark UITableViewDataSource methods
@@ -104,6 +120,11 @@
     }
     return itemHeight;
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return [self itemSize].height;
+//}
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 {
@@ -162,12 +183,9 @@
             [[cell contentView] removeAllSubviews];
             [[cell contentView] setBackgroundColor:[UIColor clearColor]];
             
-            if( [cell layoutControl] == nil )
-            {
-                IXLayout *layoutControlForCellContentView = [self layoutForCell:cell];
-                [cell setLayoutControl:layoutControlForCellContentView];
-                [[cell contentView] addSubview:[layoutControlForCellContentView contentView]];
-            }
+            IXLayout *layoutControlForCellContentView = [self layoutForCell:cell];
+            [cell setLayoutControl:layoutControlForCellContentView];
+            [[cell contentView] addSubview:[[cell layoutControl] contentView]];
         }
     }
     
@@ -178,12 +196,17 @@
     {
         [[layout sandbox] setDataProviderForRowData:[self dataProvider]];
         [[layout sandbox] setIndexPathForRowData:indexPath];
-        [[layout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController]objectAtIndexPath:indexPath]];
+
+        @try
+        {
+            [[layout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
+        } @catch (NSException *exception) {
+        }
         
         [layout applySettings];
 
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
-        CGSize layoutSize = [IXLayoutEngine getControlSize:layout forLayoutSize:[self getItemSize]];
+        CGSize layoutSize = [IXLayoutEngine getControlSize:layout forLayoutSize:[self itemSize]];
         CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
 
         [[layout contentView] setFrame:layoutRect];

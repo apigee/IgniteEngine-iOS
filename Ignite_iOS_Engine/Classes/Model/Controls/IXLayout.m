@@ -129,23 +129,20 @@
 {
     [super layoutControlContentsInRect:rect];
     
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    
-    UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_top" defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
-    //CGColorRef topColor = [[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6] CGColor];
-    UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_bottom" defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
-    //CGColorRef bottomColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.6] CGColor];
-    
-    CGColorRef topColor = [topUIColor CGColor];
-    CGColorRef bottomColor = [bottomUIColor CGColor];
-    
     BOOL showGradient = [[self propertyContainer] propertyExistsForPropertyNamed:@"color.gradient_top"];
-    
-//    NSLog(showGradient ? @"Is the gradient visible? Yes" : @"Is the gradient visible? No");
-    
     if (showGradient)
     {
+        //    NSLog(showGradient ? @"Is the gradient visible? Yes" : @"Is the gradient visible? No");        
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        
+        UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_top" defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
+        //CGColorRef topColor = [[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6] CGColor];
+        UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_bottom" defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
+        //CGColorRef bottomColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.6] CGColor];
+        
+        CGColorRef topColor = [topUIColor CGColor];
+        CGColorRef bottomColor = [bottomUIColor CGColor];
+        
         CGRect gradientFrame = self.scrollView.bounds;
         gradientFrame.size.width = rect.size.width;
         gradientFrame.size.height = rect.size.height;
