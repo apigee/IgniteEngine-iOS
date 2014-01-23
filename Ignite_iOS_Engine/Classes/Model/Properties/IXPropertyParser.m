@@ -140,8 +140,6 @@ static NSString* const kIXEmptyString = @"";
 {
     __block NSMutableArray* shortcodeRanges = nil;
     
-    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
     NSUInteger stringLength = [string length];
     if( string != nil || stringLength > 0 )
     {

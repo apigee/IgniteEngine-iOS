@@ -132,7 +132,7 @@
         BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
-            [action execute];
+            [action performSelector:@selector(execute) withObject:nil afterDelay:[[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f]];
         }
     }
 }

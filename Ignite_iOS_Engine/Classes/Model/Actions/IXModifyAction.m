@@ -20,7 +20,7 @@
 
 @implementation IXModifyAction
 
--(void)execute
+-(void)performModify
 {
     NSString* objectID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
     
@@ -59,6 +59,22 @@
                 [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
             }
         }
+    }
+}
+
+-(void)execute
+{
+    float duration = [[self actionProperties] getFloatPropertyValue:@"duration" defaultValue:0.0f];
+    if( duration > 0.0f )
+    {
+        [UIView animateWithDuration:duration
+                         animations:^{
+                             [self performModify];
+                         }];
+    }
+    else
+    {
+        [self performModify];
     }
 }
 
