@@ -28,7 +28,7 @@
                         "gradient.top": "#FF00FF",
                         "left": 0
                     },
-                    "enable_scrolls_to_top": "YES",
+                    "enable_scrolls_to_top": true,
                     "gradient_visible": true,
                     "height": "100%",
                     "id": "mylayoutcontrol",

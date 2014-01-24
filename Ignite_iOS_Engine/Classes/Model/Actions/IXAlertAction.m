@@ -28,8 +28,8 @@
     
     IXPropertyContainer* actionProperties = [self actionProperties];
     
-    NSString* title = [actionProperties getStringPropertyValue:kIX_TITLE defaultValue:nil];
-    NSString* subTitle = [actionProperties getStringPropertyValue:kIX_SUB_TITLE defaultValue:nil];
+    NSString* title = [actionProperties getStringPropertyValue:@"title" defaultValue:nil];
+    NSString* subTitle = [actionProperties getStringPropertyValue:@"subtitle" defaultValue:nil];
     NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:@"confirm_button_title" defaultValue:kIX_OK];
     
     NSString* cancelButtonTitle = nil;
