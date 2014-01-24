@@ -78,7 +78,7 @@
     }
 }
 
--(NSString*)getPropertyValue
+-(NSString*)getPropertyValue:(IXSandbox*)sandbox
 {
     if( [self originalString] == nil || [[self originalString] length] == 0 )
         return @"";
@@ -96,7 +96,7 @@
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
             
             NSRange shortCodeRange = [[[weakSelf shortCodeRanges] objectAtIndex:idx] rangeValue];
-            NSString *shortCodesValue = [shortCode evaluate];
+            NSString *shortCodesValue = [shortCode evaluate:sandbox];
             if( shortCodesValue == nil )
             {
                 shortCodesValue = @"";

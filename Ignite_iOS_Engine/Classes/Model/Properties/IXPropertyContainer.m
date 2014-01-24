@@ -140,7 +140,7 @@
         UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
         for( IXProperty* property in [[propertyArray reverseObjectEnumerator] allObjects] )
         {
-            if( [property areConditionalAndOrientationMaskValid:currentOrientation] )
+            if( [property areConditionalAndOrientationMaskValid:currentOrientation usingSandbox:[self sandbox]] )
             {
                 propertyToEvaluate = property;
                 break;
@@ -153,7 +153,7 @@
 -(NSString*)getStringPropertyValue:(NSString*)propertyName defaultValue:(NSString*)defaultValue
 {
     IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyName];
-    NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue] : defaultValue;
+    NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue:[self sandbox]] : defaultValue;
     return returnValue;
 }
 

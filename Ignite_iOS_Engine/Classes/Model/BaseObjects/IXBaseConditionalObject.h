@@ -9,14 +9,15 @@
 #import <Foundation/Foundation.h>
 
 @class IXProperty;
+@class IXSandbox;
 
 @interface IXBaseConditionalObject : NSObject <NSCopying>
 
 @property (nonatomic,assign) UIInterfaceOrientationMask interfaceOrientationMask;
 @property (nonatomic,strong) IXProperty* conditionalProperty;
 
--(BOOL)isConditionalValid;
+-(BOOL)isConditionalValid:(IXSandbox*)sandbox;
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation;
--(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation;
+-(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation usingSandbox:(IXSandbox*)sandbox;
 
 @end

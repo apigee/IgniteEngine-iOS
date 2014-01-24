@@ -130,7 +130,7 @@
     for( IXBaseAction* action in actionsForEventName )
     {
         BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
-        if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
+        if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation usingSandbox:[self sandbox]] )
         {
             [action performSelector:@selector(execute) withObject:nil afterDelay:[[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f]];
         }

@@ -54,12 +54,12 @@
     return orientationIsValid;
 }
 
--(BOOL)isConditionalValid
+-(BOOL)isConditionalValid:(IXSandbox*)sandbox
 {
     BOOL conditionalPropertyIsValid = YES;
     if( [self conditionalProperty] != nil )
     {
-        NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue];
+        NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue:sandbox];
         if( conditionalPropertyValue && [conditionalPropertyValue length] > 0 )
         {
             NSString* conditionalPropertyValueReturned = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];
@@ -70,9 +70,9 @@
     return conditionalPropertyIsValid;
 }
 
--(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation
+-(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation usingSandbox:(IXSandbox*)sandbox
 {
-    return [self isConditionalValid] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
+    return [self isConditionalValid:sandbox] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
 }
 
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class IXProperty;
+@class IXSandbox;
 
 @interface IXBaseShortCode : NSObject <NSCopying>
 
@@ -27,6 +28,6 @@
                                 objectID:(NSString*)objectID
                               methodName:(NSString*)methodName
                               parameters:(NSArray*)parameters;
--(NSString*)evaluate;
+-(NSString*)evaluate:(IXSandbox*)sandbox;
 
 @end

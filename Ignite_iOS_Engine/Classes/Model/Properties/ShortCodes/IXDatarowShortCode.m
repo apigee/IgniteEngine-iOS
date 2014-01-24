@@ -15,10 +15,8 @@
 
 @implementation IXDatarowShortCode
 
--(NSString*)evaluate
+-(NSString*)evaluate:(IXSandbox*)sandbox
 {
-    IXSandbox* sandbox = [[[self property] propertyContainer] sandbox];
-    
     IXCoreDataDataProvider* dp = [sandbox dataProviderForRowData];
     NSIndexPath* indexPath = [sandbox indexPathForRowData];
     NSManagedObject* object = [[dp fetchedResultsController] objectAtIndexPath:indexPath];
@@ -27,7 +25,7 @@
     if( !keyPath )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        keyPath = [parameterProperty getPropertyValue];
+        keyPath = [parameterProperty getPropertyValue:sandbox];
     }
     
     NSString* value = [object valueForKeyPath:keyPath];

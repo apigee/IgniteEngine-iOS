@@ -439,22 +439,22 @@
             }
         }
         
-        if( [controlLayoutInfo layoutRect].size.width == 0.0f || [controlLayoutInfo layoutRect].size.height == 0.0f )
-        {
-            // If either the width or height of the controls frame is 0 we can just set it to be hidden.
-            [[control contentView] setHidden:YES];
-        }
-        else
-        {
+//        if( [controlLayoutInfo layoutRect].size.width == 0.0f || [controlLayoutInfo layoutRect].size.height == 0.0f )
+//        {
+//            // If either the width or height of the controls frame is 0 we can just set it to be hidden.
+//            [[control contentView] setHidden:YES];
+//        }
+//        else
+//        {
             [[control contentView] setHidden:[controlLayoutInfo isHidden]];
-        }
+//        }
         
-        if( [[control contentView] isHidden] )
+        [[control contentView] setFrame:[controlLayoutInfo layoutRect]];
+        
+        if( [[control contentView] isHidden] || CGSizeEqualToSize([controlLayoutInfo layoutRect].size,CGSizeZero) )
         {
             continue;
         }
-        
-        [[control contentView] setFrame:[controlLayoutInfo layoutRect]];
         
         CGRect internalControlRect = [IXLayoutEngine getInternalLayoutRectForControl:control
                                                                  forOuterLayoutRect:[[control contentView] bounds]];

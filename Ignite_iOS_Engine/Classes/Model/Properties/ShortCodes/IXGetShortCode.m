@@ -17,7 +17,7 @@
 
 @implementation IXGetShortCode
 
--(NSString*)evaluate
+-(NSString*)evaluate:(IXSandbox*)sandbox
 {
     NSString* returnValue = nil;
     
@@ -25,7 +25,7 @@
     if( !propertyName )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        propertyName = [parameterProperty getPropertyValue];
+        propertyName = [parameterProperty getPropertyValue:sandbox];
     }
     
     if( [[self objectID] isEqualToString:@"app"] )
@@ -48,7 +48,6 @@
     }
     else
     {
-        IXSandbox* sandbox = [[[self property] propertyContainer] sandbox];
         NSArray* objectWithIDArray = [sandbox getAllControlAndDataProvidersWithID:[self objectID]];
         IXBaseObject* baseObject = [objectWithIDArray firstObject];
         if( baseObject != nil )

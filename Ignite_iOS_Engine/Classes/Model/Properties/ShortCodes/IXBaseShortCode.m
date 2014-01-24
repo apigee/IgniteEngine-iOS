@@ -53,7 +53,7 @@
                                                     parameters:[self parameters]];
 }
 
--(NSString*)evaluate
+-(NSString*)evaluate:(IXSandbox*)sandbox
 {
     return [self rawValue];
 }

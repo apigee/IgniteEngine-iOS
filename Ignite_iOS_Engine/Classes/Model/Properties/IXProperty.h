@@ -8,6 +8,7 @@
 
 #import "IXBaseConditionalObject.h"
 
+@class IXSandbox;
 @class IXPropertyContainer;
 
 @interface IXProperty : IXBaseConditionalObject <NSCopying>
@@ -23,6 +24,6 @@
 -(instancetype)initWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
 +(instancetype)propertyWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
 
--(NSString*)getPropertyValue;
+-(NSString*)getPropertyValue:(IXSandbox*)sandbox;
 
 @end

@@ -12,14 +12,14 @@
 
 @implementation IXFormatShortCode
 
--(NSString*)evaluate
+-(NSString*)evaluate:(IXSandbox*)sandbox
 {
-    NSString* returnString = [super evaluate];
+    NSString* returnString = [super evaluate:sandbox];
     if( returnString != nil )
     {
         for( IXProperty* formatterProperty in [self formatters] )
         {
-            NSString* formatterName = [formatterProperty getPropertyValue];
+            NSString* formatterName = [formatterProperty getPropertyValue:sandbox];
             if( [formatterName isEqualToString:@"to_uppercase"] )
             {
                 returnString = [returnString uppercaseString];

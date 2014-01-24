@@ -10,7 +10,7 @@
 
 @implementation IXAppShortCode
 
--(NSString*)evaluate
+-(NSString*)evaluate:(IXSandbox*)sandbox
 {
     return @"";
 }
