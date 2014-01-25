@@ -77,6 +77,7 @@
 		63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD018444D600048C668 /* NSString+IXAdditions.m */; };
 		63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD6184581EE0048C668 /* IXJSONGrabber.m */; };
 		6333614218934394004F3433 /* IXEvalShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614118934394004F3433 /* IXEvalShortCode.m */; };
+		633361451894593D004F3433 /* IXEventAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 633361441894593D004F3433 /* IXEventAction.m */; };
 		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
@@ -221,6 +222,8 @@
 		63311BD6184581EE0048C668 /* IXJSONGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONGrabber.m; sourceTree = "<group>"; };
 		6333614018934394004F3433 /* IXEvalShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEvalShortCode.h; sourceTree = "<group>"; };
 		6333614118934394004F3433 /* IXEvalShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEvalShortCode.m; sourceTree = "<group>"; };
+		633361431894593D004F3433 /* IXEventAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEventAction.h; sourceTree = "<group>"; };
+		633361441894593D004F3433 /* IXEventAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEventAction.m; sourceTree = "<group>"; };
 		634895041863637A008C3760 /* UILabel+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+IXAdditions.h"; sourceTree = "<group>"; };
 		634895051863637A008C3760 /* UILabel+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+IXAdditions.m"; sourceTree = "<group>"; };
 		6348950718637B4F008C3760 /* IXUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUITableViewCell.h; sourceTree = "<group>"; };
@@ -323,6 +326,8 @@
 				13033F31183ED8F200C29157 /* IXAlertAction.m */,
 				13033F32183ED8F200C29157 /* IXBaseAction.h */,
 				13033F33183ED8F200C29157 /* IXBaseAction.m */,
+				633361431894593D004F3433 /* IXEventAction.h */,
+				633361441894593D004F3433 /* IXEventAction.m */,
 				13033F34183ED8F200C29157 /* IXFunctionAction.h */,
 				13033F35183ED8F200C29157 /* IXFunctionAction.m */,
 				13033F36183ED8F200C29157 /* IXModifyAction.h */,
@@ -741,6 +746,7 @@
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,
 				638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */,
 				63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */,
+				633361451894593D004F3433 /* IXEventAction.m in Sources */,
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,
 				13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
