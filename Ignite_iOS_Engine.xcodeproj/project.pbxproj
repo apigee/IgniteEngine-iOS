@@ -76,6 +76,7 @@
 		63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */; };
 		63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD018444D600048C668 /* NSString+IXAdditions.m */; };
 		63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD6184581EE0048C668 /* IXJSONGrabber.m */; };
+		6333614218934394004F3433 /* IXEvalShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614118934394004F3433 /* IXEvalShortCode.m */; };
 		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
@@ -218,6 +219,8 @@
 		63311BD018444D600048C668 /* NSString+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IXAdditions.m"; sourceTree = "<group>"; };
 		63311BD5184581EE0048C668 /* IXJSONGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONGrabber.h; sourceTree = "<group>"; };
 		63311BD6184581EE0048C668 /* IXJSONGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONGrabber.m; sourceTree = "<group>"; };
+		6333614018934394004F3433 /* IXEvalShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEvalShortCode.h; sourceTree = "<group>"; };
+		6333614118934394004F3433 /* IXEvalShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEvalShortCode.m; sourceTree = "<group>"; };
 		634895041863637A008C3760 /* UILabel+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+IXAdditions.h"; sourceTree = "<group>"; };
 		634895051863637A008C3760 /* UILabel+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+IXAdditions.m"; sourceTree = "<group>"; };
 		6348950718637B4F008C3760 /* IXUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUITableViewCell.h; sourceTree = "<group>"; };
@@ -424,6 +427,8 @@
 				13033F78183ED8F200C29157 /* IXAppShortCode.m */,
 				638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */,
 				638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */,
+				6333614018934394004F3433 /* IXEvalShortCode.h */,
+				6333614118934394004F3433 /* IXEvalShortCode.m */,
 				63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */,
 				63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */,
 				635614F51842FC3000B7C95F /* IXFormatShortCode.h */,
@@ -732,6 +737,7 @@
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,
 				635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */,
 				13033F92183ED8F200C29157 /* IXAlertAction.m in Sources */,
+				6333614218934394004F3433 /* IXEvalShortCode.m in Sources */,
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,
 				638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */,
 				63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */,
