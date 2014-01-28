@@ -37,10 +37,6 @@
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXBaseControl* baseControl = [super copyWithZone:zone];
-    if( baseControl )
-    {
-        [baseControl buildView];        
-    }
     return baseControl;
 }
 

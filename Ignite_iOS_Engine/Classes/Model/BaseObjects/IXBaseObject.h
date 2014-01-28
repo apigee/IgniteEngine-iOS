@@ -25,6 +25,7 @@
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 
 -(void)addChildObject:(IXBaseObject*)childObject;
+-(void)removeChildObject:(IXBaseObject*)childObject;
 -(void)addChildObjects:(NSArray*)childObjects;
 -(NSArray*)childrenWithID:(NSString*)childObjectID;
 

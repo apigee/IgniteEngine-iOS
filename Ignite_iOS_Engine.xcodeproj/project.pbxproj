@@ -78,6 +78,10 @@
 		63311BD7184581EE0048C668 /* IXJSONGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = 63311BD6184581EE0048C668 /* IXJSONGrabber.m */; };
 		6333614218934394004F3433 /* IXEvalShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614118934394004F3433 /* IXEvalShortCode.m */; };
 		633361451894593D004F3433 /* IXEventAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 633361441894593D004F3433 /* IXEventAction.m */; };
+		6333614818971802004F3433 /* IXCreateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614718971802004F3433 /* IXCreateAction.m */; };
+		6333614D18973DA6004F3433 /* IXDeleteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614C18973DA6004F3433 /* IXDeleteAction.m */; };
+		6333615118975672004F3433 /* ARSMaquettePro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */; };
+		6333615218975672004F3433 /* ARSMaquettePro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */; };
 		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		635614F71842FC3000B7C95F /* IXFormatShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 635614F61842FC3000B7C95F /* IXFormatShortCode.m */; };
@@ -224,6 +228,12 @@
 		6333614118934394004F3433 /* IXEvalShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEvalShortCode.m; sourceTree = "<group>"; };
 		633361431894593D004F3433 /* IXEventAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEventAction.h; sourceTree = "<group>"; };
 		633361441894593D004F3433 /* IXEventAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEventAction.m; sourceTree = "<group>"; };
+		6333614618971802004F3433 /* IXCreateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCreateAction.h; sourceTree = "<group>"; };
+		6333614718971802004F3433 /* IXCreateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCreateAction.m; sourceTree = "<group>"; };
+		6333614B18973DA6004F3433 /* IXDeleteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeleteAction.h; sourceTree = "<group>"; };
+		6333614C18973DA6004F3433 /* IXDeleteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeleteAction.m; sourceTree = "<group>"; };
+		6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Light.otf"; sourceTree = "<group>"; };
+		6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Medium.otf"; sourceTree = "<group>"; };
 		634895041863637A008C3760 /* UILabel+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+IXAdditions.h"; sourceTree = "<group>"; };
 		634895051863637A008C3760 /* UILabel+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+IXAdditions.m"; sourceTree = "<group>"; };
 		6348950718637B4F008C3760 /* IXUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUITableViewCell.h; sourceTree = "<group>"; };
@@ -326,6 +336,10 @@
 				13033F31183ED8F200C29157 /* IXAlertAction.m */,
 				13033F32183ED8F200C29157 /* IXBaseAction.h */,
 				13033F33183ED8F200C29157 /* IXBaseAction.m */,
+				6333614618971802004F3433 /* IXCreateAction.h */,
+				6333614718971802004F3433 /* IXCreateAction.m */,
+				6333614B18973DA6004F3433 /* IXDeleteAction.h */,
+				6333614C18973DA6004F3433 /* IXDeleteAction.m */,
 				633361431894593D004F3433 /* IXEventAction.h */,
 				633361441894593D004F3433 /* IXEventAction.m */,
 				13033F34183ED8F200C29157 /* IXFunctionAction.h */,
@@ -529,6 +543,7 @@
 			children = (
 				13ECEA5E183EBF38004BC638 /* assets */,
 				13033F21183ED8F200C29157 /* Classes */,
+				6333614E18975672004F3433 /* Fonts */,
 				6324BF561835931C00748F27 /* Supporting Files */,
 			);
 			name = Ignite_iOS_Engine;
@@ -565,6 +580,16 @@
 			);
 			path = Categories;
 			sourceTree = "<group>";
+		};
+		6333614E18975672004F3433 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */,
+				6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */,
+			);
+			name = Fonts;
+			path = Ignite_iOS_Engine/Fonts;
+			sourceTree = SOURCE_ROOT;
 		};
 		63D23AB01845B35100C93BC7 /* DataModel */ = {
 			isa = PBXGroup;
@@ -645,8 +670,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6333615118975672004F3433 /* ARSMaquettePro-Light.otf in Resources */,
 				13BF0468183EBE7E00894760 /* Images.xcassets in Resources */,
 				13ECEA5F183EBF39004BC638 /* assets in Resources */,
+				6333615218975672004F3433 /* ARSMaquettePro-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,6 +740,7 @@
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
+				6333614818971802004F3433 /* IXCreateAction.m in Sources */,
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,
 				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
 				13033F9F183ED8F200C29157 /* IXMap.m in Sources */,
@@ -727,6 +755,7 @@
 				13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */,
 				635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */,
 				13033FA5183ED8F200C29157 /* IXSocial.m in Sources */,
+				6333614D18973DA6004F3433 /* IXDeleteAction.m in Sources */,
 				13033FA6183ED8F200C29157 /* IXTableView.m in Sources */,
 				13033F9B183ED8F200C29157 /* IXBaseControl.m in Sources */,
 				13033F9C183ED8F200C29157 /* IXBrowser.m in Sources */,

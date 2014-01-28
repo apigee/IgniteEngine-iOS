@@ -271,7 +271,21 @@
 
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue
 {
-    return nil;
+    UIFont* returnFont = defaultValue;
+    NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
+    if( stringValue )
+    {
+        NSArray* fontComponents = [stringValue componentsSeparatedByString:@":"];
+        
+        NSString* fontName = [fontComponents firstObject];
+        CGFloat fontSize = [[fontComponents lastObject] floatValue];
+        
+        if( fontName )
+        {
+            returnFont = [UIFont fontWithName:fontName size:fontSize];
+        }
+    }
+    return returnFont;
 }
 
 -(NSString*)description

@@ -44,6 +44,7 @@
 -(void)addDataProviders:(NSArray*)dataProviders;
 -(BOOL)addDataProvider:(IXBaseDataProvider*)dataProvider;
 
+-(NSArray*)getAllControlsWithID:(NSString*)objectID;
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID;
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID;
 

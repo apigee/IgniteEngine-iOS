@@ -42,6 +42,7 @@ static CGSize sIXKBSize;
 
 @property (nonatomic,assign) BOOL needsToRegisterForKeyboardNotifications;
 @property (nonatomic,strong) UITextField* textField;
+@property (nonatomic,strong) UIColor* defaultTextFieldTintColor;
 @property (nonatomic,assign,getter = shouldDismissOnReturn) BOOL dismissOnReturn;
 
 @end
@@ -64,6 +65,8 @@ static CGSize sIXKBSize;
     [_textField setDelegate:self];
     
     [[self contentView] addSubview:_textField];
+    
+    _defaultTextFieldTintColor = [_textField tintColor];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -100,6 +103,11 @@ static CGSize sIXKBSize;
     NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
                                                                                 attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
     [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
+
+    [[self textField] setTintColor:[[self propertyContainer] getColorPropertyValue:@"tint_color" defaultValue:[self defaultTextFieldTintColor]]];
+    
+    UIFont* font = [[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    [[self textField] setFont:font];
 }
 
 - (void)registerForKeyboardNotifications

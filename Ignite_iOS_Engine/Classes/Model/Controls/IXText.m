@@ -44,8 +44,10 @@
     [super applySettings];
     
     NSString* text = [self.propertyContainer getStringPropertyValue:@"text" defaultValue:nil];
-//    NSLog(@"TEXT = %@",text);
     [[self label] setText:text];
+    
+    UIFont* font = [[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    [[self label] setFont:font];
 }
 
 @end
