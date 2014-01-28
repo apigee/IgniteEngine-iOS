@@ -94,6 +94,12 @@ static CGSize sIXKBSize;
     
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:@"dismiss_on_return" defaultValue:YES]];
     [[self textField] setBackgroundColor:[UIColor whiteColor]];
+    [[self textField] setTintColor:[UIColor redColor]];
+    
+    
+//    textField.tintColor = [UIColor redColor];
+    //[[UITextField appearance] setTintColor:[UIColor redColor]];
+
     
     NSString* placeHolderText = [[self propertyContainer] getStringPropertyValue:@"placeholder_text" defaultValue:@"TextInputPlaceHolder"];
     UIColor* placeHolderTextColor = [[self propertyContainer] getColorPropertyValue:@"placeholder_text_color" defaultValue:[UIColor lightGrayColor]];
