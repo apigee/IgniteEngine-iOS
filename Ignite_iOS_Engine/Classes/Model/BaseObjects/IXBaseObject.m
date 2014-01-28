@@ -10,6 +10,7 @@
 #import "IXBaseAction.h"
 #import "IXPropertyContainer.h"
 #import "IXActionContainer.h"
+#import "IXBaseControl.h"
 
 @implementation IXBaseObject
 
@@ -107,6 +108,16 @@
     {
         [[self childObjects] addObject:childObject];
     }
+}
+
+-(void)removeChildObject:(IXBaseObject*)childObject
+{
+    [childObject setParentObject:nil];
+    if( [childObject isKindOfClass:[IXBaseControl class]] )
+    {
+        [[(IXBaseControl*)childObject contentView] removeFromSuperview];
+    }
+    [[self childObjects] removeObject:childObject];
 }
 
 -(NSArray*)childrenWithID:(NSString*)childObjectID

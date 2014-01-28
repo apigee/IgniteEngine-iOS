@@ -83,21 +83,26 @@
         else
         {
             NSData* jsonData = [NSData dataWithContentsOfURL:url];
-            NSError* error = nil;
-            
-            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-            
-            if( jsonObject )
+            if( jsonData == nil )
             {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[self jsonCache] setObject:jsonObject forKey:path];
-                });
-                grabCompletionBlock(jsonObject,nil);
+                grabCompletionBlock(nil,[NSError errorWithDomain:@"No Data found at JSON path" code:0 userInfo:nil]);
             }
             else
             {
-                grabCompletionBlock(nil,error);
-            }            
+                NSError* error = nil;
+                id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+                if( jsonObject )
+                {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [[self jsonCache] setObject:jsonObject forKey:path];
+                    });
+                    grabCompletionBlock(jsonObject,nil);
+                }
+                else
+                {
+                    grabCompletionBlock(nil,error);
+                }
+            }
         }
     }
 }

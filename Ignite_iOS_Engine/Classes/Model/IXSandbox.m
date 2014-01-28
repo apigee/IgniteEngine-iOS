@@ -43,6 +43,12 @@
     _containerControl = containerControl;
 }
 
+-(NSArray*)getAllControlsWithID:(NSString*)objectID
+{
+    NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
+    return controlsWithObjectID;
+}
+
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID
 {
     NSMutableArray* returnArray = [[NSMutableArray alloc] init];
