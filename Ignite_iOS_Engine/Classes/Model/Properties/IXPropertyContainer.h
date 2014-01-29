@@ -22,11 +22,11 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 
 @property (nonatomic,weak) IXSandbox* sandbox;
 
-// FINISHED - But unuseable until finish the IXProperty class.
-
 -(void)addProperty:(IXProperty*)property;
+-(void)addProperty:(IXProperty*)property replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties;
 -(void)addProperties:(NSArray*)properties;
--(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding;
+-(void)addProperties:(NSArray*)properties replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties;
+-(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties;
 
 -(NSDictionary*)getAllPropertiesStringValues;
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName;
@@ -40,9 +40,9 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue;
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock;
+-(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue;
 
 #warning METHODS NOT DONE YET
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
--(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue;
 
 @end

@@ -57,13 +57,23 @@
 
 -(void)addProperties:(NSArray*)properties
 {
+    [self addProperties:properties replaceOtherPropertiesWithTheSameName:NO];
+}
+
+-(void)addProperties:(NSArray*)properties replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties
+{
     for( IXProperty* property in properties )
     {
-        [self addProperty:property];
+        [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
     }
 }
 
 -(void)addProperty:(IXProperty*)property
+{
+    [self addProperty:property replaceOtherPropertiesWithTheSameName:NO];
+}
+
+-(void)addProperty:(IXProperty*)property replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties
 {
     NSString* propertyName = [property propertyName];
     if( property == nil || propertyName == nil )
@@ -80,34 +90,34 @@
         propertyArray = [[NSMutableArray alloc] initWithObjects:property, nil];
         [[self propertiesDict] setObject:propertyArray forKey:propertyName];
     }
+    else if( replaceOtherProperties )
+    {
+        [propertyArray removeAllObjects];
+        [propertyArray addObject:property];
+    }
     else if( ![propertyArray containsObject:property] )
     {
         [propertyArray addObject:property];
     }
 }
 
--(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding
+-(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties
 {
-    if( evaluateBeforeAdding )
+    NSArray* propertyNames = [[propertyContainer propertiesDict] allKeys];
+    for( NSString* propertyName in propertyNames )
     {
-        NSArray* propertyNames = [[propertyContainer propertiesDict] allKeys];
-        for( NSString* propertyName in propertyNames )
+        if( evaluateBeforeAdding )
         {
             NSString* propertyValue = [propertyContainer getStringPropertyValue:propertyName defaultValue:@""];
             IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
-            [self addProperty:property];
+            [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
         }
-    }
-    else
-    {
-        // TODO: Probably should be actually copying the properties not just adding them.
-        NSArray* propertyNames = [[propertyContainer propertiesDict] allKeys];
-        for( NSString* propertyName in propertyNames )
+        else
         {
             NSArray* propertyArray = [propertyContainer propertiesForPropertyNamed:propertyName];
             for( IXProperty* property in propertyArray )
             {
-                [self addProperty:property];
+                [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
             }
         }
     }

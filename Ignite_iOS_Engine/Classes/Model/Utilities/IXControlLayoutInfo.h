@@ -14,7 +14,6 @@
 
 @interface IXSizePercentageContainer : NSObject <NSCopying>
 
-@property (nonatomic,strong) NSString* valueAsString;
 @property (nonatomic,assign) CGFloat value;
 @property (nonatomic,assign,getter = isPercentage) BOOL percentage;
 @property (nonatomic,assign,getter = propertyWasDefined) BOOL propertyDefined;
@@ -24,6 +23,8 @@
 
 +(instancetype)sizeAndPercentageContainerWithStringValue:(NSString*)stringValue
                                           orDefaultValue:(CGFloat)defaultValue;
+
+-(BOOL)applyStringValue:(NSString*)stringValue orDefaultValue:(CGFloat)defaultValue;
 
 -(CGFloat)evaluteForMaxValue:(CGFloat)maxValue;
 
@@ -58,7 +59,6 @@
 @property (nonatomic,weak,readonly) IXPropertyContainer* propertyContainer;
 
 @property (nonatomic,assign) CGRect layoutRect;
-@property (nonatomic,assign) BOOL needsToRelayout;
 @property (nonatomic,assign) BOOL hasSeenLayout;
 
 @property (nonatomic,assign,readonly) BOOL isHidden;

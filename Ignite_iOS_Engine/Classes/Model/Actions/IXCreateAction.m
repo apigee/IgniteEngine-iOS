@@ -29,11 +29,6 @@ static NSCache* sIXCreateControlCache;
 
 -(void)addCreatedControl:(IXBaseControl*)control withParentControlID:(NSString*)parentID
 {
-    if( [[control contentView] controlContentViewTouchDelegate] == nil )
-    {
-        NSLog(@"");
-    }
-    
     IXBaseControl* parentControl = nil;
     if( parentID )
     {
@@ -93,7 +88,7 @@ static NSCache* sIXCreateControlCache;
     NSString* fullPathToControlJSON = [[NSBundle mainBundle] pathForResource:controlJSONLocation ofType:nil];
     if( fullPathToControlJSON )
     {
-        IXBaseControl* createdControl = [sIXCreateControlCache objectForKey:fullPathToControlJSON];
+        IXBaseControl* createdControl = [[sIXCreateControlCache objectForKey:fullPathToControlJSON] copy];
         if( createdControl == nil )
         {
             createdControl = [self createdControlFromLocation:fullPathToControlJSON];
@@ -102,7 +97,7 @@ static NSCache* sIXCreateControlCache;
         if( createdControl )
         {
             NSString* parentControlID = [[self actionProperties] getStringPropertyValue:@"parent_id" defaultValue:nil];
-            [self addCreatedControl:[createdControl copyWithZone:nil] withParentControlID:parentControlID];
+            [self addCreatedControl:createdControl withParentControlID:parentControlID];
         }
     }
 }

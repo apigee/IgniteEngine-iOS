@@ -25,9 +25,9 @@
     {
         _ID = nil;
         _parentObject = nil;
-        _childObjects = [[NSMutableArray alloc] init];
-        _actionContainer = [[IXActionContainer alloc] init];
-        _propertyContainer = [[IXPropertyContainer alloc] init];
+        _childObjects = nil;
+        _actionContainer = nil;
+        _propertyContainer = nil;
     }
     return self;
 }
@@ -38,7 +38,10 @@
     if( baseObjectCopy )
     {
         [baseObjectCopy setID:[[self ID] copy]];
-        [baseObjectCopy setChildObjects:[[NSMutableArray alloc] initWithArray:[self childObjects] copyItems:YES]];
+        if( [[self childObjects] count] )
+        {
+            [baseObjectCopy setChildObjects:[[NSMutableArray alloc] initWithArray:[self childObjects] copyItems:YES]];
+        }
         [baseObjectCopy setActionContainer:[[self actionContainer] copy]];
         [baseObjectCopy setPropertyContainer:[[self propertyContainer] copy]];
     }
@@ -87,9 +90,12 @@
 
 -(void)addChildObjects:(NSArray*)childObjects
 {
-    for( IXBaseObject* childObject in childObjects )
+    if( [childObjects count] > 0 )
     {
-        [self addChildObject:childObject];
+        for( IXBaseObject* childObject in childObjects )
+        {
+            [self addChildObject:childObject];
+        }
     }
 }
 

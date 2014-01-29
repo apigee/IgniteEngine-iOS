@@ -29,14 +29,14 @@
         if( [objectID isEqualToString:@"session"] )
         {
             IXPropertyContainer* sessionProperties = [[IXAppManager sharedAppManager] sessionProperties];
-            [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
+            [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
         }
         else
         {
             NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
             for( IXBaseObject* baseObject in objectsWithID )
             {
-                [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES];
+                [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
             }
             
             BOOL needsToLayout = NO;
