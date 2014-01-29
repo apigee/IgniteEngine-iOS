@@ -70,7 +70,7 @@
     [self setLayoutFlowVertical:(![layoutFlow isEqualToString:@"horizontal"])];
     
     [self setVerticalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"vertical_scroll_enabled" defaultValue:YES]];
-    [self setVerticalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"horizontal_scroll_enabled" defaultValue:YES]];
+    [self setHorizontalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"horizontal_scroll_enabled" defaultValue:YES]];
     [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:@"enable_scrolls_to_top" defaultValue:NO]];
 
     NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:@"scroll_indicator_style" defaultValue:@"default"];
