@@ -95,6 +95,23 @@ static CGSize sIXKBSize;
     NSString* returnKey = [[self propertyContainer] getStringPropertyValue:@"keyboard.return_key" defaultValue:@"default"];
     [[self textField] setReturnKeyType:[UITextField stringToReturnKeyType:returnKey]];
     
+    //NSString* justification = [[self propertyContainer] getStringPropertyValue:@"justicication" defaultValue:@"UITextAlignmentLeft"];
+    
+    //JA: Please add justification for left/center/right
+    [[self textField] setTextAlignment:UITextAlignmentCenter];
+    
+    
+    // JA: Added autocorrect
+    BOOL autoCorrect = [[self propertyContainer] getBoolPropertyValue:@"auto_correct" defaultValue:YES];
+    if( autoCorrect )
+    {
+        [[self textField] setAutocorrectionType:UITextAutocorrectionTypeYes];
+    }
+    else
+    {
+        [[self textField] setAutocorrectionType:UITextAutocorrectionTypeNo];
+    }
+    
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:@"dismiss_on_return" defaultValue:YES]];
     [[self textField] setBackgroundColor:[UIColor whiteColor]];
     [[self textField] setTintColor:[UIColor redColor]];
@@ -241,6 +258,9 @@ static CGSize sIXKBSize;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    //JA: Added action for return key press
+    [[self actionContainer] executeActionsForEventNamed:@"return_key_pressed"];
+
     BOOL shouldReturn = [self shouldDismissOnReturn];
     if( shouldReturn )
     {
