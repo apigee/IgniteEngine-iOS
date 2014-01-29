@@ -227,7 +227,7 @@
         NSURL *imageURL = nil;
         if( [IXAppManager pathIsLocal:imagePath] )
         {
-            imageURL = [[NSBundle mainBundle] URLForResource:imagePath withExtension:nil];
+            imageURL = [NSURL fileURLWithPath:imagePath];
         }
         else
         {
@@ -269,7 +269,7 @@
     {
         if( basePath == nil )
         {
-            returnPath = pathStringSetting;
+            returnPath = [NSString stringWithFormat:@"%@/%@",[[IXAppManager sharedAppManager] appDefaultViewRootPath],pathStringSetting];
         }
         else
         {

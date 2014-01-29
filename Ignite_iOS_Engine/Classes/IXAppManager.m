@@ -102,7 +102,7 @@
         [self setAppMode:IXReleaseMode];
     }
     
-    [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:@"enable_layout_debugging" defaultValue:YES]];
+    [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:@"enable_layout_debugging" defaultValue:NO]];
     [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolPropertyValue:@"shows_navigation_bar" defaultValue:YES] animated:YES];
     
     if( [[self rootViewController] isNavigationBarHidden] )
@@ -111,7 +111,18 @@
     }
     
     NSString* defaultViewProperty = [[self appProperties] getStringPropertyValue:@"default_view" defaultValue:nil];
-    [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
+    if( [IXAppManager pathIsLocal:defaultViewProperty] )
+    {
+        [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
+        [self setAppDefaultViewRootPath:[[NSBundle mainBundle] pathForResource:@"assets" ofType:nil]];
+    }
+    else
+    {
+        [self setAppDefaultViewPath:defaultViewProperty];
+        
+        NSURL* url = [NSURL URLWithString:defaultViewProperty];
+        [self setAppDefaultViewRootPath:[[url URLByDeletingLastPathComponent] absoluteString]];
+    }
 }
 
 -(void)loadApplicationDefaultView

@@ -110,7 +110,7 @@
 
 -(void)performPushNavigation:(UIViewAnimationTransition)animationTranisitionType
 {
-    NSString* navigateTo = [[self actionProperties] getPathPropertyValue:@"to" basePath:@"assets" defaultValue:nil];
+    NSString* navigateTo = [[self actionProperties] getPathPropertyValue:@"to" basePath:nil defaultValue:nil];
     NSString* pathToJSON = [[NSBundle mainBundle] pathForResource:navigateTo ofType:nil];
     if( pathToJSON )
     {

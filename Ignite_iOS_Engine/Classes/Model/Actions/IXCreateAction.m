@@ -84,7 +84,7 @@ static NSCache* sIXCreateControlCache;
 {
     [super execute];
     
-    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:@"control_location" basePath:@"assets" defaultValue:nil];
+    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
     NSString* fullPathToControlJSON = [[NSBundle mainBundle] pathForResource:controlJSONLocation ofType:nil];
     if( fullPathToControlJSON )
     {
