@@ -29,6 +29,8 @@
 @property (nonatomic, assign) CGSize itemSize;
 @property (nonatomic, assign) NSInteger currentRowCount;
 @property (nonatomic, assign) BOOL keepRowHighlightedOnSelect;
+@property (nonatomic, assign) BOOL animateReload;
+@property (nonatomic, assign) CGFloat animateReloadDuration;
 
 @end
 
@@ -85,6 +87,8 @@
     
     [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
     [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:@"keep_row_highlighted_on_select" defaultValue:NO]];
+    [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:@"animate_reload" defaultValue:NO]];
+    [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:@"animate_reload_duration" defaultValue:0.4f]];
 
     [self startTableViewReload];
 }
@@ -92,7 +96,21 @@
 -(void)startTableViewReload
 {
     [self setItemSize:[self getItemSize]];
-    [[self tableView] reloadData];
+    
+    if( [self animateReload] && [self animateReloadDuration] > 0.0f )
+    {
+        [UIView transitionWithView:[self tableView]
+                          duration:[self animateReloadDuration]
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations: ^(void) {
+                            [self.tableView reloadData];
+                        } completion: ^(BOOL isFinished) {
+                        }];
+    }
+    else
+    {
+        [[self tableView] reloadData];
+    }
 }
 
 -(CGSize)getItemSize
