@@ -50,7 +50,7 @@
                 }
                 else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
                 {
-                    [((IXBaseDataProvider*)baseObject) loadData];
+                    [((IXBaseDataProvider*)baseObject) loadData:NO];
                 }
             }
             

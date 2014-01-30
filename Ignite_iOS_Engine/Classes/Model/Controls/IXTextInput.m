@@ -33,7 +33,7 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 #import "IXClickableScrollView.h"
-
+#import "IXProperty.h"
 #import "UITextField+IXAdditions.h"
 
 static CGSize sIXKBSize;
@@ -151,6 +151,11 @@ static CGSize sIXKBSize;
                                                  selector:@selector(keyboardWillChangeFrame:)
                                                      name:UIKeyboardDidChangeFrameNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification
+                                                   object:nil];
+    
     }
 }
 
@@ -168,6 +173,9 @@ static CGSize sIXKBSize;
                                                       object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIKeyboardDidChangeFrameNotification
+                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:UITextFieldTextDidChangeNotification
                                                       object:nil];
     }
 }
@@ -269,6 +277,12 @@ static CGSize sIXKBSize;
         [[self actionContainer] executeActionsForEventNamed:@"lost_focus"];
     }
     return shouldReturn;
+}
+
+- (void)textDidChange:(NSNotification*)aNotification
+{
+    [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:@"text" rawValue:[[self textField] text]] replaceOtherPropertiesWithTheSameName:YES];
+    [[self actionContainer] executeActionsForEventNamed:@"text_changed"];
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer

@@ -40,7 +40,8 @@
     {
         _webViewForJS = [[UIWebView alloc] initWithFrame:CGRectZero];
         
-        _applicationSandbox = [[IXSandbox alloc] init];
+        _appConfigPath = [[NSBundle mainBundle] pathForResource:@"assets/IXAppConfig" ofType:@"json"];
+        _applicationSandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:[_appConfigPath stringByDeletingLastPathComponent]];
         
         _appProperties = [[IXPropertyContainer alloc] init];
         [_appProperties setSandbox:_applicationSandbox];
@@ -70,8 +71,6 @@
 
 -(void)startApplication
 {
-    [self setAppConfigPath:[[NSBundle mainBundle] pathForResource:@"assets/IXAppConfig" ofType:@"json"]];
-    
     [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
                                                  asynch:NO
                                         completionBlock:^(id jsonObject, NSError *error) {

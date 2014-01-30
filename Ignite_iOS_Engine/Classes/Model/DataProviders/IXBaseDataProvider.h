@@ -17,6 +17,6 @@
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,copy) NSString* dataLocation;
 
--(void)loadData;
+-(void)loadData:(BOOL)forceGet;
 
 @end

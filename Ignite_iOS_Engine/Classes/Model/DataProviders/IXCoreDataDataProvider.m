@@ -18,8 +18,10 @@
 
 @property (nonatomic,strong) NSMutableArray* delegates;
 
-@property (nonatomic, strong) RKObjectManager* objectManager;
+@property (nonatomic,strong) RKObjectManager* objectManager;
 @property (nonatomic,assign) BOOL sortAscending;
+@property (nonatomic,assign) BOOL needsToPerformGet;
+@property (nonatomic,assign) BOOL needsToPerformFetch;
 
 @property (nonatomic,copy) NSString* sortDescriptorKey;
 @property (nonatomic,copy) NSString* keyPath;
@@ -92,23 +94,23 @@
     NSString* fetchPredicateStrings = [[self propertyContainer] getStringPropertyValue:@"fetch_predicate_strings" defaultValue:nil];
     BOOL sortAscending = [[self propertyContainer] getBoolPropertyValue:@"fetch_sort_ascending" defaultValue:YES];
     
-    BOOL needsToRecreateEverything = NO;
+    _needsToPerformGet = NO;
     if( ![[self dataLocation] isEqualToString:previousDataLocation] )
     {
-        needsToRecreateEverything = YES;
+        _needsToPerformGet = YES;
     }
     if( ![[self pathPattern] isEqualToString:pathPattern] )
     {
-        needsToRecreateEverything = YES;
+        _needsToPerformGet = YES;
         [self setPathPattern:pathPattern];
     }
     if( ![[self objectsPath] isEqualToString:objectsPath] )
     {
-        needsToRecreateEverything = YES;
+        _needsToPerformGet = YES;
         [self setObjectsPath:objectsPath];
     }
     
-    if( needsToRecreateEverything )
+    if( _needsToPerformGet )
     {
         [self createObjectManager];
         
@@ -119,29 +121,29 @@
         }
     }
     
-    BOOL needsToRecreateFetchResultsController = needsToRecreateEverything;
+    _needsToPerformFetch = _needsToPerformGet;
     if( ![[self sortDescriptorKey] isEqualToString:sortDescriptorKey] )
     {
-        needsToRecreateFetchResultsController = YES;
+        _needsToPerformFetch = YES;
         [self setSortDescriptorKey:sortDescriptorKey];
     }
     if( [self sortAscending] == sortAscending )
     {
-        needsToRecreateFetchResultsController = YES;
+        _needsToPerformFetch = YES;
         [self setSortAscending:sortAscending];
     }
     if( ![[self fetchPredicate] isEqualToString:fetchPredicate] )
     {
-        needsToRecreateEverything = YES;
+        _needsToPerformFetch = YES;
         [self setFetchPredicate:fetchPredicate];
     }
     if( ![[self fetchPredicateStrings] isEqualToString:fetchPredicateStrings] )
     {
-        needsToRecreateEverything = YES;
+        _needsToPerformFetch = YES;
         [self setFetchPredicateStrings:fetchPredicateStrings];
     }
     
-    if( needsToRecreateFetchResultsController )
+    if( _needsToPerformFetch )
     {
         [self configureFetchedResultsController];
     }
@@ -360,31 +362,31 @@
     }
 }
 
--(void)loadData
+-(void)loadData:(BOOL)forceGet
 {
     @try
     {
-        NSError* error = nil;
-        BOOL fetchSuccessful = [self.fetchedResultsController performFetch:&error];
-        if (! fetchSuccessful) {
-            NSLog(@"WARNING: ERROR PERFORMING FETCH");
-        }
-        
-        NSArray* fetchedObjects = [[self fetchedResultsController] fetchedObjects];
-        if( fetchedObjects != nil && [fetchedObjects count] > 0 )
+        if( _needsToPerformFetch )
         {
+            NSError* error = nil;
+            BOOL fetchSuccessful = [self.fetchedResultsController performFetch:&error];
+            if (!fetchSuccessful) {
+                NSLog(@"WARNING: ERROR PERFORMING FETCH");
+            }
             [self notifyAllDelegates];
         }
-        
-        [[self objectManager] getObjectsAtPath:[self objectsPath]
-                                    parameters:nil
-                                       success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                           NSLog(@"success");
-                                           [self.fetchedResultsController performFetch:nil];
-                                       }
-                                       failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                           NSLog(@"failed");
-                                       }];
+        if( _needsToPerformGet || forceGet )
+        {
+            [[self objectManager] getObjectsAtPath:[self objectsPath]
+                                        parameters:nil
+                                           success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                               NSLog(@"success");
+                                               [self.fetchedResultsController performFetch:nil];
+                                           }
+                                           failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                                               NSLog(@"failed");
+                                           }];
+        }
     }
     @catch (NSException * e)
     {

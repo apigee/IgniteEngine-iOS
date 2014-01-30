@@ -54,7 +54,7 @@
     [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data_location" defaultValue:nil]];
 }
 
--(void)loadData
+-(void)loadData:(BOOL)forceGet
 {
     // Base Provider does nothing... Might need to update this.
 }

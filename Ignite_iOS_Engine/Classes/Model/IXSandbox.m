@@ -125,7 +125,7 @@
         [dataProvider applySettings];
         if( [dataProvider shouldAutoLoad] )
         {
-            [dataProvider loadData];
+            [dataProvider loadData:YES];
         }        
     }
 }
