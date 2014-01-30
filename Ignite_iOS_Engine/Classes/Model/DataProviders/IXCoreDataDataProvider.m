@@ -25,6 +25,8 @@
 @property (nonatomic,copy) NSString* keyPath;
 @property (nonatomic,copy) NSString* pathPattern;
 @property (nonatomic,copy) NSString* objectsPath;
+@property (nonatomic,copy) NSString* fetchPredicate;
+@property (nonatomic,copy) NSString* fetchPredicateStrings;
 @property (nonatomic,strong) RKEntityMapping* entityMapping;
 
 @property (nonatomic,copy) NSString* fetchFromEntity;
@@ -86,6 +88,8 @@
     NSString* pathPattern = [[self propertyContainer] getStringPropertyValue:@"path_pattern" defaultValue:nil];
     NSString* objectsPath = [[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil];
     NSString* sortDescriptorKey = [[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil];
+    NSString* fetchPredicate = [[self propertyContainer] getStringPropertyValue:@"fetch_predicate" defaultValue:nil];
+    NSString* fetchPredicateStrings = [[self propertyContainer] getStringPropertyValue:@"fetch_predicate_strings" defaultValue:nil];
     BOOL sortAscending = [[self propertyContainer] getBoolPropertyValue:@"fetch_sort_ascending" defaultValue:YES];
     
     BOOL needsToRecreateEverything = NO;
@@ -125,6 +129,16 @@
     {
         needsToRecreateFetchResultsController = YES;
         [self setSortAscending:sortAscending];
+    }
+    if( ![[self fetchPredicate] isEqualToString:fetchPredicate] )
+    {
+        needsToRecreateEverything = YES;
+        [self setFetchPredicate:fetchPredicate];
+    }
+    if( ![[self fetchPredicateStrings] isEqualToString:fetchPredicateStrings] )
+    {
+        needsToRecreateEverything = YES;
+        [self setFetchPredicateStrings:fetchPredicateStrings];
     }
     
     if( needsToRecreateFetchResultsController )
@@ -321,6 +335,14 @@
                                                                          ascending:[self sortAscending]
                                                                           selector:@selector(localizedCaseInsensitiveCompare:)];
             fetchRequest.sortDescriptors = @[descriptor];
+        }
+        
+        NSArray* fetchPredicateStringsArray = [[self fetchPredicateStrings] componentsSeparatedByString:@","];
+        if( [self fetchPredicate] != nil && ![[self fetchPredicate] isEqualToString:@""] && [fetchPredicateStringsArray count] > 0 )
+        {
+            NSPredicate* predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
+            NSLog(@"PREDICATE EQUALS : %@",[predicate description]);
+            [fetchRequest setPredicate:predicate];
         }
         
         [[self fetchedResultsController] setDelegate:nil];
