@@ -38,8 +38,10 @@
 @property (nonatomic,weak) IXCoreDataDataProvider* dataProviderForRowData;
 @property (nonatomic,strong) NSIndexPath* indexPathForRowData;
 
-@property (nonatomic,strong) NSString* basePath;
-@property (nonatomic,strong) NSString* rootPath;
+@property (nonatomic,copy) NSString* basePath;
+@property (nonatomic,copy) NSString* rootPath;
+
+-(instancetype)initWithBasePath:(NSString*)basePath rootPath:(NSString*)rootPath;
 
 -(void)addDataProviders:(NSArray*)dataProviders;
 -(BOOL)addDataProvider:(IXBaseDataProvider*)dataProvider;

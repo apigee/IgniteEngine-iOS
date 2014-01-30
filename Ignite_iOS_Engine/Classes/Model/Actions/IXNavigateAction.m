@@ -111,10 +111,9 @@
 -(void)performPushNavigation:(UIViewAnimationTransition)animationTranisitionType
 {
     NSString* navigateTo = [[self actionProperties] getPathPropertyValue:@"to" basePath:nil defaultValue:nil];
-    NSString* pathToJSON = [[NSBundle mainBundle] pathForResource:navigateTo ofType:nil];
-    if( pathToJSON )
+    if( navigateTo )
     {
-        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:pathToJSON
+        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:navigateTo
                                                      asynch:YES
                                             completionBlock:^(id jsonObject, NSError *error) {
                                                 
@@ -122,7 +121,7 @@
                                                 id viewDictJSONValue = [jsonObject objectForKey:@"view"];
                                                 if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
                                                 {
-                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue];
+                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue pathToJSON:navigateTo];
                                                 }
                                                 
                                                 if( viewController != nil )

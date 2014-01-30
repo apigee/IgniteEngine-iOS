@@ -144,6 +144,11 @@
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     
+    if( [layoutControl propertyContainer] == nil )
+    {
+        [layoutControl setPropertyContainer:[[IXPropertyContainer alloc] init]];
+    }
+    
     IXPropertyContainer* layoutPropertyContainer = [layoutControl propertyContainer];
     [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"]];
     [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"]];
@@ -151,7 +156,7 @@
     [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"]];
     [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]];
     
-    IXSandbox* rowSandbox = [[IXSandbox alloc] init];
+    IXSandbox* rowSandbox = [[IXSandbox alloc] initWithBasePath:[[self sandbox] basePath] rootPath:[[self sandbox] rootPath]];
     [rowSandbox setViewController:[[self sandbox] viewController]];
     [rowSandbox setContainerControl:[[self sandbox] containerControl]];
     [rowSandbox setBasePath:[[self sandbox] basePath]];

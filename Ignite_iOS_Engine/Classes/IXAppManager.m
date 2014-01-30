@@ -141,7 +141,8 @@
                                                 id viewDictJSONValue = [jsonObject objectForKey:@"view"];
                                                 if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
                                                 {
-                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue];
+                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue
+                                                                                                         pathToJSON:[self appDefaultViewPath]];
                                                 }
                                                 
                                                 if( viewController != nil )

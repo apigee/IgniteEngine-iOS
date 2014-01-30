@@ -25,19 +25,42 @@
 
 @implementation IXViewController
 
--(id)init
+-(instancetype)init
 {
-    return [self initWithNibName:nil bundle:nil];
+    return [self initWithNibName:nil bundle:nil pathToJSON:nil];
 }
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil pathToJSON:nil];
+}
+
+-(instancetype)initWithPathToJSON:(NSString*)pathToJSON
+{
+    return [self initWithNibName:nil bundle:nil pathToJSON:pathToJSON];
+}
+
++(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON
+{
+    return [[[self class] alloc] initWithNibName:nil bundle:nil pathToJSON:pathToJSON];
+}
+
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil pathToJSON:(NSString*)pathToJSON
+{
+    self = [super initWithNibName:nil bundle:nil];
     if( self != nil )
     {
-        _hasAppeared = NO;
+        NSString* jsonRootPath = nil;
+        if( [IXAppManager pathIsLocal:pathToJSON] )
+        {
+            jsonRootPath = [pathToJSON stringByDeletingLastPathComponent];
+        }
+        else
+        {
+            jsonRootPath = [[[NSURL URLWithString:pathToJSON] URLByDeletingLastPathComponent] absoluteString];
+        }
         
-        _sandbox = [[IXSandbox alloc] init];
+        _sandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:jsonRootPath];
         [_sandbox setViewController:self];
         
         _propertyContainer = [[IXPropertyContainer alloc] init];

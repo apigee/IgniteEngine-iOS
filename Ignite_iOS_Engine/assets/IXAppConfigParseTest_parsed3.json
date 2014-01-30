@@ -64,8 +64,8 @@
                              "width": "100%",
                              "layout_type": "relative",
                              "images": {
-                                "default": "/assets/images/image.png",
-                                "touch": "/assets/images/image-touch.png"
+                                "default": "/images/image.png",
+                                "touch": "/images/image-touch.png"
                              }
                         },
                         "actions":[{
@@ -86,8 +86,8 @@
                      "width": "100%",
                      "layout_type": "relative",
                      "images": {
-                     "default": "/assets/images/image.png",
-                     "touch": "/assets/images/image-touch.png"
+                     "default": "/images/image.png",
+                     "touch": "/images/image-touch.png"
                      }
                      },
                      "actions":[{

@@ -21,4 +21,6 @@
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 
++(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON;
+
 @end

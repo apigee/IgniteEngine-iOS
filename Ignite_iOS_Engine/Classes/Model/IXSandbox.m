@@ -25,9 +25,22 @@
 
 -(instancetype)init
 {
+    return [self initWithBasePath:nil rootPath:nil];
+}
+
+-(instancetype)initWithBasePath:(NSString*)basePath rootPath:(NSString*)rootPath
+{
     self = [super init];
     if( self )
     {
+        _basePath = [basePath copy];
+        _rootPath = [rootPath copy];
+        
+        if( _rootPath == nil )
+        {
+            NSLog(@"WARNING INITIALIZING SANDBOX WITHOUT ROOT PATH!!!");
+        }
+        
         _dataProviders = [[NSMutableDictionary alloc] init];
     }
     return self;

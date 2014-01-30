@@ -407,9 +407,9 @@
 }
 
 
-+(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary
++(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary pathToJSON:(NSString*)pathToJSON
 {
-    IXViewController* viewController = [[IXViewController alloc] init];
+    IXViewController* viewController = [IXViewController viewControllerWithPathToJSON:pathToJSON];
     
     NSDictionary* viewPropertyDictionary = [viewDictionary objectForKey:@"attributes"];
     

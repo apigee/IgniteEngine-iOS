@@ -30,6 +30,6 @@
 +(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray;
 +(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict;
 
-+(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary;
++(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary pathToJSON:(NSString*)pathToJSON;
 
 @end

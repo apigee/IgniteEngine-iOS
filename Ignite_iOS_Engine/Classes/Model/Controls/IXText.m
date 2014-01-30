@@ -48,7 +48,7 @@
     
     UIFont* font = [[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
 
-    [[self label] setTextColor:[[self propertyContainer] getColorPropertyValue:@"color.text" defaultValue:[UIColor whiteColor]]];
+    [[self label] setTextColor:[[self propertyContainer] getColorPropertyValue:@"color.text" defaultValue:[UIColor blackColor]]];
     
     [[self label] setFont:font];
 }

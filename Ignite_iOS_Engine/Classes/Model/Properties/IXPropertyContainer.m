@@ -9,6 +9,7 @@
 #import "IXPropertyContainer.h"
 
 #import "IXAppManager.h"
+#import "IXSandbox.h"
 #import "IXProperty.h"
 #import "IXControlLayoutInfo.h"
 
@@ -269,7 +270,7 @@
     {
         if( basePath == nil )
         {
-            returnPath = [NSString stringWithFormat:@"%@/%@",[[IXAppManager sharedAppManager] appDefaultViewRootPath],pathStringSetting];
+            returnPath = [NSString stringWithFormat:@"%@/%@",[[self sandbox] rootPath],pathStringSetting];
         }
         else
         {
