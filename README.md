@@ -13,3 +13,27 @@ A php preparser is used in the build process to parse int, float, and bool value
  2. Pass a properly formatted iOS engine JSON file as an argument to *process.php* like so:
     `php process.php format_1.2.json`
  3. The preparser will append **_parsed** to the filename, and output the corrected file in the same directory.
+
+---
+
+##Todo List
+
+####Text input
+
+- Input constraints (lowercase, uppercase, regular expressions?)
+
+####Actions:
+
+- Find a means of chaining actions together to avoid massive arrays of actions.
+
+####Data:
+
+- Can we implement an option to auto-map entity_attributes so we don't need to specify them?
+
+####Core:
+
+- File inclusion? Or is this done?
+
+####Documentation:
+
+- All of it. :|
