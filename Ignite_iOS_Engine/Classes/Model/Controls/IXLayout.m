@@ -56,9 +56,6 @@
     
     [_scrollView addSubview:_scrollViewContentView];
     
-    
-    
-    
     [[self contentView] addSubview:_scrollView];
 }
 

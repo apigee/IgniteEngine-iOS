@@ -88,18 +88,20 @@
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     
-    IXPropertyContainer* layoutPropertyContainer = [layoutControl propertyContainer];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]];
+    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
+    [layoutControl setPropertyContainer:layoutPropertyContainer];
+    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
+                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
+                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
     
-    IXSandbox* rowSandbox = [[IXSandbox alloc] init];
-    [rowSandbox setViewController:[[self sandbox] viewController]];
-    [rowSandbox setContainerControl:[[self sandbox] containerControl]];
-    [rowSandbox setBasePath:[[self sandbox] basePath]];
-    [rowSandbox setRootPath:[[self sandbox] rootPath]];
+    IXSandbox* tableViewSandbox = [self sandbox];
+    IXSandbox* rowSandbox = [[IXSandbox alloc] initWithBasePath:[tableViewSandbox basePath] rootPath:[tableViewSandbox rootPath]];
+    [rowSandbox setViewController:[tableViewSandbox viewController]];
+    [rowSandbox setContainerControl:[tableViewSandbox containerControl]];
+    [rowSandbox setBasePath:[tableViewSandbox basePath]];
+    [rowSandbox setRootPath:[tableViewSandbox rootPath]];
     
     // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
     [cell setCellSandbox:rowSandbox];
@@ -126,26 +128,26 @@
         [[cell contentView] addSubview:[[cell layoutControl] contentView]];
     }
     
-    IXLayout* layout = [cell layoutControl];
-    if( layout )
+    IXLayout* cellLayout = [cell layoutControl];
+    if( cellLayout )
     {
         @try {
-            [[layout sandbox] setIndexPathForRowData:indexPath];
-            [[layout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
-            [[layout sandbox] setDataProviderForRowData:[self dataProvider]];
+            [[cellLayout sandbox] setIndexPathForRowData:indexPath];
+            [[cellLayout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
+            [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
         }
         @catch (NSException *exception) {
         }
 
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
-        [layout applySettings];
+        [cellLayout applySettings];
         
-        CGSize layoutSize = [IXLayoutEngine getControlSize:layout forLayoutSize:[self getItemSize]];
+        CGSize layoutSize = [IXLayoutEngine getControlSize:cellLayout forLayoutSize:[self getItemSize]];
         CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
         
-        [[layout contentView] setFrame:layoutRect];
-        [[layout contentView] setBackgroundColor:[UIColor whiteColor]];
-        [layout layoutControl];
+        [[cellLayout contentView] setFrame:layoutRect];
+        [[cellLayout contentView] setBackgroundColor:[UIColor whiteColor]];
+        [cellLayout layoutControl];
     }
     
     return cell;

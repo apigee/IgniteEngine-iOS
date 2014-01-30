@@ -144,24 +144,22 @@
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     
-    if( [layoutControl propertyContainer] == nil )
-    {
-        [layoutControl setPropertyContainer:[[IXPropertyContainer alloc] init]];
-    }
+    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
+    [layoutControl setPropertyContainer:layoutPropertyContainer];
+    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
+                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
+                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
+                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
     
-    IXPropertyContainer* layoutPropertyContainer = [layoutControl propertyContainer];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"]];
-    [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]];
+    IXSandbox* tableViewSandbox = [self sandbox];
+    IXSandbox* rowSandbox = [[IXSandbox alloc] initWithBasePath:[tableViewSandbox basePath] rootPath:[tableViewSandbox rootPath]];
+    [rowSandbox setViewController:[tableViewSandbox viewController]];
+    [rowSandbox setContainerControl:[tableViewSandbox containerControl]];
+    [rowSandbox setBasePath:[tableViewSandbox basePath]];
+    [rowSandbox setRootPath:[tableViewSandbox rootPath]];
     
-    IXSandbox* rowSandbox = [[IXSandbox alloc] initWithBasePath:[[self sandbox] basePath] rootPath:[[self sandbox] rootPath]];
-    [rowSandbox setViewController:[[self sandbox] viewController]];
-    [rowSandbox setContainerControl:[[self sandbox] containerControl]];
-    [rowSandbox setBasePath:[[self sandbox] basePath]];
-    [rowSandbox setRootPath:[[self sandbox] rootPath]];
-
     // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
     [cell setCellSandbox:rowSandbox];
     [layoutControl setSandbox:rowSandbox];
@@ -196,26 +194,26 @@
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
 
-    IXLayout* layout = [cell layoutControl];
-    if( layout )
+    IXLayout* cellLayout = [cell layoutControl];
+    if( cellLayout )
     {
-        [[layout sandbox] setDataProviderForRowData:[self dataProvider]];
-        [[layout sandbox] setIndexPathForRowData:indexPath];
+        [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
+        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
 
         @try
         {
-            [[layout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
+            [[cellLayout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
         } @catch (NSException *exception) {
         }
         
-        [layout applySettings];
+        [cellLayout applySettings];
 
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
-        CGSize layoutSize = [IXLayoutEngine getControlSize:layout forLayoutSize:[self itemSize]];
+        CGSize layoutSize = [IXLayoutEngine getControlSize:cellLayout forLayoutSize:[self itemSize]];
         CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
 
-        [[layout contentView] setFrame:layoutRect];
-        [layout layoutControl];
+        [[cellLayout contentView] setFrame:layoutRect];
+        [cellLayout layoutControl];
     }
     
     return cell;
