@@ -37,4 +37,6 @@
 -(void)layoutControlContentsInRect:(CGRect)rect;
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size;
 
+-(void)processBeginTouch:(BOOL)fireTouchActions;
+-(void)processEndTouch:(BOOL)fireTouchActions;
 @end

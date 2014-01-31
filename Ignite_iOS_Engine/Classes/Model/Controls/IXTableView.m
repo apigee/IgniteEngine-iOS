@@ -161,6 +161,7 @@
     [[layoutControl contentView] setClipsToBounds:NO];
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
+    [layoutControl setActionContainer:[[self actionContainer] copy]];
     
     IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
@@ -193,7 +194,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    IXUITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"IXUITableViewCell"];
+    IXUITableViewCell* cell = [[self tableView] dequeueReusableCellWithIdentifier:@"IXUITableViewCell"];
     if( cell == nil )
     {
         cell = [[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"IXUITableViewCell"];
@@ -243,6 +244,15 @@
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+-(void)processEndTouch:(BOOL)fireTouchActions
+{
+    // TableView doesnt need to fire any touch actions.
+}
+-(void)processBeginTouch:(BOOL)fireTouchActions
+{
+    // TableView doesnt need to fire any touch actions.
 }
 
 @end

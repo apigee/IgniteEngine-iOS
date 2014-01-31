@@ -86,6 +86,20 @@
     return actionsForEvent != nil && [actionsForEvent count] > 0;
 }
 
+-(BOOL)hasActionsWithEventNamePrefix:(NSString*)eventNamePrefix;
+{
+    BOOL hasActionsWithEventNamePrefix = NO;
+    for( NSString* actionNameKey in [[self actionsDict] allKeys] )
+    {
+        if( [actionNameKey hasPrefix:eventNamePrefix] )
+        {
+            hasActionsWithEventNamePrefix = YES;
+            break;
+        }
+    }
+    return hasActionsWithEventNamePrefix;
+}
+
 -(void)addActions:(NSArray*)actions
 {
     for( IXBaseAction* action in actions )

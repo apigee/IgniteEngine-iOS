@@ -138,9 +138,67 @@
     }
 }
 
+-(IXBaseControl*)getTouchedControl:(UITouch*)touch
+{
+    if( touch == nil )
+        return nil;
+    
+    IXBaseControl* returnControl = self;
+    for( IXBaseControl* baseControl in [self childObjects] )
+    {
+        IXControlContentView* baseControlView = [baseControl contentView];
+        if( baseControlView )
+        {
+            if( ![[baseControl contentView] isHidden] && [baseControlView alpha] > 0.0f )
+            {
+                if( CGRectContainsPoint([baseControlView bounds], [touch locationInView:baseControlView]) )
+                {
+                    if( [[baseControl childObjects] count] )
+                    {
+                        IXBaseControl* childReturnControl = [baseControl getTouchedControl:touch];
+                        if( [[childReturnControl actionContainer] hasActionsWithEventNamePrefix:@"touch"] )
+                        {
+                            returnControl = childReturnControl;
+                        }
+                    }
+                    else if( [[baseControl actionContainer] hasActionsWithEventNamePrefix:@"touch"] )
+                    {
+                        returnControl = baseControl;
+                    }
+                }
+            }
+        }
+    }
+    return returnControl;
+}
+
+-(void)processBeginTouch:(BOOL)fireTouchActions
+{
+    if( fireTouchActions )
+    {
+        [[self actionContainer] executeActionsForEventNamed:@"touch"];
+    }
+}
+
+-(void)processEndTouch:(BOOL)fireTouchActions
+{
+    if( fireTouchActions )
+    {
+        IXBaseControl* parentControl = (IXBaseControl*)[self parentObject];
+        if( [parentControl contentView] )
+        {
+            [parentControl processEndTouch:fireTouchActions];
+        }
+        [[self actionContainer] executeActionsForEventNamed:@"touch_up"];
+    }
+}
+
 -(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [[self actionContainer] executeActionsForEventNamed:@"touch"];
+    UITouch* touch = [[event allTouches] anyObject];
+    IXBaseControl* touchedControl = [self getTouchedControl:touch];
+    
+    [touchedControl processBeginTouch:YES];
 }
 
 -(void)controlViewTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -155,7 +213,10 @@
 
 -(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [[self actionContainer] executeActionsForEventNamed:@"touch_up"];
+    UITouch* touch = [touches anyObject];
+    BOOL shouldFireTouchActions = ( [touch view] == [self contentView] && [touch tapCount] >= 1 );
+    
+    [self processEndTouch:shouldFireTouchActions];
 }
 
 

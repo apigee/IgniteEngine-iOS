@@ -21,6 +21,7 @@
 -(void)addActions:(NSArray*)actions;
 
 -(BOOL)hasActionsForEvent:(NSString*)eventName;
+-(BOOL)hasActionsWithEventNamePrefix:(NSString*)eventNamePrefix;
 -(NSMutableArray*)actionsForEvent:(NSString*)eventName;
 
 -(void)executeActionsForEventNamed:(NSString*)eventName;

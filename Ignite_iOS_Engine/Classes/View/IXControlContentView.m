@@ -7,6 +7,7 @@
 //
 
 #import "IXControlContentView.h"
+#import "IXAppManager.h"
 
 @implementation IXControlContentView
 
@@ -27,7 +28,10 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"TOUCHES BEGAN");
+    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+    {
+        NSLog(@"TOUCHES BEGAN : %@", [[self controlContentViewTouchDelegate] description]);
+    }
     if( [self controlContentViewTouchDelegate] && [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesBegan:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesBegan:touches withEvent:event];
@@ -36,7 +40,10 @@
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"TOUCHES MOVED");
+    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+    {
+        NSLog(@"TOUCHES MOVED : %@", [[self controlContentViewTouchDelegate] description]);
+    }    
     if( [self controlContentViewTouchDelegate] && [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesMoved:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesMoved:touches withEvent:event];
@@ -45,7 +52,10 @@
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"TOUCHES CANCELLED");
+    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+    {
+        NSLog(@"TOUCHES CANCELLED : %@", [[self controlContentViewTouchDelegate] description]);
+    }
     if( [self controlContentViewTouchDelegate] && [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesCancelled:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesCancelled:touches withEvent:event];
@@ -54,7 +64,10 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"TOUCHES ENDED");
+    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+    {
+        NSLog(@"TOUCHES ENDED : %@", [[self controlContentViewTouchDelegate] description]);
+    }
     if( [self controlContentViewTouchDelegate] && [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesEnded:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesEnded:touches withEvent:event];

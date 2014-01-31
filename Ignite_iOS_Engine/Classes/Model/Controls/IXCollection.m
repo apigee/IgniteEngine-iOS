@@ -87,7 +87,8 @@
     [[layoutControl contentView] setClipsToBounds:NO];
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
-    
+    [layoutControl setActionContainer:[[self actionContainer] copy]];
+
     IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
     [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
@@ -174,6 +175,15 @@
 {
 //    [self setCurrentRowCount:[[self dataProvider] getRowCount]];
     [[self collectionView] reloadData];
+}
+
+-(void)processEndTouch:(BOOL)fireTouchActions
+{
+    // TableView doesnt need to fire any touch actions.
+}
+-(void)processBeginTouch:(BOOL)fireTouchActions
+{
+    // TableView doesnt need to fire any touch actions.
 }
 
 @end
