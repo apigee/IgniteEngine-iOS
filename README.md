@@ -36,6 +36,7 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Can we implement an option to auto-map entity_attributes so we don't need to specify them?
 - Perhaps a simpler way of coverting json into dict/array so we don't have to handle complex maps
 - Ability to reference length of longest entry. For example:
+
     array = (asdf, asdfasdf, asdflkjlakjsdlkjsdf);
     array.maxlength (returns 19)
 
