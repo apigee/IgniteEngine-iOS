@@ -19,20 +19,19 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
 
-    JASidePanelController* controller = [[JASidePanelController alloc] init];
-    [controller.view setBackgroundColor:[UIColor magentaColor]];
-    UIViewController* vc1 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    [vc1.view setBackgroundColor:[UIColor greenColor]];
-    UIViewController* vc2 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    [vc2.view setBackgroundColor:[UIColor blueColor]];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [controller setLeftPanel:vc1];
-    [controller setRightPanel:vc2];
-    [controller setCenterPanel:[[IXAppManager sharedAppManager] rootViewController]];
-    
-    [[self window] setRootViewController:controller];
-//    [[self window] setRootViewController:[[IXAppManager sharedInstance] rootViewController]];
+//    JASidePanelController* controller = [[JASidePanelController alloc] init];
+//    [controller.view setBackgroundColor:[UIColor magentaColor]];
+//    UIViewController* vc1 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+//    [vc1.view setBackgroundColor:[UIColor greenColor]];
+//    UIViewController* vc2 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+//    [vc2.view setBackgroundColor:[UIColor blueColor]];
+//    
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [controller setLeftPanel:vc1];
+//    [controller setRightPanel:vc2];
+//    [controller setCenterPanel:[[IXAppManager sharedAppManager] rootViewController]];
+//    
+    [[self window] setRootViewController:[[IXAppManager sharedAppManager] rootViewController]];
     
     [[IXAppManager sharedAppManager] startApplication];
     [self.window makeKeyAndVisible];
