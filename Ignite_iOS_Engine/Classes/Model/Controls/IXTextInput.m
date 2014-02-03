@@ -281,8 +281,21 @@ static CGSize sIXKBSize;
 
 - (void)textDidChange:(NSNotification*)aNotification
 {
-    [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:@"text" rawValue:[[self textField] text]] replaceOtherPropertiesWithTheSameName:YES];
     [[self actionContainer] executeActionsForEventNamed:@"text_changed"];
+}
+
+- (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* readOnlyPropertyValue = nil;
+    if( [propertyName isEqualToString:@"text"] )
+    {
+        readOnlyPropertyValue = [[self textField] text];
+    }
+    else
+    {
+        readOnlyPropertyValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return readOnlyPropertyValue;
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer

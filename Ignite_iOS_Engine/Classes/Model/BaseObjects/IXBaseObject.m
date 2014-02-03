@@ -156,4 +156,19 @@
     return nil;
 }
 
+-(NSString*)description
+{
+    NSMutableString* description = [[NSMutableString alloc] initWithString:[super description]];
+    [description appendString:[NSMutableString stringWithFormat:@"\n%@ Description : \n\nProperties:\n\n%@",NSStringFromClass([self class]),[[self propertyContainer] description]]];    
+    if( [self actionContainer] )
+    {
+        [description appendFormat:@"\nActions:\n%@",[[self actionContainer] description]];
+    }
+    for( IXBaseObject* childObject in [self childObjects] )
+    {
+        [description appendString:[childObject description]];
+    }
+    return description;
+}
+
 @end

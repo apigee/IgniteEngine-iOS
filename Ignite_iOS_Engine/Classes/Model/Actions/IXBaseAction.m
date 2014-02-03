@@ -57,7 +57,15 @@
 
 -(NSString*)description
 {
-    NSMutableString* description = [NSMutableString stringWithFormat:@"\n%@ on %@:",[self class],[self eventName]];
+    NSMutableString* description = [NSMutableString stringWithFormat:@"\n%@ on %@:",NSStringFromClass([self class]),[self eventName]];
+    if( [self conditionalProperty] )
+    {
+        [description appendFormat:@"\n\nConditional: %@",[[self conditionalProperty] getPropertyValue:[[self actionContainer] sandbox]]];
+        if( [[self conditionalProperty] shortCodes] )
+        {
+            [description appendFormat:@" (%@)",[[self conditionalProperty] originalString]];
+        }
+    }
     [description appendFormat:@"\n\nProperties:\n%@ ",[[self actionProperties] description]];
     if( [self parameterProperties] )
     {

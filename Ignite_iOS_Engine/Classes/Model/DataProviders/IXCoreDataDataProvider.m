@@ -380,11 +380,10 @@
             [[self objectManager] getObjectsAtPath:[self objectsPath]
                                         parameters:nil
                                            success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                               NSLog(@"success");
                                                [self.fetchedResultsController performFetch:nil];
                                            }
                                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                               NSLog(@"failed");
+                                               NSLog(@"failed %@",[error description]);
                                            }];
         }
     }
@@ -402,6 +401,20 @@
 -(NSInteger)getRowCount
 {
     return [[[self fetchedResultsController] fetchedObjects] count];
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
+{
+    NSString* readOnlyPropertyValue = nil;
+    if( [propertyName isEqualToString:@"count"] )
+    {
+        readOnlyPropertyValue = [NSString stringWithFormat:@"%li",[self getRowCount]];
+    }
+    else
+    {
+        readOnlyPropertyValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return readOnlyPropertyValue;
 }
 
 @end

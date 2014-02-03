@@ -89,12 +89,15 @@
 -(BOOL)hasActionsWithEventNamePrefix:(NSString*)eventNamePrefix;
 {
     BOOL hasActionsWithEventNamePrefix = NO;
-    for( NSString* actionNameKey in [[self actionsDict] allKeys] )
+    if( eventNamePrefix )
     {
-        if( [actionNameKey hasPrefix:eventNamePrefix] )
+        for( NSString* actionNameKey in [[self actionsDict] allKeys] )
         {
-            hasActionsWithEventNamePrefix = YES;
-            break;
+            if( [actionNameKey hasPrefix:eventNamePrefix] )
+            {
+                hasActionsWithEventNamePrefix = YES;
+                break;
+            }
         }
     }
     return hasActionsWithEventNamePrefix;
@@ -155,7 +158,7 @@
 {
     NSMutableString* description = [NSMutableString string];
     [[self actionsDict] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [description appendFormat:@"\nEvents For %@:\n",key];
+        [description appendFormat:@"\nActions For %@:\n",key];
         for( IXBaseAction* action in obj )
         {
             [description appendString:[action description]];

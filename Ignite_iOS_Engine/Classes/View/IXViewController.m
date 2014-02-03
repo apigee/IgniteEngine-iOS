@@ -20,6 +20,7 @@
 @interface IXViewController ()
 
 @property (nonatomic,assign) BOOL hasAppeared;
+@property (nonatomic,copy) NSString* statusBarPreferredStyleString;
 
 @end
 
@@ -158,10 +159,32 @@
 
 -(void)applySettings
 {
+    NSString* statusBarStyle = [[self propertyContainer] getStringPropertyValue:@"status_bar_style" defaultValue:@"dark_content"];
+    if( ![[self statusBarPreferredStyleString] isEqualToString:statusBarStyle] )
+    {
+        [self setStatusBarPreferredStyleString:statusBarStyle];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+    
     UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
 
     [[self containerControl] applySettings];
+}
+
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIStatusBarStyle preferredStatusBarStyle = UIStatusBarStyleDefault;
+    if( [[self statusBarPreferredStyleString] isEqualToString:@"light_content"] )
+    {
+        preferredStatusBarStyle = UIStatusBarStyleLightContent;
+    }
+    return preferredStatusBarStyle;
+}
+
+-(BOOL)prefersStatusBarHidden
+{
+    return ( [[self statusBarPreferredStyleString] isEqualToString:@"hidden"] );
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

@@ -37,6 +37,7 @@
         cancelButtonTitle = [actionProperties getStringPropertyValue:@"cancel_button_title" defaultValue:kIX_CANCEL];
     
     [[self alertView] setDelegate:nil];
+    [[self alertView] dismissWithClickedButtonIndex:[[self alertView] cancelButtonIndex] animated:YES];
     [self setAlertView:[[UIAlertView alloc] initWithTitle:title
                                                   message:subTitle
                                                  delegate:self

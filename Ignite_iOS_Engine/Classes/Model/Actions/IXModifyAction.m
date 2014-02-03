@@ -46,7 +46,10 @@
                 
                 if( [baseObject isKindOfClass:[IXBaseControl class]] )
                 {
-                    needsToLayout = YES;
+                    if( [((IXBaseControl*)baseObject) contentView] )
+                    {
+                        needsToLayout = YES;
+                    }
                 }
                 else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
                 {

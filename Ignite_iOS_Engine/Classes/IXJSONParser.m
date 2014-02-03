@@ -414,7 +414,9 @@
     NSDictionary* viewPropertyDictionary = [viewDictionary objectForKey:@"attributes"];
     
     // FIXME: Setting the properties for the view on the viewControllers containerControl.  Might need to change this not sure yet!
-    [[viewController containerControl] setPropertyContainer:[IXJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary]];
+    IXPropertyContainer* viewPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary];
+    [viewController setPropertyContainer:viewPropertyContainer];
+    [[viewController containerControl] setPropertyContainer:viewPropertyContainer];
     
     NSArray* dataProviderArray = [viewDictionary objectForKey:@"data_providers"];
     NSArray* dataProviders = [IXJSONParser dataProvidersWithJSONDataProviderArray:dataProviderArray];

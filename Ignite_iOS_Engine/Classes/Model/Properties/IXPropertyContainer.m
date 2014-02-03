@@ -305,7 +305,13 @@
     NSArray* properties = [[self propertiesDict] allKeys];
     for( NSString* propertyKey in properties )
     {
-        [description appendFormat:@"%@: %@\n",propertyKey, [self getStringPropertyValue:propertyKey defaultValue:nil]];
+        IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyKey];
+        [description appendFormat:@"\t%@: %@",propertyKey, [propertyToEvaluate getPropertyValue:[self sandbox]]];
+        if( [propertyToEvaluate shortCodes] )
+        {
+            [description appendFormat:@" (%@)",[propertyToEvaluate originalString]];
+        }
+        [description appendString:@"\n"];
     }
     return description;
 }
