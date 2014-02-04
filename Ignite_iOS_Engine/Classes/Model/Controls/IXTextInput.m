@@ -254,6 +254,10 @@ static CGSize sIXKBSize;
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self unregisterForKeyboardNotifications];
+    
+    //JA: Added lost_focus action
+    [[self actionContainer] executeActionsForEventNamed:@"lost_focus"];
+
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
