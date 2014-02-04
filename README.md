@@ -24,23 +24,43 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Inline styling / markdown?
 - Wraparound/append/prepend text for input ("Email: bob@something.com" -- user typed bob@something.com, Email is prepended)
   - This should NOT affect the actual content of the input. Perhaps it draws a label on either side?
+- Allow centering of text *on the text element* instead of the layout
+- Allow setting height and width on text element and positioning text within (instead of having to test within a Layout) Alt: set line-height for text widget
+- This: http://stackoverflow.com/questions/11259983/vertically-align-uilabel
 
 ####Actions:
 
 - Find a means of chaining actions together to avoid massive arrays of actions.
 - Ability to apply the same action to multiple IDs
 - Ability to make touchable action area have a larger area than the element.
+- Change "id" in attributes field to "target" so it isn't so ambiguous
+- Why is "duration" under attributes and the target parameters under "parametesr"? Clean up and make it not ambiguous
+- Multiple even/action triggers for a single event on: [touch_up, touch_cancelled]
+- Change "None" (transition type) to "Default"
+- Implement `UINavigationControllerDelegate` navigation style for slideout menus instead of displaying it as nested layouts.
+- Simplify (can we merge?!) "event_name" and "on". Should be a single event listener. On "touch" On "custom_event".
+- No "attributes" on actions only "target" then subkey "attributes" (instead of parameters)
 
 ####Data:
 
 - Can we implement an option to auto-map entity_attributes so we don't need to specify them?
 - Perhaps a simpler way of coverting json into dict/array so we don't have to handle complex maps
+- We should have simpler JSON serialization approach. Leave in complex stuff for fallback?
+- Perform actions directly in the on-load event of the datasource
 - Ability to reference length of longest entry.
 
 For example:
 
     array = (asdf, asdfasdf, asdflkjlakjsdlkjsdf);
     array.maxlength (returns 19)
+
+####Objects:
+
+- Eventually plan to build a visualizer that identifies and audits elements. Need to be able to tell the difference between UI controls and content. If necessary, just make one a subclass of the other so we don't end up duplicating Obj-c
+- Define Button type, other types (Image should actually be IMAGE not a button)
+so we can apply different states (and have it auto-detect image based on -active -disabled, etc.). Also color overlay for different states (active: alpha:0, disabled:overlay-#FFFFFF, etc.)
+- Allow background image on elements? With cover, contain, stretch, position/offset
+- Change "images.default" to something simpler if there's only one image?
 
 ####Core:
 
@@ -54,6 +74,10 @@ For example:
 - Ability to reload and reset all config
 - Common naming convention/best practice for IDs
 - Variables for things (colors, styles)
+- Support for raw retina position & dimension values (640px instead of 320pt)
+- Allow for classes to apply to multiple objects and actions to apply to multiple classes/ids
+- Devise shorthand approach so we can use `view` and `view.controls` or even `myView.controls`.
+- Rename AppConfig to something else not RFML like
 
 ####Documentation:
 
@@ -68,13 +92,33 @@ For example:
 
 - Have a fade-out **option** for top and bottom (text fades as it slides out of view)
 - Allow action to be applied to entire table cell
+- Easy way of creating list objects? If not, data will do. How to implement local data sources? Should be able to define a local datasource directly in the table element
 
 ####Formatting:
 - need to properly define shorthand margin/padding etc.
 - Define text styles in a separate file and reference them?
 - Enhance tableview/Text to support horizontal formatting
 - Default all elements to be 100% width?
+- change "layout_type" to "position"
 
 ####Notes:
 
 - Visible YES/NO?? vs. Alpha 0? We should combine these
+
+####Layouts:
+
+- Default width should be 100%
+- Improve layout_type to support right and left alignment; default shoudl be relative and wrap [one][besidethenext] (instead of requiring float and h_align right)
+- [align_left] [align_right] <-- big deal, since this will improve scalability
+- Think "anchors" and x,y distance from an anchor point. 0123456789 ??
+- Fill remaining height/width (define a header and footer, say, and have middle body stretch to fit). Should go hand in hand with anchor layouts. 
+
+####Images:
+
+- Should default to size of image (in points) ? Or for button backgrounds?
+
+####Styles:
+
+- Programmatic font interface? else we include this in the docs
+- horizontal/vertical_alignment screws up 100% h/w. Need to be more clear how this is performed (or if alignment is defined, either ignore height/width or include it in the calculation)
+
