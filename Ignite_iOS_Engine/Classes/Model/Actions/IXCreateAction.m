@@ -8,6 +8,8 @@
 
 #import "IXCreateAction.h"
 
+#import "IXAppManager.h"
+
 #import "IXJSONParser.h"
 #import "IXJSONGrabber.h"
 
@@ -85,13 +87,12 @@ static NSCache* sIXCreateControlCache;
     [super execute];
     
     NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
-    NSString* fullPathToControlJSON = [[NSBundle mainBundle] pathForResource:controlJSONLocation ofType:nil];
-    if( fullPathToControlJSON )
+    if( controlJSONLocation )
     {
-        IXBaseControl* createdControl = [[sIXCreateControlCache objectForKey:fullPathToControlJSON] copy];
+        IXBaseControl* createdControl = [[sIXCreateControlCache objectForKey:controlJSONLocation] copy];
         if( createdControl == nil )
         {
-            createdControl = [self createdControlFromLocation:fullPathToControlJSON];
+            createdControl = [self createdControlFromLocation:controlJSONLocation];
         }
         
         if( createdControl )

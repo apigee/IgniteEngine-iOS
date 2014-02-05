@@ -14,11 +14,30 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 
+static NSString* const kIXLayoutFlow = @"layout_flow";
+static NSString* const kIXVertical = @"vertical";
+static NSString* const kIXHorizontal = @"horizontal";
+static NSString* const kIXVerticalScrollEnabled = @"vertical_scroll_enabled";
+static NSString* const kIXHorizontalScrollEnabled = @"horizontal_scroll_enabled";
+static NSString* const kIXEnableScrollsToTop = @"enable_scrolls_to_top";
+static NSString* const kIXScrollIndicatorStyle = @"scroll_indicator_style";
+static NSString* const kIXDefault = @"default";
+static NSString* const kIXBlack = @"black";
+static NSString* const kIXWhite = @"white";
+static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
+static NSString* const kIXShowsHorizontalScrollIndicator = @"shows_horizontal_scroll_indicator";
+static NSString* const kIXShowsVerticalScrollIndicator = @"shows_vertical_scroll_indicator";
+static NSString* const kIXMaxZoomScale = @"max_zoom_scale";
+static NSString* const kIXMinZoomScale = @"min_zoom_scale";
+static NSString* const kIXEnableZoom = @"enable_zoom";
+static NSString* const kIXZoomScale = @"zoom_scale";
+static NSString* const kIXColorGradientTop = @"color.gradient_top";
+static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
 
 @interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
+@property (nonatomic,strong) CAGradientLayer* gradientLayer;
 @property (nonatomic,strong) UITapGestureRecognizer* doubleTapZoomRecognizer;
-
 
 -(void)doubleTapZoomRecognized:(id)sender;
 
@@ -63,32 +82,32 @@
 {
     [super applySettings];
     
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:@"layout_flow" defaultValue:@"vertical"];
-    [self setLayoutFlowVertical:(![layoutFlow isEqualToString:@"horizontal"])];
+    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXVertical];
+    [self setLayoutFlowVertical:(![layoutFlow isEqualToString:kIXHorizontal])];
     
-    [self setVerticalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"vertical_scroll_enabled" defaultValue:YES]];
-    [self setHorizontalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"horizontal_scroll_enabled" defaultValue:YES]];
-    [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:@"enable_scrolls_to_top" defaultValue:NO]];
+    [self setVerticalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXVerticalScrollEnabled defaultValue:YES]];
+    [self setHorizontalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXHorizontalScrollEnabled defaultValue:YES]];
+    [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:kIXEnableScrollsToTop defaultValue:NO]];
 
-    NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:@"scroll_indicator_style" defaultValue:@"default"];
-    if( [scrollIndicatorStyle isEqualToString:@"black"] ) {
+    NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIXDefault];
+    if( [scrollIndicatorStyle isEqualToString:kIXBlack] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
-    } else if( [scrollIndicatorStyle isEqualToString:@"white"] ) {
+    } else if( [scrollIndicatorStyle isEqualToString:kIXWhite] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
     } else {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleDefault];
     }
     
-    BOOL showScrollIndicators = [[self propertyContainer] getBoolPropertyValue:@"shows_scroll_indicators" defaultValue:YES];
-    [[self scrollView] setShowsHorizontalScrollIndicator:[[self propertyContainer] getBoolPropertyValue:@"shows_horizontal_scroll_indicator" defaultValue:showScrollIndicators]];
-    [[self scrollView] setShowsVerticalScrollIndicator:[[self propertyContainer] getBoolPropertyValue:@"shows_vertical_scroll_indicator" defaultValue:showScrollIndicators]];
+    BOOL showScrollIndicators = [[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES];
+    [[self scrollView] setShowsHorizontalScrollIndicator:[[self propertyContainer] getBoolPropertyValue:kIXShowsHorizontalScrollIndicator defaultValue:showScrollIndicators]];
+    [[self scrollView] setShowsVerticalScrollIndicator:[[self propertyContainer] getBoolPropertyValue:kIXShowsVerticalScrollIndicator defaultValue:showScrollIndicators]];
     
-    [[self scrollView] setMaximumZoomScale:[[self propertyContainer] getFloatPropertyValue:@"max_zoom_scale" defaultValue:2.0f]];
-    [[self scrollView] setMinimumZoomScale:[[self propertyContainer] getFloatPropertyValue:@"min_zoom_scale" defaultValue:0.5f]];
-    [self setZoomEnabled:[[self propertyContainer] getBoolPropertyValue:@"enable_zoom" defaultValue:NO]];
+    [self setZoomEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnableZoom defaultValue:NO]];
     if( [self isZoomEnabled] )
     {
         [[self scrollView] setZoomScale:[[self propertyContainer] getFloatPropertyValue:@"zoom_scale" defaultValue:1.0f]];
+        [[self scrollView] setMaximumZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXMaxZoomScale defaultValue:2.0f]];
+        [[self scrollView] setMinimumZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXMinZoomScale defaultValue:0.5f]];
         if( [self doubleTapZoomRecognizer] == nil )
         {
             UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:[self contentView]
@@ -105,6 +124,8 @@
             [[self contentView] removeGestureRecognizer:[self doubleTapZoomRecognizer]];
             [self setDoubleTapZoomRecognizer:nil];
         }
+        [[self scrollView] setMinimumZoomScale:1.0f];
+        [[self scrollView] setMaximumZoomScale:1.0f];
         [[self scrollView] setZoomScale:1.0f animated:YES];
     }
 }
@@ -126,32 +147,26 @@
 {
     [super layoutControlContentsInRect:rect];
     
-    BOOL showGradient = [[self propertyContainer] propertyExistsForPropertyNamed:@"color.gradient_top"];
-    if (showGradient)
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
     {
-        //    NSLog(showGradient ? @"Is the gradient visible? Yes" : @"Is the gradient visible? No");        
-        CAGradientLayer *gradient = [CAGradientLayer layer];
+        [[self gradientLayer] removeFromSuperlayer];
+        [self setGradientLayer:[CAGradientLayer layer]];
         
-        UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_top" defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
-        //CGColorRef topColor = [[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6] CGColor];
-        UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:@"color.gradient_bottom" defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
-        //CGColorRef bottomColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.6] CGColor];
+        CGRect gradientFrame = [[self scrollView] bounds];
+        gradientFrame.size = CGSizeMake(rect.size.width, rect.size.height);
+        [[self gradientLayer] setFrame:gradientFrame];
         
-        CGColorRef topColor = [topUIColor CGColor];
-        CGColorRef bottomColor = [bottomUIColor CGColor];
+        UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientTop defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
+        UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientBottom defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
+        [[self gradientLayer] setColors:[NSArray arrayWithObjects:(id)CFBridgingRelease([topUIColor CGColor]), (id)CFBridgingRelease([bottomUIColor CGColor]), nil]];
         
-        CGRect gradientFrame = self.scrollView.bounds;
-        gradientFrame.size.width = rect.size.width;
-        gradientFrame.size.height = rect.size.height;
-        gradient.frame = gradientFrame;
-        gradient.colors = [NSArray arrayWithObjects: (id)CFBridgingRelease(topColor), (id)CFBridgingRelease(bottomColor), nil];
-        
-        [_scrollView.layer insertSublayer:gradient atIndex:0];
+        [[[self scrollView] layer] insertSublayer:[self gradientLayer] atIndex:0];
     }
-    
-    
-    
-    
+    else
+    {
+        [[self gradientLayer] removeFromSuperlayer];
+        [self setGradientLayer:nil];
+    }
     [IXLayoutEngine layoutControl:self inRect:rect];
 }
 

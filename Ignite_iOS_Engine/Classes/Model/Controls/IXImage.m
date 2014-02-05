@@ -10,6 +10,10 @@
 
 #import "UIImageView+WebCache.h"
 
+// IXImage Properties
+static NSString* const kIXImagesDefault = @"images.default";
+static NSString* const kIXImagesTouch = @"images.touch";
+
 @interface IXImage ()
 
 @property (nonatomic,strong) UIImageView* imageView;
@@ -45,14 +49,14 @@
     [super applySettings];
 
     __weak IXImage* weakSelf = self;
-    [[self propertyContainer] getImageProperty:@"images.default"
+    [[self propertyContainer] getImageProperty:kIXImagesDefault
                                   successBlock:^(UIImage *image) {
                                       [weakSelf setDefaultImage:image];
                                       [[weakSelf imageView] setImage:image];
                                   } failBlock:^(NSError *error) {
                                   }];
     
-    [[self propertyContainer] getImageProperty:@"images.touch"
+    [[self propertyContainer] getImageProperty:kIXImagesTouch
                                   successBlock:^(UIImage *image) {
                                       [weakSelf setTouchedImage:image];
                                   } failBlock:^(NSError *error) {
@@ -70,7 +74,7 @@
 
 -(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super controlViewTouchesEnded:touches withEvent:event];
+    [super controlViewTouchesCancelled:touches withEvent:event];
     [[self imageView] setImage:[self defaultImage]];
 }
 

@@ -56,8 +56,7 @@
 
 @interface IXControlLayoutInfo : NSObject <NSCopying>
 
-@property (nonatomic,weak,readonly) IXPropertyContainer* propertyContainer;
-
+@property (nonatomic,weak) IXPropertyContainer* propertyContainer;
 @property (nonatomic,assign) CGRect layoutRect;
 @property (nonatomic,assign) BOOL hasSeenLayout;
 

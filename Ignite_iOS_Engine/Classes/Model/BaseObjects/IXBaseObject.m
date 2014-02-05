@@ -153,7 +153,12 @@
 
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
 {
-    return nil;
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:@"description"] )
+    {
+        returnValue = [self description];
+    }
+    return returnValue;
 }
 
 -(NSString*)description

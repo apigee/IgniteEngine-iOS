@@ -19,6 +19,7 @@
 
 -(void)addAction:(IXBaseAction*)action;
 -(void)addActions:(NSArray*)actions;
+-(void)addActionsFromActionContainer:(IXActionContainer*)actionContainer;
 
 -(BOOL)hasActionsForEvent:(NSString*)eventName;
 -(BOOL)hasActionsWithEventNamePrefix:(NSString*)eventNamePrefix;

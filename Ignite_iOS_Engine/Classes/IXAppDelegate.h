@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class IXWindow;
+
 @interface IXAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) IXWindow *ixWindow;
 
 @end

@@ -23,7 +23,7 @@
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, strong) IXCoreDataDataProvider* dataProvider;
+@property (nonatomic, weak) IXCoreDataDataProvider* dataProvider;
 @property (nonatomic, strong) NSMutableDictionary* sectionNumbersAndRowCount;
 
 @property (nonatomic, assign) CGSize itemSize;

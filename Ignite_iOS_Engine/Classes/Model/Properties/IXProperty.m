@@ -57,12 +57,15 @@
     [copiedProperty setOriginalString:[self originalString]];
     [copiedProperty setStaticText:[self staticText]];
     [copiedProperty setPropertyValue:[self propertyValue]];
-    [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
-    for( IXBaseShortCode* copiedShortCode in [copiedProperty shortCodes] )
+    if( [[self shortCodes] count] )
     {
-        [copiedShortCode setProperty:copiedProperty];
+        [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
+        for( IXBaseShortCode* copiedShortCode in [copiedProperty shortCodes] )
+        {
+            [copiedShortCode setProperty:copiedProperty];
+        }
+        [copiedProperty setShortCodeRanges:[[NSMutableArray alloc] initWithArray:[self shortCodeRanges] copyItems:YES]];
     }
-    [copiedProperty setShortCodeRanges:[[NSMutableArray alloc] initWithArray:[self shortCodeRanges] copyItems:YES]];
     return copiedProperty;
 }
 

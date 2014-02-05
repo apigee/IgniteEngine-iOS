@@ -48,7 +48,7 @@
 
 -(NSMutableArray*)propertiesForPropertyNamed:(NSString*)propertyName
 {
-    return [[self propertiesDict] objectForKey:propertyName];
+    return [self propertiesDict][propertyName];
 }
 
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName
@@ -118,8 +118,9 @@
             NSArray* propertyArray = [propertyContainer propertiesForPropertyNamed:propertyName];
             for( IXProperty* property in propertyArray )
             {
-                [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
+                [property setPropertyContainer:self];
             }
+            [[self propertiesDict] setObject:propertyArray forKey:propertyName];
         }
     }
 }

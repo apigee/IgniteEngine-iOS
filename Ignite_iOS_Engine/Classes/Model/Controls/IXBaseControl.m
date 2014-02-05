@@ -14,6 +14,31 @@
 #import "IXLayoutEngine.h"
 #import "IXControlLayoutInfo.h"
 
+//
+// IXBaseControl Properties :
+//      Note: See IXControlLayoutInfo.h for layout properties.
+//
+static NSString* const kIXAlpha = @"alpha";
+static NSString* const kIXBorderWidth = @"border_width";
+static NSString* const kIXBorderColor = @"border_color";
+static NSString* const kIXBorderRadius = @"border_radius";
+static NSString* const kIXBackgroundColor = @"color.background";
+static NSString* const kIXEnabled = @"enabled";
+static NSString* const kIXEnableShadow = @"enable_shadow";
+static NSString* const kIXShadowBlur = @"shadow_blur";
+static NSString* const kIXShadowAlpha = @"shadow_alpha";
+static NSString* const kIXShadowColor = @"shadow_color";
+static NSString* const kIXShadowOffsetRight = @"shadow_offset_right";
+static NSString* const kIXShadowOffsetDown = @"shadow_offset_down";
+static NSString* const kIXVisible = @"visible";
+
+//
+// IXBaseControl Actions
+//
+static NSString* const kIXTouch = @"touch";
+static NSString* const kIXTouchUp = @"touch_up";
+static NSString* const kIXTouchCancelled = @"touch_cancelled";
+
 @interface IXBaseControl ()
 
 @end
@@ -38,6 +63,12 @@
 {
     IXBaseControl* baseControl = [super copyWithZone:zone];
     return baseControl;
+}
+
+-(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
+{
+    [super setPropertyContainer:propertyContainer];
+    [[self layoutInfo] setPropertyContainer:propertyContainer];
 }
 
 //
@@ -68,13 +99,13 @@
 
 -(void)applyContentViewSettings
 {
-    [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]]];
-    [[self contentView] setEnabled:[[self propertyContainer] getBoolPropertyValue:@"enabled" defaultValue:YES]];
-    [[self contentView] setHidden:![[self propertyContainer] getBoolPropertyValue:@"visible" defaultValue:YES]];
-    [[self contentView] setAlpha:[[self propertyContainer] getFloatPropertyValue:@"alpha" defaultValue:1.0f]];
+    [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+    [[self contentView] setEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnabled defaultValue:YES]];
+    [[self contentView] setHidden:![[self propertyContainer] getBoolPropertyValue:kIXVisible defaultValue:YES]];
+    [[self contentView] setAlpha:[[self propertyContainer] getFloatPropertyValue:kIXAlpha defaultValue:1.0f]];
     
-    float borderWidth = [[self propertyContainer] getFloatPropertyValue:@"border_width" defaultValue:0.0f];
-    UIColor* borderColor = [[self propertyContainer] getColorPropertyValue:@"border_color" defaultValue:[UIColor blackColor]];
+    float borderWidth = [[self propertyContainer] getFloatPropertyValue:kIXBorderWidth defaultValue:0.0f];
+    UIColor* borderColor = [[self propertyContainer] getColorPropertyValue:kIXBorderColor defaultValue:[UIColor blackColor]];
     if( [[IXAppManager sharedAppManager] isLayoutDebuggingEnabled] )
     {
         if( borderWidth == 0.0f )
@@ -88,21 +119,21 @@
     }
     [[[self contentView] layer] setBorderWidth:borderWidth];
     [[[self contentView] layer] setBorderColor:borderColor.CGColor];
-    [[[self contentView] layer] setCornerRadius:[[self propertyContainer] getFloatPropertyValue:@"border_radius" defaultValue:0.0f]];
+    [[[self contentView] layer] setCornerRadius:[[self propertyContainer] getFloatPropertyValue:kIXBorderRadius defaultValue:0.0f]];
     
-    BOOL enableShadow = [[self propertyContainer] getBoolPropertyValue:@"enable_shadow" defaultValue:NO];
+    BOOL enableShadow = [[self propertyContainer] getBoolPropertyValue:kIXEnableShadow defaultValue:NO];
     if( enableShadow )
     {
         [[[self contentView] layer] setShouldRasterize:YES];
         [[[self contentView] layer] setRasterizationScale:[[UIScreen mainScreen] scale]];
-        [[[self contentView] layer] setShadowRadius:[[self propertyContainer] getFloatPropertyValue:@"shadow_blur" defaultValue:1.0f]];
-        [[[self contentView] layer] setShadowOpacity:[[self propertyContainer] getFloatPropertyValue:@"shadow_alpha" defaultValue:1.0f]];
+        [[[self contentView] layer] setShadowRadius:[[self propertyContainer] getFloatPropertyValue:kIXShadowBlur defaultValue:1.0f]];
+        [[[self contentView] layer] setShadowOpacity:[[self propertyContainer] getFloatPropertyValue:kIXShadowAlpha defaultValue:1.0f]];
         
-        UIColor* shadowColor = [[self propertyContainer] getColorPropertyValue:@"shadow_color" defaultValue:[UIColor blackColor]];
+        UIColor* shadowColor = [[self propertyContainer] getColorPropertyValue:kIXShadowColor defaultValue:[UIColor blackColor]];
         [[[self contentView] layer] setShadowColor:shadowColor.CGColor];
         
-        float shadowOffsetRight = [[self propertyContainer] getFloatPropertyValue:@"shadow_offset_right" defaultValue:2.0f];
-        float shadowOffsetDown = [[self propertyContainer] getFloatPropertyValue:@"shadow_offset_down" defaultValue:2.0f];
+        float shadowOffsetRight = [[self propertyContainer] getFloatPropertyValue:kIXShadowOffsetRight defaultValue:2.0f];
+        float shadowOffsetDown = [[self propertyContainer] getFloatPropertyValue:kIXShadowOffsetDown defaultValue:2.0f];
         [[[self contentView] layer] setShadowOffset:CGSizeMake(shadowOffsetRight, shadowOffsetDown)];
     }
     else
@@ -153,18 +184,7 @@
             {
                 if( CGRectContainsPoint([baseControlView bounds], [touch locationInView:baseControlView]) )
                 {
-                    if( [[baseControl childObjects] count] )
-                    {
-                        IXBaseControl* childReturnControl = [baseControl getTouchedControl:touch];
-                        if( [[childReturnControl actionContainer] hasActionsWithEventNamePrefix:@"touch"] )
-                        {
-                            returnControl = childReturnControl;
-                        }
-                    }
-                    else if( [[baseControl actionContainer] hasActionsWithEventNamePrefix:@"touch"] )
-                    {
-                        returnControl = baseControl;
-                    }
+                    returnControl = [baseControl getTouchedControl:touch];
                 }
             }
         }
@@ -176,7 +196,31 @@
 {
     if( fireTouchActions )
     {
-        [[self actionContainer] executeActionsForEventNamed:@"touch"];
+        if( [[self actionContainer] hasActionsWithEventNamePrefix:kIXTouch] )
+        {
+            [[self actionContainer] executeActionsForEventNamed:kIXTouch];
+        }
+        else if( [[self parentObject] isKindOfClass:[IXBaseControl class]] )
+        {
+            IXBaseControl* parentControl = (IXBaseControl*)[self parentObject];
+            if( [parentControl contentView] )
+            {
+                [parentControl processBeginTouch:fireTouchActions];
+            }
+        }
+    }
+}
+
+-(void)processCancelTouch:(BOOL)fireTouchActions
+{
+    if( fireTouchActions )
+    {
+        IXBaseControl* parentControl = (IXBaseControl*)[self parentObject];
+        if( [parentControl contentView] )
+        {
+            [parentControl processCancelTouch:fireTouchActions];
+        }
+        [[self actionContainer] executeActionsForEventNamed:kIXTouchCancelled];
     }
 }
 
@@ -189,7 +233,7 @@
         {
             [parentControl processEndTouch:fireTouchActions];
         }
-        [[self actionContainer] executeActionsForEventNamed:@"touch_up"];
+        [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
     }
 }
 
@@ -208,17 +252,16 @@
 
 -(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
+    [self processCancelTouch:YES];
 }
 
 -(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch* touch = [touches anyObject];
-    BOOL shouldFireTouchActions = ( [touch view] == [self contentView] && [touch tapCount] >= 1 );
+//    UITouch* touch = [touches anyObject];
+//    BOOL shouldFireTouchActions = ( [touch view] == [self contentView] && [touch tapCount] >= 1 );
     
-    [self processEndTouch:shouldFireTouchActions];
+    [self processEndTouch:YES];
 }
-
 
 -(void)executeControlSpecificFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameters
 {

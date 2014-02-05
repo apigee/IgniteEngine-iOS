@@ -8,6 +8,7 @@
 
 #import "IXAppDelegate.h"
 
+#import "IXWindow.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "JASidePanelController.h"
@@ -16,8 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.ixWindow = [[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.ixWindow.backgroundColor = [UIColor whiteColor];
 
 //    JASidePanelController* controller = [[JASidePanelController alloc] init];
 //    [controller.view setBackgroundColor:[UIColor magentaColor]];
@@ -31,10 +32,10 @@
 //    [controller setRightPanel:vc2];
 //    [controller setCenterPanel:[[IXAppManager sharedAppManager] rootViewController]];
 //    
-    [[self window] setRootViewController:[[IXAppManager sharedAppManager] rootViewController]];
+    [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] rootViewController]];
     
     [[IXAppManager sharedAppManager] startApplication];
-    [self.window makeKeyAndVisible];
+    [self.ixWindow makeKeyAndVisible];
 
     return YES;
 }

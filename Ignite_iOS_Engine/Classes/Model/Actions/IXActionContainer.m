@@ -103,6 +103,14 @@
     return hasActionsWithEventNamePrefix;
 }
 
+-(void)addActionsFromActionContainer:(IXActionContainer*)actionContainer
+{
+    for( NSArray* actionArray in [[self actionsDict] allValues] )
+    {
+        [self addActions:actionArray];
+    }
+}
+
 -(void)addActions:(NSArray*)actions
 {
     for( IXBaseAction* action in actions )

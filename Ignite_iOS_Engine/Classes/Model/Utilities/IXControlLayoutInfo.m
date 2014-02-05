@@ -144,8 +144,6 @@
 
 @interface IXControlLayoutInfo ()
 
-@property (nonatomic,weak) IXPropertyContainer* propertyContainer;
-
 @property (nonatomic,assign) BOOL isHidden;
 @property (nonatomic,assign) BOOL fillRemainingWidth;
 @property (nonatomic,assign) BOOL fillRemainingHeight;

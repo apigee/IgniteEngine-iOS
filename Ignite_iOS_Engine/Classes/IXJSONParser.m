@@ -20,8 +20,55 @@
 #import "IXCoreDataDataProvider.h"
 #import "IXEntityContainer.h"
 #import "IXAppManager.h"
+#import "IXCustom.h"
+#import "IXJSONGrabber.h"
+
+static NSCache* sCustomControlCache;
+
+@interface IXCustomControlCacheContainer : NSObject <NSCopying>
+
+@property (nonatomic,strong) IXPropertyContainer* propertyContainer;
+@property (nonatomic,strong) IXActionContainer* actionContainer;
+@property (nonatomic,strong) NSArray* childControls;
+
+@end
+
+@implementation IXCustomControlCacheContainer
+
+-(instancetype)init
+{
+    return [self initWithPropertyContainer:nil actionContainer:nil childControls:nil];
+}
+
+-(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer childControls:(NSArray*)childControls
+{
+    self = [super init];
+    if( self )
+    {
+        _propertyContainer = propertyContainer;
+        _actionContainer = actionContainer;
+        _childControls = childControls;
+    }
+    return self;
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    return [[[self class] allocWithZone:zone] initWithPropertyContainer:[[self propertyContainer] copy] actionContainer:[[self actionContainer] copy] childControls:[[NSArray alloc] initWithArray:[self childControls] copyItems:YES]];
+}
+
+@end
 
 @implementation IXJSONParser
+
++(void)initialize
+{
+    if( sCustomControlCache == nil )
+    {
+        sCustomControlCache = [[NSCache alloc] init];
+        [sCustomControlCache setName:@"com.ignite.CustomControlCache"];
+    }
+}
 
 +(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue
 {
@@ -273,6 +320,71 @@
         }
     }
     return control;
+}
+
++(void)populateCustomControl:(IXCustom*)customControl withJSONAtPath:(NSString*)pathToJSON async:(BOOL)async
+{
+    [customControl setNeedsToPopulate:NO];
+    if( pathToJSON )
+    {
+        __block IXCustomControlCacheContainer* customControlCacheContainer = [[sCustomControlCache objectForKey:pathToJSON] copy];
+        if( customControlCacheContainer == nil )
+        {
+            [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:pathToJSON
+                                                         asynch:async
+                                                completionBlock:^(id jsonObject, NSError *error) {
+                                                    
+                                                    if( jsonObject != nil )
+                                                    {
+                                                        customControlCacheContainer = [[IXCustomControlCacheContainer alloc] init];
+
+                                                        NSDictionary* customControlAttributeDict = [jsonObject objectForKey:@"attributes"];
+                                                        [customControlCacheContainer setPropertyContainer:[IXJSONParser propertyContainerWithPropertyDictionary:customControlAttributeDict]];
+                                                        
+                                                        NSArray* customControlActionsArray = [jsonObject objectForKey:@"actions"];
+                                                        [customControlCacheContainer setActionContainer:[IXJSONParser actionContainerWithJSONActionsArray:customControlActionsArray]];
+                                                        
+                                                        NSArray* customControlControlsArray = [jsonObject objectForKey:@"controls"];
+                                                        [customControlCacheContainer setChildControls:[IXJSONParser controlsWithJSONControlArray:customControlControlsArray]];
+                                                        
+                                                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                            [sCustomControlCache setObject:[customControlCacheContainer copy] forKey:pathToJSON];
+                                                        });
+                                                        
+                                                        if( customControlCacheContainer != nil )
+                                                        {
+                                                            IXPropertyContainer* controlPropertyContainer = [customControl propertyContainer];
+                                                            [customControl setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
+                                                            [[customControl propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+                                                            [[customControl actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
+                                                            [customControl addChildObjects:[[customControlCacheContainer childControls] copy]];
+                                                            [[[customControl sandbox] containerControl] applySettings];
+                                                            [[[customControl sandbox] containerControl] layoutControl];
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        [customControl setNeedsToPopulate:YES];
+                                                        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+                                                        {
+                                                            NSLog(@"Error grabbing custom control JSON at path %@ with error : %@",pathToJSON,[error description]);
+                                                        }
+                                                    }
+                                                }];
+        }        
+        else
+        {
+            IXPropertyContainer* controlPropertyContainer = [customControl propertyContainer];
+            [customControl setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
+            [[customControl propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+            [[customControl actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
+            [customControl addChildObjects:[[customControlCacheContainer childControls] copy]];
+            [customControl setNeedsToPopulate:NO];
+            [[[customControl sandbox] containerControl] applySettings];
+            [[[customControl sandbox] containerControl] layoutControl];
+
+        }
+    }
 }
 
 +(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray

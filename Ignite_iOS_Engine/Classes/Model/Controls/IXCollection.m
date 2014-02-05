@@ -18,12 +18,18 @@
 @interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,IXCoreDataDataProviderDelegate>
 
 @property (nonatomic,strong) UICollectionView* collectionView;
-@property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, strong) IXCoreDataDataProvider* dataProvider;
+@property (nonatomic,strong) NSString* dataSourceID;
+@property (nonatomic,weak) IXCoreDataDataProvider* dataProvider;
 
 @end
 
 @implementation IXCollection
+
+-(void)dealloc
+{
+    [_dataProvider removeDelegate:self];
+    [_collectionView setDelegate:nil];
+}
 
 - (void)buildView
 {

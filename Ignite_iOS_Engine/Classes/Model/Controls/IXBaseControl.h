@@ -38,5 +38,6 @@
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size;
 
 -(void)processBeginTouch:(BOOL)fireTouchActions;
+-(void)processCancelTouch:(BOOL)fireTouchActions;
 -(void)processEndTouch:(BOOL)fireTouchActions;
 @end

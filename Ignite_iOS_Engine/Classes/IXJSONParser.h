@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class IXCustom;
 @class IXProperty;
 @class IXBaseAction;
 @class IXBaseControl;
@@ -29,6 +30,7 @@
 
 +(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray;
 +(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict;
++(void)populateCustomControl:(IXCustom*)customControl withJSONAtPath:(NSString*)pathToJSON async:(BOOL)async;
 
 +(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary pathToJSON:(NSString*)pathToJSON;
 
