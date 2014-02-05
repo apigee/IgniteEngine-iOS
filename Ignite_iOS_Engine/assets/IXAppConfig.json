@@ -1,7 +1,7 @@
 {
    "app":{
       "attributes":{
-          "enable_layout_debugging":"NO",
+          "enable_layout_debugging":"YES",
          "mode":"dev",
          "id":"CLIENT-13",
          "shows_navigation_bar":"NO",
