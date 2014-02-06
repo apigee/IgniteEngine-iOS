@@ -224,6 +224,15 @@
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock
 {
     NSString* imagePath = [self getPathPropertyValue:propertyName basePath:nil defaultValue:nil];
+    /*
+     Added in a fallback so that if images.touch (etc.) don't exist, it tries again with "images.default".
+     This way we don't have to specify several of the same image in the JSON.
+     - B
+    */
+    if( imagePath == nil )
+    {
+        imagePath = [self getPathPropertyValue:@"images.default" basePath:nil defaultValue:nil];
+    }
     if( imagePath != nil )
     {
         NSURL *imageURL = nil;
