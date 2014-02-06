@@ -8,10 +8,16 @@
 
 #import "IXButton.h"
 
+#import "UIImage+IXAdditions.h"
+
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXImagesDisabled = @"images.disabled";
+static NSString* const kIXImagesTouchTintColor = @"images.touch.tintColor";
+static NSString* const kIXImagesDefaultTintColor = @"images.default.tintColor";
+static NSString* const kIXImagesDisabledTintColor = @"images.disabled.tintColor";
+static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
 
 @interface IXButton ()
 
@@ -57,19 +63,38 @@ static NSString* const kIXImagesDisabled = @"images.disabled";
 {
     [super applySettings];
     
+    BOOL darkensImageOnTouch = [[self propertyContainer] getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
+    [[self button] setAdjustsImageWhenHighlighted:darkensImageOnTouch];
+    
+    UIColor* imageDefaultTintColor = [[self propertyContainer] getColorPropertyValue:kIXImagesDefaultTintColor defaultValue:nil];
+    UIColor* imageTouchTintColor = [[self propertyContainer] getColorPropertyValue:kIXImagesTouchTintColor defaultValue:nil];
+    UIColor* imageDisabledTintColor = [[self propertyContainer] getColorPropertyValue:kIXImagesDisabledTintColor defaultValue:nil];
+
     __weak typeof(self) weakSelf = self;
     [[self propertyContainer] getImageProperty:kIXImagesDefault
                                   successBlock:^(UIImage *image) {
+                                      if( imageDefaultTintColor )
+                                      {
+                                          image = [image tintedImageUsingColor:imageDefaultTintColor];
+                                      }
                                       [[weakSelf button] setBackgroundImage:image forState:UIControlStateNormal];
                                   } failBlock:^(NSError *error) {
                                   }];    
     [[self propertyContainer] getImageProperty:kIXImagesTouch
                                   successBlock:^(UIImage *image) {
+                                      if( imageTouchTintColor )
+                                      {
+                                          image = [image tintedImageUsingColor:imageTouchTintColor];
+                                      }
                                       [[weakSelf button] setBackgroundImage:image forState:UIControlStateHighlighted];
                                   } failBlock:^(NSError *error) {
                                   }];
     [[self propertyContainer] getImageProperty:kIXImagesDisabled
                                   successBlock:^(UIImage *image) {
+                                      if( imageDisabledTintColor )
+                                      {
+                                          image = [image tintedImageUsingColor:imageDisabledTintColor];
+                                      }
                                       [[weakSelf button] setBackgroundImage:image forState:UIControlStateDisabled];
                                   } failBlock:^(NSError *error) {
                                   }];
