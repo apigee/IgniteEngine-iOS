@@ -269,6 +269,8 @@
 		63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUICollectionViewCell.m; sourceTree = "<group>"; };
 		63F8A400187368BC00250994 /* IXCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCollection.h; sourceTree = "<group>"; };
 		63F8A401187368BC00250994 /* IXCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCollection.m; sourceTree = "<group>"; };
+		CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
+		CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,6 +606,8 @@
 		6333614E18975672004F3433 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */,
+				CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */,
 				6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */,
 				6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */,
 			);

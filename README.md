@@ -28,7 +28,7 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Allow setting height and width on text element and positioning text within (instead of having to test within a Layout) Alt: set line-height for text widget
 - This: http://stackoverflow.com/questions/11259983/vertically-align-uilabel
 
-####Actions:
+####Actions/Events:
 
 - Find a means of chaining actions together to avoid massive arrays of actions.
 - Ability to apply the same action to multiple IDs
@@ -40,14 +40,18 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Implement `UINavigationControllerDelegate` navigation style for slideout menus instead of displaying it as nested layouts.
 - Simplify (can we merge?!) "event_name" and "on". Should be a single event listener. On "touch" On "custom_event".
 - No "attributes" on actions only "target" then subkey "attributes" (instead of parameters)
+- Change "focus_lost" to "blur"
+- Change "on" to "trigger"
+- Alerts "Title" and "Text"
 
 ####Data:
 
 - Can we implement an option to auto-map entity_attributes so we don't need to specify them?
-- Perhaps a simpler way of coverting json into dict/array so we don't have to handle complex maps
+- Perhaps a simpler way of coverting json into dict/array so we don't have to handle complex maps. As it is, it's really (uncessarily) convoluted
 - We should have simpler JSON serialization approach. Leave in complex stuff for fallback?
 - Perform actions directly in the on-load event of the datasource
 - Ability to reference length of longest entry.
+- Default auto_load: false (add new action for "load", "refresh", "unload")
 
 For example:
 
@@ -78,6 +82,8 @@ so we can apply different states (and have it auto-detect image based on -active
 - Allow for classes to apply to multiple objects and actions to apply to multiple classes/ids
 - Devise shorthand approach so we can use `view` and `view.controls` or even `myView.controls`.
 - Rename AppConfig to something else not RFML like
+- Implement 'self' (or 'this') for actions and properties
+- Support for multiple ongoing projects running off the same framework
 
 ####Documentation:
 
@@ -121,4 +127,5 @@ so we can apply different states (and have it auto-detect image based on -active
 
 - Programmatic font interface? else we include this in the docs
 - horizontal/vertical_alignment screws up 100% h/w. Need to be more clear how this is performed (or if alignment is defined, either ignore height/width or include it in the calculation)
+- Inheriting styles (default styles)- set default font, then it doesn't need to be defined (only font.size)
 
