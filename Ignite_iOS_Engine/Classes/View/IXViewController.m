@@ -159,7 +159,7 @@
 
 -(void)applySettings
 {
-    NSString* statusBarStyle = [[self propertyContainer] getStringPropertyValue:@"status_bar_style" defaultValue:@"dark_content"];
+    NSString* statusBarStyle = [[self propertyContainer] getStringPropertyValue:@"status_bar_style" defaultValue:@"dark"];
     if( ![[self statusBarPreferredStyleString] isEqualToString:statusBarStyle] )
     {
         [self setStatusBarPreferredStyleString:statusBarStyle];
@@ -169,13 +169,26 @@
     UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
 
+    /*
+     //TODO - obviously this failed miserably! Go Brandon.
+    NSString* backgroundImage = [[self propertyContainer] getStringPropertyValue:@"images.background" defaultValue:nil];
+    if (backgroundImage)
+    {
+        [[self propertyContainer] getImageProperty:backgroundImage
+                                      successBlock:^(UIImage *image) {
+                                          [[self view] setBackgroundImage:
+                                      } failBlock:^(NSError *error) {
+                                      }];
+    }
+    */
     [[self containerControl] applySettings];
+
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
 {
     UIStatusBarStyle preferredStatusBarStyle = UIStatusBarStyleDefault;
-    if( [[self statusBarPreferredStyleString] isEqualToString:@"light_content"] )
+    if( [[self statusBarPreferredStyleString] isEqualToString:@"light"] )
     {
         preferredStatusBarStyle = UIStatusBarStyleLightContent;
     }

@@ -84,6 +84,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - Rename AppConfig to something else not RFML like
 - Implement 'self' (or 'this') for actions and properties
 - Support for multiple ongoing projects running off the same framework
+- swap "enabled: false" to "disabled: true" (industry standard)
 
 ####Documentation:
 

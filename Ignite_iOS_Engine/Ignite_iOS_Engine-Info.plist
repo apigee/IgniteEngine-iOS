@@ -32,6 +32,8 @@
 	<array>
 		<string>ARSMaquettePro-Light.otf</string>
 		<string>ARSMaquettePro-Medium.otf</string>
+		<string>SourceSansPro-Semibold.otf</string>
+		<string>SourceSansPro-Light.otf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
