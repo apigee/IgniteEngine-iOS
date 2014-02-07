@@ -78,6 +78,9 @@
 @property (nonatomic,copy,readonly) IXSizePercentageContainer* topPosition;
 @property (nonatomic,readonly) BOOL leftPositionWasDefined;
 @property (nonatomic,copy,readonly) IXSizePercentageContainer* leftPosition;
+@property (nonatomic,readonly) BOOL bottomPositionWasDefined;
+@property (nonatomic,copy,readonly) IXSizePercentageContainer* bottomPosition;
+
 
 @property (nonatomic,copy,readonly) IXEdgeInsets* marginInsets;
 @property (nonatomic,copy,readonly) IXEdgeInsets* paddingInsets;

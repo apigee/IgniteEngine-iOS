@@ -253,9 +253,23 @@
     else
         [_leftPosition applyStringValue:[[self propertyContainer] getStringPropertyValue:@"left_position" defaultValue:nil] orDefaultValue:0.0f];
     
+    if( _bottomPosition == nil )
+    {
+        _bottomPosition = [[self propertyContainer] getSizePercentageContainer:@"bottom_position" defaultValue:0.0f];
+        if (_bottomPosition.value > 0)
+        {
+            //Not working yet (B) can't figure out how to move the element away from bottom
+            _verticalAlignment = IXLayoutVerticalAlignmentBottom;
+        }
+    }
+    else
+    {
+        [_bottomPosition applyStringValue:[[self propertyContainer] getStringPropertyValue:@"bottom_position" defaultValue:nil] orDefaultValue:0.0f];
+    }
+    
     if( _paddingInsets == nil )
     {
-        IXSizePercentageContainer *defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding.default" defaultValue:0.0f];
+        IXSizePercentageContainer *defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding" defaultValue:0.0f];
         CGFloat defaultPaddingValue = [defaultPadding value];
         
         _paddingInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
@@ -270,7 +284,7 @@
     }
     else
     {
-        [[_paddingInsets defaultValue] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding.default" defaultValue:nil] orDefaultValue:0.0f];
+        [[_paddingInsets defaultValue] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding" defaultValue:nil] orDefaultValue:0.0f];
         
         CGFloat defaultPaddingsValue = [[_paddingInsets defaultValue] value];
         
@@ -287,7 +301,7 @@
     
     if( _marginInsets == nil )
     {
-        IXSizePercentageContainer *defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin.default" defaultValue:0.0f];
+        IXSizePercentageContainer *defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin" defaultValue:0.0f];
         CGFloat defaultMarginValue = [defaultMargin value];
         
         _marginInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultMargin
@@ -302,7 +316,7 @@
     }
     else
     {
-        [[_marginInsets defaultValue] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin.default" defaultValue:nil] orDefaultValue:0.0f];
+        [[_marginInsets defaultValue] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin" defaultValue:nil] orDefaultValue:0.0f];
 
         CGFloat defaultMarginsValue = [[_marginInsets defaultValue] value];
         
@@ -320,6 +334,7 @@
     _heightWasDefined = [_height propertyWasDefined];
     _topPositionWasDefined = [_topPosition propertyWasDefined];
     _leftPositionWasDefined = [_leftPosition propertyWasDefined];
+    _bottomPositionWasDefined = [_bottomPosition propertyWasDefined];
 }
 
 @end
