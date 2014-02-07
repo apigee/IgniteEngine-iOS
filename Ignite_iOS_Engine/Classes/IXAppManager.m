@@ -178,8 +178,8 @@
 
 -(void)showJSONAlertWithName:(NSString*)name error:(NSError*)error
 {
-    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ JSON IS PROBABLY BROKE SUCKER ERROR: %@",name,[error description]]
-                                message:@"fix it..."
+    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"JSON Parse Error"]
+                                message:[NSString stringWithFormat:@"Your root JSON configuration file %@ could not be parsed.",name]
                                delegate:nil
                       cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
