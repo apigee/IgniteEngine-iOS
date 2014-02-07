@@ -59,4 +59,39 @@
     // Base Provider does nothing... Might need to update this.
 }
 
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
+{
+    if( loadDidSucceed )
+    {
+        [[self actionContainer] executeActionsForEventNamed:@"success"];
+    }
+    else
+    {
+        [[self actionContainer] executeActionsForEventNamed:@"fail"];
+    }
+    [[self actionContainer] executeActionsForEventNamed:@"finished"];
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:@"raw_data_response"] )
+    {
+        returnValue = [[self rawResponse] copy];
+    }
+    else if( [propertyName isEqualToString:@"status_code"] )
+    {
+        returnValue = [NSString stringWithFormat:@"%li",[self lastResponseStatusCode]];
+    }
+    else if( [propertyName isEqualToString:@"error_message"] )
+    {
+        returnValue = [[self lastResponseErrorMessage] copy];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
+}
+
 @end

@@ -24,6 +24,7 @@
 #import "IXViewController.h"
 #import "IXNavigationViewController.h"
 #import "IXJSONGrabber.h"
+#import "RKLog.h"
 
 @interface IXAppManager ()
 
@@ -99,6 +100,7 @@
         [self setAppMode:IXDebugMode];
     } else {
         [self setAppMode:IXReleaseMode];
+        RKLogConfigureByName("*", RKLogLevelOff);
     }
     
     [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:@"enable_layout_debugging" defaultValue:NO]];

@@ -8,6 +8,7 @@
 
 #import "IXCoreDataDataProvider.h"
 
+#import "IXAppManager.h"
 #import "IXPropertyContainer.h"
 #import "IXTableView.h"
 #import "IXEntityContainer.h"
@@ -343,7 +344,10 @@
         if( [self fetchPredicate] != nil && ![[self fetchPredicate] isEqualToString:@""] && [fetchPredicateStringsArray count] > 0 )
         {
             NSPredicate* predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
-            NSLog(@"PREDICATE EQUALS : %@",[predicate description]);
+            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+            {
+                NSLog(@"PREDICATE EQUALS : %@",[predicate description]);
+            }
             [fetchRequest setPredicate:predicate];
         }
         

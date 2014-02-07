@@ -17,6 +17,11 @@
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,copy) NSString* dataLocation;
 
+@property (nonatomic,assign) NSInteger lastResponseStatusCode;
+@property (nonatomic,copy) NSString* rawResponse;
+@property (nonatomic,copy) NSString* lastResponseErrorMessage;
+
 -(void)loadData:(BOOL)forceGet;
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
 
 @end

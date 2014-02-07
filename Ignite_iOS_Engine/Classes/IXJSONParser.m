@@ -242,7 +242,13 @@ static NSCache* sCustomControlCache;
                 id conditional = [actionValueDict objectForKey:@"if"];
                 [action setConditionalProperty:[IXJSONParser conditionalPropertyForConditionalValue:conditional]];
                 
+                id enabled = [actionValueDict objectForKey:@"enabled"];
                 id propertiesDict = [actionValueDict objectForKey:@"attributes"];
+                if( enabled && ![propertiesDict objectForKey:@"enabled"] )
+                {
+                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
+                    [propertiesDict setObject:enabled forKey:@"enabled"];
+                }                
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
                 [action setActionProperties:propertyContainer];
                 
