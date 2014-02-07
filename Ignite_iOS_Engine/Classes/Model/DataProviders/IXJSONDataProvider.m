@@ -138,7 +138,7 @@
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
     if( keyPath && rowIndexPath )
     {
-        NSString* jsonKeyPath = [NSString stringWithFormat:@".%li.%@",rowIndexPath.row,keyPath];
+        NSString* jsonKeyPath = [NSString stringWithFormat:@".%li.%@",(long)rowIndexPath.row,keyPath];
         if( [self rowBaseDataPath] )
         {
             jsonKeyPath = [[self rowBaseDataPath] stringByAppendingString:jsonKeyPath];
@@ -205,8 +205,21 @@
     
     if ([currentNode isKindOfClass:[NSArray class]]) {
         // current key must be an number
-        NSArray * currentArray = (NSArray *) currentNode;
-        nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
+        @try {
+            NSException *e = [NSException
+                              exceptionWithName:@"NSRangeException"
+                              reason:@"Specified array index is out of bounds"
+                              userInfo:nil];
+            
+            NSArray * currentArray = (NSArray *) currentNode;
+            if ([currentArray count] > 0)
+                nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
+            else
+                @throw e;
+        }
+        @catch (NSException *e) {
+            NSLog(@"%@; attempted to retrieve index %@ from %@", e, currentKey, jsonXPath);
+        }
     }
     
     // remove the currently processed key from the xpath like path

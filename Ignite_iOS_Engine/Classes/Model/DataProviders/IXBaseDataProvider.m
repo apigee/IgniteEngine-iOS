@@ -71,7 +71,7 @@
 {
     [super applySettings];
     
-    [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:@"auto_load" defaultValue:YES]];
+    [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:@"auto_load" defaultValue:NO]];
     [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data_location" defaultValue:nil]];
 }
 
@@ -103,7 +103,7 @@
     }
     else if( [propertyName isEqualToString:@"status_code"] )
     {
-        returnValue = [NSString stringWithFormat:@"%li",[self lastResponseStatusCode]];
+        returnValue = [NSString stringWithFormat:@"%li",(long)[self lastResponseStatusCode]];
     }
     else if( [propertyName isEqualToString:@"error_message"] )
     {

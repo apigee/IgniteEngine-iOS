@@ -46,10 +46,10 @@ A php preparser is used in the build process to parse int, float, and bool value
 
 ####Data:
 
-- Can we implement an option to auto-map entity_attributes so we don't need to specify them?
-- Perhaps a simpler way of coverting json into dict/array so we don't have to handle complex maps. As it is, it's really (uncessarily) convoluted
-- We should have simpler JSON serialization approach. Leave in complex stuff for fallback?
-- Perform actions directly in the on-load event of the datasource
+- ~~Can we implement an option to auto-map entity_attributes so we don't need to specify them?~~
+- ~~Perhaps a simpler way of coverting json into dict/array so we don't have to handle complex maps. As it is, it's really (uncessarily) convoluted~~
+- ~~We should have simpler JSON serialization approach. Leave in complex stuff for fallback?~~
+- ~~Perform actions directly in the on-load event of the datasource~~
 - Ability to reference length of longest entry.
 - Default auto_load: false (add new action for "load", "refresh", "unload")
 
@@ -84,7 +84,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - Rename AppConfig to something else not RFML like
 - Implement 'self' (or 'this') for actions and properties
 - Support for multiple ongoing projects running off the same framework
-- swap "enabled: false" to "disabled: true" (industry standard)
+- ~~swap "enabled: false" to "disabled: true" (industry standard)~~
 
 ####Documentation:
 
@@ -105,8 +105,8 @@ so we can apply different states (and have it auto-detect image based on -active
 - need to properly define shorthand margin/padding etc.
 - Define text styles in a separate file and reference them?
 - Enhance tableview/Text to support horizontal formatting
-- Default all elements to be 100% width?
-- change "layout_type" to "position"
+- Default all elements to be 100% width or fill remaining width?
+- change "layout_type" to "position"?
 
 ####Notes:
 
@@ -118,7 +118,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - Improve layout_type to support right and left alignment; default shoudl be relative and wrap [one][besidethenext] (instead of requiring float and h_align right)
 - [align_left] [align_right] <-- big deal, since this will improve scalability
 - Think "anchors" and x,y distance from an anchor point. 0123456789 ??
-- Fill remaining height/width (define a header and footer, say, and have middle body stretch to fit). Should go hand in hand with anchor layouts. 
+- Fill remaining height/width (define a header and footer, say, and have middle body stretch to fit). Should go hand in hand with anchor layouts. (looks like this is done?)
 
 ####Images:
 
