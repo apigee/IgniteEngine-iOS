@@ -30,6 +30,7 @@
     self = [super init];
     if( self )
     {
+        _delegates = [[NSMutableArray alloc] init];
         _requestParameterProperties = [[IXPropertyContainer alloc] init];
         _requestHeaderProperties = [[IXPropertyContainer alloc] init];
         _fileAttachmentProperties = [[IXPropertyContainer alloc] init];
@@ -44,6 +45,26 @@
     [_requestHeaderProperties setSandbox:sandbox];
     [_requestParameterProperties setSandbox:sandbox];
     [_fileAttachmentProperties setSandbox:sandbox];
+}
+
+-(void)addDelegate:(id<IXDataProviderDelegate>)delegate
+{
+    if( delegate )
+        [[self delegates] addObject:delegate];
+}
+
+-(void)removeDelegate:(id<IXDataProviderDelegate>)delegate
+{
+    if( delegate )
+        [[self delegates] removeObject:delegate];
+}
+
+-(void)notifyAllDelegates
+{
+    for( id<IXDataProviderDelegate> delegate in [self delegates] )
+    {
+        [delegate dataProviderDidUpdate:self];
+    }
 }
 
 -(void)applySettings
@@ -70,6 +91,7 @@
         [[self actionContainer] executeActionsForEventNamed:@"fail"];
     }
     [[self actionContainer] executeActionsForEventNamed:@"finished"];
+    [self notifyAllDelegates];
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -92,6 +114,16 @@
         returnValue = [super getReadOnlyPropertyValue:propertyName];
     }
     return returnValue;
+}
+
+-(NSInteger)getRowCount
+{
+    return 0;
+}
+
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+{
+    return nil;
 }
 
 @end

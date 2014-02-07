@@ -15,11 +15,11 @@
 #import "IXUICollectionViewCell.h"
 #import "IXCoreDataDataProvider.h"
 
-@interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,IXCoreDataDataProviderDelegate>
+@interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,IXDataProviderDelegate>
 
 @property (nonatomic,strong) UICollectionView* collectionView;
 @property (nonatomic,strong) NSString* dataSourceID;
-@property (nonatomic,weak) IXCoreDataDataProvider* dataProvider;
+@property (nonatomic,weak) IXBaseDataProvider* dataProvider;
 
 @end
 
@@ -68,7 +68,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView
 {
-    return [[[[self dataProvider] fetchedResultsController] sections] count];
+    return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -138,14 +138,8 @@
     IXLayout* cellLayout = [cell layoutControl];
     if( cellLayout )
     {
-        @try {
-            [[cellLayout sandbox] setIndexPathForRowData:indexPath];
-            [[cellLayout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
-            [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
-        }
-        @catch (NSException *exception) {
-        }
-
+        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
+        [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
         [cellLayout applySettings];
         
@@ -177,7 +171,7 @@
     NSLog(@"deselect");
 }
 
--(void)coreDataProvider:(IXCoreDataDataProvider *)coreDataProvider didUpdateWithResultsController:(NSFetchedResultsController *)resultsController
+-(void)dataProviderDidUpdate:(IXBaseDataProvider *)coreDataProvider
 {
 //    [self setCurrentRowCount:[[self dataProvider] getRowCount]];
     [[self collectionView] reloadData];

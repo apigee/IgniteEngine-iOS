@@ -18,6 +18,7 @@
 @property (nonatomic,copy) NSString* path;
 @property (nonatomic,copy) NSString* httpMethod;
 @property (nonatomic,copy) NSString* httpBody;
+@property (nonatomic,copy) NSString* rowBaseDataPath;
 
 @property (nonatomic,strong) id lastJSONResponse;
 
@@ -49,6 +50,7 @@
 
     [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
     [self setPath:[[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil]];
+    [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"row_data_base_path" defaultValue:nil]];
 }
 
 -(void)loadData:(BOOL)forceGet
@@ -131,8 +133,57 @@
     return returnValue;
 }
 
-- (NSObject *)objectForPath:(NSString *)jsonXPath container: (NSObject*) currentNode {
-    
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+{
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    if( keyPath && rowIndexPath )
+    {
+        NSString* jsonKeyPath = [NSString stringWithFormat:@".%li.%@",rowIndexPath.row,keyPath];
+        if( [self rowBaseDataPath] )
+        {
+            jsonKeyPath = [[self rowBaseDataPath] stringByAppendingString:jsonKeyPath];
+        }
+        returnValue = [self stringForPath:jsonKeyPath container:[self lastJSONResponse]];
+    }
+    return returnValue;
+}
+
+-(NSInteger)getRowCount
+{
+    NSInteger rowCount = 0;
+    NSObject* jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
+    if( [jsonObject isKindOfClass:[NSArray class]] )
+    {
+        rowCount = [(NSArray*)jsonObject count];
+    }
+    return rowCount;
+}
+
+-(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject*)container
+{
+    NSString* returnValue = nil;
+    NSObject* jsonObject = [self objectForPath:jsonXPath container:container];
+    if( jsonObject )
+    {
+        if( [jsonObject isKindOfClass:[NSString class]] )
+        {
+            returnValue = (NSString*)jsonObject;
+        }
+        else
+        {
+            NSError* jsonConvertError = nil;
+            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+            if( jsonConvertError == nil && jsonData )
+            {
+                returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            }
+        }
+    }
+    return returnValue;
+}
+
+- (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode
+{
     if (currentNode == nil) {
         return nil;
     }

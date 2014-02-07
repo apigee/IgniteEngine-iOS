@@ -8,7 +8,6 @@
 
 #import "IXTableView.h"
 #import "IXBaseDataProvider.h"
-#import "IXCoreDataDataProvider.h"
 #import "IXSandbox.h"
 #import "IXUITableViewCell.h"
 #import "UIView+IXAdditions.h"
@@ -19,11 +18,11 @@
 #import "IXLayoutEngine.h"
 #import <RestKit/CoreData.h>
 
-@interface IXTableView () <UITableViewDataSource,UITableViewDelegate,IXCoreDataDataProviderDelegate>
+@interface IXTableView () <UITableViewDataSource,UITableViewDelegate,IXDataProviderDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, weak) IXCoreDataDataProvider* dataProvider;
+@property (nonatomic, weak) IXBaseDataProvider* dataProvider;
 @property (nonatomic, strong) NSMutableDictionary* sectionNumbersAndRowCount;
 
 @property (nonatomic, assign) CGSize itemSize;
@@ -74,7 +73,7 @@
     [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:@"dataprovider_id" defaultValue:nil]];
     
     [[self dataProvider] removeDelegate:self];
-    [self setDataProvider:((IXCoreDataDataProvider*)[[self sandbox] getDataProviderWithID:[self dataSourceID]])];
+    [self setDataProvider:[[self sandbox] getDataProviderWithID:[self dataSourceID]]];
     [[self dataProvider] addDelegate:self];
     
     NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator_style" defaultValue:@"default"];
@@ -122,7 +121,7 @@
                       [[self propertyContainer] getSizeValue:@"item_height" maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
 }
 
--(void)coreDataProvider:(IXCoreDataDataProvider *)coreDataProvider didUpdateWithResultsController:(NSFetchedResultsController *)resultsController
+-(void)dataProviderDidUpdate:(IXBaseDataProvider*)coreDataProvider
 {
     [self setCurrentRowCount:[[self dataProvider] getRowCount]];
     [self startTableViewReload];
@@ -154,7 +153,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[[[self dataProvider] fetchedResultsController] sections] count];
+    return 1;
 }
 
 -(IXLayout*)layoutForCell:(IXUITableViewCell*)cell
@@ -219,14 +218,7 @@
     if( cellLayout )
     {
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
-        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
-
-        @try
-        {
-            [[cellLayout sandbox] setDataProviderManagedObjectForRowData:[[[self dataProvider] fetchedResultsController] objectAtIndexPath:indexPath]];
-        } @catch (NSException *exception) {
-        }
-        
+        [[cellLayout sandbox] setIndexPathForRowData:indexPath];        
         [cellLayout applySettings];
 
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.

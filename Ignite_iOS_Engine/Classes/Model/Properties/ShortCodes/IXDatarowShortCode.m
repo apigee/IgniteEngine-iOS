@@ -18,23 +18,15 @@
 -(NSString*)evaluate:(IXSandbox*)sandbox
 {
     NSString* returnValue = nil;
-    
-    @try {
-        IXCoreDataDataProvider* dp = [sandbox dataProviderForRowData];
-        NSIndexPath* indexPath = [sandbox indexPathForRowData];
-        NSManagedObject* object = [[dp fetchedResultsController] objectAtIndexPath:indexPath];
-        
-        NSString* keyPath = [self methodName];
-        if( !keyPath )
-        {
-            IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-            keyPath = [parameterProperty getPropertyValue:sandbox];
-        }
-        returnValue = [object valueForKeyPath:keyPath];
+    IXBaseDataProvider* baseDP = [sandbox dataProviderForRowData];
+    NSIndexPath* rowIndexPath = [sandbox indexPathForRowData];
+    NSString* keyPath = [self methodName];
+    if( !keyPath )
+    {
+        IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
+        keyPath = [parameterProperty getPropertyValue:sandbox];
     }
-    @catch (NSException *exception) {
-        
-    }
+    returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
     return returnValue;
 }
 

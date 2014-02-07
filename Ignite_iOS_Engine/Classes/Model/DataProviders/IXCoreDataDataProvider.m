@@ -17,8 +17,6 @@
 
 @interface IXCoreDataDataProvider () <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic,strong) NSMutableArray* delegates;
-
 @property (nonatomic,strong) RKObjectManager* objectManager;
 @property (nonatomic,assign) BOOL sortAscending;
 @property (nonatomic,assign) BOOL needsToPerformGet;
@@ -41,36 +39,6 @@
 -(void)dealloc
 {
     [_fetchedResultsController setDelegate:nil];
-}
-
--(id)init
-{
-    self = [super init];
-    if( self )
-    {
-        _delegates = [[NSMutableArray alloc] init];
-    }
-    return self;
-}
-
--(void)addDelegate:(id<IXCoreDataDataProviderDelegate>)delegate
-{
-    if( delegate )
-        [[self delegates] addObject:delegate];
-}
-
--(void)removeDelegate:(id<IXCoreDataDataProviderDelegate>)delegate
-{
-    if( delegate )
-        [[self delegates] removeObject:delegate];
-}
-
--(void)notifyAllDelegates
-{
-    for( id<IXCoreDataDataProviderDelegate> delegate in [self delegates] )
-    {
-        [delegate coreDataProvider:self didUpdateWithResultsController:[self fetchedResultsController]];
-    }
 }
 
 -(void)setSandbox:(IXSandbox *)sandbox
@@ -405,6 +373,18 @@
 -(NSInteger)getRowCount
 {
     return [[[self fetchedResultsController] fetchedObjects] count];
+}
+
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+{
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    @try {
+        NSManagedObject* object = [[self fetchedResultsController] objectAtIndexPath:rowIndexPath];
+        returnValue = [object valueForKeyPath:keyPath];
+    }
+    @catch (NSException *exception) {
+    }
+    return returnValue;
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
