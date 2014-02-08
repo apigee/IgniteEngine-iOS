@@ -206,16 +206,14 @@
     if ([currentNode isKindOfClass:[NSArray class]]) {
         // current key must be an number
         @try {
-            NSException *e = [NSException
-                              exceptionWithName:@"NSRangeException"
-                              reason:@"Specified array index is out of bounds"
-                              userInfo:nil];
-            
             NSArray * currentArray = (NSArray *) currentNode;
             if ([currentArray count] > 0)
                 nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
             else
-                @throw e;
+                @throw [NSException
+                        exceptionWithName:@"NSRangeException"
+                        reason:@"Specified array index is out of bounds"
+                        userInfo:nil];
         }
         @catch (NSException *e) {
             NSLog(@"%@; attempted to retrieve index %@ from %@", e, currentKey, jsonXPath);
