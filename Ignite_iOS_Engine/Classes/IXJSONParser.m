@@ -304,6 +304,10 @@ static NSCache* sCustomControlCache;
                 id controlID = [controlValueDict objectForKey:@"id"];
                 if( controlID )
                 {
+                    if( [controlID isKindOfClass:[NSString class]] )
+                    {
+                        [control setID:controlID];
+                    }
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     [propertiesDict setObject:controlID forKey:@"id"];
                 }
