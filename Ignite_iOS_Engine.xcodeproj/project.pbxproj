@@ -94,6 +94,10 @@
 		6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6DF18A95A7A000AEEA5 /* IXSlider.m */; };
 		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
+		63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXKnob.m */; };
+		63A10B2B18AAE15D00130BEA /* RWKnobControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2618AAE15D00130BEA /* RWKnobControl.m */; };
+		63A10B2C18AAE15D00130BEA /* RWKnobRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2818AAE15D00130BEA /* RWKnobRenderer.m */; };
+		63A10B2D18AAE15D00130BEA /* RWRotationGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2A18AAE15D00130BEA /* RWRotationGestureRecognizer.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
@@ -263,6 +267,14 @@
 		638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDatarowShortCode.m; sourceTree = "<group>"; };
 		638DE47D1860E80D00F2E36A /* UIView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IXAdditions.h"; sourceTree = "<group>"; };
 		638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IXAdditions.m"; sourceTree = "<group>"; };
+		63A10B2018AAD7E200130BEA /* IXKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXKnob.h; sourceTree = "<group>"; };
+		63A10B2118AAD7E200130BEA /* IXKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXKnob.m; sourceTree = "<group>"; };
+		63A10B2518AAE15D00130BEA /* RWKnobControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWKnobControl.h; sourceTree = "<group>"; };
+		63A10B2618AAE15D00130BEA /* RWKnobControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWKnobControl.m; sourceTree = "<group>"; };
+		63A10B2718AAE15D00130BEA /* RWKnobRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWKnobRenderer.h; sourceTree = "<group>"; };
+		63A10B2818AAE15D00130BEA /* RWKnobRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWKnobRenderer.m; sourceTree = "<group>"; };
+		63A10B2918AAE15D00130BEA /* RWRotationGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWRotationGestureRecognizer.h; sourceTree = "<group>"; };
+		63A10B2A18AAE15D00130BEA /* RWRotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWRotationGestureRecognizer.m; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -324,6 +336,7 @@
 				13033F2B183ED8F200C29157 /* IXStructs.h */,
 				13033F2C183ED8F200C29157 /* Model */,
 				13033F84183ED8F200C29157 /* View */,
+				63A10B2318AAE15D00130BEA /* ThirdParty */,
 			);
 			name = Classes;
 			path = Ignite_iOS_Engine/Classes;
@@ -401,6 +414,8 @@
 				6366D6D618A18741000AEEA5 /* IXCustom.m */,
 				13033F48183ED8F200C29157 /* IXImage.h */,
 				13033F49183ED8F200C29157 /* IXImage.m */,
+				63A10B2018AAD7E200130BEA /* IXKnob.h */,
+				63A10B2118AAD7E200130BEA /* IXKnob.m */,
 				13033F4A183ED8F200C29157 /* IXLayout.h */,
 				13033F4B183ED8F200C29157 /* IXLayout.m */,
 				13033F4C183ED8F200C29157 /* IXMap.h */,
@@ -620,6 +635,27 @@
 			path = Ignite_iOS_Engine/Fonts;
 			sourceTree = SOURCE_ROOT;
 		};
+		63A10B2318AAE15D00130BEA /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				63A10B2418AAE15D00130BEA /* RWKnobControl */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		63A10B2418AAE15D00130BEA /* RWKnobControl */ = {
+			isa = PBXGroup;
+			children = (
+				63A10B2518AAE15D00130BEA /* RWKnobControl.h */,
+				63A10B2618AAE15D00130BEA /* RWKnobControl.m */,
+				63A10B2718AAE15D00130BEA /* RWKnobRenderer.h */,
+				63A10B2818AAE15D00130BEA /* RWKnobRenderer.m */,
+				63A10B2918AAE15D00130BEA /* RWRotationGestureRecognizer.h */,
+				63A10B2A18AAE15D00130BEA /* RWRotationGestureRecognizer.m */,
+			);
+			path = RWKnobControl;
+			sourceTree = "<group>";
+		};
 		63D23AB01845B35100C93BC7 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -783,6 +819,8 @@
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
+				63A10B2D18AAE15D00130BEA /* RWRotationGestureRecognizer.m in Sources */,
+				63A10B2B18AAE15D00130BEA /* RWKnobControl.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
 				6333614818971802004F3433 /* IXCreateAction.m in Sources */,
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,
@@ -827,6 +865,7 @@
 				6366D6D718A18741000AEEA5 /* IXCustom.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
 				63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */,
+				63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
@@ -838,6 +877,7 @@
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,
+				63A10B2C18AAE15D00130BEA /* RWKnobRenderer.m in Sources */,
 				13033FA7183ED8F200C29157 /* IXText.m in Sources */,
 				13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */,
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
