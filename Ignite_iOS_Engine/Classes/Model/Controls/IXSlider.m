@@ -79,6 +79,7 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
     
     if( [self isFirstLoad] )
     {
+        [self setFirstLoad:NO];
         CGFloat initialSlideValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0.0f];
         [self updateSliderValueWithValue:initialSlideValue animated:YES];
     }
