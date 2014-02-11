@@ -105,7 +105,7 @@ static const NSTimeInterval fullscreenAnimationDuration = 0.3;
     }
     [super setContentURL:contentURL];
     [[NSNotificationCenter defaultCenter] postNotificationName:ALMoviePlayerContentURLDidChangeNotification object:nil];
-    [self play];
+//    [self play];
 }
 
 - (void)setControls:(ALMoviePlayerControls *)controls {

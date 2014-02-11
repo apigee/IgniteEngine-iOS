@@ -269,6 +269,24 @@
     }
 }
 
+-(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+{
+    NSURL* returnURL = nil;
+    NSString* path = [self getPathPropertyValue:propertyName basePath:basePath defaultValue:defaultValue];
+    if( path )
+    {
+        if( [IXAppManager pathIsLocal:path] )
+        {
+            returnURL = [NSURL fileURLWithPath:path];
+        }
+        else
+        {
+            returnURL = [NSURL URLWithString:path];
+        }
+    }    
+    return returnURL;
+}
+
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
     // Use this to get IMAGE paths. Then set up a image loader singleton that loads all the images for you.
@@ -278,7 +296,11 @@
     NSString* pathStringSetting = [self getStringPropertyValue:propertyName defaultValue:defaultValue];
     if( pathStringSetting != nil )
     {
-        if( basePath == nil )
+        if( ![IXAppManager pathIsLocal:pathStringSetting] )
+        {
+            returnPath = pathStringSetting;
+        }
+        else if( basePath == nil )
         {
             returnPath = [NSString stringWithFormat:@"%@/%@",[[self sandbox] rootPath],pathStringSetting];
         }

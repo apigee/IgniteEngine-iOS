@@ -43,6 +43,7 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue;
 
 #warning METHODS NOT DONE YET
+-(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
 
 @end

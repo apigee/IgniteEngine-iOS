@@ -10,7 +10,7 @@
  
  CONTROL
  /--------------------/
- - TYPE : "IXVideoControl"
+ - TYPE : "IXMediaPlayerControl"
  - DESCRIPTION: "IXVideoControl Description."
  /--------------------/
  - PROPERTIES
@@ -26,8 +26,8 @@
  /--------------------/
 
  {
- "type": "Video",
- "properties": {
+ "type": "MediaPlayer",
+ "attributes": {
  "id": "myLinkText",
  "layout_type": "relative",
  "height": "180",
@@ -38,6 +38,7 @@
  "height":"50",
  "color": "#00FF0050"
  },
+ "auto_play":true,
  "video": "http://archive.org/download/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto-HawaiianHoliday1937-Video.mp4"
  }
  },
@@ -56,23 +57,32 @@
 
 #import "ALMoviePlayerController.h"
 
+@interface  IXMediaPlayer() <ALMoviePlayerControllerDelegate>
 
-@interface  IXMediaPlayer()
-
-@property (nonatomic, strong) ALMoviePlayerController *moviePlayer;
-@property NSInteger *controls;
-
+@property (nonatomic,strong) ALMoviePlayerController *moviePlayer;
+@property (nonatomic,strong) NSURL* movieURL;
+@property (nonatomic,assign) CGRect lastFrameForMovieControl;
 
 @end
 
 @implementation IXMediaPlayer
 
-
+-(void)dealloc
+{
+    [_moviePlayer setDelegate:nil];
+}
 
 -(void)buildView
 {
     [super buildView];
-
+    
+    _moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectZero];
+    [_moviePlayer setDelegate:self];
+    
+    ALMoviePlayerControls *movieControls = [[ALMoviePlayerControls alloc] initWithMoviePlayer:_moviePlayer style:ALMoviePlayerControlsStyleNone];
+    [_moviePlayer setControls:movieControls];
+    
+    [[self contentView] addSubview:_moviePlayer.view];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -80,67 +90,45 @@
     return size;
 }
 
+-(void)layoutControlContentsInRect:(CGRect)rect
+{
+    [self setLastFrameForMovieControl:rect];
+    if( ![[self moviePlayer] isFullscreen] )
+    {
+        [[self moviePlayer] setFrame:rect];
+    }
+}
+
 -(void)applySettings
 {
     [super applySettings];
     
-    
-    //    self.moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectMake(0, 0, [[self propertyContainer] getFloatPropertyValue:@"width" defaultValue:320.0f], [[self propertyContainer] getFloatPropertyValue:@"height" defaultValue:180.0f])];
-    // [[self propertyContainer] getFloatPropertyValue:@"width" defaultValue:320.0f]
-    
-    // Do any additional setup after loading the view.
-    
-    //create a player
-    self.moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectMake(0, 0, [[self propertyContainer] getFloatPropertyValue:@"width" defaultValue:320.0f], [[self propertyContainer] getFloatPropertyValue:@"height" defaultValue:180.0f])];
-    self.moviePlayer.view.alpha = 1.0f;
-    self.moviePlayer.delegate = self; //IMPORTANT!
-    
-    // Set the controls style
-    /*
-     embedded
-    fullscreen
-    default
-    none
-    */
-    
+    ALMoviePlayerControls* movieControls = [[self moviePlayer] controls];
     NSString* controlsStyle = [[self propertyContainer] getStringPropertyValue:@"controls" defaultValue:@"default"];
-    
-    if([controlsStyle compare:@"embedded"] == NSOrderedSame)
+    if( [controlsStyle isEqualToString:@"embedded"] )
     {
-        _controls = ALMoviePlayerControlsStyleEmbedded;
+        [movieControls setStyle:ALMoviePlayerControlsStyleEmbedded];
     }
-    else if([controlsStyle compare:@"fullscreen"] == NSOrderedSame)
+    else if( [controlsStyle isEqualToString:@"fullscreen"] )
     {
-        _controls = ALMoviePlayerControlsStyleFullscreen;
+        [movieControls setStyle:ALMoviePlayerControlsStyleFullscreen];
     }
-    else if([controlsStyle compare:@"none"] == NSOrderedSame)
+    else if( [controlsStyle isEqualToString:@"none"] )
     {
-        _controls = ALMoviePlayerControlsStyleNone;
+        [movieControls setStyle:ALMoviePlayerControlsStyleNone];
     }
     else
     {
-        _controls = ALMoviePlayerControlsStyleDefault;
+        [movieControls setStyle:ALMoviePlayerControlsStyleDefault];
     }
     
-    
-    
-    //create the controls
-    ALMoviePlayerControls *movieControls = [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:_controls];
     //[movieControls setAdjustsFullscreenImage:NO];
     [movieControls setBarColor:[[self propertyContainer] getColorPropertyValue:@"bar.color" defaultValue:[UIColor colorWithRed:195/255.0 green:29/255.0 blue:29/255.0 alpha:0.5]]];
     [movieControls setBarHeight:[[self propertyContainer] getFloatPropertyValue:@"bar.height" defaultValue:50.0f]];
     [movieControls setTimeRemainingDecrements:YES];
-    
     //[movieControls setFadeDelay:2.0];
     //[movieControls setBarHeight:100.f];
     //[movieControls setSeekRate:2.f];
-    
-    //assign controls
-    [self.moviePlayer setControls:movieControls];
-    [[self contentView] addSubview:_moviePlayer.view];
-
-    //THEN set contentURL
-    
     
     //delay initial load so statusBarOrientation returns correct value
     double delayInSeconds = 0.3;
@@ -148,44 +136,73 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         //        [self configureViewForOrientation:[UIApplication sharedApplication].statusBarOrientation];
         [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
-            self.moviePlayer.view.alpha = 1.f;
+            self.moviePlayer.view.alpha = 1.0f;
         } completion:^(BOOL finished) {
             //            self.navigationItem.leftBarButtonItem.enabled = YES;
             //            self.navigationItem.rightBarButtonItem.enabled = YES;
         }];
     });
     
+    //THEN set contentURL
+    [self setMovieURL:[[self propertyContainer] getURLPathPropertyValue:@"video" basePath:nil defaultValue:nil]];
+    
+    if( ![[[[self moviePlayer] contentURL] absoluteString] isEqualToString:[[self movieURL] absoluteString]] )
+    {
+        [[self moviePlayer] setContentURL:[self movieURL]];
+    }
+    
+    BOOL autoPlay = [[self propertyContainer] getBoolPropertyValue:@"auto_play" defaultValue:YES];
+    if( autoPlay )
+    {
+        if( [[self moviePlayer] playbackState] != MPMoviePlaybackStatePlaying )
+        {
+            [[self moviePlayer] play];
+        }
+    }
+}
+
+-(void)moviePlayerWillMoveFromWindow
+{
+    if( [[[self moviePlayer] view] superview] != [self contentView] )
+    {
+        [[self contentView] addSubview:[[self moviePlayer] view]];
+        [[self moviePlayer] setFrame:[self lastFrameForMovieControl]];
+    }
+}
+
+-(void)movieTimedOut
+{
+    [[self actionContainer] executeActionsForEventNamed:@"movie_timed_out"];
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
-    
-    if( _moviePlayer != nil )
+    if( [functionName compare:@"play"] == NSOrderedSame )
     {
-        if( [functionName compare:@"play"] == NSOrderedSame )
+        if( ![[[[self moviePlayer] contentURL] absoluteString] isEqualToString:[[self movieURL] absoluteString]] )
         {
-            NSLog(@"play, bitches!");
-            [self.moviePlayer setContentURL:[NSURL URLWithString:[[self propertyContainer] getStringPropertyValue:@"video" defaultValue:@""]]];
-        }
-        if( [functionName compare:@"pause"] == NSOrderedSame )
-        {
-            NSLog(@"pause, bitches!");
-            [self.moviePlayer pause];
-        }
-        if( [functionName compare:@"stop"] == NSOrderedSame )
-        {
-            NSLog(@"stop, bitches!");
-            [self.moviePlayer stop];
-        }
-        if( [functionName compare:@"goto"] == NSOrderedSame )
-        {
-            NSLog(@"goto, bitches!");
-            NSInteger *seconds = [[self propertyContainer] getIntPropertyValue:@"seconds" defaultValue:@"0"];
-            self.moviePlayer.currentPlaybackTime = 30;
-            [self.moviePlayer setContentURL:[NSURL URLWithString:[[self propertyContainer] getStringPropertyValue:@"video" defaultValue:@""]]];
-            [self.moviePlayer stop];
-        }
-
+            [[self moviePlayer] setContentURL:[self movieURL]];
+        }        
+        [[self moviePlayer] play];
+    }
+    else if( [functionName compare:@"pause"] == NSOrderedSame )
+    {
+        [[self moviePlayer] pause];
+    }
+    else if( [functionName compare:@"stop"] == NSOrderedSame )
+    {
+        [[self moviePlayer] stop];
+    }
+    else if( [functionName compare:@"goto"] == NSOrderedSame )
+    {
+        float seconds = [[self propertyContainer] getFloatPropertyValue:@"seconds" defaultValue:[[self moviePlayer] currentPlaybackTime]];
+        [[self moviePlayer] setCurrentPlaybackTime:seconds];
+//            [self.moviePlayer setContentURL:[self movieURL]];
+//            [self.moviePlayer stop];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
     }
 }
 
