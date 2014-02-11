@@ -42,6 +42,12 @@
     [super viewDidLoad];
 
     [[self view] setBackgroundColor:[UIColor blackColor]];
+    
+    if( [self isNavigationBarHidden] )
+    {
+        [[self interactivePopGestureRecognizer] setEnabled:YES];
+        [[self interactivePopGestureRecognizer] setDelegate:nil];
+    }
 }
 
 -(IXViewController*)viewControllerWithID:(NSString*)viewControllerID
