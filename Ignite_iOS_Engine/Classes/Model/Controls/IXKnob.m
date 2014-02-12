@@ -129,7 +129,7 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXValue] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self knobControl] value]];
+        returnValue = [NSString stringWithFormat:@"%li",lroundf([[self knobControl] value])];
     }
     else
     {
