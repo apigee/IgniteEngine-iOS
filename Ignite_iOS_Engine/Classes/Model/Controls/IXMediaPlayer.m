@@ -196,10 +196,16 @@
     }
     else if( [functionName compare:@"goto"] == NSOrderedSame )
     {
-        float seconds = [[self propertyContainer] getFloatPropertyValue:@"seconds" defaultValue:[[self moviePlayer] currentPlaybackTime]];
-        [[self moviePlayer] setCurrentPlaybackTime:seconds];
-//            [self.moviePlayer setContentURL:[self movieURL]];
-//            [self.moviePlayer stop];
+        float seconds = [parameterContainer getFloatPropertyValue:@"seconds" defaultValue:[[self moviePlayer] currentPlaybackTime]];
+        if( [[self moviePlayer] playbackState] != MPMoviePlaybackStatePlaying )
+        {
+            [[self moviePlayer] setInitialPlaybackTime:seconds];
+            [[self moviePlayer] setCurrentPlaybackTime:seconds];
+        }
+        else
+        {
+            [[self moviePlayer] setCurrentPlaybackTime:seconds];
+        }
     }
     else
     {
