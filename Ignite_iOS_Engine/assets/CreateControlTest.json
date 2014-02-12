@@ -1,1 +1,0 @@
-{"id":"createdTextInput","type":"Image","attributes":{"height":"100%","width":"100%","layout_type":"relative","images":{"default":"/assets/images/image.png","touch":"/assets/images/image-touch.png"}},"actions":[{"on":"touch_up","type":"Delete","attributes":{"id":"createdTextInput"}}]}
