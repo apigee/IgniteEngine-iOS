@@ -105,6 +105,7 @@
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
 		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
+		63F87BEC18AC25BA00282DB8 /* UIImageView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F87BEB18AC25BA00282DB8 /* UIImageView+IXAdditions.m */; };
 		63F8A402187368BC00250994 /* IXCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F8A401187368BC00250994 /* IXCollection.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -289,6 +290,8 @@
 		63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFJSONRequestOperation.m; sourceTree = "<group>"; };
 		63DFD9E6188F1A3200C5941E /* IXUICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUICollectionViewCell.h; sourceTree = "<group>"; };
 		63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUICollectionViewCell.m; sourceTree = "<group>"; };
+		63F87BEA18AC25BA00282DB8 /* UIImageView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+IXAdditions.h"; sourceTree = "<group>"; };
+		63F87BEB18AC25BA00282DB8 /* UIImageView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+IXAdditions.m"; sourceTree = "<group>"; };
 		63F8A400187368BC00250994 /* IXCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCollection.h; sourceTree = "<group>"; };
 		63F8A401187368BC00250994 /* IXCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCollection.m; sourceTree = "<group>"; };
 		CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
@@ -620,6 +623,8 @@
 				6366D6DC18A30BC7000AEEA5 /* UIImage+IXAdditions.m */,
 				63311BCC184445060048C668 /* UIImagePickerController+IXAdditions.h */,
 				63311BCD184445060048C668 /* UIImagePickerController+IXAdditions.m */,
+				63F87BEA18AC25BA00282DB8 /* UIImageView+IXAdditions.h */,
+				63F87BEB18AC25BA00282DB8 /* UIImageView+IXAdditions.m */,
 				634895041863637A008C3760 /* UILabel+IXAdditions.h */,
 				634895051863637A008C3760 /* UILabel+IXAdditions.m */,
 				63311BC618442F270048C668 /* UITextField+IXAdditions.h */,
@@ -839,6 +844,7 @@
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,
 				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
 				13033F9F183ED8F200C29157 /* IXMap.m in Sources */,
+				63F87BEC18AC25BA00282DB8 /* UIImageView+IXAdditions.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
 				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,

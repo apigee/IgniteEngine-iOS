@@ -9,12 +9,13 @@
 #import "IXImage.h"
 
 #import "UIImageView+WebCache.h"
+#import "UIImageView+IXAdditions.h"
 
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXAnimatedImages = @"animated_images";
-static NSString* const kIXAnimationDuration = @"animated_images";
+static NSString* const kIXAnimationDuration = @"animation_duration";
 static NSString* const kIXAutoAnimate = @"auto_animate";
 
 // IXImage Functions
@@ -29,10 +30,16 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 @property (nonatomic,strong) NSString* touchedImagePath;
 @property (nonatomic,strong) UIImage* touchedImage;
 @property (nonatomic,strong) NSArray* animatedImages;
+@property (nonatomic,assign,getter = isAnimationPaused) BOOL animationPaused;
 
 @end
 
 @implementation IXImage
+
+-(void)dealloc
+{
+    [_imageView stopAnimating];
+}
 
 -(void)buildView
 {
@@ -124,11 +131,23 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 {
     if( [functionName isEqualToString:kIXStartAnimation] )
     {
-        [[self imageView] startAnimating];
+        if( [self isAnimationPaused] )
+        {
+            [self setAnimationPaused:NO];
+            [[self imageView] resumeAnimation];
+        }
+        else if( ![[self imageView] isAnimating] )
+        {
+            [[self imageView] startAnimating];
+        }
     }
     else if( [functionName isEqualToString:kIXStopAnimation] )
     {
-        [[self imageView] stopAnimating];
+        if( [[self imageView] isAnimating] && ![self isAnimationPaused] )
+        {
+            [self setAnimationPaused:YES];
+            [[self imageView] pauseAnimation];
+        }
     }
     else
     {

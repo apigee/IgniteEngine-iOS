@@ -32,6 +32,12 @@ static NSString* const kIXStop = @"stop";
 
 @implementation IXSound
 
+-(void)dealloc
+{
+    [_audioPlayer setDelegate:nil];
+    [_audioPlayer stop];
+}
+
 -(void)buildView
 {
     // Sound has no view.

@@ -8,6 +8,7 @@
 
 #import "IXAlertAction.h"
 
+#import "IXAppManager.h"
 #import "IXActionContainer.h"
 #import "IXPropertyContainer.h"
 
@@ -77,3 +78,16 @@
 }
 
 @end
+
+@implementation IXDevalertAction
+
+-(void)execute
+{
+    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+    {
+        [super execute];
+    }
+}
+
+@end
+

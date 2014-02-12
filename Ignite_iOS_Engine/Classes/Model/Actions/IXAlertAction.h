@@ -32,3 +32,7 @@
 @interface IXAlertAction : IXBaseAction
 
 @end
+
+@interface IXDevalertAction : IXAlertAction
+
+@end
