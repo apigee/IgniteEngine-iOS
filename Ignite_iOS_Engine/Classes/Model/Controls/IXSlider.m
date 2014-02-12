@@ -13,6 +13,8 @@ static NSString* const kIXInitialValue = @"initial_value";
 static NSString* const kIXImagesThumb = @"images.thumb";
 static NSString* const kIXImagesMinimum = @"images.minimum";
 static NSString* const kIXImagesMaximum = @"images.maximum";
+static NSString* const kIXMinimumValue = @"minimum_value";
+static NSString* const kIXMaximumValue = @"maximum_value";
 
 // Slider Read-Only Properties
 static NSString* const kIXValue = @"value";
@@ -77,6 +79,9 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
                                   } failBlock:^(NSError *error) {
                                   }];
     
+    [[self slider] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
+    [[self slider] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];
+
     if( [self isFirstLoad] )
     {
         [self setFirstLoad:NO];

@@ -21,6 +21,8 @@ static NSString* const kIXTrackColor = @"track_color";
 static NSString* const kIXPointerColor = @"pointer_color";
 static NSString* const kIXTrackVisible = @"track_visible";
 static NSString* const kIXPointerVisible = @"pointer_visible";
+static NSString* const kIXStartAngle = @"start_angle";
+static NSString* const kIXEndAngle = @"end_angle";
 
 // Knob Read-Only Properties
 static NSString* const kIXValue = @"value";
@@ -73,6 +75,11 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     [[self knobControl] setPointerLength:[[self propertyContainer] getFloatPropertyValue:kIXPointerLength defaultValue:10.0f]];
     [[self knobControl] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
     [[self knobControl] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];
+    
+    CGFloat startAngle = [[self propertyContainer] getFloatPropertyValue:kIXStartAngle defaultValue:-M_PI * 11 / 8.0];
+    CGFloat endAngle = [[self propertyContainer] getFloatPropertyValue:kIXEndAngle defaultValue:M_PI * 3 / 8.0];
+    [[self knobControl] setStartAngle:startAngle];
+    [[self knobControl] setEndAngle:endAngle];
     
     UIColor* trackColor = [[self propertyContainer] getColorPropertyValue:kIXTrackColor defaultValue:[UIColor blueColor]];
     UIColor* pointerColor = [[self propertyContainer] getColorPropertyValue:kIXPointerColor defaultValue:[UIColor redColor]];
