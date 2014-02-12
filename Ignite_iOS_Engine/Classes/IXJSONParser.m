@@ -139,6 +139,7 @@ static NSCache* sCustomControlCache;
 
 +(NSArray*)propertiesWithPropertyName:(NSString*)propertyName propertyValueArray:(NSArray*)propertyValueArray
 {
+    NSMutableArray* stringsToBeCommaSeperatedArray = nil;
     NSMutableArray* propertyArray = [NSMutableArray array];
     for( id propertyValueObject in propertyValueArray )
     {
@@ -151,9 +152,25 @@ static NSCache* sCustomControlCache;
                 [propertyArray addObject:property];
             }
         }
+        else if( [propertyValueObject isKindOfClass:[NSString class]] )
+        {
+            if( !stringsToBeCommaSeperatedArray )
+                stringsToBeCommaSeperatedArray = [NSMutableArray arrayWithObject:propertyValueObject];
+            else
+                [stringsToBeCommaSeperatedArray addObject:propertyValueObject];
+        }
         else
         {
             NSLog(@"WARNING: property value array for %@ does not have a dictionary objects",propertyName);
+        }
+    }
+    if( [stringsToBeCommaSeperatedArray count] )
+    {
+        NSString* commaSeperatedString = [stringsToBeCommaSeperatedArray componentsJoinedByString:@","];
+        IXProperty* commaSeperatedProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:commaSeperatedString];
+        if( commaSeperatedProperty )
+        {
+            [propertyArray addObject:commaSeperatedProperty];
         }
     }
     return propertyArray;
