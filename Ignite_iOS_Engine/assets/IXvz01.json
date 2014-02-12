@@ -74,6 +74,15 @@
 								},
 								"id": "mediaplayer_tv",
 								"type": "MediaPlayer"
+							},
+							{
+								"attributes": {
+									"auto_play": false,
+									"isPlaying": false,
+									"sound_location": "/music/JoshWoodward-MorningBlue.mp3"
+								},
+								"id": "mediaplayer_music",
+								"type": "Sound"
 							}
 						],
 						"id": "layout_tv",
@@ -434,11 +443,11 @@
 							{
 								"actions": [],
 								"attributes": {
-									"color.background": "#00FF00",
+									"color.background": "#000000",
 									"height": 369,
 									"layout_type": "absolute",
 									"visible": true,
-									"width": 208
+									"width": 416
 								},
 								"controls": [
 									{
@@ -472,212 +481,440 @@
 										"actions": [
 											{
 												"attributes": {
-													"function_name": [
-														{
-															"if": "[[mediaplayer_tv.isOn]]==1",
-															"value": "pause"
-														}
-													],
-													"id": "mediaplayer_tv"
-												},
-												"on": "touch_up",
-												"type": "Function"
-											},
-											{
-												"attributes": {
-													"id": "mediaplayer_tv"
+													"duration": 0.25,
+													"id": "layout_iphone_right"
 												},
 												"on": "touch_up",
 												"parameters": {
-													"video": [
-														{
-															"if": "[[mediaplayer_tv.isOn]]==1 && '[[mediaplayer_tv.video]]'=='/videos/tv_ad_video.mp4'",
-															"value": "/videos/tv_news_video.mp4"
-														},
-														{
-															"if": "[[mediaplayer_tv.isOn]]==1 && '[[mediaplayer_tv.video]]'=='/videos/tv_news_video.mp4'",
-															"value": "/videos/tv_skating_video.mp4"
-														},
-														{
-															"if": "[[mediaplayer_tv.isOn]]==1 && '[[mediaplayer_tv.video]]'=='/videos/tv_skating_video.mp4'",
-															"value": "/videos/tv_ad_video.mp4"
-														}
-													]
+													"margin.left": -208
 												},
 												"type": "Modify"
 											},
 											{
 												"attributes": {
-													"function_name": [
-														{
-															"if": "[[mediaplayer_tv.isOn]]==1",
-															"value": "play"
-														}
-													],
-													"id": "mediaplayer_tv"
+													"id": "layout_iphone_right_tv"
 												},
 												"on": "touch_up",
-												"type": "Function"
+												"parameters": {
+													"visible": 1
+												},
+												"type": "Modify"
 											}
 										],
 										"attributes": {
-											"color.background": "#00FF00",
-											"height": 40,
+											"height": 62.2,
 											"layout_type": "float",
-											"margin.left": 60,
 											"margin.top": 59,
-											"width": 40
+											"width": 208
 										},
-										"id": "button_tv_channelchanger",
+										"id": "button_show_tv",
 										"type": "Button"
+									},
+									{
+										"attributes": {
+											"height": 369,
+											"layout_type": "float",
+											"margin.left": 208,
+											"visible": false,
+											"width": 208
+										},
+										"controls": [
+											{
+												"attributes": {
+													"height": 369,
+													"images.default": "/images/iphone_background_tv_208x369.png",
+													"layout_type": "float",
+													"margin.top": 0,
+													"visible": true,
+													"width": 208
+												},
+												"controls": [],
+												"type": "Image"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"duration": 0.25,
+															"id": "layout_iphone_right"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"margin.left": 0
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"delay": 0.5,
+															"id": "layout_iphone_right_tv"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"visible": 0
+														},
+														"type": "Modify"
+													}
+												],
+												"attributes": {
+													"height": 44,
+													"images.default": "/images/button_iphone_back_44x44.png",
+													"layout_type": "float",
+													"margin.left": 0,
+													"margin.top": 0,
+													"width": 44
+												},
+												"type": "Button"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"function_name": [
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1",
+																	"value": "pause"
+																}
+															],
+															"id": "mediaplayer_tv"
+														},
+														"on": "touch_up",
+														"type": "Function"
+													},
+													{
+														"attributes": {
+															"id": "mediaplayer_tv"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"video": [
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1 && '[[mediaplayer_tv.video]]'=='/videos/tv_ad_video.mp4'",
+																	"value": "/videos/tv_news_video.mp4"
+																},
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1 && '[[mediaplayer_tv.video]]'=='/videos/tv_news_video.mp4'",
+																	"value": "/videos/tv_skating_video.mp4"
+																},
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1 && '[[mediaplayer_tv.video]]'=='/videos/tv_skating_video.mp4'",
+																	"value": "/videos/tv_ad_video.mp4"
+																}
+															]
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"function_name": [
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1",
+																	"value": "play"
+																}
+															],
+															"id": "mediaplayer_tv"
+														},
+														"on": "touch_up",
+														"type": "Function"
+													}
+												],
+												"attributes": {
+													"enabled": false,
+													"height": 80,
+													"images.default": "/images/button_iphone_updowncombo_208x80.png",
+													"layout_type": "float",
+													"margin.left": 0,
+													"margin.top": 260,
+													"width": 208
+												},
+												"id": "button_tv_channelchanger",
+												"type": "Button"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"id": "layout_tv"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"visible": [
+																{
+																	"if": "[[layout_tv.visible]]==1",
+																	"value": false
+																},
+																{
+																	"if": "[[layout_tv.visible]]==0",
+																	"value": true
+																}
+															]
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"id": "mediaplayer_tv"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"isOn": [
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1",
+																	"value": false
+																},
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==0",
+																	"value": true
+																}
+															]
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"id": "button_tv_onoff"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"images.default": [
+																{
+																	"if": "[[layout_tv.visible]]==1",
+																	"value": "/images/button_iphone_toggleon_52x47.png"
+																},
+																{
+																	"if": "[[layout_tv.visible]]==0",
+																	"value": "/images/button_iphone_toggleoff_52x47.png"
+																}
+															]
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"id": "button_tv_channelchanger"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"enabled": [
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==1",
+																	"value": true
+																},
+																{
+																	"if": "[[mediaplayer_tv.isOn]]==0",
+																	"value": false
+																}
+															]
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"function_name": [
+																{
+																	"if": "[[layout_tv.visible]]==0",
+																	"value": "stop"
+																},
+																{
+																	"if": "[[layout_tv.visible]]==1",
+																	"value": "play"
+																}
+															],
+															"id": "mediaplayer_tv"
+														},
+														"on": "touch_up",
+														"type": "Function"
+													}
+												],
+												"attributes": {
+													"height": 47,
+													"images.default": "/images/button_iphone_toggleoff_52x47.png",
+													"layout_type": "float",
+													"margin.left": 78,
+													"margin.top": 130,
+													"width": 52
+												},
+												"id": "button_tv_onoff",
+												"type": "Button"
+											}
+										],
+										"id": "layout_iphone_right_tv",
+										"type": "Layout"
 									},
 									{
 										"actions": [
 											{
 												"attributes": {
-													"id": "layout_tv"
+													"duration": 0.25,
+													"id": "layout_iphone_right"
 												},
 												"on": "touch_up",
 												"parameters": {
-													"visible": [
-														{
-															"if": "[[layout_tv.visible]]==1",
-															"value": false
-														},
-														{
-															"if": "[[layout_tv.visible]]==0",
-															"value": true
-														}
-													]
+													"margin.left": -208
 												},
 												"type": "Modify"
 											},
 											{
 												"attributes": {
-													"id": "mediaplayer_tv"
+													"id": "layout_iphone_right_music"
 												},
 												"on": "touch_up",
 												"parameters": {
-													"isOn": [
-														{
-															"if": "[[mediaplayer_tv.isOn]]==1",
-															"value": false
-														},
-														{
-															"if": "[[mediaplayer_tv.isOn]]==0",
-															"value": true
-														}
-													]
+													"visible": 1
 												},
 												"type": "Modify"
-											},
-											{
-												"attributes": {
-													"id": "button_tv_onoff"
-												},
-												"on": "touch_up",
-												"parameters": {
-													"color.background": [
-														{
-															"if": "[[layout_tv.visible]]==1",
-															"value": "#ffffff"
-														},
-														{
-															"if": "[[layout_tv.visible]]==0",
-															"value": "#000000"
-														}
-													]
-												},
-												"type": "Modify"
-											},
-											{
-												"attributes": {
-													"function_name": [
-														{
-															"if": "[[layout_tv.visible]]==0",
-															"value": "stop"
-														},
-														{
-															"if": "[[layout_tv.visible]]==1",
-															"value": "play"
-														}
-													],
-													"id": "mediaplayer_tv"
-												},
-												"on": "touch_up",
-												"type": "Function"
 											}
 										],
 										"attributes": {
-											"color.background": "#000000",
-											"height": 40,
+											"height": 62.2,
 											"layout_type": "float",
-											"margin.top": 59,
-											"width": 40
+											"margin.top": 121.2,
+											"width": 208
 										},
-										"id": "button_tv_onoff",
-										"type": "Button"
-									},
-									{
-										"actions": [
-											{
-												"attributes": {
-													"id": "mediaplayer_music"
-												},
-												"on": "touch_up",
-												"parameters": {
-													"isPlaying": [
-														{
-															"if": "[[mediaplayer_music.isPlaying]]==0",
-															"value": true
-														},
-														{
-															"if": "[[mediaplayer_music.isPlaying]]==1",
-															"value": false
-														}
-													]
-												},
-												"type": "Modify"
-											},
-											{
-												"attributes": {
-													"function_name": [
-														{
-															"if": "[[mediaplayer_music.isPlaying]]==1",
-															"value": "play"
-														},
-														{
-															"if": "[[mediaplayer_music.isPlaying]]==0",
-															"value": "pause"
-														}
-													],
-													"id": "mediaplayer_music"
-												},
-												"on": "touch_up",
-												"type": "Function"
-											}
-										],
-										"attributes": {
-											"color.background": "#0000FF",
-											"height": 40,
-											"layout_type": "float",
-											"margin.top": 109,
-											"width": 40
-										},
-										"id": "button_music_onoff",
+										"id": "button_show_music",
 										"type": "Button"
 									},
 									{
 										"attributes": {
-											"auto_play": false,
-											"isPlaying": false,
-											"sound_location": "/music/JoshWoodward-MorningBlue.mp3"
+											"height": 369,
+											"layout_type": "float",
+											"margin.left": 208,
+											"visible": false,
+											"width": 208
 										},
-										"id": "mediaplayer_music",
-										"type": "Sound"
+										"controls": [
+											{
+												"attributes": {
+													"height": 369,
+													"images.default": "/images/iphone_background_tv_208x369.png",
+													"layout_type": "float",
+													"margin.top": 0,
+													"visible": true,
+													"width": 208
+												},
+												"controls": [],
+												"type": "Image"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"id": "mediaplayer_music"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"isPlaying": [
+																{
+																	"if": "[[mediaplayer_music.isPlaying]]==0",
+																	"value": true
+																},
+																{
+																	"if": "[[mediaplayer_music.isPlaying]]==1",
+																	"value": false
+																}
+															]
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"function_name": [
+																{
+																	"if": "[[mediaplayer_music.isPlaying]]==1",
+																	"value": "play"
+																},
+																{
+																	"if": "[[mediaplayer_music.isPlaying]]==0",
+																	"value": "pause"
+																}
+															],
+															"id": "mediaplayer_music"
+														},
+														"on": "touch_up",
+														"type": "Function"
+													}
+												],
+												"attributes": {
+													"color.background": "#0000FF",
+													"height": 40,
+													"layout_type": "float",
+													"margin.top": 109,
+													"width": 40
+												},
+												"id": "button_music_onoff",
+												"type": "Button"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"duration": 0.25,
+															"id": "layout_iphone_right"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"margin.left": 0
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"delay": 0.5,
+															"id": "layout_iphone_right_music"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"visible": 0
+														},
+														"type": "Modify"
+													}
+												],
+												"attributes": {
+													"height": 44,
+													"images.default": "/images/button_iphone_back_44x44.png",
+													"layout_type": "float",
+													"margin.left": 0,
+													"margin.top": 0,
+													"width": 44
+												},
+												"type": "Button"
+											}
+										],
+										"id": "layout_iphone_right_music",
+										"type": "Layout"
+									},
+									{
+										"attributes": {
+											"height": 62.2,
+											"layout_type": "float",
+											"margin.top": 183.4,
+											"width": 208
+										},
+										"id": "button_show_lights",
+										"type": "Button"
+									},
+									{
+										"attributes": {
+											"height": 62.2,
+											"layout_type": "float",
+											"margin.top": 245.6,
+											"width": 208
+										},
+										"id": "button_show_temp",
+										"type": "Button"
+									},
+									{
+										"attributes": {
+											"height": 62.2,
+											"layout_type": "float",
+											"margin.top": 307.8,
+											"width": 208
+										},
+										"id": "button_show_fireplace",
+										"type": "Button"
 									}
 								],
-								"id": "iphone_right_layout",
+								"id": "layout_iphone_right",
 								"type": "Layout"
 							}
 						],
