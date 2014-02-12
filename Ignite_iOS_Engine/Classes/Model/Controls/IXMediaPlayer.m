@@ -77,6 +77,7 @@
     [super buildView];
     
     _moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectZero];
+    [_moviePlayer setShouldAutoplay:NO];
     [_moviePlayer setDelegate:self];
     
     ALMoviePlayerControls *movieControls = [[ALMoviePlayerControls alloc] initWithMoviePlayer:_moviePlayer style:ALMoviePlayerControlsStyleNone];
