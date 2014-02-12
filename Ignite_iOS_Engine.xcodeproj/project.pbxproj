@@ -98,6 +98,7 @@
 		63A10B2B18AAE15D00130BEA /* RWKnobControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2618AAE15D00130BEA /* RWKnobControl.m */; };
 		63A10B2C18AAE15D00130BEA /* RWKnobRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2818AAE15D00130BEA /* RWKnobRenderer.m */; };
 		63A10B2D18AAE15D00130BEA /* RWRotationGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2A18AAE15D00130BEA /* RWRotationGestureRecognizer.m */; };
+		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
@@ -275,6 +276,8 @@
 		63A10B2818AAE15D00130BEA /* RWKnobRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWKnobRenderer.m; sourceTree = "<group>"; };
 		63A10B2918AAE15D00130BEA /* RWRotationGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWRotationGestureRecognizer.h; sourceTree = "<group>"; };
 		63A10B2A18AAE15D00130BEA /* RWRotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWRotationGestureRecognizer.m; sourceTree = "<group>"; };
+		63A10B2E18AAF9D900130BEA /* IXSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSound.h; sourceTree = "<group>"; };
+		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -434,6 +437,8 @@
 				6366D6DF18A95A7A000AEEA5 /* IXSlider.m */,
 				13033F58183ED8F200C29157 /* IXSocial.h */,
 				13033F59183ED8F200C29157 /* IXSocial.m */,
+				63A10B2E18AAF9D900130BEA /* IXSound.h */,
+				63A10B2F18AAF9D900130BEA /* IXSound.m */,
 				13033F5A183ED8F200C29157 /* IXTableView.h */,
 				13033F5B183ED8F200C29157 /* IXTableView.m */,
 				13033F5C183ED8F200C29157 /* IXText.h */,
@@ -847,6 +852,7 @@
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				13033FA3183ED8F200C29157 /* IXPanel.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
+				63A10B3018AAF9D900130BEA /* IXSound.m in Sources */,
 				634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */,
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
 				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
