@@ -30,6 +30,8 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Nestsans.ttf</string>
+		<string>NestsansBold.ttf</string>
 		<string>ARSMaquettePro-Light.otf</string>
 		<string>ARSMaquettePro-Medium.otf</string>
 		<string>SourceSansPro-Semibold.otf</string>
