@@ -1,7 +1,7 @@
 {
   "app": {
     "attributes": {
-      "default_view": "IXcom_apigee_checkin.json",
+      "default_view": "IXvz01.json",
       "enable_layout_debugging": true,
       "id": "CLIENT-13",
       "mode": "debug",
