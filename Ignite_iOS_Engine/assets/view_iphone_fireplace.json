@@ -1,16 +1,96 @@
 {
 	"attributes": {
 		"height": "100%",
+		"images.default": "/images/iphone_background_music_208x369.png",
 		"layout_type": "float",
-		"width": "100%",
-		"color.background":"#FFFFFF"
+		"width": "100%"
 	},
 	"controls": [
 		{
-			"type":"Text",
-			"attributes":{
-				"text":"Fireplace"
-			}
+			"actions": [
+				{
+					"attributes": {
+						"duration": 0.4,
+						"id": "fireplace_on"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": [
+							{
+								"if": "[[fireplace_on.alpha]] == 1",
+								"value": 0
+							},
+							{
+								"if": "[[fireplace_on.alpha]] == 0",
+								"value": 1
+							}
+						]
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"duration": 0.4,
+						"id": "fireplace_overlay"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": [
+							{
+								"if": "[[fireplace_overlay.alpha]] == 1",
+								"value": 0
+							},
+							{
+								"if": "[[fireplace_overlay.alpha]] == 0",
+								"value": 1
+							}
+						]
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"id": "mediaplayer_fireplace"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"isPlaying": [
+							{
+								"if": "[[mediaplayer_fireplace.isPlaying]]==0",
+								"value": true
+							},
+							{
+								"if": "[[mediaplayer_fireplace.isPlaying]]==1",
+								"value": false
+							}
+						]
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": [
+							{
+								"if": "[[mediaplayer_fireplace.isPlaying]]==1",
+								"value": "play"
+							},
+							{
+								"if": "[[mediaplayer_fireplace.isPlaying]]==0",
+								"value": "pause"
+							}
+						],
+						"id": "mediaplayer_fireplace"
+					},
+					"on": "touch_up",
+					"type": "Function"
+				}
+			],
+			"attributes": {
+				"color.background": "0000FF",
+				"height": 100,
+				"width": 100
+			},
+			"type": "Button"
 		}
 	],
 	"id": "layout_iphone_right_fireplace",
