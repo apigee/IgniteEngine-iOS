@@ -81,9 +81,9 @@
 			],
 			"attributes": {
 				"height": 20,
-				"images.maximum": "/images/slider_images.max_20x22.png",
-				"images.minimum": "/images/slider_images.min_20x22.png",
-				"images.thumb": "/images/slider_thumb_23x24.png",
+				"images.maximum": "/images/slider_images.max_20x22@2x.png",
+				"images.minimum": "/images/slider_images.min_20x22@2x.png",
+				"images.thumb": "/images/slider_thumb_23x24@2x.png",
 				"initial_value": 1,
 				"layout_type": "float",
 				"margin.left": 24,
