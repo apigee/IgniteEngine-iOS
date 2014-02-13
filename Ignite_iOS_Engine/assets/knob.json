@@ -82,16 +82,29 @@
                             {
                                 "actions": [],
                                 "attributes": {
-                                    "height": 370,
-                                    "images.default": "/images/iphone_nest_mode_standby.png",
+                                    "height": 208,
+                                    "images.default": [
+                                        {
+                                            "if": "[[customKnob1.value]] == 70",
+                                            "value": "/images/iphone_nest_standby_208x208.png"
+                                        },
+                                        {
+                                            "if": "[[customKnob1.value]] <= 67",
+                                            "value": "/images/iphone_nest_cool_208x208.png"
+                                        },
+                                        {
+                                            "if": "[[customKnob1.value]] >= 73",
+                                            "value": "/images/iphone_nest_heat_208x208.png"
+                                        },
+                                    ],
                                     "layout_type": "float",
                                     "vertical_alignment": "bottom",
-                                    "margin.top": 100,
+                                    "margin.bottom": -4,
                                     "visible": true,
                                     "width": 208
                                 },
                                 "controls": [],
-                                "id": "iphone_nest_bg",
+                                "id": "iphone_nest_mode",
                                 "type": "Image"
                             },
                             {
@@ -99,6 +112,13 @@
                                     {
                                         "attributes": {
                                             "id": "customText"
+                                        },
+                                        "on": "value_changed",
+                                        "type": "Refresh"
+                                    },
+                                    {
+                                        "attributes": {
+                                            "id": "iphone_nest_mode"
                                         },
                                         "on": "value_changed",
                                         "type": "Refresh"
