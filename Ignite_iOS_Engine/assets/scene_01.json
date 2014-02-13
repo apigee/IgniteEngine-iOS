@@ -23,7 +23,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_0_1024x768.png",
+                            "images.default": "/images/car_0_1024x768.jpg",
                             "layout_type": "absolute",
                             "visible": true,
                             "width": "100%"
@@ -36,7 +36,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_1_1024x768.png",
+                            "images.default": "/images/ext_1_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"
@@ -49,7 +49,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_2_1024x768.png",
+                            "images.default": "/images/ext_2_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"
@@ -62,7 +62,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_3_1024x768.png",
+                            "images.default": "/images/ext_3_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"

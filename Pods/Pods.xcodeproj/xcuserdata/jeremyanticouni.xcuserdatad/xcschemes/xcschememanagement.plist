@@ -8,71 +8,107 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>Pods-ALMoviePlayerController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 		<key>Pods-ColorUtils.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>Pods-JASidePanels.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>Pods-Masonry.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
 		</dict>
 		<key>Pods-RestKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 		<key>Pods-SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 		<key>Pods-SOCKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>8</integer>
 		</dict>
 		<key>Pods-SVPulsingAnnotationView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>9</integer>
 		</dict>
 		<key>Pods-SVWebViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>10</integer>
 		</dict>
 		<key>Pods-TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>12</integer>
 		</dict>
 		<key>Pods-TransitionKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>11</integer>
 		</dict>
 		<key>Pods-ZBarSDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>13</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>08E81C2D44D64DBC9D8610D1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0A9104A1C8074798802221CE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,7 +133,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>4C952C20866D4F21BB69CCE2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>54C2B7C229B54189AF8CFFB8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5C2F2400774B4AFE9B5B8576</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6B56739DBCC248FEA908C3DB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -107,7 +158,42 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>7ABF62476F3840DFB4E0D492</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>82015592097143B090FDCC57</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8EB37AE084224B90B693B9B6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9354623FC230480CA8CC7762</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>98C3C5F958C84C43A3481DEC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9C71C0DE66774BA6A0079177</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A3372D210E984DA5A5614089</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AC744654F23D4B6A8B537AC8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,12 +203,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>DA32F2D5DCC44CC382CF1367</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>DA41B2EA851C4BC882F01729</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>DBD09D2656BF48B7ABE1F039</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>F031C502A9BA4309A1F567C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F4B646F89AD24B7DA5C9775E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
