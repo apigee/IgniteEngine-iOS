@@ -445,24 +445,12 @@
 								"attributes": {
 									"color.background": "#000000",
 									"height": 369,
+									"horizontal_scroll_enabled": false,
 									"layout_type": "absolute",
 									"visible": true,
 									"width": 416
 								},
 								"controls": [
-									{
-										"actions": [],
-										"attributes": {
-											"height": 59,
-											"images.default": "/images/iphone_header_208x59.png",
-											"layout_type": "float",
-											"visible": true,
-											"width": 208
-										},
-										"controls": [],
-										"id": "iphone_header_416x118",
-										"type": "Image"
-									},
 									{
 										"actions": [],
 										"attributes": {
@@ -499,6 +487,17 @@
 													"visible": 1
 												},
 												"type": "Modify"
+											},
+											{
+												"attributes": {
+													"duration": 0.25,
+													"id": "button_tv_back"
+												},
+												"on": "touch_up",
+												"parameters": {
+													"alpha": 1
+												},
+												"type": "Modify"
 											}
 										],
 										"attributes": {
@@ -515,6 +514,7 @@
 											"height": 369,
 											"layout_type": "float",
 											"margin.left": 208,
+											"margin.top": 0,
 											"visible": false,
 											"width": 208
 										},
@@ -524,47 +524,12 @@
 													"height": 369,
 													"images.default": "/images/iphone_background_tv_208x369.png",
 													"layout_type": "float",
-													"margin.top": 0,
+													"margin.top": 59,
 													"visible": true,
 													"width": 208
 												},
 												"controls": [],
 												"type": "Image"
-											},
-											{
-												"actions": [
-													{
-														"attributes": {
-															"duration": 0.25,
-															"id": "layout_iphone_right"
-														},
-														"on": "touch_up",
-														"parameters": {
-															"margin.left": 0
-														},
-														"type": "Modify"
-													},
-													{
-														"attributes": {
-															"delay": 0.5,
-															"id": "layout_iphone_right_tv"
-														},
-														"on": "touch_up",
-														"parameters": {
-															"visible": 0
-														},
-														"type": "Modify"
-													}
-												],
-												"attributes": {
-													"height": 44,
-													"images.default": "/images/button_iphone_back_44x44.png",
-													"layout_type": "float",
-													"margin.left": 0,
-													"margin.top": 0,
-													"width": 44
-												},
-												"type": "Button"
 											},
 											{
 												"actions": [
@@ -731,10 +696,58 @@
 													"images.default": "/images/button_iphone_toggleoff_52x47.png",
 													"layout_type": "float",
 													"margin.left": 78,
-													"margin.top": 130,
+													"margin.top": 160,
 													"width": 52
 												},
 												"id": "button_tv_onoff",
+												"type": "Button"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"duration": 0.25,
+															"id": "layout_iphone_right"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"margin.left": 0
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"delay": 0.5,
+															"id": "layout_iphone_right_tv"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"visible": 0
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"duration": 0.25,
+															"id": "button_tv_back"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"alpha": 0
+														},
+														"type": "Modify"
+													}
+												],
+												"attributes": {
+													"alpha": 0,
+													"height": 44,
+													"images.default": "/images/button_iphone_back_44x44.png",
+													"layout_type": "float",
+													"margin.left": 0,
+													"margin.top": 10,
+													"width": 44
+												},
+												"id": "button_tv_back",
 												"type": "Button"
 											}
 										],
@@ -786,7 +799,7 @@
 											{
 												"attributes": {
 													"height": 369,
-													"images.default": "/images/iphone_background_tv_208x369.png",
+													"images.default": "/images/iphone_background_music_208x369.png",
 													"layout_type": "float",
 													"margin.top": 0,
 													"visible": true,
@@ -884,6 +897,29 @@
 										"type": "Layout"
 									},
 									{
+										"actions": [
+											{
+												"attributes": {
+													"duration": 0.25,
+													"id": "layout_iphone_right"
+												},
+												"on": "touch_up",
+												"parameters": {
+													"margin.left": -208
+												},
+												"type": "Modify"
+											},
+											{
+												"attributes": {
+													"id": "layout_iphone_right_lights"
+												},
+												"on": "touch_up",
+												"parameters": {
+													"visible": 1
+												},
+												"type": "Modify"
+											}
+										],
 										"attributes": {
 											"height": 62.2,
 											"layout_type": "float",
@@ -892,6 +928,66 @@
 										},
 										"id": "button_show_lights",
 										"type": "Button"
+									},
+									{
+										"attributes": {
+											"height": 369,
+											"layout_type": "float",
+											"margin.left": 208,
+											"visible": false,
+											"width": 208
+										},
+										"controls": [
+											{
+												"attributes": {
+													"height": 369,
+													"images.default": "/images/iphone_background_lights_208x369.png",
+													"layout_type": "float",
+													"margin.top": 0,
+													"visible": true,
+													"width": 208
+												},
+												"controls": [],
+												"type": "Image"
+											},
+											{
+												"actions": [
+													{
+														"attributes": {
+															"duration": 0.25,
+															"id": "layout_iphone_right"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"margin.left": 0
+														},
+														"type": "Modify"
+													},
+													{
+														"attributes": {
+															"delay": 0.5,
+															"id": "layout_iphone_right_lights"
+														},
+														"on": "touch_up",
+														"parameters": {
+															"visible": 0
+														},
+														"type": "Modify"
+													}
+												],
+												"attributes": {
+													"height": 44,
+													"images.default": "/images/button_iphone_back_44x44.png",
+													"layout_type": "float",
+													"margin.left": 0,
+													"margin.top": 0,
+													"width": 44
+												},
+												"type": "Button"
+											}
+										],
+										"id": "layout_iphone_right_lights",
+										"type": "Layout"
 									},
 									{
 										"attributes": {
@@ -916,6 +1012,21 @@
 								],
 								"id": "layout_iphone_right",
 								"type": "Layout"
+							},
+							{
+								"actions": [],
+								"attributes": {
+									"alpha": 1.0,
+									"enabled": false,
+									"height": 59,
+									"images.default": "/images/iphone_header_208x59.png",
+									"layout_type": "float",
+									"visible": true,
+									"width": 208
+								},
+								"controls": [],
+								"id": "iphone_header_416x118",
+								"type": "Image"
 							}
 						],
 						"id": "iphone_right",
@@ -924,6 +1035,63 @@
 				],
 				"id": "layout_main",
 				"type": "Layout"
+			},
+			{
+				"actions": [
+					{
+						"attributes": {
+							"nav_animation_type": "none",
+							"nav_stack_type": "push",
+							"to": "scene_01.json"
+						},
+						"on": "touch_up",
+						"type": "Navigate"
+					}
+				],
+				"attributes": {
+					"color.background": "#FF0000",
+					"text":"scene_01",
+					"alpha":0.4
+				},
+				"type": "Text"
+			},
+			{
+				"actions": [
+					{
+						"attributes": {
+							"nav_animation_type": "none",
+							"nav_stack_type": "push",
+							"to": "scene_02.json"
+						},
+						"on": "touch_up",
+						"type": "Navigate"
+					}
+				],
+				"attributes": {
+					"color.background": "#0000FF",
+					"text":"scene_02",
+					"alpha":0.4
+				},
+				"type": "Text"
+			},
+			{
+				"actions": [
+					{
+						"attributes": {
+							"nav_animation_type": "none",
+							"nav_stack_type": "push",
+							"to": "scene_03.json"
+						},
+						"on": "touch_up",
+						"type": "Navigate"
+					}
+				],
+				"attributes": {
+					"color.background": "#00FF00",
+					"text":"scene_03",
+					"alpha":0.4
+				},
+				"type": "Text"
 			}
 		]
 	}
