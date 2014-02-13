@@ -4,7 +4,8 @@
 			"color.background": "#000000",
 			"margin": 0,
 			"padding": 0,
-			"status_bar_style": "hidden"
+			"status_bar_style": "hidden",
+			"horizontal_scroll_enabled": false
 		},
 		"controls": [
 			{
@@ -30,15 +31,6 @@
 								},
 								"on": "swipe_left",
 								"type": "Navigate"
-							},
-							{
-								"attributes": {
-									"subtitle": "default",
-									"title": "push"
-								},
-								"enabled": false,
-								"on": "touch_2up",
-								"type": "Alert"
 							}
 						],
 						"attributes": {
@@ -63,6 +55,16 @@
 						},
 						"controls": [
 							{
+								"actions": [
+									{
+										"attributes": {
+											"event_name": "show",
+											"id": "iphone_right"
+										},
+										"on": "touch_up",
+										"type": "Event"
+									}
+								],
 								"attributes": {
 									"auto_play": false,
 									"controls": "none",
@@ -74,15 +76,6 @@
 								},
 								"id": "mediaplayer_tv",
 								"type": "MediaPlayer"
-							},
-							{
-								"attributes": {
-									"auto_play": false,
-									"isPlaying": false,
-									"sound_location": "/music/JoshWoodward-MorningBlue.mp3"
-								},
-								"id": "mediaplayer_music",
-								"type": "Sound"
 							}
 						],
 						"id": "layout_tv",
@@ -92,31 +85,106 @@
 						"actions": [
 							{
 								"attributes": {
-									"event_name": "show",
-									"id": "iphone_right"
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] == -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_show_tv"
 								},
 								"on": "touch_up",
 								"type": "Event"
 							},
 							{
 								"attributes": {
-									"id": "fireplace_off"
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] > -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_back"
 								},
-								"on": "touch",
-								"parameters": {
-									"visible": false
-								},
-								"type": "Modify"
+								"on": "touch_up",
+								"type": "Event"
 							},
 							{
 								"attributes": {
-									"id": "fireplace_on"
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] <= -760",
+											"value": "hide"
+										},
+										{
+											"if": "[[layout_main.margin.left]] >= -380",
+											"value": "show"
+										}
+									],
+									"id": "iphone_right"
 								},
-								"on": "touch",
-								"parameters": {
-									"visible": true
+								"on": "touch_up",
+								"type": "Event"
+							}
+						],
+						"attributes": {
+							"alpha": 1,
+							"height": 219,
+							"layout_type": "absolute",
+							"margin.left": 750,
+							"margin.top": 56,
+							"width": 389
+						},
+						"type": "Button"
+					},
+					{
+						"actions": [
+							{
+								"attributes": {
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] == -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_show_fireplace"
 								},
-								"type": "Modify"
+								"on": "touch_up",
+								"type": "Event"
+							},
+							{
+								"attributes": {
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] > -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_back"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							},
+							{
+								"attributes": {
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] <= -760",
+											"value": "hide"
+										},
+										{
+											"if": "[[layout_main.margin.left]] >= -380",
+											"value": "show"
+										}
+									],
+									"id": "iphone_right"
+								},
+								"on": "touch_up",
+								"type": "Event"
 							}
 						],
 						"attributes": {
@@ -192,7 +260,16 @@
 						"actions": [
 							{
 								"attributes": {
-									"event_name": "show",
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] == -380",
+											"value": "show"
+										},
+										{
+											"if": "[[layout_main.margin.left]] == -760",
+											"value": "hide"
+										}
+									],
 									"id": "iphone_left"
 								},
 								"on": "touch_up",
@@ -234,7 +311,16 @@
 						"actions": [
 							{
 								"attributes": {
-									"event_name": "hide",
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] == -380",
+											"value": "show"
+										},
+										{
+											"if": "[[layout_main.margin.left]] == 0",
+											"value": "hide"
+										}
+									],
 									"id": "iphone_left"
 								},
 								"on": "touch_up",
@@ -274,7 +360,53 @@
 						"type": "Image"
 					},
 					{
-						"actions": [],
+						"actions": [
+							{
+								"attributes": {
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] == -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_show_music"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							},
+							{
+								"attributes": {
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] > -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_back"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							},
+							{
+								"attributes": {
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] <= -760",
+											"value": "hide"
+										},
+										{
+											"if": "[[layout_main.margin.left]] >= -380",
+											"value": "show"
+										}
+									],
+									"id": "iphone_right"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							}
+						],
 						"attributes": {
 							"height": 45,
 							"images.default": "/images/sonos.png",
@@ -286,6 +418,15 @@
 						},
 						"id": "sonos",
 						"type": "Image"
+					},
+					{
+						"attributes": {
+							"auto_play": false,
+							"isPlaying": false,
+							"sound_location": "/music/JoshWoodward-MorningBlue.mp3"
+						},
+						"id": "mediaplayer_music",
+						"type": "Sound"
 					},
 					{
 						"actions": [
@@ -410,7 +551,16 @@
 						"actions": [
 							{
 								"attributes": {
-									"duration": 0.5,
+									"duration": [
+										{
+											"if": "[[layout_main.margin.left]] == 0",
+											"value": 1
+										},
+										{
+											"if": "[[layout_main.margin.left]] == -380",
+											"value": 0.5
+										}
+									],
 									"id": "layout_main"
 								},
 								"on": "show",
