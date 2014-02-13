@@ -57,7 +57,7 @@
                 "height": 500,
                 "horizontal_alignment":"center",
                 "layout_type": "relative",
-                "initial_value": 69,
+                "initial_value": 69.99,
                 "minimum_value": 50,
                 "maximum_value": 90,
                 "images":{

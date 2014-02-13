@@ -101,21 +101,25 @@
                                     }
                                 ],
                                 "attributes": {
-                                    "height": 180,
-                                    "horizontal_alignment": "center",
-                                    "initial_value": 70,
+                                         "color": {
+                                         "background": "#00000000"
+                                         },
+                                    "width": 208,
+                                    "height": 208,
+                                    "margin.top": 104,
+                                    "horizontal_alignment":"center",
                                     "layout_type": "float",
-                                    "line_width": 4.0,
-                                    "margin.top": 140,
-                                    "maximum_value": 90,
+                                    "initial_value": 69.99,
                                     "minimum_value": 50,
-                                    "pointer_color": "#FFFFFF",
-                                    "pointer_length": 20.0,
-                                    "pointer_visible": true,
-                                    "track_color": "#0000FF00",
-                                    "track_visible": true,
-                                    "width": 180
+                                    "maximum_value": 90,
+                                    "maximum_angle": 145,
+                                    "knob_animation_duration": 1,                                    
+                                    "images":{
+                                        "background":"images/knob_bg_208x208.png",
+                                        "pointer":"images/knob_marker_208x208.png"
+                                    }                    
                                 },
+                                
                                 "id": "customKnob1",
                                 "type": "Knob"
                             },
