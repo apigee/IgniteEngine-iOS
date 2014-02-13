@@ -115,10 +115,6 @@
                 IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
                 [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
             }
-            else
-            {
-                NSLog(@"");
-            }
         }
         else
         {

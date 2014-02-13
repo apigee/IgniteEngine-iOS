@@ -82,7 +82,9 @@
 			"attributes": {
 				"height": 20,
 				"images.maximum": "/images/slider_images.max_20x22@2x.png",
+				"images.maximum.capInsets": "{0,0,0,12}",
 				"images.minimum": "/images/slider_images.min_20x22@2x.png",
+				"images.minimum.capInsets": "{0,12,0,0}",
 				"images.thumb": "/images/slider_thumb_23x24@2x.png",
 				"initial_value": 1,
 				"layout_type": "float",
