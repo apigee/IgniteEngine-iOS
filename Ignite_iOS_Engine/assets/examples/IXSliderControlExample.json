@@ -57,9 +57,11 @@
                 "minimum_value": 0,
                 "maximum_value": 10,
                 "images" : {
-                     "minimum" : "images/slider_minimum.png",
-                     "maximum" : "images/slider_maximum.png",
-                     "thumb" : "images/slider_tab.png",
+                     "minimum" : "images/slider_images.min_20x22.png",
+                     "minimum.capInsets" : "{0,12,0,0}",
+                     "maximum" : "images/slider_images.max_20x22.png",
+                     "maximum.capInsets" : "{0,0,0,12}",
+                     "thumb" : "images/slider_tab.png"
                 }
             }
          }
