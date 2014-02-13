@@ -11,7 +11,20 @@
 #import "IXViewController.h"
 #import "IXLayout.h"
 
+@interface IXNavigationViewController ()
+
+@property (nonatomic,strong) UIScreenEdgePanGestureRecognizer* rightScreenPanGestureRecognizer;
+@property (nonatomic,strong) UIScreenEdgePanGestureRecognizer* leftScreenPanGestureRecognizer;
+
+@end
+
 @implementation IXNavigationViewController
+
+-(void)dealloc
+{
+    [_leftScreenPanGestureRecognizer removeTarget:self action:@selector(handleScreenEdgePan:)];
+    [_rightScreenPanGestureRecognizer removeTarget:self action:@selector(handleScreenEdgePan:)];
+}
 
 -(id)init
 {
@@ -41,12 +54,44 @@
 {
     [super viewDidLoad];
 
+    if( [self rightScreenPanGestureRecognizer] == nil )
+    {
+        [self setRightScreenPanGestureRecognizer:[[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScreenEdgePan:)]];
+        [[self rightScreenPanGestureRecognizer] setEdges:UIRectEdgeRight];
+        [[self view] addGestureRecognizer:[self rightScreenPanGestureRecognizer]];
+    }
+    if( [self leftScreenPanGestureRecognizer] == nil )
+    {
+        [self setLeftScreenPanGestureRecognizer:[[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScreenEdgePan:)]];
+        [[self leftScreenPanGestureRecognizer] setEdges:UIRectEdgeLeft];
+        [[self view] addGestureRecognizer:[self leftScreenPanGestureRecognizer]];
+    }
+    
     [[self view] setBackgroundColor:[UIColor blackColor]];
     
     if( [self isNavigationBarHidden] )
     {
         [[self interactivePopGestureRecognizer] setEnabled:YES];
         [[self interactivePopGestureRecognizer] setDelegate:nil];
+    }
+}
+
+-(void)handleScreenEdgePan:(UIScreenEdgePanGestureRecognizer*)screenEdgePanGestureRecognizer
+{
+    if( [screenEdgePanGestureRecognizer state] == UIGestureRecognizerStateEnded )
+    {
+        if( [[self visibleViewController] isKindOfClass:[IXViewController class]] )
+        {
+            IXViewController* viewController = (IXViewController*)[self visibleViewController];
+            if( screenEdgePanGestureRecognizer == [self rightScreenPanGestureRecognizer] )
+            {
+                [[viewController actionContainer] executeActionsForEventNamed:@"screen_pan_right"];
+            }
+            else if( screenEdgePanGestureRecognizer == [self leftScreenPanGestureRecognizer] )
+            {
+                [[viewController actionContainer] executeActionsForEventNamed:@"screen_pan_left"];
+            }
+        }
     }
 }
 

@@ -567,6 +567,7 @@ static NSCache* sCustomControlCache;
     
     NSArray* actionsArray = [viewDictionary objectForKey:@"actions"];
     IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
+    [viewController setActionContainer:actionContainer];
     [[viewController containerControl] setActionContainer:actionContainer];
     
     return viewController;
