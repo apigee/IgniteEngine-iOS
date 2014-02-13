@@ -109,9 +109,16 @@
     {
         if( evaluateBeforeAdding )
         {
-            NSString* propertyValue = [propertyContainer getStringPropertyValue:propertyName defaultValue:@""];
-            IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
-            [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
+            NSString* propertyValue = [propertyContainer getStringPropertyValue:propertyName defaultValue:nil];
+            if( propertyValue )
+            {
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:propertyName rawValue:propertyValue];
+                [self addProperty:property replaceOtherPropertiesWithTheSameName:replaceOtherProperties];
+            }
+            else
+            {
+                NSLog(@"");
+            }
         }
         else
         {
