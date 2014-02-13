@@ -1,0 +1,75 @@
+{
+    "view": {
+        "attributes": {
+            "height": "100%",
+            "width": "100%",
+            "padding.top": 100,
+            "color": {
+				"background": "#FFFFFF"
+			}
+        },
+        "controls": [
+         {
+            "id": "playText",
+            "type": "Text",
+            "actions": [{
+                    "on": "touch_up",
+                    "type": "Function",
+                    "attributes": {
+                        "id": "soundControl",
+                        "function_name": "play"
+                    }
+            }],
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Play Sound"
+            }
+         },
+         {
+            "id": "pauseText",
+            "type": "Text",
+            "actions": [{
+                "on": "touch_up",
+                "type": "Function",
+                "attributes": {
+                    "id": "soundControl",
+                    "function_name": "pause"
+                }
+            }],
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Pause Sound"
+            }
+         },
+        {
+            "id": "stopText",
+            "type": "Text",
+            "actions": [{
+                "on": "touch_up",
+                "type": "Function",
+                "attributes": {
+                    "id": "soundControl",
+                    "function_name": "stop"
+                }
+            }],
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Stop Sound"
+            }
+         },
+         {
+            "id": "soundControl",
+            "type": "Sound",
+            "attributes": {
+                "sound_location": "http://www.zultys.com/phone_sounds/Gong1.wav",
+                "volume": 1,
+                "number_of_loops": 0,
+                "auto_play": false
+            }
+         }
+        ]
+    }
+}

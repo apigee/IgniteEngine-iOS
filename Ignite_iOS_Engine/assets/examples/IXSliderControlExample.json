@@ -1,0 +1,68 @@
+{
+    "view": {
+        "attributes": {
+            "height": "100%",
+            "width": "100%",
+            "padding.top": 100,
+            "color": {
+				"background": "#FFFFFF"
+			}
+        },
+        "controls": [
+         {
+            "id": "sliderValueText",
+            "type": "Text",
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Slider Value : [[customSlider.value]]"
+            }
+         },
+         {
+            "id": "changeValueText",
+            "type": "Text",
+            "actions": [{
+                "on": "touch_up",
+                "type": "Function",
+                "attributes": {
+                    "id": "customSlider",
+                    "function_name": "update_slider_value",
+                },
+                "parameters" : {
+                    "value" : "5",
+                    "animated" : true
+                }
+            }],
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Update Slider Value to 5"
+            }
+         },
+         {
+            "id": "customSlider",
+            "type": "Slider",
+            "actions": [{
+                "on": "value_changed",
+                "type": "Refresh",
+                "attributes": {
+                    "id": "sliderValueText"
+                }
+            }],
+            "attributes": {
+                "width": 500,
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "initial_value": 5,
+                "minimum_value": 0,
+                "maximum_value": 10,
+                "images" : {
+                     "minimum" : "images/slider_minimum.png",
+                     "maximum" : "images/slider_maximum.png",
+                     "thumb" : "images/slider_tab.png",
+                }
+            }
+         }
+        ]
+    }
+}

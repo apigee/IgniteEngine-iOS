@@ -1,0 +1,59 @@
+{
+    "view": {
+        "attributes": {
+            "height": "100%",
+            "width": "100%",
+            "padding.top": 100,
+            "color": {
+				"background": "#FFFFFF"
+			}
+        },
+        "controls": [
+         {
+            "id": "customButton",
+            "type": "Button",
+            "actions": [{
+                "on": "touch_up",
+                "type": "Alert",
+                "attributes": {
+                    "title": "Touch Up Alerted",
+                    "subtitle": "Button Example"
+                }
+            }],
+            "attributes": {
+                "height": "200",
+                "width": "300",
+                "layout_type": "relative",
+                "horizontal_alignment":"center",                     
+                "darkens_image_on_touch": false,
+                "enabled":true,
+                "title" : {
+                     "default":{
+                        "text" : "Default Text",
+                        "font" : "NestsansBold:40",
+                        "color" : "#7CFC00"
+                     },
+                     "touch":{
+                        "text" : "Touch Text",
+                        "font" : "Nestsans:40",
+                        "color" : "#00FFFF"
+                     },
+                     "disabled":{
+                        "text" : "Disabled Text",
+                        "font" : "NestsansBold:40",
+                        "color" : "#FFFFFF"
+                     }
+                },
+                "images": {
+                    "default": "images/image2.png",
+                    "default.tintColor": "#02220026",
+                    "touch": "images/image-touch2.png",
+                    "touch.tintColor": "#02220026",
+                    "disabled" :"images/image-touch2.png",
+                    "disabled.tintColor": "#02220026"
+                }
+            }
+         }
+        ]
+    }
+}
