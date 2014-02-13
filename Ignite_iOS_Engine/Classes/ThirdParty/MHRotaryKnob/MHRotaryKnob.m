@@ -8,7 +8,7 @@
 	to the right (the maximum is +MaxAngle).
  */
 
-const float MaxAngle = 135.0f;
+const float MaxAngle = 145.0f;
 const float MinDistanceSquared = 16.0f;
 
 @implementation MHRotaryKnob

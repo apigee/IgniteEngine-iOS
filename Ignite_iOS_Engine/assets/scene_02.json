@@ -297,6 +297,29 @@
                 "type": "Text"
             },
             {
+                "actions": [
+                    {
+                        "attributes": {
+                            "nav_animation_type": "none",
+                            "nav_stack_type": "push",
+                            "to": "examples/IX_ControlExamples.json"
+                        },
+                        "on": "touch_up",
+                        "type": "Navigate"
+                    }
+                ],
+                "attributes": {
+                    "alpha": 0.4,
+                    "color.background": "#CFF602",
+                    "text": "examples"
+                },
+                "type": "Text"
+            },
+
+
+
+            
+            {
                 "id": "animatedImageControl",
                 "type": "Image",
                 "attributes": {

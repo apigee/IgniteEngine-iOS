@@ -58,8 +58,8 @@
                 "horizontal_alignment":"center",
                 "layout_type": "relative",
                 "initial_value": 69,
-                "minimum_value": 60,
-                "maximum_value": 80,
+                "minimum_value": 50,
+                "maximum_value": 90,
                 "images":{
                     "background":"images/bg.png",
                     "pointer":"images/marker.png"
