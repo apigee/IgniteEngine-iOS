@@ -67,10 +67,26 @@
                             {
                                 "actions": [],
                                 "attributes": {
-                                    "height": 311,
+                                    "height": 370,
                                     "images.default": "/images/iphone_nest_bg.png",
                                     "layout_type": "float",
-                                    "margin.top": 59,
+                                    "vertical_alignment": "bottom",
+                                    "margin.top": 0,
+                                    "visible": true,
+                                    "width": 208
+                                },
+                                "controls": [],
+                                "id": "iphone_nest_bg",
+                                "type": "Image"
+                            },
+                            {
+                                "actions": [],
+                                "attributes": {
+                                    "height": 370,
+                                    "images.default": "/images/iphone_nest_mode_standby.png",
+                                    "layout_type": "float",
+                                    "vertical_alignment": "bottom",
+                                    "margin.top": 100,
                                     "visible": true,
                                     "width": 208
                                 },
@@ -101,35 +117,37 @@
                                     }
                                 ],
                                 "attributes": {
-                                         "color": {
-                                         "background": "#00000000"
-                                         },
+                                    "color": {
+                                        "background": "#00000000"
+                                    },
                                     "width": 208,
                                     "height": 208,
-                                    "margin.top": 104,
-                                    "horizontal_alignment":"center",
+                                    "margin.bottom": -4,
+                                    "horizontal_alignment": "center",
+                                    "vertical_alignment": "bottom",
                                     "layout_type": "float",
                                     "initial_value": 69.99,
                                     "minimum_value": 50,
                                     "maximum_value": 90,
-                                    "maximum_angle": 145,
-                                    "knob_animation_duration": 1,                                    
-                                    "images":{
-                                        "background":"images/knob_bg_208x208.png",
-                                        "pointer":"images/knob_marker_208x208.png"
-                                    }                    
+                                    "maximum_angle": 146,
+                                    "knob_animation_duration": 1,
+                                    "images": {
+                                        "background": "images/knob_bg_208x208.png",
+                                        "pointer": "images/knob_marker_208x208.png"
+                                    }
                                 },
-                                
                                 "id": "customKnob1",
                                 "type": "Knob"
                             },
                             {
                                 "attributes": {
                                     "color.text": "#FFFFFF",
+                                    "margin.bottom": 60,
                                     "horizontal_alignment": "center",
+                                    "vertical_alignment": "bottom",
+                                    "font": "NestsansBold:70",
                                     "layout_type": "float",
-                                    "text": "[[customKnob1.value]]",
-                                    "vertical_alignment": "middle"
+                                    "text": "[[customKnob1.value]]"
                                 },
                                 "id": "customText",
                                 "type": "Text"
@@ -206,7 +224,7 @@
                                     "height": 311,
                                     "images.default": "/images/iphone_nest_bg.png",
                                     "layout_type": "float",
-                                    "margin.top": 59,
+                                    "margin.top": 0,
                                     "visible": true,
                                     "width": 208
                                 },
@@ -229,12 +247,12 @@
                                     "horizontal_alignment": "center",
                                     "initial_value": 70,
                                     "layout_type": "float",
-                                    "line_width": 4.0,
+                                    "line_width": 4,
                                     "margin.top": 140,
                                     "maximum_value": 90,
                                     "minimum_value": 50,
                                     "pointer_color": "#FFFFFF",
-                                    "pointer_length": 20.0,
+                                    "pointer_length": 20,
                                     "pointer_visible": true,
                                     "track_color": "#0000FF00",
                                     "track_visible": true,
