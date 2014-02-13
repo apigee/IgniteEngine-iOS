@@ -252,7 +252,8 @@
                                                       progress:nil
                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
                                                          if (image) {
-                                                             successBlock(image);
+                                                             if( successBlock )
+                                                                successBlock(image);
                                                          } else {
                                                              if( failBlock )
                                                                 failBlock(error);
@@ -269,10 +270,10 @@
     }
 }
 
--(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+-(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
 {
     NSURL* returnURL = nil;
-    NSString* path = [self getPathPropertyValue:propertyName basePath:basePath defaultValue:defaultValue];
+    NSString* path = [self getPathPropertyValue:propertyName basePath:basePath defaultValue:[defaultValue absoluteString]];
     if( path )
     {
         if( [IXAppManager pathIsLocal:path] )

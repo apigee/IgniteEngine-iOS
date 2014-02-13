@@ -11,7 +11,7 @@
 #import "IXViewController.h"
 #import "IXLayout.h"
 
-@interface IXNavigationViewController ()
+@interface IXNavigationViewController () <UINavigationControllerDelegate>
 
 @property (nonatomic,strong) UIScreenEdgePanGestureRecognizer* rightScreenPanGestureRecognizer;
 @property (nonatomic,strong) UIScreenEdgePanGestureRecognizer* leftScreenPanGestureRecognizer;
