@@ -12,19 +12,11 @@
 
 // Knob Properties
 static NSString* const kIXInitialValue = @"initial_value";
-static NSString* const kIXLineWidth = @"line_width";
-static NSString* const kIXPointerLength = @"pointer_length";
 static NSString* const kIXMinimumValue = @"minimum_value";
 static NSString* const kIXMaximumValue = @"maximum_value";
-static NSString* const kIXTrackColor = @"track_color";
-static NSString* const kIXPointerColor = @"pointer_color";
 static NSString* const kIXImagesForeground = @"images.foreground";
 static NSString* const kIXImagesBackground = @"images.background";
 static NSString* const kIXImagesPointer = @"images.pointer";
-static NSString* const kIXTrackVisible = @"track_visible";
-static NSString* const kIXPointerVisible = @"pointer_visible";
-static NSString* const kIXStartAngle = @"start_angle";
-static NSString* const kIXEndAngle = @"end_angle";
 
 // Knob Read-Only Properties
 static NSString* const kIXValue = @"value";
@@ -44,6 +36,11 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
 @end
 
 @implementation IXKnob
+
+-(void)dealloc
+{
+    [_knobControl removeTarget:self action:@selector(knobValueChanged:) forControlEvents:UIControlEventValueChanged];
+}
 
 -(void)buildView
 {
@@ -68,8 +65,7 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     if(!CGRectEqualToRect([[self knobControl] frame], rect) || !CGPointEqualToPoint([[self knobControl] center], center) )
     {
         [[self knobControl] setFrame:rect];
-        
-        _knobControl.knobImageCenter = center;
+        [[self knobControl] setKnobImageCenter:center];
         [self updateKnobValueWithValue:[[self knobControl] value] animated:NO];
     }
 }

@@ -70,6 +70,7 @@
 -(void)dealloc
 {
     [_moviePlayer setDelegate:nil];
+    [_moviePlayer stop];
 }
 
 -(void)buildView
