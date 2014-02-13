@@ -10,7 +10,7 @@
 				"height": 369,
 				"images.default": "/images/iphone_background_music_208x369.png",
 				"layout_type": "float",
-				"margin.top": 0,
+				"margin.top": 59,
 				"visible": true,
 				"width": 208
 			},
@@ -65,6 +65,18 @@
 			},
 			"id": "button_music_onoff",
 			"type": "Button"
+		},
+		{
+			"attributes": {
+				"images.maximum": "/images/slider_images.max_20x22.png",
+				"images.minimum": "/images/slider_images.min_20x22.png",
+				"images.thumb": "/images/slider_thumb_38x46.png",
+				"initial_value": 80,
+				"maximum_value": 100,
+				"minimum_value": 0
+			},
+			"id": "slider_music_volume",
+			"type": "Slider"
 		}
 	],
 	"id": "layout_iphone_right_music",
