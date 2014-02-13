@@ -259,6 +259,12 @@
                                     "if": "[[image_headlights.margin.left]]==-750",
                                     "value": "100%"
                                 }
+                            ],
+                            "margin.left": [
+                                {
+                                    "if": "1==1",
+                                    "value": -300
+                                }
                             ]
                         },
                         "type": "Modify"
@@ -268,6 +274,25 @@
                     "alpha": 0.4,
                     "color.background": "#ffffff",
                     "text": "Headlights"
+                },
+                "type": "Text"
+            },
+            {
+                "actions": [
+                    {
+                        "attributes": {
+                            "nav_animation_type": "none",
+                            "nav_stack_type": "push",
+                            "to": "knob.json"
+                        },
+                        "on": "touch_up",
+                        "type": "Navigate"
+                    }
+                ],
+                "attributes": {
+                    "alpha": 0.4,
+                    "color.background": "#CFF602",
+                    "text": "big knob"
                 },
                 "type": "Text"
             },
@@ -296,7 +321,7 @@
                             "layout_type": "absolute",
                             "alpha": 1,
                             "width": 1500,
-                            "margin.left": 1500
+                            "margin.left": "100%"
                         },
                         "controls": [],
                         "id": "image_headlights",
