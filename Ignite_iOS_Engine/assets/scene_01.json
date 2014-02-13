@@ -6,6 +6,20 @@
             "padding": 0,
             "status_bar_style": "hidden"
         },
+        "actions": [{
+            "on": "screen_pan_right",
+            "type": "Alert",
+            "attributes": {
+                "title": "Screen Pan Right"
+            }
+        },
+        {
+            "on": "screen_pan_left",
+            "type": "Alert",
+            "attributes": {
+                "title": "Screen Pan Left"
+            }
+        }],
         "controls": [
             {
                 "attributes": {
