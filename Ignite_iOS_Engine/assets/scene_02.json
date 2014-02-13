@@ -6,6 +6,24 @@
             "padding": 0,
             "status_bar_style": "hidden"
         },
+        "actions": [
+            {
+                "attributes": {
+                    "nav_stack_type": "push",
+                    "to": "scene_03.json"
+                },
+                "on": "screen_pan_right",
+                "type": "Navigate"
+            },
+            {
+                "attributes": {
+                    "nav_stack_type": "pop",
+                    "to": "scene_01.json"
+                },
+                "on": "screen_pan_left",
+                "type": "Navigate"
+            }
+        ],
         "controls": [
             {
                 "attributes": {
@@ -23,7 +41,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_0_1024x768.png",
+                            "images.default": "/images/ext_0_1024x768.jpg",
                             "layout_type": "absolute",
                             "visible": true,
                             "width": "100%"
@@ -36,7 +54,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_1_1024x768.png",
+                            "images.default": "/images/ext_1_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"
@@ -49,7 +67,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_2_1024x768.png",
+                            "images.default": "/images/ext_2_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"
@@ -62,7 +80,7 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_3_1024x768.png",
+                            "images.default": "/images/ext_3_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"
