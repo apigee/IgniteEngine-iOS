@@ -2,7 +2,7 @@
   "app": {
     "attributes": {
       "default_view": "scene_00.json",
-      "enable_layout_debugging": true,
+      "enable_layout_debugging": false,
       "id": "CLIENT-13",
       "mode": "debug",
       "shows_navigation_bar": false,
