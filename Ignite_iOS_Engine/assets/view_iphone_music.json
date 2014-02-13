@@ -1,0 +1,72 @@
+{
+	"attributes": {
+		"height": "100%",
+		"layout_type": "float",
+		"width": "100%"
+	},
+	"controls": [
+		{
+			"attributes": {
+				"height": 369,
+				"images.default": "/images/iphone_background_music_208x369.png",
+				"layout_type": "float",
+				"margin.top": 0,
+				"visible": true,
+				"width": 208
+			},
+			"controls": [],
+			"type": "Image"
+		},
+		{
+			"actions": [
+				{
+					"attributes": {
+						"id": "mediaplayer_music"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"isPlaying": [
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==0",
+								"value": true
+							},
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==1",
+								"value": false
+							}
+						]
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": [
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==1",
+								"value": "play"
+							},
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==0",
+								"value": "pause"
+							}
+						],
+						"id": "mediaplayer_music"
+					},
+					"on": "touch_up",
+					"type": "Function"
+				}
+			],
+			"attributes": {
+				"color.background": "#0000FF",
+				"height": 40,
+				"layout_type": "float",
+				"margin.top": 109,
+				"width": 40
+			},
+			"id": "button_music_onoff",
+			"type": "Button"
+		}
+	],
+	"id": "layout_iphone_right_music",
+	"type": "Layout"
+}
