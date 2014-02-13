@@ -147,6 +147,11 @@
 
 -(void)executeActionsForEventNamed:(NSString*)eventName
 {
+    [self executeActionsForEventNamed:eventName propertyWithName:nil mustHaveValue:nil];
+}
+
+-(void)executeActionsForEventNamed:(NSString*)eventName propertyWithName:(NSString*)propertyName mustHaveValue:(NSString*)value
+{
     NSArray* actionsForEventName = [self actionsForEvent:eventName];
     if( actionsForEventName == nil )
         return;
@@ -157,7 +162,20 @@
         BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation usingSandbox:[self sandbox]] )
         {
-            [action performSelector:@selector(execute) withObject:nil afterDelay:[[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f]];
+            BOOL shouldFireAction = (value == nil);
+            if( value && propertyName )
+            {
+                NSString* actionValue = [[action actionProperties] getStringPropertyValue:propertyName defaultValue:nil];
+                if( actionValue )
+                {
+                    shouldFireAction = [actionValue isEqualToString:value];
+                }
+            }
+            
+            if( shouldFireAction )
+            {
+                [action performSelector:@selector(execute) withObject:nil afterDelay:[[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f]];
+            }
         }
     }
 }

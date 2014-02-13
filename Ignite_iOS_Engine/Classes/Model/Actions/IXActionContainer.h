@@ -26,5 +26,6 @@
 -(NSMutableArray*)actionsForEvent:(NSString*)eventName;
 
 -(void)executeActionsForEventNamed:(NSString*)eventName;
+-(void)executeActionsForEventNamed:(NSString*)eventName propertyWithName:(NSString*)propertyName mustHaveValue:(NSString*)value;
 
 @end
