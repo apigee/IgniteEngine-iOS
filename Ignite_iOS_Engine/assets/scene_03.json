@@ -213,16 +213,13 @@
 						],
 						"attributes": {
 							"height": 131,
-							"images": {
-								"default": "/images/fireplace_off.png"
-							},
 							"layout_type": "absolute",
 							"margin.left": 767,
 							"margin.top": 386,
 							"width": 272
 						},
 						"id": "fireplace_off",
-						"type": "Image"
+						"type": "Button"
 					},
 					{
 						"actions": [
@@ -261,26 +258,26 @@
 						"attributes": {
 							"alpha": 0,
 							"enabled": false,
-							"height": 214,
-							"images.default": "/images/fireplace_overlay.png",
+							"height": 315,
+							"images.default": "/images/fireplace_overlay_lightson.png",
 							"layout_type": "absolute",
-							"margin.left": 727,
-							"margin.top": 345,
-							"width": 352
+							"margin.left": 685,
+							"margin.top": 284,
+							"width": 440
 						},
-						"id": "fireplace_overlay",
+						"id": "fireplace_overlay_lightson",
 						"type": "Image"
 					},
 					{
 						"attributes": {
-							"alpha": 1,
+							"alpha": 0,
 							"enabled": false,
-							"height": 214,
+							"height": 315,
 							"images.default": "/images/fireplace_overlay_lightsoff.png",
 							"layout_type": "absolute",
-							"margin.left": 727,
-							"margin.top": 345,
-							"width": 352
+							"margin.left": 685,
+							"margin.top": 284,
+							"width": 440
 						},
 						"id": "fireplace_overlay_lightsoff",
 						"type": "Image"

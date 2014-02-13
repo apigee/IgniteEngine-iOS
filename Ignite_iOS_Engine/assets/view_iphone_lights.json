@@ -40,18 +40,58 @@
 				},
 				{
 					"attributes": {
+						"delay": [
+							{
+								"if": "[[background_room_lights_off.alpha]]==0",
+								"value": 0.1
+							}
+						],
 						"duration": 0.2,
+						"id": "fireplace_overlay_lightson"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": [
+							{
+								"if": "[[fireplace_on.alpha]]==0",
+								"value": 0
+							},
+							{
+								"if": "[[background_room_lights_off.alpha]]==1 && [[fireplace_on.alpha]]==1",
+								"value": 0
+							},
+							{
+								"if": "[[background_room_lights_off.alpha]]==0 && [[fireplace_on.alpha]]==1",
+								"value": 1
+							}
+						]
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"delay": [
+							{
+								"if": "[[background_room_lights_off.alpha]]==1",
+								"value": 0.02
+							}
+						],
+						"duration": 0.1,
 						"id": "fireplace_overlay_lightsoff"
 					},
 					"on": "touch_up",
 					"parameters": {
 						"alpha": [
 							{
-								"if": "[[fireplace_overlay_lightsoff.alpha]]==0",
+								"if": "[[fireplace_on.alpha]]==0",
 								"value": 0
 							},
 							{
-								"if": "[[fireplace_overlay_lightsoff.alpha]]==1",
+								"if": "[[background_room_lights_off.alpha]]==0 && [[fireplace_on.alpha]]==1",
+								"value": 0
+							},
+							{
+								"if": "[[background_room_lights_off.alpha]]==1 && [[fireplace_on.alpha]]==1",
 								"value": 1
 							}
 						]
