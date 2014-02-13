@@ -68,12 +68,16 @@
 		},
 		{
 			"attributes": {
+				"height": 20,
 				"images.maximum": "/images/slider_images.max_20x22.png",
 				"images.minimum": "/images/slider_images.min_20x22.png",
 				"images.thumb": "/images/slider_thumb_38x46.png",
 				"initial_value": 80,
+				"layout_type": "float",
+				"margin.top": 200,
 				"maximum_value": 100,
-				"minimum_value": 0
+				"minimum_value": 0,
+				"width": "100%"
 			},
 			"id": "slider_music_volume",
 			"type": "Slider"
