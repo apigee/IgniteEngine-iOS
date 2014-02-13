@@ -15,6 +15,8 @@ static NSString* const kIXImagesMinimum = @"images.minimum";
 static NSString* const kIXImagesMaximum = @"images.maximum";
 static NSString* const kIXMinimumValue = @"minimum_value";
 static NSString* const kIXMaximumValue = @"maximum_value";
+static NSString* const kIXImagesMaximumCapInsets = @"images.maximum.capInsets";
+static NSString* const kIXImagesMinimumCapInsets = @"images.minimum.capInsets";
 
 // Slider Read-Only Properties
 static NSString* const kIXValue = @"value";
@@ -62,14 +64,27 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
 {
     [super applySettings];
     
+    NSString* maxInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMaximumCapInsets defaultValue:nil];
+    NSString* minInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMinimumCapInsets defaultValue:nil];
+    
     __weak typeof(self) weakSelf = self;
     [[self propertyContainer] getImageProperty:kIXImagesMaximum
                                   successBlock:^(UIImage *image) {
+                                      if( maxInsetsString )
+                                      {
+                                          UIEdgeInsets maxEdgeInsets = UIEdgeInsetsFromString(maxInsetsString);
+                                          image = [image resizableImageWithCapInsets:maxEdgeInsets];
+                                      }
                                       [[weakSelf slider] setMaximumTrackImage:image forState:UIControlStateNormal];
                                   } failBlock:^(NSError *error) {
                                   }];
     [[self propertyContainer] getImageProperty:kIXImagesMinimum
                                   successBlock:^(UIImage *image) {
+                                      if( minInsetsString )
+                                      {
+                                          UIEdgeInsets minEdgeInsets = UIEdgeInsetsFromString(minInsetsString);
+                                          image = [image resizableImageWithCapInsets:minEdgeInsets];
+                                      }
                                       [[weakSelf slider] setMinimumTrackImage:image forState:UIControlStateNormal];
                                   } failBlock:^(NSError *error) {
                                   }];

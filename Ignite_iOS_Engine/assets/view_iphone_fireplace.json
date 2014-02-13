@@ -20,6 +20,16 @@
 			"actions": [
 				{
 					"attributes": {
+						"delay": [
+							{
+								"if": "[[fireplace_on.alpha]] == 1",
+								"value": 0
+							},
+							{
+								"if": "[[fireplace_on.alpha]] == 0",
+								"value": 0.1
+							}
+						],
 						"duration": 0.2,
 						"id": "fireplace_on"
 					},
@@ -40,18 +50,45 @@
 				},
 				{
 					"attributes": {
+						"delay": [
+							{
+								"if": "[[fireplace_on.alpha]] == 1",
+								"value": 0.1
+							},
+							{
+								"if": "[[fireplace_on.alpha]] == 0",
+								"value": 0
+							}
+						],
 						"duration": 0.2,
-						"id": "fireplace_overlay"
+						"id": [
+							{
+								"if": "[[background_room_lights_off.alpha]]==0",
+								"value": "fireplace_overlay_lightson"
+							},
+							{
+								"if": "[[background_room_lights_off.alpha]]==1",
+								"value": "fireplace_overlay_lightsoff"
+							}
+						]
 					},
 					"on": "touch_up",
 					"parameters": {
 						"alpha": [
 							{
-								"if": "[[fireplace_overlay.alpha]] == 1",
+								"if": "[[fireplace_overlay_lightson.alpha]] == 1 && [[background_room_lights_off.alpha]]==0",
 								"value": 0
 							},
 							{
-								"if": "[[fireplace_overlay.alpha]] == 0",
+								"if": "[[fireplace_overlay_lightson.alpha]] == 0 && [[background_room_lights_off.alpha]]==0",
+								"value": 1
+							},
+							{
+								"if": "[[fireplace_overlay_lightsoff.alpha]] == 1 && [[background_room_lights_off.alpha]]==1",
+								"value": 0
+							},
+							{
+								"if": "[[fireplace_overlay_lightsoff.alpha]] == 0 && [[background_room_lights_off.alpha]]==1",
 								"value": 1
 							}
 						]
@@ -98,9 +135,9 @@
 			"attributes": {
 				"color.background": "FF0000",
 				"height": 100,
-				"width": 100,
+				"layout_type": "float",
 				"margin.top": 180,
-				"layout_type":"float"
+				"width": 100
 			},
 			"type": "Button"
 		}
