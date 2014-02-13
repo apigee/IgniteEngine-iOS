@@ -27,6 +27,7 @@ static NSString* const kIXPause = @"pause";
 static NSString* const kIXStop = @"stop";
 
 @interface IXSound () <AVAudioPlayerDelegate>
+@property (nonatomic,strong) NSURL* lastSoundURL;
 @property (nonatomic,strong) AVAudioPlayer* audioPlayer;
 @end
 
@@ -48,8 +49,10 @@ static NSString* const kIXStop = @"stop";
     [super applySettings];
     
     NSURL* soundURL = [[self propertyContainer] getURLPathPropertyValue:kIXSoundLocation basePath:nil defaultValue:nil];
-    if( ![[[[self audioPlayer] url] absoluteString] isEqualToString:[soundURL absoluteString]] )
+    if( ![[self lastSoundURL] isEqual:soundURL] )
     {
+        [self setLastSoundURL:soundURL];
+        
         [[self audioPlayer] setDelegate:nil];
         [[self audioPlayer] stop];
         
