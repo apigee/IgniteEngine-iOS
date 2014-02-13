@@ -22,6 +22,7 @@
 
 -(void)dealloc
 {
+    [self setDelegate:nil];
     [_leftScreenPanGestureRecognizer removeTarget:self action:@selector(handleScreenEdgePan:)];
     [_rightScreenPanGestureRecognizer removeTarget:self action:@selector(handleScreenEdgePan:)];
 }
@@ -36,6 +37,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if( self != nil )
     {
+        [self setDelegate:self];
         [[self navigationBar] setBackgroundColor:[UIColor clearColor]];
 //        [self setNavigationBarHidden:NO animated:NO];
 //        [self setToolbarHidden:YES animated:NO];
@@ -63,6 +65,7 @@
     if( [self leftScreenPanGestureRecognizer] == nil )
     {
         [self setLeftScreenPanGestureRecognizer:[[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScreenEdgePan:)]];
+        [[self leftScreenPanGestureRecognizer] requireGestureRecognizerToFail:[self interactivePopGestureRecognizer]];
         [[self leftScreenPanGestureRecognizer] setEdges:UIRectEdgeLeft];
         [[self view] addGestureRecognizer:[self leftScreenPanGestureRecognizer]];
     }
@@ -74,6 +77,27 @@
         [[self interactivePopGestureRecognizer] setEnabled:YES];
         [[self interactivePopGestureRecognizer] setDelegate:nil];
     }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[self leftScreenPanGestureRecognizer] removeTarget:self action:@selector(handleScreenEdgePan:)];
+    [[self view] removeGestureRecognizer:[self leftScreenPanGestureRecognizer]];
+    [self setLeftScreenPanGestureRecognizer:nil];
+    [self setLeftScreenPanGestureRecognizer:[[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScreenEdgePan:)]];
+    [[self leftScreenPanGestureRecognizer] setEdges:UIRectEdgeLeft];
+
+    if( [[self viewControllers] count] > 1 )
+    {
+        [[self leftScreenPanGestureRecognizer] setEnabled:NO];
+        [[self leftScreenPanGestureRecognizer] requireGestureRecognizerToFail:[self interactivePopGestureRecognizer]];
+    }
+    else
+    {
+        [[self leftScreenPanGestureRecognizer] setEnabled:YES];
+    }
+    
+    [[self view] addGestureRecognizer:[self leftScreenPanGestureRecognizer]];
 }
 
 -(void)handleScreenEdgePan:(UIScreenEdgePanGestureRecognizer*)screenEdgePanGestureRecognizer
