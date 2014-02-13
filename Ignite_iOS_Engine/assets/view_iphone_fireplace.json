@@ -1,16 +1,26 @@
 {
 	"attributes": {
 		"height": "100%",
-		"images.default": "/images/iphone_background_music_208x369.png",
 		"layout_type": "float",
 		"width": "100%"
 	},
 	"controls": [
 		{
+			"attributes": {
+				"height": 369,
+				"images.default": "/images/iphone_background_fireplace_208x369.png",
+				"layout_type": "float",
+				"margin.top": 59,
+				"visible": true,
+				"width": 208
+			},
+			"type": "Image"
+		},
+		{
 			"actions": [
 				{
 					"attributes": {
-						"duration": 0.4,
+						"duration": 0.2,
 						"id": "fireplace_on"
 					},
 					"on": "touch_up",
@@ -30,7 +40,7 @@
 				},
 				{
 					"attributes": {
-						"duration": 0.4,
+						"duration": 0.2,
 						"id": "fireplace_overlay"
 					},
 					"on": "touch_up",
@@ -76,7 +86,7 @@
 							},
 							{
 								"if": "[[mediaplayer_fireplace.isPlaying]]==0",
-								"value": "pause"
+								"value": "stop"
 							}
 						],
 						"id": "mediaplayer_fireplace"
@@ -86,9 +96,11 @@
 				}
 			],
 			"attributes": {
-				"color.background": "0000FF",
+				"color.background": "FF0000",
 				"height": 100,
-				"width": 100
+				"width": 100,
+				"margin.top": 180,
+				"layout_type":"float"
 			},
 			"type": "Button"
 		}
