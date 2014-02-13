@@ -6,20 +6,24 @@
             "padding": 0,
             "status_bar_style": "hidden"
         },
-        "actions": [{
-            "on": "screen_pan_right",
-            "type": "Alert",
-            "attributes": {
-                "title": "Screen Pan Right"
+        "actions": [
+            {
+                "attributes": {
+                    "nav_stack_type": "push",
+                    "to": "scene_02.json"
+                },
+                "on": "screen_pan_right",
+                "type": "Navigate"
+            },
+            {
+                "attributes": {
+                    "nav_stack_type": "pop",
+                    "to": "scene_01.json"
+                },
+                "on": "screen_pan_left",
+                "type": "Navigate"
             }
-        },
-        {
-            "on": "screen_pan_left",
-            "type": "Alert",
-            "attributes": {
-                "title": "Screen Pan Left"
-            }
-        }],
+        ],
         "controls": [
             {
                 "attributes": {
