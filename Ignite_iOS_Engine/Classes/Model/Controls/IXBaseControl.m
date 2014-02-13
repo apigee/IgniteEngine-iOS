@@ -24,6 +24,8 @@ static NSString* const kIXBorderColor = @"border_color";
 static NSString* const kIXBorderRadius = @"border_radius";
 static NSString* const kIXBackgroundColor = @"color.background";
 static NSString* const kIXEnabled = @"enabled";
+static NSString* const kIXEnableTap = @"enable_tap";
+static NSString* const kIXEnableSwipe = @"enable_swipe";
 static NSString* const kIXEnableShadow = @"enable_shadow";
 static NSString* const kIXShadowBlur = @"shadow_blur";
 static NSString* const kIXShadowAlpha = @"shadow_alpha";
@@ -33,17 +35,34 @@ static NSString* const kIXShadowOffsetDown = @"shadow_offset_down";
 static NSString* const kIXVisible = @"visible";
 
 //
-// IXBaseControl Actions
+// IXBaseControl Events
 //
 static NSString* const kIXTouch = @"touch";
 static NSString* const kIXTouchUp = @"touch_up";
 static NSString* const kIXTouchCancelled = @"touch_cancelled";
+static NSString* const kIXTap = @"tap";
+static NSString* const kIXTapCount = @"tap_count";
+static NSString* const kIXSwipe = @"swipe";
+static NSString* const kIXSwipeDirection = @"swipe_direction";
+static NSString* const kIXDown = @"down";
+static NSString* const kIXUp = @"up";
+static NSString* const kIXRight = @"right";
+static NSString* const kIXLeft = @"left";
 
 @interface IXBaseControl ()
+
+@property (nonatomic,strong) NSArray* tapGestureRecognizers;
+@property (nonatomic,strong) NSArray* swipeGestureRecognizers;
 
 @end
 
 @implementation IXBaseControl
+
+-(void)dealloc
+{
+    [self removeTapGestureRecognizers];
+    [self removeSwipeGestureRecognizers];
+}
 
 -(id)init
 {
@@ -97,6 +116,31 @@ static NSString* const kIXTouchCancelled = @"touch_cancelled";
     [self layoutControlContentsInRect:internalLayoutRect];
 }
 
+-(void)applySettings
+{
+    [super applySettings];
+    
+    if( [self contentView] != nil )
+    {
+        if( _layoutInfo == nil )
+        {
+            _layoutInfo = [[IXControlLayoutInfo alloc] initWithPropertyContainer:[self propertyContainer]];
+        }
+        else
+        {
+            [_layoutInfo refreshLayoutInfo];
+        }
+        
+        [self applyContentViewSettings];
+        [self applyGestureRecognizerSettings];
+    }
+    
+    for( IXBaseControl* baseControl in [self childObjects] )
+    {
+        [baseControl applySettings];
+    }
+}
+
 -(void)applyContentViewSettings
 {
     [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
@@ -141,31 +185,133 @@ static NSString* const kIXTouchCancelled = @"touch_cancelled";
         [[[self contentView] layer] setShouldRasterize:NO];
         [[[self contentView] layer] setShadowOpacity:0.0f];
     }
-    
-    // TODO: Add gesture recognizers.
 }
 
--(void)applySettings
+-(void)addTapGestureRecognizers
 {
-    [super applySettings];
-    
-    if( [self contentView] != nil )
+    if( ![[self tapGestureRecognizers] count] )
     {
-        if( _layoutInfo == nil )
+        NSMutableArray* tapRecognizers = [NSMutableArray array];
+        UITapGestureRecognizer* previousTapRecognizer = nil;
+        for( int i = 5; i > 0; i-- )
         {
-            _layoutInfo = [[IXControlLayoutInfo alloc] initWithPropertyContainer:[self propertyContainer]];
+            UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+            [tapRecognizer setNumberOfTapsRequired:i];
+            [tapRecognizer setDelaysTouchesEnded:NO];
+            [tapRecognizer setCancelsTouchesInView:NO];
+            if( previousTapRecognizer )
+            {
+                [tapRecognizer requireGestureRecognizerToFail:previousTapRecognizer];
+            }
+            [[self contentView] addGestureRecognizer:tapRecognizer];
+            [tapRecognizers addObject:tapRecognizer];
+            previousTapRecognizer = tapRecognizer;
         }
-        else
+        [self setTapGestureRecognizers:tapRecognizers];
+    }
+}
+
+-(void)removeTapGestureRecognizers
+{
+    if( [[self tapGestureRecognizers] count] )
+    {
+        for( UITapGestureRecognizer* tapRecognizer in [self tapGestureRecognizers] )
         {
-            [_layoutInfo refreshLayoutInfo];
+            [tapRecognizer removeTarget:self action:@selector(tapGestureRecognized:)];
+            [[self contentView] removeGestureRecognizer:tapRecognizer];
         }
-        
-        [self applyContentViewSettings];
+        [self setTapGestureRecognizers:nil];
+    }
+}
+
+-(void)addSwipeGestureRecognizers
+{
+    if( ![[self swipeGestureRecognizers] count] )
+    {
+        NSMutableArray* swipeRecognizers = [NSMutableArray array];
+        for( int i = 0; i < 4; i++ )
+        {
+            UISwipeGestureRecognizer* swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestureRecognized:)];
+            [swipeRecognizer setDelaysTouchesEnded:NO];
+            [swipeRecognizer setCancelsTouchesInView:NO];
+            
+            UISwipeGestureRecognizerDirection swipeDirection = 1 << i;
+            [swipeRecognizer setDirection:swipeDirection];
+            
+            [[self contentView] addGestureRecognizer:swipeRecognizer];
+            [swipeRecognizers addObject:swipeRecognizer];
+        }
+        [self setSwipeGestureRecognizers:swipeRecognizers];
+    }
+}
+
+-(void)removeSwipeGestureRecognizers
+{
+    if([[self swipeGestureRecognizers] count])
+    {
+        for( UISwipeGestureRecognizer* swipeRecognizer in [self swipeGestureRecognizers] )
+        {
+            [swipeRecognizer removeTarget:self action:@selector(swipeGestureRecognized:)];
+            [[self contentView] removeGestureRecognizer:swipeRecognizer];
+        }
+        [self setSwipeGestureRecognizers:nil];
+    }
+}
+
+-(void)applyGestureRecognizerSettings
+{
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableTap defaultValue:NO] )
+    {
+        [self addTapGestureRecognizers];
+    }
+    else
+    {
+        [self removeTapGestureRecognizers];
     }
     
-    for( IXBaseControl* baseControl in [self childObjects] )
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableSwipe defaultValue:NO] )
     {
-        [baseControl applySettings];
+        [self addSwipeGestureRecognizers];
+    }
+    else
+    {
+        [self removeSwipeGestureRecognizers];
+    }
+}
+
+-(void)tapGestureRecognized:(UITapGestureRecognizer*)tapRecognizer
+{
+    NSString* tapCount = [NSString stringWithFormat:@"%lu",[tapRecognizer numberOfTapsRequired]];
+    [[self actionContainer] executeActionsForEventNamed:kIXTap propertyWithName:kIXTapCount mustHaveValue:tapCount];
+}
+
+-(void)swipeGestureRecognized:(UISwipeGestureRecognizer*)swipeRecognizer
+{
+    NSString* swipeDirection = nil;
+    switch ([swipeRecognizer direction]) {
+        case UISwipeGestureRecognizerDirectionDown:{
+            swipeDirection = kIXDown;
+            break;
+        }
+        case UISwipeGestureRecognizerDirectionLeft:{
+            swipeDirection = kIXLeft;
+            break;
+        }
+        case UISwipeGestureRecognizerDirectionRight:{
+            swipeDirection = kIXRight;
+            break;
+        }
+        case UISwipeGestureRecognizerDirectionUp:{
+            swipeDirection = kIXUp;
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+    if( swipeDirection )
+    {
+        [[self actionContainer] executeActionsForEventNamed:kIXSwipe propertyWithName:kIXSwipeDirection mustHaveValue:swipeDirection];
     }
 }
 
