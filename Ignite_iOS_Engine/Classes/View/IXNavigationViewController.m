@@ -89,12 +89,7 @@
 
     if( [[self viewControllers] count] > 1 )
     {
-        [[self leftScreenPanGestureRecognizer] setEnabled:NO];
         [[self leftScreenPanGestureRecognizer] requireGestureRecognizerToFail:[self interactivePopGestureRecognizer]];
-    }
-    else
-    {
-        [[self leftScreenPanGestureRecognizer] setEnabled:YES];
     }
     
     [[self view] addGestureRecognizer:[self leftScreenPanGestureRecognizer]];
