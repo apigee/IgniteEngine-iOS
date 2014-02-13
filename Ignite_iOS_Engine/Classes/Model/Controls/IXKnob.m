@@ -17,6 +17,8 @@ static NSString* const kIXMaximumValue = @"maximum_value";
 static NSString* const kIXImagesForeground = @"images.foreground";
 static NSString* const kIXImagesBackground = @"images.background";
 static NSString* const kIXImagesPointer = @"images.pointer";
+static NSString* const kIXMaximumAngle = @"maximum_angle";
+static NSString* const kIXKnobAnimationDuration = @"knob_animation_duration";
 
 // Knob Read-Only Properties
 static NSString* const kIXValue = @"value";
@@ -73,6 +75,12 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
 -(void)applySettings
 {
     [super applySettings];
+    
+    CGFloat maximumAngle = [[self propertyContainer] getFloatPropertyValue:kIXMaximumAngle defaultValue:145.0f];
+    [[self knobControl] setMaximumAngle:maximumAngle];
+    
+    CGFloat animationDuration = [[self propertyContainer] getFloatPropertyValue:kIXKnobAnimationDuration defaultValue:0.2f];
+    [[self knobControl] setAnimationDuration:animationDuration];
     
     [[self knobControl] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
     [[self knobControl] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];

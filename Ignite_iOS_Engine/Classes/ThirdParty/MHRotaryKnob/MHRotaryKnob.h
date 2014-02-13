@@ -64,6 +64,9 @@ MHRotaryKnobInteractionStyle;
  */
 @interface MHRotaryKnob : UIControl
 
+@property (nonatomic,assign) CGFloat maximumAngle;
+@property (nonatomic,assign) CFTimeInterval animationDuration;
+
 /* How the user interacts with the control. */
 @property (nonatomic, assign) MHRotaryKnobInteractionStyle interactionStyle;
 

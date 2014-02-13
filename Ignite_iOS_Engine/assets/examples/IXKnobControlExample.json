@@ -57,6 +57,8 @@
                 "height": 500,
                 "horizontal_alignment":"center",
                 "layout_type": "relative",
+                "knob_animation_duration": 1.0,
+                "maximum_angle": 145,
                 "initial_value": 69,
                 "minimum_value": 50,
                 "maximum_value": 90,

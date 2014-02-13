@@ -28,7 +28,7 @@ const float MinDistanceSquared = 16.0f;
 {
 	if ((self = [super initWithFrame:frame]))
 	{
-		[self commonInit];
+		[self commonInitWithMaxAngle:145.0f];
 	}
 	return self;
 }
@@ -37,9 +37,17 @@ const float MinDistanceSquared = 16.0f;
 {
 	if ((self = [super initWithCoder:aDecoder]))
 	{
-		[self commonInit];
+		[self commonInitWithMaxAngle:145.0f];
 	}
 	return self;
+}
+
+-(void)commonInitWithMaxAngle:(CGFloat)maxAngle
+{
+    _maximumAngle = maxAngle;
+    _animationDuration = 0.2f;
+    
+    [self commonInit];
 }
 
 - (void)commonInit
@@ -63,22 +71,22 @@ const float MinDistanceSquared = 16.0f;
 
 - (float)clampAngle:(float)theAngle
 {
-	if (theAngle < -MaxAngle)
-		theAngle = -MaxAngle;
-	else if (theAngle > MaxAngle)
-		theAngle = MaxAngle;
+	if (theAngle < -[self maximumAngle])
+		theAngle = -[self maximumAngle];
+	else if (theAngle > [self maximumAngle])
+		theAngle = [self maximumAngle];
 
 	return theAngle;
 }
 
 - (float)angleForValue:(float)value
 {
-	return ((value - self.minimumValue)/(self.maximumValue - self.minimumValue) - 0.5f) * (MaxAngle*2.0f);
+	return ((value - self.minimumValue)/(self.maximumValue - self.minimumValue) - 0.5f) * ([self maximumAngle]*2.0f);
 }
 
 - (float)valueForAngle:(float)angle
 {
-	return (angle/(MaxAngle*2.0f) + 0.5f) * (self.maximumValue - self.minimumValue) + self.minimumValue;
+	return (angle/([self maximumAngle]*2.0f) + 0.5f) * (self.maximumValue - self.minimumValue) + self.minimumValue;
 }
 
 - (float)angleBetweenCenterAndPoint:(CGPoint)point
@@ -198,7 +206,7 @@ const float MinDistanceSquared = 16.0f;
 		if (fabsf(delta) > 45.0f)
 			return NO;
 
-		self.value += (self.maximumValue - self.minimumValue) * delta / (MaxAngle*2.0f);
+		self.value += (self.maximumValue - self.minimumValue) * delta / ([self maximumAngle]*2.0f);
 
 		// Note that the above is equivalent to:
 		//self.value += [self valueForAngle:newAngle] - [self valueForAngle:angle];
@@ -256,7 +264,7 @@ const float MinDistanceSquared = 16.0f;
 		float oldAngle = [self angleForValue:oldValue];
 
 		CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.rotation.z"];
-		animation.duration = 0.2f;
+		animation.duration = [self animationDuration];
 
 		animation.values = @[[NSNumber numberWithFloat:oldAngle * M_PI/180.0f],
 			[NSNumber numberWithFloat:(newAngle + oldAngle)/2.0f * M_PI/180.0f], 
