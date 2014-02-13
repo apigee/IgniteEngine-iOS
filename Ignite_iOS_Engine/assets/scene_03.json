@@ -2,10 +2,10 @@
 	"view": {
 		"attributes": {
 			"color.background": "#000000",
+			"horizontal_scroll_enabled": false,
 			"margin": 0,
 			"padding": 0,
-			"status_bar_style": "hidden",
-			"horizontal_scroll_enabled": false
+			"status_bar_style": "hidden"
 		},
 		"controls": [
 			{
@@ -204,40 +204,30 @@
 						"actions": [
 							{
 								"attributes": {
-									"event_name": "hide",
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] <= -760",
+											"value": "hide"
+										},
+										{
+											"if": "[[layout_main.margin.left]] >= -380",
+											"value": "show"
+										}
+									],
 									"id": "iphone_right"
 								},
 								"on": "touch_up",
 								"type": "Event"
-							},
-							{
-								"attributes": {
-									"id": "fireplace_on"
-								},
-								"on": "touch",
-								"parameters": {
-									"visible": false
-								},
-								"type": "Modify"
-							},
-							{
-								"attributes": {
-									"id": "fireplace_off"
-								},
-								"on": "touch",
-								"parameters": {
-									"visible": true
-								},
-								"type": "Modify"
 							}
 						],
 						"attributes": {
+							"alpha": 0,
 							"height": 131,
 							"images.default": "/images/fireplace_on.gif",
 							"layout_type": "absolute",
 							"margin.left": 767,
 							"margin.top": 386,
-							"visible": false,
+							"visible": true,
 							"width": 272
 						},
 						"id": "fireplace_on",
@@ -246,15 +236,26 @@
 					{
 						"attributes": {
 							"enabled": false,
-							"height": 131,
+							"height": 214,
 							"images.default": "/images/fireplace_overlay.png",
 							"layout_type": "absolute",
-							"margin.left": 767,
-							"margin.top": 386,
-							"width": 272
+							"margin.left": 727,
+							"margin.top": 345,
+							"width": 352,
+							"alpha": 0
 						},
 						"id": "fireplace_overlay",
 						"type": "Image"
+					},
+						{
+						"attributes": {
+							"auto_play": false,
+							"isPlaying": false,
+							"sound_location": "/music/fire-1.mp3",
+							"number_of_loops": -1
+						},
+						"id": "mediaplayer_fireplace",
+						"type": "Sound"
 					},
 					{
 						"actions": [
