@@ -1,0 +1,18 @@
+{
+	"attributes": {
+		"height": "100%",
+		"layout_type": "float",
+		"width": "100%",
+		"color.background":"#FFFFFF"
+	},
+	"controls": [
+		{
+			"type":"Text",
+			"attributes":{
+				"text":"Fireplace"
+			}
+		}
+	],
+	"id": "layout_iphone_right_fireplace",
+	"type": "Layout"
+}
