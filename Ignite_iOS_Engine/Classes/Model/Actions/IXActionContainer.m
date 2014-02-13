@@ -163,7 +163,7 @@
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation usingSandbox:[self sandbox]] )
         {
             BOOL shouldFireAction = (value == nil || propertyName == nil );
-            if( value && propertyName )
+            if( !shouldFireAction )
             {
                 NSString* actionValue = [[action actionProperties] getStringPropertyValue:propertyName defaultValue:nil];
                 if( actionValue )
