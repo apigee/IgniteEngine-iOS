@@ -37,7 +37,7 @@
 							"enabled": true,
 							"height": 768,
 							"horizontal_scroll_enabled": false,
-							"images.default": "/images/room_1_1784x768.png",
+							"images.default": "/images/room_1_1784x768.jpg",
 							"layout_type": "absolute",
 							"width": 1784
 						},
@@ -57,13 +57,13 @@
 							}
 						],
 						"attributes": {
+							"alpha": 0,
 							"enabled": true,
 							"height": 768,
 							"horizontal_scroll_enabled": false,
-							"images.default": "/images/room_0_1784x768.png",
+							"images.default": "/images/room_0_1784x768.jpg",
 							"layout_type": "absolute",
-							"width": 1784,
-							"alpha": 0
+							"width": 1784
 						},
 						"id": "background_room_lights_off",
 						"type": "Image"
@@ -679,10 +679,10 @@
 							}
 						],
 						"attributes": {
-							"height": 369,
+							"height": 370,
 							"layout_type": "float",
 							"margin.left": 1494,
-							"margin.top": 301,
+							"margin.top": 300,
 							"visible": true,
 							"width": 208
 						},
@@ -1123,21 +1123,54 @@
 						"type": "Layout"
 					},
 					{
-				"id": "animatedImageControl",
-				"type": "Image",
-				"attributes": {
-					"animated_images": "assets/images/bolt_00/00.png,assets/images/bolt_00/01.png,assets/images/bolt_00/01.png,assets/images/bolt_00/02.png,assets/images/bolt_00/03.png,assets/images/bolt_00/04.png,assets/images/bolt_00/05.png,assets/images/bolt_00/06.png,assets/images/bolt_00/07.png,assets/images/bolt_00/08.png,assets/images/bolt_00/09.png,assets/images/bolt_00/10.png,assets/images/bolt_00/10.png,assets/images/bolt_00/11.png,assets/images/bolt_00/11.png,assets/images/bolt_00/12.png,assets/images/bolt_00/13.png,assets/images/bolt_00/14.png,assets/images/bolt_00/15.png,assets/images/bolt_00/16.png,assets/images/bolt_00/17.png,assets/images/bolt_00/18.png,assets/images/bolt_00/19.png,assets/images/bolt_00/20.png,assets/images/bolt_00/21.png,assets/images/bolt_00/22.png,assets/images/bolt_00/23.png,assets/images/bolt_00/24.png,assets/images/bolt_00/25.png,assets/images/bolt_00/26.png,assets/images/bolt_00/27.png,assets/images/bolt_00/28.png",
-					"enabled": false,
-					"animation_duration": 1,
-					"layout_type": "float",
-					"alpha": 1,
-					"height": "100%",
-					"width": "100%",
-					"margin.top": 0,
-					"margin.left": 0,
-					"auto_animate": true
-				}
-			}
+						"attributes": {
+							"alpha": 1,
+							"animated_images": [
+								"assets/images/bolt_00/00.png",
+								"assets/images/bolt_00/01.png",
+								"assets/images/bolt_00/01.png",
+								"assets/images/bolt_00/02.png",
+								"assets/images/bolt_00/03.png",
+								"assets/images/bolt_00/04.png",
+								"assets/images/bolt_00/05.png",
+								"assets/images/bolt_00/06.png",
+								"assets/images/bolt_00/07.png",
+								"assets/images/bolt_00/08.png",
+								"assets/images/bolt_00/09.png",
+								"assets/images/bolt_00/10.png",
+								"assets/images/bolt_00/10.png",
+								"assets/images/bolt_00/11.png",
+								"assets/images/bolt_00/11.png",
+								"assets/images/bolt_00/12.png",
+								"assets/images/bolt_00/13.png",
+								"assets/images/bolt_00/14.png",
+								"assets/images/bolt_00/15.png",
+								"assets/images/bolt_00/16.png",
+								"assets/images/bolt_00/17.png",
+								"assets/images/bolt_00/18.png",
+								"assets/images/bolt_00/19.png",
+								"assets/images/bolt_00/20.png",
+								"assets/images/bolt_00/21.png",
+								"assets/images/bolt_00/22.png",
+								"assets/images/bolt_00/23.png",
+								"assets/images/bolt_00/24.png",
+								"assets/images/bolt_00/25.png",
+								"assets/images/bolt_00/26.png",
+								"assets/images/bolt_00/27.png",
+								"assets/images/bolt_00/28.png"
+							],
+							"animation_duration": 1,
+							"auto_animate": true,
+							"enabled": false,
+							"height": "100%",
+							"layout_type": "float",
+							"margin.left": 0,
+							"margin.top": 0,
+							"width": "100%"
+						},
+						"id": "animatedImageControl",
+						"type": "Image"
+					}
 				],
 				"id": "layout_main",
 				"type": "Layout"
@@ -1217,8 +1250,7 @@
 					"text": "big knob"
 				},
 				"type": "Text"
-			},
-			
+			}
 		]
 	}
 }
