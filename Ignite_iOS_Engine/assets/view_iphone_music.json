@@ -59,6 +59,7 @@
 				},
 				{
 					"attributes": {
+						"delay": 0.8,
 						"function_name": [
 							{
 								"if": "[[mediaplayer_music.isPlaying]]==1",
@@ -70,6 +71,34 @@
 							}
 						],
 						"id": "mediaplayer_music"
+					},
+					"on": "touch_up",
+					"type": "Function"
+				},
+				{
+					"attributes": {
+						"duration": 0.2,
+						"id": "animation_sonos"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": 1
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": [
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==1",
+								"value": "start_animation"
+							},
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==0",
+								"value": "stop_animation"
+							}
+						],
+						"id": "animation_sonos"
 					},
 					"on": "touch_up",
 					"type": "Function"

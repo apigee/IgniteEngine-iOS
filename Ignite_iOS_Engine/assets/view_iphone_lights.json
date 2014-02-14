@@ -113,6 +113,14 @@
 					},
 					"on": "touch_up",
 					"type": "Function"
+				},
+				{
+					"attributes": {
+						"function_name": "start_animation",
+						"id": "animation_lamp"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {
@@ -171,7 +179,6 @@
 			"id": "button_fake1",
 			"type": "Button"
 		},
-		
 		{
 			"actions": [
 				{

@@ -39,6 +39,34 @@
 				},
 				{
 					"attributes": {
+						"duration": 0.2,
+						"id": "animation_fireplace"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": 1
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": [
+							{
+								"if": "[[fireplace_on.alpha]] == 0",
+								"value": "start_animation"
+							},
+							{
+								"if": "[[fireplace_on.alpha]] == 1",
+								"value": "stop_animation"
+							}
+						],
+						"id": "animation_fireplace"
+					},
+					"on": "touch_up",
+					"type": "Function"
+				},
+				{
+					"attributes": {
 						"delay": [
 							{
 								"if": "[[fireplace_on.alpha]] == 1",
@@ -46,7 +74,7 @@
 							},
 							{
 								"if": "[[fireplace_on.alpha]] == 0",
-								"value": 0.1
+								"value": 1.5
 							}
 						],
 						"duration": 0.1,
@@ -72,11 +100,11 @@
 						"delay": [
 							{
 								"if": "[[fireplace_on.alpha]] == 1",
-								"value": 0.1
+								"value": 0
 							},
 							{
 								"if": "[[fireplace_on.alpha]] == 0",
-								"value": 0
+								"value": 1.5
 							}
 						],
 						"duration": 0.1,
@@ -135,6 +163,16 @@
 				},
 				{
 					"attributes": {
+						"delay": [
+							{
+								"if": "[[mediaplayer_fireplace.isPlaying]]==1",
+								"value": 0
+							},
+							{
+								"if": "[[mediaplayer_fireplace.isPlaying]]==0",
+								"value": 1.5
+							}
+						],
 						"function_name": [
 							{
 								"if": "[[mediaplayer_fireplace.isPlaying]]==1",

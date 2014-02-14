@@ -57,7 +57,7 @@
 				},
 				{
 					"attributes": {
-						"delay" : 0.1,
+						"delay": 0.1,
 						"function_name": [
 							{
 								"if": "[[layout_tv.visible]]==1",
@@ -73,7 +73,6 @@
 					"type": "Function"
 				},
 				{
-					"delay" : 0.6,
 					"attributes": {
 						"function_name": [
 							{
@@ -83,6 +82,7 @@
 						],
 						"id": "mediaplayer_tv"
 					},
+					"delay": 0.6,
 					"on": "touch_up",
 					"type": "Function"
 				}
@@ -102,7 +102,35 @@
 			"actions": [
 				{
 					"attributes": {
-						"delay" : 0.1,
+						"duration": 0.2,
+						"id": "animation_tv"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": 1
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": [
+							{
+								"if": "[[layout_tv.visible]]==0",
+								"value": "start_animation"
+							},
+							{
+								"if": "[[layout_tv.visible]]==1",
+								"value": "stop_animation"
+							}
+						],
+						"id": "animation_tv"
+					},
+					"on": "touch_up",
+					"type": "Function"
+				},
+				{
+					"attributes": {
+						"delay": 0.1,
 						"function_name": [
 							{
 								"if": "[[layout_tv.visible]]==1",

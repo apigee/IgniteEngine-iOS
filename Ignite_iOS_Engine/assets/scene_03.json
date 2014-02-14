@@ -1,15 +1,5 @@
 {
 	"view": {
-		"actions": [
-			{
-				"attributes": {
-					"function_name": "start_animation",
-					"id": "animatedImageControl"
-				},
-				"on": "did_appear",
-				"type": "Function"
-			}
-		],
 		"attributes": {
 			"color.background": "#000000",
 			"horizontal_scroll_enabled": false,
@@ -323,6 +313,7 @@
 							}
 						],
 						"attributes": {
+							"enabled": true,
 							"height": 50,
 							"layout_type": "absolute",
 							"margin.left": 466,
@@ -631,6 +622,45 @@
 									"enabled": true
 								},
 								"type": "Modify"
+							},
+							{
+								"attributes": {
+									"duration": 0.2,
+									"id": "animation_nest"
+								},
+								"on": "show",
+								"parameters": {
+									"alpha": 1
+								},
+								"type": "Modify"
+							},
+							{
+								"attributes": {
+									"function_name": "start_animation",
+									"id": "animation_nest"
+								},
+								"on": "show",
+								"type": "Function"
+							},
+							{
+								"attributes": {
+									"duration": 0.1,
+									"id": "animation_nest"
+								},
+								"on": "hide",
+								"parameters": {
+									"alpha": 0
+								},
+								"type": "Modify"
+							},
+							{
+								"attributes": {
+									"delay": 1,
+									"function_name": "stop_animation",
+									"id": "animation_nest"
+								},
+								"on": "hide",
+								"type": "Function"
 							}
 						],
 						"attributes": {
@@ -1102,42 +1132,40 @@
 					},
 					{
 						"attributes": {
-							"alpha": 1,
+							"alpha": 0,
 							"animated_images": [
-								"assets/images/bolt_00/00.png",
-								"assets/images/bolt_00/01.png",
-								"assets/images/bolt_00/01.png",
-								"assets/images/bolt_00/02.png",
-								"assets/images/bolt_00/03.png",
-								"assets/images/bolt_00/04.png",
-								"assets/images/bolt_00/05.png",
-								"assets/images/bolt_00/06.png",
-								"assets/images/bolt_00/07.png",
-								"assets/images/bolt_00/08.png",
-								"assets/images/bolt_00/09.png",
-								"assets/images/bolt_00/10.png",
-								"assets/images/bolt_00/10.png",
-								"assets/images/bolt_00/11.png",
-								"assets/images/bolt_00/11.png",
-								"assets/images/bolt_00/12.png",
-								"assets/images/bolt_00/13.png",
-								"assets/images/bolt_00/14.png",
-								"assets/images/bolt_00/15.png",
-								"assets/images/bolt_00/16.png",
-								"assets/images/bolt_00/17.png",
-								"assets/images/bolt_00/18.png",
-								"assets/images/bolt_00/19.png",
-								"assets/images/bolt_00/20.png",
-								"assets/images/bolt_00/21.png",
-								"assets/images/bolt_00/22.png",
-								"assets/images/bolt_00/23.png",
-								"assets/images/bolt_00/24.png",
-								"assets/images/bolt_00/25.png",
-								"assets/images/bolt_00/26.png",
-								"assets/images/bolt_00/27.png",
-								"assets/images/bolt_00/28.png"
+								"assets/animations/bolt_nest/Room_Nest_bolt_00000.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00001.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00002.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00003.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00004.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00005.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00006.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00007.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00008.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00009.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00010.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00011.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00012.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00013.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00014.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00015.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00016.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00017.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00018.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00019.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00020.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00021.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00022.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00023.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00024.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00025.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00026.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00027.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00028.png",
+								"assets/animations/bolt_nest/Room_Nest_bolt_00029.png"
 							],
-							"animation_duration": 1,
+							"animation_duration": 2,
 							"auto_animate": false,
 							"enabled": false,
 							"height": "100%",
@@ -1146,7 +1174,194 @@
 							"margin.top": 0,
 							"width": "100%"
 						},
-						"id": "animatedImageControl",
+						"id": "animation_nest",
+						"type": "Image"
+					},
+					{
+						"attributes": {
+							"alpha": 0,
+							"animated_images": [
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00000.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00001.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00002.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00003.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00004.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00005.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00006.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00007.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00008.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00009.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00010.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00011.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00012.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00013.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00014.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00015.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00016.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00017.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00018.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00019.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00020.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00021.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00022.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00023.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00024.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00025.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00026.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00027.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00028.png",
+								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00029.png"
+							],
+							"animation_duration": 2,
+							"auto_animate": false,
+							"enabled": false,
+							"height": "100%",
+							"layout_type": "float",
+							"margin.left": 0,
+							"margin.top": 0,
+							"width": "100%"
+						},
+						"id": "animation_fireplace",
+						"type": "Image"
+					},
+					{
+						"attributes": {
+							"alpha": 0,
+							"animated_images": [
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00000.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00001.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00002.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00003.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00004.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00005.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00006.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00007.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00008.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00009.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00010.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00011.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00012.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00013.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00014.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00015.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00016.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00017.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00018.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00019.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00020.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00021.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00022.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00023.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00024.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00025.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00026.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00027.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00028.png",
+								"assets/animations/bolt_sonos/Room_Sonos_bolt_00029.png"
+							],
+							"animation_duration": 1.6,
+							"auto_animate": false,
+							"enabled": false,
+							"height": "100%",
+							"layout_type": "float",
+							"margin.left": 0,
+							"margin.top": 0,
+							"width": "100%"
+						},
+						"id": "animation_sonos",
+						"type": "Image"
+					},
+					{
+						"attributes": {
+							"animated_images": [
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00000.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00001.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00002.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00003.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00004.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00005.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00006.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00007.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00008.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00009.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00010.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00011.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00012.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00013.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00014.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00015.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00016.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00017.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00018.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00019.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00020.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00021.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00022.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00023.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00024.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00025.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00026.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00027.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00028.png",
+								"assets/animations/bolt_lamp/Room_Lamp_bolt_00029.png"
+							],
+							"animation_duration": 0.1,
+							"animation_repeat_count": 1,
+							"auto_animate": false,
+							"enabled": false,
+							"height": "100%",
+							"layout_type": "float",
+							"margin.left": 0,
+							"margin.top": 0,
+							"width": "100%"
+						},
+						"id": "animation_lamp",
+						"type": "Image"
+					},
+					{
+						"attributes": {
+							"animated_images": [
+								"assets/animations/bolt_tv/Room_TV_bolt_00000.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00001.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00002.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00003.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00004.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00005.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00006.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00007.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00008.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00009.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00010.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00011.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00012.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00013.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00014.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00015.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00016.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00017.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00018.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00019.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00020.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00021.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00022.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00023.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00024.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00025.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00026.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00027.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00028.png",
+								"assets/animations/bolt_tv/Room_TV_bolt_00029.png"
+							],
+							"animation_duration": 1.1,
+							"auto_animate": false,
+							"enabled": false,
+							"height": "100%",
+							"layout_type": "float",
+							"margin.left": 0,
+							"margin.top": 0,
+							"width": "100%"
+						},
+						"id": "animation_tv",
 						"type": "Image"
 					}
 				],
@@ -1214,10 +1429,10 @@
 				"attributes": {
 					"alpha": 1,
 					"enabled": false,
-					"height": 500,
+					"height": 560,
 					"layout_type": "float",
 					"margin.left": 300,
-					"margin.top": 240,
+					"margin.top": 190,
 					"width": 400
 				},
 				"id": "layout_return",
