@@ -206,11 +206,10 @@
                     }
                 ],
                 "attributes": {
-                    "height": 369,
+                    "height": 208,
                     "layout_type": "float",
-                    "margin.right": 34,
+                    "margin.left": 300,
                     "margin.top": 302,
-                    "horizontal_alignment": "right",
                     "visible": true,
                     "width": 208
                 },
@@ -219,7 +218,7 @@
                         "actions": [],
                         "attributes": {
                             "color.background": "#00FF00",
-                            "height": 369,
+                            "height": 208,
                             "layout_type": "absolute",
                             "visible": true,
                             "width": 208
@@ -228,55 +227,46 @@
                             {
                                 "actions": [],
                                 "attributes": {
-                                    "height": 59,
-                                    "images.default": "/images/iphone_header_208x59.png",
-                                    "layout_type": "float",
-                                    "visible": true,
-                                    "width": 208
-                                },
-                                "controls": [],
-                                "id": "iphone_header_416x118",
-                                "type": "Image"
-                            },
-                            {
-                                "actions": [],
-                                "attributes": {
-                                    "height": 311,
-                                    "images.default": "/images/iphone_nest_bg.png",
-                                    "layout_type": "float",
-                                    "margin.top": 0,
-                                    "visible": true,
-                                    "width": 208
-                                },
-                                "controls": [],
-                                "id": "iphone_nest_bg",
-                                "type": "Image"
-                            },
-                            {
-                                "actions": [
-                                    {
-                                        "attributes": {
-                                            "id": "customText"
+                                    "height": 208,
+                                    "images.default": [
+                                        {
+                                            "if": "[[customKnob1.value]] == 70",
+                                            "value": "/images/iphone_nest_standby_208x208.png"
                                         },
-                                        "on": "value_changed",
-                                        "type": "Refresh"
-                                    }
-                                ],
-                                "attributes": {
-                                    "height": 180,
-                                    "horizontal_alignment": "center",
-                                    "initial_value": 70,
+                                        {
+                                            "if": "[[customKnob1.value]] <= 67",
+                                            "value": "/images/iphone_nest_cool_208x208.png"
+                                        },
+                                        {
+                                            "if": "[[customKnob1.value]] >= 73",
+                                            "value": "/images/iphone_nest_heat_208x208.png"
+                                        },
+                                    ],
                                     "layout_type": "float",
-                                    "line_width": 4,
-                                    "margin.top": 140,
-                                    "maximum_value": 90,
+                                    "visible": true,
+                                    "width": 208
+                                },
+                                "controls": [],
+                                "id": "iphone_nest_mode",
+                                "type": "Image"
+                            },
+                            {
+                                "attributes": {
+                                    "color": {
+                                        "background": "#00000000"
+                                    },
+                                    "width": 208,
+                                    "height": 208,
+                                    "layout_type": "float",
+                                    "initial_value": 69.99,
                                     "minimum_value": 50,
-                                    "pointer_color": "#FFFFFF",
-                                    "pointer_length": 20,
-                                    "pointer_visible": true,
-                                    "track_color": "#0000FF00",
-                                    "track_visible": true,
-                                    "width": 180
+                                    "maximum_value": 90,
+                                    "maximum_angle": 146,
+                                    "knob_animation_duration": 1,
+                                    "images": {
+                                        "background": "images/knob_bg_208x208.png",
+                                        "pointer": "images/knob_marker_208x208.png"
+                                    }
                                 },
                                 "id": "customKnob2",
                                 "type": "Knob"
@@ -284,10 +274,12 @@
                             {
                                 "attributes": {
                                     "color.text": "#FFFFFF",
+                                    "margin.bottom": 60,
                                     "horizontal_alignment": "center",
+                                    "vertical_alignment": "bottom",
+                                    "font": "NestsansBold:70",
                                     "layout_type": "float",
-                                    "text": "[[customKnob1.value]]",
-                                    "vertical_alignment": "middle"
+                                    "text": "[[customKnob1.value]]"
                                 },
                                 "id": "customText",
                                 "type": "Text"
@@ -297,7 +289,7 @@
                         "type": "Layout"
                     }
                 ],
-                "id": "iphone_left",
+                "id": "iphone_right",
                 "type": "Layout"
             }
         ]
