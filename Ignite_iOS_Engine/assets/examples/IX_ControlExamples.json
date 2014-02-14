@@ -117,6 +117,22 @@
                 "layout_type": "relative",
                 "text": "Sound Example"
             }
+         },
+         {
+            "id": "timerExampleText",
+            "type": "Text",
+            "actions": [{
+                "on": "touch_up",
+                "type": "Navigate",
+                "attributes": {
+                    "to": "IXTimerControlExample.json"
+                }
+            }],
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Timer Example"
+            }
          }
         ]
     }
