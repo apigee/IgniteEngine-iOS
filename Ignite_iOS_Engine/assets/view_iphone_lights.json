@@ -7,7 +7,7 @@
 	"controls": [
 		{
 			"attributes": {
-				"height": 369,
+				"height": 370,
 				"images.default": "/images/iphone_background_lights_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,

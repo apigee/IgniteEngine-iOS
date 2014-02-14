@@ -7,7 +7,7 @@
 	"controls": [
 		{
 			"attributes": {
-				"height": 369,
+				"height": 370,
 				"images.default": "/images/iphone_background_fireplace_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,
@@ -18,6 +18,25 @@
 		},
 		{
 			"actions": [
+				{
+					"attributes": {
+						"id": "button_fireplace_onoff"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"images.default": [
+							{
+								"if": "[[fireplace_on.alpha]] == 0",
+								"value": "/images/button_iphone_toggleon_52x47.png"
+							},
+							{
+								"if": "[[fireplace_on.alpha]] == 1",
+								"value": "/images/button_iphone_toggleoff_52x47.png"
+							}
+						]
+					},
+					"type": "Modify"
+				},
 				{
 					"attributes": {
 						"delay": [
@@ -133,12 +152,14 @@
 				}
 			],
 			"attributes": {
-				"color.background": "FF0000",
-				"height": 100,
+				"height": 47,
+				"images.default": "/images/button_iphone_toggleoff_52x47.png",
 				"layout_type": "float",
-				"margin.top": 180,
-				"width": 100
+				"margin.left": 110,
+				"margin.top": 198,
+				"width": 52
 			},
+			"id": "button_fireplace_onoff",
 			"type": "Button"
 		}
 	],

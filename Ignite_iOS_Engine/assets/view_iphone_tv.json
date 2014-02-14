@@ -21,10 +21,22 @@
 			"actions": [
 				{
 					"attributes": {
+						"delay": 0.5,
+						"function_name": "goto",
+						"id": "mediaplayer_tv"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"seconds": "[[eval('Math.floor((Math.random()*30)+1);')]]"
+					},
+					"type": "Function"
+				},
+				{
+					"attributes": {
 						"function_name": [
 							{
 								"if": "[[mediaplayer_tv.isOn]]==1",
-								"value": "pause"
+								"value": "stop"
 							}
 						],
 						"id": "mediaplayer_tv"
@@ -57,17 +69,6 @@
 				},
 				{
 					"attributes": {
-						"function_name": "goto",
-						"id": "mediaplayer_tv"
-					},
-					"on": "touch_up",
-					"parameters": {
-						"seconds": "[[eval('Math.floor((Math.random()*30)+1);')]]"
-					},
-					"type": "Function"
-				},
-				{
-					"attributes": {
 						"function_name": [
 							{
 								"if": "[[mediaplayer_tv.isOn]]==1",
@@ -96,6 +97,22 @@
 			"actions": [
 				{
 					"attributes": {
+						"function_name": [
+							{
+								"if": "[[layout_tv.visible]]==0",
+								"value": "goto"
+							}
+						],
+						"id": "mediaplayer_tv"
+					},
+					"on": "touch",
+					"parameters": {
+						"seconds": "[[eval('Math.floor((Math.random()*30)+1);')]]"
+					},
+					"type": "Function"
+				},
+				{
+					"attributes": {
 						"id": "layout_tv"
 					},
 					"on": "touch_up",
@@ -117,7 +134,7 @@
 					"attributes": {
 						"id": "mediaplayer_tv"
 					},
-					"on": "touch_up",
+					"on": "touch",
 					"parameters": {
 						"isOn": [
 							{
@@ -169,17 +186,6 @@
 						]
 					},
 					"type": "Modify"
-				},
-				{
-					"attributes": {
-						"function_name": "goto",
-						"id": "mediaplayer_tv"
-					},
-					"on": "touch_up",
-					"parameters": {
-						"seconds": "[[eval('Math.floor((Math.random()*30)+1);')]]"
-					},
-					"type": "Function"
 				},
 				{
 					"attributes": {

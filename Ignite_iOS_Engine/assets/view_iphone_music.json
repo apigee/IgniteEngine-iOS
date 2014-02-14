@@ -7,7 +7,7 @@
 	"controls": [
 		{
 			"attributes": {
-				"height": 369,
+				"height": 370,
 				"images.default": "/images/iphone_background_music_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,
@@ -19,6 +19,25 @@
 		},
 		{
 			"actions": [
+				{
+					"attributes": {
+						"id": "button_music_onoff"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"images.default": [
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==0",
+								"value": "/images/button_iphone_toggleon_52x47.png"
+							},
+							{
+								"if": "[[mediaplayer_music.isPlaying]]==1",
+								"value": "/images/button_iphone_toggleoff_52x47.png"
+							}
+						]
+					},
+					"type": "Modify"
+				},
 				{
 					"attributes": {
 						"id": "mediaplayer_music"
@@ -57,11 +76,12 @@
 				}
 			],
 			"attributes": {
-				"color.background": "#0000FF",
-				"height": 40,
+				"height": 47,
+				"images.default": "/images/button_iphone_toggleoff_52x47.png",
 				"layout_type": "float",
-				"margin.top": 109,
-				"width": 40
+				"margin.left": 126,
+				"margin.top": 172,
+				"width": 52
 			},
 			"id": "button_music_onoff",
 			"type": "Button"
@@ -89,7 +109,7 @@
 				"initial_value": 1,
 				"layout_type": "float",
 				"margin.left": 24,
-				"margin.top": 200,
+				"margin.top": 244,
 				"maximum_value": 1,
 				"minimum_value": 0,
 				"width": 160

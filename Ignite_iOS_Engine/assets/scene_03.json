@@ -649,7 +649,7 @@
 							}
 						],
 						"id": "iphone_left",
-						"type": "Custom"
+						"type": "Layout"
 					},
 					{
 						"actions": [
@@ -841,13 +841,6 @@
 											},
 											{
 												"attributes": {
-													"title": "YOU TAPPED THE FUCKING TV"
-												},
-												"on": "touch_up",
-												"type": "Alert"
-											},
-											{
-												"attributes": {
 													"duration": 0.25,
 													"id": "button_back"
 												},
@@ -1019,20 +1012,6 @@
 										},
 										"id": "button_show_temperature",
 										"type": "Button"
-									},
-									{
-										"attributes": {
-											"control_location": "view_iphone_temperature.json",
-											"height": 370,
-											"layout_type": "float",
-											"load_async": false,
-											"margin.left": 208,
-											"margin.top": 0,
-											"visible": true,
-											"width": 208
-										},
-										"id": "custom_iphone_left_temperature",
-										"type": "Custom"
 									},
 									{
 										"actions": [
