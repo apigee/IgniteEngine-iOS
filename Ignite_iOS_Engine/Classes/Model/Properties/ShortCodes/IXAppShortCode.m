@@ -8,11 +8,33 @@
 
 #import "IXAppShortCode.h"
 
+#import "IXProperty.h"
+
 @implementation IXAppShortCode
 
 -(NSString*)evaluate:(IXSandbox*)sandbox
 {
-    return @"";
+    NSString* returnValue = nil;
+    
+    NSString* propertyName = [self methodName];
+    if( !propertyName )
+    {
+        IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
+        propertyName = [parameterProperty getPropertyValue:sandbox];
+    }
+    
+    if( [propertyName hasPrefix:@"random_number"] )
+    {
+        NSUInteger upperBound = 100;
+        NSArray* stringArray = [propertyName componentsSeparatedByString:@"."];
+        if( [stringArray count] > 1 )
+        {
+            upperBound = [[stringArray lastObject] intValue];
+        }
+        returnValue = [NSString stringWithFormat:@"%i",arc4random_uniform(upperBound)];
+    }
+    
+    return returnValue;
 }
 
 -(BOOL)valueIsNeverGoingToChange
