@@ -40,7 +40,6 @@
 				},
 				{
 					"attributes": {
-						
 						"duration": 0,
 						"id": "fireplace_overlay_lightson"
 					},
@@ -65,7 +64,6 @@
 				},
 				{
 					"attributes": {
-						
 						"duration": 0,
 						"id": "fireplace_overlay_lightsoff"
 					},
@@ -87,6 +85,14 @@
 						]
 					},
 					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": "play",
+						"id": "mediaplayer_lightswitch"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {
@@ -97,6 +103,15 @@
 				"title.default.text": "Toggle Lights"
 			},
 			"type": "Button"
+		},
+		{
+			"attributes": {
+				"auto_play": false,
+				"number_of_loops": 0,
+				"sound_location": "/audio/light_switch_flick_008.mp3"
+			},
+			"id": "mediaplayer_lightswitch",
+			"type": "Sound"
 		}
 	],
 	"id": "layout_iphone_right_lights",
