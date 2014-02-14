@@ -242,6 +242,16 @@
         if( [IXAppManager pathIsLocal:imagePath] )
         {
             imageURL = [NSURL fileURLWithPath:imagePath];
+            
+            UIImage* image = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:[imageURL absoluteString]];
+            if( image )
+            {
+                if( successBlock )
+                {
+                    successBlock(image);
+                    return;
+                }
+            }            
         }
         else
         {
@@ -251,7 +261,7 @@
         if( imageURL )
         {
             [[SDWebImageManager sharedManager] downloadWithURL:imageURL
-                                                       options:0
+                                                       options:SDWebImageCacheMemoryOnly
                                                       progress:nil
                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
                                                          if (image) {
@@ -306,7 +316,14 @@
         }
         else if( basePath == nil )
         {
-            returnPath = [NSString stringWithFormat:@"%@/%@",[[self sandbox] rootPath],pathStringSetting];
+            if( [pathStringSetting hasPrefix:@"/"] )
+            {
+                returnPath = [NSString stringWithFormat:@"%@%@",[[self sandbox] rootPath],pathStringSetting];
+            }
+            else
+            {
+                returnPath = [NSString stringWithFormat:@"%@/%@",[[self sandbox] rootPath],pathStringSetting];
+            }
         }
         else
         {

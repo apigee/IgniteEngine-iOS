@@ -25,6 +25,7 @@
 #import "IXNavigationViewController.h"
 #import "IXJSONGrabber.h"
 #import "RKLog.h"
+#import "SDWebImageManager.h"
 
 @interface IXAppManager ()
 
@@ -94,6 +95,26 @@
                                         }];
 }
 
+-(void)preloadImages
+{
+    NSArray* imagesToPreload = [[self appProperties] getCommaSeperatedArrayListValue:@"preload_images" defaultValue:nil];
+    for( NSString* imagePath in imagesToPreload )
+    {
+        NSURL* imageURL = [[NSBundle mainBundle] URLForResource:imagePath withExtension:nil];
+        if( imageURL )
+        {
+            [[SDWebImageManager sharedManager] downloadWithURL:imageURL
+                                                       options:0
+                                                      progress:nil
+                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
+                                                         NSLog(@"Finished : %@",[error description]);
+                                                     }];
+        }
+    }
+    
+    
+}
+
 -(void)applyAppProperties
 {
     if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] ) {
@@ -124,6 +145,7 @@
         NSURL* url = [NSURL URLWithString:defaultViewProperty];
         [self setAppDefaultViewRootPath:[[url URLByDeletingLastPathComponent] absoluteString]];
     }
+    [self preloadImages];
 }
 
 -(void)loadApplicationDefaultView

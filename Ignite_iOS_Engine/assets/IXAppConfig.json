@@ -6,6 +6,15 @@
       "id": "CLIENT-13",
       "mode": "debug",
       "shows_navigation_bar": false,
+      "preload_images": [
+          "assets/images/iphone_background_tv_208x369.png",
+          "assets/images/iphone_background_music_208x369.png",
+          "assets/images/iphone_background_lights_208x369.png",
+          "assets/images/iphone_background_fireplace_208x369.png",
+          "assets/images/iphone_menu_208x311.png",
+          "assets/images/room_0_1784x768.jpg",
+          "assets/images/room_1_1784x768.jpg"
+      ],
       "title": [
         {
           "if": "'NO'=='NO'",

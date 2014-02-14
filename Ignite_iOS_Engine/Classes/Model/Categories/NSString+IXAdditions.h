@@ -11,5 +11,6 @@
 @interface NSString (IXAdditions)
 
 +(NSString*)stringFromBOOL:(BOOL)boolean;
++(NSString*)stringFromFloat:(float)floatValue;
 
 @end
