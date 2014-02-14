@@ -333,7 +333,6 @@
 							}
 						],
 						"attributes": {
-							"color.background": "#FFFFFF",
 							"height": 60,
 							"images.default": "/images/nest_off.png",
 							"layout_type": "absolute",
@@ -401,7 +400,68 @@
 							"visible": true,
 							"width": 200
 						},
-						"id": "button_lights_toggle",
+						"id": "button_lightsright_toggle",
+						"type": "Button"
+					},
+
+					{
+						"actions": [
+							{
+								"attributes": {
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] == -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_show_lights"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							},
+							{
+								"attributes": {
+									"delay": 0.8,
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] > -760",
+											"value": "touch_up"
+										}
+									],
+									"id": "button_back"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							},
+							{
+								"attributes": {
+									"event_name": [
+										{
+											"if": "[[layout_main.margin.left]] <= -760",
+											"value": "hide"
+										},
+										{
+											"if": "[[layout_main.margin.left]] >= -380",
+											"value": "show"
+										}
+									],
+									"id": "iphone_right"
+								},
+								"on": "touch_up",
+								"type": "Event"
+							}
+						],
+						"attributes": {
+							"enabled": true,
+							"height": 110,
+							"layout_type": "absolute",
+							"margin.left": 460,
+							"margin.top": 55,
+							"visible": true,
+							"width": 60
+						},
+						"id": "button_lightsleft_toggle",
 						"type": "Button"
 					},
 					{

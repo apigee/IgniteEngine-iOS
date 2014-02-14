@@ -30,7 +30,7 @@
 								"value": 0.1
 							}
 						],
-						"duration": 0.2,
+						"duration": 0.1,
 						"id": "fireplace_on"
 					},
 					"on": "touch_up",
@@ -60,7 +60,7 @@
 								"value": 0
 							}
 						],
-						"duration": 0.2,
+						"duration": 0.1,
 						"id": [
 							{
 								"if": "[[background_room_lights_off.alpha]]==0",
