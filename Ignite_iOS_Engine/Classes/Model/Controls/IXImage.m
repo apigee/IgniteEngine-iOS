@@ -10,6 +10,7 @@
 
 #import "UIImageView+WebCache.h"
 #import "UIImageView+IXAdditions.h"
+#import "NSString+IXAdditions.h"
 
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
@@ -17,6 +18,16 @@ static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXAnimatedImages = @"animated_images";
 static NSString* const kIXAnimationDuration = @"animation_duration";
 static NSString* const kIXAutoAnimate = @"auto_animate";
+static NSString* const kIXAnimationRepeatCount = @"animation_repeat_count";
+
+// IXImage Read-Only Properties
+static NSString* const kIXIsAnimating = @"is_animating";
+
+// IXImage Events
+static NSString* const kIXImagesDefaultLoaded = @"images_default_loaded";
+static NSString* const kIXImagesTouchLoaded = @"images_touch_loaded";
+static NSString* const kIXImagesDefaultFailed = @"images_default_failed";
+static NSString* const kIXImagesTouchFailed = @"images_touch_failed";
 
 // IXImage Functions
 static NSString* const kIXStartAnimation = @"start_animation";
@@ -79,6 +90,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
             }
             [[self imageView] setAnimationImages:imagesArray];
             [[self imageView] setAnimationDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimationDuration defaultValue:0.2f]];
+            [[self imageView] setAnimationRepeatCount:[[self propertyContainer] getIntPropertyValue:kIXAnimationRepeatCount defaultValue:0]];
             
             BOOL autoAnimate = [[self propertyContainer] getBoolPropertyValue:kIXAutoAnimate defaultValue:YES];
             if( autoAnimate )
@@ -94,13 +106,17 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                                       successBlock:^(UIImage *image) {
                                           [weakSelf setDefaultImage:image];
                                           [[weakSelf imageView] setImage:image];
+                                          [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultLoaded];
                                       } failBlock:^(NSError *error) {
+                                          [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
                                       }];
         
         [[self propertyContainer] getImageProperty:kIXImagesTouch
                                       successBlock:^(UIImage *image) {
                                           [weakSelf setTouchedImage:image];
+                                          [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchLoaded];
                                       } failBlock:^(NSError *error) {
+                                          [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchFailed];
                                       }];
 
     }
@@ -125,6 +141,20 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 {
     [super controlViewTouchesEnded:touches withEvent:event];
     [[self imageView] setImage:[self defaultImage]];
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:kIXIsAnimating] )
+    {
+        returnValue = [NSString stringFromBOOL:[[self imageView] isAnimating]];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
