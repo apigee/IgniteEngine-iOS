@@ -17,6 +17,30 @@
             },
             {
                 "attributes": {
+                    "id": "animated_garage"
+                },
+                "on": "will_appear",
+                "parameters": {
+                    "visible": false
+                },
+                "type": "Modify"
+            },
+            
+            {
+                                        "attributes": {
+                                            "event_name": "touch_up",
+                                            "id": "layout_inteceptor"
+                                        },
+                                        "on": "did_appear",
+                                        "type": "Event"
+                                    },
+
+
+
+
+
+            {
+                "attributes": {
                     "nav_stack_type": "pop",
                     "to": "scene_01.json"
                 },
@@ -25,7 +49,82 @@
             }
         ],
         "controls": [
+            
             {
+                "actions": [
+
+                {
+                        "attributes": {
+                            "id": "image_headlights",
+                            "duration": 5.25                        },
+                        "on": "touch_up",
+                        "parameters": {
+                            "margin.left": [
+                                {
+                                    "if": "1==1",
+                                    "value": -500
+                                }
+                            ]
+                        },
+                        "type": "Modify"
+                    },
+                    {
+                        "attributes": {
+                            "id": "image_ext_01_1024x768",
+                            "duration": 0.25,
+                            "delay": 3
+                        },
+                        "on": "touch_up",
+                        "parameters": {
+                            "alpha": 1
+                        },
+                        "type": "Modify"
+                    },
+                    {
+                        "attributes": {
+                            "id": "animated_garage",
+                            "delay": 3.25
+                        },
+                        "on": "touch_up",
+                        "parameters": {
+                            "visible": true
+                        },
+                        "type": "Modify"
+                    },
+                    {
+                        "attributes": {
+                            "id": "image_ext_02_1024x768",
+                            "delay": 4.15,
+                            "duration": 0.1
+                        },
+                        "on": "touch_up",
+                        "parameters": {
+                            "alpha": 1
+                        },
+                        "type": "Modify"
+                    },
+                    
+                    {
+                        "attributes": {
+                            "id": "image_ext_03_1024x768",
+                            "duration": 0.25,
+                            "delay": 5
+                        },
+                        "on": "touch_up",
+                        "parameters": {
+                            "alpha": 1
+                        },
+                        "type": "Modify"
+                    }
+
+                ],
+                "attributes": {
+                    "height": "100%",
+                    "layout_type": "float",
+                    "width": "100%"
+                },
+                "controls": [
+                    {
                 "attributes": {
                     "color": {
                         "background": "#00FF00"
@@ -41,55 +140,103 @@
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_0_1024x768.jpg",
+                            "images.default": "/images/ext_00_1024x768.jpg",
                             "layout_type": "absolute",
                             "visible": true,
                             "width": "100%"
                         },
                         "controls": [],
-                        "id": "image_ext_0_1024x768",
+                        "id": "image_ext_00_1024x768",
                         "type": "Image"
                     },
                     {
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_1_1024x768.jpg",
+                            "images.default": "/images/ext_01_1024x768.jpg",
                             "layout_type": "absolute",
                             "alpha": 0,
                             "width": "100%"
                         },
                         "controls": [],
-                        "id": "image_ext_1_1024x768",
+                        "id": "image_ext_01_1024x768",
                         "type": "Image"
                     },
                     {
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_2_1024x768.jpg",
-                            "layout_type": "absolute",
+                            "images.default": "/images/ext_02_1024x768.jpg",
+                            "layout_type": "float",
                             "alpha": 0,
                             "width": "100%"
                         },
                         "controls": [],
-                        "id": "image_ext_2_1024x768",
+                        "id": "image_ext_02_1024x768",
                         "type": "Image"
                     },
+                    {
+                "attributes": {
+                    "alpha": 1,
+                    "animated_images": [
+                        "assets/animations/garage/00.jpg",
+                        "assets/animations/garage/01.jpg",
+                        "assets/animations/garage/01.jpg",
+                        "assets/animations/garage/02.jpg",
+                        "assets/animations/garage/03.jpg",
+                        "assets/animations/garage/04.jpg",
+                        "assets/animations/garage/05.jpg",
+                        "assets/animations/garage/06.jpg",
+                        "assets/animations/garage/07.jpg",
+                        "assets/animations/garage/08.jpg",
+                        "assets/animations/garage/09.jpg",
+                        "assets/animations/garage/10.jpg",
+                        "assets/animations/garage/10.jpg",
+                        "assets/animations/garage/11.jpg",
+                        "assets/animations/garage/11.jpg",
+                        "assets/animations/garage/12.jpg",
+                        "assets/animations/garage/13.jpg",
+                        "assets/animations/garage/14.jpg",
+                        "assets/animations/garage/15.jpg",
+                        "assets/animations/garage/16.jpg",
+                        "assets/animations/garage/17.jpg",
+                        "assets/animations/garage/18.jpg",
+                        "assets/animations/garage/19.jpg",
+                        "assets/animations/garage/20.jpg",
+                        "assets/animations/garage/21.jpg",
+                        "assets/animations/garage/22.jpg",
+                        "assets/animations/garage/23.jpg",
+                        "assets/animations/garage/24.jpg",
+                        "assets/animations/garage/25.jpg",
+                        "assets/animations/garage/26.jpg",
+                        "assets/animations/garage/27.jpg",
+                        "assets/animations/garage/28.jpg"
+                    ],
+                    "animation_duration": 1,
+                    "auto_animate": true,
+                    "visible": true,
+                    "height": "100%",
+                    "layout_type": "absolute",
+                    "margin.left": 0,
+                    "margin.top": 0,
+                    "width": "100%"
+                },
+                "id": "animated_garage",
+                "type": "Image"
+            },
                     {
                         "actions": [],
                         "attributes": {
                             "height": "100%",
-                            "images.default": "/images/ext_3_1024x768.jpg",
-                            "layout_type": "absolute",
+                            "images.default": "/images/ext_03_1024x768.jpg",
+                            "layout_type": "float",
                             "alpha": 0,
                             "width": "100%"
                         },
                         "controls": [],
-                        "id": "image_ext_3_1024x768",
+                        "id": "image_ext_03_1024x768",
                         "type": "Image"
                     }
-                    
                 ],
                 "id": "layout_main",
                 "type": "Layout"
@@ -152,184 +299,25 @@
                 "type": "Text"
             },
             {
-                "actions": [
-                    {
-                        "attributes": {
-                            "id": "image_ext_1_1024x768",
-                            "duration": 0.25
-                        },
-                        "on": "touch_up",
-                        "parameters": {
-                            "alpha": [
-                                {
-                                    "if": "[[image_ext_1_1024x768.alpha]]==1",
-                                    "value": 0
-                                },
-                                {
-                                    "if": "[[image_ext_1_1024x768.alpha]]==0",
-                                    "value": 1
-                                }
-                            ]
-                        },
-                        "type": "Modify"
-                    }
-                ],
+                "actions": [],
                 "attributes": {
-                    "alpha": 0.4,
-                    "color.background": "#ffffff",
-                    "text": "Exterior Lights"
+                    "height": 300,
+                    "images.default": "/images/headlights_1630x300.png",
+                    "vertical_alignment": "bottom",
+                    "layout_type": "float",
+                    "alpha": 1,
+                    "width": 1630,
+                    "margin.left": 1500
                 },
-                "type": "Text"
-            },
-            {
-                "actions": [
-                    {
-                        "attributes": {
-                            "id": "image_ext_2_1024x768",
-                            "duration": 0.25
-                        },
-                        "on": "touch_up",
-                        "parameters": {
-                            "alpha": [
-                                {
-                                    "if": "[[image_ext_2_1024x768.alpha]]==1",
-                                    "value": 0
-                                },
-                                {
-                                    "if": "[[image_ext_2_1024x768.alpha]]==0",
-                                    "value": 1
-                                }
-                            ]
-                        },
-                        "type": "Modify"
-                    }
+                "controls": [],
+                "id": "image_headlights",
+                "type": "Image"
+            }
+
                 ],
-                "attributes": {
-                    "alpha": 0.4,
-                    "color.background": "#ffffff",
-                    "text": "Garage"
-                },
-                "type": "Text"
-            },
-            {
-                "actions": [
-                    {
-                        "attributes": {
-                            "id": "image_ext_3_1024x768",
-                            "duration": 0.25
-                        },
-                        "on": "touch_up",
-                        "parameters": {
-                            "alpha": [
-                                {
-                                    "if": "[[image_ext_3_1024x768.alpha]]==1",
-                                    "value": 0
-                                },
-                                {
-                                    "if": "[[image_ext_3_1024x768.alpha]]==0",
-                                    "value": 1
-                                }
-                            ]
-                        },
-                        "type": "Modify"
-                    }
-                ],
-                "attributes": {
-                    "alpha": 0.4,
-                    "color.background": "#ffffff",
-                    "text": "Interior Lights"
-                },
-                "type": "Text"
-            },
-            {
-                "actions": [
-                    {
-                        "attributes": {
-                            "id": "image_headlights",
-                            "duration": 3
-                        },
-                        "on": "touch_up",
-                        "parameters": {
-                            "margin.left": [
-                                {
-                                    "if": "[[image_headlights.margin.left]]=='100%'",
-                                    "value": 0
-                                },
-                                {
-                                    "if": "[[image_headlights.margin.left]]==-750",
-                                    "value": "100%"
-                                }
-                            ],
-                            "margin.left": [
-                                {
-                                    "if": "1==1",
-                                    "value": -300
-                                }
-                            ]
-                        },
-                        "type": "Modify"
-                    }
-                ],
-                "attributes": {
-                    "alpha": 0.4,
-                    "color.background": "#ffffff",
-                    "text": "Headlights"
-                },
-                "type": "Text"
-            },
-            {
-                "actions": [
-                    {
-                        "attributes": {
-                            "nav_animation_type": "none",
-                            "nav_stack_type": "push",
-                            "to": "knob.json"
-                        },
-                        "on": "touch_up",
-                        "type": "Navigate"
-                    }
-                ],
-                "attributes": {
-                    "alpha": 0.4,
-                    "color.background": "#CFF602",
-                    "text": "big knob"
-                },
-                "type": "Text"
-            },
-            {
-                "actions": [
-                    {
-                        "attributes": {
-                            "nav_animation_type": "none",
-                            "nav_stack_type": "push",
-                            "to": "examples/IX_ControlExamples.json"
-                        },
-                        "on": "touch_up",
-                        "type": "Navigate"
-                    }
-                ],
-                "attributes": {
-                    "alpha": 0.4,
-                    "color.background": "#CFF602",
-                    "text": "examples"
-                },
-                "type": "Text"
-            },
-            {
-                        "actions": [],
-                        "attributes": {
-                            "height": 320,
-                            "images.default": "/images/headlights_1500x320.png",
-                            "vertical_alignment": "bottom",
-                            "layout_type": "absolute",
-                            "alpha": 1,
-                            "width": 1500,
-                            "margin.left": "100%"
-                        },
-                        "controls": [],
-                        "id": "image_headlights",
-                        "type": "Image"
-                    }
+                "id": "layout_inteceptor",
+                "type": "Layout"
+            }
         ]
     }
 }
