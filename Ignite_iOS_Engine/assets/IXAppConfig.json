@@ -162,7 +162,12 @@
         "assets/animations/bolt_tv/Room_TV_bolt_00026.png",
         "assets/animations/bolt_tv/Room_TV_bolt_00027.png",
         "assets/animations/bolt_tv/Room_TV_bolt_00028.png",
-        "assets/animations/bolt_tv/Room_TV_bolt_00029.png"
+        "assets/animations/bolt_tv/Room_TV_bolt_00029.png",
+        "assets/images/car_0_1024x768.jpg",
+        "assets/images/ext_00_1024x768.jpg",
+        "assets/images/ext_01_1024x768.jpg",
+        "assets/images/ext_02_1024x768.jpg",
+        "assets/images/ext_03_1024x768.jpg"
       ],
       "shows_navigation_bar": false,
       "title": [
