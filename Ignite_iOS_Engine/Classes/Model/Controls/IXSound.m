@@ -10,6 +10,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "NSString+IXAdditions.h"
 
 // Knob Properties
 static NSString* const kIXSoundLocation = @"sound_location";
@@ -18,8 +19,10 @@ static NSString* const kIXNumberOfLoops = @"number_of_loops";
 static NSString* const kIXAutoPlay = @"auto_play";
 
 // Sound Read-Only Properties
+static NSString* const kIXIsPlaying = @"is_playing";
 
 // Sound Events
+static NSString* const kIXFinished = @"finished";
 
 // Sound Functions
 static NSString* const kIXPlay = @"play";
@@ -99,6 +102,25 @@ static NSString* const kIXStop = @"stop";
     {
         [super applyFunction:functionName withParameters:parameterContainer];
     }
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:kIXIsPlaying] )
+    {
+        returnValue = [NSString stringFromBOOL:[[self audioPlayer] isPlaying]];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
+}
+
+-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXFinished];
 }
 
 @end
