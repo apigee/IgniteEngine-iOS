@@ -621,6 +621,16 @@
 									"margin.left": -380
 								},
 								"type": "Modify"
+							},
+							{
+								"attributes": {
+									"id": "layout_return"
+								},
+								"on": "show",
+								"parameters": {
+									"enabled": true
+								},
+								"type": "Modify"
 							}
 						],
 						"attributes": {
@@ -681,6 +691,16 @@
 								"on": "hide",
 								"parameters": {
 									"margin.left": -380
+								},
+								"type": "Modify"
+							},
+							{
+								"attributes": {
+									"id": "layout_return"
+								},
+								"on": "show",
+								"parameters": {
+									"enabled": true
 								},
 								"type": "Modify"
 							}
@@ -1137,6 +1157,111 @@
 				"actions": [
 					{
 						"attributes": {
+							"duration": 0.5,
+							"id": "layout_main"
+						},
+						"on": "touch_up",
+						"parameters": {
+							"margin.left": -380
+						},
+						"type": "Modify"
+					},
+					{
+						"attributes": {
+							"id": "layout_return"
+						},
+						"on": "touch_up",
+						"parameters": {
+							"enabled": false
+						},
+						"type": "Modify"
+					}
+				],
+				"attributes": {
+					"alpha": 1,
+					"enabled": false,
+					"height": 240,
+					"layout_type": "float",
+					"width": 470
+				},
+				"id": "layout_return",
+				"type": "Layout"
+			},
+			{
+				"actions": [
+					{
+						"attributes": {
+							"duration": 0.5,
+							"id": "layout_main"
+						},
+						"on": "touch_up",
+						"parameters": {
+							"margin.left": -380
+						},
+						"type": "Modify"
+					},
+					{
+						"attributes": {
+							"id": "layout_return"
+						},
+						"on": "touch_up",
+						"parameters": {
+							"enabled": false
+						},
+						"type": "Modify"
+					}
+				],
+				"attributes": {
+					"alpha": 1,
+					"enabled": false,
+					"height": 500,
+					"layout_type": "float",
+					"margin.left": 300,
+					"margin.top": 240,
+					"width": 400
+				},
+				"id": "layout_return",
+				"type": "Layout"
+			},
+			{
+				"actions": [
+					{
+						"attributes": {
+							"duration": 0.5,
+							"id": "layout_main"
+						},
+						"on": "touch_up",
+						"parameters": {
+							"margin.left": -380
+						},
+						"type": "Modify"
+					},
+					{
+						"attributes": {
+							"id": "layout_return"
+						},
+						"on": "touch_up",
+						"parameters": {
+							"enabled": false
+						},
+						"type": "Modify"
+					}
+				],
+				"attributes": {
+					"alpha": 1,
+					"enabled": false,
+					"height": 240,
+					"layout_type": "float",
+					"margin.left": 700,
+					"width": 300
+				},
+				"id": "layout_return",
+				"type": "Layout"
+			},
+			{
+				"actions": [
+					{
+						"attributes": {
 							"nav_animation_type": "none",
 							"nav_stack_type": "push",
 							"to": "scene_01.json"
@@ -1187,25 +1312,6 @@
 					"alpha": 0.4,
 					"color.background": "#00FF00",
 					"text": "scene_03"
-				},
-				"type": "Text"
-			},
-			{
-				"actions": [
-					{
-						"attributes": {
-							"nav_animation_type": "none",
-							"nav_stack_type": "push",
-							"to": "knob.json"
-						},
-						"on": "touch_up",
-						"type": "Navigate"
-					}
-				],
-				"attributes": {
-					"alpha": 0.4,
-					"color.background": "#CFF602",
-					"text": "big knob"
 				},
 				"type": "Text"
 			}

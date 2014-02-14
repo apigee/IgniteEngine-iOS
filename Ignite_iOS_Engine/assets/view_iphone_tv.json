@@ -21,18 +21,6 @@
 			"actions": [
 				{
 					"attributes": {
-						"delay": 0.5,
-						"function_name": "goto",
-						"id": "mediaplayer_tv"
-					},
-					"on": "touch_up",
-					"parameters": {
-						"seconds": "[[eval('Math.floor((Math.random()*30)+1);')]]"
-					},
-					"type": "Function"
-				},
-				{
-					"attributes": {
 						"function_name": [
 							{
 								"if": "[[mediaplayer_tv.isOn]]==1",
@@ -41,14 +29,14 @@
 						],
 						"id": "mediaplayer_tv"
 					},
-					"on": "touch_up",
+					"on": "touch",
 					"type": "Function"
 				},
 				{
 					"attributes": {
 						"id": "mediaplayer_tv"
 					},
-					"on": "touch_up",
+					"on": "touch",
 					"parameters": {
 						"video": [
 							{
@@ -69,9 +57,27 @@
 				},
 				{
 					"attributes": {
+						"delay" : 0.1,
 						"function_name": [
 							{
-								"if": "[[mediaplayer_tv.isOn]]==1",
+								"if": "[[layout_tv.visible]]==1",
+								"value": "goto"
+							}
+						],
+						"id": "mediaplayer_tv"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"seconds": "[[app('random_number.40')]]"
+					},
+					"type": "Function"
+				},
+				{
+					"delay" : 0.6,
+					"attributes": {
+						"function_name": [
+							{
+								"if": "[[layout_tv.visible]]==1",
 								"value": "play"
 							}
 						],
@@ -84,10 +90,9 @@
 			"attributes": {
 				"enabled": false,
 				"height": 80,
-				"images.default": "/images/button_iphone_updowncombo_208x80.png",
 				"layout_type": "float",
 				"margin.left": 0,
-				"margin.top": 260,
+				"margin.top": 214,
 				"width": 208
 			},
 			"id": "button_tv_channelchanger",
@@ -97,17 +102,18 @@
 			"actions": [
 				{
 					"attributes": {
+						"delay" : 0.1,
 						"function_name": [
 							{
-								"if": "[[layout_tv.visible]]==0",
+								"if": "[[layout_tv.visible]]==1",
 								"value": "goto"
 							}
 						],
 						"id": "mediaplayer_tv"
 					},
-					"on": "touch",
+					"on": "touch_up",
 					"parameters": {
-						"seconds": "[[eval('Math.floor((Math.random()*30)+1);')]]"
+						"seconds": "[[app('random_number.40')]]"
 					},
 					"type": "Function"
 				},
@@ -209,8 +215,8 @@
 				"height": 47,
 				"images.default": "/images/button_iphone_toggleoff_52x47.png",
 				"layout_type": "float",
-				"margin.left": 78,
-				"margin.top": 160,
+				"margin.left": 112,
+				"margin.top": 171,
 				"width": 52
 			},
 			"id": "button_tv_onoff",

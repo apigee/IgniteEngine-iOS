@@ -41,6 +41,26 @@
 				{
 					"attributes": {
 						"duration": 0,
+						"id": "button_lights_onoff"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"images.default": [
+							{
+								"if": "[[background_room_lights_off.alpha]]==0",
+								"value": "/images/button_iphone_toggleon_52x47.png"
+							},
+							{
+								"if": "[[background_room_lights_off.alpha]]==1",
+								"value": "/images/button_iphone_toggleoff_52x47.png"
+							}
+						]
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"duration": 0,
 						"id": "fireplace_overlay_lightson"
 					},
 					"on": "touch_up",
@@ -96,12 +116,105 @@
 				}
 			],
 			"attributes": {
-				"color.background": "CFF602",
-				"height": 100,
+				"height": 47,
+				"images.default": "/images/button_iphone_toggleon_52x47.png",
 				"layout_type": "float",
-				"margin.top": 180,
-				"title.default.text": "Toggle Lights"
+				"margin.left": 126,
+				"margin.top": 152,
+				"width": 52
 			},
+			"id": "button_lights_onoff",
+			"type": "Button"
+		},
+		{
+			"actions": [
+				{
+					"attributes": {
+						"duration": 0,
+						"id": "button_fake1"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"images.default": [
+							{
+								"if": "[[button_fake1.isOn]]==0",
+								"value": "/images/button_iphone_toggleon_52x47.png"
+							},
+							{
+								"if": "[[button_fake1.isOn]]==1",
+								"value": "/images/button_iphone_toggleoff_52x47.png"
+							}
+						],
+						"isOn": [
+							{
+								"if": "[[button_fake1.isOn]]==0",
+								"value": true
+							},
+							{
+								"if": "[[button_fake1.isOn]]==1",
+								"value": false
+							}
+						]
+					},
+					"type": "Modify"
+				}
+			],
+			"attributes": {
+				"height": 47,
+				"images.default": "/images/button_iphone_toggleon_52x47.png",
+				"isOn": true,
+				"layout_type": "float",
+				"margin.left": 126,
+				"margin.top": 185,
+				"width": 52
+			},
+			"id": "button_fake1",
+			"type": "Button"
+		},
+		
+		{
+			"actions": [
+				{
+					"attributes": {
+						"duration": 0,
+						"id": "button_fake2"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"images.default": [
+							{
+								"if": "[[button_fake2.isOn]]==0",
+								"value": "/images/button_iphone_toggleon_52x47.png"
+							},
+							{
+								"if": "[[button_fake2.isOn]]==1",
+								"value": "/images/button_iphone_toggleoff_52x47.png"
+							}
+						],
+						"isOn": [
+							{
+								"if": "[[button_fake2.isOn]]==0",
+								"value": true
+							},
+							{
+								"if": "[[button_fake2.isOn]]==1",
+								"value": false
+							}
+						]
+					},
+					"type": "Modify"
+				}
+			],
+			"attributes": {
+				"height": 47,
+				"images.default": "/images/button_iphone_toggleon_52x47.png",
+				"isOn": true,
+				"layout_type": "float",
+				"margin.left": 126,
+				"margin.top": 218,
+				"width": 52
+			},
+			"id": "button_fake2",
 			"type": "Button"
 		},
 		{

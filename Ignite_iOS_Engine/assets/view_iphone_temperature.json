@@ -36,10 +36,9 @@
 			"actions": [],
 			"attributes": {
 				"height": 370,
-				"images.default": "/images/iphone_nest_bg.png",
+				"images.default": "/images/iphone_background_temperature_208x369.png",
 				"layout_type": "float",
-				"margin.top": 0,
-				"vertical_alignment": "bottom",
+				"margin.top": 59,
 				"visible": true,
 				"width": 208
 			},
@@ -73,6 +72,21 @@
 			},
 			"controls": [],
 			"id": "iphone_nest_mode",
+			"type": "Image"
+		},
+		{
+			"actions": [],
+			"attributes": {
+				"enabled": false,
+				"height": 370,
+				"images.default": "/images/iphone_background_temperature-overlay_208x369.png",
+				"layout_type": "float",
+				"margin.top": 59,
+				"visible": true,
+				"width": 208
+			},
+			"controls": [],
+			"id": "iphone_nest_bg",
 			"type": "Image"
 		},
 		{
