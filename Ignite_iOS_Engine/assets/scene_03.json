@@ -6,7 +6,7 @@
 					"function_name": "start_animation",
 					"id": "animatedImageControl"
 				},
-				"on": "did_appear",
+				"on": "did_appearz",
 				"type": "Function"
 			}
 		],
@@ -308,50 +308,96 @@
 								"attributes": {
 									"event_name": [
 										{
-											"if": "[[layout_main.margin.left]] == -380",
+											"if": "[[layout_main.margin.left]] <= -380",
 											"value": "show"
 										},
 										{
-											"if": "[[layout_main.margin.left]] == 0",
+											"if": "[[layout_main.margin.left]] >= 0",
 											"value": "hide"
 										}
 									],
 									"id": "iphone_left"
 								},
-								"on": "touch_up",
+								"on": "touch",
 								"type": "Event"
-							},
-							{
-								"attributes": {
-									"id": "nest_off"
-								},
-								"on": "touch",
-								"parameters": {
-									"visible": false
-								},
-								"type": "Modify"
-							},
-							{
-								"attributes": {
-									"id": "nest_on"
-								},
-								"on": "touch",
-								"parameters": {
-									"visible": true
-								},
-								"type": "Modify"
 							}
 						],
 						"attributes": {
-							"height": 60,
-							"images.default": "/images/nest_off.png",
+							"height": 50,
 							"layout_type": "absolute",
-							"margin.left": 460,
-							"margin.top": 184,
-							"width": 60
+							"margin.left": 466,
+							"margin.top": 189,
+							"width": 50
 						},
-						"id": "nest_off",
-						"type": "Image"
+						"controls": [
+							{
+								"attributes": {
+									"alpha": 0.5,
+									"enabled": false,
+									"height": "80%",
+									"images.default": [
+										{
+											"if": "[[knob_nest_iphone.value]] == 70",
+											"value": "/images/iphone_nest_standby_60x60.png"
+										},
+										{
+											"if": "[[knob_nest_iphone.value]] <= 67",
+											"value": "/images/iphone_nest_cool_60x60.png"
+										},
+										{
+											"if": "[[knob_nest_iphone.value]] >= 73",
+											"value": "/images/iphone_nest_heat_60x60.png"
+										}
+									],
+									"layout_type": "float",
+									"margin.left": "10%",
+									"margin.top": "10%",
+									"visible": true,
+									"width": "80%"
+								},
+								"controls": [],
+								"id": "iphone_nest_mode",
+								"type": "Image"
+							},
+							{
+								"attributes": {
+									"color": {
+										"background": "#00000000"
+									},
+									"enabled": false,
+									"height": "100%",
+									"images": {
+										"background": "/images/knob_bg_60x60@2x.png",
+										"pointer": "/images/knob_marker_208x208.png"
+									},
+									"initial_value": 69.99,
+									"knob_animation_duration": 1,
+									"layout_type": "float",
+									"maximum_angle": 146,
+									"maximum_value": 90,
+									"minimum_value": 50,
+									"width": "100%"
+								},
+								"id": "knob_nest_wall",
+								"type": "Knob"
+							},
+							{
+								"attributes": {
+									"color.text": "#FFFFFF",
+									"enabled": false,
+									"font": "NestsansBold:14",
+									"horizontal_alignment": "center",
+									"layout_type": "float",
+									"margin.bottom": 18,
+									"text": "[[knob_nest_iphone.value]]",
+									"vertical_alignment": "bottom"
+								},
+								"id": "text_knob_wall",
+								"type": "Text"
+							}
+						],
+						"id": "layout_nest_toggle",
+						"type": "Layout"
 					},
 					{
 						"actions": [
@@ -477,58 +523,6 @@
 						"actions": [
 							{
 								"attributes": {
-									"event_name": [
-										{
-											"if": "[[layout_main.margin.left]] == -380",
-											"value": "show"
-										},
-										{
-											"if": "[[layout_main.margin.left]] == 0",
-											"value": "hide"
-										}
-									],
-									"id": "iphone_left"
-								},
-								"on": "touch_up",
-								"type": "Event"
-							},
-							{
-								"attributes": {
-									"id": "nest_on"
-								},
-								"on": "touch",
-								"parameters": {
-									"visible": false
-								},
-								"type": "Modify"
-							},
-							{
-								"attributes": {
-									"id": "nest_off"
-								},
-								"on": "touch",
-								"parameters": {
-									"visible": true
-								},
-								"type": "Modify"
-							}
-						],
-						"attributes": {
-							"height": 60,
-							"images.default": "/images/nest_on.gif",
-							"layout_type": "absolute",
-							"margin.left": 460,
-							"margin.top": 184,
-							"visible": false,
-							"width": 60
-						},
-						"id": "nest_on",
-						"type": "Image"
-					},
-					{
-						"actions": [
-							{
-								"attributes": {
 									"delay": 0.8,
 									"event_name": [
 										{
@@ -620,98 +614,32 @@
 							}
 						],
 						"attributes": {
-							"height": 369,
+							"color.background": "#908c87",
+							"height": 370,
+							"horizontal_scroll_enabled": false,
 							"layout_type": "float",
-							"margin.left": 34,
-							"margin.top": 302,
+							"margin.left": 82,
+							"margin.top": 300,
 							"visible": true,
 							"width": 208
 						},
 						"controls": [
 							{
-								"actions": [],
 								"attributes": {
-									"color.background": "#00FF00",
-									"height": 369,
+									"control_location": "view_iphone_temperature.json",
+									"height": 370,
 									"layout_type": "absolute",
+									"load_async": false,
+									"margin.left": 208,
 									"visible": true,
 									"width": 208
 								},
-								"controls": [
-									{
-										"actions": [],
-										"attributes": {
-											"height": 59,
-											"images.default": "/images/iphone_header_208x59.png",
-											"layout_type": "float",
-											"visible": true,
-											"width": 208
-										},
-										"controls": [],
-										"id": "iphone_header_416x118",
-										"type": "Image"
-									},
-									{
-										"actions": [],
-										"attributes": {
-											"height": 311,
-											"images.default": "/images/iphone_nest_bg.png",
-											"layout_type": "float",
-											"margin.top": 59,
-											"visible": true,
-											"width": 208
-										},
-										"controls": [],
-										"id": "iphone_nest_bg",
-										"type": "Image"
-									},
-									{
-										"actions": [
-											{
-												"attributes": {
-													"id": "customText"
-												},
-												"on": "value_changed",
-												"type": "Refresh"
-											}
-										],
-										"attributes": {
-											"height": 180,
-											"horizontal_alignment": "center",
-											"initial_value": 70,
-											"layout_type": "float",
-											"line_width": 4,
-											"margin.top": 140,
-											"maximum_value": 90,
-											"minimum_value": 50,
-											"pointer_color": "#FFFFFF",
-											"pointer_length": 20,
-											"pointer_visible": true,
-											"track_color": "#0000FF00",
-											"track_visible": true,
-											"width": 180
-										},
-										"id": "customKnob",
-										"type": "Knob"
-									},
-									{
-										"attributes": {
-											"color.text": "#FFFFFF",
-											"horizontal_alignment": "center",
-											"layout_type": "float",
-											"text": "[[customKnob.value]]",
-											"vertical_alignment": "middle"
-										},
-										"id": "customText",
-										"type": "Text"
-									}
-								],
-								"id": "iphone_left_layout",
-								"type": "Layout"
+								"id": "custom_iphone_right_tv",
+								"type": "Custom"
 							}
 						],
 						"id": "iphone_left",
-						"type": "Layout"
+						"type": "Custom"
 					},
 					{
 						"actions": [
@@ -819,7 +747,7 @@
 									{
 										"attributes": {
 											"delay": 0.5,
-											"id": "custom_iphone_right_temperature"
+											"id": "custom_iphone_left_temperature"
 										},
 										"on": "touch_up",
 										"parameters": {
@@ -867,7 +795,7 @@
 								"actions": [],
 								"attributes": {
 									"color.background": "#000000",
-									"height": 369,
+									"height": 370,
 									"horizontal_scroll_enabled": false,
 									"layout_type": "absolute",
 									"visible": true,
@@ -936,7 +864,7 @@
 									{
 										"attributes": {
 											"control_location": "view_iphone_tv.json",
-											"height": 369,
+											"height": 370,
 											"layout_type": "float",
 											"load_async": false,
 											"margin.left": 208,
@@ -995,7 +923,7 @@
 									{
 										"attributes": {
 											"control_location": "view_iphone_music.json",
-											"height": 369,
+											"height": 370,
 											"layout_type": "float",
 											"load_async": false,
 											"margin.left": 208,
@@ -1054,7 +982,7 @@
 									{
 										"attributes": {
 											"control_location": "view_iphone_lights.json",
-											"height": 369,
+											"height": 370,
 											"layout_type": "float",
 											"load_async": false,
 											"margin.left": 208,
@@ -1080,7 +1008,7 @@
 											},
 											{
 												"attributes": {
-													"id": "custom_iphone_right_temperature"
+													"id": "custom_iphone_left_temperature"
 												},
 												"on": "touch_up",
 												"parameters": {
@@ -1113,7 +1041,7 @@
 									{
 										"attributes": {
 											"control_location": "view_iphone_temperature.json",
-											"height": 369,
+											"height": 370,
 											"layout_type": "float",
 											"load_async": false,
 											"margin.left": 208,
@@ -1121,7 +1049,7 @@
 											"visible": false,
 											"width": 208
 										},
-										"id": "custom_iphone_right_temperature",
+										"id": "custom_iphone_left_temperature",
 										"type": "Custom"
 									},
 									{
@@ -1129,7 +1057,7 @@
 											{
 												"attributes": {
 													"duration": 0.25,
-													"id": "layout_iphone_right"
+													"id": "layout_iphone_left"
 												},
 												"on": "touch_up",
 												"parameters": {
@@ -1172,7 +1100,7 @@
 									{
 										"attributes": {
 											"control_location": "view_iphone_fireplace.json",
-											"height": 369,
+											"height": 370,
 											"layout_type": "float",
 											"load_async": false,
 											"margin.left": 208,

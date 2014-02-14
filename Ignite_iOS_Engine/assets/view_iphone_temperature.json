@@ -1,18 +1,133 @@
 {
 	"attributes": {
+		"color.background": "#FFFFFF",
 		"height": "100%",
 		"layout_type": "float",
-		"width": "100%",
-		"color.background":"#FFFFFF"
+		"width": "100%"
 	},
 	"controls": [
 		{
-			"type":"Text",
-			"attributes":{
-				"text":"Temp"
-			}
+			"actions": [],
+			"attributes": {
+				"height": 59,
+				"images.default": "/images/iphone_header_208x59.png",
+				"layout_type": "float",
+				"visible": true,
+				"width": 208
+			},
+			"controls": [],
+			"id": "iphone_header_416x118",
+			"type": "Image"
+		},
+		{
+			"actions": [],
+			"attributes": {
+				"height": 370,
+				"images.default": "/images/iphone_nest_bg.png",
+				"layout_type": "float",
+				"margin.top": 0,
+				"vertical_alignment": "bottom",
+				"visible": true,
+				"width": 208
+			},
+			"controls": [],
+			"id": "iphone_nest_bg",
+			"type": "Image"
+		},
+		{
+			"actions": [],
+			"attributes": {
+				"height": 208,
+				"images.default": [
+					{
+						"if": "[[knob_nest_iphone.value]] == 70",
+						"value": "/images/iphone_nest_standby_208x208.png"
+					},
+					{
+						"if": "[[knob_nest_iphone.value]] <= 67",
+						"value": "/images/iphone_nest_cool_208x208.png"
+					},
+					{
+						"if": "[[knob_nest_iphone.value]] >= 73",
+						"value": "/images/iphone_nest_heat_208x208.png"
+					}
+				],
+				"layout_type": "float",
+				"margin.bottom": -4,
+				"vertical_alignment": "bottom",
+				"visible": true,
+				"width": 208
+			},
+			"controls": [],
+			"id": "iphone_nest_mode",
+			"type": "Image"
+		},
+		{
+			"actions": [
+				{
+					"attributes": {
+						"id": "text_knob_wall"
+					},
+					"on": "value_changed",
+					"type": "Refresh"
+				},
+				{
+					"attributes": {
+						"id": "iphone_nest_mode"
+					},
+					"on": "value_changed",
+					"type": "Refresh"
+				},
+				{
+					"attributes": {
+						"function_name": "update_knob_value",
+						"id": "knob_nest_wall"
+					},
+					"on": "value_changed",
+					"parameters": {
+						"animated": true,
+						"value": "[[knob_nest_iphone.value]]"
+					},
+					"type": "Function"
+				}
+			],
+			"attributes": {
+				"color": {
+					"background": "#00000000"
+				},
+				"height": 208,
+				"horizontal_alignment": "center",
+				"images": {
+					"background": "images/knob_bg_208x208.png",
+					"pointer": "images/knob_marker_208x208.png"
+				},
+				"initial_value": 69.99,
+				"knob_animation_duration": 1,
+				"layout_type": "float",
+				"margin.bottom": -4,
+				"maximum_angle": 146,
+				"maximum_value": 90,
+				"minimum_value": 50,
+				"vertical_alignment": "bottom",
+				"width": 208
+			},
+			"id": "knob_nest_iphone",
+			"type": "Knob"
+		},
+		{
+			"attributes": {
+				"color.text": "#FFFFFF",
+				"font": "NestsansBold:70",
+				"horizontal_alignment": "center",
+				"layout_type": "float",
+				"margin.bottom": 60,
+				"text": "[[knob_nest_iphone.value]]",
+				"vertical_alignment": "bottom"
+			},
+			"id": "text_knob_wall",
+			"type": "Text"
 		}
 	],
-	"id": "layout_iphone_right_temperature",
+	"id": "layout_iphone_left_temperature",
 	"type": "Layout"
 }
