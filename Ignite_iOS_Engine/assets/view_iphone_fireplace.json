@@ -50,16 +50,7 @@
 				},
 				{
 					"attributes": {
-						"function_name": [
-							{
-								"if": "[[fireplace_on.alpha]] == 0",
-								"value": "start_animation"
-							},
-							{
-								"if": "[[fireplace_on.alpha]] == 1",
-								"value": "stop_animation"
-							}
-						],
+						"function_name": "start_animation",
 						"id": "animation_fireplace"
 					},
 					"on": "touch_up",
@@ -70,7 +61,7 @@
 						"delay": [
 							{
 								"if": "[[fireplace_on.alpha]] == 1",
-								"value": 0
+								"value": 1
 							},
 							{
 								"if": "[[fireplace_on.alpha]] == 0",
@@ -100,7 +91,7 @@
 						"delay": [
 							{
 								"if": "[[fireplace_on.alpha]] == 1",
-								"value": 0
+								"value": 1
 							},
 							{
 								"if": "[[fireplace_on.alpha]] == 0",
@@ -166,7 +157,7 @@
 						"delay": [
 							{
 								"if": "[[mediaplayer_fireplace.isPlaying]]==1",
-								"value": 0
+								"value": 1
 							},
 							{
 								"if": "[[mediaplayer_fireplace.isPlaying]]==0",

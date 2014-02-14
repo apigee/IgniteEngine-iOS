@@ -88,16 +88,7 @@
 				},
 				{
 					"attributes": {
-						"function_name": [
-							{
-								"if": "[[mediaplayer_music.isPlaying]]==1",
-								"value": "start_animation"
-							},
-							{
-								"if": "[[mediaplayer_music.isPlaying]]==0",
-								"value": "stop_animation"
-							}
-						],
+						"function_name": "start_animation",
 						"id": "animation_sonos"
 					},
 					"on": "touch_up",
@@ -124,6 +115,34 @@
 					"on": "value_changed",
 					"parameters": {
 						"volume": "[[slider_music_volume.value]]"
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": "start_animation",
+						"id": "animation_sonos"
+					},
+					"on": "value_changed",
+					"type": "Function"
+				},
+				{
+					"attributes": {
+						"id": "animation_sonos"
+					},
+					"on": "touch",
+					"parameters": {
+						"animation_repeat_count": -1
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"id": "animation_sonos"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"animation_repeat_count": 1
 					},
 					"type": "Modify"
 				}

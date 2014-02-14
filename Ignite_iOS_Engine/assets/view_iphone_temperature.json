@@ -116,6 +116,20 @@
 						"value": "[[knob_nest_iphone.value]]"
 					},
 					"type": "Function"
+				},
+				{
+					"attributes": {
+						"delay": 0.6,
+						"function_name": [
+							{
+								"if": "[[layout_main.margin.left]] == 0",
+								"value": "start_animation"
+							}
+						],
+						"id": "animation_nest"
+					},
+					"on": "value_changed",
+					"type": "Function"
 				}
 			],
 			"attributes": {

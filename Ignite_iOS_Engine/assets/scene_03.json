@@ -310,6 +310,25 @@
 								},
 								"on": "touch_up",
 								"type": "Event"
+							},
+							{
+								"attributes": {
+									"duration": 0.2,
+									"id": "animation_nest"
+								},
+								"on": "touch_up",
+								"parameters": {
+									"alpha": 1
+								},
+								"type": "Modify"
+							},
+							{
+								"attributes": {
+									"function_name": "start_animation",
+									"id": "animation_nest"
+								},
+								"on": "touch_up",
+								"type": "Function"
 							}
 						],
 						"attributes": {
@@ -622,45 +641,6 @@
 									"enabled": true
 								},
 								"type": "Modify"
-							},
-							{
-								"attributes": {
-									"duration": 0.2,
-									"id": "animation_nest"
-								},
-								"on": "show",
-								"parameters": {
-									"alpha": 1
-								},
-								"type": "Modify"
-							},
-							{
-								"attributes": {
-									"function_name": "start_animation",
-									"id": "animation_nest"
-								},
-								"on": "show",
-								"type": "Function"
-							},
-							{
-								"attributes": {
-									"duration": 0.1,
-									"id": "animation_nest"
-								},
-								"on": "hide",
-								"parameters": {
-									"alpha": 0
-								},
-								"type": "Modify"
-							},
-							{
-								"attributes": {
-									"delay": 1,
-									"function_name": "stop_animation",
-									"id": "animation_nest"
-								},
-								"on": "hide",
-								"type": "Function"
 							}
 						],
 						"attributes": {
@@ -1165,7 +1145,8 @@
 								"assets/animations/bolt_nest/Room_Nest_bolt_00028.png",
 								"assets/animations/bolt_nest/Room_Nest_bolt_00029.png"
 							],
-							"animation_duration": 2,
+							"animation_duration": 0.6,
+							"animation_repeat_count": 1,
 							"auto_animate": false,
 							"enabled": false,
 							"height": "100%",
@@ -1212,7 +1193,8 @@
 								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00028.png",
 								"assets/animations/bolt_fireplace/Room_fireplace_bolt_00029.png"
 							],
-							"animation_duration": 2,
+							"animation_duration": 1.6,
+							"animation_repeat_count": 1,
 							"auto_animate": false,
 							"enabled": false,
 							"height": "100%",
@@ -1260,6 +1242,7 @@
 								"assets/animations/bolt_sonos/Room_Sonos_bolt_00029.png"
 							],
 							"animation_duration": 1.6,
+							"animation_repeat_count": 1,
 							"auto_animate": false,
 							"enabled": false,
 							"height": "100%",
@@ -1353,6 +1336,7 @@
 								"assets/animations/bolt_tv/Room_TV_bolt_00029.png"
 							],
 							"animation_duration": 1.1,
+							"animation_repeat_count": 1,
 							"auto_animate": false,
 							"enabled": false,
 							"height": "100%",
@@ -1472,63 +1456,6 @@
 				},
 				"id": "layout_return",
 				"type": "Layout"
-			},
-			{
-				"actions": [
-					{
-						"attributes": {
-							"nav_animation_type": "none",
-							"nav_stack_type": "push",
-							"to": "scene_01.json"
-						},
-						"on": "touch_up",
-						"type": "Navigate"
-					}
-				],
-				"attributes": {
-					"alpha": 0.4,
-					"color.background": "#FF0000",
-					"text": "scene_01"
-				},
-				"type": "Text"
-			},
-			{
-				"actions": [
-					{
-						"attributes": {
-							"nav_animation_type": "none",
-							"nav_stack_type": "push",
-							"to": "scene_02.json"
-						},
-						"on": "touch_up",
-						"type": "Navigate"
-					}
-				],
-				"attributes": {
-					"alpha": 0.4,
-					"color.background": "#0000FF",
-					"text": "scene_02"
-				},
-				"type": "Text"
-			},
-			{
-				"actions": [
-					{
-						"attributes": {
-							"nav_animation_type": "none",
-							"nav_stack_type": "push",
-							"to": "scene_03.json"
-						},
-						"on": "touch_up",
-						"type": "Navigate"
-					}
-				],
-				"attributes": {
-					"alpha": 0.4,
-					"color.background": "#00FF00",
-					"text": "scene_03"
-				},
-				"type": "Text"
 			}
 		]
 	}

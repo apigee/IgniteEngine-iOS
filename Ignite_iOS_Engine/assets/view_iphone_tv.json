@@ -85,6 +85,14 @@
 					"delay": 0.6,
 					"on": "touch_up",
 					"type": "Function"
+				},
+				{
+					"attributes": {
+						"function_name": "start_animation",
+						"id": "animation_tv"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {
@@ -113,16 +121,7 @@
 				},
 				{
 					"attributes": {
-						"function_name": [
-							{
-								"if": "[[layout_tv.visible]]==0",
-								"value": "start_animation"
-							},
-							{
-								"if": "[[layout_tv.visible]]==1",
-								"value": "stop_animation"
-							}
-						],
+						"function_name": "start_animation",
 						"id": "animation_tv"
 					},
 					"on": "touch_up",
