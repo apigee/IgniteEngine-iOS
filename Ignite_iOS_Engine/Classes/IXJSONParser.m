@@ -349,6 +349,32 @@ static NSCache* sCustomControlCache;
     return control;
 }
 
++(void)populateCustomControl:(IXCustom *)customControl withCustomControlCacheContainer:(IXCustomControlCacheContainer*)customControlCacheContainer
+{
+    if( customControlCacheContainer != nil )
+    {
+        IXPropertyContainer* controlPropertyContainer = [customControl propertyContainer];
+        if( [customControlCacheContainer propertyContainer] )
+        {
+            [customControl setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
+            [[customControl propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+        }
+        if( [customControl actionContainer] )
+        {
+            [[customControl actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
+        }
+        else
+        {
+            [customControl setActionContainer:[[customControlCacheContainer actionContainer] copy]];
+        }
+        
+        [customControl addChildObjects:[[customControlCacheContainer childControls] copy]];
+        [[[customControl sandbox] containerControl] applySettings];
+        [[[customControl sandbox] containerControl] layoutControl];
+        [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
+    }
+}
+
 +(void)populateCustomControl:(IXCustom*)customControl withJSONAtPath:(NSString*)pathToJSON async:(BOOL)async
 {
     [customControl setNeedsToPopulate:NO];
@@ -380,13 +406,7 @@ static NSCache* sCustomControlCache;
                                                         
                                                         if( customControlCacheContainer != nil )
                                                         {
-                                                            IXPropertyContainer* controlPropertyContainer = [customControl propertyContainer];
-                                                            [customControl setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
-                                                            [[customControl propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
-                                                            [[customControl actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
-                                                            [customControl addChildObjects:[[customControlCacheContainer childControls] copy]];
-                                                            [[[customControl sandbox] containerControl] applySettings];
-                                                            [[[customControl sandbox] containerControl] layoutControl];
+                                                            [IXJSONParser populateCustomControl:customControl withCustomControlCacheContainer:customControlCacheContainer];
                                                         }
                                                     }
                                                     else
@@ -401,15 +421,7 @@ static NSCache* sCustomControlCache;
         }        
         else
         {
-            IXPropertyContainer* controlPropertyContainer = [customControl propertyContainer];
-            [customControl setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
-            [[customControl propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
-            [[customControl actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
-            [customControl addChildObjects:[[customControlCacheContainer childControls] copy]];
-            [customControl setNeedsToPopulate:NO];
-            [[[customControl sandbox] containerControl] applySettings];
-            [[[customControl sandbox] containerControl] layoutControl];
-
+            [IXJSONParser populateCustomControl:customControl withCustomControlCacheContainer:customControlCacheContainer];
         }
     }
 }
