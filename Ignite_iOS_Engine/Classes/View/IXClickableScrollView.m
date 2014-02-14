@@ -30,7 +30,7 @@
     UIControl* parentContentView = [parentControl contentView];
     if( parentContentView != nil && ![parentContentView isHidden] && [parentContentView isEnabled] )
     {
-        if( [[parentControl actionContainer] hasActionsForEvent:@"touch"] )
+        if( [[parentControl actionContainer] hasActionsWithEventNamePrefix:@"touch"] )
         {
             return parentContentView;
         }
