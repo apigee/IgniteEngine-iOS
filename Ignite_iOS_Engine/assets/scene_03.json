@@ -1032,6 +1032,25 @@
 												},
 												"on": "touch_up",
 												"type": "Event"
+											},
+											{
+												"attributes": {
+													"duration": 0.2,
+													"id": "animation_nest"
+												},
+												"on": "touch_up",
+												"parameters": {
+													"alpha": 1
+												},
+												"type": "Modify"
+											},
+											{
+												"attributes": {
+													"function_name": "start_animation",
+													"id": "animation_nest"
+												},
+												"on": "touch_up",
+												"type": "Function"
 											}
 										],
 										"attributes": {
