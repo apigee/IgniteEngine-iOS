@@ -107,7 +107,6 @@
                                                        options:0
                                                       progress:nil
                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
-                                                         NSLog(@"Finished : %@",[error description]);
                                                      }];
         }
     }
