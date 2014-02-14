@@ -1,5 +1,15 @@
 {
 	"view": {
+		"actions": [
+			{
+				"attributes": {
+					"function_name": "start_animation",
+					"id": "animatedImageControl"
+				},
+				"on": "did_appear",
+				"type": "Function"
+			}
+		],
 		"attributes": {
 			"color.background": "#000000",
 			"horizontal_scroll_enabled": false,
@@ -403,7 +413,6 @@
 						"id": "button_lightsright_toggle",
 						"type": "Button"
 					},
-
 					{
 						"actions": [
 							{
@@ -1220,7 +1229,7 @@
 								"assets/images/bolt_00/28.png"
 							],
 							"animation_duration": 1,
-							"auto_animate": true,
+							"auto_animate": false,
 							"enabled": false,
 							"height": "100%",
 							"layout_type": "float",
