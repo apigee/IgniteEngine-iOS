@@ -63,6 +63,13 @@
          {
             "id": "soundControl",
             "type": "Sound",
+            "actions": [{
+                "on": "finished",
+                "type": "Alert",
+                "attributes": {
+                    "title": "Sound Finished Playing"
+                }
+            }],
             "attributes": {
                 "sound_location": "http://www.zultys.com/phone_sounds/Gong1.wav",
                 "volume": 1,

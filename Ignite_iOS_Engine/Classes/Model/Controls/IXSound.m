@@ -20,6 +20,8 @@ static NSString* const kIXAutoPlay = @"auto_play";
 
 // Sound Read-Only Properties
 static NSString* const kIXIsPlaying = @"is_playing";
+static NSString* const kIXDuration = @"duration";
+static NSString* const kIXCurrentTime = @"current_time";
 
 // Sound Events
 static NSString* const kIXFinished = @"finished";
@@ -110,6 +112,14 @@ static NSString* const kIXStop = @"stop";
     if( [propertyName isEqualToString:kIXIsPlaying] )
     {
         returnValue = [NSString stringFromBOOL:[[self audioPlayer] isPlaying]];
+    }
+    else if( [propertyName isEqualToString:kIXDuration] )
+    {
+        returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] duration]];
+    }
+    else if( [propertyName isEqualToString:kIXCurrentTime] )
+    {
+        returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] currentTime]];
     }
     else
     {
