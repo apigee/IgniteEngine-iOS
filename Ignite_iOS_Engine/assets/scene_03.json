@@ -6,7 +6,7 @@
 					"function_name": "start_animation",
 					"id": "animatedImageControl"
 				},
-				"on": "did_appearz",
+				"on": "did_appear",
 				"type": "Function"
 			}
 		],
@@ -318,7 +318,7 @@
 									],
 									"id": "iphone_left"
 								},
-								"on": "touch",
+								"on": "touch_up",
 								"type": "Event"
 							}
 						],
@@ -332,14 +332,10 @@
 						"controls": [
 							{
 								"attributes": {
-									"alpha": 0.5,
+									"alpha": 0,
 									"enabled": false,
 									"height": "80%",
 									"images.default": [
-										{
-											"if": "[[knob_nest_iphone.value]] == 70",
-											"value": "/images/iphone_nest_standby_60x60.png"
-										},
 										{
 											"if": "[[knob_nest_iphone.value]] <= 67",
 											"value": "/images/iphone_nest_cool_60x60.png"
@@ -347,6 +343,10 @@
 										{
 											"if": "[[knob_nest_iphone.value]] >= 73",
 											"value": "/images/iphone_nest_heat_60x60.png"
+										},
+										{
+											"if": "[[knob_nest_iphone.value]] == 70",
+											"value": "/images/iphone_nest_standby_60x60.png"
 										}
 									],
 									"layout_type": "float",
@@ -367,8 +367,8 @@
 									"enabled": false,
 									"height": "100%",
 									"images": {
-										"background": "/images/knob_bg_60x60@2x.png",
-										"pointer": "/images/knob_marker_208x208.png"
+										"_pointer": "/images/knob_marker_208x208.png",
+										"background": "/images/knob_bg_60x60@2x.png"
 									},
 									"initial_value": 69.99,
 									"knob_animation_duration": 1,
@@ -388,7 +388,8 @@
 									"font": "NestsansBold:14",
 									"horizontal_alignment": "center",
 									"layout_type": "float",
-									"margin.bottom": 18,
+									"margin.bottom": 16,
+									"margin.left": 3,
 									"text": "[[knob_nest_iphone.value]]",
 									"vertical_alignment": "bottom"
 								},
@@ -592,7 +593,16 @@
 						"actions": [
 							{
 								"attributes": {
-									"duration": 0.5,
+									"duration": [
+										{
+											"if": "[[layout_main.margin.left]] == -760",
+											"value": 1
+										},
+										{
+											"if": "[[layout_main.margin.left]] == -380",
+											"value": 0.5
+										}
+									],
 									"id": "layout_main"
 								},
 								"on": "show",
@@ -630,11 +640,11 @@
 									"height": 370,
 									"layout_type": "absolute",
 									"load_async": false,
-									"margin.left": 208,
+									"margin.left": 0,
 									"visible": true,
 									"width": 208
 								},
-								"id": "custom_iphone_right_tv",
+								"id": "custom_iphone_left_temperature",
 								"type": "Custom"
 							}
 						],
@@ -677,6 +687,7 @@
 						],
 						"attributes": {
 							"height": 370,
+							"horizontal_scroll_enabled": false,
 							"layout_type": "float",
 							"margin.left": 1494,
 							"margin.top": 300,
@@ -737,17 +748,6 @@
 										"attributes": {
 											"delay": 0.5,
 											"id": "custom_iphone_right_lights"
-										},
-										"on": "touch_up",
-										"parameters": {
-											"visible": 0
-										},
-										"type": "Modify"
-									},
-									{
-										"attributes": {
-											"delay": 0.5,
-											"id": "custom_iphone_left_temperature"
 										},
 										"on": "touch_up",
 										"parameters": {
@@ -838,6 +838,13 @@
 													"visible": 1
 												},
 												"type": "Modify"
+											},
+											{
+												"attributes": {
+													"title": "YOU TAPPED THE FUCKING TV"
+												},
+												"on": "touch_up",
+												"type": "Alert"
 											},
 											{
 												"attributes": {
@@ -997,36 +1004,11 @@
 										"actions": [
 											{
 												"attributes": {
-													"duration": 0.25,
-													"id": "layout_iphone_right"
+													"event_name": "show",
+													"id": "iphone_left"
 												},
 												"on": "touch_up",
-												"parameters": {
-													"margin.left": -208
-												},
-												"type": "Modify"
-											},
-											{
-												"attributes": {
-													"id": "custom_iphone_left_temperature"
-												},
-												"on": "touch_up",
-												"parameters": {
-													"visible": 1
-												},
-												"type": "Modify"
-											},
-											{
-												"attributes": {
-													"duration": 0.25,
-													"id": "button_back"
-												},
-												"on": "touch_up",
-												"parameters": {
-													"alpha": 1,
-													"margin.left": 0
-												},
-												"type": "Modify"
+												"type": "Event"
 											}
 										],
 										"attributes": {
@@ -1046,7 +1028,7 @@
 											"load_async": false,
 											"margin.left": 208,
 											"margin.top": 0,
-											"visible": false,
+											"visible": true,
 											"width": 208
 										},
 										"id": "custom_iphone_left_temperature",
@@ -1057,7 +1039,7 @@
 											{
 												"attributes": {
 													"duration": 0.25,
-													"id": "layout_iphone_left"
+													"id": "layout_iphone_right"
 												},
 												"on": "touch_up",
 												"parameters": {
