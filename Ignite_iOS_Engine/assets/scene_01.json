@@ -116,85 +116,78 @@
       },
       {
         "actions": [
-
-        {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_c"
-                },
-                "on": "touch_up",
-                "type": "Function"
-              },
-              {
-                "attributes": {
-                  "id": "image_car_screen_d",
-                  "delay": 4
-                },
-                "on": "touch_up",
-                "parameters": {
-                  "alpha": 1
-                },
-                "type": "Modify"
-              },
-              {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_d",
-                  "delay": 4
-
-                },
-                "on": "touch_up",
-                "type": "Function"
-              },
-              {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_d",
-                  "parameters": {
-                  "enabled": false
-                }
-
-                },
-                "on": "touch_up",
-                "type": "Modify"
-              },
-              {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_c",
-                  "parameters": {
-                  "enabled": false
-                }
-
-                },
-                "on": "touch_up",
-                "type": "Modify"
-              },
-              {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_b",
-                  "parameters": {
-                  "enabled": false
-                }
-
-                },
-                "on": "touch_up",
-                "type": "Modify"
-              },
-              {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_a",
-                  "parameters": {
-                  "enabled": false
-                }
-
-                },
-                "on": "touch_up",
-                "type": "Modify"
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_c"
+            },
+            "on": "touch_up",
+            "type": "Function"
+          },
+          {
+            "attributes": {
+              "id": "image_car_screen_d",
+              "delay": 4
+            },
+            "on": "touch_up",
+            "parameters": {
+              "alpha": 1
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_d",
+              "delay": 4
+            },
+            "on": "touch_up",
+            "type": "Function"
+          },
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_d",
+              "parameters": {
+                "enabled": false
               }
-
+            },
+            "on": "touch_up",
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_c",
+              "parameters": {
+                "enabled": false
+              }
+            },
+            "on": "touch_up",
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_b",
+              "parameters": {
+                "enabled": false
+              }
+            },
+            "on": "touch_up",
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_a",
+              "parameters": {
+                "enabled": false
+              }
+            },
+            "on": "touch_up",
+            "type": "Modify"
+          }
         ],
         "attributes": {
           "height": "100%",
@@ -210,27 +203,35 @@
       },
       {
         "actions": [
-
-        {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_d"
-                },
-                "on": "touch_up",
-                "type": "Function"
-              },
-              {
-                "attributes": {
-                  "id": "image_car_screen_d",
-                  "duration": 0.1
-                },
-                "on": "touch_up",
-                "parameters": {
-                  "alpha": 1
-                },
-                "type": "Modify"
-              }
-
+          {
+            "attributes": {
+              "function_name": "play",
+              "id": "sound_car_screen_d"
+            },
+            "on": "touch_up",
+            "type": "Function"
+          },
+          {
+            "attributes": {
+              "id": "image_car_screen_d",
+              "duration": 0.1
+            },
+            "on": "touch_up",
+            "parameters": {
+              "alpha": 1
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_step_work_2"
+            },
+            "on": "touch_up",
+            "parameters": {
+              "enabled": true
+            },
+            "type": "Modify"
+          }
         ],
         "attributes": {
           "height": "100%",
@@ -241,73 +242,6 @@
         },
         "controls": [],
         "id": "image_car_screen_d",
-        "type": "Image"
-      },
-      {
-        "actions": [
-
-        {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_bmw_beep"                },
-                "on": "touch",
-                "type": "Function"
-              },
-              {
-                "attributes": {
-                  "id": "image_car_screen_f",
-                  "duration": 0.1
-                },
-                "on": "touch_up",
-                "parameters": {
-                  "alpha": 1
-                },
-                "type": "Modify"
-              }
-
-        ],
-        "attributes": {
-          "height": "100%",
-          "images.default": "/images/car_screen_e_1024x768.png",
-          "layout_type": "absolute",
-          "alpha": 0,
-          "width": "100%"
-        },
-        "controls": [],
-        "id": "image_car_screen_e",
-        "type": "Image"
-      },
-      {
-        "actions": [
-
-        {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_bmw_beep"                },
-                "on": "touch",
-                "type": "Function"
-              },
-              {
-                "attributes": {
-                  "id": "step_work"
-                },
-                "on": "touch_up",
-                "parameters": {
-                  "images.default": "/images/step_work_1_418x62.png"
-                },
-                "type": "Modify"
-              }
-
-        ],
-        "attributes": {
-          "height": "100%",
-          "images.default": "/images/car_screen_f_1024x768.png",
-          "layout_type": "absolute",
-          "alpha": 0,
-          "width": "100%"
-        },
-        "controls": [],
-        "id": "image_car_screen_f",
         "type": "Image"
       },
       {
@@ -331,8 +265,89 @@
               "width": 418
             },
             "controls": [],
-            "id": "step_work",
+            "id": "image_step_work_1",
             "type": "Image"
+          },
+          {
+            "actions": [],
+            "attributes": {
+              "alpha": 0,
+              "height": 62,
+              "images.default": "/images/step_work_2_418x62.png",
+              "layout_type": "absolute",
+              "width": 418
+            },
+            "controls": [],
+            "id": "image_step_work_2",
+            "type": "Image"
+          },
+          {
+            "actions": [],
+            "attributes": {
+              "alpha": 1,
+              "height": 62,
+              "layout_flow": "horizontal",
+              "layout_type": "absolute",
+              "width": 418
+            },
+            "controls": [
+              {
+                "actions": [
+                  {
+                    "on": "touch_up",
+                    "type": "Navigate",
+                    "attributes": {
+                      "to": "scene_01.json"
+                    }
+                  }
+                ],
+                "attributes": {
+                  "height": 62,
+                  "width": "33%"
+                },
+                "controls": [],
+                "id": "image_step_work",
+                "type": "Image"
+              },
+              {
+                "actions": [
+                  {
+                    "on": "touch_up",
+                    "type": "Navigate",
+                    "attributes": {
+                      "to": "scene_02.json"
+                    }
+                  }
+                ],
+                "attributes": {
+                  "height": 62,
+                  "width": "33%"
+                },
+                "controls": [],
+                "id": "image_step_home",
+                "type": "Image"
+              },
+              {
+                "actions": [
+                  {
+                    "on": "touch_up",
+                    "type": "Navigate",
+                    "attributes": {
+                      "to": "scene_03.json"
+                    }
+                  }
+                ],
+                "attributes": {
+                  "height": 62,
+                  "width": "33%"
+                },
+                "controls": [],
+                "id": "image_step_livingroom",
+                "type": "Image"
+              }
+            ],
+            "id": "layout_step_work",
+            "type": "Layout"
           }
         ],
         "id": "layout_navigation",
@@ -426,8 +441,6 @@
                 "on": "touch_up",
                 "type": "Function"
               },
-               
-              
               {
                 "attributes": {
                   "id": "image_car_screen_c",
@@ -473,7 +486,6 @@
             "type": "Image"
           },
           {
-            
             "attributes": {
               "height": 62,
               "images.default": "/images/step_start_418x62.png",
@@ -565,7 +577,7 @@
         "type": "Sound"
       },
       {
-        "id": "timerControl",
+        "id": "timer_start",
         "type": "Timer",
         "actions": [
           {
@@ -597,7 +609,101 @@
           "repeats": true,
           "time_interval": 1.5
         }
+      },
+      {
+        "id": "timer_next",
+        "type": "Timer",
+        "actions": [
+          {
+            "attributes": {
+              "id": "image_step_work_2",
+              "duration": 0.25
+            },
+            "on": "timer_fired",
+            "parameters": {
+              "alpha": 1
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_step_work_2",
+              "duration": 1,
+              "delay": 0.5
+            },
+            "on": "timer_fired",
+            "parameters": {
+              "alpha": 0
+            },
+            "type": "Modify"
+          }
+        ],
+        "attributes": {
+          "enabled": true,
+          "repeats": true,
+          "time_interval": 1.5
+        }
+      },
+      {
+        "attributes": {
+          "alpha": 1,
+          "animated_images": [
+            "assets/animations/bolt_gps/00.png",
+            "assets/animations/bolt_gps/01.png",
+            "assets/animations/bolt_gps/01.png",
+            "assets/animations/bolt_gps/02.png",
+            "assets/animations/bolt_gps/03.png",
+            "assets/animations/bolt_gps/04.png",
+            "assets/animations/bolt_gps/05.png",
+            "assets/animations/bolt_gps/06.png",
+            "assets/animations/bolt_gps/07.png",
+            "assets/animations/bolt_gps/08.png",
+            "assets/animations/bolt_gps/09.png",
+            "assets/animations/bolt_gps/10.png",
+            "assets/animations/bolt_gps/11.png",
+            "assets/animations/bolt_gps/12.png",
+            "assets/animations/bolt_gps/13.png",
+            "assets/animations/bolt_gps/14.png",
+            "assets/animations/bolt_gps/15.png",
+            "assets/animations/bolt_gps/16.png",
+            "assets/animations/bolt_gps/17.png",
+            "assets/animations/bolt_gps/18.png",
+            "assets/animations/bolt_gps/19.png"
+          ],
+          "animation_repeat_count": -1,
+          "animation_duration": 2,
+          "auto_animate": false,
+          "enabled": false,
+          "visible": true,
+          "height": "100%",
+          "layout_type": "absolute",
+          "margin.left": 0,
+          "margin.top": 0,
+          "width": "100%"
+        },
+        "id": "image_animation_car_idle",
+        "type": "Image"
+      },
+      {
+        "actions": [],
+        "attributes": {
+          "height": "100%",
+          "images.default": "images/car_cloud_1024x768.png",
+          "layout_type": "float",
+          "enabled": false,
+          "alpha": 0,
+          "width": "100%"
+        },
+        "controls": [],
+        "id": "image_car_cloud",
+        "type": "Image"
       }
+
+
+
+
+                  
+
     ]
   }
 }

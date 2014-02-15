@@ -119,7 +119,7 @@
 						"function_name": "start_animation",
 						"id": "animation_lamp"
 					},
-					"on": "touch_up",
+					"on": "touch",
 					"type": "Function"
 				}
 			],
