@@ -19,6 +19,15 @@
             }
          },
          {
+            "id": "sliderStatusText",
+            "type": "Text",
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Slider Drag Status : Not Dragging"
+            }
+         },
+         {
             "id": "changeValueText",
             "type": "Text",
             "actions": [{
@@ -47,6 +56,24 @@
                 "type": "Refresh",
                 "attributes": {
                     "id": "sliderValueText"
+                }
+            },{
+                "on": "touch",
+                "type": "Modify",
+                "attributes": {
+                    "id": "sliderStatusText"
+                },
+                "parameters": {
+                    "text": "Slider Drag Status : Dragging"
+                }
+            },{
+                "on": "touch_up",
+                "type": "Modify",
+                "attributes": {
+                    "id": "sliderStatusText"
+                },
+                "parameters": {
+                    "text" : "Slider Drag Status : Not Dragging"
                 }
             }],
             "attributes": {
