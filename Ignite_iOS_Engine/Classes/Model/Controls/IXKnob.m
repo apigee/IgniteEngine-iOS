@@ -24,7 +24,9 @@ static NSString* const kIXKnobAnimationDuration = @"knob_animation_duration";
 static NSString* const kIXValue = @"value";
 
 // Knob Events
-static NSString* const IXValueChanged = @"value_changed";
+static NSString* const kIXValueChanged = @"value_changed";
+static NSString* const kIXTouch = @"touch";
+static NSString* const kIXTouchUp = @"touch_up";
 
 // Knob Functions
 static NSString* const kIXUpdateKnobValue = @"update_knob_value";
@@ -42,6 +44,10 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
 -(void)dealloc
 {
     [_knobControl removeTarget:self action:@selector(knobValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [_knobControl removeTarget:self action:@selector(knobDragStarted:) forControlEvents:UIControlEventTouchDown];
+    [_knobControl removeTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpInside];
+    [_knobControl removeTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
+    [_knobControl removeTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchCancel];
 }
 
 -(void)buildView
@@ -51,7 +57,13 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     _firstLoad = YES;
     
     _knobControl = [[MHRotaryKnob alloc] initWithFrame:CGRectZero];
+    
     [_knobControl addTarget:self action:@selector(knobValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [_knobControl addTarget:self action:@selector(knobDragStarted:) forControlEvents:UIControlEventTouchDown];
+    [_knobControl addTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpInside];
+    [_knobControl addTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
+    [_knobControl addTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchCancel];
+
 
     [[self contentView] addSubview:_knobControl];
 }
@@ -112,7 +124,17 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
 
 -(void)knobValueChanged:(MHRotaryKnob*)knobControl
 {
-    [[self actionContainer] executeActionsForEventNamed:IXValueChanged];
+    [[self actionContainer] executeActionsForEventNamed:kIXValueChanged];
+}
+
+-(void)knobDragStarted:(MHRotaryKnob*)knobControl
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXTouch];
+}
+
+-(void)knobDragEnded:(MHRotaryKnob*)knobControl
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
 }
 
 -(void)updateKnobValueWithValue:(CGFloat)knobValue animated:(BOOL)animated

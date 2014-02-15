@@ -22,7 +22,9 @@ static NSString* const kIXImagesMinimumCapInsets = @"images.minimum.capInsets";
 static NSString* const kIXValue = @"value";
 
 // Slider Events
-static NSString* const IXValueChanged = @"value_changed";
+static NSString* const kIXValueChanged = @"value_changed";
+static NSString* const kIXTouch = @"touch";
+static NSString* const kIXTouchUp = @"touch_up";
 
 // Slider Functions
 static NSString* const kIXUpdateSliderValue = @"update_slider_value";
@@ -37,6 +39,15 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
 
 @implementation IXSlider
 
+-(void)dealloc
+{
+    [_slider removeTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [_slider removeTarget:self action:@selector(sliderDragStarted:) forControlEvents:UIControlEventTouchDown];
+    [_slider removeTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchUpInside];
+    [_slider removeTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
+    [_slider removeTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchCancel];
+}
+
 -(void)buildView
 {
     [super buildView];
@@ -44,7 +55,12 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
     _firstLoad = YES;
     
     _slider = [[UISlider alloc] initWithFrame:CGRectZero];
+    
     [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [_slider addTarget:self action:@selector(sliderDragStarted:) forControlEvents:UIControlEventTouchDown];
+    [_slider addTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchUpInside];
+    [_slider addTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
+    [_slider addTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchCancel];
     
     [[self contentView] addSubview:_slider];
 }
@@ -107,7 +123,17 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
 
 -(void)sliderValueChanged:(UISlider*)slider
 {
-    [[self actionContainer] executeActionsForEventNamed:IXValueChanged];
+    [[self actionContainer] executeActionsForEventNamed:kIXValueChanged];
+}
+
+-(void)sliderDragStarted:(UISlider*)slider
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXTouch];
+}
+
+-(void)sliderDragEnded:(UISlider*)slider
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
 }
 
 -(void)updateSliderValueWithValue:(CGFloat)sliderValue animated:(BOOL)animated
