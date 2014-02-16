@@ -1,188 +1,235 @@
 {
-    "view": {
+  "view": {
+    "attributes": {
+      "height": "100%",
+      "width": "100%",
+      "padding.top": 100,
+      "color": {
+        "background": "#ffffff"
+      }
+    },
+    "actions": [
+      {
+        "on": "screen_pan_right",
+        "type": "Alert",
         "attributes": {
-            "height": "100%",
-            "width": "100%",
-            "padding.top": 100,
-            "color": {
-                "background": "#FFFFFF"
-            }
-        },
-        "actions": [{
-            "on": "screen_pan_right",
-            "type": "Alert",
+          "title": "Screen Pan Right"
+        }
+      },
+      {
+        "on": "screen_pan_left",
+        "type": "Alert",
+        "attributes": {
+          "title": "Screen Pan Left"
+        }
+      }
+    ],
+    "controls": [
+    
+      {
+        "id": "animatedImagesExampleText",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "title": "Screen Pan Right"
+              "to": "examples/IXAnimatedImagesControlExample.json"
             }
-        },{
-            "on": "screen_pan_left",
-            "type": "Alert",
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "Animated Images Example"
+        }
+      },
+      {
+        "id": "buttonExampleText",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "title": "Screen Pan Left"
+              "to": "examples/IXButtonControlExample.json"
             }
-        }],
-        "controls": [
-         {
-            "id": "animatedImagesExampleText",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "IXAnimatedImagesControlExample.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "Button Example"
+        }
+      },
+      {
+        "id": "knobExampleText",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Animated Images Example"
+              "to": "examples/IXKnobControlExample.json"
             }
-         },
-         {
-            "id": "buttonExampleText",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "IXButtonControlExample.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "Knob Example"
+        }
+      },
+      {
+        "id": "mediaPlayerExampleText",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Button Example"
+              "to": "examples/IXMediaPlayerControlExample.json"
             }
-         },
-        {
-            "id": "knobExampleText",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "IXKnobControlExample.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "MediaPlayer Example"
+        }
+      },
+      {
+        "id": "sliderExampleText",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Knob Example"
+              "to": "examples/IXSliderControlExample.json"
             }
-         },
-         {
-            "id": "mediaPlayerExampleText",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "IXMediaPlayerControlExample.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "Slider Example"
+        }
+      },
+      {
+        "id": "soundExampleText",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "MediaPlayer Example"
+              "to": "examples/IXSoundControlExample.json"
             }
-         },
-         {
-             "id": "sliderExampleText",
-             "type": "Text",
-             "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "IXSliderControlExample.json"
-                }
-             }],
-             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Slider Example"
-            }
-         },
-         {
-            "id": "soundExampleText",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "IXSoundControlExample.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "Sound Example"
+        }
+      },
+      {
+        "id": "scene_01",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Sound Example"
+              "to": "scene_01.json"
             }
-         },
-         {
-            "id": "scene_01",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "scene_01.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "scene_01",
+          "margin.top": 50
+        }
+      },
+      {
+        "id": "scene_02",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "scene_01",
-                "margin.top": 50
+              "to": "scene_02.json"
             }
-         },
-         {
-            "id": "scene_02",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "scene_02.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "scene_02"
+        }
+      },
+      {
+        "id": "scene_03",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "scene_02"
+              "to": "scene_03.json"
             }
-         },
-         {
-            "id": "scene_03",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "scene_03.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "scene_03"
+        }
+      },
+      {
+        "id": "knob",
+        "type": "Text",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "scene_03"
+              "to": "knob.json"
             }
-         },
-         {
-            "id": "knob",
-            "type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "type": "Navigate",
-                "attributes": {
-                    "to": "knob.json"
-                }
-            }],
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "center",
+          "layout_type": "relative",
+          "text": "knob"
+        }
+      },
+      {
+        "id": "knob",
+        "type": "Layout",
+        "actions": [
+          {
+            "on": "touch_up",
+            "type": "Navigate",
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "knob"
+              "to": "scene_000.json",
+              "nav_animation_duration": 10,
+              "nav_animation_type": "curl_up"
             }
-         }
-        ]
-    }
+          }
+        ],
+        "attributes": {
+          "horizontal_alignment": "right",
+          "vertical_alignment": "top",
+          "layout_type": "float",
+          "height": 40,
+          "width": 20,
+          "color.background": "#ffffff"
+        }
+      }
+    ]
+  }
 }

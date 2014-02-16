@@ -39,53 +39,68 @@
         "type": "Image"
       },
       {
-        "attributes": {
-          "alpha": 1,
-          "animated_images": [
-            "assets/animations/car_idle/00.png",
-            "assets/animations/car_idle/01.png",
-            "assets/animations/car_idle/01.png",
-            "assets/animations/car_idle/02.png",
-            "assets/animations/car_idle/03.png",
-            "assets/animations/car_idle/04.png"
-          ],
-          "animation_repeat_count": -1,
-          "animation_duration": 0.1,
-          "auto_animate": true,
-          "visible": true,
-          "height": "100%",
-          "layout_type": "absolute",
-          "margin.left": 0,
-          "margin.top": 0,
-          "width": "100%"
-        },
-        "id": "image_animation_car_idle",
-        "type": "Image"
-      },
-      {
-        "actions": [],
+        "actions": [
+          {
+                "attributes": {
+                  "id": "image_car_01",
+                  "duration": 0.25
+                },
+                "on": "touch_up",
+                "parameters": {
+                  "alpha": 0
+                },
+                "type": "Modify"
+              }
+        ],
         "attributes": {
           "height": "100%",
-          "images.default": "/images/car_02_1024x768.jpg",
-          "layout_type": "absolute",
-          "alpha": 1,
-          "width": "100%"
-        },
-        "controls": [],
-        "id": "image_car_02",
-        "type": "Image"
-      },
-      {
-        "actions": [],
-        "attributes": {
-          "height": "100%",
-          "images.default": "/images/car_02_1024x768.jpg",
+          "images.default": "/images/car_01_1024x768.jpg",
           "layout_type": "absolute",
           "alpha": 1,
           "width": "100%"
         },
         "controls": [],
         "id": "image_car_01",
+        "type": "Image"
+      },
+      {
+        "attributes": {
+          "alpha": 1,
+          "animated_images": [
+            "assets/animations/bolt_gps/00.png",
+            "assets/animations/bolt_gps/01.png",
+            "assets/animations/bolt_gps/01.png",
+            "assets/animations/bolt_gps/02.png",
+            "assets/animations/bolt_gps/03.png",
+            "assets/animations/bolt_gps/04.png",
+            "assets/animations/bolt_gps/05.png",
+            "assets/animations/bolt_gps/06.png",
+            "assets/animations/bolt_gps/07.png",
+            "assets/animations/bolt_gps/08.png",
+            "assets/animations/bolt_gps/09.png",
+            "assets/animations/bolt_gps/10.png",
+            "assets/animations/bolt_gps/11.png",
+            "assets/animations/bolt_gps/12.png",
+            "assets/animations/bolt_gps/13.png",
+            "assets/animations/bolt_gps/14.png",
+            "assets/animations/bolt_gps/15.png",
+            "assets/animations/bolt_gps/16.png",
+            "assets/animations/bolt_gps/17.png",
+            "assets/animations/bolt_gps/18.png",
+            "assets/animations/bolt_gps/19.png"
+          ],
+          "animation_repeat_count": -1,
+          "animation_duration": 0.75,
+          "auto_animate": true,
+          "enabled": false,
+          "visible": false,
+          "height": "100%",
+          "layout_type": "absolute",
+          "margin.left": 0,
+          "margin.top": 0,
+          "width": "100%"
+        },
+        "id": "image_animation_car_gps",
         "type": "Image"
       },
       {
@@ -123,6 +138,72 @@
             },
             "on": "touch_up",
             "type": "Function"
+          },
+          {
+            "attributes": {
+              "id": "image_animation_car_gps",
+              "delay": 1
+            },
+            "on": "touch_up",
+            "parameters": {
+              "visible": true
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_animation_car_gps",
+              "delay": 2.2
+            },
+            "on": "touch_up",
+            "parameters": {
+              "visible": false
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_animation_car_gps",
+              "delay": 4
+            },
+            "on": "touch_up",
+            "parameters": {
+              "visible": true
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_animation_car_gps",
+              "delay": 5.2
+            },
+            "on": "touch_up",
+            "parameters": {
+              "visible": false
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_animation_car_gps",
+              "delay": 10
+            },
+            "on": "touch_up",
+            "parameters": {
+              "visible": true
+            },
+            "type": "Modify"
+          },
+          {
+            "attributes": {
+              "id": "image_animation_car_gps",
+              "delay": 11.2
+            },
+            "on": "touch_up",
+            "parameters": {
+              "visible": false
+            },
+            "type": "Modify"
           },
           {
             "attributes": {
@@ -366,6 +447,15 @@
             "actions": [
               {
                 "attributes": {
+                  "function_name": "play",
+                  "id": "sound_bmw_chime",
+                  "delay": 0
+                },
+                "on": "touch_up",
+                "type": "Function"
+              },
+              {
+                "attributes": {
                   "id": "layout_start",
                   "duration": 0.25
                 },
@@ -377,9 +467,9 @@
               },
               {
                 "attributes": {
-                  "function_name": "stop",
-                  "id": "sound_bmw_chime",
-                  "delay": 0.25
+                  "function_name": "play",
+                  "id": "sound_car_on",
+                  "delay": 5
                 },
                 "on": "touch_up",
                 "type": "Function"
@@ -396,10 +486,133 @@
                 },
                 "type": "Modify"
               },
+
+
+
+
+              {
+            "attributes": {
+              "id": "knob_speedo",
+              "delay": 1.25
+            },
+            "on": "touch_up",
+            "parameters": {
+              "knob_animation_duration": 0.75
+            },
+            "type": "Modify"
+          },
+          {
+            "on": "touch_up",
+            "type": "Function",
+            "attributes": {
+              "id": "knob_speedo",
+              "function_name": "update_knob_value",
+              "delay": 1.25
+            },
+            "parameters": {
+              "value": 85,
+              "animated": true
+            }
+          },
+          {
+            "attributes": {
+              "id": "knob_speedo"
+            },
+            "on": "touch_up",
+            "parameters": {
+              "knob_animation_duration": 0.75,
+              "delay": 1.25
+            },
+            "type": "Modify"
+          },
+          {
+            "on": "touch_up",
+            "type": "Function",
+            "attributes": {
+              "id": "knob_speedo",
+              "delay": 2,
+              "function_name": "update_knob_value"
+            },
+            "parameters": {
+              "value": 52.5,
+              "animated": true
+            }
+          },
+          {
+            "attributes": {
+              "id": "knob_tach",
+              "delay": 1.25
+            },
+            "on": "touch_up",
+            "parameters": {
+              "knob_animation_duration": 0.75
+            },
+            "type": "Modify"
+          },
+          {
+            "on": "touch_up",
+            "type": "Function",
+            "attributes": {
+              "id": "knob_tach",
+              "function_name": "update_knob_value",
+              "delay": 1.25
+            },
+            "parameters": {
+              "value": 85,
+              "animated": true
+            }
+          },
+          {
+            "attributes": {
+              "id": "knob_tach"
+            },
+            "on": "touch_up",
+            "parameters": {
+              "knob_animation_duration": 0.75
+            },
+            "type": "Modify"
+          },
+          {
+            "on": "touch_up",
+            "type": "Function",
+            "attributes": {
+              "id": "knob_tach",
+              "delay": 2,
+              "function_name": "update_knob_value"
+            },
+            "parameters": {
+              "value": 52.5,
+              "animated": true
+            }
+          },
+          {
+            "attributes": {
+              "id": "timer_tach",
+              "delay": 6.0
+            },
+            "on": "touch_up",
+            "parameters": {
+              "enabled": true
+            },
+            "type": "Modify"
+          },
+
+
+
+
+
+
+
+
+
+
+
+
+
               {
                 "attributes": {
                   "id": "image_car_02",
-                  "delay": 3,
+                  "delay": 5,
                   "duration": 0.25
                 },
                 "on": "touch_up",
@@ -411,7 +624,7 @@
               {
                 "attributes": {
                   "id": "image_car_screen_a",
-                  "delay": 1.5,
+                  "delay": 1.25,
                   "duration": 0.1
                 },
                 "on": "touch_up",
@@ -423,27 +636,6 @@
               {
                 "attributes": {
                   "id": "image_car_screen_b",
-                  "delay": 4.5,
-                  "duration": 0.1
-                },
-                "on": "touch_up",
-                "parameters": {
-                  "alpha": 1
-                },
-                "type": "Modify"
-              },
-              {
-                "attributes": {
-                  "function_name": "play",
-                  "id": "sound_car_screen_b",
-                  "delay": 4.25
-                },
-                "on": "touch_up",
-                "type": "Function"
-              },
-              {
-                "attributes": {
-                  "id": "image_car_screen_c",
                   "delay": 6.5,
                   "duration": 0.1
                 },
@@ -456,23 +648,25 @@
               {
                 "attributes": {
                   "function_name": "play",
-                  "id": "sound_car_on",
-                  "delay": 2
+                  "id": "sound_car_screen_b",
+                  "delay": 6.25
                 },
                 "on": "touch_up",
                 "type": "Function"
               },
               {
                 "attributes": {
-                  "id": "image_animation_car_idle",
-                  "delay": 2.5
+                  "id": "image_car_screen_c",
+                  "delay": 8.5,
+                  "duration": 0.1
                 },
-                "on": "will_appear",
+                "on": "touch_up",
                 "parameters": {
-                  "visible": true
+                  "alpha": 1
                 },
                 "type": "Modify"
               }
+              
             ],
             "attributes": {
               "height": "100%",
@@ -519,9 +713,9 @@
       {
         "actions": [],
         "attributes": {
-          "auto_play": true,
+          "auto_play": false,
           "isPlaying": false,
-          "number_of_loops": 3,
+          "number_of_loops": 1,
           "volume": 0.25,
           "sound_location": "/audio/bmw_chime.mp3"
         },
@@ -565,7 +759,18 @@
         "type": "Sound"
       },
       {
-        "actions": [],
+        "actions": [
+          {
+            "attributes": {
+              "id": "timer_next"
+            },
+            "on": "finished",
+            "parameters": {
+              "enabled": true
+            },
+            "type": "Modify"
+          }
+        ],
         "attributes": {
           "auto_play": false,
           "isPlaying": false,
@@ -617,7 +822,8 @@
           {
             "attributes": {
               "id": "image_step_work_2",
-              "duration": 0.25
+              "duration": 0.25,
+              "enabled": false
             },
             "on": "timer_fired",
             "parameters": {
@@ -639,71 +845,117 @@
           }
         ],
         "attributes": {
-          "enabled": true,
+          "enabled": false,
           "repeats": true,
           "time_interval": 1.5
         }
-      },
-      {
-        "attributes": {
-          "alpha": 1,
-          "animated_images": [
-            "assets/animations/bolt_gps/00.png",
-            "assets/animations/bolt_gps/01.png",
-            "assets/animations/bolt_gps/01.png",
-            "assets/animations/bolt_gps/02.png",
-            "assets/animations/bolt_gps/03.png",
-            "assets/animations/bolt_gps/04.png",
-            "assets/animations/bolt_gps/05.png",
-            "assets/animations/bolt_gps/06.png",
-            "assets/animations/bolt_gps/07.png",
-            "assets/animations/bolt_gps/08.png",
-            "assets/animations/bolt_gps/09.png",
-            "assets/animations/bolt_gps/10.png",
-            "assets/animations/bolt_gps/11.png",
-            "assets/animations/bolt_gps/12.png",
-            "assets/animations/bolt_gps/13.png",
-            "assets/animations/bolt_gps/14.png",
-            "assets/animations/bolt_gps/15.png",
-            "assets/animations/bolt_gps/16.png",
-            "assets/animations/bolt_gps/17.png",
-            "assets/animations/bolt_gps/18.png",
-            "assets/animations/bolt_gps/19.png"
-          ],
-          "animation_repeat_count": -1,
-          "animation_duration": 2,
-          "auto_animate": false,
-          "enabled": false,
-          "visible": true,
-          "height": "100%",
-          "layout_type": "absolute",
-          "margin.left": 0,
-          "margin.top": 0,
-          "width": "100%"
-        },
-        "id": "image_animation_car_idle",
-        "type": "Image"
       },
       {
         "actions": [],
         "attributes": {
           "height": "100%",
           "images.default": "images/car_cloud_1024x768.png",
-          "layout_type": "float",
+          "layout_type": "absolute",
           "enabled": false,
-          "alpha": 0,
+          "alpha": 1,
           "width": "100%"
         },
         "controls": [],
         "id": "image_car_cloud",
         "type": "Image"
+      },
+      {
+        "id": "knob_speedo",
+        "type": "Knob",
+        "attributes": {
+          "color": {
+            "background": "#00000000"
+          },
+          "width": 139,
+          "height": 139,
+          "margin.left": 17,
+          "margin.top": 249,
+          "layout_type": "absolute",
+          "initial_value": 52.5,
+          "minimum_value": 50,
+          "maximum_value": 90,
+          "knob_animation_duration": 0.5,
+          "images": {
+            "pointer": "examples/images/marker2.png"
+          }
+        }
+      },
+      {
+        "id": "knob_tach",
+        "type": "Knob",
+        "actions": [
+          
+        ],
+        "attributes": {
+          "color": {
+            "background": "#00000000"
+          },
+          "width": 139,
+          "height": 139,
+          "margin.left": 205,
+          "margin.top": 244,
+          "layout_type": "absolute",
+          "initial_value": 52.5,
+          "minimum_value": 50,
+          "maximum_value": 90,
+          "knob_animation_duration": 0.5,
+          "images": {
+            "pointer": "examples/images/marker2.png"
+          }
+        }
+      },
+      {
+        "id": "timer_tach",
+        "type": "Timer",
+        "actions": [
+        {
+            "attributes": {
+              "id": "knob_speedo"
+            },
+            "on": "timer_fired",
+            "parameters": {
+              "knob_animation_duration": 0.1
+            },
+            "type": "Modify"
+          },
+          {
+            "on": "timer_fired",
+            "type": "Function",
+            "attributes": {
+              "id": "knob_tach",
+              "function_name": "update_knob_value"
+            },
+            "parameters": {
+              "value": 55.5,
+              "animated": true
+            }
+          },
+          {
+            "on": "timer_fired",
+            "type": "Function",
+            "attributes": {
+              "id": "knob_tach",
+              "delay": 0.1,
+              "function_name": "update_knob_value"
+            },
+            "parameters": {
+              "value": 55.7,
+              "animated": true
+            }
+          }
+
+        ],
+        "attributes": {
+          "enabled": false,
+          "repeats": true,
+          "time_interval": 0.1
+        }
       }
-
-
-
-
-                  
-
     ]
   }
 }

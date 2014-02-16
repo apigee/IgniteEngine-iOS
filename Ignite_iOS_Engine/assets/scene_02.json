@@ -1,7 +1,7 @@
 {
   "view": {
     "attributes": {
-      "color.background": "#000000",
+      "color.background": "#00000000",
       "margin": 0,
       "padding": 0,
       "status_bar_style": "hidden"
@@ -52,7 +52,15 @@
             },
             "on": "touch_up",
             "type": "Event"
-          }
+          },
+          {
+                                        "on": "movie_stopped",
+                                        "type": "Navigate",
+                                        "attributes": {
+                                            "to": "scene_03.json",
+                                            "nav_animation_type": "curl_up"
+                                        }
+                                    }
         ],
         "attributes": {
           "auto_play": true,
@@ -65,7 +73,90 @@
         },
         "id": "mediaplayer_tv",
         "type": "MediaPlayer"
-      }
+      },
+      {
+                "actions": [
+
+
+                ],
+                "attributes": {
+                    "height": 62,
+                    "layout_type": "float",
+                    "alpha": 1,
+                    "width": 418,
+                    "vertical_alignment": "bottom",
+                    "horizontal_alignment": "center",
+                    "margin.bottom": 26
+                },
+                "controls": [
+                    {
+                        "actions": [],
+                        "attributes": {
+                            "height": 62,
+                            "images.default": "/images/step_home_1_418x62.png",
+                            "layout_type": "absolute",
+                            "width": 418
+                        },
+                        "controls": [],
+                        "id": "image_step_work_1",
+                        "type": "Image"
+                    },
+                    {
+                        "actions": [],
+                        "attributes": {
+                            "alpha": 1,
+                            "height": 62,
+                            "layout_flow": "horizontal",
+                            "layout_type": "absolute",
+                            "width": 418
+                        },
+                        "controls": [
+                            {
+                                "actions": [
+                                    {
+                                        "on": "touch_up",
+                                        "type": "Navigate",
+                                        "attributes": {
+                                            "to": "scene_01.json",
+                                            "nav_animation_type": "curl_down"
+                                        }
+                                    }
+                                ],
+                                "attributes": {
+                                    "height": 62,
+                                    "width": "33%"
+                                },
+                                "controls": [],
+                                "id": "image_step_work",
+                                "type": "Image"
+                            },
+                            {
+                                "actions": [
+                                    {
+                                        "on": "touch_up",
+                                        "type": "Navigate",
+                                        "attributes": {
+                                            "to": "scene_02.json",
+                                            "nav_animation_type": "curl_down"
+                                        }
+                                    }
+                                ],
+                                "attributes": {
+                                    "height": 62,
+                                    "width": "33%"
+                                },
+                                "controls": [],
+                                "id": "image_step_home",
+                                "type": "Image"
+                            }
+                        ],
+                        "id": "layout_step_work",
+                        "type": "Layout"
+                    }
+                ],
+                "id": "layout_navigation",
+                "type": "Layout"
+            }
     ]
   }
 }

@@ -153,6 +153,16 @@
         [[self moviePlayer] setContentURL:[self movieURL]];
     }
     
+    
+    //TODO: Add additional events
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieLoadStateChanged:) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enteredFullscreen:) name:MPMoviePlayerDidEnterFullscreenNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitedFullscreen:) name:MPMoviePlayerDidExitFullscreenNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackStateChanged:) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackStopped) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    
+    
     BOOL autoPlay = [[self propertyContainer] getBoolPropertyValue:@"auto_play" defaultValue:YES];
     if( autoPlay )
     {
@@ -175,6 +185,11 @@
 -(void)movieTimedOut
 {
     [[self actionContainer] executeActionsForEventNamed:@"movie_timed_out"];
+}
+
+-(void)moviePlaybackStopped
+{
+    [[self actionContainer] executeActionsForEventNamed:@"movie_stopped"];
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
