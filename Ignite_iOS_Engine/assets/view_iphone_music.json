@@ -120,6 +120,16 @@
 				},
 				{
 					"attributes": {
+						"id": "animation_sonos"
+					},
+					"on": "touch",
+					"parameters": {
+						"animation_duration": 0.5
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
 						"function_name": "start_animation",
 						"id": "animation_sonos"
 					},
@@ -143,6 +153,16 @@
 					"on": "touch_up",
 					"parameters": {
 						"animation_repeat_count": 1
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"id": "animation_sonos"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"animation_duration": 1.6
 					},
 					"type": "Modify"
 				}

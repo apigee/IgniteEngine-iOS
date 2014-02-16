@@ -25,7 +25,7 @@
 				"height": 59,
 				"images.default": "/images/iphone_header_208x59.png",
 				"layout_type": "float",
-				"visible": true,
+				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -39,7 +39,7 @@
 				"images.default": "/images/iphone_background_temperature_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,
-				"visible": true,
+				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -67,7 +67,7 @@
 				"layout_type": "float",
 				"margin.bottom": -4,
 				"vertical_alignment": "bottom",
-				"visible": true,
+				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -82,7 +82,7 @@
 				"images.default": "/images/iphone_background_temperature-overlay_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,
-				"visible": true,
+				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -119,17 +119,43 @@
 				},
 				{
 					"attributes": {
-						"delay": 0.6,
-						"function_name": [
-							{
-								"if": "[[layout_main.margin.left]] == 0",
-								"value": "start_animation"
-							}
-						],
+						"duration": 0.2,
 						"id": "animation_nest"
 					},
-					"on": "value_changed",
+					"on": "touch",
+					"parameters": {
+						"alpha": 1
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"delay": 0.1,
+						"function_name": "start_animation",
+						"id": "animation_nest"
+					},
+					"on": "touch",
 					"type": "Function"
+				},
+				{
+					"attributes": {
+						"delay": 1,
+						"function_name": "satop_animation",
+						"id": "animation_nest"
+					},
+					"on": "touch_up",
+					"type": "Function"
+				},
+				{
+					"attributes": {
+						"duration": 0.2,
+						"id": "animation_nest"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"alpha": 0
+					},
+					"type": "Modify"
 				}
 			],
 			"attributes": {
