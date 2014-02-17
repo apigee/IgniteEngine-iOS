@@ -19,7 +19,7 @@
     if (event.type == UIEventTypeMotion &&
         event.subtype == UIEventSubtypeMotionShake)
     {
-        [[IXAppManager sharedAppManager] startApplication];
+//        [[IXAppManager sharedAppManager] startApplication];
     }
 }
 
