@@ -5,7 +5,7 @@
             "width": "100%",
             "padding.top": 100,
             "color": {
-				"background": "#FFFFFF"
+				"background": "#000000"
 			}
         },
         "controls": [
@@ -17,10 +17,11 @@
                 "type": "Function",
                 "attributes": {
                     "id": "animatedImageControl",
-                    "function_name": "start_animation"
+                    "function_name": "restart_animation"
                 }
             }],
             "attributes": {
+                     "color.text":"#FFFFFF",
                 "horizontal_alignment":"center",
                 "layout_type": "relative",
                 "text": "Start Animation"
@@ -38,6 +39,7 @@
                 }
             }],
             "attributes": {
+                     "color.text":"#FFFFFF",
                 "horizontal_alignment":"center",
                 "layout_type": "relative",
                 "text": "Stop Animation"
@@ -48,16 +50,10 @@
             "type": "Image",
             "attributes": {
                 "width": "100%",
-                "height": "400",
+                "height": "100%",
                 "horizontal_alignment":"center",
-                "animated_images" : [
-                    "assets/images/bg_01.jpg",
-                    "assets/images/bg_02.jpg",
-                    "assets/images/bg_03.jpg",
-                    "assets/images/bg_04.jpg",
-                    "assets/images/bg_05.jpg"
-                ],
-                "animation_duration": 2,
+                "images.default" : "images/test2.gif",
+                     "gif_duration": 1,
                 "auto_animate": true
             }
          }
