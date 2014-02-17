@@ -39,33 +39,35 @@
 				},
 				{
 					"attributes": {
-						"duration": 0.2,
 						"id": "animation_fireplace"
 					},
 					"on": "touch_up",
 					"parameters": {
-						"alpha": 1
+						"visible": true
 					},
 					"type": "Modify"
 				},
 				{
 					"attributes": {
-						"function_name": "start_animation",
+						"delay": 0.75,
 						"id": "animation_fireplace"
 					},
 					"on": "touch_up",
-					"type": "Function"
+					"parameters": {
+						"visible": false
+					},
+					"type": "Modify"
 				},
 				{
 					"attributes": {
 						"delay": [
 							{
 								"if": "[[fireplace_on.alpha]] == 1",
-								"value": 1
+								"value": 0.75
 							},
 							{
 								"if": "[[fireplace_on.alpha]] == 0",
-								"value": 1.5
+								"value": 0.75
 							}
 						],
 						"duration": 0.1,

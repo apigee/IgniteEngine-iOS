@@ -1179,20 +1179,20 @@
 					{
 						"actions": [],
 						"attributes": {
-							"enabled": false,
 							"gif_duration": 1,
 							"height": 400,
 							"images.default": "/animations/animation_fireplace_626x400.gif",
 							"layout_type": "float",
 							"margin.left": 1025,
 							"margin.top": 47,
-							"visible": true,
+							"visible": false,
 							"width": 626
 						},
 						"controls": [],
-						"id": "image_animation_fireplace",
+						"id": "animation_fireplace",
 						"type": "Image"
 					}
+                    
 					
 				],
 				"id": "layout_main",
