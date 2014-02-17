@@ -4,20 +4,18 @@
       "default_view": "scene_00.json",
       "enable_layout_debugging": false,
       "id": "CLIENT-13",
-      "mode": "debug",
+      "mode": "release",
       "preload_images": [
-                          "assets/images/car_00_1024x768.jpg",
-                          "assets/images/car_02_1024x768.jpg",
-                          "assets/images/car_03_1024x768.jpg",
-                          "assets/images/car_04_1024x768.jpg",
-                          "assets/images/ext_05_1024x768.jpg",
-                          "assets/images/room_1_1784x768.jpg",
-                          "assets/images/room_0_1784x768.jpg",
-                          "assets/images/fireplace_on.jpg",
-                          "assets/images/fireplace_overlay_lightson.jpg",
-                          "assets/images/fireplace_overlay_lightsoff.jpg"
-
-        
+        "assets/images/car_00_1024x768.jpg",
+        "assets/images/car_02_1024x768.jpg",
+        "assets/images/car_03_1024x768.jpg",
+        "assets/images/car_04_1024x768.jpg",
+        "assets/images/ext_05_1024x768.jpg",
+        "assets/images/room_1_1784x768.jpg",
+        "assets/images/room_0_1784x768.jpg",
+        "assets/images/fireplace_on.jpg",
+        "assets/images/fireplace_overlay_lightson.jpg",
+        "assets/images/fireplace_overlay_lightsoff.jpg"
       ],
       "shows_navigation_bar": false,
       "title": [
