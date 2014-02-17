@@ -11,6 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIImageView+IXAdditions.h"
 #import "NSString+IXAdditions.h"
+#import <ImageIO/ImageIO.h>
 
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
@@ -33,7 +34,54 @@ static NSString* const kIXImagesTouchFailed = @"images_touch_failed";
 static NSString* const kIXStartAnimation = @"start_animation";
 static NSString* const kIXStopAnimation = @"stop_animation";
 
+@interface IXWeakTimerImageTarget : NSObject
+
+@property (nonatomic,weak) IXImage* imageControl;
+@property (nonatomic,assign) NSString* selectorName;
+
+@end
+
+@implementation IXWeakTimerImageTarget
+
+-(instancetype)initWithTarget:(IXImage*)image selectorName:(NSString*)selectorName
+{
+    self = [super init];
+    if( self )
+    {
+        _imageControl = image;
+        _selectorName = selectorName;
+    }
+    return self;
+}
+
+-(void)timerDidFire:(NSTimer*)timer
+{
+    if([self imageControl] && [self selectorName])
+    {
+        SEL selector = NSSelectorFromString([self selectorName]);
+        IMP imp = [[self imageControl] methodForSelector:selector];
+        void (*func)(id, SEL) = (void *)imp;
+        func([self imageControl], selector);
+    }
+    else
+    {
+        [timer invalidate];
+    }
+}
+
+@end
+
 @interface IXImage ()
+{
+    CGImageSourceRef _gifImageRef;
+}
+
+@property (nonatomic,strong) IXWeakTimerImageTarget* weakTimerTarget;
+
+@property (nonatomic,assign) BOOL shouldStopAnimation;
+@property (nonatomic,strong) NSTimer* gifTimer;
+@property (nonatomic,assign) NSUInteger gifNumberOfFrames;
+@property (nonatomic,assign) NSUInteger gifNextFrame;
 
 @property (nonatomic,strong) UIImageView* imageView;
 @property (nonatomic,strong) NSString* defaultImagePath;
@@ -49,13 +97,22 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 
 -(void)dealloc
 {
-    [_imageView stopAnimating];
+    _shouldStopAnimation = YES;
+    if( _gifImageRef != nil )
+    {
+        CFRelease(_gifImageRef);
+    }
+    [_gifTimer invalidate];
 }
 
 -(void)buildView
 {
     [super buildView];
     
+    _weakTimerTarget = [[IXWeakTimerImageTarget alloc] initWithTarget:self selectorName:@"performTransition"];
+    _gifImageRef = nil;
+    
+    _shouldStopAnimation = NO;
     _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     [[self contentView] addSubview:_imageView];
 }
@@ -70,34 +127,70 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     return size;
 }
 
+-(UIImage*)getImageAtCurrentIndex
+{
+    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(_gifImageRef, [self gifNextFrame], NULL);
+    
+    UIImage* image = [[UIImage alloc] initWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    
+    CGImageRelease(imageRef);
+    
+    return image;
+}
+
+-(void)performTransition
+{
+    if(!_shouldStopAnimation)
+    {
+        [[self imageView] setImage:[self getImageAtCurrentIndex]];
+        [self setGifNextFrame:[self gifNextFrame]+1];
+        if([self gifNextFrame] == [self gifNumberOfFrames]){
+            [self setGifNextFrame:0];
+        }
+    }
+    else
+    {
+        if([[self gifTimer] isValid])
+        {
+            [[self gifTimer] invalidate];
+            [self setGifTimer:nil];
+        }
+    }
+}
+
 -(void)applySettings
 {
     [super applySettings];
 
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXAnimatedImages] )
+    NSString* imagePath = [[self propertyContainer] getPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
+    if( [[imagePath pathExtension] isEqualToString:@"gif"])
     {
-//        NSArray* imagesPaths = [[self propertyContainer] getCommaSeperatedArrayListValue:kIXAnimatedImages defaultValue:nil];
-//        if( [imagesPaths count] )
-//        {
-//            NSMutableArray* imagesArray = [NSMutableArray arrayWithCapacity:[imagesPaths count]];
-//            for( NSString* imagePath in imagesPaths )
-//            {
-//                UIImage* image = [UIImage imageNamed:imagePath];
-//                if( image )
-//                {
-//                    [imagesArray addObject:image];
-//                }
-//            }
-//            [[self imageView] setAnimationImages:imagesArray];
-//            [[self imageView] setAnimationDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimationDuration defaultValue:0.2f]];
-//            [[self imageView] setAnimationRepeatCount:[[self propertyContainer] getIntPropertyValue:kIXAnimationRepeatCount defaultValue:0]];
-//            
-//            BOOL autoAnimate = [[self propertyContainer] getBoolPropertyValue:kIXAutoAnimate defaultValue:YES];
-//            if( autoAnimate )
-//            {
-//                [[self imageView] startAnimating];
-//            }
-//        }
+        if( ![[self defaultImagePath] isEqualToString:imagePath] )
+        {
+            [self setDefaultImagePath:imagePath];
+            float gifDuration = [[self propertyContainer] getFloatPropertyValue:@"gif_duration" defaultValue:1.0f];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData* data = [[NSData alloc] initWithContentsOfFile:imagePath];
+                
+                [[self gifTimer] invalidate];
+                if( _gifImageRef != nil )
+                {
+                    CFRelease(_gifImageRef);
+                    _gifImageRef = nil;
+                }
+                _gifImageRef = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+                _gifNumberOfFrames = CGImageSourceGetCount(_gifImageRef);
+                
+                dispatch_main_sync_safe(^{
+                    
+                    NSTimeInterval timeInterval = gifDuration/_gifNumberOfFrames;
+                    [self setGifTimer:nil];
+                    [self setGifNextFrame:0];
+                    [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:timeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
+                    
+                });
+            });
+        }
     }
     else
     {
