@@ -67,6 +67,18 @@
       }
     ],
     "controls": [
+    {
+        "attributes": {
+          "height": "100%",
+          "images.default": "/images/ext_00_1024x768.jpg",
+          "layout_type": "absolute",
+          "alpha": 1,
+          "width": "100%"
+        },
+        "controls": [],
+        "id": "image_ext_00",
+        "type": "Image"
+      },
       {
         "attributes": {
           "auto_play": true,
@@ -83,7 +95,7 @@
       {
         "attributes": {
           "height": "100%",
-          "images.default": "/images/ext_00_1024x768.png",
+          "images.default": "/images/ext_00_1024x768.jpg",
           "layout_type": "absolute",
           "alpha": 0,
           "width": "100%"

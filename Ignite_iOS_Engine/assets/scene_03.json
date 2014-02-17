@@ -277,7 +277,7 @@
 							"width": 440
 						},
 						"id": "fireplace_overlay_lightson",
-						"type": "1Image"
+						"type": "Image"
 					},
 					{
 						"attributes": {
@@ -291,7 +291,7 @@
 							"width": 440
 						},
 						"id": "fireplace_overlay_lightsoff",
-						"type": "1Image"
+						"type": "Image"
 					},
 					{
 						"attributes": {
@@ -585,7 +585,7 @@
 					{
 						"attributes": {
 							"auto_play": true,
-							"isPlaying": false,
+							"isPlaying": true,
 							"sound_location": "/audio/classical.aac"
 						},
 						"id": "mediaplayer_music",
