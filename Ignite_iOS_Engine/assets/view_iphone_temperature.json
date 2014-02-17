@@ -117,46 +117,31 @@
 					},
 					"type": "Function"
 				},
+				
 				{
 					"attributes": {
-						"duration": 0.2,
 						"id": "animation_nest"
 					},
 					"on": "touch",
 					"parameters": {
-						"alpha": 1
+						"visible": true
 					},
 					"type": "Modify"
 				},
 				{
 					"attributes": {
-						"delay": 0.1,
-						"function_name": "start_animation",
-						"id": "animation_nest"
-					},
-					"on": "touch",
-					"type": "Function"
-				},
-				{
-					"attributes": {
-						"delay": 1,
-						"function_name": "satop_animation",
-						"id": "animation_nest"
-					},
-					"on": "touch_up",
-					"type": "Function"
-				},
-				{
-					"attributes": {
-						"duration": 0.2,
+						"delay": 0.75,
 						"id": "animation_nest"
 					},
 					"on": "touch_up",
 					"parameters": {
-						"alpha": 0
+						"visible": false
 					},
 					"type": "Modify"
 				},
+
+
+
 				{
 					"attributes": {
 						"function_name": "play",

@@ -116,11 +116,24 @@
 				},
 				{
 					"attributes": {
-						"function_name": "start_animation",
 						"id": "animation_lamp"
 					},
-					"on": "touch",
-					"type": "Function"
+					"on": "touch_up",
+					"parameters": {
+						"visible": true
+					},
+					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"delay": 0.75,
+						"id": "animation_lamp"
+					},
+					"on": "touch_up",
+					"parameters": {
+						"visible": false
+					},
+					"type": "Modify"
 				},
 				{
 					"attributes": {

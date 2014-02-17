@@ -1191,6 +1191,70 @@
 						"controls": [],
 						"id": "animation_fireplace",
 						"type": "Image"
+					},
+					{
+						"actions": [],
+						"attributes": {
+							"gif_duration": 1,
+							"height": 400,
+							"images.default": "/animations/animation_tv_626x400.gif",
+							"layout_type": "float",
+							"margin.left": 1025,
+							"margin.top": 47,
+							"visible": false,
+							"width": 626
+						},
+						"controls": [],
+						"id": "animation_tv",
+						"type": "Image"
+					},
+					{
+						"actions": [],
+						"attributes": {
+							"gif_duration": 1,
+							"height": 400,
+							"images.default": "/animations/animation_sonos_626x400.gif",
+							"layout_type": "float",
+							"margin.left": 1025,
+							"margin.top": 47,
+							"visible": false,
+							"width": 626
+						},
+						"controls": [],
+						"id": "animation_sonos",
+						"type": "Image"
+					},
+					{
+						"actions": [],
+						"attributes": {
+							"gif_duration": 1,
+							"height": 400,
+							"images.default": "/animations/animation_lamp_626x400.gif",
+							"layout_type": "float",
+							"margin.left": 1025,
+							"margin.top": 47,
+							"visible": false,
+							"width": 626
+						},
+						"controls": [],
+						"id": "animation_lamp",
+						"type": "Image"
+					},
+					{
+						"actions": [],
+						"attributes": {
+							"gif_duration": 1,
+							"height": 200,
+							"images.default": "/animations/animation_nest_400x200.gif",
+							"layout_type": "float",
+							"margin.left": 120,
+							"margin.top": 80,
+							"visible": false,
+							"width": 400
+						},
+						"controls": [],
+						"id": "animation_nest",
+						"type": "Image"
 					}
                     
 					

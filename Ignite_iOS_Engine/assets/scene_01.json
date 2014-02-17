@@ -1323,20 +1323,22 @@
 				"id": "view_dash_temperature",
 				"type": "Layout"
 			},
-			{
-				"actions": [],
-				"attributes": {
-					"enabled": false,
-					"height": "100%",
-					"images.default": "/images/test4.gif",
-					"layout_type": "absolute",
-					"visible": false,
-					"width": "100%"
-				},
-				"controls": [],
-				"id": "image_animation_gps",
-				"type": "Image"
-			}
+                     {
+                     "actions": [],
+                     "attributes": {
+                     "gif_duration": 0.75,
+                     "height": 150,
+                     "images.default": "/animations/animation_gps_250x150.gif",
+                     "layout_type": "float",
+                     "margin.left": 603,
+                     "margin.top": 104,
+                     "visible": false,
+                     "width": 250
+                     },
+                     "controls": [],
+                     "id": "image_animation_gps",
+                     "type": "Image"
+                     }
 		]
 	}
 }

@@ -77,22 +77,25 @@
 				},
 				{
 					"attributes": {
-						"duration": 0.2,
 						"id": "animation_sonos"
 					},
 					"on": "touch_up",
 					"parameters": {
-						"alpha": 1
+						"visible": true
 					},
 					"type": "Modify"
 				},
 				{
 					"attributes": {
-						"function_name": "start_animation",
-						"id": "animation_sonos"
+						"id": "animation_sonos",
+						"delay": 0.75
+
 					},
 					"on": "touch_up",
-					"type": "Function"
+					"parameters": {
+						"visible": false
+					},
+					"type": "Modify"
 				},
 				{
 					"attributes": {
