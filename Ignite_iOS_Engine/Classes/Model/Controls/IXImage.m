@@ -32,6 +32,7 @@ static NSString* const kIXImagesTouchFailed = @"images_touch_failed";
 
 // IXImage Functions
 static NSString* const kIXStartAnimation = @"start_animation";
+static NSString* const kIXReStartAnimation = @"restart_animation";
 static NSString* const kIXStopAnimation = @"stop_animation";
 
 @interface IXWeakTimerImageTarget : NSObject
@@ -82,6 +83,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 @property (nonatomic,strong) NSTimer* gifTimer;
 @property (nonatomic,assign) NSUInteger gifNumberOfFrames;
 @property (nonatomic,assign) NSUInteger gifNextFrame;
+@property (nonatomic,assign) NSTimeInterval gifTimerTimeInterval;
 
 @property (nonatomic,strong) UIImageView* imageView;
 @property (nonatomic,strong) NSString* defaultImagePath;
@@ -129,6 +131,11 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 
 -(UIImage*)getImageAtCurrentIndex
 {
+    if( [self gifNextFrame] >= [self gifNumberOfFrames] || _gifImageRef == nil )
+    {
+        return nil;
+    }
+    
     CGImageRef imageRef = CGImageSourceCreateImageAtIndex(_gifImageRef, [self gifNextFrame], NULL);
     
     UIImage* image = [[UIImage alloc] initWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
@@ -140,7 +147,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 
 -(void)performTransition
 {
-    if(!_shouldStopAnimation)
+    if(![self shouldStopAnimation])
     {
         [[self imageView] setImage:[self getImageAtCurrentIndex]];
         [self setGifNextFrame:[self gifNextFrame]+1];
@@ -173,6 +180,8 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                 NSData* data = [[NSData alloc] initWithContentsOfFile:imagePath];
                 
                 [[self gifTimer] invalidate];
+                [self setGifTimer:nil];
+
                 if( _gifImageRef != nil )
                 {
                     CFRelease(_gifImageRef);
@@ -180,13 +189,12 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                 }
                 _gifImageRef = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
                 _gifNumberOfFrames = CGImageSourceGetCount(_gifImageRef);
+                _gifTimerTimeInterval = gifDuration/_gifNumberOfFrames;
                 
                 dispatch_main_sync_safe(^{
                     
-                    NSTimeInterval timeInterval = gifDuration/_gifNumberOfFrames;
-                    [self setGifTimer:nil];
                     [self setGifNextFrame:0];
-                    [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:timeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
+                    [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
                     
                 });
             });
@@ -254,22 +262,35 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 {
     if( [functionName isEqualToString:kIXStartAnimation] )
     {
-        if( [self isAnimationPaused] )
+        if( [self gifTimer] == nil || ![[self gifTimer] isValid] )
         {
-            [self setAnimationPaused:NO];
-            [[self imageView] resumeAnimation];
+            [[self gifTimer] invalidate];
+            [self setGifTimer:nil];            
+            if( _gifImageRef != nil )
+            {
+                [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
+            }
         }
-        else if( ![[self imageView] isAnimating] )
+    }
+    else if( [functionName isEqualToString:kIXReStartAnimation] )
+    {
+        if( [self gifTimer] == nil || ![[self gifTimer] isValid] )
         {
-            [[self imageView] startAnimating];
+            [[self gifTimer] invalidate];
+            [self setGifTimer:nil];
+            if( _gifImageRef != nil )
+            {
+                [self setGifNextFrame:0];
+                [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
+            }
         }
     }
     else if( [functionName isEqualToString:kIXStopAnimation] )
     {
-        if( [[self imageView] isAnimating] && ![self isAnimationPaused] )
+        if( [[self gifTimer] isValid] )
         {
-            [self setAnimationPaused:YES];
-            [[self imageView] pauseAnimation];
+            [[self gifTimer] invalidate];
+            [self setGifTimer:nil];
         }
     }
     else
