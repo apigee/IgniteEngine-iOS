@@ -168,7 +168,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 -(void)applySettings
 {
     [super applySettings];
-
+    
     NSString* imagePath = [[self propertyContainer] getPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
     if( [[imagePath pathExtension] isEqualToString:@"gif"])
     {
@@ -198,6 +198,27 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                     
                 });
             });
+        }
+        
+        if( _gifImageRef )
+        {
+            BOOL previousShouldStop = [self shouldStopAnimation];
+            [self setShouldStopAnimation:[[self contentView] isHidden]];
+            
+            if( [self shouldStopAnimation] )
+            {
+                [[self imageView] setImage:nil];
+                [[self gifTimer] invalidate];
+                [self setGifTimer:nil];
+            }
+            else
+            {
+                if( previousShouldStop != [self shouldStopAnimation] )
+                {
+                    [self setGifNextFrame:0];
+                    [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
+                }
+            }
         }
     }
     else
@@ -280,6 +301,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
             [self setGifTimer:nil];
             if( _gifImageRef != nil )
             {
+                [self setShouldStopAnimation:NO];
                 [self setGifNextFrame:0];
                 [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
             }
@@ -289,6 +311,8 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     {
         if( [[self gifTimer] isValid] )
         {
+            [self setShouldStopAnimation:YES];
+            [[self imageView] setImage:nil];
             [[self gifTimer] invalidate];
             [self setGifTimer:nil];
         }
