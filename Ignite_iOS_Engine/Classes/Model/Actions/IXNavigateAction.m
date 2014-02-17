@@ -31,6 +31,10 @@
     {
         [self performPopNavigation:animationTransition];
     }
+    else if( [navigateStackType isEqualToString:@"replace"] )
+    {
+        [self performReplaceNavigation:animationTransition];
+    }
 }
 
 +(UIViewAnimationTransition)stringToViewAnimationTransition:(NSString*)string
@@ -105,6 +109,49 @@
         {
             [navController popViewControllerAnimated:animated];
         }
+    }
+}
+
+-(void)performReplaceNavigation:(UIViewAnimationTransition)animationTranisitionType
+{
+    NSString* navigateTo = [[self actionProperties] getPathPropertyValue:@"to" basePath:nil defaultValue:nil];
+    if( navigateTo )
+    {
+        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:navigateTo
+                                                     asynch:YES
+                                            completionBlock:^(id jsonObject, NSError *error) {
+                                                
+                                                IXViewController* viewController = nil;
+                                                id viewDictJSONValue = [jsonObject objectForKey:@"view"];
+                                                if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
+                                                {
+                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue pathToJSON:navigateTo];
+                                                }
+                                                
+                                                if( viewController != nil )
+                                                {
+                                                    UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+                                                    if ( animationTranisitionType == UIViewAnimationOptionTransitionNone )
+                                                    {
+                                                        [navController setViewControllers:@[viewController] animated:YES];
+                                                    }
+                                                    else
+                                                    {
+                                                        CGFloat delay = [[self actionProperties] getFloatPropertyValue:@"nav_animation_delay" defaultValue:0.0f];
+                                                        CGFloat duration = [[self actionProperties] getFloatPropertyValue:@"nav_animation_duration" defaultValue:0.75f];
+                                                        [UIView animateWithDuration:duration
+                                                                              delay:delay
+                                                                            options:0
+                                                                         animations:^{
+                                                                             
+                                                                             [navController setViewControllers:@[viewController] animated:NO];
+                                                                             [UIView setAnimationTransition:animationTranisitionType
+                                                                                                    forView:[navController view]
+                                                                                                      cache:NO];
+                                                                         } completion:nil];
+                                                    }
+                                                }
+                                            }];
     }
 }
 
