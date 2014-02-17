@@ -11,7 +11,7 @@
 			{
 				"attributes": {
 					"color": {
-						"background": "#00FF00"
+						"background": "#000000"
 					},
 					"enabled": true,
 					"height": "100%",
@@ -277,7 +277,7 @@
 							"width": 440
 						},
 						"id": "fireplace_overlay_lightson",
-						"type": "Image"
+						"type": "1Image"
 					},
 					{
 						"attributes": {
@@ -291,7 +291,7 @@
 							"width": 440
 						},
 						"id": "fireplace_overlay_lightsoff",
-						"type": "Image"
+						"type": "1Image"
 					},
 					{
 						"attributes": {

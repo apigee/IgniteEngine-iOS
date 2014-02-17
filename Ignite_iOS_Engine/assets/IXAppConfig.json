@@ -15,7 +15,19 @@
         "assets/images/room_0_1784x768.jpg",
         "assets/images/fireplace_on.jpg",
         "assets/images/fireplace_overlay_lightson.jpg",
-        "assets/images/fireplace_overlay_lightsoff.jpg"
+        "assets/images/fireplace_overlay_lightsoff.jpg",
+                         "assets/images/step_next_418x62",
+                         "assets/images/car_cloud_1024x768",
+                         "assets/images/car_screen_aa_1024x768",
+                         "assets/images/car_screen_a_1024x768",
+                         "assets/images/car_screen_c_1024x768",
+                         "assets/images/car_screen_d_1024x768",
+                         "assets/images/car_screen_e_1024x768",
+                         "assets/images/car_screen_f_1024x768",
+                        "assets/images/ car_screen_weather_1024x768",
+                         "assets/images/car_screen_temp_1024x768",
+                         "assets/images/step_work_1_418x62",
+                         "assets/images/car_00_1024x768"
       ],
       "shows_navigation_bar": false,
       "title": [

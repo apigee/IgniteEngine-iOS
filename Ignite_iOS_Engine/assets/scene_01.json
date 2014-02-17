@@ -696,7 +696,6 @@
 					},
 					{
 						"attributes": {
-							"nav_animation_type": "curl_up",
 							"nav_stack_type": "push",
 							"to": "scene_02.json"
 						},
