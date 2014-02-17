@@ -48,10 +48,11 @@
 
         if (!duration)
         {
-            duration = (1.0f/10.0f)*count;
+            //duration = (1.0f/10.0f)*count;
+            duration = 0.75;
         }
 
-        animatedImage = [UIImage animatedImageWithImages:images duration:duration];
+        animatedImage = [UIImage animatedImageWithImages:images duration:0.75];
     }
 
     CFRelease(source);
