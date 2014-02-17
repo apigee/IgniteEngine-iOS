@@ -1015,8 +1015,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: APIGEE CORPORATION";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jeremy Anticouni (DTK434NTWA)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jeremy Anticouni (DTK434NTWA)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1032,7 +1032,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "2A38D33A-19B3-41FD-98C4-843C411A7490";
+				PROVISIONING_PROFILE = "6B6CB82F-E91E-447B-A3FF-7DB78035063C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1043,8 +1043,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: APIGEE CORPORATION";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jeremy Anticouni (DTK434NTWA)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jeremy Anticouni (DTK434NTWA)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1060,7 +1060,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "2A38D33A-19B3-41FD-98C4-843C411A7490";
+				PROVISIONING_PROFILE = "6B6CB82F-E91E-447B-A3FF-7DB78035063C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
