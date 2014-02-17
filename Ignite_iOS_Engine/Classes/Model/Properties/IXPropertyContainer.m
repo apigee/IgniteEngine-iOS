@@ -278,16 +278,15 @@
                 NSData* data = [[NSData alloc] initWithContentsOfFile:imagePath];
                 UIImage* returnImage = [UIImage ix_animatedGIFWithData:data withDuration:gifDuration];
                 dispatch_main_sync_safe(^{
-                    if( returnImage && successBlock )
+                    if( returnImage && successBlock != nil )
                     {
-                        successBlock(returnImage);
+                        successBlock([UIImage imageWithCGImage:[returnImage CGImage]]);
                     }
-                    else
+                    else if( failBlock != nil )
                     {
                         failBlock(nil);
                     }
                 });
-                [[SDImageCache sharedImageCache] storeImage:returnImage forKey:[imageURL absoluteString]];
             });
             
             return;
@@ -301,7 +300,7 @@
                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
                                                          if (image) {
                                                              if( successBlock )
-                                                                successBlock(image);
+                                                                successBlock([UIImage imageWithCGImage:[image CGImage]]);
                                                          } else {
                                                              if( failBlock )
                                                                 failBlock(error);

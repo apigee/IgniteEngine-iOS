@@ -76,28 +76,28 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXAnimatedImages] )
     {
-        NSArray* imagesPaths = [[self propertyContainer] getCommaSeperatedArrayListValue:kIXAnimatedImages defaultValue:nil];
-        if( [imagesPaths count] )
-        {
-            NSMutableArray* imagesArray = [NSMutableArray arrayWithCapacity:[imagesPaths count]];
-            for( NSString* imagePath in imagesPaths )
-            {
-                UIImage* image = [UIImage imageNamed:imagePath];
-                if( image )
-                {
-                    [imagesArray addObject:image];
-                }
-            }
-            [[self imageView] setAnimationImages:imagesArray];
-            [[self imageView] setAnimationDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimationDuration defaultValue:0.2f]];
-            [[self imageView] setAnimationRepeatCount:[[self propertyContainer] getIntPropertyValue:kIXAnimationRepeatCount defaultValue:0]];
-            
-            BOOL autoAnimate = [[self propertyContainer] getBoolPropertyValue:kIXAutoAnimate defaultValue:YES];
-            if( autoAnimate )
-            {
-                [[self imageView] startAnimating];
-            }
-        }
+//        NSArray* imagesPaths = [[self propertyContainer] getCommaSeperatedArrayListValue:kIXAnimatedImages defaultValue:nil];
+//        if( [imagesPaths count] )
+//        {
+//            NSMutableArray* imagesArray = [NSMutableArray arrayWithCapacity:[imagesPaths count]];
+//            for( NSString* imagePath in imagesPaths )
+//            {
+//                UIImage* image = [UIImage imageNamed:imagePath];
+//                if( image )
+//                {
+//                    [imagesArray addObject:image];
+//                }
+//            }
+//            [[self imageView] setAnimationImages:imagesArray];
+//            [[self imageView] setAnimationDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimationDuration defaultValue:0.2f]];
+//            [[self imageView] setAnimationRepeatCount:[[self propertyContainer] getIntPropertyValue:kIXAnimationRepeatCount defaultValue:0]];
+//            
+//            BOOL autoAnimate = [[self propertyContainer] getBoolPropertyValue:kIXAutoAnimate defaultValue:YES];
+//            if( autoAnimate )
+//            {
+//                [[self imageView] startAnimating];
+//            }
+//        }
     }
     else
     {

@@ -63,11 +63,12 @@
     float duration = [[self actionProperties] getFloatPropertyValue:@"duration" defaultValue:0.0f];
     if( duration > 0.0f )
     {
+        __weak typeof(self) weakSelf = self;
         [UIView animateWithDuration:duration
                               delay:0.0f
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-                             [self performModify];
+                             [weakSelf performModify];
                          } completion:nil];
     }
     else

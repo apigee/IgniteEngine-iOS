@@ -68,10 +68,11 @@
         }
         
         if( asynch )
-        {            
+        {
+            __weak typeof(self) weakSelf = self;
             IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:url] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[self jsonCache] setObject:JSON forKey:path];
+                    [[weakSelf jsonCache] setObject:JSON forKey:path];
                 });
                 grabCompletionBlock(JSON,nil);
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -93,8 +94,9 @@
                 id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
                 if( jsonObject )
                 {
+                    __weak typeof(self) weakSelf = self;
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                        [[self jsonCache] setObject:jsonObject forKey:path];
+                        [[weakSelf jsonCache] setObject:jsonObject forKey:path];
                     });
                     grabCompletionBlock(jsonObject,nil);
                 }

@@ -4,7 +4,7 @@
       "default_view": "scene_00.json",
       "enable_layout_debugging": false,
       "id": "CLIENT-13",
-      "mode": "debug",
+      "mode": "release",
       "preload_images": [
                           "assets/images/car_00_1024x768.jpg",
                           "assets/images/car_02_1024x768.jpg",

@@ -97,11 +97,12 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     [[self knobControl] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
     [[self knobControl] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];
     
+    __weak typeof(self) weakSelf = self;
     [[self propertyContainer] getImageProperty:kIXImagesPointer
                                   successBlock:^(UIImage *image) {
                                       if(image)
                                       {
-                                          [[self knobControl] setKnobImage:image forState:UIControlStateNormal];
+                                          [[weakSelf knobControl] setKnobImage:image forState:UIControlStateNormal];
                                       }
                                   } failBlock:^(NSError *error) {
                                   }];
@@ -109,7 +110,7 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
                                   successBlock:^(UIImage *image) {
                                       if(image)
                                       {
-                                          [[self knobControl] setBackgroundImage:image];
+                                          [[weakSelf knobControl] setBackgroundImage:image];
                                       }
                                   } failBlock:^(NSError *error) {
                                   }];

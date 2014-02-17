@@ -25,7 +25,7 @@
 
     if( [navigateStackType isEqualToString:@"push"] )
     {
-        [self performPushNavigation:animationTransition];
+        [self performReplaceNavigation:animationTransition];
     }
     else if( [navigateStackType isEqualToString:@"pop"] )
     {
