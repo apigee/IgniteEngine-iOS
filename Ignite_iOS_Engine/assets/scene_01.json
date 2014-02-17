@@ -63,214 +63,227 @@
 				"id": "image_car_01",
 				"type": "Image"
 			},
+                     {
+                     "actions": [
+                                 {
+                                 "attributes": {
+                                 "delay": 2,
+                                 "function_name": "stop",
+                                 "id": "sound_bmw_chime"
+                                 },
+                                 "on": "touch_up",
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 2,
+                                 "function_name": "play",
+                                 "id": "sound_car_on"
+                                 },
+                                 "on": "touch_up",
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 0,
+                                 "duration": 0.25,
+                                 "id": "image_car_01"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "alpha": 0
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "duration": 0.1,
+                                 "id": "image_car_screen_a"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "alpha": 1
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 1.25,
+                                 "id": "knob_speedo"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "knob_animation_duration": 0.75
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 0.25,
+                                 "function_name": "update_knob_value",
+                                 "id": "knob_speedo"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "animated": true,
+                                 "value": 85
+                                 },
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "id": "knob_speedo"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "delay": 1.25,
+                                 "knob_animation_duration": 0.75
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 1,
+                                 "function_name": "update_knob_value",
+                                 "id": "knob_speedo"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "animated": true,
+                                 "value": 52.5
+                                 },
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "id": "knob_tach"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "knob_animation_duration": 0.75
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 0.25,
+                                 "function_name": "update_knob_value",
+                                 "id": "knob_tach"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "animated": true,
+                                 "value": 85
+                                 },
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 1,
+                                 "function_name": "update_knob_value",
+                                 "id": "knob_tach"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "animated": true,
+                                 "value": 52.5
+                                 },
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "id": "knob_tach"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "knob_animation_duration": 0.75
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 3,
+                                 "id": "timer_tach"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "enabled": true
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 5,
+                                 "duration": 0.25,
+                                 "id": "image_car_02"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "alpha": 0
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 6.5,
+                                 "duration": 0.25,
+                                 "id": "image_car_04"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "alpha": 0
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 4.5,
+                                 "duration": 0.1,
+                                 "id": "image_car_screen_b"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "alpha": 1
+                                 },
+                                 "type": "Modify"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 4.25,
+                                 "function_name": "play",
+                                 "id": "sound_car_screen_b"
+                                 },
+                                 "on": "touch_up",
+                                 "type": "Function"
+                                 },
+                                 {
+                                 "attributes": {
+                                 "delay": 7,
+                                 "duration": 0.1,
+                                 "id": "image_car_screen_c"
+                                 },
+                                 "on": "touch_up",
+                                 "parameters": {
+                                 "alpha": 1
+                                 },
+                                 "type": "Modify"
+                                 }
+                                 ],
+                     "attributes": {
+                     "alpha": 1,
+                     "height": "100%",
+                     "images.default": "/images/car_screen_aa_1024x768.png",
+                     "layout_type": "absolute",
+                     "width": "100%"
+                     },
+                     "controls": [],
+                     "id": "car_screen_aa",
+                     "type": "Image"
+                     },
 			{
-				"actions": [
-					{
-						"attributes": {
-							"delay": 2,
-							"function_name": "stop",
-							"id": "sound_bmw_chime"
-						},
-						"on": "touch_up",
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"delay": 2,
-							"function_name": "play",
-							"id": "sound_car_on"
-						},
-						"on": "touch_up",
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"delay": 0,
-							"duration": 0.25,
-							"id": "image_car_01"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"alpha": 0
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"duration": 0.1,
-							"id": "image_car_screen_a"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"alpha": 1
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 1.25,
-							"id": "knob_speedo"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"knob_animation_duration": 0.75
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 0.25,
-							"function_name": "update_knob_value",
-							"id": "knob_speedo"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"animated": true,
-							"value": 85
-						},
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"id": "knob_speedo"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"delay": 1.25,
-							"knob_animation_duration": 0.75
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 1,
-							"function_name": "update_knob_value",
-							"id": "knob_speedo"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"animated": true,
-							"value": 52.5
-						},
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"id": "knob_tach"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"knob_animation_duration": 0.75
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 0.25,
-							"function_name": "update_knob_value",
-							"id": "knob_tach"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"animated": true,
-							"value": 85
-						},
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"delay": 1,
-							"function_name": "update_knob_value",
-							"id": "knob_tach"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"animated": true,
-							"value": 52.5
-						},
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"id": "knob_tach"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"knob_animation_duration": 0.75
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 3,
-							"id": "timer_tach"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"enabled": true
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 5,
-							"duration": 0.25,
-							"id": "image_car_02"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"alpha": 0
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 6.5,
-							"duration": 0.25,
-							"id": "image_car_04"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"alpha": 0
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 4.5,
-							"duration": 0.1,
-							"id": "image_car_screen_b"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"alpha": 1
-						},
-						"type": "Modify"
-					},
-					{
-						"attributes": {
-							"delay": 4.25,
-							"function_name": "play",
-							"id": "sound_car_screen_b"
-						},
-						"on": "touch_up",
-						"type": "Function"
-					},
-					{
-						"attributes": {
-							"delay": 7,
-							"duration": 0.1,
-							"id": "image_car_screen_c"
-						},
-						"on": "touch_up",
-						"parameters": {
-							"alpha": 1
-						},
-						"type": "Modify"
-					}
-				],
 				"attributes": {
-					"alpha": 1,
+                     "enabled": false,
+                     "alpha": 1,
 					"height": "100%",
 					"images.default": "/images/car_screen_aa_1024x768.png",
 					"layout_type": "absolute",
@@ -739,7 +752,7 @@
 						},
 						"on": "timer_fired",
 						"parameters": {
-							"alpha": 0.1
+							"alpha": 0.25
 						},
 						"type": "Modify"
 					},

@@ -74,7 +74,7 @@
           "height": "100%",
           "isOn": false,
           "layout_type": "absolute",
-          "video": "/videos/scene02.mp4",
+          "video": "/videos/scene_02.mov",
           "width": "100%"
         },
         "id": "mediaplayer_scene02",
