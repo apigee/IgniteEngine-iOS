@@ -1004,7 +1004,7 @@
 					},
 					"height": 139,
 					"images": {
-						"pointer": "examples/images/marker2.png"
+						"pointer": "/images/marker2.png"
 					},
 					"initial_value": 52.5,
 					"knob_animation_duration": 0.5,
@@ -1026,7 +1026,7 @@
 					},
 					"height": 139,
 					"images": {
-						"pointer": "examples/images/marker2.png"
+						"pointer": "/images/marker2.png"
 					},
 					"initial_value": 52.5,
 					"knob_animation_duration": 0.5,

@@ -49,7 +49,7 @@
 				},
 				{
 					"attributes": {
-						"delay": 0.75,
+						"delay": 1,
 						"id": "animation_fireplace"
 					},
 					"on": "touch_up",
