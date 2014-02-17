@@ -24,23 +24,18 @@
     NSString* objectID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
     NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
     
-    BOOL needsToLayout = NO;
     for( IXBaseObject* baseObject in objectsWithID )
     {
         [baseObject applySettings];
+        
         if( [baseObject isKindOfClass:[IXBaseControl class]] )
         {
-            needsToLayout = YES;
+            [((IXBaseControl*)baseObject) layoutControl];
         }
         else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
         {
             [((IXBaseDataProvider*)baseObject) loadData:YES];
         }
-    }
-    
-    if( needsToLayout )
-    {
-        [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
     }
 }
 

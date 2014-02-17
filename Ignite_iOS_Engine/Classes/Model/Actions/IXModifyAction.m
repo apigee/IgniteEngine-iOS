@@ -39,19 +39,12 @@
                 [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
             }
             
-            BOOL needsToLayout = NO;
+            BOOL needsToLayout = [[self parameterProperties] hasLayoutProperties];
             for( IXBaseObject* baseObject in objectsWithID )
             {
                 [baseObject applySettings];
                 
-                if( [baseObject isKindOfClass:[IXBaseControl class]] )
-                {
-                    if( [((IXBaseControl*)baseObject) contentView] )
-                    {
-                        needsToLayout = YES;
-                    }
-                }
-                else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
+                if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
                 {
                     [((IXBaseDataProvider*)baseObject) loadData:NO];
                 }

@@ -22,6 +22,8 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 
 @property (nonatomic,weak) IXSandbox* sandbox;
 
+-(BOOL)hasLayoutProperties;
+
 -(void)addProperty:(IXProperty*)property;
 -(void)addProperty:(IXProperty*)property replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties;
 -(void)addProperties:(NSArray*)properties;

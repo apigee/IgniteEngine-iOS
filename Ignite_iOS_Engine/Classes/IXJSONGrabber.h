@@ -13,6 +13,7 @@ typedef void(^IXJSONGrabCompletedBlock)(id jsonObject, NSError *error);
 @interface IXJSONGrabber : NSObject
 
 +(IXJSONGrabber*)sharedJSONGrabber;
++(void)clearCache;
 
 -(void)grabJSONFromPath:(NSString*)path
                  asynch:(BOOL)asynch

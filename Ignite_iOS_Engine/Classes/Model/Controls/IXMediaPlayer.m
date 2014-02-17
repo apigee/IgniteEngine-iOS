@@ -62,6 +62,8 @@
 @property (nonatomic,strong) ALMoviePlayerController *moviePlayer;
 @property (nonatomic,strong) NSURL* movieURL;
 @property (nonatomic,assign) CGRect lastFrameForMovieControl;
+@property (nonatomic,assign) MPMoviePlaybackState lastKnownState;
+@property (nonatomic,assign) BOOL didFireStopped;
 
 @end
 
@@ -69,6 +71,9 @@
 
 -(void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackStateDidChangeNotification object:_moviePlayer];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayer];
+
     [_moviePlayer setDelegate:nil];
     [_moviePlayer stop];
 }
@@ -160,6 +165,7 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enteredFullscreen:) name:MPMoviePlayerDidEnterFullscreenNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitedFullscreen:) name:MPMoviePlayerDidExitFullscreenNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackStateChanged:) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackStateChanged) name:MPMoviePlayerPlaybackStateDidChangeNotification object:[self moviePlayer]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackStopped) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     
     
@@ -189,7 +195,27 @@
 
 -(void)moviePlaybackStopped
 {
-    [[self actionContainer] executeActionsForEventNamed:@"movie_stopped"];
+    if( ![self didFireStopped] )
+    {
+        [self setDidFireStopped:YES];
+        [[self actionContainer] executeActionsForEventNamed:@"movie_stopped"];
+    }
+}
+
+-(void)moviePlaybackStateChanged
+{
+    MPMoviePlaybackState currentPlaybackState = [[self moviePlayer] playbackState];
+    if( [self lastKnownState] != currentPlaybackState )
+    {
+        [self setLastKnownState:currentPlaybackState];
+        switch (currentPlaybackState) {
+            case MPMoviePlaybackStatePlaying:
+                [self setDidFireStopped:NO];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer

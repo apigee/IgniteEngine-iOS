@@ -199,6 +199,28 @@
     return layoutInfoCopy;
 }
 
++(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName
+{
+    BOOL triggersLayout = NO;
+    if( [propertyName isEqualToString:@"visible"] || [propertyName isEqualToString:@"layout_type"] )
+    {
+        triggersLayout = YES;
+    }
+    else if( [propertyName rangeOfString:@"height"].location != NSNotFound || [propertyName rangeOfString:@"width"].location != NSNotFound  )
+    {
+        triggersLayout = YES;
+    }
+    else if( [propertyName hasPrefix:@"margin"] || [propertyName hasPrefix:@"padding"] )
+    {
+        triggersLayout = YES;
+    }
+    else if( [propertyName hasSuffix:@"position"] || [propertyName hasSuffix:@"alignment"] )
+    {
+        triggersLayout = YES;
+    }
+    return triggersLayout;
+}
+
 -(void)refreshLayoutInfo
 {
     _hasSeenLayout = NO;

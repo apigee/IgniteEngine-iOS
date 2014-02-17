@@ -15,6 +15,7 @@
 
 #import "ColorUtils.h"
 #import "SDWebImageManager.h"
+#import "UIImage+IXAdditions.h"
 
 @interface IXPropertyContainer ()
 
@@ -100,6 +101,18 @@
     {
         [propertyArray addObject:property];
     }
+}
+
+-(BOOL)hasLayoutProperties
+{
+    BOOL hasLayoutProperties = NO;
+    for( NSString* propertyName in [[self propertiesDict] allKeys] )
+    {
+        hasLayoutProperties = [IXControlLayoutInfo doesPropertyNameTriggerLayout:propertyName];
+        if( hasLayoutProperties )
+            break;
+    }
+    return hasLayoutProperties;
 }
 
 -(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties
@@ -256,6 +269,28 @@
         else
         {
             imageURL = [NSURL URLWithString:imagePath];
+        }
+        
+        if([[imagePath pathExtension] isEqualToString:@"gif"])
+        {
+            float gifDuration = [self getFloatPropertyValue:@"gif_duration" defaultValue:1.0f];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData* data = [[NSData alloc] initWithContentsOfFile:imagePath];
+                UIImage* returnImage = [UIImage ix_animatedGIFWithData:data withDuration:gifDuration];
+                dispatch_main_sync_safe(^{
+                    if( returnImage && successBlock )
+                    {
+                        successBlock(returnImage);
+                    }
+                    else
+                    {
+                        failBlock(nil);
+                    }
+                });
+                [[SDImageCache sharedImageCache] storeImage:returnImage forKey:[imageURL absoluteString]];
+            });
+            
+            return;
         }
         
         if( imageURL )

@@ -107,4 +107,9 @@
     }
 }
 
++(void)clearCache
+{
+    [[[IXJSONGrabber sharedJSONGrabber] jsonCache] removeAllObjects];
+}
+
 @end

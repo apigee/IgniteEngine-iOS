@@ -11,5 +11,6 @@
 @interface UIImage (IXAdditions)
 
 -(UIImage*)tintedImageUsingColor:(UIColor*)tintColor;
++(UIImage *)ix_animatedGIFWithData:(NSData *)data withDuration:(NSUInteger)duration;
 
 @end

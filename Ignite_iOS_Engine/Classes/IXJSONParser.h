@@ -18,6 +18,8 @@
 
 @interface IXJSONParser : NSObject
 
++(void)clearCache;
+
 +(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue;
 +(IXProperty*)conditionalPropertyForConditionalValue:(id)conditionalValue;
 

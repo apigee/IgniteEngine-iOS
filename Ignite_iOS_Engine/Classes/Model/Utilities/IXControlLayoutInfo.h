@@ -88,6 +88,7 @@
 -(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
 +(instancetype)controlLayoutInfoWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
 
++(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName;
 -(void)refreshLayoutInfo;
 
 @end

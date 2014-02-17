@@ -414,4 +414,12 @@ static NSString* const kIXLeft = @"left";
     
 }
 
+-(void)conserveMemory
+{
+    for( IXBaseControl* control in [self childObjects] )
+    {
+        [control conserveMemory];
+    }
+}
+
 @end

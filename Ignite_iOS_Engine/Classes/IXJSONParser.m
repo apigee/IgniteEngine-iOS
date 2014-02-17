@@ -585,4 +585,9 @@ static NSCache* sCustomControlCache;
     return viewController;
 }
 
++(void)clearCache
+{
+    [sCustomControlCache removeAllObjects];
+}
+
 @end
