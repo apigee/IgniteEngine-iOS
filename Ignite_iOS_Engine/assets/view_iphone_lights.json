@@ -121,6 +121,14 @@
 					},
 					"on": "touch",
 					"type": "Function"
+				},
+				{
+					"attributes": {
+						"function_name": "play",
+						"id": "sound_beep"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {
@@ -165,6 +173,14 @@
 						]
 					},
 					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": "play",
+						"id": "sound_beep"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {
@@ -210,6 +226,14 @@
 						]
 					},
 					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": "play",
+						"id": "sound_beep"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {

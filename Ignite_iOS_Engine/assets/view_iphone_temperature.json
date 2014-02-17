@@ -22,10 +22,10 @@
 		{
 			"actions": [],
 			"attributes": {
+				"alpha": 1,
 				"height": 59,
 				"images.default": "/images/iphone_header_208x59.png",
 				"layout_type": "float",
-				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -35,11 +35,11 @@
 		{
 			"actions": [],
 			"attributes": {
+				"alpha": 1,
 				"height": 370,
 				"images.default": "/images/iphone_background_temperature_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,
-				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -49,6 +49,7 @@
 		{
 			"actions": [],
 			"attributes": {
+				"alpha": 1,
 				"height": 208,
 				"images.default": [
 					{
@@ -67,7 +68,6 @@
 				"layout_type": "float",
 				"margin.bottom": -4,
 				"vertical_alignment": "bottom",
-				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -77,12 +77,12 @@
 		{
 			"actions": [],
 			"attributes": {
+				"alpha": 1,
 				"enabled": false,
 				"height": 370,
 				"images.default": "/images/iphone_background_temperature-overlay_208x369.png",
 				"layout_type": "float",
 				"margin.top": 59,
-				"alpha": 1,
 				"width": 208
 			},
 			"controls": [],
@@ -156,6 +156,14 @@
 						"alpha": 0
 					},
 					"type": "Modify"
+				},
+				{
+					"attributes": {
+						"function_name": "play",
+						"id": "sound_beep"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {

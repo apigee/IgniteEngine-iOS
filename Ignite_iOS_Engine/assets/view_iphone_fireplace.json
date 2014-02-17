@@ -178,6 +178,14 @@
 					},
 					"on": "touch_up",
 					"type": "Function"
+				},
+				{
+					"attributes": {
+						"function_name": "play",
+						"id": "sound_beep"
+					},
+					"on": "touch_up",
+					"type": "Function"
 				}
 			],
 			"attributes": {
