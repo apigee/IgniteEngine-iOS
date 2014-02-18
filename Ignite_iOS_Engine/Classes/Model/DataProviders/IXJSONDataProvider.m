@@ -89,13 +89,18 @@
         [weakSelf setLastResponseStatusCode:[response statusCode]];
         [weakSelf setLastResponseErrorMessage:[error description]];
         
-        NSError* jsonConvertError = nil;
-        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-        if( jsonConvertError == nil && jsonData )
-        {
-            NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            [weakSelf setRawResponse:jsonString];
-            [weakSelf setLastJSONResponse:JSON];
+        @try {
+            NSError* jsonConvertError = nil;
+            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+            if( jsonConvertError == nil && jsonData )
+            {
+                NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                [weakSelf setRawResponse:jsonString];
+                [weakSelf setLastJSONResponse:JSON];
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception.reason);
         }
         [weakSelf fireLoadFinishedEvents:NO];
     }];
