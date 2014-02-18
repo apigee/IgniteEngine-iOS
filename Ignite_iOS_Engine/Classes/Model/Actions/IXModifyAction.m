@@ -33,7 +33,8 @@
         }
         else
         {
-            NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
+            IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
+            NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID];
             for( IXBaseObject* baseObject in objectsWithID )
             {
                 [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];

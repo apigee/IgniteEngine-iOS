@@ -72,6 +72,9 @@
 -(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
 {
     _propertyContainer = propertyContainer;
+    
+    [[self conditionalProperty] setPropertyContainer:_propertyContainer];
+    
     for( IXBaseShortCode *shortCode in [self shortCodes] )
     {
         for( IXProperty *property in [shortCode parameters] )
@@ -81,7 +84,7 @@
     }
 }
 
--(NSString*)getPropertyValue:(IXSandbox*)sandbox
+-(NSString*)getPropertyValue
 {
     if( [self originalString] == nil || [[self originalString] length] == 0 )
         return @"";
@@ -99,7 +102,7 @@
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
             
             NSRange shortCodeRange = [[[weakSelf shortCodeRanges] objectAtIndex:idx] rangeValue];
-            NSString *shortCodesValue = [shortCode evaluate:sandbox];
+            NSString *shortCodesValue = [shortCode evaluate];
             if( shortCodesValue == nil )
             {
                 shortCodesValue = @"";

@@ -26,7 +26,8 @@
     
     if( objectID && eventName )
     {
-        NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
+        IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
+        NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID];
         for( IXBaseObject* baseObject in objectsWithID )
         {
             [[baseObject actionContainer] executeActionsForEventNamed:eventName];

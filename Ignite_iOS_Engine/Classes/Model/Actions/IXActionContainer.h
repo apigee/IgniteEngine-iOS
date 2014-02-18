@@ -14,8 +14,7 @@
 
 @interface IXActionContainer : NSObject <NSCopying>
 
-@property (nonatomic,weak) IXSandbox* sandbox;
-@property (nonatomic,weak) IXBaseObject* actionContainerOwner;
+@property (nonatomic,weak) IXBaseObject* ownerObject;
 
 -(void)addAction:(IXBaseAction*)action;
 -(void)addActions:(NSArray*)actions;

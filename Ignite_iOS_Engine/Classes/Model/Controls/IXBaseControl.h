@@ -32,6 +32,7 @@
 @property (nonatomic,assign,getter = shouldNotifyParentOfLayoutUpdates) BOOL notifyParentOfLayoutUpdates;
 
 -(void)buildView;
+-(BOOL)isContentViewVisible;
 -(void)conserveMemory;
 
 -(void)layoutControl;

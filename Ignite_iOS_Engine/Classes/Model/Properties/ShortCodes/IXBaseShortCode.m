@@ -8,6 +8,7 @@
 
 #import "IXBaseShortCode.h"
 #import "IXProperty.h"
+#import "IXBaseObject.h"
 
 @implementation IXBaseShortCode
 
@@ -53,7 +54,7 @@
                                                     parameters:[self parameters]];
 }
 
--(NSString*)evaluate:(IXSandbox*)sandbox
+-(NSString*)evaluate
 {
     return [self rawValue];
 }

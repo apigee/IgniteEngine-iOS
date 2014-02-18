@@ -18,16 +18,11 @@
 @interface IXCoreDataDataProvider () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic,strong) RKObjectManager* objectManager;
-@property (nonatomic,assign) BOOL sortAscending;
 @property (nonatomic,assign) BOOL needsToPerformGet;
 @property (nonatomic,assign) BOOL needsToPerformFetch;
 
-@property (nonatomic,copy) NSString* sortDescriptorKey;
 @property (nonatomic,copy) NSString* keyPath;
 @property (nonatomic,copy) NSString* pathPattern;
-@property (nonatomic,copy) NSString* objectsPath;
-@property (nonatomic,copy) NSString* fetchPredicate;
-@property (nonatomic,copy) NSString* fetchPredicateStrings;
 @property (nonatomic,strong) RKEntityMapping* entityMapping;
 
 @property (nonatomic,copy) NSString* fetchFromEntity;
@@ -41,27 +36,26 @@
     [_fetchedResultsController setDelegate:nil];
 }
 
--(void)setSandbox:(IXSandbox *)sandbox
+-(void)setEntityContainer:(IXEntityContainer *)entityContainer
 {
-    [super setSandbox:sandbox];
-    
-    [[_entityContainer entityProperties] setSandbox:sandbox];
+    _entityContainer = entityContainer;
+    [[_entityContainer entityProperties] setOwnerObject:self];
 }
 
 -(void)applySettings
 {
     NSString* previousDataLocation = [self dataLocation];
+    NSString* objectsPath = [self objectsPath];
+    NSString* fetchPredicate = [self fetchPredicate];
+    NSString* fetchPredicateStrings = [self fetchPredicateStrings];
+    NSString* sortDescriptorKey = [self sortDescriptorKey];
+    BOOL sortAscending = [self sortAscending];
 
     [super applySettings];
     
     [self setFetchFromEntity:[[self propertyContainer] getStringPropertyValue:@"fetch_from_entity_name" defaultValue:nil]];
     
     NSString* pathPattern = [[self propertyContainer] getStringPropertyValue:@"path_pattern" defaultValue:nil];
-    NSString* objectsPath = [[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil];
-    NSString* sortDescriptorKey = [[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil];
-    NSString* fetchPredicate = [[self propertyContainer] getStringPropertyValue:@"fetch_predicate" defaultValue:nil];
-    NSString* fetchPredicateStrings = [[self propertyContainer] getStringPropertyValue:@"fetch_predicate_strings" defaultValue:nil];
-    BOOL sortAscending = [[self propertyContainer] getBoolPropertyValue:@"fetch_sort_ascending" defaultValue:YES];
     
     _needsToPerformGet = NO;
     if( ![[self dataLocation] isEqualToString:previousDataLocation] )
@@ -76,7 +70,6 @@
     if( ![[self objectsPath] isEqualToString:objectsPath] )
     {
         _needsToPerformGet = YES;
-        [self setObjectsPath:objectsPath];
     }
     
     if( _needsToPerformGet )
@@ -94,22 +87,18 @@
     if( ![[self sortDescriptorKey] isEqualToString:sortDescriptorKey] )
     {
         _needsToPerformFetch = YES;
-        [self setSortDescriptorKey:sortDescriptorKey];
     }
-    if( [self sortAscending] == sortAscending )
+    else if( [self sortAscending] != sortAscending )
     {
         _needsToPerformFetch = YES;
-        [self setSortAscending:sortAscending];
     }
-    if( ![[self fetchPredicate] isEqualToString:fetchPredicate] )
+    else if( ![[self fetchPredicate] isEqualToString:fetchPredicate] )
     {
         _needsToPerformFetch = YES;
-        [self setFetchPredicate:fetchPredicate];
     }
-    if( ![[self fetchPredicateStrings] isEqualToString:fetchPredicateStrings] )
+    else if( ![[self fetchPredicateStrings] isEqualToString:fetchPredicateStrings] )
     {
         _needsToPerformFetch = YES;
-        [self setFetchPredicateStrings:fetchPredicateStrings];
     }
     
     if( _needsToPerformFetch )
@@ -300,22 +289,14 @@
     {
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self fetchFromEntity]];
         
-        if( [self sortDescriptorKey] != nil && ![[self sortDescriptorKey] isEqualToString:@""] )
+        NSSortDescriptor* sortDescriptor = [self sortDescriptor];
+        if( sortDescriptor )
         {
-            NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
-                                                                         ascending:[self sortAscending]
-                                                                          selector:@selector(localizedCaseInsensitiveCompare:)];
-            fetchRequest.sortDescriptors = @[descriptor];
+            fetchRequest.sortDescriptors = @[sortDescriptor];
         }
-        
-        NSArray* fetchPredicateStringsArray = [[self fetchPredicateStrings] componentsSeparatedByString:@","];
-        if( [self fetchPredicate] != nil && ![[self fetchPredicate] isEqualToString:@""] && [fetchPredicateStringsArray count] > 0 )
+        NSPredicate* predicate = [self predicate];
+        if( predicate )
         {
-            NSPredicate* predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
-            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-            {
-                NSLog(@"PREDICATE EQUALS : %@",[predicate description]);
-            }
             [fetchRequest setPredicate:predicate];
         }
         
@@ -385,20 +366,6 @@
     @catch (NSException *exception) {
     }
     return returnValue;
-}
-
--(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
-{
-    NSString* readOnlyPropertyValue = nil;
-    if( [propertyName isEqualToString:@"count"] )
-    {
-        readOnlyPropertyValue = [NSString stringWithFormat:@"%li",[self getRowCount]];
-    }
-    else
-    {
-        readOnlyPropertyValue = [super getReadOnlyPropertyValue:propertyName];
-    }
-    return readOnlyPropertyValue;
 }
 
 @end

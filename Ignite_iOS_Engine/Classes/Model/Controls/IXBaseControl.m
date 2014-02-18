@@ -100,6 +100,19 @@ static NSString* const kIXLeft = @"left";
     [_contentView setClipsToBounds:NO];
 }
 
+-(BOOL)isContentViewVisible
+{
+    BOOL isVisible = NO;
+    if( [self contentView] )
+    {
+        if( ![[self contentView] isHidden] && [[self contentView] alpha] > 0.0f )
+        {
+            isVisible = YES;
+        }
+    }
+    return isVisible;
+}
+
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
     return CGSizeZero;
@@ -281,7 +294,7 @@ static NSString* const kIXLeft = @"left";
 
 -(void)tapGestureRecognized:(UITapGestureRecognizer*)tapRecognizer
 {
-    NSString* tapCount = [NSString stringWithFormat:@"%lu",[tapRecognizer numberOfTapsRequired]];
+    NSString* tapCount = [NSString stringWithFormat:@"%lu",(unsigned long)[tapRecognizer numberOfTapsRequired]];
     [[self actionContainer] executeActionsForEventNamed:kIXTap propertyWithName:kIXTapCount mustHaveValue:tapCount];
 }
 

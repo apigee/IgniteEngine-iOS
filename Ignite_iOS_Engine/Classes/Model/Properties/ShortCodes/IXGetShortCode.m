@@ -17,7 +17,7 @@
 
 @implementation IXGetShortCode
 
--(NSString*)evaluate:(IXSandbox*)sandbox
+-(NSString*)evaluate
 {
     NSString* returnValue = nil;
     
@@ -25,7 +25,7 @@
     if( !propertyName )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        propertyName = [parameterProperty getPropertyValue:sandbox];
+        propertyName = [parameterProperty getPropertyValue];
     }
     
     if( [[self objectID] isEqualToString:@"app"] )
@@ -42,15 +42,20 @@
     }
     else if( [[self objectID] isEqualToString:@"view"] )
     {
-        IXSandbox* sandbox = [[[self property] propertyContainer] sandbox];
+        IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
         IXViewController* viewController = [sandbox viewController];
         returnValue = [[viewController propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
     }
     else
     {
-        NSArray* objectWithIDArray = [sandbox getAllControlAndDataProvidersWithID:[self objectID]];
-        IXBaseObject* baseObject = [objectWithIDArray firstObject];
-        if( baseObject != nil )
+        IXBaseObject* baseObject = [[[self property] propertyContainer] ownerObject];
+        if( ![[self objectID] isEqualToString:@"self"] )
+        {
+            NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlAndDataProvidersWithID:[self objectID]];
+            baseObject = [objectWithIDArray firstObject];
+        }
+        
+        if( baseObject )
         {
             returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
             if( returnValue == nil )

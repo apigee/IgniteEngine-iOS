@@ -9,6 +9,9 @@
 #import "IXWindow.h"
 
 #import "IXAppManager.h"
+#import "SDWebImageManager.h"
+#import "IXJSONGrabber.h"
+#import "IXJSONParser.h"
 
 @implementation IXWindow
 
@@ -19,7 +22,13 @@
     if (event.type == UIEventTypeMotion &&
         event.subtype == UIEventSubtypeMotionShake)
     {
-//        [[IXAppManager sharedAppManager] startApplication];
+        // Clear caches.
+        [[[SDWebImageManager sharedManager] imageCache] clearMemory];
+        [[[SDWebImageManager sharedManager] imageCache] clearDisk];
+        [IXJSONGrabber clearCache];
+        [IXJSONParser clearCache];
+        
+        [[IXAppManager sharedAppManager] startApplication];
     }
 }
 

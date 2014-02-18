@@ -65,12 +65,12 @@
         [_sandbox setViewController:self];
         
         _propertyContainer = [[IXPropertyContainer alloc] init];
-        [_propertyContainer setSandbox:_sandbox];
         
         _containerControl = [[IXLayout alloc] init];
         [_containerControl setID:@"view"];
         [_containerControl setSandbox:_sandbox];
         
+        [_propertyContainer setOwnerObject:_containerControl];
         [_sandbox setContainerControl:_containerControl];
     }
     return self;

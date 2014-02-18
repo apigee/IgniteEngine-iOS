@@ -13,13 +13,13 @@
 
 @implementation IXEvalShortCode
 
--(NSString*)evaluate:(IXSandbox*)sandbox
+-(NSString*)evaluate
 {
     NSString* stringToEval = [self methodName];
     if( !stringToEval )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        stringToEval = [parameterProperty getPropertyValue:sandbox];
+        stringToEval = [parameterProperty getPropertyValue];
     }
     return [[IXAppManager sharedAppManager] evaluateJavascript:stringToEval];
 }

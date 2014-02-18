@@ -46,10 +46,7 @@
         _applicationSandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:[_appConfigPath stringByDeletingLastPathComponent]];
         
         _appProperties = [[IXPropertyContainer alloc] init];
-        [_appProperties setSandbox:_applicationSandbox];
-        
         _sessionProperties = [[IXPropertyContainer alloc] init];
-        [_sessionProperties setSandbox:_applicationSandbox];
         
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
     }

@@ -22,7 +22,8 @@
     if( deleteControlID )
     {
         NSMutableArray* parentsNeedingLayout = [NSMutableArray array];
-        NSArray* controlsToDelete = [[[self actionProperties] sandbox] getAllControlsWithID:deleteControlID];
+        IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
+        NSArray* controlsToDelete = [sandbox getAllControlsWithID:deleteControlID];
         for( IXBaseControl* control in controlsToDelete )
         {
             if( [control parentObject] )

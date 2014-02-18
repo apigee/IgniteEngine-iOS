@@ -26,7 +26,7 @@
 
 @implementation IXActionContainer
 
-@synthesize sandbox = _sandbox;
+@synthesize ownerObject = _ownerObject;
 
 -(instancetype)init
 {
@@ -43,8 +43,7 @@
     IXActionContainer* actionContainerCopy = [[[self class] allocWithZone:zone] init];
     if( actionContainerCopy )
     {
-        [actionContainerCopy setSandbox:[self sandbox]];
-        [actionContainerCopy setActionContainerOwner:[self actionContainerOwner]];
+        [actionContainerCopy setOwnerObject:[self ownerObject]];
         [[self actionsDict] enumerateKeysAndObjectsUsingBlock:^(NSString* actionName, NSArray* actionArray, BOOL *stop) {
             NSMutableArray* actionArrayCopy = [[NSMutableArray alloc] initWithArray:actionArray copyItems:YES];
             [actionContainerCopy addActions:actionArrayCopy];
@@ -53,21 +52,21 @@
     return actionContainerCopy;
 }
 
--(IXSandbox*)sandbox
+-(IXBaseObject*)ownerObject
 {
-    return _sandbox;
+    return _ownerObject;
 }
 
--(void)setSandbox:(IXSandbox *)sandbox
+-(void)setOwnerObject:(IXBaseObject *)ownerObject
 {
-    _sandbox = sandbox;
+    _ownerObject = ownerObject;
     for( NSArray* actionArray in [[self actionsDict] allValues] )
     {
         for( IXBaseAction* action in actionArray )
         {
-            [[action actionProperties] setSandbox:_sandbox];
-            [[action parameterProperties] setSandbox:_sandbox];
-            [[action subActionContainer] setSandbox:_sandbox];
+            [[action actionProperties] setOwnerObject:ownerObject];
+            [[action parameterProperties] setOwnerObject:ownerObject];
+            [[action subActionContainer] setOwnerObject:ownerObject];
         }
     }
 }
@@ -129,9 +128,6 @@
     }
 
     [action setActionContainer:self];
-    [[action actionProperties] setSandbox:[self sandbox]];
-    [[action parameterProperties] setSandbox:[self sandbox]];
-    [[action subActionContainer] setSandbox:[self sandbox]];
 
     NSMutableArray* actionsForType = [self actionsForEvent:actionEventName];
     if( actionsForType == nil )
@@ -160,7 +156,7 @@
     for( IXBaseAction* action in actionsForEventName )
     {
         BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
-        if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation usingSandbox:[self sandbox]] )
+        if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
             BOOL shouldFireAction = (value == nil || propertyName == nil );
             if( !shouldFireAction )

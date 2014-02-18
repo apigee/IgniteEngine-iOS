@@ -32,13 +32,14 @@ static NSCache* sIXCreateControlCache;
 -(void)addCreatedControl:(IXBaseControl*)control withParentControlID:(NSString*)parentID
 {
     IXBaseControl* parentControl = nil;
+    IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
     if( parentID )
     {
-        parentControl = [[[[self actionProperties] sandbox] getAllControlsWithID:parentID] firstObject];
+        parentControl = [[sandbox getAllControlsWithID:parentID] firstObject];
     }
     else
     {
-        parentControl = [[[self actionProperties] sandbox] containerControl];
+        parentControl = [sandbox containerControl];
     }
     
     if( parentControl )

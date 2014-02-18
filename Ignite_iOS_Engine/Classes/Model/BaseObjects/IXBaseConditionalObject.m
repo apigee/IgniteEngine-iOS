@@ -10,6 +10,7 @@
 
 #import "IXAppManager.h"
 #import "IXProperty.h"
+#import "IXBaseObject.h"
 
 @implementation IXBaseConditionalObject
 
@@ -29,7 +30,7 @@
     IXBaseConditionalObject* baseConditionalObjectCopy = [[[self class] allocWithZone:zone] init];
     if( baseConditionalObjectCopy )
     {
-        [baseConditionalObjectCopy setConditionalProperty:[self conditionalProperty]];
+        [baseConditionalObjectCopy setConditionalProperty:[[self conditionalProperty] copy]];
         [baseConditionalObjectCopy setInterfaceOrientationMask:[self interfaceOrientationMask]];
     }
     return baseConditionalObjectCopy;
@@ -54,12 +55,12 @@
     return orientationIsValid;
 }
 
--(BOOL)isConditionalValid:(IXSandbox*)sandbox
+-(BOOL)isConditionalValid
 {
     BOOL conditionalPropertyIsValid = YES;
     if( [self conditionalProperty] != nil )
     {
-        NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue:sandbox];
+        NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue];
         if( conditionalPropertyValue && [conditionalPropertyValue length] > 0 )
         {
             NSString* conditionalPropertyValueReturned = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];
@@ -70,9 +71,9 @@
     return conditionalPropertyIsValid;
 }
 
--(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation usingSandbox:(IXSandbox*)sandbox
+-(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation
 {
-    return [self isConditionalValid:sandbox] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
+    return [self isConditionalValid] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
 }
 
 

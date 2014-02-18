@@ -10,6 +10,7 @@
 
 @class IXProperty;
 @class IXSandbox;
+@class IXBaseObject;
 
 @interface IXBaseShortCode : NSObject <NSCopying>
 
@@ -28,6 +29,6 @@
                                 objectID:(NSString*)objectID
                               methodName:(NSString*)methodName
                               parameters:(NSArray*)parameters;
--(NSString*)evaluate:(IXSandbox*)sandbox;
+-(NSString*)evaluate;
 
 @end

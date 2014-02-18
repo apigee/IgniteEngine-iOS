@@ -11,6 +11,7 @@
 #import "IXPropertyContainer.h"
 #import "IXProperty.h"
 #import "IXActionContainer.h"
+#import "IXBaseObject.h"
 
 @implementation IXBaseAction
 
@@ -55,12 +56,21 @@
     // Base action does nothing.
 }
 
+-(void)setActionContainer:(IXActionContainer *)actionContainer
+{
+    _actionContainer = actionContainer;
+    
+    [[self actionProperties] setOwnerObject:[actionContainer ownerObject]];
+    [[self parameterProperties] setOwnerObject:[actionContainer ownerObject]];
+    [[self subActionContainer] setOwnerObject:[actionContainer ownerObject]];
+}
+
 -(NSString*)description
 {
     NSMutableString* description = [NSMutableString stringWithFormat:@"\n%@ on %@:",NSStringFromClass([self class]),[self eventName]];
     if( [self conditionalProperty] )
     {
-        [description appendFormat:@"\n\nConditional: %@",[[self conditionalProperty] getPropertyValue:[[self actionContainer] sandbox]]];
+        [description appendFormat:@"\n\nConditional: %@",[[self conditionalProperty] getPropertyValue]];
         if( [[self conditionalProperty] shortCodes] )
         {
             [description appendFormat:@" (%@)",[[self conditionalProperty] originalString]];

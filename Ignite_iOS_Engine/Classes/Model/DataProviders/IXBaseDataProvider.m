@@ -11,6 +11,7 @@
 #import "IXPropertyContainer.h"
 #import "IXTableView.h"
 #import "IXEntityContainer.h"
+#import "IXAppManager.h"
 
 #import <RestKit/RestKit.h>
 
@@ -38,13 +39,22 @@
     return self;
 }
 
--(void)setSandbox:(IXSandbox *)sandbox
+-(void)setRequestHeaderProperties:(IXPropertyContainer *)requestHeaderProperties
 {
-    [super setSandbox:sandbox];
-    
-    [_requestHeaderProperties setSandbox:sandbox];
-    [_requestParameterProperties setSandbox:sandbox];
-    [_fileAttachmentProperties setSandbox:sandbox];
+    _requestHeaderProperties = requestHeaderProperties;
+    [_requestHeaderProperties setOwnerObject:self];
+}
+
+-(void)setRequestParameterProperties:(IXPropertyContainer *)requestParameterProperties
+{
+    _requestParameterProperties = requestParameterProperties;
+    [_requestParameterProperties setOwnerObject:self];
+}
+
+-(void)setFileAttachmentProperties:(IXPropertyContainer *)fileAttachmentProperties
+{
+    _fileAttachmentProperties = fileAttachmentProperties;
+    [_fileAttachmentProperties setOwnerObject:self];
 }
 
 -(void)addDelegate:(id<IXDataProviderDelegate>)delegate
@@ -72,7 +82,12 @@
     [super applySettings];
     
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:@"auto_load" defaultValue:NO]];
-    [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data_location" defaultValue:nil]];
+    [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data_location" defaultValue:nil]];    
+    [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil]];
+    [self setFetchPredicate:[[self propertyContainer] getStringPropertyValue:@"fetch_predicate" defaultValue:nil]];
+    [self setFetchPredicateStrings:[[self propertyContainer] getStringPropertyValue:@"fetch_predicate_strings" defaultValue:nil]];
+    [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil]];
+    [self setSortAscending:[[self propertyContainer] getBoolPropertyValue:@"fetch_sort_ascending" defaultValue:YES]];
 }
 
 -(void)loadData:(BOOL)forceGet
@@ -109,11 +124,42 @@
     {
         returnValue = [[self lastResponseErrorMessage] copy];
     }
+    else if( [propertyName isEqualToString:@"count"] )
+    {
+        returnValue = [NSString stringWithFormat:@"%li",[self getRowCount]];
+    }
     else
     {
         returnValue = [super getReadOnlyPropertyValue:propertyName];
     }
     return returnValue;
+}
+
+-(NSSortDescriptor*)sortDescriptor
+{
+    NSSortDescriptor* sortDescriptor = nil;
+    if( [self sortDescriptorKey] != nil && ![[self sortDescriptorKey] isEqualToString:@""] )
+    {
+        sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
+                                                       ascending:[self sortAscending]
+                                                        selector:@selector(localizedCaseInsensitiveCompare:)];
+    }
+    return sortDescriptor;
+}
+
+-(NSPredicate*)predicate
+{
+    NSPredicate* predicate = nil;
+    NSArray* fetchPredicateStringsArray = [[self fetchPredicateStrings] componentsSeparatedByString:@","];
+    if( [self fetchPredicate] != nil && ![[self fetchPredicate] isEqualToString:@""] && [fetchPredicateStringsArray count] > 0 )
+    {
+        predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
+        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+        {
+            NSLog(@"PREDICATE EQUALS : %@",[predicate description]);
+        }
+    }
+    return predicate;
 }
 
 -(NSInteger)getRowCount

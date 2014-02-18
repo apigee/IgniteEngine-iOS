@@ -566,6 +566,7 @@ static NSCache* sCustomControlCache;
     
     // FIXME: Setting the properties for the view on the viewControllers containerControl.  Might need to change this not sure yet!
     IXPropertyContainer* viewPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary];
+    [viewPropertyContainer setOwnerObject:[viewController containerControl]];
     [viewController setPropertyContainer:viewPropertyContainer];
     [[viewController containerControl] setPropertyContainer:viewPropertyContainer];
     

@@ -15,10 +15,10 @@
 
 @property (nonatomic,strong) AFHTTPClient* httpClient;
 
-@property (nonatomic,copy) NSString* path;
 @property (nonatomic,copy) NSString* httpMethod;
 @property (nonatomic,copy) NSString* httpBody;
 @property (nonatomic,copy) NSString* rowBaseDataPath;
+@property (nonatomic,strong) NSArray* rowDataResults;
 
 @property (nonatomic,strong) id lastJSONResponse;
 
@@ -49,7 +49,6 @@
     [[self httpClient] setParameterEncoding:paramEncoding];
 
     [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
-    [self setPath:[[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil]];
     [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"row_data_base_path" defaultValue:nil]];
 }
 
@@ -62,13 +61,13 @@
     [self setLastResponseStatusCode:0];
     [self setLastResponseErrorMessage:nil];
     
-    NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self path] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
+    NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
     [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
     
     __weak typeof(self) weakSelf = self;
     IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
-        [weakSelf setLastResponseStatusCode:response.statusCode];
+        [weakSelf setLastResponseStatusCode:[response statusCode]];
         
         NSError* jsonConvertError = nil;
         NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
@@ -87,7 +86,7 @@
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {        
 
-        [weakSelf setLastResponseStatusCode:response.statusCode];
+        [weakSelf setLastResponseStatusCode:[response statusCode]];
         [weakSelf setLastResponseErrorMessage:[error description]];
         
         NSError* jsonConvertError = nil;
@@ -100,8 +99,36 @@
         }
         [weakSelf fireLoadFinishedEvents:NO];
     }];
-    
     [[self httpClient] enqueueHTTPRequestOperation:operation];
+}
+
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
+{
+    [self setRowDataResults:nil];
+    if( loadDidSucceed )
+    {
+        NSObject* jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
+        NSArray* rowDataResults = nil;
+        if( [jsonObject isKindOfClass:[NSArray class]] )
+        {
+            rowDataResults = (NSArray*)jsonObject;
+        }
+        if( rowDataResults )
+        {
+            NSPredicate* predicate = [self predicate];
+            if( predicate )
+            {
+                rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
+            }
+            NSSortDescriptor* sortDescriptor = [self sortDescriptor];
+            if( sortDescriptor )
+            {
+                rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
+            }
+            [self setRowDataResults:rowDataResults];
+        }
+    }
+    [super fireLoadFinishedEvents:loadDidSucceed];
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -138,25 +165,15 @@
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
     if( keyPath && rowIndexPath )
     {
-        NSString* jsonKeyPath = [NSString stringWithFormat:@".%li.%@",(long)rowIndexPath.row,keyPath];
-        if( [self rowBaseDataPath] )
-        {
-            jsonKeyPath = [[self rowBaseDataPath] stringByAppendingString:jsonKeyPath];
-        }
-        returnValue = [self stringForPath:jsonKeyPath container:[self lastJSONResponse]];
+        NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
+        returnValue = [self stringForPath:jsonKeyPath container:[self rowDataResults]];
     }
     return returnValue;
 }
 
 -(NSInteger)getRowCount
 {
-    NSInteger rowCount = 0;
-    NSObject* jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
-    if( [jsonObject isKindOfClass:[NSArray class]] )
-    {
-        rowCount = [(NSArray*)jsonObject count];
-    }
-    return rowCount;
+    return [[self rowDataResults] count];
 }
 
 -(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject*)container

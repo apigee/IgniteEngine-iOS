@@ -65,11 +65,7 @@
 
 -(void)setSandbox:(IXSandbox *)sandbox
 {
-    _sandbox = sandbox;
-    
-    [_actionContainer setSandbox:_sandbox];
-    [_propertyContainer setSandbox:_sandbox];
-    
+    _sandbox = sandbox;    
     for( IXBaseObject* child in [self childObjects] )
     {
         [child setSandbox:_sandbox];
@@ -79,13 +75,13 @@
 -(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
 {
     _propertyContainer = propertyContainer;
-    [_propertyContainer setSandbox:[self sandbox]];
+    [_propertyContainer setOwnerObject:self];
 }
 
 -(void)setActionContainer:(IXActionContainer *)actionContainer
 {
     _actionContainer = actionContainer;
-    [_actionContainer setSandbox:[self sandbox]];
+    [_actionContainer setOwnerObject:self];
 }
 
 -(void)addChildObjects:(NSArray*)childObjects
@@ -103,8 +99,6 @@
 {
     [childObject setParentObject:self];
     [childObject setSandbox:[self sandbox]];
-    [[childObject propertyContainer] setSandbox:[self sandbox]];
-    [[childObject actionContainer] setSandbox:[self sandbox]];
     
     if( [self childObjects] == nil )
     {

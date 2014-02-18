@@ -21,8 +21,9 @@
 
 -(void)execute
 {
+    IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
     NSString* objectID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
-    NSArray* objectsWithID = [[[self actionContainer] sandbox] getAllControlAndDataProvidersWithID:objectID];
+    NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID];
     
     for( IXBaseObject* baseObject in objectsWithID )
     {

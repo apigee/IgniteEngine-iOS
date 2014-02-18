@@ -9,10 +9,11 @@
 #import "IXAppShortCode.h"
 
 #import "IXProperty.h"
+#import "IXBaseObject.h"
 
 @implementation IXAppShortCode
 
--(NSString*)evaluate:(IXSandbox*)sandbox
+-(NSString*)evaluate:(IXBaseObject*)baseObject
 {
     NSString* returnValue = nil;
     
@@ -20,7 +21,7 @@
     if( !propertyName )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        propertyName = [parameterProperty getPropertyValue:sandbox];
+        propertyName = [parameterProperty getPropertyValue];
     }
     
     if( [propertyName hasPrefix:@"random_number"] )

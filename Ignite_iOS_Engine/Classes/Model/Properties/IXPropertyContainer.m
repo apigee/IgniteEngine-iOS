@@ -13,6 +13,7 @@
 #import "IXProperty.h"
 #import "IXControlLayoutInfo.h"
 
+#import "IXBaseObject.h"
 #import "ColorUtils.h"
 #import "SDWebImageManager.h"
 #import "UIImage+IXAdditions.h"
@@ -30,7 +31,7 @@
     self = [super init];
     if( self )
     {
-        _sandbox = nil;
+        _ownerObject = nil;
         _propertiesDict = [[NSMutableDictionary alloc] init];
     }
     return self;
@@ -39,7 +40,7 @@
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXPropertyContainer* propertyContainerCopy = [[[self class] allocWithZone:zone] init];
-    [propertyContainerCopy setSandbox:[self sandbox]];
+    [propertyContainerCopy setOwnerObject:[self ownerObject]];
     [[self propertiesDict] enumerateKeysAndObjectsUsingBlock:^(NSString* propertyName, NSArray* propertyArray, BOOL *stop) {
         NSMutableArray* propertyArrayCopy = [[NSMutableArray alloc] initWithArray:propertyArray copyItems:YES];
         [propertyContainerCopy addProperties:propertyArrayCopy];
@@ -168,7 +169,7 @@
         UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
         for( IXProperty* property in [[propertyArray reverseObjectEnumerator] allObjects] )
         {
-            if( [property areConditionalAndOrientationMaskValid:currentOrientation usingSandbox:[self sandbox]] )
+            if( [property areConditionalAndOrientationMaskValid:currentOrientation] )
             {
                 propertyToEvaluate = property;
                 break;
@@ -181,7 +182,7 @@
 -(NSString*)getStringPropertyValue:(NSString*)propertyName defaultValue:(NSString*)defaultValue
 {
     IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyName];
-    NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue:[self sandbox]] : defaultValue;
+    NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue] : defaultValue;
     return returnValue;
 }
 
@@ -350,13 +351,14 @@
         }
         else if( basePath == nil )
         {
+            NSString* rootPath = [[[self ownerObject] sandbox] rootPath];
             if( [pathStringSetting hasPrefix:@"/"] )
             {
-                returnPath = [NSString stringWithFormat:@"%@%@",[[self sandbox] rootPath],pathStringSetting];
+                returnPath = [NSString stringWithFormat:@"%@%@",rootPath,pathStringSetting];
             }
             else
             {
-                returnPath = [NSString stringWithFormat:@"%@/%@",[[self sandbox] rootPath],pathStringSetting];
+                returnPath = [NSString stringWithFormat:@"%@/%@",rootPath,pathStringSetting];
             }
         }
         else
@@ -393,7 +395,7 @@
     for( NSString* propertyKey in properties )
     {
         IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyKey];
-        [description appendFormat:@"\t%@: %@",propertyKey, [propertyToEvaluate getPropertyValue:[self sandbox]]];
+        [description appendFormat:@"\t%@: %@",propertyKey, [propertyToEvaluate getPropertyValue]];
         if( [propertyToEvaluate shortCodes] )
         {
             [description appendFormat:@" (%@)",[propertyToEvaluate originalString]];

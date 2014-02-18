@@ -8,18 +8,19 @@
 
 #import "IXFormatShortCode.h"
 
+#import "IXBaseObject.h"
 #import "IXProperty.h"
 
 @implementation IXFormatShortCode
 
--(NSString*)evaluate:(IXSandbox*)sandbox
+-(NSString*)evaluate
 {
-    NSString* returnString = [super evaluate:sandbox];
+    NSString* returnString = [super evaluate];
     if( returnString != nil )
     {
         for( IXProperty* formatterProperty in [self formatters] )
         {
-            NSString* formatterName = [formatterProperty getPropertyValue:sandbox];
+            NSString* formatterName = [formatterProperty getPropertyValue];
             if( [formatterName isEqualToString:@"to_uppercase"] )
             {
                 returnString = [returnString uppercaseString];

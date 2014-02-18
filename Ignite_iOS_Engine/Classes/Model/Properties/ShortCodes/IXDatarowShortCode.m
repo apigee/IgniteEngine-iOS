@@ -15,18 +15,21 @@
 
 @implementation IXDatarowShortCode
 
--(NSString*)evaluate:(IXSandbox*)sandbox
+-(NSString*)evaluate
 {
     NSString* returnValue = nil;
+    
+    IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
     IXBaseDataProvider* baseDP = [sandbox dataProviderForRowData];
     NSIndexPath* rowIndexPath = [sandbox indexPathForRowData];
     NSString* keyPath = [self methodName];
     if( !keyPath )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        keyPath = [parameterProperty getPropertyValue:sandbox];
+        keyPath = [parameterProperty getPropertyValue];
     }
     returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    
     return returnValue;
 }
 
