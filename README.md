@@ -128,5 +128,5 @@ so we can apply different states (and have it auto-detect image based on -active
 
 - Programmatic font interface? else we include this in the docs
 - horizontal/vertical_alignment screws up 100% h/w. Need to be more clear how this is performed (or if alignment is defined, either ignore height/width or include it in the calculation)
-- Inheriting styles (default styles)- set default font, then it doesn't need to be defined (only font.size)
+- Inheriting styles (default styles)- set default font, then it doesn't need to be defined (only font.size) (or color.text: inherit)
 
