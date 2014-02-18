@@ -845,7 +845,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "touch -cm ${SRCROOT}/Ignite_iOS_Engine/assets";
+			shellScript = "touch -cm ${SRCROOT}/../assets";
 		};
 /* End PBXShellScriptBuildPhase section */
 

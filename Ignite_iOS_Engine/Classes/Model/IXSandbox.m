@@ -13,6 +13,8 @@
 #import "IXBaseDataProvider.h"
 #import "IXAppManager.h"
 
+static NSString* const kIXSelfControlRef = @"self";
+
 @interface IXSandbox ()
 
 @property (nonatomic,strong) NSMutableDictionary* dataProviders;
@@ -62,8 +64,16 @@
     return controlsWithObjectID;
 }
 
--(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID
+-(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
 {
+    if( [objectID isEqualToString:kIXSelfControlRef] )
+    {
+        NSArray* returnArray = nil;
+        if( selfObject )
+            returnArray = [NSArray arrayWithObject:selfObject];
+        return returnArray;
+    }
+    
     NSMutableArray* returnArray = [[NSMutableArray alloc] init];
     
     NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];

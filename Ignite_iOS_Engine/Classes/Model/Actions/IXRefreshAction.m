@@ -23,7 +23,7 @@
 {
     IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
     NSString* objectID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
-    NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID];
+    NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID withSelfObject:[[self actionContainer] ownerObject]];
     
     for( IXBaseObject* baseObject in objectsWithID )
     {

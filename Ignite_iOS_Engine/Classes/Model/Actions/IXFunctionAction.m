@@ -24,7 +24,7 @@
     if( objectID != nil && functionName != nil )
     {
         IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
-        NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID];
+        NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID withSelfObject:[[self actionContainer] ownerObject]];
         for( IXBaseObject* baseObject in objectsWithID )
         {
             [baseObject applyFunction:functionName withParameters:[self parameterProperties]];

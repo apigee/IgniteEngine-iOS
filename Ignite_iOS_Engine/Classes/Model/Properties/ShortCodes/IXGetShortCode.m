@@ -49,11 +49,8 @@
     else
     {
         IXBaseObject* baseObject = [[[self property] propertyContainer] ownerObject];
-        if( ![[self objectID] isEqualToString:@"self"] )
-        {
-            NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlAndDataProvidersWithID:[self objectID]];
-            baseObject = [objectWithIDArray firstObject];
-        }
+        NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlAndDataProvidersWithID:[self objectID] withSelfObject:baseObject];
+        baseObject = [objectWithIDArray firstObject];
         
         if( baseObject )
         {
