@@ -89,14 +89,18 @@
         [weakSelf setLastResponseStatusCode:[response statusCode]];
         [weakSelf setLastResponseErrorMessage:[error description]];
         
-        NSError* jsonConvertError = nil;
-        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+        /* This is commented out until we sort out why exactly it's here -- causing crash if the API call fails. 
+           -B
+        */
+        
+        //NSError* jsonConvertError = nil;
+        /*NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
         if( jsonConvertError == nil && jsonData )
         {
             NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
             [weakSelf setRawResponse:jsonString];
             [weakSelf setLastJSONResponse:JSON];
-        }
+        }*/
         [weakSelf fireLoadFinishedEvents:NO];
     }];
     [[self httpClient] enqueueHTTPRequestOperation:operation];
