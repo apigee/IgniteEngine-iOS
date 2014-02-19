@@ -12,6 +12,12 @@
 #import "IXSandbox.h"
 #import "IXJSONParser.h"
 
+@interface IXSandbox ()
+
+@property (nonatomic,strong) NSMutableDictionary* dataProviders;
+
+@end
+
 @interface IXCustom ()
 
 @property (nonatomic,strong) IXSandbox* customControlSandox;
@@ -46,6 +52,9 @@
                 [self setCustomControlSandox:[[IXSandbox alloc] initWithBasePath:nil rootPath:jsonRootPath]];
                 [[self customControlSandox] setViewController:[[self sandbox] viewController]];
                 [[self customControlSandox] setContainerControl:[[self sandbox] containerControl]];
+                [[self customControlSandox] setDataProviderForRowData:[[self sandbox] dataProviderForRowData]];
+                [[self customControlSandox] setIndexPathForRowData:[[self sandbox] indexPathForRowData]];
+                [[self customControlSandox] setDataProviders:[[self sandbox] dataProviders]];
                 [self setSandbox:[self customControlSandox]];
             }
             if( [self needsToPopulate] )
