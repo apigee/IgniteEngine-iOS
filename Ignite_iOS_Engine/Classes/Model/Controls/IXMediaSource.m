@@ -133,17 +133,17 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+//    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     
     [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
     
     // Handle a movie capture
-    if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-        NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(moviePath)) {
-            UISaveVideoAtPathToSavedPhotosAlbum(moviePath, self, nil, nil);
-        }
-    }
+//    if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+//        NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+//        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(moviePath)) {
+//            UISaveVideoAtPathToSavedPhotosAlbum(moviePath, self, nil, nil);
+//        }
+//    }
 
     
     

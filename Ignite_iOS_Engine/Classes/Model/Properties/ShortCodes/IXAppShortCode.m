@@ -32,7 +32,7 @@
         {
             upperBound = [[stringArray lastObject] intValue];
         }
-        returnValue = [NSString stringWithFormat:@"%i",arc4random_uniform(upperBound)];
+        returnValue = [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
     }
     
     return returnValue;

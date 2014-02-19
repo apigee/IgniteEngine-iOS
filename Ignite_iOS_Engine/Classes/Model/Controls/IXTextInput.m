@@ -98,7 +98,7 @@ static CGSize sIXKBSize;
     //NSString* justification = [[self propertyContainer] getStringPropertyValue:@"justicication" defaultValue:@"UITextAlignmentLeft"];
     
     //JA: Please add justification for left/center/right
-    [[self textField] setTextAlignment:UITextAlignmentCenter];
+    [[self textField] setTextAlignment:NSTextAlignmentCenter];
     
     
     // JA: Added autocorrect

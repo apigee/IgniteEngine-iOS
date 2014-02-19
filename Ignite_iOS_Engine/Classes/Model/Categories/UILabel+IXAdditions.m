@@ -16,9 +16,12 @@
     
     float lineHeight = ([[self font] ascender] - [[self font] descender] ) + 1;
     
-    returnSize = [[self text] sizeWithFont:[self font]
-                         constrainedToSize:CGSizeMake(fixedWidth,FLT_MAX)
-                             lineBreakMode:[self lineBreakMode]];
+    CGRect textRect = [[self text] boundingRectWithSize:CGSizeMake(fixedWidth,FLT_MAX)
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:@{NSFontAttributeName:[self font]}
+                                                context:nil];
+
+    returnSize = textRect.size;
     
     if( [self numberOfLines] != 0 && lineHeight * [self numberOfLines] < returnSize.height )
         returnSize.height = lineHeight * [self numberOfLines];
