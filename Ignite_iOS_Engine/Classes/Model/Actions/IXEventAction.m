@@ -21,7 +21,7 @@
 {
     IXPropertyContainer* actionProperties = [self actionProperties];
     
-    NSString* objectID = [actionProperties getStringPropertyValue:@"id" defaultValue:nil];
+    NSString* objectID = [actionProperties getStringPropertyValue:kIX_ID defaultValue:nil];
     NSString* eventName = [actionProperties getStringPropertyValue:@"event_name" defaultValue:nil];
     
     if( objectID && eventName )

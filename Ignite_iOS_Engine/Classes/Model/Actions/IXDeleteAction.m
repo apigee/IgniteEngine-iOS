@@ -18,7 +18,7 @@
 {
     [super execute];
     
-    NSString* deleteControlID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
+    NSString* deleteControlID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
     if( deleteControlID )
     {
         NSMutableArray* parentsNeedingLayout = [NSMutableArray array];

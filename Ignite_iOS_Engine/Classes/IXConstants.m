@@ -10,6 +10,8 @@
 
 // SPECIAL
 NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME = @"IXDummyDataModelEntity";
+NSString* const kIX_ID = @"_id";
+NSString* const kIX_TYPE = @"_type";
 
 // ACTION TYPES
 NSString* const kIX_ALERT = @"alert";

@@ -18,7 +18,7 @@
 
 -(void)execute
 {
-    NSString* objectID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
+    NSString* objectID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
     NSString* functionName = [[self actionProperties] getStringPropertyValue:@"function_name" defaultValue:nil];
     
     if( objectID != nil && functionName != nil )

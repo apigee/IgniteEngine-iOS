@@ -137,7 +137,7 @@
 
 -(void)applySettings
 {
-    [self setID:[[self propertyContainer] getStringPropertyValue:@"id" defaultValue:[self ID]]];
+    [self setID:[[self propertyContainer] getStringPropertyValue:kIX_ID defaultValue:[self ID]]];
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer

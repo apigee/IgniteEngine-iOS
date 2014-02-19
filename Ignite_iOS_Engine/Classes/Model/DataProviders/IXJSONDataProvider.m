@@ -49,7 +49,7 @@
     [[self httpClient] setParameterEncoding:paramEncoding];
 
     [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
-    [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"row_data_base_path" defaultValue:nil]];
+    [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"datarow.basepath" defaultValue:nil]];
 }
 
 -(void)loadData:(BOOL)forceGet
@@ -112,7 +112,16 @@
     [self setRowDataResults:nil];
     if( loadDidSucceed )
     {
-        NSObject* jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
+        NSObject* jsonObject = nil;
+        if( [self rowBaseDataPath].length <= 0 && [[self lastJSONResponse] isKindOfClass:[NSArray class]] )
+        {
+            jsonObject = [self lastJSONResponse];
+        }
+        else
+        {
+            jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
+        }
+
         NSArray* rowDataResults = nil;
         if( [jsonObject isKindOfClass:[NSArray class]] )
         {

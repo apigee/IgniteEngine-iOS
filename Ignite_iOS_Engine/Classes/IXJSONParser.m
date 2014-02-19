@@ -242,7 +242,7 @@ static NSCache* sCustomControlCache;
         id eventName = [actionValueDict objectForKey:@"on"];
         if( [eventName isKindOfClass:[NSString class]] )
         {
-            id type = [actionValueDict objectForKey:@"type"];
+            id type = [actionValueDict objectForKey:kIX_TYPE];
             if( [type isKindOfClass:[NSString class]] )
             {
                 NSString* actionClassString = [NSString stringWithFormat:@"IX%@Action",[type capitalizedString]];
@@ -308,7 +308,7 @@ static NSCache* sCustomControlCache;
     IXBaseControl* control = nil;
     if( [controlValueDict allKeys] > 0 )
     {
-        NSString* controlType = [controlValueDict objectForKey:@"type"];
+        NSString* controlType = [controlValueDict objectForKey:kIX_TYPE];
         NSString* controlClassString = [NSString stringWithFormat:@"IX%@",controlType];
         
         Class controlClass = NSClassFromString(controlClassString);
@@ -318,7 +318,7 @@ static NSCache* sCustomControlCache;
             id propertiesDict = [controlValueDict objectForKey:@"attributes"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
-                id controlID = [controlValueDict objectForKey:@"id"];
+                id controlID = [controlValueDict objectForKey:kIX_ID];
                 if( controlID )
                 {
                     if( [controlID isKindOfClass:[NSString class]] )
@@ -326,7 +326,7 @@ static NSCache* sCustomControlCache;
                         [control setID:controlID];
                     }
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
-                    [propertiesDict setObject:controlID forKey:@"id"];
+                    [propertiesDict setObject:controlID forKey:kIX_ID];
                 }
                 
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
@@ -452,7 +452,7 @@ static NSCache* sCustomControlCache;
     IXBaseDataProvider* dataProvider = nil;
     if( [dataProviderValueDict allKeys] > 0 )
     {
-        NSString* dataProviderType = [dataProviderValueDict objectForKey:@"type"];
+        NSString* dataProviderType = [dataProviderValueDict objectForKey:kIX_TYPE];
         NSString* dataProviderClassString = [NSString stringWithFormat:@"IX%@DataProvider",dataProviderType];
         
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
@@ -462,11 +462,11 @@ static NSCache* sCustomControlCache;
             id propertiesDict = [dataProviderValueDict objectForKey:@"attributes"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
-                id controlID = [dataProviderValueDict objectForKey:@"id"];
+                id controlID = [dataProviderValueDict objectForKey:kIX_ID];
                 if( controlID )
                 {
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
-                    [propertiesDict setObject:controlID forKey:@"id"];
+                    [propertiesDict setObject:controlID forKey:kIX_ID];
                 }
                 
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];

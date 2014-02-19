@@ -22,7 +22,7 @@
 
 -(void)performModify
 {
-    NSString* objectID = [[self actionProperties] getStringPropertyValue:@"id" defaultValue:nil];
+    NSString* objectID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
     
     if( objectID != nil && [self parameterProperties] != nil )
     {

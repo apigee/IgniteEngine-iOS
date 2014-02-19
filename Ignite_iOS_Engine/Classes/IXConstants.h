@@ -10,6 +10,8 @@
 
 // SPECIAL
 extern NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME;
+extern NSString* const kIX_ID;
+extern NSString* const kIX_TYPE;
 
 // ACTION TYPES
 extern NSString* const kIX_ALERT;

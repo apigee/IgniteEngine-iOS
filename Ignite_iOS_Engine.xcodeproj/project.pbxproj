@@ -817,7 +817,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = Preparser/process.sh;
+			shellScript = "";
 		};
 		174B3967FD5446A9BFBB4B95 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

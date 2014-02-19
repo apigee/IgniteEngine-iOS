@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "IXConstants.h"
 #import "IXSandbox.h"
 #import "IXActionContainer.h"
 #import "IXPropertyContainer.h"

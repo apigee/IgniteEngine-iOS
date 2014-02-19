@@ -100,7 +100,7 @@ static NSString* const kIXSelfControlRef = @"self";
 {
     BOOL didAddDataProvider = NO;
     
-    NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:@"id" defaultValue:nil];
+    NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:kIX_ID defaultValue:nil];
     if( dataProviderID != nil && ![dataProviderID isEqualToString:@""] )
     {
         if( [[self dataProviders] objectForKey:dataProviderID] != nil )
