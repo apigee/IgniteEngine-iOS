@@ -56,6 +56,12 @@
     // Base action does nothing.
 }
 
+-(void)setActionProperties:(IXPropertyContainer *)actionProperties
+{
+    _actionProperties = actionProperties;
+    [[self conditionalProperty] setPropertyContainer:actionProperties];
+}
+    
 -(void)setActionContainer:(IXActionContainer *)actionContainer
 {
     _actionContainer = actionContainer;
