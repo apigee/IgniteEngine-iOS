@@ -13,7 +13,7 @@
 
 @implementation IXAppShortCode
 
--(NSString*)evaluate:(IXBaseObject*)baseObject
+-(NSString*)evaluate
 {
     NSString* returnValue = nil;
     
