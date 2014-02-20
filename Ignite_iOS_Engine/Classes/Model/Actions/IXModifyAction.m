@@ -62,12 +62,27 @@
 -(void)execute
 {
     float duration = [[self actionProperties] getFloatPropertyValue:@"duration" defaultValue:0.0f];
+    NSString *animationStyle = [[self actionProperties] getStringPropertyValue:@"animation_style" defaultValue:nil];
+    
+        UIViewAnimationCurve animationCurve;
+    
+        if ( [animationStyle isEqualToString:@"ease_in_out"] )
+            animationCurve = UIViewAnimationCurveEaseInOut;
+        else if ( [animationStyle isEqualToString:@"ease_in"] )
+            animationCurve = UIViewAnimationCurveEaseIn;
+        else if ( [animationStyle isEqualToString:@"ease_out"] )
+            animationCurve = UIViewAnimationCurveEaseOut;
+        else if ( [animationStyle isEqualToString:@"linear"] )
+            animationCurve = UIViewAnimationCurveLinear;
+        else
+            animationCurve = UIViewAnimationCurveEaseInOut;
+    
     if( duration > 0.0f )
     {
         __weak typeof(self) weakSelf = self;
         [UIView animateWithDuration:duration
                               delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
+                            options: animationCurve | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
                              [weakSelf performModify];
                          } completion:nil];

@@ -84,6 +84,7 @@
         [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:@"seperator_color" defaultValue:[UIColor grayColor]]];
     }
     
+    [[self tableView] setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"scrollable" defaultValue:YES]];
     [[self tableView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor whiteColor]]];
     
     [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
