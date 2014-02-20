@@ -51,6 +51,8 @@ A php preparser is used in the build process to parse int, float, and bool value
 - ~~We should have simpler JSON serialization approach. Leave in complex stuff for fallback?~~
 - ~~Perform actions directly in the on-load event of the datasource~~
 - Ability to reference length of longest entry.
+- Allow local/relative path data
+- Allow for defining a basic data list inside JSON and using that as a datasource/tableview source
 - Default auto_load: false (add new action for "load", "refresh", "unload")
 
 For example:
