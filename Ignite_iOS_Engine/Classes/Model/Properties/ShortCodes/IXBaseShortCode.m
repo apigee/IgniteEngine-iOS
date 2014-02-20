@@ -51,7 +51,7 @@
     return [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
                                                       objectID:[self objectID]
                                                     methodName:[self methodName]
-                                                    parameters:[self parameters]];
+                                                    parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]];
 }
 
 -(NSString*)evaluate

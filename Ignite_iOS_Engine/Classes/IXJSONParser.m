@@ -421,7 +421,7 @@ static NSCache* sCustomControlCache;
             [customControl setActionContainer:[[customControlCacheContainer actionContainer] copy]];
         }
         
-        [customControl addChildObjects:[[customControlCacheContainer childControls] copy]];
+        [customControl addChildObjects:[[NSArray alloc] initWithArray:[customControlCacheContainer childControls] copyItems:YES]];
         [[[customControl sandbox] containerControl] applySettings];
         [[[customControl sandbox] containerControl] layoutControl];
         [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
@@ -454,7 +454,7 @@ static NSCache* sCustomControlCache;
                                                         [customControlCacheContainer setChildControls:[IXJSONParser controlsWithJSONControlArray:customControlControlsArray]];
                                                         
                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                            [sCustomControlCache setObject:[customControlCacheContainer copy] forKey:pathToJSON];
+                                                            [sCustomControlCache setObject:customControlCacheContainer forKey:pathToJSON];
                                                         });
                                                         
                                                         if( customControlCacheContainer != nil )
