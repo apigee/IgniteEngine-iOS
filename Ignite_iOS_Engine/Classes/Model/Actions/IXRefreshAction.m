@@ -21,9 +21,12 @@
 
 -(void)execute
 {
-    IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
-    NSString* objectID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
-    NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID withSelfObject:[[self actionContainer] ownerObject]];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
+   
+    IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
+    IXSandbox* sandbox = [ownerObject sandbox];
+    NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
+                                                             withSelfObject:ownerObject];
     
     for( IXBaseObject* baseObject in objectsWithID )
     {

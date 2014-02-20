@@ -21,13 +21,15 @@
 {
     IXPropertyContainer* actionProperties = [self actionProperties];
     
-    NSString* objectID = [actionProperties getStringPropertyValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [actionProperties getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
     NSString* eventName = [actionProperties getStringPropertyValue:@"event_name" defaultValue:nil];
     
-    if( objectID && eventName )
+    if( objectIDs && eventName )
     {
-        IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
-        NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID withSelfObject:[[self actionContainer] ownerObject]];
+        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
+        IXSandbox* sandbox = [ownerObject sandbox];
+        NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
+                                                                 withSelfObject:ownerObject];
         for( IXBaseObject* baseObject in objectsWithID )
         {
             [[baseObject actionContainer] executeActionsForEventNamed:eventName];

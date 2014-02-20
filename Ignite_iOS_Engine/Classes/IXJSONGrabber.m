@@ -50,6 +50,7 @@
         return;
     }
     
+    path = [path stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     id jsonObject = [[self jsonCache] objectForKey:path];
     if( jsonObject )
     {

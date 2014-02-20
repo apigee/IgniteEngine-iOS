@@ -18,13 +18,15 @@
 
 -(void)execute
 {
-    NSString* objectID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
     NSString* functionName = [[self actionProperties] getStringPropertyValue:@"function_name" defaultValue:nil];
     
-    if( objectID != nil && functionName != nil )
+    if( objectIDs != nil && functionName != nil )
     {
-        IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
-        NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID withSelfObject:[[self actionContainer] ownerObject]];
+        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
+        IXSandbox* sandbox = [ownerObject sandbox];
+        NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
+                                                                 withSelfObject:ownerObject];
         for( IXBaseObject* baseObject in objectsWithID )
         {
             [baseObject applyFunction:functionName withParameters:[self parameterProperties]];

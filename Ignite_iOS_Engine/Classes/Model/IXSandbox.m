@@ -64,6 +64,22 @@ static NSString* const kIXSelfControlRef = @"self";
     return controlsWithObjectID;
 }
 
+-(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject
+{
+    NSMutableArray* returnArray = nil;
+    if( [objectIDs count] )
+    {
+        returnArray = [[NSMutableArray alloc] init];
+        for( NSString* objectID in objectIDs )
+        {
+            NSArray* objectsWithID = [self getAllControlAndDataProvidersWithID:objectID
+                                                                withSelfObject:selfObject];
+            [returnArray addObjectsFromArray:objectsWithID];
+        }
+    }
+    return returnArray;
+}
+
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
 {
     if( [objectID isEqualToString:kIXSelfControlRef] )
@@ -143,7 +159,7 @@ static NSString* const kIXSelfControlRef = @"self";
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
     IXBaseDataProvider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
-    if( returnDataProvider == nil && [self isEqual:[[IXAppManager sharedAppManager] applicationSandbox]] )
+    if( returnDataProvider == nil && ![self isEqual:[[IXAppManager sharedAppManager] applicationSandbox]] )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
     }

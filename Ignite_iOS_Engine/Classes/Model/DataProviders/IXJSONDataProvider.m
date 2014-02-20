@@ -10,8 +10,13 @@
 
 #import "AFHTTPClient.h"
 #import "IXAFJSONRequestOperation.h"
+#import "IXAppManager.h"
+#import "IXJSONGrabber.h"
+#import "SDWebImageCompat.h"
 
 @interface IXJSONDataProvider ()
+
+@property (nonatomic,assign) BOOL isLocalPath;
 
 @property (nonatomic,strong) AFHTTPClient* httpClient;
 
@@ -33,23 +38,35 @@
     if( [self dataLocation] == nil )
         return;
     
-    if( [self httpClient] == nil || ![[[[self httpClient] baseURL] absoluteString] isEqualToString:[self dataLocation]] )
-    {
-        [self setHttpClient:[AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[self dataLocation]]]];
-        [[self httpClient] setParameterEncoding:AFJSONParameterEncoding];
-    }
-    
-    AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
-    NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
-    if( [parameterEncoding isEqualToString:@"form"] ) {
-        paramEncoding = AFFormURLParameterEncoding;
-    } else if( [parameterEncoding isEqualToString:@"plist"] ) {
-        paramEncoding = AFPropertyListParameterEncoding;
-    }    
-    [[self httpClient] setParameterEncoding:paramEncoding];
-
-    [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
     [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"datarow.basepath" defaultValue:nil]];
+    [self setIsLocalPath:[IXAppManager pathIsLocal:[self dataLocation]]];
+    
+    if( ![self isLocalPath] )
+    {
+        if( [self httpClient] == nil || ![[[[self httpClient] baseURL] absoluteString] isEqualToString:[self dataLocation]] )
+        {
+            [self setHttpClient:[AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[self dataLocation]]]];
+            [[self httpClient] setParameterEncoding:AFJSONParameterEncoding];
+        }
+        
+        AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
+        NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
+        if( [parameterEncoding isEqualToString:@"form"] ) {
+            paramEncoding = AFFormURLParameterEncoding;
+        } else if( [parameterEncoding isEqualToString:@"plist"] ) {
+            paramEncoding = AFPropertyListParameterEncoding;
+        }
+        
+        [[self httpClient] setParameterEncoding:paramEncoding];
+        
+        [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
+    }
+    else
+    {
+        [self setDataLocation:[[self propertyContainer] getPathPropertyValue:@"data_location" basePath:nil defaultValue:nil]];
+        [self setHttpClient:nil];
+        [self setHttpMethod:nil];
+    }
 }
 
 -(void)loadData:(BOOL)forceGet
@@ -61,35 +78,16 @@
     [self setLastResponseStatusCode:0];
     [self setLastResponseErrorMessage:nil];
     
-    NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
-    [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
-    
-    __weak typeof(self) weakSelf = self;
-    IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    if( ![self isLocalPath] )
+    {
+        NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
+        [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
         
-        [weakSelf setLastResponseStatusCode:[response statusCode]];
-        
-        NSError* jsonConvertError = nil;
-        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-        if( jsonConvertError == nil && jsonData )
-        {
-            NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            [weakSelf setRawResponse:jsonString];
-            [weakSelf setLastJSONResponse:JSON];
-            [weakSelf fireLoadFinishedEvents:YES];
-        }
-        else
-        {
-            [self setLastResponseErrorMessage:[jsonConvertError description]];
-            [weakSelf fireLoadFinishedEvents:NO];
-        }
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {        
-
-        [weakSelf setLastResponseStatusCode:[response statusCode]];
-        [weakSelf setLastResponseErrorMessage:[error description]];
-        
-        @try {
+        __weak typeof(self) weakSelf = self;
+        IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
+            [weakSelf setLastResponseStatusCode:[response statusCode]];
+            
             NSError* jsonConvertError = nil;
             NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
             if( jsonConvertError == nil && jsonData )
@@ -97,14 +95,87 @@
                 NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                 [weakSelf setRawResponse:jsonString];
                 [weakSelf setLastJSONResponse:JSON];
+                [weakSelf fireLoadFinishedEvents:YES];
+            }
+            else
+            {
+                [weakSelf setLastResponseErrorMessage:[jsonConvertError description]];
+                [weakSelf fireLoadFinishedEvents:NO];
+            }
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            
+            [weakSelf setLastResponseStatusCode:[response statusCode]];
+            [weakSelf setLastResponseErrorMessage:[error description]];
+            
+            @try {
+                NSError* jsonConvertError = nil;
+                NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                if( jsonConvertError == nil && jsonData )
+                {
+                    NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                    [weakSelf setRawResponse:jsonString];
+                    [weakSelf setLastJSONResponse:JSON];
+                }
+            }
+            @catch (NSException *exception) {
+                NSLog(@"%@", exception.reason);
+            }
+            [weakSelf fireLoadFinishedEvents:NO];
+        }];
+        [[self httpClient] enqueueHTTPRequestOperation:operation];
+    }
+    else
+    {
+        NSString* dataPath = [self dataLocation];
+        if( ![[self dataLocation] hasSuffix:@"/"] && ![[self objectsPath] hasPrefix:@"/"] )
+        {
+            if( [self objectsPath].length )
+            {
+                dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self objectsPath]];
             }
         }
-        @catch (NSException *exception) {
-            NSLog(@"%@", exception.reason);
+        else
+        {
+            dataPath = [[self dataLocation] stringByAppendingString:[self objectsPath]];
         }
-        [weakSelf fireLoadFinishedEvents:NO];
-    }];
-    [[self httpClient] enqueueHTTPRequestOperation:operation];
+        
+        __weak typeof(self) weakSelf = self;
+        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
+                                                     asynch:YES
+                                            completionBlock:^(id jsonObject, NSError *error) {
+                                                
+                                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                    NSError* jsonError = error;
+                                                    NSData* jsonData = nil;
+                                                    if( jsonObject )
+                                                    {
+                                                        NSError* jsonConvertError = nil;
+                                                        jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                                                        if( jsonConvertError != nil )
+                                                        {
+                                                            jsonError = jsonConvertError;
+                                                        }
+                                                    }
+                                                    if( jsonData )
+                                                    {
+                                                        NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                                        [weakSelf setRawResponse:jsonString];
+                                                        [weakSelf setLastJSONResponse:jsonObject];
+                                                        dispatch_main_sync_safe(^{
+                                                            [weakSelf fireLoadFinishedEvents:YES];
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        [weakSelf setLastResponseErrorMessage:[jsonError description]];
+                                                        dispatch_main_sync_safe(^{
+                                                            [weakSelf fireLoadFinishedEvents:NO];
+                                                        });
+                                                    }
+                                                });
+        }];
+    }
 }
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed

@@ -47,6 +47,7 @@
 
 -(NSArray*)getAllControlsWithID:(NSString*)objectID;
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
+-(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject;
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID;
 
 -(void)loadAllDataProviders;
