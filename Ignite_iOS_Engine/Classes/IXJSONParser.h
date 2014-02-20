@@ -28,7 +28,8 @@
 +(IXProperty*)propertyWithPropertyName:(NSString*)propertyName propertyValueDict:(NSDictionary*)propertyValueDict;
 
 +(IXActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray;
-+(IXBaseAction*)actionWithValueDictionary:(NSDictionary*)actionValueDict;
++(NSArray*)actionsWithEventNames:(NSArray*)eventNames actionValueDictionary:(NSDictionary*)actionValueDict;
++(IXBaseAction*)actionWithEventName:(NSString*)eventName valueDictionary:(NSDictionary*)actionValueDict;
 
 +(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray;
 +(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict;

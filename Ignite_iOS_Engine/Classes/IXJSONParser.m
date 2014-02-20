@@ -228,7 +228,45 @@ static NSCache* sCustomControlCache;
     return propertyContainer;
 }
 
-+(IXBaseAction*)actionWithValueDictionary:(NSDictionary*)actionValueDict
++(NSArray*)actionsWithEventNames:(NSArray*)eventNames actionValueDictionary:(NSDictionary*)actionValueDict
+{
+    NSMutableArray* actionArray = nil;
+    if( [eventNames count] )
+    {
+        IXBaseAction* action = nil;
+        for( id eventName in eventNames )
+        {
+            if( [eventName isKindOfClass:[NSString class]] )
+            {
+                if( action == nil )
+                {
+                    action = [IXJSONParser actionWithEventName:eventName valueDictionary:actionValueDict];
+                    if( action )
+                    {
+                        actionArray = [NSMutableArray arrayWithObject:action];
+                    }
+                    else
+                    {
+                        // Break out of loop here if the action wasn't created on the first go around.
+                        break;
+                    }
+                }
+                else
+                {
+                    IXBaseAction* copiedAction = [action copy];
+                    [copiedAction setEventName:eventName];
+                    if( copiedAction )
+                    {
+                        [actionArray addObject:copiedAction];
+                    }
+                }
+            }
+        }
+    }
+    return actionArray;
+}
+
++(IXBaseAction*)actionWithEventName:(NSString*)eventName valueDictionary:(NSDictionary*)actionValueDict
 {
     IXBaseAction* action = nil;
     if( [actionValueDict allKeys] > 0 )
@@ -239,44 +277,40 @@ static NSCache* sCustomControlCache;
             return nil;
         }
         
-        id eventName = [actionValueDict objectForKey:@"on"];
-        if( [eventName isKindOfClass:[NSString class]] )
+        id type = [actionValueDict objectForKey:kIX_TYPE];
+        if( [type isKindOfClass:[NSString class]] )
         {
-            id type = [actionValueDict objectForKey:kIX_TYPE];
-            if( [type isKindOfClass:[NSString class]] )
-            {
-                NSString* actionClassString = [NSString stringWithFormat:@"IX%@Action",[type capitalizedString]];
-                action = [[NSClassFromString(actionClassString) alloc] init];
-            }
+            NSString* actionClassString = [NSString stringWithFormat:@"IX%@Action",[type capitalizedString]];
+            action = [[NSClassFromString(actionClassString) alloc] init];
+        }
+        
+        if( action != nil )
+        {
+            [action setEventName:eventName];
             
-            if( action != nil )
+            id orientation = [actionValueDict objectForKey:@"orientation"];
+            [action setInterfaceOrientationMask:[IXJSONParser orientationMaskForValue:orientation]];
+            
+            id conditional = [actionValueDict objectForKey:@"if"];
+            [action setConditionalProperty:[IXJSONParser conditionalPropertyForConditionalValue:conditional]];
+            
+            id enabled = [actionValueDict objectForKey:@"enabled"];
+            id propertiesDict = [actionValueDict objectForKey:@"attributes"];
+            if( enabled && ![propertiesDict objectForKey:@"enabled"] )
             {
-                [action setEventName:eventName];
-                
-                id orientation = [actionValueDict objectForKey:@"orientation"];
-                [action setInterfaceOrientationMask:[IXJSONParser orientationMaskForValue:orientation]];
-                
-                id conditional = [actionValueDict objectForKey:@"if"];
-                [action setConditionalProperty:[IXJSONParser conditionalPropertyForConditionalValue:conditional]];
-                
-                id enabled = [actionValueDict objectForKey:@"enabled"];
-                id propertiesDict = [actionValueDict objectForKey:@"attributes"];
-                if( enabled && ![propertiesDict objectForKey:@"enabled"] )
-                {
-                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
-                    [propertiesDict setObject:enabled forKey:@"enabled"];
-                }                
-                IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
-                [action setActionProperties:propertyContainer];
-                
-                id parametersDict = [actionValueDict objectForKey:@"parameters"];
-                IXPropertyContainer* parameterContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
-                [action setParameterProperties:parameterContainer];
-                
-                id actionsDict = [actionValueDict objectForKey:@"actions"];
-                IXActionContainer* subActionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsDict];
-                [action setSubActionContainer:subActionContainer];
-            }
+                propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
+                [propertiesDict setObject:enabled forKey:@"enabled"];
+            }                
+            IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
+            [action setActionProperties:propertyContainer];
+            
+            id parametersDict = [actionValueDict objectForKey:@"parameters"];
+            IXPropertyContainer* parameterContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
+            [action setParameterProperties:parameterContainer];
+            
+            id actionsDict = [actionValueDict objectForKey:@"actions"];
+            IXActionContainer* subActionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsDict];
+            [action setSubActionContainer:subActionContainer];
         }
     }
     return action;
@@ -292,10 +326,29 @@ static NSCache* sCustomControlCache;
         {
             if( [actionValueDict isKindOfClass:[NSDictionary class]] )
             {
-                IXBaseAction* action = [IXJSONParser actionWithValueDictionary:actionValueDict];
-                if( action != nil )
+                id eventNameValue = [actionValueDict objectForKey:@"on"];
+                NSArray* eventNameStrings = nil;
+                if( eventNameValue )
                 {
-                    [actionContainer addAction:action];
+                    if( [eventNameValue isKindOfClass:[NSString class]] )
+                    {
+                        eventNameStrings = [eventNameValue componentsSeparatedByString:@","];
+                    }
+                    else if( [eventNameValue isKindOfClass:[NSArray class]] )
+                    {
+                        eventNameStrings = eventNameValue;
+                    }
+                    
+                    if( [eventNameStrings count] > 1 )
+                    {
+                        NSArray* actions = [IXJSONParser actionsWithEventNames:eventNameStrings actionValueDictionary:actionValueDict];
+                        [actionContainer addActions:actions];
+                    }
+                    else
+                    {
+                        IXBaseAction* action = [IXJSONParser actionWithEventName:[eventNameStrings firstObject] valueDictionary:actionValueDict];
+                        [actionContainer addAction:action];
+                    }
                 }
             }
         }
