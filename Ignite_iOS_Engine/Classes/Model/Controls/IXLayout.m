@@ -58,7 +58,8 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
     _layoutFlowVertical = YES;
     _verticalScrollEnabled = YES;
     _horizontalScrollEnabled = YES;
-    
+    _gradientLayer = [CAGradientLayer layer];
+
     _scrollView = [[IXClickableScrollView alloc] initWithFrame:CGRectZero];
     [_scrollView setDelegate:self];
     [_scrollView setParentControl:self];
@@ -128,6 +129,13 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
         [[self scrollView] setMaximumZoomScale:1.0f];
         [[self scrollView] setZoomScale:1.0f animated:YES];
     }
+    
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
+    {
+        UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientTop defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
+        UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientBottom defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
+        [[self gradientLayer] setColors:[NSArray arrayWithObjects:(id)CFBridgingRelease([topUIColor CGColor]), (id)CFBridgingRelease([bottomUIColor CGColor]), nil]];
+    }
 }
 
 -(void)doubleTapZoomRecognized:(id)sender
@@ -147,27 +155,24 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
 {
     [super layoutControlContentsInRect:rect];
     
+    [IXLayoutEngine layoutControl:self inRect:rect];
+    
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
     {
-        [[self gradientLayer] removeFromSuperlayer];
-        [self setGradientLayer:[CAGradientLayer layer]];
+        if( [[self gradientLayer] superlayer] != [[self scrollView] layer] )
+        {
+            [[self gradientLayer] removeFromSuperlayer];
+            [[[self scrollView] layer] insertSublayer:[self gradientLayer] atIndex:0];
+        }
         
         CGRect gradientFrame = [[self scrollView] bounds];
         gradientFrame.size = CGSizeMake(rect.size.width, rect.size.height);
         [[self gradientLayer] setFrame:gradientFrame];
-        
-        UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientTop defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
-        UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientBottom defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
-        [[self gradientLayer] setColors:[NSArray arrayWithObjects:(id)CFBridgingRelease([topUIColor CGColor]), (id)CFBridgingRelease([bottomUIColor CGColor]), nil]];
-        
-        [[[self scrollView] layer] insertSublayer:[self gradientLayer] atIndex:0];
     }
     else
     {
         [[self gradientLayer] removeFromSuperlayer];
-        [self setGradientLayer:nil];
     }
-    [IXLayoutEngine layoutControl:self inRect:rect];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size

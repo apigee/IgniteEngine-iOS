@@ -33,3 +33,22 @@ static const IXSizeAndPosition IXSizeAndPositionZero = {
     .size   = { .width = 0.0f, .height = 0.0f },
     .position  = { .x = 0.0f, .y = 0.0f }
 };
+
+typedef struct IXSizeValuePercentage
+{
+    BOOL propertyWasDefined;
+    BOOL isPercentage;
+    float value;
+    
+} IXSizeValuePercentage;
+
+typedef struct IXEdgeInsets
+{
+    IXSizeValuePercentage defaultInset;
+    IXSizeValuePercentage top;
+    IXSizeValuePercentage left;
+    IXSizeValuePercentage bottom;
+    IXSizeValuePercentage right;
+    
+} IXEdgeInsets;
+

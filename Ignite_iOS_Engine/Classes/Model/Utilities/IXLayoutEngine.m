@@ -54,7 +54,7 @@
         {
             continue;
         }
-        unclaimedWidth -= [[controlLayoutInfo width] evaluteForMaxValue:totalWidthAvailable];
+        unclaimedWidth -= ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo width], totalWidthAvailable);
         
         if( ![controlLayoutInfo widthWasDefined] )
         {
@@ -74,11 +74,12 @@
     
     IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
     
-    UIEdgeInsets controlMarginInsets = [[controlLayoutInfo marginInsets] evaluateEdgeInsetsUsingMaxSize:layoutRect.size];
+    UIEdgeInsets controlMarginInsets = [controlLayoutInfo evaluateEdgeInsets:[controlLayoutInfo marginInsets]
+                                                                usingMaxSize:layoutRect.size];
     
     if( [controlLayoutInfo leftPositionWasDefined] && [controlLayoutInfo isAbsolutePositioned] )
     {
-        returnPosition.x = [[controlLayoutInfo leftPosition] evaluteForMaxValue:layoutRect.size.width];
+        returnPosition.x = ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo leftPosition], layoutRect.size.width);
     }
     else
     {
@@ -105,7 +106,7 @@
     
     if( [controlLayoutInfo topPositionWasDefined] && [controlLayoutInfo isAbsolutePositioned ] )
     {
-        returnPosition.y = [[controlLayoutInfo topPosition] evaluteForMaxValue:layoutRect.size.height];
+        returnPosition.y = ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo topPosition], layoutRect.size.height);
     }
     else
     {
@@ -150,25 +151,25 @@
     if( heightWasDefined && widthWasDefined )
     {
         // If both height and width were defined then just set the returnSize to the calculated sizes.
-        returnSize.width = [[controlLayoutInfo width] evaluteForMaxValue:layoutSize.width];
-        returnSize.height = [[controlLayoutInfo height] evaluteForMaxValue:layoutSize.height];
+        returnSize.width = ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo width], layoutSize.width);
+        returnSize.height = ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo height], layoutSize.height);
     }
     else if( ![controlLayoutInfo isHidden ] )
     {
         if( widthWasDefined )
         {
-            layoutSize.width = [[controlLayoutInfo width] evaluteForMaxValue:layoutSize.width];
+            layoutSize.width = ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo width], layoutSize.width);
         }
         if( heightWasDefined )
         {
-            layoutSize.height = [[controlLayoutInfo height] evaluteForMaxValue:layoutSize.height];
+            layoutSize.height = ixEvaluateSizeValuePercentageForMaxValue([controlLayoutInfo height], layoutSize.height);
         }
         
         returnSize = layoutSize;
         
         if( !widthWasDefined || !heightWasDefined )
         {
-            UIEdgeInsets controlPaddingInsets = [[controlLayoutInfo paddingInsets] evaluateEdgeInsetsUsingMaxSize:layoutSize];
+            UIEdgeInsets controlPaddingInsets = [controlLayoutInfo evaluateEdgeInsets:[controlLayoutInfo paddingInsets] usingMaxSize:layoutSize];
             
             CGSize internalSize = CGSizeMake( fmaxf(0.0f,layoutSize.width - controlPaddingInsets.left - controlPaddingInsets.right),
                                               fmaxf(0.0f,layoutSize.height - controlPaddingInsets.top - controlPaddingInsets.bottom));
@@ -214,7 +215,7 @@
 {
     CGRect returnRect = outerLayoutRect;
     
-    UIEdgeInsets controlPaddingInsets = [[[control layoutInfo] paddingInsets] evaluateEdgeInsetsUsingMaxSize:returnRect.size];
+    UIEdgeInsets controlPaddingInsets = [[control layoutInfo] evaluateEdgeInsets:[[control layoutInfo] paddingInsets] usingMaxSize:returnRect.size];
     
     returnRect.origin.x = controlPaddingInsets.left;
     returnRect.origin.y = controlPaddingInsets.top;
@@ -228,7 +229,7 @@
 {
     IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
     
-    UIEdgeInsets controlMarginInsets = [[controlLayoutInfo marginInsets] evaluateEdgeInsetsUsingMaxSize:layoutRect.size];
+    UIEdgeInsets controlMarginInsets = [controlLayoutInfo evaluateEdgeInsets:[controlLayoutInfo marginInsets] usingMaxSize:layoutRect.size];
     
     IXSizeAndPosition sizeAndPosition = IXSizeAndPositionZero;
     
@@ -462,7 +463,7 @@
         [control layoutControlContentsInRect:CGRectIntegral(internalControlRect)];
     }
     
-    UIEdgeInsets layoutControlPaddingInsets = [[[layoutControl layoutInfo] paddingInsets] evaluateEdgeInsetsUsingMaxSize:[layoutsView bounds].size];
+    UIEdgeInsets layoutControlPaddingInsets = [[layoutControl layoutInfo] evaluateEdgeInsets:[[layoutControl layoutInfo] paddingInsets] usingMaxSize:[layoutsView bounds].size];
     
     CGSize contentSize = [layoutsView bounds].size;
     
@@ -515,15 +516,16 @@
     CGSize returnSize = CGSizeZero;
 
     IXControlLayoutInfo* layoutControlsLayoutInfo = [layoutControl layoutInfo];
-    UIEdgeInsets layoutControlPaddingInsets = [[layoutControlsLayoutInfo paddingInsets] evaluateEdgeInsetsUsingMaxSize:suggestedSize];
+    
+    UIEdgeInsets layoutControlPaddingInsets = [layoutControlsLayoutInfo evaluateEdgeInsets:[layoutControlsLayoutInfo paddingInsets] usingMaxSize:suggestedSize];
     
     if( [layoutControlsLayoutInfo widthWasDefined] )
     {
-        returnSize.width = [[layoutControlsLayoutInfo width] evaluteForMaxValue:suggestedSize.width];
+        returnSize.width = ixEvaluateSizeValuePercentageForMaxValue([layoutControlsLayoutInfo width], suggestedSize.width);
     }
     if( [layoutControlsLayoutInfo heightWasDefined] )
     {
-        returnSize.height = [[layoutControlsLayoutInfo height] evaluteForMaxValue:suggestedSize.height];
+        returnSize.height = ixEvaluateSizeValuePercentageForMaxValue([layoutControlsLayoutInfo height], suggestedSize.height);
     }
     
     CGRect absoluteLayoutRect = CGRectZero;

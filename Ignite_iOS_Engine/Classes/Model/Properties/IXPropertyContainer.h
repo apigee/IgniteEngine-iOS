@@ -38,12 +38,12 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(int)getIntPropertyValue:(NSString*)propertyName defaultValue:(int)defaultValue;
 -(float)getFloatPropertyValue:(NSString*)propertyName defaultValue:(float)defaultValue;
 -(float)getSizeValue:(NSString*)propertyName maximumSize:(float)maxSize defaultValue:(float)defaultValue;
--(IXSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue;
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue;
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock;
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue;
 -(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue;
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
+-(NSString*)getPathFromStringPropertyValue:(NSString*)stringPropertyValue basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
 
 @end

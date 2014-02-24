@@ -28,7 +28,6 @@
     {
         IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
         IXSandbox* sandbox = [ownerObject sandbox];
-        BOOL needsToLayout = NO;
         for( NSString* objectID in objectIDs )
         {
             if( [objectID isEqualToString:@"session"] )
@@ -43,15 +42,7 @@
                 for( IXBaseObject* baseObject in objectsWithID )
                 {
                     [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
-                }
-                
-                if( !needsToLayout )
-                {
-                    needsToLayout = [[self parameterProperties] hasLayoutProperties];
-                }
-                
-                for( IXBaseObject* baseObject in objectsWithID )
-                {
+
                     [baseObject applySettings];
                     
                     if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
@@ -61,8 +52,8 @@
                 }
             }
         }
-        
-        if( needsToLayout )
+
+        if( [[self parameterProperties] hasLayoutProperties] )
         {
             [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
         }

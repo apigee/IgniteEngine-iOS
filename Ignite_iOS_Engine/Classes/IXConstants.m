@@ -21,6 +21,7 @@ NSString* const kIX_SET = @"set";
 NSString* const kIX_FUNCTION = @"function";
 
 // RANDOMS
+NSString* const kIX_ANIMATED = @"animated";
 NSString* const kIX_TITLE = @"title";
 NSString* const kIX_SUB_TITLE = @"sub_title";
 NSString* const kIX_STYLE = @"style";

@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+#define IX_dispatch_main_sync_safe(block)\
+    if ([NSThread isMainThread])\
+    {\
+        block();\
+    }\
+    else\
+    {\
+        dispatch_sync(dispatch_get_main_queue(), block);\
+    }
+
 // SPECIAL
 extern NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME;
 extern NSString* const kIX_ID;
@@ -21,6 +31,7 @@ extern NSString* const kIX_SET;
 extern NSString* const kIX_FUNCTION;
 
 // RANDOMS
+extern NSString* const kIX_ANIMATED;
 extern NSString* const kIX_TITLE;
 extern NSString* const kIX_SUB_TITLE;
 extern NSString* const kIX_STYLE;

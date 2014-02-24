@@ -170,7 +170,15 @@
             
             if( shouldFireAction )
             {
-                [action performSelector:@selector(execute) withObject:nil afterDelay:[[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f]];
+                float delay = [[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f];
+                if( delay <= 0.0f )
+                {
+                    [action execute];
+                }
+                else
+                {
+                    [action performSelector:@selector(execute) withObject:nil afterDelay:[[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f]];
+                }
             }
         }
     }

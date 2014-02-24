@@ -55,15 +55,36 @@
 
 #import "SDWebImageManager.h"
 
+// Social Properties
+static NSString* const kIX_SharePlatform = @"share.platform"; // kIX_SharePlatform Types Accepted
+static NSString* const kIX_ShareText = @"share.text";
+static NSString* const kIX_ShareImage = @"share.image";
+
+// kIX_SharePlatform Types
+static NSString* const kIX_SharePlatform_Facebook = @"facebook";
+static NSString* const kIX_SharePlatform_Twitter = @"twitter";
+static NSString* const kIX_SharePlatform_SinaWeibo = @"sina_weibo";
+
+// Social Read-Only Properties
+static NSString* const kIX_Facebook_Available = @"facebook_available";
+static NSString* const kIX_Twitter_Available = @"twitter_available";
+static NSString* const kIX_Sina_Weibo_Available = @"sina_weibo_available";
+
+// Social Events
+static NSString* const kIX_Share_Done = @"share_done";
+static NSString* const kIX_Share_Cancelled = @"share_cancelled";
+
+// Social Functions
+static NSString* const kIX_Present_Share_Controller = @"present_share_controller"; // Params : "animated"
+static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller"; // Params : "animated"
+
 @interface  IXSocial ()
 
 @property (nonatomic,strong) SLComposeViewController* composeViewController;
 @property (nonatomic,copy) SLComposeViewControllerCompletionHandler composeViewControllerCompletionBlock;
-@property (nonatomic,assign) BOOL isPresentingComposeController;
 
 @property (nonatomic,strong) NSString* shareServiceType;
 @property (nonatomic,strong) NSString* shareInitialText;
-@property (nonatomic,strong) NSString* shareImagePath;
 @property (nonatomic,strong) UIImage* shareImage;
 
 @end
@@ -83,12 +104,12 @@
         {
             case SLComposeViewControllerResultDone:
             {
-                [[weakSelf actionContainer] executeActionsForEventNamed:@"share_done"];
+                [[weakSelf actionContainer] executeActionsForEventNamed:kIX_Share_Done];
                 break;
             }
             case SLComposeViewControllerResultCancelled:
             {
-                [[weakSelf actionContainer] executeActionsForEventNamed:@"share_cancelled"];
+                [[weakSelf actionContainer] executeActionsForEventNamed:kIX_Share_Cancelled];
                 break;
             }
             default:
@@ -104,12 +125,11 @@
 {
     [super applySettings];
     
-    [self setShareServiceType:[IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:@"share.platform" defaultValue:nil]]];
-    [self setShareInitialText:[[self propertyContainer] getStringPropertyValue:@"share.text" defaultValue:nil]];
-    [self setShareImagePath:[[self propertyContainer] getStringPropertyValue:@"share.image" defaultValue:nil]];
+    [self setShareServiceType:[IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:kIX_SharePlatform defaultValue:nil]]];
+    [self setShareInitialText:[[self propertyContainer] getStringPropertyValue:kIX_ShareText defaultValue:nil]];
 
     __weak IXSocial* weakSelf = self;
-    [[self propertyContainer] getImageProperty:@"share.image"
+    [[self propertyContainer] getImageProperty:kIX_ShareImage
                                   successBlock:^(UIImage *image) {
                                       [weakSelf setShareImage:image];
                                   } failBlock:^(NSError *error) {
@@ -118,13 +138,13 @@
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-    if( [functionName isEqualToString:@"present_share_controller"] )
+    if( [functionName isEqualToString:kIX_Present_Share_Controller] )
     {
-        [self presentComposeViewController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        [self presentComposeViewController:[parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:YES]];
     }
-    else if( [functionName isEqualToString:@"dismiss_share_controller"] )
+    else if( [functionName isEqualToString:kIX_Dismiss_Share_Controller] )
     {
-        [self dismissComposeViewController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        [self dismissComposeViewController:[parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:YES]];
     }
     else
     {
@@ -135,15 +155,15 @@
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = nil;
-    if( [propertyName isEqualToString:@"facebook_available"] )
+    if( [propertyName isEqualToString:kIX_Facebook_Available] )
     {
         returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]];
     }
-    else if( [propertyName isEqualToString:@"twitter_available"] )
+    else if( [propertyName isEqualToString:kIX_Twitter_Available] )
     {
         returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]];
     }
-    else if( [propertyName isEqualToString:@"sina_weibo_available"] )
+    else if( [propertyName isEqualToString:kIX_Sina_Weibo_Available] )
     {
         returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]];
     }
@@ -156,11 +176,11 @@
 
 +(NSString*)getServiceType:(NSString*)typeSetting
 {
-    if( [typeSetting isEqualToString:@"twitter"] )
+    if( [typeSetting isEqualToString:kIX_SharePlatform_Twitter] )
         return SLServiceTypeTwitter;
-    else if( [typeSetting isEqualToString:@"facebook"] )
+    else if( [typeSetting isEqualToString:kIX_SharePlatform_Facebook] )
         return SLServiceTypeFacebook;
-    else if( [typeSetting isEqualToString:@"sina_weibo"] )
+    else if( [typeSetting isEqualToString:kIX_SharePlatform_SinaWeibo] )
         return SLServiceTypeSinaWeibo;
     return nil;
 }
