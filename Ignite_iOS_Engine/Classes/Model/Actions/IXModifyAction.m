@@ -18,6 +18,16 @@
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 
+// IXModifyAction Properties
+static NSString* const kIXDuration = @"duration";
+static NSString* const kIXAnimationStyle = @"animation_style";
+
+// kIXAnimationStyle Types
+static NSString* const kIXEaseInOut = @"ease_in_out";
+static NSString* const kIXEaseIn = @"ease_in";
+static NSString* const kIXEaseOut = @"ease_out";
+static NSString* const kIXLinear = @"linear";
+
 @implementation IXModifyAction
 
 -(void)performModify
@@ -30,7 +40,7 @@
         IXSandbox* sandbox = [ownerObject sandbox];
         for( NSString* objectID in objectIDs )
         {
-            if( [objectID isEqualToString:@"session"] )
+            if( [objectID isEqualToString:kIX_SESSION] )
             {
                 IXPropertyContainer* sessionProperties = [[IXAppManager sharedAppManager] sessionProperties];
                 [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
@@ -57,26 +67,26 @@
         {
             [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
         }
+        
+        [self actionDidFinishWithEvents:nil];
     }
 }
 
 -(void)execute
 {
-    float duration = [[self actionProperties] getFloatPropertyValue:@"duration" defaultValue:0.0f];
-    NSString *animationStyle = [[self actionProperties] getStringPropertyValue:@"animation_style" defaultValue:nil];
+    float duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
+    NSString *animationStyle = [[self actionProperties] getStringPropertyValue:kIXAnimationStyle defaultValue:nil];
     
-        UIViewAnimationCurve animationCurve;
-    
-        if ( [animationStyle isEqualToString:@"ease_in_out"] )
-            animationCurve = UIViewAnimationCurveEaseInOut;
-        else if ( [animationStyle isEqualToString:@"ease_in"] )
-            animationCurve = UIViewAnimationCurveEaseIn;
-        else if ( [animationStyle isEqualToString:@"ease_out"] )
-            animationCurve = UIViewAnimationCurveEaseOut;
-        else if ( [animationStyle isEqualToString:@"linear"] )
-            animationCurve = UIViewAnimationCurveLinear;
-        else
-            animationCurve = UIViewAnimationCurveEaseInOut;
+    UIViewAnimationCurve animationCurve = UIViewAnimationCurveEaseInOut;
+
+    if ( [animationStyle isEqualToString:kIXEaseInOut] )
+        animationCurve = UIViewAnimationCurveEaseInOut;
+    else if ( [animationStyle isEqualToString:kIXEaseIn] )
+        animationCurve = UIViewAnimationCurveEaseIn;
+    else if ( [animationStyle isEqualToString:kIXEaseOut] )
+        animationCurve = UIViewAnimationCurveEaseOut;
+    else if ( [animationStyle isEqualToString:kIXLinear] )
+        animationCurve = UIViewAnimationCurveLinear;
     
     if( duration > 0.0f )
     {

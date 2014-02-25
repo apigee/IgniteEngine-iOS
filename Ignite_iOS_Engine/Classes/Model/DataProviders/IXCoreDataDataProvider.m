@@ -321,7 +321,7 @@
     {
         if( _needsToPerformFetch )
         {
-            NSError* error = nil;
+            NSError* __autoreleasing error = nil;
             BOOL fetchSuccessful = [self.fetchedResultsController performFetch:&error];
             if (!fetchSuccessful) {
                 NSLog(@"WARNING: ERROR PERFORMING FETCH");

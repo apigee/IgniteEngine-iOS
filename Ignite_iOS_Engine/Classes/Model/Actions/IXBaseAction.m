@@ -71,6 +71,16 @@
     [[self subActionContainer] setOwnerObject:[actionContainer ownerObject]];
 }
 
+-(void)actionDidFinishWithEvents:(NSArray*)eventsToFire
+{
+    IXActionContainer* subActionContainer = [self subActionContainer];
+    for( NSString* eventToFire in eventsToFire )
+    {
+        [subActionContainer executeActionsForEventNamed:eventToFire];
+    }
+    [subActionContainer executeActionsForEventNamed:kIX_FINISHED];
+}
+
 -(NSString*)description
 {
     NSMutableString* description = [NSMutableString stringWithFormat:@"\n%@ on %@:",NSStringFromClass([self class]),[self eventName]];

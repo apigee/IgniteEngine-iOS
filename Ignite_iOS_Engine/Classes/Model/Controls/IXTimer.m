@@ -8,6 +8,8 @@
 
 #import "IXTimer.h"
 
+#import "IXWeakTimerTarget.h"
+
 // IXTimer Properties
 static NSString* const kIXEnabled = @"enabled"; // Default YES
 static NSString* const kIXRepeats = @"repeats"; // Default NO
@@ -20,44 +22,7 @@ static NSString* const kIXTimerFired = @"timer_fired";
 static NSString* const kIXStart = @"start";
 static NSString* const kIXStop = @"stop";
 
-@interface IXWeakTimerTarget : NSObject
-
-@property (nonatomic,weak) IXTimer* timerControl;
-@property (nonatomic,assign) NSString* selectorName;
-
-@end
-
-@implementation IXWeakTimerTarget
-
--(instancetype)initWithTarget:(IXTimer*)timer selectorName:(NSString*)selectorName
-{
-    self = [super init];
-    if( self )
-    {
-        _timerControl = timer;
-        _selectorName = selectorName;
-    }
-    return self;
-}
-
--(void)timerDidFire:(NSTimer*)timer
-{
-    if([self timerControl] && [self selectorName])
-    {
-        SEL selector = NSSelectorFromString([self selectorName]);
-        IMP imp = [[self timerControl] methodForSelector:selector];
-        void (*func)(id, SEL) = (void *)imp;
-        func([self timerControl], selector);
-    }
-    else
-    {
-        [timer invalidate];
-    }
-}
-
-@end
-
-@interface IXTimer ()
+@interface IXTimer () <IXWeakTimerTargetDelegate>
 
 @property (nonatomic,strong) IXWeakTimerTarget* weakTimerTarget;
 
@@ -79,7 +44,7 @@ static NSString* const kIXStop = @"stop";
 {
     // The Timer control doesnt have a view.
 
-    _weakTimerTarget = [[IXWeakTimerTarget alloc] initWithTarget:self selectorName:@"handleTimer"];
+    _weakTimerTarget = [[IXWeakTimerTarget alloc] initWithDelegate:self];
 }
 
 -(void)applySettings
@@ -99,11 +64,8 @@ static NSString* const kIXStop = @"stop";
     {
         [self stopTimer];
         
-        [self setTimer:[NSTimer scheduledTimerWithTimeInterval:[self timeInterval]
-                                                        target:[self weakTimerTarget]
-                                                      selector:@selector(timerDidFire:)
-                                                      userInfo:nil
-                                                       repeats:[self shouldRepeat]]];
+        NSTimer* timer = [[self weakTimerTarget] createTimerWithInterval:[self timeInterval] repeats:[self shouldRepeat]];
+        [self setTimer:timer];
     }
 }
 
@@ -113,7 +75,7 @@ static NSString* const kIXStop = @"stop";
     [self setTimer:nil];
 }
 
--(void)handleTimer
+-(void)timerFired:(IXWeakTimerTarget*)timerTarget;
 {
     [[self actionContainer] performSelectorOnMainThread:@selector(executeActionsForEventNamed:)
                                              withObject:kIXTimerFired

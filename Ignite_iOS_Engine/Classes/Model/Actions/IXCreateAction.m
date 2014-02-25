@@ -18,6 +18,15 @@
 #import "IXBaseControl.h"
 
 static NSCache* sIXCreateControlCache;
+static NSString* const kIXCreateControlCacheName = @"com.ignite.CreateControlCache";
+
+// IXCreateAction Properties
+static NSString* const kIXControlLocation = @"control_location";
+static NSString* const kIXParentID = @"parent_id";
+
+// IXCreateAction Events
+static NSString* const kIXSuccess = @"success";
+static NSString* const kIXFailed = @"failed";
 
 @implementation IXCreateAction
 
@@ -25,7 +34,7 @@ static NSCache* sIXCreateControlCache;
 {
     @autoreleasepool {
         sIXCreateControlCache = [[NSCache alloc] init];
-        [sIXCreateControlCache setName:@"com.ignite.CreateControlCache"];
+        [sIXCreateControlCache setName:kIXCreateControlCacheName];
     }
 }
 
@@ -47,7 +56,13 @@ static NSCache* sIXCreateControlCache;
         [parentControl addChildObject:control];
         [control applySettings];
         [parentControl layoutControl];
-    }    
+        
+        [self actionDidFinishWithEvents:@[kIXSuccess]];
+    }
+    else
+    {
+        [self actionDidFinishWithEvents:@[kIXFailed]];
+    }
 }
 
 -(IXBaseControl*)createdControlFromLocation:(NSString*)location
@@ -87,7 +102,7 @@ static NSCache* sIXCreateControlCache;
 {
     [super execute];
     
-    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
+    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:kIXControlLocation basePath:nil defaultValue:nil];
     if( controlJSONLocation )
     {
         IXBaseControl* createdControl = [[sIXCreateControlCache objectForKey:controlJSONLocation] copy];
@@ -98,8 +113,12 @@ static NSCache* sIXCreateControlCache;
         
         if( createdControl )
         {
-            NSString* parentControlID = [[self actionProperties] getStringPropertyValue:@"parent_id" defaultValue:nil];
+            NSString* parentControlID = [[self actionProperties] getStringPropertyValue:kIXParentID defaultValue:nil];
             [self addCreatedControl:createdControl withParentControlID:parentControlID];
+        }
+        else
+        {
+            [self actionDidFinishWithEvents:@[kIXFailed]];
         }
     }
 }

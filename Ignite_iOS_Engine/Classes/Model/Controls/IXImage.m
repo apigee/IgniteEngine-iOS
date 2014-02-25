@@ -8,18 +8,16 @@
 
 #import "IXImage.h"
 
-#import "UIImageView+WebCache.h"
-#import "UIImageView+IXAdditions.h"
 #import "NSString+IXAdditions.h"
-#import <ImageIO/ImageIO.h>
+#import "UIImageView+IXAdditions.h"
+
+#import "IXWeakTimerTarget.h"
+#import "IXGIFImageView.h"
 
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
-static NSString* const kIXAnimatedImages = @"animated_images";
-static NSString* const kIXAnimationDuration = @"animation_duration";
-static NSString* const kIXAutoAnimate = @"auto_animate";
-static NSString* const kIXAnimationRepeatCount = @"animation_repeat_count";
+static NSString* const kIXGIFDuration = @"gif_duration";
 
 // IXImage Read-Only Properties
 static NSString* const kIXIsAnimating = @"is_animating";
@@ -35,87 +33,25 @@ static NSString* const kIXStartAnimation = @"start_animation";
 static NSString* const kIXReStartAnimation = @"restart_animation";
 static NSString* const kIXStopAnimation = @"stop_animation";
 
-@interface IXWeakTimerImageTarget : NSObject
-
-@property (nonatomic,weak) IXImage* imageControl;
-@property (nonatomic,assign) NSString* selectorName;
-
-@end
-
-@implementation IXWeakTimerImageTarget
-
--(instancetype)initWithTarget:(IXImage*)image selectorName:(NSString*)selectorName
-{
-    self = [super init];
-    if( self )
-    {
-        _imageControl = image;
-        _selectorName = selectorName;
-    }
-    return self;
-}
-
--(void)timerDidFire:(NSTimer*)timer
-{
-    if([self imageControl] && [self selectorName])
-    {
-        SEL selector = NSSelectorFromString([self selectorName]);
-        IMP imp = [[self imageControl] methodForSelector:selector];
-        void (*func)(id, SEL) = (void *)imp;
-        func([self imageControl], selector);
-    }
-    else
-    {
-        [timer invalidate];
-    }
-}
-
-@end
-
 @interface IXImage ()
-{
-    CGImageSourceRef _gifImageRef;
-}
 
-@property (nonatomic,strong) IXWeakTimerImageTarget* weakTimerTarget;
+@property (nonatomic,strong) IXGIFImageView* imageView;
 
-@property (nonatomic,assign) BOOL shouldStopAnimation;
-@property (nonatomic,strong) NSTimer* gifTimer;
-@property (nonatomic,assign) NSUInteger gifNumberOfFrames;
-@property (nonatomic,assign) NSUInteger gifNextFrame;
-@property (nonatomic,assign) NSTimeInterval gifTimerTimeInterval;
-
-@property (nonatomic,strong) UIImageView* imageView;
-@property (nonatomic,strong) NSString* defaultImagePath;
 @property (nonatomic,strong) UIImage* defaultImage;
-@property (nonatomic,strong) NSString* touchedImagePath;
 @property (nonatomic,strong) UIImage* touchedImage;
-@property (nonatomic,strong) NSArray* animatedImages;
-@property (nonatomic,assign,getter = isAnimationPaused) BOOL animationPaused;
+
+@property (nonatomic,assign,getter = isAnimatedGIF) BOOL animatedGif;
+@property (nonatomic,strong) NSURL* animatedGIFURL;
 
 @end
 
 @implementation IXImage
 
--(void)dealloc
-{
-    _shouldStopAnimation = YES;
-    if( _gifImageRef != nil )
-    {
-        CFRelease(_gifImageRef);
-    }
-    [_gifTimer invalidate];
-}
-
 -(void)buildView
 {
     [super buildView];
     
-    _weakTimerTarget = [[IXWeakTimerImageTarget alloc] initWithTarget:self selectorName:@"performTransition"];
-    _gifImageRef = nil;
-    
-    _shouldStopAnimation = NO;
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    _imageView = [[IXGIFImageView alloc] initWithFrame:CGRectZero];
     [[self contentView] addSubview:_imageView];
 }
 
@@ -129,96 +65,22 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     return size;
 }
 
--(UIImage*)getImageAtCurrentIndex
-{
-    if( [self gifNextFrame] >= [self gifNumberOfFrames] || _gifImageRef == nil )
-    {
-        return nil;
-    }
-    
-    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(_gifImageRef, [self gifNextFrame], NULL);
-    
-    UIImage* image = [[UIImage alloc] initWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-    
-    CGImageRelease(imageRef);
-    
-    return image;
-}
-
--(void)performTransition
-{
-    if(![self shouldStopAnimation])
-    {
-        [[self imageView] setImage:[self getImageAtCurrentIndex]];
-        [self setGifNextFrame:[self gifNextFrame]+1];
-        if([self gifNextFrame] == [self gifNumberOfFrames]){
-            [self setGifNextFrame:0];
-        }
-    }
-    else
-    {
-        if([[self gifTimer] isValid])
-        {
-            [[self gifTimer] invalidate];
-            [self setGifTimer:nil];
-        }
-    }
-}
-
 -(void)applySettings
 {
     [super applySettings];
     
-    NSString* imagePath = [[self propertyContainer] getPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
-    if( [[imagePath pathExtension] isEqualToString:@"gif"])
-    {
-        if( ![[self defaultImagePath] isEqualToString:imagePath] )
-        {
-            [self setDefaultImagePath:imagePath];
-            float gifDuration = [[self propertyContainer] getFloatPropertyValue:@"gif_duration" defaultValue:1.0f];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSData* data = [[NSData alloc] initWithContentsOfFile:imagePath];
-                
-                [[self gifTimer] invalidate];
-                [self setGifTimer:nil];
+    NSURL* imageURL = [[self propertyContainer] getURLPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
+    [self setAnimatedGif:[[imageURL pathExtension] isEqualToString:kIX_GIF_EXTENSION]];
 
-                if( _gifImageRef != nil )
-                {
-                    CFRelease(_gifImageRef);
-                    _gifImageRef = nil;
-                }
-                _gifImageRef = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
-                _gifNumberOfFrames = CGImageSourceGetCount(_gifImageRef);
-                _gifTimerTimeInterval = gifDuration/_gifNumberOfFrames;
-                
-                dispatch_main_sync_safe(^{
-                    
-                    [self setGifNextFrame:0];
-                    [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
-                    
-                });
-            });
-        }
-        
-        if( _gifImageRef )
+    if( [self isAnimatedGIF] )
+    {
+        if( ![[self animatedGIFURL] isEqual:imageURL] )
         {
-            BOOL previousShouldStop = [self shouldStopAnimation];
-            [self setShouldStopAnimation:[[self contentView] isHidden]];
+            [self setAnimatedGIFURL:imageURL];
             
-            if( [self shouldStopAnimation] )
-            {
-                [[self imageView] setImage:nil];
-                [[self gifTimer] invalidate];
-                [self setGifTimer:nil];
-            }
-            else
-            {
-                if( previousShouldStop != [self shouldStopAnimation] )
-                {
-                    [self setGifNextFrame:0];
-                    [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
-                }
-            }
+            float gifDuration = [[self propertyContainer] getFloatPropertyValue:kIXGIFDuration defaultValue:0.0f];
+            [[self imageView] setAnimatedGIFDuration:gifDuration];
+            [[self imageView] setAnimatedGIFURL:[self animatedGIFURL]];
         }
     }
     else
@@ -232,7 +94,6 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                                       } failBlock:^(NSError *error) {
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
                                       }];
-        
         [[self propertyContainer] getImageProperty:kIXImagesTouch
                                       successBlock:^(UIImage *image) {
                                           [weakSelf setTouchedImage:image];
@@ -240,14 +101,13 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                                       } failBlock:^(NSError *error) {
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchFailed];
                                       }];
-
     }
 }
 
 -(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesBegan:touches withEvent:event];
-    if( [self touchedImage] )
+    if( ![self isAnimatedGIF] && [self touchedImage] )
     {
         [[self imageView] setImage:[self touchedImage]];
     }
@@ -256,13 +116,19 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 -(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesCancelled:touches withEvent:event];
-    [[self imageView] setImage:[self defaultImage]];
+    if( ![self isAnimatedGIF] )
+    {
+        [[self imageView] setImage:[self defaultImage]];
+    }
 }
 
 -(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesEnded:touches withEvent:event];
-    [[self imageView] setImage:[self defaultImage]];
+    if( ![self isAnimatedGIF] )
+    {
+        [[self imageView] setImage:[self defaultImage]];
+    }
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -270,7 +136,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXIsAnimating] )
     {
-        returnValue = [NSString stringFromBOOL:[[self imageView] isAnimating]];
+        returnValue = [NSString stringFromBOOL:[[self imageView] isGIFAnimating]];
     }
     else
     {
@@ -283,39 +149,15 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 {
     if( [functionName isEqualToString:kIXStartAnimation] )
     {
-        if( [self gifTimer] == nil || ![[self gifTimer] isValid] )
-        {
-            [[self gifTimer] invalidate];
-            [self setGifTimer:nil];            
-            if( _gifImageRef != nil )
-            {
-                [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
-            }
-        }
+        [[self imageView] startGIFAnimation:NO];
     }
     else if( [functionName isEqualToString:kIXReStartAnimation] )
     {
-        if( [self gifTimer] == nil || ![[self gifTimer] isValid] )
-        {
-            [[self gifTimer] invalidate];
-            [self setGifTimer:nil];
-            if( _gifImageRef != nil )
-            {
-                [self setShouldStopAnimation:NO];
-                [self setGifNextFrame:0];
-                [self setGifTimer:[NSTimer scheduledTimerWithTimeInterval:_gifTimerTimeInterval target:[self weakTimerTarget] selector:@selector(timerDidFire:) userInfo:nil repeats:YES]];
-            }
-        }
+        [[self imageView] startGIFAnimation:YES];
     }
     else if( [functionName isEqualToString:kIXStopAnimation] )
     {
-        if( [[self gifTimer] isValid] )
-        {
-            [self setShouldStopAnimation:YES];
-            [[self imageView] setImage:nil];
-            [[self gifTimer] invalidate];
-            [self setGifTimer:nil];
-        }
+        [[self imageView] stopGIFAnimation:NO];
     }
     else
     {

@@ -15,6 +15,9 @@
 
 #import "IXBaseObject.h"
 
+// IXEventAction Properties
+static NSString* const kIXEventName = @"event_name";
+
 @implementation IXEventAction
 
 -(void)execute
@@ -22,7 +25,7 @@
     IXPropertyContainer* actionProperties = [self actionProperties];
     
     NSArray* objectIDs = [actionProperties getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
-    NSString* eventName = [actionProperties getStringPropertyValue:@"event_name" defaultValue:nil];
+    NSString* eventName = [actionProperties getStringPropertyValue:kIXEventName defaultValue:nil];
     
     if( objectIDs && eventName )
     {
@@ -35,6 +38,8 @@
             [[baseObject actionContainer] executeActionsForEventNamed:eventName];
         }
     }
+    
+    [self actionDidFinishWithEvents:nil];
 }
 
 @end

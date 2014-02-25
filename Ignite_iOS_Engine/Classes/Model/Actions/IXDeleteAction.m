@@ -12,12 +12,18 @@
 #import "IXBaseControl.h"
 #import "IXPropertyContainer.h"
 
+// IXDeleteAction Events
+static NSString* kIXSuccess = @"success";
+static NSString* kIXFailed = @"failed";
+
 @implementation IXDeleteAction
 
 -(void)execute
 {
     [super execute];
     
+    BOOL didSucceed = NO;
+
     NSString* deleteControlID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
     if( deleteControlID )
     {
@@ -37,6 +43,17 @@
         {
             [parent layoutControl];
         }
+        
+        didSucceed = ([controlsToDelete count] > 0);
+    }
+    
+    if( didSucceed )
+    {
+        [self actionDidFinishWithEvents:@[kIXSuccess]];
+    }
+    else
+    {
+        [self actionDidFinishWithEvents:@[kIXFailed]];
     }
 }
 

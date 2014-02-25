@@ -12,6 +12,19 @@
 #import "IXActionContainer.h"
 #import "IXPropertyContainer.h"
 
+// IXAlertAction Properties
+static NSString* const kIXTitle = @"title";
+static NSString* const kIXSubtitle = @"subtitle";
+static NSString* const kIXConfirmButtonTitle = @"confirm_button_title";
+static NSString* const kIXShowsCancelButton = @"shows_cancel_button";
+static NSString* const kIXCancelButtonTitle = @"cancel_button_title";
+
+// IXAlertAction Events
+static NSString* const kIXWillPresentAlert = @"will_present_alert";
+static NSString* const kIXDidPresentAlert = @"did_present_alert";
+static NSString* const kIXCancelButtonPressed = @"cancel_button_pressed";
+static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
+
 @interface IXAlertAction () <UIAlertViewDelegate>
 @property (nonatomic,strong) UIAlertView* alertView;
 @end
@@ -29,14 +42,12 @@
     
     IXPropertyContainer* actionProperties = [self actionProperties];
     
-    NSString* title = [actionProperties getStringPropertyValue:@"title" defaultValue:nil];
-    NSString* subTitle = [actionProperties getStringPropertyValue:@"subtitle" defaultValue:nil];
-    NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:@"confirm_button_title" defaultValue:kIX_OK];
+    NSString* title = [actionProperties getStringPropertyValue:kIXTitle defaultValue:nil];
+    NSString* subTitle = [actionProperties getStringPropertyValue:kIXSubtitle defaultValue:nil];
+    NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:kIXConfirmButtonTitle defaultValue:kIX_OK];
     
-    NSString* cancelButtonTitle = nil;
-    if( [actionProperties getBoolPropertyValue:@"shows_cancel_button" defaultValue:NO] )
-        cancelButtonTitle = [actionProperties getStringPropertyValue:@"cancel_button_title" defaultValue:kIX_CANCEL];
-    
+    NSString* cancelButtonTitle = [actionProperties getStringPropertyValue:kIXCancelButtonTitle defaultValue:nil];
+
     [[self alertView] setDelegate:nil];
     [[self alertView] dismissWithClickedButtonIndex:[[self alertView] cancelButtonIndex] animated:YES];
     [self setAlertView:[[UIAlertView alloc] initWithTitle:title
@@ -54,27 +65,27 @@
 
 - (void)willPresentAlertView:(UIAlertView *)alertView
 {
-    [[self subActionContainer] executeActionsForEventNamed:@"will_present_alert"];
+    [[self subActionContainer] executeActionsForEventNamed:kIXWillPresentAlert];
 }
 
 - (void)didPresentAlertView:(UIAlertView *)alertView
 {
-    [[self subActionContainer] executeActionsForEventNamed:@"did_present_alert"];
+    [[self subActionContainer] executeActionsForEventNamed:kIXDidPresentAlert];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    [[self alertView] setDelegate:nil];
+    [self setAlertView:nil];
+
     if( buttonIndex == [alertView cancelButtonIndex] )
     {
-        [[self subActionContainer] executeActionsForEventNamed:@"cancel_button_pressed"];
+        [self actionDidFinishWithEvents:@[kIXCancelButtonPressed]];
     }
     else
     {
-        [[self subActionContainer] executeActionsForEventNamed:@"confirm_button_pressed"];
+        [self actionDidFinishWithEvents:@[kIXConfirmButtonPressed]];
     }
-    
-    [[self alertView] setDelegate:nil];
-    [self setAlertView:nil];
 }
 
 @end

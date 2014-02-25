@@ -44,6 +44,5 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue;
 -(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue;
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
--(NSString*)getPathFromStringPropertyValue:(NSString*)stringPropertyValue basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
 
 @end

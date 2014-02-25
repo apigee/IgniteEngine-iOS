@@ -41,6 +41,8 @@
             [((IXBaseDataProvider*)baseObject) loadData:YES];
         }
     }
+    
+    [self actionDidFinishWithEvents:nil];
 }
 
 @end

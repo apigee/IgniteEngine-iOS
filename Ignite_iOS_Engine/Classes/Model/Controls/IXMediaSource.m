@@ -154,7 +154,10 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXSelectedMedia] )
     {
-        returnValue = [NSString stringWithFormat:@"%@", [self selectedMedia]];
+        if( [self selectedMedia] )
+        {
+            returnValue = [NSString stringWithFormat:@"%@", [self selectedMedia]];
+        }
     }
     else
     {
@@ -168,8 +171,6 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 {
 //    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     
-    [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
-    
     // Handle a movie capture
 //    if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
 //        NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
@@ -178,6 +179,9 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 //        }
 //    }
 
+    [self setSelectedMedia:info[UIImagePickerControllerReferenceURL]];
+    
+    [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
     
     if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
     {
@@ -185,7 +189,6 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     }
     if(info != nil)
     {
-        [self setSelectedMedia:info[UIImagePickerControllerReferenceURL]];
         [[self actionContainer] executeActionsForEventNamed:@"did_load_media"];
     }
     

@@ -11,6 +11,7 @@
 #import "IXAppManager.h"
 #import "IXSandbox.h"
 #import "IXJSONParser.h"
+#import "IXPathHandler.h"
 
 @interface IXSandbox ()
 
@@ -43,7 +44,7 @@
             if( [self customControlSandox] == nil )
             {
                 NSString* jsonRootPath = nil;
-                if( [IXAppManager pathIsLocal:pathToJSON] ) {
+                if( [IXPathHandler pathIsLocal:pathToJSON] ) {
                     jsonRootPath = [pathToJSON stringByDeletingLastPathComponent];
                 } else {
                     jsonRootPath = [[[NSURL URLWithString:pathToJSON] URLByDeletingLastPathComponent] absoluteString];

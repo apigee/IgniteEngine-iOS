@@ -12,6 +12,7 @@
 #import "IXSandbox.h"
 #import "IXProperty.h"
 #import "IXControlLayoutInfo.h"
+#import "IXPathHandler.h"
 
 #import "IXBaseObject.h"
 #import "ColorUtils.h"
@@ -234,112 +235,79 @@
 
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock
 {
-    NSString* imagePath = [self getPathPropertyValue:propertyName basePath:nil defaultValue:nil];
+    NSURL* imageURL = [self getURLPathPropertyValue:propertyName basePath:nil defaultValue:nil];
     /*
      Added in a fallback so that if images.touch (etc.) don't exist, it tries again with "images.default".
      This way we don't have to specify several of the same image in the JSON.
      - B
     */
-    if( imagePath == nil )
+    if( imageURL == nil && ![propertyName isEqualToString:@"images.default"] )
     {
-        imagePath = [self getPathPropertyValue:@"images.default" basePath:nil defaultValue:nil];
+        imageURL = [self getURLPathPropertyValue:@"images.default" basePath:nil defaultValue:nil];
     }
-    if( imagePath != nil )
+    
+    if( imageURL != nil )
     {
-        NSURL *imageURL = nil;
+        NSString* imageURLPath = [imageURL absoluteString];
         
-        if ( [IXAppManager pathIsAssetsLibrary:imagePath] )
+        if ( [IXPathHandler pathIsAssetsLibrary:imageURLPath] )
         {
-            //
-            imageURL = [NSURL URLWithString:imagePath];
-            
-            ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *asset)
-            {
-                ALAssetRepresentation *rep = [asset defaultRepresentation];
-                CGImageRef iref = [rep fullResolutionImage];
-                if (iref) {
-                    UIImage* image = [UIImage imageWithCGImage:iref];
-                    if( image )
-                    {
-                        if( successBlock )
-                        {
-                            successBlock(image);
-                            return;
-                        }
-                    }
-                }
-            };
-            
-            //
-            ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *err)
-            {
-                if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-                {
-                    NSLog(@"Failed to load image from assets-library: %@",[err localizedDescription]);
-                }
-                return;
-
-            };
-            
             ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
             [library assetForURL:imageURL
-                           resultBlock:resultblock
-                          failureBlock:failureblock];
-        }
-        else if( [IXAppManager pathIsLocal:imagePath] )
-        {
-            imageURL = [NSURL fileURLWithPath:imagePath];
-            
-            UIImage* image = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:[imageURL absoluteString]];
-            if( image )
-            {
-                if( successBlock )
-                {
-                    successBlock(image);
-                    return;
-                }
-            }            
+                     resultBlock:^(ALAsset *asset) {
+                         
+                         ALAssetRepresentation *rep = [asset defaultRepresentation];
+                         CGImageRef iref = [rep fullResolutionImage];
+                         if (iref)
+                         {
+                             UIImage* image = [UIImage imageWithCGImage:iref];
+                             if( image )
+                             {
+                                 if( successBlock )
+                                 {
+                                     successBlock(image);
+                                 }
+                             }
+                         }
+                         
+                     } failureBlock:^(NSError *err) {
+                         
+                        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+                        {
+                            NSLog(@"Failed to load image from assets-library: %@",[err localizedDescription]);
+                        }
+                    }];
         }
         else
         {
-            imageURL = [NSURL URLWithString:imagePath];
-        }
-        
-        if([[imagePath pathExtension] isEqualToString:@"gif"])
-        {
-            float gifDuration = [self getFloatPropertyValue:@"gif_duration" defaultValue:1.0f];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSData* data = [[NSData alloc] initWithContentsOfFile:imagePath];
-                UIImage* returnImage = [UIImage ix_animatedGIFWithData:data withDuration:gifDuration];
-                dispatch_main_sync_safe(^{
-                    if( returnImage && successBlock != nil )
+            if( [IXPathHandler pathIsLocal:imageURLPath] )
+            {
+                UIImage* image = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:[imageURL absoluteString]];
+                if( image )
+                {
+                    if( successBlock )
                     {
-                        successBlock([UIImage imageWithCGImage:[returnImage CGImage]]);
+                        successBlock(image);
+                        return;
                     }
-                    else if( failBlock != nil )
-                    {
-                        failBlock(nil);
-                    }
-                });
-            });
+                }            
+            }
             
-            return;
-        }
-        
-        if( imageURL )
-        {
-            [[SDWebImageManager sharedManager] downloadWithURL:imageURL
-                                                       options:SDWebImageCacheMemoryOnly
-                                                      progress:nil
-                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
-                                                         if (image) {
-                                                             if( successBlock )
-                                                                successBlock([UIImage imageWithCGImage:[image CGImage]]);
-                                                         } else {
-                                                             if( failBlock )
-                                                                failBlock(error);
-                                                         }
-                                                     }];
+            if( imageURL )
+            {
+                [[SDWebImageManager sharedManager] downloadWithURL:imageURL
+                                                           options:SDWebImageCacheMemoryOnly
+                                                          progress:nil
+                                                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
+                                                             if (image) {
+                                                                 if( successBlock )
+                                                                    successBlock([UIImage imageWithCGImage:[image CGImage]]);
+                                                             } else {
+                                                                 if( failBlock )
+                                                                    failBlock(error);
+                                                             }
+                                                         }];
+            }
         }
     }
     else
@@ -353,57 +321,27 @@
 
 -(NSURL*)getURLPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
 {
-    NSURL* returnURL = nil;
-    NSString* path = [self getPathPropertyValue:propertyName basePath:basePath defaultValue:[defaultValue absoluteString]];
-    if( path )
+    NSURL* returnURL = defaultValue;
+    NSString* stringSettingValue = [self getStringPropertyValue:propertyName defaultValue:nil];
+    if( stringSettingValue != nil )
     {
-        if( [IXAppManager pathIsLocal:path] )
-        {
-            returnURL = [NSURL fileURLWithPath:path];
-        }
-        else
-        {
-            returnURL = [NSURL URLWithString:path];
-        }
-    }    
-    return returnURL;
-}
-
--(NSString*)getPathFromStringPropertyValue:(NSString*)stringPropertyValue basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
-{
-    NSString* returnPath = defaultValue;
-    if( stringPropertyValue != nil )
-    {
-        if( ![IXAppManager pathIsLocal:stringPropertyValue] || [IXAppManager pathIsAssetsLibrary:stringPropertyValue] )
-        {
-            returnPath = stringPropertyValue;
-        }
-        else if( basePath == nil )
-        {
-            NSString* rootPath = [[[self ownerObject] sandbox] rootPath];
-            if( [stringPropertyValue hasPrefix:@"/"] )
-            {
-                returnPath = [NSString stringWithFormat:@"%@%@",rootPath,stringPropertyValue];
-            }
-            else
-            {
-                returnPath = [NSString stringWithFormat:@"%@/%@",rootPath,stringPropertyValue];
-            }
-        }
-        else
-        {
-            returnPath = [NSString stringWithFormat:@"%@/%@",basePath,stringPropertyValue];
-        }
+        returnURL = [IXPathHandler normalizedURLPath:stringSettingValue
+                                            basePath:basePath
+                                            rootPath:[[[self ownerObject] sandbox] rootPath]];
     }
-    return returnPath;
+    return returnURL;
 }
 
 -(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
-    // Use this to get IMAGE paths. Then set up a image loader singleton that loads all the images for you.
-    // Same with other FILE paths. When a control needs the data from a file use this to get the path to the image and set up a data loader singleton.
-    NSString* pathStringSetting = [self getStringPropertyValue:propertyName defaultValue:defaultValue];
-    NSString* returnPath = [self getPathFromStringPropertyValue:pathStringSetting basePath:basePath defaultValue:defaultValue];
+    NSString* returnPath = defaultValue;
+    NSString* stringSettingValue = [self getStringPropertyValue:propertyName defaultValue:nil];
+    if( stringSettingValue != nil )
+    {
+        returnPath = [IXPathHandler normalizedPath:stringSettingValue
+                                          basePath:basePath
+                                          rootPath:[[[self ownerObject] sandbox] rootPath]];
+    }
     return returnPath;
 }
 

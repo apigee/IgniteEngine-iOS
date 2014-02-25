@@ -18,6 +18,7 @@ static NSString* const kIXSoundLocation = @"sound_location";
 static NSString* const kIXVolume = @"volume";
 static NSString* const kIXNumberOfLoops = @"number_of_loops";
 static NSString* const kIXAutoPlay = @"auto_play";
+static NSString* const kIXForceSoundReload = @"force_sound_reload";
 
 // Sound Read-Only Properties
 static NSString* const kIXIsPlaying = @"is_playing";
@@ -34,6 +35,7 @@ static NSString* const kIXPause = @"pause";
 static NSString* const kIXStop = @"stop";
 
 @interface IXSound () <AVAudioPlayerDelegate>
+@property (nonatomic,assign) BOOL forceSoundReload;
 @property (nonatomic,strong) NSURL* lastSoundURL;
 @property (nonatomic,strong) AVAudioPlayer* audioPlayer;
 @property (nonatomic,strong) NSString* lastCreationErrorMessage;
@@ -57,7 +59,8 @@ static NSString* const kIXStop = @"stop";
     [super applySettings];
     
     NSURL* soundURL = [[self propertyContainer] getURLPathPropertyValue:kIXSoundLocation basePath:nil defaultValue:nil];
-    if( ![[self lastSoundURL] isEqual:soundURL] )
+    [self setForceSoundReload:[[self propertyContainer] getBoolPropertyValue:kIXForceSoundReload defaultValue:NO]];
+    if( ![[self lastSoundURL] isEqual:soundURL] || [self audioPlayer] == nil || [self forceSoundReload] )
     {
         [self setLastSoundURL:soundURL];
         
@@ -65,20 +68,31 @@ static NSString* const kIXStop = @"stop";
         [[self audioPlayer] setDelegate:nil];
         [[self audioPlayer] stop];
         
+        NSData* soundData = [[NSData alloc] initWithContentsOfURL:soundURL];
+        
         NSError* audioPlayerError = nil;
-        NSData* soundData = [NSData dataWithContentsOfURL:soundURL];
         [self setAudioPlayer:[[AVAudioPlayer alloc] initWithData:soundData error:&audioPlayerError]];
-        if( [self audioPlayer] && audioPlayerError == nil )
+        if( [self audioPlayer] && !audioPlayerError )
         {
             [[self audioPlayer] prepareToPlay];
             [[self audioPlayer] setDelegate:self];
         }
         else
         {
-            [self setLastCreationErrorMessage:[audioPlayerError description]];
+            if( audioPlayerError )
+            {
+                [self setLastCreationErrorMessage:[audioPlayerError description]];
+            }
+            else
+            {
+                if( !soundData )
+                {
+                    [self setLastCreationErrorMessage:[NSString stringWithFormat:@"No sound data found at path: \n %@.",[[self lastSoundURL] absoluteString]]];
+                }
+            }
             if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
             {
-                NSLog(@"IXSOUND WITH _id:%@ CREATION ERROR: %@",[self ID],[self lastCreationErrorMessage]);
+                NSLog(@"IXSOUND WITH ID:%@ CREATION ERROR: %@",[[self ID] uppercaseString],[self lastCreationErrorMessage]);
             }
         }
     }

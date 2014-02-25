@@ -16,6 +16,7 @@
 #import "IXLayout.h"
 #import "IXTextInput.h"
 #import "IXClickableScrollView.h"
+#import "IXPathHandler.h"
 
 @interface IXViewController ()
 
@@ -52,7 +53,7 @@
     if( self != nil )
     {
         NSString* jsonRootPath = nil;
-        if( [IXAppManager pathIsLocal:pathToJSON] )
+        if( [IXPathHandler pathIsLocal:pathToJSON] )
         {
             jsonRootPath = [pathToJSON stringByDeletingLastPathComponent];
         }

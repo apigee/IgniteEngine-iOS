@@ -13,6 +13,7 @@
 #import "IXAppManager.h"
 #import "IXJSONGrabber.h"
 #import "SDWebImageCompat.h"
+#import "IXPathHandler.h"
 
 @interface IXJSONDataProvider ()
 
@@ -39,7 +40,7 @@
         return;
     
     [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"datarow.basepath" defaultValue:nil]];
-    [self setIsLocalPath:[IXAppManager pathIsLocal:[self dataLocation]]];
+    [self setIsLocalPath:[IXPathHandler pathIsLocal:[self dataLocation]]];
     
     if( ![self isLocalPath] )
     {
@@ -88,7 +89,7 @@
             
             [weakSelf setLastResponseStatusCode:[response statusCode]];
             
-            NSError* jsonConvertError = nil;
+            NSError* __autoreleasing jsonConvertError = nil;
             NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
             if( jsonConvertError == nil && jsonData )
             {
@@ -109,7 +110,7 @@
             [weakSelf setLastResponseErrorMessage:[error description]];
             
             @try {
-                NSError* jsonConvertError = nil;
+                NSError* __autoreleasing jsonConvertError = nil;
                 NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
                 if( jsonConvertError == nil && jsonData )
                 {
@@ -150,7 +151,7 @@
                                                     NSData* jsonData = nil;
                                                     if( jsonObject )
                                                     {
-                                                        NSError* jsonConvertError = nil;
+                                                        NSError* __autoreleasing jsonConvertError = nil;
                                                         jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
                                                         if( jsonConvertError != nil )
                                                         {
@@ -232,7 +233,7 @@
                 }
                 else
                 {
-                    NSError* jsonConvertError = nil;
+                    NSError* __autoreleasing jsonConvertError = nil;
                     NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
                     if( jsonConvertError == nil && jsonData )
                     {
@@ -273,7 +274,7 @@
         }
         else
         {
-            NSError* jsonConvertError = nil;
+            NSError* __autoreleasing jsonConvertError = nil;
             NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
             if( jsonConvertError == nil && jsonData )
             {

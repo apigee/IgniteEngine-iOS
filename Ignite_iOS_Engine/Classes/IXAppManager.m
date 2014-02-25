@@ -26,6 +26,7 @@
 #import "IXJSONGrabber.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
+#import "IXPathHandler.h"
 
 @interface IXAppManager ()
 
@@ -129,7 +130,7 @@
     }
     
     NSString* defaultViewProperty = [[self appProperties] getStringPropertyValue:@"default_view" defaultValue:nil];
-    if( [IXAppManager pathIsLocal:defaultViewProperty] )
+    if( [IXPathHandler pathIsLocal:defaultViewProperty] )
     {
         [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
         [self setAppDefaultViewRootPath:[[NSBundle mainBundle] pathForResource:@"assets" ofType:nil]];
@@ -179,16 +180,6 @@
 +(UIInterfaceOrientation)currentInterfaceOrientation
 {
     return [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] interfaceOrientation];
-}
-
-+(BOOL)pathIsLocal:(NSString*)path
-{
-    return ![path hasPrefix:@"http://"] && ![path hasPrefix:@"https://"];
-}
-
-+(BOOL)pathIsAssetsLibrary:(NSString*)path
-{
-    return [path hasPrefix:@"assets-library://"];
 }
 
 -(NSString*)evaluateJavascript:(NSString*)javascript

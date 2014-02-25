@@ -10,6 +10,7 @@
 
 #import "IXAppManager.h"
 #import "IXAFJSONRequestOperation.h"
+#import "IXPathHandler.h"
 
 @interface IXJSONGrabber ()
 
@@ -59,7 +60,7 @@
     else
     {
         NSURL* url = nil;
-        if( [IXAppManager pathIsLocal:path] )
+        if( [IXPathHandler pathIsLocal:path] )
         {
             url = [NSURL fileURLWithPath:path];
         }
@@ -91,7 +92,7 @@
             }
             else
             {
-                NSError* error = nil;
+                NSError* __autoreleasing error = nil;
                 id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
                 if( jsonObject )
                 {

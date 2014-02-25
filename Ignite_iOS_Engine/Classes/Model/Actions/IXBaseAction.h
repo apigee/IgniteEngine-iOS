@@ -27,5 +27,6 @@
               subActionContainer:(IXActionContainer*)subActionContainer;
 
 -(void)execute;
+-(void)actionDidFinishWithEvents:(NSArray*)actionsToFire;
 
 @end

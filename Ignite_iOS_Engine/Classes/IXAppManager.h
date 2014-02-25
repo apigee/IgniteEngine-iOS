@@ -48,8 +48,6 @@
 -(IXViewController*)currentIXViewController;
 
 +(UIInterfaceOrientation)currentInterfaceOrientation;
-+(BOOL)pathIsLocal:(NSString*)path;
-+(BOOL)pathIsAssetsLibrary:(NSString*)path;
 -(NSString*)evaluateJavascript:(NSString*)javascript;
 
 @end

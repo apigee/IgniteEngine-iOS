@@ -14,12 +14,15 @@
 #import "IXActionContainer.h"
 #import "IXBaseDataProvider.h"
 
+// IXFunctionAction Properties
+static NSString* const kIXFunctionName = @"function_name";
+
 @implementation IXFunctionAction
 
 -(void)execute
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
-    NSString* functionName = [[self actionProperties] getStringPropertyValue:@"function_name" defaultValue:nil];
+    NSString* functionName = [[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil];
     
     if( objectIDs != nil && functionName != nil )
     {
@@ -31,6 +34,8 @@
         {
             [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
         }
+        
+        [self actionDidFinishWithEvents:nil];
     }
 }
 
