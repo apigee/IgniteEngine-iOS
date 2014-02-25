@@ -247,7 +247,46 @@
     if( imagePath != nil )
     {
         NSURL *imageURL = nil;
-        if( [IXAppManager pathIsLocal:imagePath] )
+        
+        if ( [IXAppManager pathIsAssetsLibrary:imagePath] )
+        {
+            //
+            imageURL = [NSURL URLWithString:imagePath];
+            
+            ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *asset)
+            {
+                ALAssetRepresentation *rep = [asset defaultRepresentation];
+                CGImageRef iref = [rep fullResolutionImage];
+                if (iref) {
+                    UIImage* image = [UIImage imageWithCGImage:iref];
+                    if( image )
+                    {
+                        if( successBlock )
+                        {
+                            successBlock(image);
+                            return;
+                        }
+                    }
+                }
+            };
+            
+            //
+            ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *err)
+            {
+                if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+                {
+                    NSLog(@"Failed to load image from assets-library: %@",[err localizedDescription]);
+                }
+                return;
+
+            };
+            
+            ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+            [library assetForURL:imageURL
+                           resultBlock:resultblock
+                          failureBlock:failureblock];
+        }
+        else if( [IXAppManager pathIsLocal:imagePath] )
         {
             imageURL = [NSURL fileURLWithPath:imagePath];
             
@@ -335,7 +374,7 @@
     NSString* returnPath = defaultValue;
     if( stringPropertyValue != nil )
     {
-        if( ![IXAppManager pathIsLocal:stringPropertyValue] )
+        if( ![IXAppManager pathIsLocal:stringPropertyValue] || [IXAppManager pathIsAssetsLibrary:stringPropertyValue] )
         {
             returnPath = stringPropertyValue;
         }

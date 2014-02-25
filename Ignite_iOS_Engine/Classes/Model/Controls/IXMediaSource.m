@@ -185,9 +185,8 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     }
     if(info != nil)
     {
-        [[self actionContainer] executeActionsForEventNamed:@"did_load_media"];
         [self setSelectedMedia:info[UIImagePickerControllerReferenceURL]];
-        
+        [[self actionContainer] executeActionsForEventNamed:@"did_load_media"];
     }
     
     //Here's the image!  [info objectForKey:@"UIImagePickerControllerOriginalImage"];
