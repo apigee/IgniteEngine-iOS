@@ -220,15 +220,9 @@
 
 -(float)getSizeValue:(NSString*)propertyName maximumSize:(float)maxSize defaultValue:(float)defaultValue
 {
-    IXSizePercentageContainer* sizePercentageContainer = [self getSizePercentageContainer:propertyName defaultValue:defaultValue];
-    float returnValue = [sizePercentageContainer evaluteForMaxValue:maxSize];
+    IXSizeValuePercentage sizeValuePercentage = ixSizePercentageValueWithStringOrDefaultValue([self getStringPropertyValue:propertyName defaultValue:nil], defaultValue);
+    float returnValue = ixEvaluateSizeValuePercentageForMaxValue(sizeValuePercentage, maxSize);
     return returnValue;
-}
-
--(IXSizePercentageContainer*)getSizePercentageContainer:(NSString*)propertyName defaultValue:(CGFloat)defaultValue
-{
-    NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
-    return [IXSizePercentageContainer sizeAndPercentageContainerWithStringValue:stringValue orDefaultValue:defaultValue];
 }
 
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue
@@ -253,21 +247,7 @@
     if( imagePath != nil )
     {
         NSURL *imageURL = nil;
-        if( [IXAppManager pathIsAssetsLibrary:imagePath] )
-        {
-            ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
-            [assetLibrary assetForURL:[NSURL fileURLWithPath:imagePath] resultBlock:^(ALAsset *asset)
-             {
-                 ALAssetRepresentation *rep = [asset defaultRepresentation];
-                 Byte *buffer = (Byte*)malloc(rep.size);
-                 NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
-                 NSData *data = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
-             }
-             failureBlock:^(NSError *err) {
-                 NSLog(@"Error: %@",[err localizedDescription]);
-             }];
-        }
-        else if( [IXAppManager pathIsLocal:imagePath] )
+        if( [IXAppManager pathIsLocal:imagePath] )
         {
             imageURL = [NSURL fileURLWithPath:imagePath];
             
@@ -350,36 +330,41 @@
     return returnURL;
 }
 
--(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+-(NSString*)getPathFromStringPropertyValue:(NSString*)stringPropertyValue basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
-    // Use this to get IMAGE paths. Then set up a image loader singleton that loads all the images for you.
-    // Same with other FILE paths. When a control needs the data from a file use this to get the path to the image and set up a data loader singleton.
-    
     NSString* returnPath = defaultValue;
-    NSString* pathStringSetting = [self getStringPropertyValue:propertyName defaultValue:defaultValue];
-    if( pathStringSetting != nil && ![pathStringSetting isEqualToString:@"(null)"])
+    if( stringPropertyValue != nil )
     {
-        if( ![IXAppManager pathIsLocal:pathStringSetting] || [IXAppManager pathIsAssetsLibrary:pathStringSetting])
+        if( ![IXAppManager pathIsLocal:stringPropertyValue] )
         {
-            returnPath = pathStringSetting;
+            returnPath = stringPropertyValue;
         }
         else if( basePath == nil )
         {
             NSString* rootPath = [[[self ownerObject] sandbox] rootPath];
-            if( [pathStringSetting hasPrefix:@"/"] )
+            if( [stringPropertyValue hasPrefix:@"/"] )
             {
-                returnPath = [NSString stringWithFormat:@"%@%@",rootPath,pathStringSetting];
+                returnPath = [NSString stringWithFormat:@"%@%@",rootPath,stringPropertyValue];
             }
             else
             {
-                returnPath = [NSString stringWithFormat:@"%@/%@",rootPath,pathStringSetting];
+                returnPath = [NSString stringWithFormat:@"%@/%@",rootPath,stringPropertyValue];
             }
         }
         else
         {
-            returnPath = [NSString stringWithFormat:@"%@/%@",basePath,pathStringSetting];
+            returnPath = [NSString stringWithFormat:@"%@/%@",basePath,stringPropertyValue];
         }
     }
+    return returnPath;
+}
+
+-(NSString*)getPathPropertyValue:(NSString*)propertyName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+{
+    // Use this to get IMAGE paths. Then set up a image loader singleton that loads all the images for you.
+    // Same with other FILE paths. When a control needs the data from a file use this to get the path to the image and set up a data loader singleton.
+    NSString* pathStringSetting = [self getStringPropertyValue:propertyName defaultValue:defaultValue];
+    NSString* returnPath = [self getPathFromStringPropertyValue:pathStringSetting basePath:basePath defaultValue:defaultValue];
     return returnPath;
 }
 

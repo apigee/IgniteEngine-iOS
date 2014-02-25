@@ -10,9 +10,10 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "IXAppManager.h"
 #import "NSString+IXAdditions.h"
 
-// Knob Properties
+// Sound Properties
 static NSString* const kIXSoundLocation = @"sound_location";
 static NSString* const kIXVolume = @"volume";
 static NSString* const kIXNumberOfLoops = @"number_of_loops";
@@ -22,6 +23,7 @@ static NSString* const kIXAutoPlay = @"auto_play";
 static NSString* const kIXIsPlaying = @"is_playing";
 static NSString* const kIXDuration = @"duration";
 static NSString* const kIXCurrentTime = @"current_time";
+static NSString* const kIXLastCreationError = @"last_creation_error";
 
 // Sound Events
 static NSString* const kIXFinished = @"finished";
@@ -34,6 +36,7 @@ static NSString* const kIXStop = @"stop";
 @interface IXSound () <AVAudioPlayerDelegate>
 @property (nonatomic,strong) NSURL* lastSoundURL;
 @property (nonatomic,strong) AVAudioPlayer* audioPlayer;
+@property (nonatomic,strong) NSString* lastCreationErrorMessage;
 @end
 
 @implementation IXSound
@@ -58,6 +61,7 @@ static NSString* const kIXStop = @"stop";
     {
         [self setLastSoundURL:soundURL];
         
+        [self setLastCreationErrorMessage:nil];
         [[self audioPlayer] setDelegate:nil];
         [[self audioPlayer] stop];
         
@@ -68,6 +72,14 @@ static NSString* const kIXStop = @"stop";
         {
             [[self audioPlayer] prepareToPlay];
             [[self audioPlayer] setDelegate:self];
+        }
+        else
+        {
+            [self setLastCreationErrorMessage:[audioPlayerError description]];
+            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+            {
+                NSLog(@"IXSOUND WITH _id:%@ CREATION ERROR: %@",[self ID],[self lastCreationErrorMessage]);
+            }
         }
     }
     
@@ -120,6 +132,10 @@ static NSString* const kIXStop = @"stop";
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
         returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] currentTime]];
+    }
+    else if( [propertyName isEqualToString:kIXLastCreationError] )
+    {
+        returnValue = [self lastCreationErrorMessage];
     }
     else
     {

@@ -100,6 +100,7 @@
 		63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3118ABDD2000130BEA /* Nestsans.ttf */; };
 		63A10B3418ABDD2000130BEA /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3218ABDD2000130BEA /* NestsansBold.ttf */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
+		63CC9A5A18B7F06200ECCECB /* IXBaseControlConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9A5918B7F06200ECCECB /* IXBaseControlConfig.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
 		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
@@ -283,6 +284,8 @@
 		63A10B3218ABDD2000130BEA /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
+		63CC9A5818B7F06200ECCECB /* IXBaseControlConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseControlConfig.h; sourceTree = "<group>"; };
+		63CC9A5918B7F06200ECCECB /* IXBaseControlConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXBaseControlConfig.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
 		63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFJSONRequestOperation.h; sourceTree = "<group>"; };
 		63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFJSONRequestOperation.m; sourceTree = "<group>"; };
@@ -403,6 +406,8 @@
 			children = (
 				13033F39183ED8F200C29157 /* IXBaseConditionalObject.h */,
 				13033F3A183ED8F200C29157 /* IXBaseConditionalObject.m */,
+				63CC9A5818B7F06200ECCECB /* IXBaseControlConfig.h */,
+				63CC9A5918B7F06200ECCECB /* IXBaseControlConfig.m */,
 				13033F3B183ED8F200C29157 /* IXBaseObject.h */,
 				13033F3C183ED8F200C29157 /* IXBaseObject.m */,
 			);
@@ -841,6 +846,7 @@
 				13033FB6183ED8F200C29157 /* IXLayoutEngine.m in Sources */,
 				13BF0469183EBE7E00894760 /* main.m in Sources */,
 				13033F90183ED8F200C29157 /* IXJSONParser.m in Sources */,
+				63CC9A5A18B7F06200ECCECB /* IXBaseControlConfig.m in Sources */,
 				6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,

@@ -12,6 +12,7 @@
 #import "IXProperty.h"
 #import "IXViewController.h"
 #import "IXBaseControl.h"
+#import "IXBaseControlConfig.h"
 #import "IXLayout.h"
 #import "IXBaseAction.h"
 #import "IXTextInput.h"
@@ -29,7 +30,7 @@ static NSCache* sCustomControlCache;
 
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
-@property (nonatomic,strong) NSArray* childControls;
+@property (nonatomic,strong) NSArray* childConfigControls;
 
 @end
 
@@ -37,24 +38,24 @@ static NSCache* sCustomControlCache;
 
 -(instancetype)init
 {
-    return [self initWithPropertyContainer:nil actionContainer:nil childControls:nil];
+    return [self initWithPropertyContainer:nil actionContainer:nil childConfigControls:nil];
 }
 
--(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer childControls:(NSArray*)childControls
+-(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer childConfigControls:(NSArray*)childConfigControls
 {
     self = [super init];
     if( self )
     {
         _propertyContainer = propertyContainer;
         _actionContainer = actionContainer;
-        _childControls = childControls;
+        _childConfigControls = childConfigControls;
     }
     return self;
 }
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    return [[[self class] allocWithZone:zone] initWithPropertyContainer:[[self propertyContainer] copy] actionContainer:[[self actionContainer] copy] childControls:[[NSArray alloc] initWithArray:[self childControls] copyItems:YES]];
+    return [[[self class] allocWithZone:zone] initWithPropertyContainer:[[self propertyContainer] copy] actionContainer:[[self actionContainer] copy] childConfigControls:[[NSArray alloc] initWithArray:[self childConfigControls] copyItems:YES]];
 }
 
 @end
@@ -356,6 +357,49 @@ static NSCache* sCustomControlCache;
     return actionContainer;
 }
 
++(IXBaseControlConfig*)controlConfigWithValueDictionary:(NSDictionary*)controlValueDict
+{
+    IXBaseControlConfig* controlConfig = nil;
+    if( [controlValueDict allKeys] > 0 )
+    {
+        NSString* controlType = [controlValueDict objectForKey:kIX_TYPE];
+        NSString* controlClassString = [NSString stringWithFormat:@"IX%@",controlType];
+        
+        Class controlClass = NSClassFromString(controlClassString);
+        if( controlClass != nil )
+        {
+            controlConfig = [[IXBaseControlConfig alloc] init];
+            [controlConfig setControlClass:controlClass];
+            id propertiesDict = [controlValueDict objectForKey:@"attributes"];
+            if( [propertiesDict isKindOfClass:[NSDictionary class]] )
+            {
+                id controlID = [controlValueDict objectForKey:kIX_ID];
+                if( controlID )
+                {
+                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
+                    [propertiesDict setObject:controlID forKey:kIX_ID];
+                }
+                
+                IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
+                [controlConfig setPropertyContainer:propertyContainer];
+                
+                id actionsArray = [controlValueDict objectForKey:@"actions"];
+                IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
+                [controlConfig setActionContainer:actionContainer];
+                
+                NSArray* controlsValueArray = [controlValueDict objectForKey:@"controls"];
+                NSArray* childControlConfigs = [IXJSONParser controlConfigsWithJSONControlArray:controlsValueArray];
+                [controlConfig setChildControlConfigs:childControlConfigs];
+            }
+        }
+        else
+        {
+            NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
+        }
+    }
+    return controlConfig;
+}
+
 +(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict
 {
     IXBaseControl* control = nil;
@@ -424,7 +468,15 @@ static NSCache* sCustomControlCache;
             [customControl setActionContainer:[[customControlCacheContainer actionContainer] copy]];
         }
         
-        [customControl addChildObjects:[[NSArray alloc] initWithArray:[customControlCacheContainer childControls] copyItems:YES]];
+        for( IXBaseControlConfig* controlConfig in [customControlCacheContainer childConfigControls] )
+        {
+            IXBaseControl* childControl = [controlConfig createControl];
+            if( childControl )
+            {
+                [customControl addChildObject:childControl];
+            }
+        }
+        
         [[[customControl sandbox] containerControl] applySettings];
         [[[customControl sandbox] containerControl] layoutControl];
         [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
@@ -454,7 +506,7 @@ static NSCache* sCustomControlCache;
                                                         [customControlCacheContainer setActionContainer:[IXJSONParser actionContainerWithJSONActionsArray:customControlActionsArray]];
                                                         
                                                         NSArray* customControlControlsArray = [jsonObject objectForKey:@"controls"];
-                                                        [customControlCacheContainer setChildControls:[IXJSONParser controlsWithJSONControlArray:customControlControlsArray]];
+                                                        [customControlCacheContainer setChildConfigControls:[IXJSONParser controlConfigsWithJSONControlArray:customControlControlsArray]];
                                                         
                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                             [sCustomControlCache setObject:customControlCacheContainer forKey:pathToJSON];
@@ -480,6 +532,27 @@ static NSCache* sCustomControlCache;
             [IXJSONParser populateCustomControl:customControl withCustomControlCacheContainer:customControlCacheContainer];
         }
     }
+}
+
++(NSArray*)controlConfigsWithJSONControlArray:(NSArray*)controlsValueArray
+{
+    NSMutableArray* controlArray = nil;
+    if( [controlsValueArray isKindOfClass:[NSArray class]] )
+    {
+        controlArray = [NSMutableArray array];
+        for( id controlValueDict in controlsValueArray )
+        {
+            if( [controlValueDict isKindOfClass:[NSDictionary class]] )
+            {
+                IXBaseControlConfig* controlConfig = [IXJSONParser controlConfigWithValueDictionary:controlValueDict];
+                if( controlConfig != nil )
+                {
+                    [controlArray addObject:controlConfig];
+                }
+            }
+        }
+    }
+    return controlArray;
 }
 
 +(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray

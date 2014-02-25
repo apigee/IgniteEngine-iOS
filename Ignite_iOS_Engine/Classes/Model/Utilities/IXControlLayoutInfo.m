@@ -9,139 +9,6 @@
 #import "IXControlLayoutInfo.h"
 #import "IXPropertyContainer.h"
 
-@implementation IXSizePercentageContainer
-
--(instancetype)init
-{
-    return [self initWithStringValue:nil orDefaultValue:0.0f];
-}
-
-+(instancetype)sizeAndPercentageContainerWithStringValue:(NSString*)stringValue orDefaultValue:(CGFloat)defaultValue
-{
-    return [[[self class] alloc] initWithStringValue:stringValue orDefaultValue:defaultValue];
-}
-
--(instancetype)initWithStringValue:(NSString*)stringValue orDefaultValue:(CGFloat)defaultValue
-{
-    self = [super init];
-    if( self != nil )
-    {
-        [self applyStringValue:stringValue orDefaultValue:defaultValue];        
-    }
-    return self;
-}
-
--(BOOL)applyStringValue:(NSString*)stringValue orDefaultValue:(CGFloat)defaultValue
-{
-    BOOL isPercentage = NO;
-    CGFloat value = 0.0f;
-    
-    _propertyDefined = ( stringValue != nil );
-    if( _propertyDefined )
-    {
-        isPercentage = [stringValue hasSuffix:@"\%"];
-        if( isPercentage )
-        {
-            value = [[stringValue stringByReplacingOccurrencesOfString:@"\%" withString:@""] floatValue] / 100.0f;
-        }
-        else
-        {
-            value = [stringValue floatValue];
-        }
-    }
-    else
-    {
-        isPercentage = NO;
-        value = defaultValue;
-    }
-    
-    BOOL returnValue = ( ( _percentage == isPercentage ) && ( _value == value ) );
-    
-    _percentage = isPercentage;
-    _value = value;
-    
-    return returnValue;
-}
-
--(instancetype)copyWithZone:(NSZone *)zone
-{
-    IXSizePercentageContainer* containerCopy = [[[self class] allocWithZone:zone] init];
-    [containerCopy setValue:[self value]];
-    [containerCopy setPercentage:[self isPercentage]];
-    [containerCopy setPropertyDefined:[self propertyWasDefined]];
-    return containerCopy;
-}
-
--(CGFloat)evaluteForMaxValue:(CGFloat)maxValue
-{
-    float returnFloat = [self value];
-    if( [self isPercentage] )
-    {
-        returnFloat = returnFloat * maxValue;
-    }
-    return returnFloat;
-}
-
--(BOOL)isEqual:(IXSizePercentageContainer*)object
-{
-    return ( ( self == object ) || ( ([object propertyWasDefined] == _propertyDefined) && ([object isPercentage] == _percentage) && ([object value] == _value) ) );
-}
-
-@end
-
-@implementation IXEdgeInsets
-
--(instancetype)init
-{
-    return [self initWithDefaultValue:nil top:nil left:nil bottom:nil right:nil];
-}
-
-+(instancetype)edgeInsetsWithDefaultValue:(IXSizePercentageContainer*)defaultValue
-                                      top:(IXSizePercentageContainer*)top
-                                     left:(IXSizePercentageContainer*)left
-                                   bottom:(IXSizePercentageContainer*)bottom
-                                    right:(IXSizePercentageContainer*)right
-{
-    return [[[self class] alloc] initWithDefaultValue:defaultValue top:top left:left bottom:bottom right:right];
-}
-
--(instancetype)initWithDefaultValue:(IXSizePercentageContainer*)defaultValue
-                                top:(IXSizePercentageContainer*)top
-                               left:(IXSizePercentageContainer*)left
-                             bottom:(IXSizePercentageContainer*)bottom
-                              right:(IXSizePercentageContainer*)right
-{
-    self = [super init];
-    if( self != nil )
-    {
-        _defaultValue = defaultValue;
-        _top = top;
-        _left = left;
-        _bottom = bottom;
-        _right = right;
-    }
-    return self;
-}
-
--(instancetype)copyWithZone:(NSZone *)zone
-{
-    return [[[self class] allocWithZone:zone] initWithDefaultValue:[[self defaultValue] copy]
-                                                               top:[[self top] copy]
-                                                              left:[[self left] copy]
-                                                            bottom:[[self bottom] copy]
-                                                             right:[[self right] copy]];
-}
-
--(UIEdgeInsets)evaluateEdgeInsetsUsingMaxSize:(CGSize)maxSize
-{
-    return UIEdgeInsetsMake([[self top] evaluteForMaxValue:maxSize.height],
-                            [[self left] evaluteForMaxValue:maxSize.width],
-                            [[self bottom] evaluteForMaxValue:maxSize.height],
-                            [[self right] evaluteForMaxValue:maxSize.width]);
-}
-
-@end
-
 @interface IXControlLayoutInfo ()
 
 @property (nonatomic,assign) BOOL isHidden;
@@ -155,16 +22,16 @@
 @property (nonatomic,assign) IXLayoutHorizontalAlignment horizontalAlignment;
 
 @property (nonatomic,assign) BOOL widthWasDefined;
-@property (nonatomic,copy) IXSizePercentageContainer* width;
+@property (nonatomic,assign) IXSizeValuePercentage width;
 @property (nonatomic,assign) BOOL heightWasDefined;
-@property (nonatomic,copy) IXSizePercentageContainer* height;
+@property (nonatomic,assign) IXSizeValuePercentage height;
 @property (nonatomic,assign) BOOL topPositionWasDefined;
-@property (nonatomic,copy) IXSizePercentageContainer* topPosition;
+@property (nonatomic,assign) IXSizeValuePercentage topPosition;
 @property (nonatomic,assign) BOOL leftPositionWasDefined;
-@property (nonatomic,copy) IXSizePercentageContainer* leftPosition;
+@property (nonatomic,assign) IXSizeValuePercentage leftPosition;
 
-@property (nonatomic,copy) IXEdgeInsets* marginInsets;
-@property (nonatomic,copy) IXEdgeInsets* paddingInsets;
+@property (nonatomic,assign) IXEdgeInsets marginInsets;
+@property (nonatomic,assign) IXEdgeInsets paddingInsets;
 
 @end
 
@@ -188,6 +55,16 @@
     if( self != nil )
     {
         _propertyContainer = propertyContainer;
+        
+        _height = IXSizeValuePercentageZero();
+        _width = IXSizeValuePercentageZero();
+        _topPosition = IXSizeValuePercentageZero();
+        _leftPosition = IXSizeValuePercentageZero();
+        _bottomPosition = IXSizeValuePercentageZero();
+        
+        _marginInsets = IXEdgeInsetsZero();
+        _paddingInsets = IXEdgeInsetsZero();
+        
         [self refreshLayoutInfo];
     }
     return self;
@@ -195,30 +72,8 @@
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    IXControlLayoutInfo* layoutInfoCopy = [[[self class] allocWithZone:zone] initWithPropertyContainer:_propertyContainer];
+    IXControlLayoutInfo* layoutInfoCopy = [[[self class] allocWithZone:zone] initWithPropertyContainer:[self propertyContainer]];
     return layoutInfoCopy;
-}
-
-+(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName
-{
-    BOOL triggersLayout = NO;
-    if( [propertyName isEqualToString:@"visible"] || [propertyName isEqualToString:@"layout_type"] )
-    {
-        triggersLayout = YES;
-    }
-    else if( [propertyName rangeOfString:@"height"].location != NSNotFound || [propertyName rangeOfString:@"width"].location != NSNotFound  )
-    {
-        triggersLayout = YES;
-    }
-    else if( [propertyName hasPrefix:@"margin"] || [propertyName hasPrefix:@"padding"] )
-    {
-        triggersLayout = YES;
-    }
-    else if( [propertyName hasSuffix:@"position"] || [propertyName hasSuffix:@"alignment"] )
-    {
-        triggersLayout = YES;
-    }
-    return triggersLayout;
 }
 
 -(void)refreshLayoutInfo
@@ -255,108 +110,117 @@
     else if( [horizontalAlignmentString isEqualToString:@"right"] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
-    if( _width == nil )
-        _width = [[self propertyContainer] getSizePercentageContainer:@"width" defaultValue:0.0f];
-    else
-        [_width applyStringValue:[[self propertyContainer] getStringPropertyValue:@"width" defaultValue:nil] orDefaultValue:0.0f];
+    _width = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"width" defaultValue:nil], 0.0f);
+    _height = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"height" defaultValue:nil], 0.0f);
+    _topPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"top_position" defaultValue:nil], 0.0f);
+    _leftPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"left_position" defaultValue:nil], 0.0f);
+    _bottomPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"bottom_position" defaultValue:nil], 0.0f);
     
-    if( _height == nil )
-        _height = [[self propertyContainer] getSizePercentageContainer:@"height" defaultValue:0.0f];
-    else
-        [_height applyStringValue:[[self propertyContainer] getStringPropertyValue:@"height" defaultValue:nil] orDefaultValue:0.0f];
+    _paddingInsets.defaultInset = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding" defaultValue:nil], 0.0f);
     
-    if( _topPosition == nil )
-        _topPosition = [[self propertyContainer] getSizePercentageContainer:@"top_position" defaultValue:0.0f];
-    else
-        [_topPosition applyStringValue:[[self propertyContainer] getStringPropertyValue:@"top_position" defaultValue:nil] orDefaultValue:0.0f];
+    CGFloat defaultPaddingValue = _paddingInsets.defaultInset.value;
+    _paddingInsets.top = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.top" defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.left = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.left" defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.bottom = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.bottom" defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.right = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.right" defaultValue:nil], defaultPaddingValue);
     
-    if( _leftPosition == nil )
-        _leftPosition = [[self propertyContainer] getSizePercentageContainer:@"left_position" defaultValue:0.0f];
-    else
-        [_leftPosition applyStringValue:[[self propertyContainer] getStringPropertyValue:@"left_position" defaultValue:nil] orDefaultValue:0.0f];
+    _marginInsets.defaultInset = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin" defaultValue:nil], 0.0f);
     
-    if( _bottomPosition == nil )
+    CGFloat defaultMarginValue = _marginInsets.defaultInset.value;
+    _marginInsets.top = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.top" defaultValue:nil], defaultMarginValue);
+    _marginInsets.left = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.left" defaultValue:nil], defaultMarginValue);
+    _marginInsets.bottom = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.bottom" defaultValue:nil], defaultMarginValue);
+    _marginInsets.right = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.right" defaultValue:nil], defaultMarginValue);
+    
+    _widthWasDefined = _width.propertyWasDefined;
+    _heightWasDefined = _height.propertyWasDefined;
+    _topPositionWasDefined = _topPosition.propertyWasDefined;
+    _leftPositionWasDefined = _leftPosition.propertyWasDefined;
+    _bottomPositionWasDefined = _bottomPosition.propertyWasDefined;
+}
+
++(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName
+{
+    BOOL triggersLayout = NO;
+    if( [propertyName isEqualToString:@"visible"] || [propertyName isEqualToString:@"layout_type"] )
     {
-        _bottomPosition = [[self propertyContainer] getSizePercentageContainer:@"bottom_position" defaultValue:0.0f];
-        if (_bottomPosition.value > 0)
+        triggersLayout = YES;
+    }
+    else if( [propertyName rangeOfString:@"height"].location != NSNotFound || [propertyName rangeOfString:@"width"].location != NSNotFound  )
+    {
+        triggersLayout = YES;
+    }
+    else if( [propertyName hasPrefix:@"margin"] || [propertyName hasPrefix:@"padding"] )
+    {
+        triggersLayout = YES;
+    }
+    else if( [propertyName hasSuffix:@"position"] || [propertyName hasSuffix:@"alignment"] )
+    {
+        triggersLayout = YES;
+    }
+    return triggersLayout;
+}
+
+IXEdgeInsets IXEdgeInsetsZero()
+{
+    IXEdgeInsets edgeInsets;
+    edgeInsets.defaultInset = IXSizeValuePercentageZero();
+    edgeInsets.top = IXSizeValuePercentageZero();
+    edgeInsets.left = IXSizeValuePercentageZero();
+    edgeInsets.bottom = IXSizeValuePercentageZero();
+    edgeInsets.right = IXSizeValuePercentageZero();
+    return edgeInsets;
+}
+
+-(UIEdgeInsets)evaluateEdgeInsets:(IXEdgeInsets)edgeInsets usingMaxSize:(CGSize)maxSize
+{
+    return UIEdgeInsetsMake(ixEvaluateSizeValuePercentageForMaxValue(edgeInsets.top, maxSize.height),
+                            ixEvaluateSizeValuePercentageForMaxValue(edgeInsets.left, maxSize.width),
+                            ixEvaluateSizeValuePercentageForMaxValue(edgeInsets.bottom, maxSize.height),
+                            ixEvaluateSizeValuePercentageForMaxValue(edgeInsets.right, maxSize.width));
+}
+
+IXSizeValuePercentage IXSizeValuePercentageZero()
+{
+    IXSizeValuePercentage sizeValuePercentage;
+    sizeValuePercentage.propertyWasDefined = NO;
+    sizeValuePercentage.isPercentage = NO;
+    sizeValuePercentage.value = 0.0f;
+    return sizeValuePercentage;
+}
+
+IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* stringValue, float defaultValue)
+{
+    IXSizeValuePercentage sizeValuePercentage = IXSizeValuePercentageZero();
+    sizeValuePercentage.propertyWasDefined = ( stringValue != nil );
+    if( sizeValuePercentage.propertyWasDefined )
+    {
+        sizeValuePercentage.isPercentage = [stringValue hasSuffix:@"\%"];
+        if( sizeValuePercentage.isPercentage )
         {
-            //Not working yet (B) can't figure out how to move the element away from bottom
-            _verticalAlignment = IXLayoutVerticalAlignmentBottom;
+            sizeValuePercentage.value = [[stringValue stringByReplacingOccurrencesOfString:@"\%" withString:@""] floatValue] / 100.0f;
+        }
+        else
+        {
+            sizeValuePercentage.value = [stringValue floatValue];
         }
     }
     else
     {
-        [_bottomPosition applyStringValue:[[self propertyContainer] getStringPropertyValue:@"bottom_position" defaultValue:nil] orDefaultValue:0.0f];
+        sizeValuePercentage.isPercentage = NO;
+        sizeValuePercentage.value = defaultValue;
     }
-    
-    if( _paddingInsets == nil )
-    {
-        IXSizePercentageContainer *defaultPadding = [[self propertyContainer] getSizePercentageContainer:@"padding" defaultValue:0.0f];
-        CGFloat defaultPaddingValue = [defaultPadding value];
-        
-        _paddingInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultPadding
-                                                                top:[[self propertyContainer] getSizePercentageContainer:@"padding.top"
-                                                                                                            defaultValue:defaultPaddingValue]
-                                                               left:[[self propertyContainer] getSizePercentageContainer:@"padding.left"
-                                                                                                            defaultValue:defaultPaddingValue]
-                                                             bottom:[[self propertyContainer] getSizePercentageContainer:@"padding.bottom"
-                                                                                                            defaultValue:defaultPaddingValue]
-                                                              right:[[self propertyContainer] getSizePercentageContainer:@"padding.right"
-                                                                                                            defaultValue:defaultPaddingValue]];
-    }
-    else
-    {
-        [[_paddingInsets defaultValue] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding" defaultValue:nil] orDefaultValue:0.0f];
-        
-        CGFloat defaultPaddingsValue = [[_paddingInsets defaultValue] value];
-        
-        [[_paddingInsets top] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding.top" defaultValue:nil]
-                              orDefaultValue:defaultPaddingsValue];
-        [[_paddingInsets bottom] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding.bottom" defaultValue:nil]
-                                 orDefaultValue:defaultPaddingsValue];
-        [[_paddingInsets left] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding.left" defaultValue:nil]
-                               orDefaultValue:defaultPaddingsValue];
-        [[_paddingInsets right] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"padding.right" defaultValue:nil]
-                                orDefaultValue:defaultPaddingsValue];
+    return sizeValuePercentage;
+}
 
-    }
-    
-    if( _marginInsets == nil )
+float ixEvaluateSizeValuePercentageForMaxValue(IXSizeValuePercentage sizeValuePercentage, CGFloat maxValue)
+{
+    float returnFloat = sizeValuePercentage.value;
+    if( sizeValuePercentage.isPercentage )
     {
-        IXSizePercentageContainer *defaultMargin = [[self propertyContainer] getSizePercentageContainer:@"margin" defaultValue:0.0f];
-        CGFloat defaultMarginValue = [defaultMargin value];
-        
-        _marginInsets = [[IXEdgeInsets alloc] initWithDefaultValue:defaultMargin
-                                                               top:[[self propertyContainer] getSizePercentageContainer:@"margin.top"
-                                                                                                           defaultValue:defaultMarginValue]
-                                                              left:[[self propertyContainer] getSizePercentageContainer:@"margin.left"
-                                                                                                           defaultValue:defaultMarginValue]
-                                                            bottom:[[self propertyContainer] getSizePercentageContainer:@"margin.bottom"
-                                                                                                           defaultValue:defaultMarginValue]
-                                                             right:[[self propertyContainer] getSizePercentageContainer:@"margin.right"
-                                                                                                           defaultValue:defaultMarginValue]];
+        returnFloat = returnFloat * maxValue;
     }
-    else
-    {
-        [[_marginInsets defaultValue] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin" defaultValue:nil] orDefaultValue:0.0f];
-
-        CGFloat defaultMarginsValue = [[_marginInsets defaultValue] value];
-        
-        [[_marginInsets top] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin.top" defaultValue:nil]
-                             orDefaultValue:defaultMarginsValue];
-        [[_marginInsets bottom] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin.bottom" defaultValue:nil]
-                                orDefaultValue:defaultMarginsValue];
-        [[_marginInsets left] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin.left" defaultValue:nil]
-                              orDefaultValue:defaultMarginsValue];
-        [[_marginInsets right] applyStringValue:[[self propertyContainer] getStringPropertyValue:@"margin.right" defaultValue:nil]
-                               orDefaultValue:defaultMarginsValue];
-    }
-    
-    _widthWasDefined = [_width propertyWasDefined];
-    _heightWasDefined = [_height propertyWasDefined];
-    _topPositionWasDefined = [_topPosition propertyWasDefined];
-    _leftPositionWasDefined = [_leftPosition propertyWasDefined];
-    _bottomPositionWasDefined = [_bottomPosition propertyWasDefined];
+    return returnFloat;
 }
 
 @end

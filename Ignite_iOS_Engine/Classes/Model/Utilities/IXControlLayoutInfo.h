@@ -12,48 +12,6 @@
 
 @class IXPropertyContainer;
 
-@interface IXSizePercentageContainer : NSObject <NSCopying>
-
-@property (nonatomic,assign) CGFloat value;
-@property (nonatomic,assign,getter = isPercentage) BOOL percentage;
-@property (nonatomic,assign,getter = propertyWasDefined) BOOL propertyDefined;
-
--(instancetype)initWithStringValue:(NSString*)stringValue
-                    orDefaultValue:(CGFloat)defaultValue;
-
-+(instancetype)sizeAndPercentageContainerWithStringValue:(NSString*)stringValue
-                                          orDefaultValue:(CGFloat)defaultValue;
-
--(BOOL)applyStringValue:(NSString*)stringValue orDefaultValue:(CGFloat)defaultValue;
-
--(CGFloat)evaluteForMaxValue:(CGFloat)maxValue;
-
-@end
-
-@interface IXEdgeInsets : NSObject <NSCopying>
-
-@property (nonatomic,copy) IXSizePercentageContainer* defaultValue;
-@property (nonatomic,copy) IXSizePercentageContainer* top;
-@property (nonatomic,copy) IXSizePercentageContainer* left;
-@property (nonatomic,copy) IXSizePercentageContainer* bottom;
-@property (nonatomic,copy) IXSizePercentageContainer* right;
-
--(instancetype)initWithDefaultValue:(IXSizePercentageContainer*)defaultValue
-                                top:(IXSizePercentageContainer*)top
-                               left:(IXSizePercentageContainer*)left
-                             bottom:(IXSizePercentageContainer*)bottom
-                              right:(IXSizePercentageContainer*)right;
-
-+(instancetype)edgeInsetsWithDefaultValue:(IXSizePercentageContainer*)defaultValue
-                                      top:(IXSizePercentageContainer*)top
-                                     left:(IXSizePercentageContainer*)left
-                                   bottom:(IXSizePercentageContainer*)bottom
-                                    right:(IXSizePercentageContainer*)right;
-
--(UIEdgeInsets)evaluateEdgeInsetsUsingMaxSize:(CGSize)maxSize;
-
-@end
-
 @interface IXControlLayoutInfo : NSObject <NSCopying>
 
 @property (nonatomic,weak) IXPropertyContainer* propertyContainer;
@@ -70,25 +28,31 @@
 @property (nonatomic,assign,readonly) IXLayoutVerticalAlignment verticalAlignment;
 @property (nonatomic,assign,readonly) IXLayoutHorizontalAlignment horizontalAlignment;
 
-@property (nonatomic,readonly) BOOL widthWasDefined;
-@property (nonatomic,copy,readonly) IXSizePercentageContainer* width;
-@property (nonatomic,readonly) BOOL heightWasDefined;
-@property (nonatomic,copy,readonly) IXSizePercentageContainer* height;
-@property (nonatomic,readonly) BOOL topPositionWasDefined;
-@property (nonatomic,copy,readonly) IXSizePercentageContainer* topPosition;
-@property (nonatomic,readonly) BOOL leftPositionWasDefined;
-@property (nonatomic,copy,readonly) IXSizePercentageContainer* leftPosition;
-@property (nonatomic,readonly) BOOL bottomPositionWasDefined;
-@property (nonatomic,copy,readonly) IXSizePercentageContainer* bottomPosition;
+@property (nonatomic,assign,readonly) BOOL widthWasDefined;
+@property (nonatomic,assign,readonly) IXSizeValuePercentage width;
+@property (nonatomic,assign,readonly) BOOL heightWasDefined;
+@property (nonatomic,assign,readonly) IXSizeValuePercentage height;
+@property (nonatomic,assign,readonly) BOOL topPositionWasDefined;
+@property (nonatomic,assign,readonly) IXSizeValuePercentage topPosition;
+@property (nonatomic,assign,readonly) BOOL leftPositionWasDefined;
+@property (nonatomic,assign,readonly) IXSizeValuePercentage leftPosition;
+@property (nonatomic,assign,readonly) BOOL bottomPositionWasDefined;
+@property (nonatomic,assign,readonly) IXSizeValuePercentage bottomPosition;
 
-
-@property (nonatomic,copy,readonly) IXEdgeInsets* marginInsets;
-@property (nonatomic,copy,readonly) IXEdgeInsets* paddingInsets;
+@property (nonatomic,assign,readonly) IXEdgeInsets marginInsets;
+@property (nonatomic,assign,readonly) IXEdgeInsets paddingInsets;
 
 -(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
 +(instancetype)controlLayoutInfoWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
 
-+(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName;
 -(void)refreshLayoutInfo;
++(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName;
+
+IXEdgeInsets IXEdgeInsetsZero();
+-(UIEdgeInsets)evaluateEdgeInsets:(IXEdgeInsets)edgeInsets usingMaxSize:(CGSize)maxSize;
+
+IXSizeValuePercentage IXSizeValuePercentageZero();
+IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* stringValue, float defaultValue);
+float ixEvaluateSizeValuePercentageForMaxValue(IXSizeValuePercentage sizeValuePercentage, CGFloat maxValue);
 
 @end
