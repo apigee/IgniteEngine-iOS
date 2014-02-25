@@ -123,7 +123,10 @@
     NSString* actionEventName = [action eventName];
     if( action == nil || actionEventName == nil )
     {
-        NSLog(@"ERROR: TRYING TO ADD ACTION THAT IS NIL OR ACTIONS NAME IS NIL");
+        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+        {
+            NSLog(@"ERROR: TRYING TO ADD ACTION THAT IS NIL OR ACTIONS NAME IS NIL");
+        }
         return;
     }
 

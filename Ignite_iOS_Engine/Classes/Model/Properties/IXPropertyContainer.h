@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "IXConstants.h"
 
 @class IXProperty;

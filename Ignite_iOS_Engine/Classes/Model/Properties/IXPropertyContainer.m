@@ -253,7 +253,21 @@
     if( imagePath != nil )
     {
         NSURL *imageURL = nil;
-        if( [IXAppManager pathIsLocal:imagePath] )
+        if( [IXAppManager pathIsAssetsLibrary:imagePath] )
+        {
+            ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+            [assetLibrary assetForURL:[NSURL fileURLWithPath:imagePath] resultBlock:^(ALAsset *asset)
+             {
+                 ALAssetRepresentation *rep = [asset defaultRepresentation];
+                 Byte *buffer = (Byte*)malloc(rep.size);
+                 NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
+                 NSData *data = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+             }
+             failureBlock:^(NSError *err) {
+                 NSLog(@"Error: %@",[err localizedDescription]);
+             }];
+        }
+        else if( [IXAppManager pathIsLocal:imagePath] )
         {
             imageURL = [NSURL fileURLWithPath:imagePath];
             
@@ -343,9 +357,9 @@
     
     NSString* returnPath = defaultValue;
     NSString* pathStringSetting = [self getStringPropertyValue:propertyName defaultValue:defaultValue];
-    if( pathStringSetting != nil )
+    if( pathStringSetting != nil && ![pathStringSetting isEqualToString:@"(null)"])
     {
-        if( ![IXAppManager pathIsLocal:pathStringSetting] )
+        if( ![IXAppManager pathIsLocal:pathStringSetting] || [IXAppManager pathIsAssetsLibrary:pathStringSetting])
         {
             returnPath = pathStringSetting;
         }

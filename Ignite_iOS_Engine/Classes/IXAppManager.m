@@ -186,6 +186,11 @@
     return ![path hasPrefix:@"http://"] && ![path hasPrefix:@"https://"];
 }
 
++(BOOL)pathIsAssetsLibrary:(NSString*)path
+{
+    return [path hasPrefix:@"assets-library://"];
+}
+
 -(NSString*)evaluateJavascript:(NSString*)javascript
 {
     if( javascript == nil )

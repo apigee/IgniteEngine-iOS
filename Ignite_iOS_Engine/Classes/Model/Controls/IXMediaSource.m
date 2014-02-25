@@ -26,12 +26,25 @@
  /--------------------/
 
  {
-    "type": "Media",
-    "properties": {
-        "id": "myMedia",
-        "source": "library"
-    }
+     "_id": "mediasourceLibrary",
+     "_type": "MediaSource",
+     "attributes": {
+         "source": "library",
+     }
  }
+ 
+ And to fire:
+ 
+ {
+     "_type": "Function",
+     "attributes": {
+         "function_name": "present_picker",
+         "_id": "mediasourceLibrary"
+     },
+     "on": "touch_up"
+ }
+ 
+ 
  
  /--------------------/
  - Changelog
@@ -50,11 +63,15 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+// IXMediaSource Read-Only Properties
+static NSString* const kIXSelectedMedia = @"selected_media";
+
 @interface  IXMediaSource() <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic,strong) NSString* sourceTypeString;
 @property (nonatomic,assign) UIImagePickerControllerSourceType pickerSourceType;
 @property (nonatomic,strong) UIImagePickerController* imagePickerController;
+@property (nonatomic,strong) NSURL* selectedMedia;
 
 @end
 
@@ -107,7 +124,8 @@
         [[self imagePickerController] setSourceType:[self pickerSourceType]];
         if( [[self sourceTypeString] isEqualToString:@"video"] )
         {
-            [[self imagePickerController] setAllowsEditing:NO];
+            //deprecated in 3.1, why do we need this?
+            //[[self imagePickerController] setAllowsEditing:NO];
             [[self imagePickerController] setMediaTypes:@[(NSString*)kUTTypeMovie]];
         }
     }
@@ -131,11 +149,26 @@
     }
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:kIXSelectedMedia] )
+    {
+        returnValue = [NSString stringWithFormat:@"%@", [self selectedMedia]];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+        didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
 //    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     
-    [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:NULL];
+    [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
     
     // Handle a movie capture
 //    if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
@@ -146,12 +179,20 @@
 //    }
 
     
-    
-    NSLog(@"Done!");
-    [[self actionContainer] executeActionsForEventNamed:@"done"];
-    
+    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+    {
+        NSLog(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
+    }
+    if(info != nil)
+    {
+        [[self actionContainer] executeActionsForEventNamed:@"did_load_media"];
+        [self setSelectedMedia:info[UIImagePickerControllerReferenceURL]];
+        
+    }
     
     //Here's the image!  [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 }
+
+
 
 @end

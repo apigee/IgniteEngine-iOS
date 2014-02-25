@@ -108,6 +108,7 @@
 		63F8A402187368BC00250994 /* IXCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F8A401187368BC00250994 /* IXCollection.m */; };
 		CA887C7E18B3D9470050B75B /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */; };
 		CA887C7F18B3D9470050B75B /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */; };
+		CAD81A7518BBCEA400EE08BD /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -295,6 +296,7 @@
 		63F8A401187368BC00250994 /* IXCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCollection.m; sourceTree = "<group>"; };
 		CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
 		CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.otf"; sourceTree = "<group>"; };
+		CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +304,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAD81A7518BBCEA400EE08BD /* AssetsLibrary.framework in Frameworks */,
 				6324BF501835931C00748F27 /* Foundation.framework in Frameworks */,
 				6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */,
 				6324BF541835931C00748F27 /* UIKit.framework in Frameworks */,
@@ -568,6 +571,7 @@
 		6324BF4E1835931C00748F27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */,
 				131591EA18396B3E0046B16D /* libiconv.dylib */,
 				131591DF18396A960046B16D /* CoreMedia.framework */,
 				131591E018396A960046B16D /* CoreVideo.framework */,

@@ -396,7 +396,10 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
+            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+            {
+                NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
+            }
         }
     }
     return control;
@@ -551,7 +554,10 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", dataProviderType, [dataProviderValueDict description]);
+            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+            {
+                NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", dataProviderType, [dataProviderValueDict description]);
+            }
         }
     }
     return dataProvider;
