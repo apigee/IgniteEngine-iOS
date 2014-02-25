@@ -45,7 +45,7 @@
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
 
 
--(NSInteger)getRowCount;
+-(NSUInteger)getRowCount;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;
 
 @end

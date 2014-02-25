@@ -17,6 +17,4 @@
 @property (nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) IXEntityContainer* entityContainer;
 
--(NSInteger)getRowCount;
-
 @end

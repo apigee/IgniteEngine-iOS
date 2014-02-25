@@ -16,7 +16,7 @@
     
     float lineHeight = ([[self font] ascender] - [[self font] descender] ) + 1;
     
-    CGRect textRect = [[self text] boundingRectWithSize:CGSizeMake(fixedWidth,FLT_MAX)
+    CGRect textRect = [[self text] boundingRectWithSize:CGSizeMake(fixedWidth,CGFLOAT_MAX)
                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                              attributes:@{NSFontAttributeName:[self font]}
                                                 context:nil];

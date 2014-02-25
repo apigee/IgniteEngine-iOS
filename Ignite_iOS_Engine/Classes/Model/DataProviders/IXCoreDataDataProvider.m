@@ -279,7 +279,10 @@
     }
     @catch (NSException * e)
     {
-        NSLog(@"WARNING : DataProvider Exception: %@", e);
+        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+        {
+            NSLog(@"WARNING : DataProvider Exception: %@", e);
+        }
     }
 }
 
@@ -311,7 +314,10 @@
     }
     @catch (NSException * e)
     {
-        NSLog(@"WARNING : DataProvider Exception: %@", e);
+        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+        {
+            NSLog(@"WARNING : DataProvider Exception: %@", e);
+        }
     }
 }
 
@@ -324,7 +330,10 @@
             NSError* __autoreleasing error = nil;
             BOOL fetchSuccessful = [self.fetchedResultsController performFetch:&error];
             if (!fetchSuccessful) {
-                NSLog(@"WARNING: ERROR PERFORMING FETCH");
+                if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+                {
+                    NSLog(@"WARNING: ERROR PERFORMING FETCH");
+                }
             }
             [self notifyAllDelegates];
         }
@@ -336,13 +345,19 @@
                                                [self.fetchedResultsController performFetch:nil];
                                            }
                                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                               NSLog(@"failed %@",[error description]);
+                                               if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+                                               {
+                                                   NSLog(@"failed %@",[error description]);
+                                               }
                                            }];
         }
     }
     @catch (NSException * e)
     {
-        NSLog(@"WARNING : DataProvider Exception: %@", e);
+        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
+        {
+            NSLog(@"WARNING : DataProvider Exception: %@", e);
+        }
     }
 }
 
@@ -351,7 +366,7 @@
     [self notifyAllDelegates];
 }
 
--(NSInteger)getRowCount
+-(NSUInteger)getRowCount
 {
     return [[[self fetchedResultsController] fetchedObjects] count];
 }

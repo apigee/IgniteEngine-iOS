@@ -126,7 +126,7 @@
     }
     else if( [propertyName isEqualToString:@"count"] )
     {
-        returnValue = [NSString stringWithFormat:@"%li",[self getRowCount]];
+        returnValue = [NSString stringWithFormat:@"%li",(long)[self getRowCount]];
     }
     else
     {
@@ -162,7 +162,7 @@
     return predicate;
 }
 
--(NSInteger)getRowCount
+-(NSUInteger)getRowCount
 {
     return 0;
 }

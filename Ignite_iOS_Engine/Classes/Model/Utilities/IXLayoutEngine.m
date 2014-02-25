@@ -275,7 +275,7 @@
         
         if( !fixOffsetToLayoutRect && ![controlLayoutInfo widthWasDefined] )
         {
-            horizontalLayoutRect.size.width = FLT_MAX;
+            horizontalLayoutRect.size.width = CGFLOAT_MAX;
         }
         
         sizeAndPosition.size = [IXLayoutEngine getControlSize:control
@@ -290,7 +290,7 @@
             horizontalLayoutRect.size.height = sizeAndPosition.size.height;
         }
         
-        if( sizeAndPosition.size.width >= FLT_MAX )
+        if( sizeAndPosition.size.width >= CGFLOAT_MAX )
         {
             sizeAndPosition.size.width = layoutRect.size.width;
             horizontalLayoutRect.size.width = layoutRect.size.width;
