@@ -59,9 +59,4 @@
     return [self rawValue];
 }
 
--(BOOL)valueIsNeverGoingToChange
-{
-    return NO;
-}
-
 @end
