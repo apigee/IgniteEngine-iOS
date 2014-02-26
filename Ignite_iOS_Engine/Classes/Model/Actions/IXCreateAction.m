@@ -9,6 +9,7 @@
 #import "IXCreateAction.h"
 
 #import "IXAppManager.h"
+#import "IXLogger.h"
 
 #import "IXJSONParser.h"
 #import "IXJSONGrabber.h"
@@ -90,6 +91,10 @@ static NSString* const kIXFailed = @"failed";
                                                                 });
                                                             }
                                                         }
+                                                    }
+                                                    else
+                                                    {
+                                                        DDLogError(@"ERROR: from %@ in %@ : Error grabbing create control actions JSON. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
                                                     }
                                                 }];
         }

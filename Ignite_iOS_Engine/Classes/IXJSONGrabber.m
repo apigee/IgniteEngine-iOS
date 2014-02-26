@@ -11,6 +11,7 @@
 #import "IXAppManager.h"
 #import "IXAFJSONRequestOperation.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 @interface IXJSONGrabber ()
 

@@ -105,6 +105,7 @@
 		63CC9AB418BD0BD700ECCECB /* IXGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB318BD0BD700ECCECB /* IXGIFImageView.m */; };
 		63CC9AB918BD12C200ECCECB /* IXSoundRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB818BD12C200ECCECB /* IXSoundRecorder.m */; };
 		63CC9ABC18BD1D8700ECCECB /* IXPathHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */; };
+		63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABE18BE8AB600ECCECB /* IXLogger.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
 		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
@@ -298,6 +299,8 @@
 		63CC9AB818BD12C200ECCECB /* IXSoundRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSoundRecorder.m; sourceTree = "<group>"; };
 		63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPathHandler.h; sourceTree = "<group>"; };
 		63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPathHandler.m; sourceTree = "<group>"; };
+		63CC9ABD18BE8AB600ECCECB /* IXLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLogger.h; sourceTree = "<group>"; };
+		63CC9ABE18BE8AB600ECCECB /* IXLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLogger.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
 		63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFJSONRequestOperation.h; sourceTree = "<group>"; };
 		63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFJSONRequestOperation.m; sourceTree = "<group>"; };
@@ -538,6 +541,8 @@
 				13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */,
 				13033F7E183ED8F200C29157 /* IXLayoutEngine.h */,
 				13033F7F183ED8F200C29157 /* IXLayoutEngine.m */,
+				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
+				63CC9ABE18BE8AB600ECCECB /* IXLogger.m */,
 				63CC9AAF18BD0BB000ECCECB /* IXWeakTimerTarget.h */,
 				63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */,
 				63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */,
@@ -900,6 +905,7 @@
 				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
 				13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */,
+				63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */,
 				13033FB2183ED8F200C29157 /* IXPropertyParser.m in Sources */,
 				63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */,
 				13033F93183ED8F200C29157 /* IXBaseAction.m in Sources */,

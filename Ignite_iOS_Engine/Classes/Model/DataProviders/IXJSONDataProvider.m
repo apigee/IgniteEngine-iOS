@@ -9,11 +9,12 @@
 #import "IXJSONDataProvider.h"
 
 #import "AFHTTPClient.h"
+
 #import "IXAFJSONRequestOperation.h"
 #import "IXAppManager.h"
 #import "IXJSONGrabber.h"
-#import "SDWebImageCompat.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 @interface IXJSONDataProvider ()
 
@@ -120,7 +121,7 @@
                 }
             }
             @catch (NSException *exception) {
-                NSLog(@"%@", exception.reason);
+                DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
             }
             [weakSelf fireLoadFinishedEvents:NO];
         }];
@@ -163,14 +164,14 @@
                                                         NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                                                         [weakSelf setRawResponse:jsonString];
                                                         [weakSelf setLastJSONResponse:jsonObject];
-                                                        dispatch_main_sync_safe(^{
+                                                        IX_dispatch_main_sync_safe(^{
                                                             [weakSelf fireLoadFinishedEvents:YES];
                                                         });
                                                     }
                                                     else
                                                     {
                                                         [weakSelf setLastResponseErrorMessage:[jsonError description]];
-                                                        dispatch_main_sync_safe(^{
+                                                        IX_dispatch_main_sync_safe(^{
                                                             [weakSelf fireLoadFinishedEvents:NO];
                                                         });
                                                     }
@@ -318,14 +319,14 @@
                         reason:@"Specified array index is out of bounds"
                         userInfo:nil];
         }
-        @catch (NSException *e) {
-            NSLog(@"%@; attempted to retrieve index %@ from %@", e, currentKey, jsonXPath);
+        @catch (NSException *exception) {
+            DDLogError(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
         }
     }
     
     // remove the currently processed key from the xpath like path
     NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:@""];    
-    if( nextXPath == nil || [nextXPath isEqualToString:@""] )
+    if( nextXPath.length <= 0 )
     {
         return nextNode;
     }

@@ -12,6 +12,7 @@
 #import "IXTableView.h"
 #import "IXEntityContainer.h"
 #import "IXAppManager.h"
+#import "IXLogger.h"
 
 #import <RestKit/RestKit.h>
 
@@ -154,10 +155,7 @@
     if( [self fetchPredicate] != nil && ![[self fetchPredicate] isEqualToString:@""] && [fetchPredicateStringsArray count] > 0 )
     {
         predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
-        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-        {
-            NSLog(@"PREDICATE EQUALS : %@",[predicate description]);
-        }
+        DDLogVerbose(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);
     }
     return predicate;
 }

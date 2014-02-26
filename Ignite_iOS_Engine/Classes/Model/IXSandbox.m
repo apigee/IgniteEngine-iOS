@@ -12,6 +12,7 @@
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 #import "IXAppManager.h"
+#import "IXLogger.h"
 
 static NSString* const kIXSelfControlRef = @"self";
 
@@ -40,7 +41,7 @@ static NSString* const kIXSelfControlRef = @"self";
         
         if( _rootPath == nil )
         {
-            NSLog(@"WARNING INITIALIZING SANDBOX WITHOUT ROOT PATH!!!");
+            DDLogWarn(@"WARNING from %@ in %@ : INITIALIZING SANDBOX WITHOUT ROOT PATH!!!",THIS_FILE,THIS_METHOD);
         }
         
         _dataProviders = [[NSMutableDictionary alloc] init];
@@ -123,11 +124,11 @@ static NSString* const kIXSelfControlRef = @"self";
         {
             if( [[[self dataProviders] objectForKey:dataProvider] isEqual:dataProvider] )
             {
-                NSLog(@"WARNING: ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE");
+                DDLogWarn(@"WARNING from %@ in %@ :  ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE",THIS_FILE,THIS_METHOD);
             }
             else
             {
-                NSLog(@"WARNING: CONFLICTING DATASOURCE IDS");
+                DDLogError(@"ERROR from %@ in %@ :  CONFLICTING DATASOURCE IDS WITH ID : %@",THIS_FILE,THIS_METHOD,dataProviderID);
             }
         }
         
@@ -138,7 +139,7 @@ static NSString* const kIXSelfControlRef = @"self";
     }
     else
     {
-        NSLog(@"WARNING: ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID");
+        DDLogError(@"ERROR from %@ in %@ :  ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID : %@",THIS_FILE,THIS_METHOD,[dataProvider description]);
     }
     
     return didAddDataProvider;

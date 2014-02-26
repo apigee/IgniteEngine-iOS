@@ -27,6 +27,7 @@
 #import "RKLog.h"
 #import "SDWebImageManager.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 @interface IXAppManager ()
 
@@ -108,14 +109,16 @@
                                                      }];
         }
     }
-    
-    
 }
 
 -(void)applyAppProperties
 {
+    NSString* appLogLevel = [[self appProperties] getStringPropertyValue:@"log_level" defaultValue:@"debug"];
+    [[IXLogger sharedLogger] setAppLogLevel:appLogLevel];
+
     if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] ) {
         [self setAppMode:IXDebugMode];
+        RKLogConfigureByName("*", RKLogLevelOff);
     } else {
         [self setAppMode:IXReleaseMode];
         RKLogConfigureByName("*", RKLogLevelOff);

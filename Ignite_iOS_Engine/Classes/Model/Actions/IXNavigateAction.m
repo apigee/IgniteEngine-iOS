@@ -14,6 +14,7 @@
 #import "IXJSONGrabber.h"
 #import "IXJSONParser.h"
 #import "IXAppManager.h"
+#import "IXLogger.h"
 
 // IXNavigateAction Properties
 static NSString* const kIXTo = @"to";
@@ -193,6 +194,7 @@ static BOOL sIXIsAttemptingNavigation = NO;
                                                 }
                                                 else
                                                 {
+                                                    DDLogError(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
                                                     [self navigationActionDidFinish:NO];
                                                 }
             }];

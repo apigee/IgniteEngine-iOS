@@ -23,6 +23,7 @@
 #import "IXAppManager.h"
 #import "IXCustom.h"
 #import "IXJSONGrabber.h"
+#import "IXLogger.h"
 
 static NSCache* sCustomControlCache;
 
@@ -162,7 +163,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"WARNING: property value array for %@ does not have a dictionary objects",propertyName);
+            DDLogWarn(@"WARNING from %@ in %@ : Property value array for %@ does not have a dictionary objects",THIS_FILE,THIS_METHOD,propertyName);
         }
     }
     if( [stringsToBeCommaSeperatedArray count] )
@@ -213,7 +214,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"WARNING: property value for %@ not a valid object",key);
+            DDLogWarn(@"WARNING from %@ in %@ : Property value for %@ not a valid object",THIS_FILE,THIS_METHOD,key);
         }
     }];
 }
@@ -394,7 +395,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
+            DDLogError(@"ERROR from %@ in %@ : Control class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,controlType, [controlValueDict description]);
         }
     }
     return controlConfig;
@@ -440,10 +441,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-            {
-                NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
-            }
+            DDLogError(@"ERROR from %@ in %@ : Control class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,controlType, [controlValueDict description]);
         }
     }
     return control;
@@ -520,10 +518,8 @@ static NSCache* sCustomControlCache;
                                                     else
                                                     {
                                                         [customControl setNeedsToPopulate:YES];
-                                                        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-                                                        {
-                                                            NSLog(@"Error grabbing custom control JSON at path %@ with error : %@",pathToJSON,[error description]);
-                                                        }
+                                                        
+                                                        DDLogError(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
                                                     }
                                                 }];
         }        
@@ -627,10 +623,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-            {
-                NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", dataProviderType, [dataProviderValueDict description]);
-            }
+            DDLogError(@"ERROR from %@ in %@ : DataProvider class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,dataProviderType, [dataProviderValueDict description]);
         }
     }
     return dataProvider;
