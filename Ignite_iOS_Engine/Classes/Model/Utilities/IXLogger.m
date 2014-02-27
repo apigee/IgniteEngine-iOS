@@ -58,9 +58,9 @@ static NSString* const kIXLogLevelRelease = @"release";
     
     int logLevelInt = ddLogLevel;
     if( [appLogLevel isEqualToString:kIXLogLevelVerbose] ) {
-        logLevelInt = LOG_LEVEL_DEBUG;
-    } else if ( [appLogLevel isEqualToString:kIXLogLevelDebug] ) {
         logLevelInt = LOG_LEVEL_VERBOSE;
+    } else if ( [appLogLevel isEqualToString:kIXLogLevelDebug] ) {
+        logLevelInt = LOG_LEVEL_DEBUG;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelInfo] ) {
         logLevelInt = LOG_LEVEL_INFO;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelWarn] ) {

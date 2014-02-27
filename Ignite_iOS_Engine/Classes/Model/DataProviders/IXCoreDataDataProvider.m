@@ -327,7 +327,7 @@
             if (!fetchSuccessful) {
                 DDLogError(@"ERROR : %@ Error performing fetch in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
             }
-            [self notifyAllDelegates];
+            [self fireLoadFinishedEvents:fetchSuccessful];
         }
         if( _needsToPerformGet || forceGet )
         {
@@ -349,7 +349,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self notifyAllDelegates];
+    [self fireLoadFinishedEvents:YES];
 }
 
 -(NSUInteger)getRowCount

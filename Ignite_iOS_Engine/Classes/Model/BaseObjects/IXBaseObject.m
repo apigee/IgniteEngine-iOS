@@ -40,7 +40,8 @@
         [baseObjectCopy setID:[[self ID] copy]];
         if( [[self childObjects] count] )
         {
-            [baseObjectCopy setChildObjects:[[NSMutableArray alloc] initWithArray:[self childObjects] copyItems:YES]];
+            NSArray* childObjectsCopy = [[NSMutableArray alloc] initWithArray:[self childObjects] copyItems:YES];
+            [baseObjectCopy addChildObjects:childObjectsCopy];
         }
         [baseObjectCopy setActionContainer:[[self actionContainer] copy]];
         [baseObjectCopy setPropertyContainer:[[self propertyContainer] copy]];

@@ -34,37 +34,34 @@
     _needsToPopulate = YES;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXCustom* customCopy = [super copyWithZone:zone];
+    [customCopy setNeedsToPopulate:[self needsToPopulate]];
+    [customCopy setDataProviders:[self dataProviders]];
+    return customCopy;
+}
+
 -(void)applySettings
 {
-    if( [self needsToPopulate] || [self customControlSandox] == nil )
+    if( [self customControlSandox] == nil )
     {
         NSString* pathToJSON = [[self propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
-        if( pathToJSON )
-        {
-            if( [self customControlSandox] == nil )
-            {
-                NSString* jsonRootPath = nil;
-                if( [IXPathHandler pathIsLocal:pathToJSON] ) {
-                    jsonRootPath = [pathToJSON stringByDeletingLastPathComponent];
-                } else {
-                    jsonRootPath = [[[NSURL URLWithString:pathToJSON] URLByDeletingLastPathComponent] absoluteString];
-                }
-                
-                [self setCustomControlSandox:[[IXSandbox alloc] initWithBasePath:nil rootPath:jsonRootPath]];
-                [[self customControlSandox] setViewController:[[self sandbox] viewController]];
-                [[self customControlSandox] setContainerControl:[[self sandbox] containerControl]];
-                [[self customControlSandox] setDataProviderForRowData:[[self sandbox] dataProviderForRowData]];
-                [[self customControlSandox] setIndexPathForRowData:[[self sandbox] indexPathForRowData]];
-                [[self customControlSandox] setDataProviders:[[self sandbox] dataProviders]];
-                [self setSandbox:[self customControlSandox]];
-            }
-            if( [self needsToPopulate] )
-            {
-                BOOL loadAsync = [[self propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES];
-                [IXJSONParser populateCustomControl:self withJSONAtPath:pathToJSON async:loadAsync];
-                [self setNeedsToPopulate:NO];
-            }
+        NSString* jsonRootPath = nil;
+        if( [IXPathHandler pathIsLocal:pathToJSON] ) {
+            jsonRootPath = [pathToJSON stringByDeletingLastPathComponent];
+        } else {
+            jsonRootPath = [[[NSURL URLWithString:pathToJSON] URLByDeletingLastPathComponent] absoluteString];
         }
+        [self setCustomControlSandox:[[IXSandbox alloc] initWithBasePath:nil rootPath:jsonRootPath]];
+        [[self customControlSandox] setCustomControlContainer:self];
+        [[self customControlSandox] setViewController:[[self sandbox] viewController]];
+        [[self customControlSandox] setContainerControl:[[self sandbox] containerControl]];
+        [[self customControlSandox] setDataProviderForRowData:[[self sandbox] dataProviderForRowData]];
+        [[self customControlSandox] setIndexPathForRowData:[[self sandbox] indexPathForRowData]];
+        [[self customControlSandox] setDataProviders:[NSMutableDictionary dictionaryWithDictionary:[[self sandbox] dataProviders]]];
+        [[self customControlSandox] addDataProviders:[self dataProviders]];
+        [self setSandbox:[self customControlSandox]];
     }
     
     [super applySettings];

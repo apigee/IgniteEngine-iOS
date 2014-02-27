@@ -11,5 +11,6 @@
 @interface IXCustom : IXLayout
 
 @property (nonatomic,assign) BOOL needsToPopulate;
+@property (nonatomic,strong) NSArray* dataProviders;
 
 @end

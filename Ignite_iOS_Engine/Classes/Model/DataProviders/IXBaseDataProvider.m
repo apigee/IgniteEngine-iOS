@@ -16,6 +16,8 @@
 
 #import <RestKit/RestKit.h>
 
+NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdateNotification";
+
 @interface IXBaseDataProvider ()
 
 @end
@@ -32,7 +34,6 @@
     self = [super init];
     if( self )
     {
-        _delegates = [[NSMutableArray alloc] init];
         _requestParameterProperties = [[IXPropertyContainer alloc] init];
         _requestHeaderProperties = [[IXPropertyContainer alloc] init];
         _fileAttachmentProperties = [[IXPropertyContainer alloc] init];
@@ -56,26 +57,6 @@
 {
     _fileAttachmentProperties = fileAttachmentProperties;
     [_fileAttachmentProperties setOwnerObject:self];
-}
-
--(void)addDelegate:(id<IXDataProviderDelegate>)delegate
-{
-    if( delegate )
-        [[self delegates] addObject:delegate];
-}
-
--(void)removeDelegate:(id<IXDataProviderDelegate>)delegate
-{
-    if( delegate )
-        [[self delegates] removeObject:delegate];
-}
-
--(void)notifyAllDelegates
-{
-    for( id<IXDataProviderDelegate> delegate in [self delegates] )
-    {
-        [delegate dataProviderDidUpdate:self];
-    }
 }
 
 -(void)applySettings
@@ -107,7 +88,8 @@
         [[self actionContainer] executeActionsForEventNamed:@"fail"];
     }
     [[self actionContainer] executeActionsForEventNamed:@"finished"];
-    [self notifyAllDelegates];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification object:self];
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName

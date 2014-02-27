@@ -30,7 +30,7 @@ static NSString* const kIXImagesTouchFailed = @"images_touch_failed";
 
 // IXImage Functions
 static NSString* const kIXStartAnimation = @"start_animation";
-static NSString* const kIXReStartAnimation = @"restart_animation";
+static NSString* const kIXRestartAnimation = @"restart_animation";
 static NSString* const kIXStopAnimation = @"stop_animation";
 
 @interface IXImage ()
@@ -151,7 +151,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     {
         [[self imageView] startGIFAnimation:NO];
     }
-    else if( [functionName isEqualToString:kIXReStartAnimation] )
+    else if( [functionName isEqualToString:kIXRestartAnimation] )
     {
         [[self imageView] startGIFAnimation:YES];
     }

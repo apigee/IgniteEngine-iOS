@@ -15,6 +15,7 @@
 #import "IXJSONGrabber.h"
 
 #import "IXPropertyContainer.h"
+#import "IXBaseControlConfig.h"
 
 #import "IXBaseControl.h"
 
@@ -72,22 +73,24 @@ static NSString* const kIXFailed = @"failed";
     
     if( location )
     {
-        createdControl = [[sIXCreateControlCache objectForKey:location] copy];
+        __block IXBaseControlConfig* controlConfig = [sIXCreateControlCache objectForKey:location];
         if( createdControl == nil )
         {
             [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:location
                                                          asynch:NO
+                                                    shouldCache:NO
                                                 completionBlock:^(id jsonObject, NSError *error) {
                                                     
                                                     if( jsonObject )
                                                     {
                                                         if( [jsonObject isKindOfClass:[NSDictionary class]] )
                                                         {
-                                                            createdControl = [IXJSONParser controlWithValueDictionary:jsonObject];
+                                                            controlConfig = [IXJSONParser controlConfigWithValueDictionary:jsonObject];
+                                                            createdControl = [controlConfig createControl];
                                                             if( createdControl )
                                                             {
                                                                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                    [sIXCreateControlCache setObject:[createdControl copy] forKey:location cost:0];
+                                                                    [sIXCreateControlCache setObject:controlConfig forKey:location cost:0];
                                                                 });
                                                             }
                                                         }
@@ -97,6 +100,10 @@ static NSString* const kIXFailed = @"failed";
                                                         DDLogError(@"ERROR: from %@ in %@ : Error grabbing create control actions JSON. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
                                                     }
                                                 }];
+        }
+        else
+        {
+            createdControl = [controlConfig createControl];
         }
     }
     

@@ -93,7 +93,7 @@
     if( propertyArray == nil )
     {
         propertyArray = [[NSMutableArray alloc] initWithObjects:property, nil];
-        [[self propertiesDict] setObject:propertyArray forKey:propertyName];
+        [self propertiesDict][propertyName] = propertyArray;
     }
     else if( replaceOtherProperties )
     {
@@ -139,7 +139,8 @@
             {
                 [property setPropertyContainer:self];
             }
-            [[self propertiesDict] setObject:propertyArray forKey:propertyName];
+            
+            [self propertiesDict][propertyName] = propertyArray;
         }
     }
 }

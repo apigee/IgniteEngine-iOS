@@ -14,6 +14,7 @@
 #import "IXSandbox.h"
 #import "IXViewController.h"
 #import "IXAppManager.h"
+#import "IXLayout.h"
 
 @implementation IXGetShortCode
 
@@ -44,7 +45,7 @@
     {
         IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
         IXViewController* viewController = [sandbox viewController];
-        returnValue = [[viewController propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
+        returnValue = [viewController getViewPropertyNamed:propertyName];
     }
     else
     {

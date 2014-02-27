@@ -77,7 +77,7 @@
     if( eventName == nil )
         return nil;
     
-    return [[self actionsDict] objectForKey:eventName];
+    return [self actionsDict][eventName];
 }
 
 -(BOOL)hasActionsForEvent:(NSString*)eventName

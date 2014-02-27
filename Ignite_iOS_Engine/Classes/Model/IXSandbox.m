@@ -13,8 +13,11 @@
 #import "IXBaseDataProvider.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
+#import "IXViewController.h"
 
 static NSString* const kIXSelfControlRef = @"self";
+static NSString* const kIXViewControlRef = @"_view";
+static NSString* const kIXCustomContainerControlRef = @"_custom";
 
 @interface IXSandbox ()
 
@@ -83,25 +86,38 @@ static NSString* const kIXSelfControlRef = @"self";
 
 -(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
 {
+    NSArray* returnArray = nil;
     if( [objectID isEqualToString:kIXSelfControlRef] )
     {
-        NSArray* returnArray = nil;
         if( selfObject )
-            returnArray = [NSArray arrayWithObject:selfObject];
-        return returnArray;
+        {
+            returnArray = @[selfObject];
+        }
     }
-    
-    NSMutableArray* returnArray = [[NSMutableArray alloc] init];
-    
-    NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
-    [returnArray addObjectsFromArray:controlsWithObjectID];
-
-    IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
-    if( dataProviderWithObjectID )
+    else if( [objectID isEqualToString:kIXCustomContainerControlRef] )
     {
-        [returnArray addObject:dataProviderWithObjectID];
+        if( [self customControlContainer] )
+        {
+            returnArray = @[[self customControlContainer]];
+        }
     }
-    
+    else if( [objectID isEqualToString:kIXViewControlRef] )
+    {
+        if( [[self viewController] containerControl] )
+        {
+            returnArray = @[[[self viewController] containerControl]];
+        }
+    }
+    else
+    {
+        NSMutableArray* arrayOfObjects = [[NSMutableArray alloc] initWithArray:[[self containerControl] childrenWithID:objectID]];
+        IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
+        if( dataProviderWithObjectID )
+        {
+            [arrayOfObjects addObject:dataProviderWithObjectID];
+        }
+        returnArray = arrayOfObjects;
+    }
     return returnArray;
 }
 
@@ -118,11 +134,11 @@ static NSString* const kIXSelfControlRef = @"self";
     BOOL didAddDataProvider = NO;
     
     NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:kIX_ID defaultValue:nil];
-    if( dataProviderID != nil && ![dataProviderID isEqualToString:@""] )
+    if( dataProviderID.length > 0 )
     {
-        if( [[self dataProviders] objectForKey:dataProviderID] != nil )
+        if( [self dataProviders][dataProviderID] != nil )
         {
-            if( [[[self dataProviders] objectForKey:dataProvider] isEqual:dataProvider] )
+            if( [[self dataProviders][dataProviderID] isEqual:dataProvider] )
             {
                 DDLogWarn(@"WARNING from %@ in %@ :  ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE",THIS_FILE,THIS_METHOD);
             }
@@ -133,7 +149,7 @@ static NSString* const kIXSelfControlRef = @"self";
         }
         
         [dataProvider setSandbox:self];
-        [[self dataProviders] setObject:dataProvider forKey:dataProviderID];
+        [self dataProviders][dataProviderID] = dataProvider;
         
         didAddDataProvider = YES;
     }
@@ -141,7 +157,6 @@ static NSString* const kIXSelfControlRef = @"self";
     {
         DDLogError(@"ERROR from %@ in %@ :  ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID : %@",THIS_FILE,THIS_METHOD,[dataProvider description]);
     }
-    
     return didAddDataProvider;
 }
 
@@ -159,7 +174,7 @@ static NSString* const kIXSelfControlRef = @"self";
 
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
-    IXBaseDataProvider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
+    IXBaseDataProvider* returnDataProvider = [self dataProviders][dataProviderID];
     if( returnDataProvider == nil && ![self isEqual:[[IXAppManager sharedAppManager] applicationSandbox]] )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];

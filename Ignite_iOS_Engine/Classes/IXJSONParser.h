@@ -12,9 +12,15 @@
 @class IXProperty;
 @class IXBaseAction;
 @class IXBaseControl;
+@class IXBaseControlConfig;
+@class IXBaseDataProviderConfig;
+@class IXCustomControlCacheContainer;
 @class IXViewController;
 @class IXActionContainer;
 @class IXPropertyContainer;
+
+typedef void(^IXJSONParseViewControllerCompletionBlock)(BOOL didSucceed, IXViewController* viewController, NSError* error);
+typedef void(^IXJSONPopulateControlCompletionBlock)(BOOL didSucceed, NSError* error);
 
 @interface IXJSONParser : NSObject
 
@@ -31,10 +37,21 @@
 +(NSArray*)actionsWithEventNames:(NSArray*)eventNames actionValueDictionary:(NSDictionary*)actionValueDict;
 +(IXBaseAction*)actionWithEventName:(NSString*)eventName valueDictionary:(NSDictionary*)actionValueDict;
 
-+(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray;
-+(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict;
-+(void)populateCustomControl:(IXCustom*)customControl withJSONAtPath:(NSString*)pathToJSON async:(BOOL)async;
++(NSArray*)controlConfigsWithJSONControlArray:(NSArray*)controlsValueArray;
++(IXBaseControlConfig*)controlConfigWithValueDictionary:(NSDictionary*)controlValueDict;
 
-+(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary pathToJSON:(NSString*)pathToJSON;
++(IXBaseDataProviderConfig*)dataProviderConfigWithValueDictionary:(NSDictionary*)dataProviderValueDict;
++(NSArray*)dataProviderConfigsWithJSONDataProviderArray:(NSArray*)dataProvidersValueArray;
+
++(void)populateControl:(IXBaseControl*)control
+        withJSONAtPath:(NSString*)pathToJSON
+             loadAsync:(BOOL)loadAsync
+       completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock;
+
++(void)populateControl:(IXBaseControl *)control withCustomControlCacheContainer:(IXCustomControlCacheContainer*)customControlCacheContainer completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock;
+
++(void)viewControllerWithPathToJSON:(NSString*)pathToJSON
+                          loadAsync:(BOOL)loadAsync
+                    completionBlock:(IXJSONParseViewControllerCompletionBlock)completionBlock;
 
 @end

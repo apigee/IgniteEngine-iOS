@@ -108,11 +108,11 @@
             IXViewController* viewController = (IXViewController*)[self visibleViewController];
             if( screenEdgePanGestureRecognizer == [self rightScreenPanGestureRecognizer] )
             {
-                [[viewController actionContainer] executeActionsForEventNamed:@"screen_pan_right"];
+                [viewController fireViewEventNamed:@"screen_pan_right"];
             }
             else if( screenEdgePanGestureRecognizer == [self leftScreenPanGestureRecognizer] )
             {
-                [[viewController actionContainer] executeActionsForEventNamed:@"screen_pan_left"];
+                [viewController fireViewEventNamed:@"screen_pan_left"];
             }
         }
     }

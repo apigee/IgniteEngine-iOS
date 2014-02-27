@@ -119,11 +119,11 @@ static NSString* const kIXStop = @"stop";
     }
     else if( [propertyName isEqualToString:kIXDuration] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] duration]];
+        returnValue = [NSString stringFromFloat:[[self audioPlayer] duration]];
     }
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] currentTime]];
+        returnValue = [NSString stringFromFloat:[[self audioPlayer] currentTime]];
     }
     else if( [propertyName isEqualToString:kIXLastCreationError] )
     {

@@ -23,4 +23,12 @@
     return self;
 }
 
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXEntityContainer* copiedEntityContainer = [[[self class] allocWithZone:zone] init];
+    [copiedEntityContainer setEntityProperties:[[self entityProperties] copy]];
+    [copiedEntityContainer setSubEntities:[[NSMutableArray alloc] initWithArray:[self subEntities] copyItems:YES]];
+    return copiedEntityContainer;
+}
+
 @end

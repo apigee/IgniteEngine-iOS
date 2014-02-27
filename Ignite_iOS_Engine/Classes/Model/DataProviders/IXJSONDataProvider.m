@@ -145,6 +145,7 @@
         __weak typeof(self) weakSelf = self;
         [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
                                                      asynch:YES
+                                                shouldCache:YES
                                             completionBlock:^(id jsonObject, NSError *error) {
                                                 
                                                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -304,7 +305,7 @@
     // if dict -> get value
     if ([currentNode isKindOfClass:[NSDictionary class]]) {
         NSDictionary *currentDict = (NSDictionary *) currentNode;
-        nextNode = [currentDict objectForKey:currentKey];
+        nextNode = currentDict[currentKey];
     }
     
     if ([currentNode isKindOfClass:[NSArray class]]) {

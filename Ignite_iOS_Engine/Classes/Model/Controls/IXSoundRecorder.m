@@ -132,7 +132,7 @@ static NSString* const kIXFinished = @"finished";
     }
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self audioRecorder] currentTime]];
+        returnValue = [NSString stringFromFloat:[[self audioRecorder] currentTime]];
     }
     else if( [propertyName isEqualToString:kIXLastErrorMessage] )
     {

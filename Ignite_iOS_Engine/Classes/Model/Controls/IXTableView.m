@@ -18,7 +18,13 @@
 #import "IXLayoutEngine.h"
 #import <RestKit/CoreData.h>
 
-@interface IXTableView () <UITableViewDataSource,UITableViewDelegate,IXDataProviderDelegate>
+@interface IXSandbox ()
+
+@property (nonatomic,strong) NSMutableDictionary* dataProviders;
+
+@end
+
+@interface IXTableView () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSString* dataSourceID;
@@ -37,7 +43,7 @@
 
 -(void)dealloc
 {
-    [_dataProvider removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
     [_tableView setDataSource:nil];
     [_tableView setDelegate:nil];
 }
@@ -72,9 +78,17 @@
     
     [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:@"dataprovider_id" defaultValue:nil]];
     
-    [[self dataProvider] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
+
     [self setDataProvider:[[self sandbox] getDataProviderWithID:[self dataSourceID]]];
-    [[self dataProvider] addDelegate:self];
+    
+    if( [self dataProvider] )
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(dataProviderNotification:)
+                                                     name:IXBaseDataProviderDidUpdateNotification
+                                                   object:[self dataProvider]];
+    }
     
     NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator_style" defaultValue:@"default"];
     if( [seperatorStyle isEqualToString:@"none"] ) {
@@ -122,7 +136,7 @@
                       [[self propertyContainer] getSizeValue:@"item_height" maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
 }
 
--(void)dataProviderDidUpdate:(IXBaseDataProvider*)coreDataProvider
+-(void)dataProviderNotification:(NSNotification*)notification
 {
     [self setCurrentRowCount:[[self dataProvider] getRowCount]];
     [self startTableViewReload];
@@ -180,6 +194,7 @@
     [rowSandbox setContainerControl:[tableViewSandbox containerControl]];
     [rowSandbox setBasePath:[tableViewSandbox basePath]];
     [rowSandbox setRootPath:[tableViewSandbox rootPath]];
+    [rowSandbox setDataProviders:[tableViewSandbox dataProviders]];
     
     // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
     [cell setCellSandbox:rowSandbox];
