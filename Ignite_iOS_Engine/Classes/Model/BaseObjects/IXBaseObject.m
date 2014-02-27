@@ -136,6 +136,21 @@
     return childObjectsFound;
 }
 
+-(NSArray*)childrenThatAreKindOfClass:(Class)baseObjectClass
+{
+    NSMutableArray* childObjectsFound = [NSMutableArray array];
+    
+    if( [self isKindOfClass:baseObjectClass] )
+        [childObjectsFound addObject:self];
+    
+    for( IXBaseObject* childObject in [self childObjects] )
+    {
+        [childObjectsFound addObjectsFromArray:[childObject childrenThatAreKindOfClass:baseObjectClass]];
+    }
+    
+    return childObjectsFound;
+}
+
 -(void)applySettings
 {
     [self setID:[[self propertyContainer] getStringPropertyValue:kIX_ID defaultValue:[self ID]]];

@@ -50,7 +50,7 @@
     else
     {
         IXBaseObject* baseObject = [[[self property] propertyContainer] ownerObject];
-        NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlAndDataProvidersWithID:[self objectID] withSelfObject:baseObject];
+        NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlsAndDataProvidersWithID:[self objectID] withSelfObject:baseObject];
         baseObject = [objectWithIDArray firstObject];
         
         if( baseObject )

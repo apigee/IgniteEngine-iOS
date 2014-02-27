@@ -14,6 +14,7 @@
 #import "IXLayoutEngine.h"
 #import "IXUICollectionViewCell.h"
 #import "IXCoreDataDataProvider.h"
+#import "IXCustom.h"
 
 @interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
 
@@ -148,6 +149,14 @@
     {
         [[cellLayout sandbox] setIndexPathForRowData:indexPath];
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
+        
+        NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
+        for( IXCustom* customControl in childrenThatAreCustomControls )
+        {
+            [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
+            [[customControl sandbox] setIndexPathForRowData:indexPath];
+        }
+
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
         [cellLayout applySettings];
         

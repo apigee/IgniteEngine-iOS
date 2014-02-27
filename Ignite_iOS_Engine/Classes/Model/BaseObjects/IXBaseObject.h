@@ -29,6 +29,7 @@
 -(void)removeChildObject:(IXBaseObject*)childObject;
 -(void)addChildObjects:(NSArray*)childObjects;
 -(NSArray*)childrenWithID:(NSString*)childObjectID;
+-(NSArray*)childrenThatAreKindOfClass:(Class)baseObjectClass;
 
 -(void)applySettings;
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer;

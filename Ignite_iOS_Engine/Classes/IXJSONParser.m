@@ -447,7 +447,8 @@ static NSCache* sCustomControlCache;
         if( [childControl isKindOfClass:[IXCustom class]] )
         {
             IXCustom* customControl = (IXCustom*)childControl;
-            NSString* pathToJSON = [[customControl propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];            
+            NSString* pathToJSON = [[customControl propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
+            [customControl setPathToJSON:pathToJSON];
             BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES];
             [IXJSONParser populateControl:customControl
                            withJSONAtPath:pathToJSON
@@ -532,11 +533,6 @@ static NSCache* sCustomControlCache;
 
 +(void)populateControl:(IXBaseControl*)control withJSONAtPath:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock
 {
-    if( [control isKindOfClass:[IXCustom class]] )
-    {
-        [((IXCustom*) control) setNeedsToPopulate:NO];
-    }
-    
     if( pathToJSON )
     {
         __block IXCustomControlCacheContainer* customControlCacheContainer = [sCustomControlCache objectForKey:pathToJSON];
@@ -580,11 +576,6 @@ static NSCache* sCustomControlCache;
                                                     }
                                                     else
                                                     {
-                                                        if( [control isKindOfClass:[IXCustom class]] )
-                                                        {
-                                                            [((IXCustom*) control) setNeedsToPopulate:YES];
-                                                        }
-                                                        
                                                         completionBlock(NO,error);
                                                         
                                                         DDLogError(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);

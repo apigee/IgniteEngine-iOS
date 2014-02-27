@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class IXBaseControl;
+@class IXPropertyContainer;
 
 @protocol IXControlContentViewTouchDelegate <NSObject>
 
@@ -19,6 +20,9 @@
 -(void)controlViewTouchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event;
 -(void)controlViewTouchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;
 
+-(void)controlViewTapGestureRecognized:(UITapGestureRecognizer*)tapGestureRecognizer;
+-(void)controlViewSwipeGestureRecognized:(UISwipeGestureRecognizer*)swipeGestureRecognizer;
+
 @end
 
 @interface IXControlContentView : UIControl
@@ -26,5 +30,10 @@
 @property (nonatomic,weak) id<IXControlContentViewTouchDelegate> controlContentViewTouchDelegate;
 
 -(id)initWithFrame:(CGRect)frame viewTouchDelegate:(id<IXControlContentViewTouchDelegate>)touchDelegate;
+
+-(void)beginListeningForTapGestures;
+-(void)beginListeningForSwipeGestures;
+-(void)stopListeningForTapGestures;
+-(void)stopListeningForSwipeGestures;
 
 @end

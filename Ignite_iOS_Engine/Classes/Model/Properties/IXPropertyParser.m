@@ -15,7 +15,7 @@
 //static NSString* const kIXShortcodeMainComponents = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\((.+?)\\)\\]$";
 //static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([\\w\\.]+)(\\('?([^)]+)'\\)?)*?\\]\\]$";
 //static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([\\w\\.]+)\\(?\\'?(.+?)?\\'?\\)?\\]\\]$";
-static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([\\w\\.]+)\\(?(.+?)?\\)?\\]\\]$";
+static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([$\\w\\.]+)\\(?(.+?)?\\)?\\]\\]$";
 
 static NSString* const kIXJSComponents = @"^\\*\\|([^\\*\\|]+)\\|\\*$";
 
@@ -46,15 +46,15 @@ static NSString* const kIXEmptyString = @"";
 
 +(void)initialize
 {
-    sIXShortCodeParamRegex = [[NSRegularExpression alloc] initWithPattern:kIXParamComponent
-                                                                   options:NSRegularExpressionDotMatchesLineSeparators
-                                                                     error:nil];
+//    sIXShortCodeParamRegex = [[NSRegularExpression alloc] initWithPattern:kIXParamComponent
+//                                                                   options:NSRegularExpressionDotMatchesLineSeparators
+//                                                                     error:nil];
     sIXShortCodeMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponents
                                                                             options:NSRegularExpressionDotMatchesLineSeparators
                                                                               error:nil];
-    sIXShortCodeMainComponentsNoParamsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponentsNoParams
-                                                                                    options:NSRegularExpressionDotMatchesLineSeparators
-                                                                                      error:nil];
+//    sIXShortCodeMainComponentsNoParamsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponentsNoParams
+//                                                                                    options:NSRegularExpressionDotMatchesLineSeparators
+//                                                                                      error:nil];
 }
 
 +(NSMutableArray*)topLevelParameterRangesFromString:(NSString*)string

@@ -13,11 +13,12 @@
 #import "IXBaseDataProvider.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
+#import "IXCustom.h"
 #import "IXViewController.h"
 
-static NSString* const kIXSelfControlRef = @"self";
-static NSString* const kIXViewControlRef = @"_view";
-static NSString* const kIXCustomContainerControlRef = @"_custom";
+static NSString* const kIXSelfControlRef = @"$self";
+static NSString* const kIXViewControlRef = @"$view";
+static NSString* const kIXCustomContainerControlRef = @"$custom";
 
 @interface IXSandbox ()
 
@@ -46,8 +47,6 @@ static NSString* const kIXCustomContainerControlRef = @"_custom";
         {
             DDLogWarn(@"WARNING from %@ in %@ : INITIALIZING SANDBOX WITHOUT ROOT PATH!!!",THIS_FILE,THIS_METHOD);
         }
-        
-        _dataProviders = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -60,65 +59,6 @@ static NSString* const kIXCustomContainerControlRef = @"_custom";
 -(void)setContainerControl:(IXBaseControl *)containerControl
 {
     _containerControl = containerControl;
-}
-
--(NSArray*)getAllControlsWithID:(NSString*)objectID
-{
-    NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
-    return controlsWithObjectID;
-}
-
--(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject
-{
-    NSMutableArray* returnArray = nil;
-    if( [objectIDs count] )
-    {
-        returnArray = [[NSMutableArray alloc] init];
-        for( NSString* objectID in objectIDs )
-        {
-            NSArray* objectsWithID = [self getAllControlAndDataProvidersWithID:objectID
-                                                                withSelfObject:selfObject];
-            [returnArray addObjectsFromArray:objectsWithID];
-        }
-    }
-    return returnArray;
-}
-
--(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
-{
-    NSArray* returnArray = nil;
-    if( [objectID isEqualToString:kIXSelfControlRef] )
-    {
-        if( selfObject )
-        {
-            returnArray = @[selfObject];
-        }
-    }
-    else if( [objectID isEqualToString:kIXCustomContainerControlRef] )
-    {
-        if( [self customControlContainer] )
-        {
-            returnArray = @[[self customControlContainer]];
-        }
-    }
-    else if( [objectID isEqualToString:kIXViewControlRef] )
-    {
-        if( [[self viewController] containerControl] )
-        {
-            returnArray = @[[[self viewController] containerControl]];
-        }
-    }
-    else
-    {
-        NSMutableArray* arrayOfObjects = [[NSMutableArray alloc] initWithArray:[[self containerControl] childrenWithID:objectID]];
-        IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
-        if( dataProviderWithObjectID )
-        {
-            [arrayOfObjects addObject:dataProviderWithObjectID];
-        }
-        returnArray = arrayOfObjects;
-    }
-    return returnArray;
 }
 
 -(void)addDataProviders:(NSArray*)dataProviders
@@ -149,7 +89,15 @@ static NSString* const kIXCustomContainerControlRef = @"_custom";
         }
         
         [dataProvider setSandbox:self];
-        [self dataProviders][dataProviderID] = dataProvider;
+        
+        if( ![self dataProviders] )
+        {
+            [self setDataProviders:[[NSMutableDictionary alloc] initWithObjects:@[dataProvider] forKeys:@[dataProviderID]]];
+        }
+        else
+        {
+            [self dataProviders][dataProviderID] = dataProvider;
+        }
         
         didAddDataProvider = YES;
     }
@@ -180,6 +128,73 @@ static NSString* const kIXCustomContainerControlRef = @"_custom";
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
     }
     return returnDataProvider;
+}
+
+-(NSArray*)getAllControlsWithID:(NSString*)objectID
+{
+    NSMutableArray* arrayOfControls = [NSMutableArray array];
+    if( [self customControlContainer] )
+    {
+        [arrayOfControls addObjectsFromArray:[[self customControlContainer] childrenWithID:objectID]];
+    }
+    if( ![arrayOfControls count] )
+    {
+        [arrayOfControls addObjectsFromArray:[[self containerControl] childrenWithID:objectID]];
+    }
+    return arrayOfControls;
+}
+
+-(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject
+{
+    NSMutableArray* returnArray = nil;
+    if( [objectIDs count] )
+    {
+        returnArray = [[NSMutableArray alloc] init];
+        for( NSString* objectID in objectIDs )
+        {
+            NSArray* objectsWithID = [self getAllControlsAndDataProvidersWithID:objectID
+                                                                 withSelfObject:selfObject];
+            [returnArray addObjectsFromArray:objectsWithID];
+        }
+    }
+    return returnArray;
+}
+
+-(NSArray*)getAllControlsAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
+{
+    NSArray* returnArray = nil;
+    if( [objectID isEqualToString:kIXSelfControlRef] )
+    {
+        if( selfObject )
+        {
+            returnArray = @[selfObject];
+        }
+    }
+    else if( [objectID isEqualToString:kIXCustomContainerControlRef] )
+    {
+        if( [self customControlContainer] )
+        {
+            returnArray = @[[self customControlContainer]];
+        }
+    }
+    else if( [objectID isEqualToString:kIXViewControlRef] )
+    {
+        if( [[self viewController] containerControl] )
+        {
+            returnArray = @[[[self viewController] containerControl]];
+        }
+    }
+    else
+    {
+        NSMutableArray* arrayOfObjects = [[NSMutableArray alloc] initWithArray:[self getAllControlsWithID:objectID]];
+        IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
+        if( dataProviderWithObjectID )
+        {
+            [arrayOfObjects addObject:dataProviderWithObjectID];
+        }
+        returnArray = arrayOfObjects;
+    }
+    return returnArray;
 }
 
 @end

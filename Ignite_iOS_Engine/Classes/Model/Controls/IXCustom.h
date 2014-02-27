@@ -10,7 +10,7 @@
 
 @interface IXCustom : IXLayout
 
-@property (nonatomic,assign) BOOL needsToPopulate;
+@property (nonatomic,strong) NSString* pathToJSON;
 @property (nonatomic,strong) NSArray* dataProviders;
 
 @end

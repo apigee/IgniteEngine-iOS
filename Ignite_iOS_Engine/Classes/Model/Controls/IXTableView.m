@@ -16,6 +16,7 @@
 #import "IXPropertyContainer.h"
 #import "IXProperty.h"
 #import "IXLayoutEngine.h"
+#import "IXCustom.h"
 #import <RestKit/CoreData.h>
 
 @interface IXSandbox ()
@@ -234,7 +235,14 @@
     if( cellLayout )
     {
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
-        [[cellLayout sandbox] setIndexPathForRowData:indexPath];        
+        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
+        
+        NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
+        for( IXCustom* customControl in childrenThatAreCustomControls )
+        {
+            [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
+            [[customControl sandbox] setIndexPathForRowData:indexPath];
+        }
         [cellLayout applySettings];
 
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.

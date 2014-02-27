@@ -78,19 +78,9 @@
     [super viewDidLoad];
     
     [self setView:[_containerControl contentView]];
-
-    // To change the frame to underlap the status bar
-//    CGRect frame = [[self view] frame];
-//    frame.origin = CGPointMake(0, -[[UIApplication sharedApplication] statusBarFrame].size.height);
-//    [[self view] setFrame:frame];
-    
-    
-//    [self setWantsFullScreenLayout:YES];
     [[self view] setClipsToBounds:YES];
     
-    [self setAutomaticallyAdjustsScrollViewInsets:NO];//![[[IXAppManager sharedAppManager] rootViewController] isNavigationBarHidden]];
-//    [[self view] addSubview:[_containerControl contentView]];
-    // FIXME: need to set some default values here for the container control and add the view properties to it.
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
 }
 
 -(void)viewWillAppear:(BOOL)animated
