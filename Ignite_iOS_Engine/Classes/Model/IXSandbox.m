@@ -12,8 +12,13 @@
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 #import "IXAppManager.h"
+#import "IXLogger.h"
+#import "IXCustom.h"
+#import "IXViewController.h"
 
-static NSString* const kIXSelfControlRef = @"self";
+static NSString* const kIXSelfControlRef = @"$self";
+static NSString* const kIXViewControlRef = @"$view";
+static NSString* const kIXCustomContainerControlRef = @"$custom";
 
 @interface IXSandbox ()
 
@@ -40,10 +45,8 @@ static NSString* const kIXSelfControlRef = @"self";
         
         if( _rootPath == nil )
         {
-            NSLog(@"WARNING INITIALIZING SANDBOX WITHOUT ROOT PATH!!!");
+            DDLogWarn(@"WARNING from %@ in %@ : INITIALIZING SANDBOX WITHOUT ROOT PATH!!!",THIS_FILE,THIS_METHOD);
         }
-        
-        _dataProviders = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -56,52 +59,6 @@ static NSString* const kIXSelfControlRef = @"self";
 -(void)setContainerControl:(IXBaseControl *)containerControl
 {
     _containerControl = containerControl;
-}
-
--(NSArray*)getAllControlsWithID:(NSString*)objectID
-{
-    NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
-    return controlsWithObjectID;
-}
-
--(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject
-{
-    NSMutableArray* returnArray = nil;
-    if( [objectIDs count] )
-    {
-        returnArray = [[NSMutableArray alloc] init];
-        for( NSString* objectID in objectIDs )
-        {
-            NSArray* objectsWithID = [self getAllControlAndDataProvidersWithID:objectID
-                                                                withSelfObject:selfObject];
-            [returnArray addObjectsFromArray:objectsWithID];
-        }
-    }
-    return returnArray;
-}
-
--(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
-{
-    if( [objectID isEqualToString:kIXSelfControlRef] )
-    {
-        NSArray* returnArray = nil;
-        if( selfObject )
-            returnArray = [NSArray arrayWithObject:selfObject];
-        return returnArray;
-    }
-    
-    NSMutableArray* returnArray = [[NSMutableArray alloc] init];
-    
-    NSArray* controlsWithObjectID = [[self containerControl] childrenWithID:objectID];
-    [returnArray addObjectsFromArray:controlsWithObjectID];
-
-    IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
-    if( dataProviderWithObjectID )
-    {
-        [returnArray addObject:dataProviderWithObjectID];
-    }
-    
-    return returnArray;
 }
 
 -(void)addDataProviders:(NSArray*)dataProviders
@@ -117,30 +74,37 @@ static NSString* const kIXSelfControlRef = @"self";
     BOOL didAddDataProvider = NO;
     
     NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:kIX_ID defaultValue:nil];
-    if( dataProviderID != nil && ![dataProviderID isEqualToString:@""] )
+    if( dataProviderID.length > 0 )
     {
-        if( [[self dataProviders] objectForKey:dataProviderID] != nil )
+        if( [self dataProviders][dataProviderID] != nil )
         {
-            if( [[[self dataProviders] objectForKey:dataProvider] isEqual:dataProvider] )
+            if( [[self dataProviders][dataProviderID] isEqual:dataProvider] )
             {
-                NSLog(@"WARNING: ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE");
+                DDLogWarn(@"WARNING from %@ in %@ :  ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE",THIS_FILE,THIS_METHOD);
             }
             else
             {
-                NSLog(@"WARNING: CONFLICTING DATASOURCE IDS");
+                DDLogError(@"ERROR from %@ in %@ :  CONFLICTING DATASOURCE IDS WITH ID : %@",THIS_FILE,THIS_METHOD,dataProviderID);
             }
         }
         
         [dataProvider setSandbox:self];
-        [[self dataProviders] setObject:dataProvider forKey:dataProviderID];
+        
+        if( ![self dataProviders] )
+        {
+            [self setDataProviders:[[NSMutableDictionary alloc] initWithObjects:@[dataProvider] forKeys:@[dataProviderID]]];
+        }
+        else
+        {
+            [self dataProviders][dataProviderID] = dataProvider;
+        }
         
         didAddDataProvider = YES;
     }
     else
     {
-        NSLog(@"WARNING: ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID");
+        DDLogError(@"ERROR from %@ in %@ :  ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID : %@",THIS_FILE,THIS_METHOD,[dataProvider description]);
     }
-    
     return didAddDataProvider;
 }
 
@@ -158,12 +122,79 @@ static NSString* const kIXSelfControlRef = @"self";
 
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
-    IXBaseDataProvider* returnDataProvider = [[self dataProviders] objectForKey:dataProviderID];
+    IXBaseDataProvider* returnDataProvider = [self dataProviders][dataProviderID];
     if( returnDataProvider == nil && ![self isEqual:[[IXAppManager sharedAppManager] applicationSandbox]] )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
     }
     return returnDataProvider;
+}
+
+-(NSArray*)getAllControlsWithID:(NSString*)objectID
+{
+    NSMutableArray* arrayOfControls = [NSMutableArray array];
+    if( [self customControlContainer] )
+    {
+        [arrayOfControls addObjectsFromArray:[[self customControlContainer] childrenWithID:objectID]];
+    }
+    if( ![arrayOfControls count] )
+    {
+        [arrayOfControls addObjectsFromArray:[[self containerControl] childrenWithID:objectID]];
+    }
+    return arrayOfControls;
+}
+
+-(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject
+{
+    NSMutableArray* returnArray = nil;
+    if( [objectIDs count] )
+    {
+        returnArray = [[NSMutableArray alloc] init];
+        for( NSString* objectID in objectIDs )
+        {
+            NSArray* objectsWithID = [self getAllControlsAndDataProvidersWithID:objectID
+                                                                 withSelfObject:selfObject];
+            [returnArray addObjectsFromArray:objectsWithID];
+        }
+    }
+    return returnArray;
+}
+
+-(NSArray*)getAllControlsAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
+{
+    NSArray* returnArray = nil;
+    if( [objectID isEqualToString:kIXSelfControlRef] )
+    {
+        if( selfObject )
+        {
+            returnArray = @[selfObject];
+        }
+    }
+    else if( [objectID isEqualToString:kIXCustomContainerControlRef] )
+    {
+        if( [self customControlContainer] )
+        {
+            returnArray = @[[self customControlContainer]];
+        }
+    }
+    else if( [objectID isEqualToString:kIXViewControlRef] )
+    {
+        if( [[self viewController] containerControl] )
+        {
+            returnArray = @[[[self viewController] containerControl]];
+        }
+    }
+    else
+    {
+        NSMutableArray* arrayOfObjects = [[NSMutableArray alloc] initWithArray:[self getAllControlsWithID:objectID]];
+        IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
+        if( dataProviderWithObjectID )
+        {
+            [arrayOfObjects addObject:dataProviderWithObjectID];
+        }
+        returnArray = arrayOfObjects;
+    }
+    return returnArray;
 }
 
 @end

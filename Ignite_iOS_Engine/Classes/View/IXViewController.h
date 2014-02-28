@@ -16,11 +16,12 @@
 
 @interface IXViewController : UIViewController
 
-@property (nonatomic,strong) IXSandbox* sandbox;
-@property (nonatomic,strong) IXLayout* containerControl;
-@property (nonatomic,strong) IXPropertyContainer* propertyContainer;
-@property (nonatomic,strong) IXActionContainer* actionContainer;
+@property (nonatomic,strong,readonly) IXSandbox* sandbox;
+@property (nonatomic,strong,readonly) IXLayout* containerControl;
 
 +(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON;
+
+-(void)fireViewEventNamed:(NSString*)eventName;
+-(NSString*)getViewPropertyNamed:(NSString*)propertyName;
 
 @end

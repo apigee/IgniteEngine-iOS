@@ -14,6 +14,7 @@
 #import "IXJSONGrabber.h"
 #import "IXJSONParser.h"
 #import "IXAppManager.h"
+#import "IXLogger.h"
 
 // IXNavigateAction Properties
 static NSString* const kIXTo = @"to";
@@ -175,27 +176,21 @@ static BOOL sIXIsAttemptingNavigation = NO;
     NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
     if( navigateTo )
     {
-        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:navigateTo
-                                                     asynch:YES
-                                            completionBlock:^(id jsonObject, NSError *error) {
-                                                
-                                                IXViewController* viewController = nil;
-                                                id viewDictJSONValue = [jsonObject objectForKey:kIX_VIEW];
-                                                if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
-                                                {
-                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue pathToJSON:navigateTo];
-                                                }
-                                                
-                                                if( viewController != nil )
-                                                {
-                                                    [self finishPushNavigationTo:viewController
-                                                              isReplaceStackType:isReplaceStackType];
-                                                }
-                                                else
-                                                {
-                                                    [self navigationActionDidFinish:NO];
-                                                }
-            }];
+        [IXJSONParser viewControllerWithPathToJSON:navigateTo
+                                         loadAsync:YES
+                                   completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+                                       
+                                       if( viewController != nil )
+                                       {
+                                           [self finishPushNavigationTo:viewController
+                                                     isReplaceStackType:isReplaceStackType];
+                                       }
+                                       else
+                                       {
+                                           DDLogError(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
+                                           [self navigationActionDidFinish:NO];
+                                       }
+        }];
     }
 }
 

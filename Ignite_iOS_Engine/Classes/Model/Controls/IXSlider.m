@@ -8,6 +8,8 @@
 
 #import "IXSlider.h"
 
+#import "NSString+IXAdditions.h"
+
 // Slider Properties
 static NSString* const kIXInitialValue = @"initial_value";
 static NSString* const kIXImagesThumb = @"images.thumb";
@@ -161,7 +163,7 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXValue] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self slider] value]];
+        returnValue = [NSString stringFromFloat:[[self slider] value]];
     }
     else
     {

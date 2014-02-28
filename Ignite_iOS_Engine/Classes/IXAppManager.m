@@ -27,6 +27,7 @@
 #import "RKLog.h"
 #import "SDWebImageManager.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 @interface IXAppManager ()
 
@@ -73,6 +74,7 @@
 {
     [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
                                                  asynch:NO
+                                            shouldCache:NO
                                         completionBlock:^(id jsonObject, NSError *error) {
                                             
                                             if( jsonObject == nil )
@@ -108,14 +110,16 @@
                                                      }];
         }
     }
-    
-    
 }
 
 -(void)applyAppProperties
 {
+    NSString* appLogLevel = [[self appProperties] getStringPropertyValue:@"log_level" defaultValue:@"debug"];
+    [[IXLogger sharedLogger] setAppLogLevel:appLogLevel];
+
     if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] ) {
         [self setAppMode:IXDebugMode];
+        RKLogConfigureByName("*", RKLogLevelOff);
     } else {
         [self setAppMode:IXReleaseMode];
         RKLogConfigureByName("*", RKLogLevelOff);
@@ -147,34 +151,19 @@
 
 -(void)loadApplicationDefaultView
 {
-    [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appDefaultViewPath]
-                                                 asynch:NO
-                                        completionBlock:^(id jsonObject, NSError *error) {
-                                            
-                                            if( jsonObject == nil )
-                                            {
-                                                [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
-                                            }
-                                            else
-                                            {
-                                                IXViewController* viewController = nil;
-                                                id viewDictJSONValue = [jsonObject objectForKey:@"view"];
-                                                if( [viewDictJSONValue isKindOfClass:[NSDictionary class]] )
-                                                {
-                                                    viewController = [IXJSONParser viewControllerWithViewDictionary:viewDictJSONValue
-                                                                                                         pathToJSON:[self appDefaultViewPath]];
-                                                }
-                                                
-                                                if( viewController != nil )
-                                                {
-                                                    [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
-                                                }
-                                                else
-                                                {
-                                                    [self showJSONAlertWithName:@"" error:nil];
-                                                }
-                                            }
-                                        }];
+    [IXJSONParser viewControllerWithPathToJSON:[self appDefaultViewPath]
+                                     loadAsync:NO
+                               completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+                                   
+                                   if( didSucceed && viewController && error == nil )
+                                   {
+                                       [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
+                                   }
+                                   else
+                                   {
+                                       [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
+                                   }
+    }];
 }
 
 +(UIInterfaceOrientation)currentInterfaceOrientation

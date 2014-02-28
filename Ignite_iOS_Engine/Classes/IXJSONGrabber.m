@@ -11,6 +11,7 @@
 #import "IXAppManager.h"
 #import "IXAFJSONRequestOperation.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 @interface IXJSONGrabber ()
 
@@ -43,6 +44,7 @@
 
 -(void)grabJSONFromPath:(NSString*)path
                  asynch:(BOOL)asynch
+            shouldCache:(BOOL)shouldCache
         completionBlock:(IXJSONGrabCompletedBlock)grabCompletionBlock
 {
     if( [path length] <= 0 )
@@ -73,9 +75,12 @@
         {
             __weak typeof(self) weakSelf = self;
             IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:url] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[weakSelf jsonCache] setObject:JSON forKey:path];
-                });
+                if( shouldCache )
+                {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [[weakSelf jsonCache] setObject:JSON forKey:path];
+                    });
+                }
                 grabCompletionBlock(JSON,nil);
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 grabCompletionBlock(nil,error);
@@ -97,9 +102,12 @@
                 if( jsonObject )
                 {
                     __weak typeof(self) weakSelf = self;
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                        [[weakSelf jsonCache] setObject:jsonObject forKey:path];
-                    });
+                    if( shouldCache )
+                    {
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            [[weakSelf jsonCache] setObject:jsonObject forKey:path];
+                        });
+                    }
                     grabCompletionBlock(jsonObject,nil);
                 }
                 else

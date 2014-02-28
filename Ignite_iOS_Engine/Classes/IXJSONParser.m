@@ -13,6 +13,7 @@
 #import "IXViewController.h"
 #import "IXBaseControl.h"
 #import "IXBaseControlConfig.h"
+#import "IXBaseDataProviderConfig.h"
 #import "IXLayout.h"
 #import "IXBaseAction.h"
 #import "IXTextInput.h"
@@ -23,6 +24,8 @@
 #import "IXAppManager.h"
 #import "IXCustom.h"
 #import "IXJSONGrabber.h"
+#import "IXLogger.h"
+#import "IXPathHandler.h"
 
 static NSCache* sCustomControlCache;
 
@@ -31,6 +34,7 @@ static NSCache* sCustomControlCache;
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) NSArray* childConfigControls;
+@property (nonatomic,strong) NSArray* dataProviderConfigs;
 
 @end
 
@@ -38,10 +42,10 @@ static NSCache* sCustomControlCache;
 
 -(instancetype)init
 {
-    return [self initWithPropertyContainer:nil actionContainer:nil childConfigControls:nil];
+    return [self initWithPropertyContainer:nil actionContainer:nil childConfigControls:nil dataProviderConfigs:nil];
 }
 
--(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer childConfigControls:(NSArray*)childConfigControls
+-(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer childConfigControls:(NSArray*)childConfigControls dataProviderConfigs:(NSArray*)dataProviderConfigs
 {
     self = [super init];
     if( self )
@@ -49,13 +53,17 @@ static NSCache* sCustomControlCache;
         _propertyContainer = propertyContainer;
         _actionContainer = actionContainer;
         _childConfigControls = childConfigControls;
+        _dataProviderConfigs = dataProviderConfigs;
     }
     return self;
 }
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    return [[[self class] allocWithZone:zone] initWithPropertyContainer:[[self propertyContainer] copy] actionContainer:[[self actionContainer] copy] childConfigControls:[[NSArray alloc] initWithArray:[self childConfigControls] copyItems:YES]];
+    return [[[self class] allocWithZone:zone] initWithPropertyContainer:[[self propertyContainer] copy]
+                                                        actionContainer:[[self actionContainer] copy]
+                                                    childConfigControls:[[NSArray alloc] initWithArray:[self childConfigControls] copyItems:YES]
+                                                    dataProviderConfigs:[[NSArray alloc] initWithArray:[self dataProviderConfigs] copyItems:YES]];
 }
 
 @end
@@ -162,7 +170,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"WARNING: property value array for %@ does not have a dictionary objects",propertyName);
+            DDLogWarn(@"WARNING from %@ in %@ : Property value array for %@ does not have a dictionary objects",THIS_FILE,THIS_METHOD,propertyName);
         }
     }
     if( [stringsToBeCommaSeperatedArray count] )
@@ -213,7 +221,7 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"WARNING: property value for %@ not a valid object",key);
+            DDLogWarn(@"WARNING from %@ in %@ : Property value for %@ not a valid object",THIS_FILE,THIS_METHOD,key);
         }
     }];
 }
@@ -357,6 +365,38 @@ static NSCache* sCustomControlCache;
     return actionContainer;
 }
 
++(IXEntityContainer*)entityContainerWithJSONEntityDict:(NSDictionary*)entityDict
+{
+    IXEntityContainer* entity = nil;
+    if( [entityDict isKindOfClass:[NSDictionary class]] )
+    {
+        entity = [[IXEntityContainer alloc] init];
+        
+        [entityDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if( [obj isKindOfClass:[NSString class]] )
+            {
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:obj];
+                [[entity entityProperties] addProperty:property];
+            }
+            else if( [obj isKindOfClass:[NSNumber class]] )
+            {
+                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
+                [[entity entityProperties] addProperty:property];
+            }
+            else if( [obj isKindOfClass:[NSArray class]] && [key isEqualToString:@"sub_entities"] )
+            {
+                for( NSDictionary* subEntityDict in obj )
+                {
+                    IXEntityContainer* subEntityContainer = [IXJSONParser entityContainerWithJSONEntityDict:subEntityDict];
+                    if( subEntityContainer != nil )
+                        [[entity subEntities] addObject:subEntityContainer];
+                }
+            }
+        }];
+    }
+    return entity;
+}
+
 +(IXBaseControlConfig*)controlConfigWithValueDictionary:(NSDictionary*)controlValueDict
 {
     IXBaseControlConfig* controlConfig = nil;
@@ -394,78 +434,82 @@ static NSCache* sCustomControlCache;
         }
         else
         {
-            NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
+            DDLogError(@"ERROR from %@ in %@ : Control class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,controlType, [controlValueDict description]);
         }
     }
     return controlConfig;
 }
 
-+(IXBaseControl*)controlWithValueDictionary:(NSDictionary*)controlValueDict
++(void)populateControlsCustomControlChildren:(IXBaseControl*)control
 {
-    IXBaseControl* control = nil;
-    if( [controlValueDict allKeys] > 0 )
+    for( IXBaseControl* childControl in [control childObjects] )
     {
-        NSString* controlType = [controlValueDict objectForKey:kIX_TYPE];
-        NSString* controlClassString = [NSString stringWithFormat:@"IX%@",controlType];
+        if( [childControl isKindOfClass:[IXCustom class]] )
+        {
+            IXCustom* customControl = (IXCustom*)childControl;
+            NSString* pathToJSON = [[customControl propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
+            [customControl setPathToJSON:pathToJSON];
+            BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES];
+            [IXJSONParser populateControl:customControl
+                           withJSONAtPath:pathToJSON
+                                loadAsync:loadAsync
+                          completionBlock:^(BOOL didSucceed, NSError *error) {
+                              if( didSucceed )
+                              {
+                                  if( loadAsync )
+                                  {
+                                      [[[customControl sandbox] containerControl] applySettings];
+                                      [[[customControl sandbox] containerControl] layoutControl];
+                                  }
+                                  [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
+                              }
+                              else
+                              {
+                                  [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
+                              }
+                          }];
+        }
         
-        Class controlClass = NSClassFromString(controlClassString);
-        control = [[controlClass alloc] init];
-        if( control != nil )
-        {
-            id propertiesDict = [controlValueDict objectForKey:@"attributes"];
-            if( [propertiesDict isKindOfClass:[NSDictionary class]] )
-            {
-                id controlID = [controlValueDict objectForKey:kIX_ID];
-                if( controlID )
-                {
-                    if( [controlID isKindOfClass:[NSString class]] )
-                    {
-                        [control setID:controlID];
-                    }
-                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
-                    [propertiesDict setObject:controlID forKey:kIX_ID];
-                }
-                
-                IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
-                [control setPropertyContainer:propertyContainer];
-                
-                id actionsArray = [controlValueDict objectForKey:@"actions"];
-                IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
-                [control setActionContainer:actionContainer];
-                
-                NSArray* controlsValueArray = [controlValueDict objectForKey:@"controls"];
-                NSArray* controls = [IXJSONParser controlsWithJSONControlArray:controlsValueArray];
-                [control addChildObjects:controls];
-            }
-        }
-        else
-        {
-            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-            {
-                NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", controlType, [controlValueDict description]);
-            }
-        }
+        [IXJSONParser populateControlsCustomControlChildren:childControl];
     }
-    return control;
 }
 
-+(void)populateCustomControl:(IXCustom *)customControl withCustomControlCacheContainer:(IXCustomControlCacheContainer*)customControlCacheContainer
++(void)populateControl:(IXBaseControl *)control withCustomControlCacheContainer:(IXCustomControlCacheContainer*)customControlCacheContainer completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock
 {
     if( customControlCacheContainer != nil )
     {
-        IXPropertyContainer* controlPropertyContainer = [customControl propertyContainer];
+        IXPropertyContainer* controlPropertyContainer = [control propertyContainer];
         if( [customControlCacheContainer propertyContainer] )
         {
-            [customControl setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
-            [[customControl propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+            [control setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
+            [[control propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
         }
-        if( [customControl actionContainer] )
+        if( [control actionContainer] )
         {
-            [[customControl actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
+            [[control actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
         }
         else
         {
-            [customControl setActionContainer:[[customControlCacheContainer actionContainer] copy]];
+            [control setActionContainer:[[customControlCacheContainer actionContainer] copy]];
+        }
+        
+        NSMutableArray* dataProviders = [[NSMutableArray alloc] init];
+        for( IXBaseDataProviderConfig* dataProviderConfig in [customControlCacheContainer dataProviderConfigs] )
+        {
+            IXBaseDataProvider* dataProvider = [dataProviderConfig createDataProvider];
+            if( dataProvider )
+            {
+                [dataProviders addObject:dataProvider];
+            }
+        }
+        
+        if( [control isKindOfClass:[IXCustom class]] )
+        {
+            [((IXCustom*)control) setDataProviders:dataProviders];
+        }
+        else
+        {
+            [[control sandbox] addDataProviders:dataProviders];
         }
         
         for( IXBaseControlConfig* controlConfig in [customControlCacheContainer childConfigControls] )
@@ -473,40 +517,53 @@ static NSCache* sCustomControlCache;
             IXBaseControl* childControl = [controlConfig createControl];
             if( childControl )
             {
-                [customControl addChildObject:childControl];
+                [control addChildObject:childControl];
             }
         }
         
-        [[[customControl sandbox] containerControl] applySettings];
-        [[[customControl sandbox] containerControl] layoutControl];
-        [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
+        [IXJSONParser populateControlsCustomControlChildren:control];
+        
+        completionBlock(YES,nil);
+    }
+    else
+    {
+        completionBlock(NO,[NSError errorWithDomain:@"No control cache found." code:0 userInfo:nil] );
     }
 }
 
-+(void)populateCustomControl:(IXCustom*)customControl withJSONAtPath:(NSString*)pathToJSON async:(BOOL)async
++(void)populateControl:(IXBaseControl*)control withJSONAtPath:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock
 {
-    [customControl setNeedsToPopulate:NO];
     if( pathToJSON )
     {
-        __block IXCustomControlCacheContainer* customControlCacheContainer = [[sCustomControlCache objectForKey:pathToJSON] copy];
+        __block IXCustomControlCacheContainer* customControlCacheContainer = [sCustomControlCache objectForKey:pathToJSON];
         if( customControlCacheContainer == nil )
         {
             [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:pathToJSON
-                                                         asynch:async
+                                                         asynch:loadAsync
+                                                    shouldCache:NO
                                                 completionBlock:^(id jsonObject, NSError *error) {
                                                     
                                                     if( jsonObject != nil )
                                                     {
                                                         customControlCacheContainer = [[IXCustomControlCacheContainer alloc] init];
-
-                                                        NSDictionary* customControlAttributeDict = [jsonObject objectForKey:@"attributes"];
+                                                        
+                                                        NSDictionary* controlJSONDictionary = [jsonObject objectForKey:@"view"];
+                                                        if( controlJSONDictionary == nil )
+                                                        {
+                                                            controlJSONDictionary = jsonObject;
+                                                        }
+                                                        
+                                                        NSDictionary* customControlAttributeDict = [controlJSONDictionary objectForKey:@"attributes"];
                                                         [customControlCacheContainer setPropertyContainer:[IXJSONParser propertyContainerWithPropertyDictionary:customControlAttributeDict]];
                                                         
-                                                        NSArray* customControlActionsArray = [jsonObject objectForKey:@"actions"];
+                                                        NSArray* customControlActionsArray = [controlJSONDictionary objectForKey:@"actions"];
                                                         [customControlCacheContainer setActionContainer:[IXJSONParser actionContainerWithJSONActionsArray:customControlActionsArray]];
                                                         
-                                                        NSArray* customControlControlsArray = [jsonObject objectForKey:@"controls"];
+                                                        NSArray* customControlControlsArray = [controlJSONDictionary objectForKey:@"controls"];
                                                         [customControlCacheContainer setChildConfigControls:[IXJSONParser controlConfigsWithJSONControlArray:customControlControlsArray]];
+                                                        
+                                                        NSArray* customControlDataProvidersArray = [controlJSONDictionary objectForKey:@"data_providers"];
+                                                        [customControlCacheContainer setDataProviderConfigs:[IXJSONParser dataProviderConfigsWithJSONDataProviderArray:customControlDataProvidersArray]];
                                                         
                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                             [sCustomControlCache setObject:customControlCacheContainer forKey:pathToJSON];
@@ -514,22 +571,20 @@ static NSCache* sCustomControlCache;
                                                         
                                                         if( customControlCacheContainer != nil )
                                                         {
-                                                            [IXJSONParser populateCustomControl:customControl withCustomControlCacheContainer:customControlCacheContainer];
+                                                            [IXJSONParser populateControl:control withCustomControlCacheContainer:customControlCacheContainer completionBlock:completionBlock];
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        [customControl setNeedsToPopulate:YES];
-                                                        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-                                                        {
-                                                            NSLog(@"Error grabbing custom control JSON at path %@ with error : %@",pathToJSON,[error description]);
-                                                        }
+                                                        completionBlock(NO,error);
+                                                        
+                                                        DDLogError(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
                                                     }
                                                 }];
         }        
         else
         {
-            [IXJSONParser populateCustomControl:customControl withCustomControlCacheContainer:customControlCacheContainer];
+            [IXJSONParser populateControl:control withCustomControlCacheContainer:customControlCacheContainer completionBlock:completionBlock];
         }
     }
 }
@@ -555,39 +610,20 @@ static NSCache* sCustomControlCache;
     return controlArray;
 }
 
-+(NSArray*)controlsWithJSONControlArray:(NSArray*)controlsValueArray
++(IXBaseDataProviderConfig*)dataProviderConfigWithValueDictionary:(NSDictionary*)dataProviderValueDict
 {
-    NSMutableArray* controlArray = nil;
-    if( [controlsValueArray isKindOfClass:[NSArray class]] )
-    {
-        controlArray = [NSMutableArray array];
-        for( id controlValueDict in controlsValueArray )
-        {
-            if( [controlValueDict isKindOfClass:[NSDictionary class]] )
-            {
-                IXBaseControl* control = [IXJSONParser controlWithValueDictionary:controlValueDict];
-                if( control != nil )
-                {
-                    [controlArray addObject:control];
-                }
-            }
-        }
-    }
-    return controlArray;
-}
-
-+(IXBaseDataProvider*)dataProviderWithValueDictionary:(NSDictionary*)dataProviderValueDict
-{
-    IXBaseDataProvider* dataProvider = nil;
+    IXBaseDataProviderConfig* dataProviderConfig = nil;
     if( [dataProviderValueDict allKeys] > 0 )
     {
         NSString* dataProviderType = [dataProviderValueDict objectForKey:kIX_TYPE];
         NSString* dataProviderClassString = [NSString stringWithFormat:@"IX%@DataProvider",dataProviderType];
         
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
-        dataProvider = [[dataProviderClass alloc] init];
         if( dataProviderType != nil )
         {
+            dataProviderConfig = [[IXBaseDataProviderConfig alloc] init];
+            [dataProviderConfig setDataProviderClass:dataProviderClass];
+            
             id propertiesDict = [dataProviderValueDict objectForKey:@"attributes"];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
@@ -599,123 +635,70 @@ static NSCache* sCustomControlCache;
                 }
                 
                 IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
-                [dataProvider setPropertyContainer:propertyContainer];
+                [dataProviderConfig setPropertyContainer:propertyContainer];
                 
-                if( [dataProvider isKindOfClass:[IXCoreDataDataProvider class]] )
+                if( dataProviderClass == [IXCoreDataDataProvider class] )
                 {
                     id entitiesDict = [dataProviderValueDict objectForKey:@"entity"];
                     IXEntityContainer* entityContainer = [IXJSONParser entityContainerWithJSONEntityDict:entitiesDict];
-                    [((IXCoreDataDataProvider*)dataProvider) setEntityContainer:entityContainer];
+                    [dataProviderConfig setEntityContainer:entityContainer];
                 }
                 
                 id parametersDict = [dataProviderValueDict objectForKey:@"parameters"];
                 IXPropertyContainer* parametersPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
-                [dataProvider setRequestParameterProperties:parametersPropertyContainer];
+                [dataProviderConfig setRequestParameters:parametersPropertyContainer];
                 
                 id headersDict = [dataProviderValueDict objectForKey:@"headers"];
                 IXPropertyContainer* headersPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:headersDict];
-                [dataProvider setRequestHeaderProperties:headersPropertyContainer];
-
+                [dataProviderConfig setRequestHeaders:headersPropertyContainer];
+                
                 id attachmentsDict = [dataProviderValueDict objectForKey:@"attachments"];
                 IXPropertyContainer* attachmentsPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:attachmentsDict];
-                [dataProvider setFileAttachmentProperties:attachmentsPropertyContainer];
+                [dataProviderConfig setFileAttachments:attachmentsPropertyContainer];
                 
                 id actionsArray = [dataProviderValueDict objectForKey:@"actions"];
                 IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
-                [dataProvider setActionContainer:actionContainer];            
+                [dataProviderConfig setActionContainer:actionContainer];
             }
         }
         else
         {
-            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-            {
-                NSLog(@"JSONPARSER ERROR: Control class with name: %@ was not found \n Description of control: \n %@", dataProviderType, [dataProviderValueDict description]);
-            }
+            DDLogError(@"ERROR from %@ in %@ : DataProvider class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,dataProviderType, [dataProviderValueDict description]);
         }
     }
-    return dataProvider;
+    return dataProviderConfig;
 }
 
-+(IXEntityContainer*)entityContainerWithJSONEntityDict:(NSDictionary*)entityDict
++(NSArray*)dataProviderConfigsWithJSONDataProviderArray:(NSArray*)dataProvidersValueArray
 {
-    IXEntityContainer* entity = nil;
-    if( [entityDict isKindOfClass:[NSDictionary class]] )
-    {
-        entity = [[IXEntityContainer alloc] init];
-        
-        [entityDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if( [obj isKindOfClass:[NSString class]] )
-            {
-                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:obj];
-                [[entity entityProperties] addProperty:property];
-            }
-            else if( [obj isKindOfClass:[NSNumber class]] )
-            {
-                IXProperty* property = [[IXProperty alloc] initWithPropertyName:key rawValue:[obj stringValue]];
-                [[entity entityProperties] addProperty:property];
-            }
-            else if( [obj isKindOfClass:[NSArray class]] && [key isEqualToString:@"sub_entities"] )
-            {
-                for( NSDictionary* subEntityDict in obj )
-                {
-                    IXEntityContainer* subEntityContainer = [IXJSONParser entityContainerWithJSONEntityDict:subEntityDict];
-                    if( subEntityContainer != nil )
-                        [[entity subEntities] addObject:subEntityContainer];
-                }
-            }
-        }];
-    }
-    return entity;
-}
-
-+(NSArray*)dataProvidersWithJSONDataProviderArray:(NSArray*)dataProvidersValueArray
-{
-    NSMutableArray* dataProviderArray = nil;
+    NSMutableArray* dataProviderConfigsArray = nil;
     if( [dataProvidersValueArray isKindOfClass:[NSArray class]] )
     {
-        dataProviderArray = [NSMutableArray array];
+        dataProviderConfigsArray = [NSMutableArray array];
         for( id dataProviderValueDict in dataProvidersValueArray )
         {
             if( [dataProviderValueDict isKindOfClass:[NSDictionary class]] )
             {
-                IXBaseDataProvider* dataProvider = [IXJSONParser dataProviderWithValueDictionary:dataProviderValueDict];
+                IXBaseDataProviderConfig* dataProvider = [IXJSONParser dataProviderConfigWithValueDictionary:dataProviderValueDict];
                 if( dataProvider != nil )
                 {
-                    [dataProviderArray addObject:dataProvider];
+                    [dataProviderConfigsArray addObject:dataProvider];
                 }
             }
         }
     }
-    return dataProviderArray;
+    return dataProviderConfigsArray;
 }
 
-
-+(IXViewController*)viewControllerWithViewDictionary:(NSDictionary*)viewDictionary pathToJSON:(NSString*)pathToJSON
++(void)viewControllerWithPathToJSON:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXJSONParseViewControllerCompletionBlock)completionBlock
 {
     IXViewController* viewController = [IXViewController viewControllerWithPathToJSON:pathToJSON];
-    
-    NSDictionary* viewPropertyDictionary = [viewDictionary objectForKey:@"attributes"];
-    
-    // FIXME: Setting the properties for the view on the viewControllers containerControl.  Might need to change this not sure yet!
-    IXPropertyContainer* viewPropertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:viewPropertyDictionary];
-    [viewPropertyContainer setOwnerObject:[viewController containerControl]];
-    [viewController setPropertyContainer:viewPropertyContainer];
-    [[viewController containerControl] setPropertyContainer:viewPropertyContainer];
-    
-    NSArray* dataProviderArray = [viewDictionary objectForKey:@"data_providers"];
-    NSArray* dataProviders = [IXJSONParser dataProvidersWithJSONDataProviderArray:dataProviderArray];
-    [[viewController sandbox] addDataProviders:dataProviders];
-    
-    NSArray* controlsValueArray = [viewDictionary objectForKey:@"controls"];
-    NSArray* controls = [IXJSONParser controlsWithJSONControlArray:controlsValueArray];
-    [[viewController containerControl] addChildObjects:controls];
-    
-    NSArray* actionsArray = [viewDictionary objectForKey:@"actions"];
-    IXActionContainer* actionContainer = [IXJSONParser actionContainerWithJSONActionsArray:actionsArray];
-    [viewController setActionContainer:actionContainer];
-    [[viewController containerControl] setActionContainer:actionContainer];
-    
-    return viewController;
+    [IXJSONParser populateControl:[viewController containerControl]
+                   withJSONAtPath:pathToJSON
+                        loadAsync:loadAsync
+                  completionBlock:^(BOOL didSucceed,NSError* error) {
+                      completionBlock(didSucceed,viewController,error);
+                  }];
 }
 
 +(void)clearCache

@@ -9,11 +9,12 @@
 #import "IXJSONDataProvider.h"
 
 #import "AFHTTPClient.h"
+
 #import "IXAFJSONRequestOperation.h"
 #import "IXAppManager.h"
 #import "IXJSONGrabber.h"
-#import "SDWebImageCompat.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 @interface IXJSONDataProvider ()
 
@@ -120,7 +121,7 @@
                 }
             }
             @catch (NSException *exception) {
-                NSLog(@"%@", exception.reason);
+                DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
             }
             [weakSelf fireLoadFinishedEvents:NO];
         }];
@@ -144,6 +145,7 @@
         __weak typeof(self) weakSelf = self;
         [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
                                                      asynch:YES
+                                                shouldCache:YES
                                             completionBlock:^(id jsonObject, NSError *error) {
                                                 
                                                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -163,14 +165,14 @@
                                                         NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                                                         [weakSelf setRawResponse:jsonString];
                                                         [weakSelf setLastJSONResponse:jsonObject];
-                                                        dispatch_main_sync_safe(^{
+                                                        IX_dispatch_main_sync_safe(^{
                                                             [weakSelf fireLoadFinishedEvents:YES];
                                                         });
                                                     }
                                                     else
                                                     {
                                                         [weakSelf setLastResponseErrorMessage:[jsonError description]];
-                                                        dispatch_main_sync_safe(^{
+                                                        IX_dispatch_main_sync_safe(^{
                                                             [weakSelf fireLoadFinishedEvents:NO];
                                                         });
                                                     }
@@ -303,7 +305,7 @@
     // if dict -> get value
     if ([currentNode isKindOfClass:[NSDictionary class]]) {
         NSDictionary *currentDict = (NSDictionary *) currentNode;
-        nextNode = [currentDict objectForKey:currentKey];
+        nextNode = currentDict[currentKey];
     }
     
     if ([currentNode isKindOfClass:[NSArray class]]) {
@@ -318,14 +320,14 @@
                         reason:@"Specified array index is out of bounds"
                         userInfo:nil];
         }
-        @catch (NSException *e) {
-            NSLog(@"%@; attempted to retrieve index %@ from %@", e, currentKey, jsonXPath);
+        @catch (NSException *exception) {
+            DDLogError(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
         }
     }
     
     // remove the currently processed key from the xpath like path
     NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:@""];    
-    if( nextXPath == nil || [nextXPath isEqualToString:@""] )
+    if( nextXPath.length <= 0 )
     {
         return nextNode;
     }

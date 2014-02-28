@@ -47,8 +47,8 @@ static NSString* const kIXLinear = @"linear";
             }
             else
             {
-                NSArray* objectsWithID = [sandbox getAllControlAndDataProvidersWithID:objectID
-                                                                       withSelfObject:ownerObject];
+                NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithID:objectID
+                                                                        withSelfObject:ownerObject];
                 for( IXBaseObject* baseObject in objectsWithID )
                 {
                     [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];

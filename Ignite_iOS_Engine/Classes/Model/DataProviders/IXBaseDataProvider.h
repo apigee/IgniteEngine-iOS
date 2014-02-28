@@ -8,19 +8,13 @@
 
 #import "IXBaseObject.h"
 
-@protocol IXDataProviderDelegate <NSObject>
-
--(void)dataProviderDidUpdate:(IXBaseDataProvider*)coreDataProvider;
-
-@end
+extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 @interface IXBaseDataProvider : IXBaseObject
 
 @property (nonatomic,strong) IXPropertyContainer* requestParameterProperties;
 @property (nonatomic,strong) IXPropertyContainer* requestHeaderProperties;
 @property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
-
-@property (nonatomic,strong) NSMutableArray* delegates;
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,copy) NSString* dataLocation;
@@ -37,13 +31,8 @@
 -(NSSortDescriptor*)sortDescriptor;
 -(NSPredicate*)predicate;
 
--(void)notifyAllDelegates;
--(void)addDelegate:(id<IXDataProviderDelegate>)delegate;
--(void)removeDelegate:(id<IXDataProviderDelegate>)delegate;
-
 -(void)loadData:(BOOL)forceGet;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
-
 
 -(NSUInteger)getRowCount;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;

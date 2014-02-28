@@ -65,13 +65,9 @@
         _sandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:jsonRootPath];
         [_sandbox setViewController:self];
         
-        _propertyContainer = [[IXPropertyContainer alloc] init];
-        
         _containerControl = [[IXLayout alloc] init];
-        [_containerControl setID:@"view"];
         [_containerControl setSandbox:_sandbox];
         
-        [_propertyContainer setOwnerObject:_containerControl];
         [_sandbox setContainerControl:_containerControl];
     }
     return self;
@@ -82,19 +78,9 @@
     [super viewDidLoad];
     
     [self setView:[_containerControl contentView]];
-
-    // To change the frame to underlap the status bar
-//    CGRect frame = [[self view] frame];
-//    frame.origin = CGPointMake(0, -[[UIApplication sharedApplication] statusBarFrame].size.height);
-//    [[self view] setFrame:frame];
-    
-    
-//    [self setWantsFullScreenLayout:YES];
     [[self view] setClipsToBounds:YES];
     
-    [self setAutomaticallyAdjustsScrollViewInsets:NO];//![[[IXAppManager sharedAppManager] rootViewController] isNavigationBarHidden]];
-//    [[self view] addSubview:[_containerControl contentView]];
-    // FIXME: need to set some default values here for the container control and add the view properties to it.
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -105,34 +91,34 @@
     {
         [self setHasAppeared:YES];
         [[self sandbox] loadAllDataProviders];
-        [[[self containerControl] actionContainer] executeActionsForEventNamed:@"will_first_appear"];
+        [self fireViewEventNamed:@"will_first_appear"];
     }
     
     [self applySettings];
     [self layoutControls];
 
-    [[[self containerControl] actionContainer] executeActionsForEventNamed:@"will_appear"];
+    [self fireViewEventNamed:@"will_appear"];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [[[self containerControl] actionContainer] executeActionsForEventNamed:@"did_appear"];
+    [self fireViewEventNamed:@"did_appear"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [[[self containerControl] actionContainer] executeActionsForEventNamed:@"will_disappear"];
+    [self fireViewEventNamed:@"will_disappear"];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-    [[[self containerControl] actionContainer] executeActionsForEventNamed:@"did_disappear"];
+ 
+    [self fireViewEventNamed:@"did_disappear"];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -158,16 +144,32 @@
     [[self containerControl] layoutControl];
 }
 
+-(void)fireViewEventNamed:(NSString *)eventName
+{
+    [[[self containerControl] actionContainer] executeActionsForEventNamed:eventName];
+}
+
+-(NSString*)getViewPropertyNamed:(NSString*)propertyName
+{
+    NSString* viewPropertyValue = [[self containerControl] getReadOnlyPropertyValue:propertyName];
+    if( viewPropertyValue == nil )
+    {
+        viewPropertyValue = [[[self containerControl] propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
+    }
+    return viewPropertyValue;
+}
+
 -(void)applySettings
 {
-    NSString* statusBarStyle = [[self propertyContainer] getStringPropertyValue:@"status_bar_style" defaultValue:@"dark"];
+    IXPropertyContainer* propertyContainer = [[self containerControl] propertyContainer];
+    NSString* statusBarStyle = [propertyContainer getStringPropertyValue:@"status_bar_style" defaultValue:@"dark"];
     if( ![[self statusBarPreferredStyleString] isEqualToString:statusBarStyle] )
     {
         [self setStatusBarPreferredStyleString:statusBarStyle];
         [self setNeedsStatusBarAppearanceUpdate];
     }
     
-    UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]];
+    UIColor* backgroundColor = [propertyContainer getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
 
     /*
@@ -183,7 +185,6 @@
     }
     */
     [[self containerControl] applySettings];
-
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle

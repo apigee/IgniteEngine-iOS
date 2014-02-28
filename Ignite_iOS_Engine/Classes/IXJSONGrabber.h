@@ -17,6 +17,7 @@ typedef void(^IXJSONGrabCompletedBlock)(id jsonObject, NSError *error);
 
 -(void)grabJSONFromPath:(NSString*)path
                  asynch:(BOOL)asynch
+            shouldCache:(BOOL)shouldCache
         completionBlock:(IXJSONGrabCompletedBlock)grabCompletionBlock;
 
 @end

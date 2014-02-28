@@ -109,7 +109,9 @@
             {
                 CGImageRef image = CGImageSourceCreateImageAtIndex(_animatedGIFImageRef, frameIndex, NULL);
                 NSDictionary *frameProperties = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(_animatedGIFImageRef, frameIndex, NULL));
-                gifDuration += [[[frameProperties objectForKey:(NSString*)kCGImagePropertyGIFDictionary] objectForKey:(NSString*)kCGImagePropertyGIFDelayTime] doubleValue];
+                
+                gifDuration += [frameProperties[(NSString*)kCGImagePropertyGIFDictionary][(NSString*)kCGImagePropertyGIFDelayTime] doubleValue];
+                
                 CGImageRelease(image);
             }
             

@@ -23,6 +23,7 @@
 #import <Foundation/Foundation.h>
 #import <RestKit/CoreData.h>
 
+@class IXCustom;
 @class IXBaseObject;
 @class IXViewController;
 @class IXBaseControl;
@@ -33,6 +34,7 @@
 
 @property (nonatomic,weak) IXViewController* viewController;
 @property (nonatomic,weak) IXBaseControl* containerControl;
+@property (nonatomic,weak) IXCustom* customControlContainer;
 
 @property (nonatomic,weak) IXBaseDataProvider* dataProviderForRowData;
 @property (nonatomic,strong) NSIndexPath* indexPathForRowData;
@@ -46,7 +48,7 @@
 -(BOOL)addDataProvider:(IXBaseDataProvider*)dataProvider;
 
 -(NSArray*)getAllControlsWithID:(NSString*)objectID;
--(NSArray*)getAllControlAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
+-(NSArray*)getAllControlsAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
 -(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject;
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID;
 

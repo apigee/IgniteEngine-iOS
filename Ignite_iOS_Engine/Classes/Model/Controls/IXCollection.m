@@ -14,8 +14,9 @@
 #import "IXLayoutEngine.h"
 #import "IXUICollectionViewCell.h"
 #import "IXCoreDataDataProvider.h"
+#import "IXCustom.h"
 
-@interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,IXDataProviderDelegate>
+@interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
 
 @property (nonatomic,strong) UICollectionView* collectionView;
 @property (nonatomic,strong) NSString* dataSourceID;
@@ -27,7 +28,7 @@
 
 -(void)dealloc
 {
-    [_dataProvider removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
     [_collectionView setDelegate:nil];
 }
 
@@ -59,9 +60,17 @@
     
     [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:@"dataprovider_id" defaultValue:nil]];
     
-    [[self dataProvider] removeDelegate:self];
-    [self setDataProvider:((IXCoreDataDataProvider*)[[self sandbox] getDataProviderWithID:[self dataSourceID]])];
-    [[self dataProvider] addDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
+    
+    [self setDataProvider:[[self sandbox] getDataProviderWithID:[self dataSourceID]]];
+    
+    if( [self dataProvider] )
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(dataProviderNotification:)
+                                                     name:IXBaseDataProviderDidUpdateNotification
+                                                   object:[self dataProvider]];
+    }
     
     [_collectionView reloadData];
 }
@@ -140,6 +149,14 @@
     {
         [[cellLayout sandbox] setIndexPathForRowData:indexPath];
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
+        
+        NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
+        for( IXCustom* customControl in childrenThatAreCustomControls )
+        {
+            [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
+            [[customControl sandbox] setIndexPathForRowData:indexPath];
+        }
+
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
         [cellLayout applySettings];
         
@@ -171,7 +188,7 @@
     NSLog(@"deselect");
 }
 
--(void)dataProviderDidUpdate:(IXBaseDataProvider *)coreDataProvider
+-(void)dataProviderNotification:(NSNotification*)notification
 {
 //    [self setCurrentRowCount:[[self dataProvider] getRowCount]];
     [[self collectionView] reloadData];

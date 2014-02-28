@@ -12,6 +12,7 @@
 #import "IXPropertyContainer.h"
 #import "IXTableView.h"
 #import "IXEntityContainer.h"
+#import "IXLogger.h"
 
 #import <RestKit/RestKit.h>
 
@@ -208,9 +209,9 @@
         
         [managedObjectModel setEntities:[[managedObjectModel entities] arrayByAddingObject:entity]];
     }
-    @catch (NSException * e)
+    @catch (NSException * exception)
     {
-        NSLog(@"WARNING : DataProvider Exception: %@", e);
+        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
         entity = nil;
     }
     return entity;
@@ -231,9 +232,9 @@
         [[self objectManager] addResponseDescriptor:responseDescriptor];
         [[[self objectManager] managedObjectStore] createPersistentStoreCoordinator];
     }
-    @catch (NSException * e)
+    @catch (NSException * exception)
     {
-        NSLog(@"WARNING : DataProvider Exception: %@", e);
+        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
@@ -277,12 +278,9 @@
         // Configure a managed object cache to ensure we do not create duplicate objects
         [managedObjectStore setManagedObjectCache:[[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext]];
     }
-    @catch (NSException * e)
+    @catch (NSException * exception)
     {
-        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-        {
-            NSLog(@"WARNING : DataProvider Exception: %@", e);
-        }
+        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
@@ -312,12 +310,9 @@
                                                                                          cacheName:nil]];
         [[self fetchedResultsController] setDelegate:self];
     }
-    @catch (NSException * e)
+    @catch (NSException * exception)
     {
-        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-        {
-            NSLog(@"WARNING : DataProvider Exception: %@", e);
-        }
+        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
@@ -330,12 +325,9 @@
             NSError* __autoreleasing error = nil;
             BOOL fetchSuccessful = [self.fetchedResultsController performFetch:&error];
             if (!fetchSuccessful) {
-                if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-                {
-                    NSLog(@"WARNING: ERROR PERFORMING FETCH");
-                }
+                DDLogError(@"ERROR : %@ Error performing fetch in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
             }
-            [self notifyAllDelegates];
+            [self fireLoadFinishedEvents:fetchSuccessful];
         }
         if( _needsToPerformGet || forceGet )
         {
@@ -345,25 +337,19 @@
                                                [self.fetchedResultsController performFetch:nil];
                                            }
                                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                               if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-                                               {
-                                                   NSLog(@"failed %@",[error description]);
-                                               }
+                                               DDLogError(@"ERROR : %@ Error performing get in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
                                            }];
         }
     }
-    @catch (NSException * e)
+    @catch (NSException * exception)
     {
-        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-        {
-            NSLog(@"WARNING : DataProvider Exception: %@", e);
-        }
+        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self notifyAllDelegates];
+    [self fireLoadFinishedEvents:YES];
 }
 
 -(NSUInteger)getRowCount

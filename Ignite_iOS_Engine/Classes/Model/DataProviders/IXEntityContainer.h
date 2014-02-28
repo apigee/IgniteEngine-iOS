@@ -10,7 +10,7 @@
 
 @class IXPropertyContainer;
 
-@interface IXEntityContainer : NSObject
+@interface IXEntityContainer : NSObject <NSCopying>
 
 @property (nonatomic,strong) IXPropertyContainer* entityProperties;
 @property (nonatomic,strong) NSMutableArray* subEntities;

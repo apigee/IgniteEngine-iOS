@@ -18,6 +18,7 @@
 #import "ColorUtils.h"
 #import "SDWebImageManager.h"
 #import "UIImage+IXAdditions.h"
+#import "IXLogger.h"
 
 @interface IXPropertyContainer ()
 
@@ -82,7 +83,7 @@
     NSString* propertyName = [property propertyName];
     if( property == nil || propertyName == nil )
     {
-        NSLog(@"ERROR: TRYING TO ADD PROPERTY THAT IS NIL OR PROPERTIES NAME IS NIL");
+        DDLogError(@"ERROR from %@ in %@ : TRYING TO ADD PROPERTY THAT IS NIL OR PROPERTIES NAME IS NIL",THIS_FILE,THIS_METHOD);
         return;
     }
     
@@ -92,7 +93,7 @@
     if( propertyArray == nil )
     {
         propertyArray = [[NSMutableArray alloc] initWithObjects:property, nil];
-        [[self propertiesDict] setObject:propertyArray forKey:propertyName];
+        [self propertiesDict][propertyName] = propertyArray;
     }
     else if( replaceOtherProperties )
     {
@@ -138,7 +139,8 @@
             {
                 [property setPropertyContainer:self];
             }
-            [[self propertiesDict] setObject:propertyArray forKey:propertyName];
+            
+            [self propertiesDict][propertyName] = propertyArray;
         }
     }
 }
@@ -271,11 +273,7 @@
                          }
                          
                      } failureBlock:^(NSError *err) {
-                         
-                        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-                        {
-                            NSLog(@"Failed to load image from assets-library: %@",[err localizedDescription]);
-                        }
+                         DDLogError(@"ERROR from %@ in %@ : Failed to load image from assets-library: %@",THIS_FILE,THIS_METHOD,[err localizedDescription]);
                     }];
         }
         else

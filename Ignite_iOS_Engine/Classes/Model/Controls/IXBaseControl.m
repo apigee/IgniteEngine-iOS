@@ -51,18 +51,9 @@ static NSString* const kIXLeft = @"left";
 
 @interface IXBaseControl ()
 
-@property (nonatomic,strong) NSArray* tapGestureRecognizers;
-@property (nonatomic,strong) NSArray* swipeGestureRecognizers;
-
 @end
 
 @implementation IXBaseControl
-
--(void)dealloc
-{
-    [self removeTapGestureRecognizers];
-    [self removeSwipeGestureRecognizers];
-}
 
 -(id)init
 {
@@ -125,8 +116,15 @@ static NSString* const kIXLeft = @"left";
 
 -(void)layoutControl
 {
-    CGRect internalLayoutRect = [IXLayoutEngine getInternalLayoutRectForControl:self forOuterLayoutRect:[[self contentView] bounds]];
-    [self layoutControlContentsInRect:internalLayoutRect];
+    if( [self parentObject] && [self shouldNotifyParentOfLayoutUpdates] )
+    {
+        [((IXBaseControl*)[self parentObject]) layoutControl];
+    }
+    else
+    {
+        CGRect internalLayoutRect = [IXLayoutEngine getInternalLayoutRectForControl:self forOuterLayoutRect:[[self contentView] bounds]];
+        [self layoutControlContentsInRect:internalLayoutRect];
+    }
 }
 
 -(void)applySettings
@@ -200,108 +198,63 @@ static NSString* const kIXLeft = @"left";
     }
 }
 
--(void)addTapGestureRecognizers
-{
-    if( ![[self tapGestureRecognizers] count] )
-    {
-        NSMutableArray* tapRecognizers = [NSMutableArray array];
-        UITapGestureRecognizer* previousTapRecognizer = nil;
-        for( int i = 5; i > 0; i-- )
-        {
-            UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
-            [tapRecognizer setNumberOfTapsRequired:i];
-            [tapRecognizer setDelaysTouchesEnded:NO];
-            [tapRecognizer setCancelsTouchesInView:NO];
-            if( previousTapRecognizer )
-            {
-                [tapRecognizer requireGestureRecognizerToFail:previousTapRecognizer];
-            }
-            [[self contentView] addGestureRecognizer:tapRecognizer];
-            [tapRecognizers addObject:tapRecognizer];
-            previousTapRecognizer = tapRecognizer;
-        }
-        [self setTapGestureRecognizers:tapRecognizers];
-    }
-}
-
--(void)removeTapGestureRecognizers
-{
-    if( [[self tapGestureRecognizers] count] )
-    {
-        for( UITapGestureRecognizer* tapRecognizer in [self tapGestureRecognizers] )
-        {
-            [tapRecognizer removeTarget:self action:@selector(tapGestureRecognized:)];
-            [[self contentView] removeGestureRecognizer:tapRecognizer];
-        }
-        [self setTapGestureRecognizers:nil];
-    }
-}
-
--(void)addSwipeGestureRecognizers
-{
-    if( ![[self swipeGestureRecognizers] count] )
-    {
-        NSMutableArray* swipeRecognizers = [NSMutableArray array];
-        for( int i = 0; i < 4; i++ )
-        {
-            UISwipeGestureRecognizer* swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestureRecognized:)];
-            [swipeRecognizer setDelaysTouchesEnded:NO];
-            [swipeRecognizer setCancelsTouchesInView:NO];
-            
-            UISwipeGestureRecognizerDirection swipeDirection = 1 << i;
-            [swipeRecognizer setDirection:swipeDirection];
-            
-            [[self contentView] addGestureRecognizer:swipeRecognizer];
-            [swipeRecognizers addObject:swipeRecognizer];
-        }
-        [self setSwipeGestureRecognizers:swipeRecognizers];
-    }
-}
-
--(void)removeSwipeGestureRecognizers
-{
-    if([[self swipeGestureRecognizers] count])
-    {
-        for( UISwipeGestureRecognizer* swipeRecognizer in [self swipeGestureRecognizers] )
-        {
-            [swipeRecognizer removeTarget:self action:@selector(swipeGestureRecognized:)];
-            [[self contentView] removeGestureRecognizer:swipeRecognizer];
-        }
-        [self setSwipeGestureRecognizers:nil];
-    }
-}
-
 -(void)applyGestureRecognizerSettings
 {
     if( [[self propertyContainer] getBoolPropertyValue:kIXEnableTap defaultValue:NO] )
     {
-        [self addTapGestureRecognizers];
+        [[self contentView] beginListeningForTapGestures];
     }
     else
     {
-        [self removeTapGestureRecognizers];
+        [[self contentView] stopListeningForTapGestures];
     }
     
     if( [[self propertyContainer] getBoolPropertyValue:kIXEnableSwipe defaultValue:NO] )
     {
-        [self addSwipeGestureRecognizers];
+        [[self contentView] beginListeningForSwipeGestures];
     }
     else
     {
-        [self removeSwipeGestureRecognizers];
+        [[self contentView] stopListeningForSwipeGestures];
     }
 }
 
--(void)tapGestureRecognized:(UITapGestureRecognizer*)tapRecognizer
+-(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSString* tapCount = [NSString stringWithFormat:@"%lu",(unsigned long)[tapRecognizer numberOfTapsRequired]];
+    UITouch* touch = [[event allTouches] anyObject];
+    IXBaseControl* touchedControl = [self getTouchedControl:touch];
+    
+    [touchedControl processBeginTouch:YES];
+}
+
+-(void)controlViewTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self processCancelTouch:YES];
+}
+
+-(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    //    UITouch* touch = [touches anyObject];
+    //    BOOL shouldFireTouchActions = ( [touch view] == [self contentView] && [touch tapCount] >= 1 );
+    
+    [self processEndTouch:YES];
+}
+
+-(void)controlViewTapGestureRecognized:(UITapGestureRecognizer *)tapGestureRecognizer
+{
+    NSString* tapCount = [NSString stringWithFormat:@"%lu",(unsigned long)[tapGestureRecognizer numberOfTapsRequired]];
     [[self actionContainer] executeActionsForEventNamed:kIXTap propertyWithName:kIXTapCount mustHaveValue:tapCount];
 }
 
--(void)swipeGestureRecognized:(UISwipeGestureRecognizer*)swipeRecognizer
+-(void)controlViewSwipeGestureRecognized:(UISwipeGestureRecognizer *)swipeGestureRecognizer
 {
     NSString* swipeDirection = nil;
-    switch ([swipeRecognizer direction]) {
+    switch ([swipeGestureRecognizer direction]) {
         case UISwipeGestureRecognizerDirectionDown:{
             swipeDirection = kIXDown;
             break;
@@ -394,32 +347,6 @@ static NSString* const kIXLeft = @"left";
         }
         [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
     }
-}
-
--(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch* touch = [[event allTouches] anyObject];
-    IXBaseControl* touchedControl = [self getTouchedControl:touch];
-    
-    [touchedControl processBeginTouch:YES];
-}
-
--(void)controlViewTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
-}
-
--(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self processCancelTouch:YES];
-}
-
--(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-//    UITouch* touch = [touches anyObject];
-//    BOOL shouldFireTouchActions = ( [touch view] == [self contentView] && [touch tapCount] >= 1 );
-    
-    [self processEndTouch:YES];
 }
 
 -(void)executeControlSpecificFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameters

@@ -14,6 +14,7 @@
 #import "IXSandbox.h"
 #import "IXViewController.h"
 #import "IXAppManager.h"
+#import "IXLayout.h"
 #import "IXDeviceHardware.h"
 
 // IXGetShortCode Read-Only Properties
@@ -109,12 +110,12 @@ static NSString* const kIXOrientation = @"orientation";
     {
         IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
         IXViewController* viewController = [sandbox viewController];
-        returnValue = [[viewController propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
+        returnValue = [viewController getViewPropertyNamed:propertyName];
     }
     else
     {
         IXBaseObject* baseObject = [[[self property] propertyContainer] ownerObject];
-        NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlAndDataProvidersWithID:[self objectID] withSelfObject:baseObject];
+        NSArray* objectWithIDArray = [[baseObject sandbox] getAllControlsAndDataProvidersWithID:[self objectID] withSelfObject:baseObject];
         baseObject = [objectWithIDArray firstObject];
         
         if( baseObject )

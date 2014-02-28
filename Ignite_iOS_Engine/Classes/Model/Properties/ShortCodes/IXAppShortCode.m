@@ -11,6 +11,8 @@
 #import "IXProperty.h"
 #import "IXBaseObject.h"
 
+static NSString* const kIXRandomNumber = @"random_number";
+
 @implementation IXAppShortCode
 
 -(NSString*)evaluate
@@ -24,7 +26,7 @@
         propertyName = [parameterProperty getPropertyValue];
     }
     
-    if( [propertyName hasPrefix:@"random_number"] )
+    if( [propertyName hasPrefix:kIXRandomNumber] )
     {
         NSUInteger upperBound = 100;
         NSArray* stringArray = [propertyName componentsSeparatedByString:@"."];
@@ -36,11 +38,6 @@
     }
     
     return returnValue;
-}
-
--(BOOL)valueIsNeverGoingToChange
-{
-    return NO;
 }
 
 @end

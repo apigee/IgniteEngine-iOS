@@ -11,6 +11,8 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "IXAppManager.h"
+#import "IXLogger.h"
+
 #import "NSString+IXAdditions.h"
 
 // Sound Properties
@@ -35,10 +37,17 @@ static NSString* const kIXPause = @"pause";
 static NSString* const kIXStop = @"stop";
 
 @interface IXSound () <AVAudioPlayerDelegate>
-@property (nonatomic,assign) BOOL forceSoundReload;
-@property (nonatomic,strong) NSURL* lastSoundURL;
+
 @property (nonatomic,strong) AVAudioPlayer* audioPlayer;
+
+@property (nonatomic,strong) NSURL* lastSoundURL;
 @property (nonatomic,strong) NSString* lastCreationErrorMessage;
+
+@property (nonatomic,assign) BOOL forceSoundReload;
+@property (nonatomic,assign) BOOL shouldAutoPlay;
+@property (nonatomic,assign) float volume;
+@property (nonatomic,assign) NSInteger numberOfLoops;
+
 @end
 
 @implementation IXSound
@@ -58,57 +67,26 @@ static NSString* const kIXStop = @"stop";
 {
     [super applySettings];
     
-    NSURL* soundURL = [[self propertyContainer] getURLPathPropertyValue:kIXSoundLocation basePath:nil defaultValue:nil];
+    [self setVolume:[[self propertyContainer] getFloatPropertyValue:kIXVolume defaultValue:1.0f]];
+    [self setNumberOfLoops:[[self propertyContainer] getIntPropertyValue:kIXNumberOfLoops defaultValue:0]];
     [self setForceSoundReload:[[self propertyContainer] getBoolPropertyValue:kIXForceSoundReload defaultValue:NO]];
+
+    NSURL* soundURL = [[self propertyContainer] getURLPathPropertyValue:kIXSoundLocation basePath:nil defaultValue:nil];
     if( ![[self lastSoundURL] isEqual:soundURL] || [self audioPlayer] == nil || [self forceSoundReload] )
     {
         [self setLastSoundURL:soundURL];
-        
+        [self setShouldAutoPlay:[[self propertyContainer] getBoolPropertyValue:kIXAutoPlay defaultValue:YES]];
+
         [self setLastCreationErrorMessage:nil];
         [[self audioPlayer] setDelegate:nil];
         [[self audioPlayer] stop];
         
-        NSData* soundData = [[NSData alloc] initWithContentsOfURL:soundURL];
-        
-        NSError* audioPlayerError = nil;
-        [self setAudioPlayer:[[AVAudioPlayer alloc] initWithData:soundData error:&audioPlayerError]];
-        if( [self audioPlayer] && !audioPlayerError )
-        {
-            [[self audioPlayer] prepareToPlay];
-            [[self audioPlayer] setDelegate:self];
-        }
-        else
-        {
-            if( audioPlayerError )
-            {
-                [self setLastCreationErrorMessage:[audioPlayerError description]];
-            }
-            else
-            {
-                if( !soundData )
-                {
-                    [self setLastCreationErrorMessage:[NSString stringWithFormat:@"No sound data found at path: \n %@.",[[self lastSoundURL] absoluteString]]];
-                }
-            }
-            if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-            {
-                NSLog(@"IXSOUND WITH ID:%@ CREATION ERROR: %@",[[self ID] uppercaseString],[self lastCreationErrorMessage]);
-            }
-        }
+        [self createAudioPlayer];
     }
     
     if( [self audioPlayer] )
     {
-        CGFloat volume = [[self propertyContainer] getFloatPropertyValue:kIXVolume defaultValue:1.0f];
-        CGFloat numberOfLoops = [[self propertyContainer] getFloatPropertyValue:kIXNumberOfLoops defaultValue:0.0f];
-        [[self audioPlayer] setVolume:volume];
-        [[self audioPlayer] setNumberOfLoops:numberOfLoops];
-        
-        BOOL autoPlay = [[self propertyContainer] getBoolPropertyValue:kIXAutoPlay defaultValue:YES];
-        if( autoPlay && ![[self audioPlayer] isPlaying] )
-        {
-            [[self audioPlayer] play];
-        }
+        [self applyAudioPlayerSettings];
     }
 }
 
@@ -141,11 +119,11 @@ static NSString* const kIXStop = @"stop";
     }
     else if( [propertyName isEqualToString:kIXDuration] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] duration]];
+        returnValue = [NSString stringFromFloat:[[self audioPlayer] duration]];
     }
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self audioPlayer] currentTime]];
+        returnValue = [NSString stringFromFloat:[[self audioPlayer] currentTime]];
     }
     else if( [propertyName isEqualToString:kIXLastCreationError] )
     {
@@ -156,6 +134,52 @@ static NSString* const kIXStop = @"stop";
         returnValue = [super getReadOnlyPropertyValue:propertyName];
     }
     return returnValue;
+}
+
+-(void)createAudioPlayer
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        NSData* soundData = [[NSData alloc] initWithContentsOfURL:[self lastSoundURL]];
+        
+        NSError* audioPlayerError = nil;
+        [self setAudioPlayer:[[AVAudioPlayer alloc] initWithData:soundData error:&audioPlayerError]];
+        if( [self audioPlayer] && !audioPlayerError )
+        {
+            [self applyAudioPlayerSettings];
+            [[self audioPlayer] prepareToPlay];
+            [[self audioPlayer] setDelegate:self];
+        }
+        else
+        {
+            if( audioPlayerError )
+            {
+                [self setLastCreationErrorMessage:[audioPlayerError description]];
+            }
+            else
+            {
+                if( !soundData )
+                {
+                    [self setLastCreationErrorMessage:[NSString stringWithFormat:@"No sound data found at path: \n %@.",[[self lastSoundURL] absoluteString]]];
+                }
+            }
+            
+            DDLogError(@"ERROR: from %@ in %@ : SOUND CONTROL ID:%@ CREATION ERROR: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[self lastCreationErrorMessage]);
+        }
+        
+        IX_dispatch_main_sync_safe(^{
+            if( [self shouldAutoPlay] && ![[self audioPlayer] isPlaying] )
+            {
+                [[self audioPlayer] play];
+            }
+        });
+    });
+}
+
+-(void)applyAudioPlayerSettings
+{
+    [[self audioPlayer] setVolume:[self volume]];
+    [[self audioPlayer] setNumberOfLoops:[self numberOfLoops]];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag

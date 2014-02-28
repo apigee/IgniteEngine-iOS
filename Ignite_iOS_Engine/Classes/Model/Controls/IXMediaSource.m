@@ -57,6 +57,7 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
+#import "IXLogger.h"
 
 #import "UIImagePickerController+IXAdditions.h"
 #import "UIViewController+IXAdditions.h"
@@ -183,10 +184,8 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     
     [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
     
-    if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-    {
-        NSLog(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
-    }
+    DDLogInfo(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
+    
     if(info != nil)
     {
         [[self actionContainer] executeActionsForEventNamed:@"did_load_media"];

@@ -17,6 +17,7 @@
 #import "IXLayout.h"
 #import "IXPropertyContainer.h"
 #import "IXAlertAction.h"
+#import "IXLogger.h"
 
 @interface IXActionContainer ()
 
@@ -76,7 +77,7 @@
     if( eventName == nil )
         return nil;
     
-    return [[self actionsDict] objectForKey:eventName];
+    return [self actionsDict][eventName];
 }
 
 -(BOOL)hasActionsForEvent:(NSString*)eventName
@@ -123,10 +124,7 @@
     NSString* actionEventName = [action eventName];
     if( action == nil || actionEventName == nil )
     {
-        if( [[IXAppManager sharedAppManager] appMode] == IXDebugMode )
-        {
-            NSLog(@"ERROR: TRYING TO ADD ACTION THAT IS NIL OR ACTIONS NAME IS NIL");
-        }
+        DDLogError(@"ERROR: TRYING TO ADD ACTION THAT IS NIL OR ACTIONS NAME IS NIL");
         return;
     }
 

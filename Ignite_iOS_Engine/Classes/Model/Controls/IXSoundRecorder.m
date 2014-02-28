@@ -14,6 +14,7 @@
 
 #import "IXAppManager.h"
 #import "IXPathHandler.h"
+#import "IXLogger.h"
 
 // IXSoundRecorder Properties
 static NSString* const kIXRecordToLocation = @"record_to_location";
@@ -131,7 +132,7 @@ static NSString* const kIXFinished = @"finished";
     }
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
-        returnValue = [NSString stringWithFormat:@"%f",[[self audioRecorder] currentTime]];
+        returnValue = [NSString stringFromFloat:[[self audioRecorder] currentTime]];
     }
     else if( [propertyName isEqualToString:kIXLastErrorMessage] )
     {
@@ -159,6 +160,7 @@ static NSString* const kIXFinished = @"finished";
         {
             [self setLastErrorMessage:[NSString stringWithFormat:@"ERROR: Problem Creating AVAudioRecorder using URL %@: \n\n%@",[[self recordToLocationURL] absoluteString],[error description]]];
             [[self actionContainer] executeActionsForEventNamed:kIXError];
+            DDLogError(@"ERROR: from %@ in %@ : SOUNDRECORDER CONTROL ID:%@ CREATION ERROR USING URL %@: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[[self recordToLocationURL] absoluteString],[self lastErrorMessage]);
         }
         else
         {
