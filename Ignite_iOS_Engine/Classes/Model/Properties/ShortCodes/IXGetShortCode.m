@@ -14,6 +14,18 @@
 #import "IXSandbox.h"
 #import "IXViewController.h"
 #import "IXAppManager.h"
+#import "IXDeviceHardware.h"
+
+// IXGetShortCode Read-Only Properties
+static NSString* const kIXScreenWidth = @"screen.width";
+static NSString* const kIXScreenHeight = @"screen.height";
+static NSString* const kIXScaleFactor = @"screen.scale";
+static NSString* const kIXModel = @"model"; //See IXDeviceHardware.m for complete list
+static NSString* const kIXType = @"type";
+static NSString* const kIXOSVersion = @"os.version";
+static NSString* const kIXOSVersionInteger = @"os.version.integer";
+static NSString* const kIXOSVersionMajor = @"os.version.major";
+static NSString* const kIXOrientation = @"orientation";
 
 @implementation IXGetShortCode
 
@@ -28,7 +40,60 @@
         propertyName = [parameterProperty getPropertyValue];
     }
     
-    if( [[self objectID] isEqualToString:@"app"] )
+    if( [[self objectID] isEqualToString:@"device"] )
+    {
+        if ([propertyName isEqualToString:kIXScreenWidth])
+            returnValue = [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.width];
+        else if ([propertyName isEqualToString:kIXScreenHeight])
+            returnValue = [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.height];
+        else if ([propertyName isEqualToString:kIXScaleFactor])
+            returnValue = [NSString stringWithFormat:@"%.1f", [[UIScreen mainScreen] scale]];
+        else if ([propertyName isEqualToString:kIXModel])
+        {
+            IXDeviceHardware *hw = [[IXDeviceHardware alloc] init];
+            returnValue = [hw modelString];
+        }
+        else if ([propertyName isEqualToString:kIXType])
+        {
+            //potential return values: iPod touch, iPhone, iPhone Simulator, iPad, iPad Simulator
+            returnValue = [[UIDevice currentDevice] model];
+        }
+        else if ([propertyName isEqualToString:kIXOSVersion])
+        {
+            returnValue = [[UIDevice currentDevice] systemVersion];
+        }
+        else if ([propertyName isEqualToString:kIXOSVersionInteger])
+        {
+            NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"."];
+            returnValue = [[[[UIDevice currentDevice] systemVersion] componentsSeparatedByCharactersInSet: doNotWant] componentsJoinedByString: @""];
+        }
+        else if ([propertyName isEqualToString:kIXOSVersionMajor])
+        {
+            returnValue = [[[UIDevice currentDevice] systemVersion] substringToIndex:1];
+        }
+        else if ([propertyName isEqualToString:kIXOrientation])
+        {
+            int type = [[UIApplication sharedApplication] statusBarOrientation];
+            if (type == 1) {
+                returnValue = @"Portrait";
+            } else if (type == 2) {
+                returnValue = @"Portrait-UpsideDown";
+            } else if (type == 3) {
+                returnValue = @"Landscape-Right";
+            } else if (type == 4) {
+                returnValue = @"Landscape-Left";
+            } else
+                returnValue = nil;
+        }
+        else
+        {
+            returnValue = nil;
+        }
+        
+
+        
+    }
+    else if( [[self objectID] isEqualToString:@"app"] )
     {
         returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }

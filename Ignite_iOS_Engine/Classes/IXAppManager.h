@@ -31,6 +31,7 @@
 @property (nonatomic,copy) NSString* appDefaultViewPath;
 @property (nonatomic,copy) NSString* appDefaultViewRootPath;
 
+@property (nonatomic,strong) IXPropertyContainer* deviceProperties;
 @property (nonatomic,strong) IXPropertyContainer* appProperties;
 @property (nonatomic,strong) IXPropertyContainer* sessionProperties;
 
