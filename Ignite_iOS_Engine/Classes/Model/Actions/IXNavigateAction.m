@@ -180,7 +180,7 @@ static BOOL sIXIsAttemptingNavigation = NO;
                                          loadAsync:YES
                                    completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
                                        
-                                       if( viewController != nil )
+                                       if( didSucceed && viewController != nil )
                                        {
                                            [self finishPushNavigationTo:viewController
                                                      isReplaceStackType:isReplaceStackType];
