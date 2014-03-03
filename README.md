@@ -43,6 +43,9 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Change "focus_lost" to "blur"
 - Change "on" to "trigger"
 - Alerts "Title" and "Text"
+- Add "unwind on _____" (e.g. unwind on touch_up)
+- Modify actions working strangely on borders of device (40pt border) don't work.
+- referencing on [[someID.that_ids_event]] for performing actions when other controls' events fire
 
 ####Data:
 
@@ -87,6 +90,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - Implement 'self' (or 'this') for actions and properties
 - Support for multiple ongoing projects running off the same framework
 - ~~swap "enabled: false" to "disabled: true" (industry standard)~~
+- ~~update self in actions to target just "self" instead of having to use [[self._id]]~~- 
 
 ####Documentation:
 
@@ -125,6 +129,7 @@ so we can apply different states (and have it auto-detect image based on -active
 ####Images:
 
 - Should default to size of image (in points) ? Or for button backgrounds?
+- images.default.tintColor doesn't work on Image
 
 ####Styles:
 
@@ -132,3 +137,8 @@ so we can apply different states (and have it auto-detect image based on -active
 - horizontal/vertical_alignment screws up 100% h/w. Need to be more clear how this is performed (or if alignment is defined, either ignore height/width or include it in the calculation)
 - Inheriting styles (default styles)- set default font, then it doesn't need to be defined (only font.size) (or color.text: inherit)
 
+####Additional 3rd Party stuff
+- OvershareKit?
+
+####Navigation
+- Option to save reference of viewController (for push pop navigation and saving state). This would require a "release" function on a view controller too.
