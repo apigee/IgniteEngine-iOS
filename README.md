@@ -130,6 +130,7 @@ so we can apply different states (and have it auto-detect image based on -active
 
 - Should default to size of image (in points) ? Or for button backgrounds?
 - images.default.tintColor doesn't work on Image
+- Why are animated gif touch events disabled? IXImage line 110 for example.
 
 ####Styles:
 
