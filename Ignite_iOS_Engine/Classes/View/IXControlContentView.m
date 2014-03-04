@@ -14,6 +14,7 @@
 
 @property (nonatomic,strong) NSArray* tapGestureRecognizers;
 @property (nonatomic,strong) NSArray* swipeGestureRecognizers;
+@property (nonatomic,strong) NSArray* pinchGestureRecognizers;
 
 @end
 
@@ -79,6 +80,24 @@
     }
 }
 
+-(void)beginListeningForPinchGestures
+{
+    if( ![[self pinchGestureRecognizers] count] )
+    {
+        NSMutableArray* pinchRecognizers = [NSMutableArray array];
+        for( int i = 0; i < 4; i++ )
+        {
+            UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGestureRecognized:)];
+            pinchRecognizer.delaysTouchesEnded = NO;
+            pinchRecognizer.cancelsTouchesInView = NO;
+            
+            [self addGestureRecognizer:pinchRecognizer];
+            [pinchRecognizers addObject:pinchRecognizer];
+        }
+        self.pinchGestureRecognizers = pinchRecognizers;
+    }
+}
+
 -(void)stopListeningForTapGestures
 {
     for( UITapGestureRecognizer* tapRecognizer in [self tapGestureRecognizers] )
@@ -97,6 +116,16 @@
         [self removeGestureRecognizer:swipeRecognizer];
     }
     [self setSwipeGestureRecognizers:nil];
+}
+
+-(void)stopListeningForPinchGestures
+{
+    for( UIPinchGestureRecognizer* pinchRecognizer in [self pinchGestureRecognizers] )
+    {
+        [pinchRecognizer removeTarget:self action:@selector(pinchGestureRecognized:)];
+        [self removeGestureRecognizer:pinchRecognizer];
+    }
+    self.swipeGestureRecognizers = nil;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -150,6 +179,15 @@
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewSwipeGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewSwipeGestureRecognized:swipeRecognizer];
+    }
+}
+
+-(void)pinchGestureRecognized:(UIPinchGestureRecognizer*)pinchRecognizer
+{
+    DDLogVerbose(@"PINCH RECOGNIZED WITH SWIPE DIRECTION %lu : %@", (unsigned long)nil, [[self controlContentViewTouchDelegate] description]);
+    if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewPinchGestureRecognized:)] )
+    {
+        [[self controlContentViewTouchDelegate] controlViewPinchGestureRecognized:pinchRecognizer];
     }
 }
 

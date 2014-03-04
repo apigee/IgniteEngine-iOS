@@ -136,7 +136,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 {
     if( [UIViewController isOkToPresentViewController:[self imagePickerController]] )
     {
-        [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self imagePickerController]
+        [[[IXAppManager sharedAppManager] rootViewController] presentViewController:self.imagePickerController
                                                                          animated:animated
                                                                        completion:nil];
     }
@@ -144,7 +144,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 -(void)dismissPickerController:(BOOL)animated
 {
-    if( [UIViewController isOkToDismissViewController:[self imagePickerController]] )
+    if( [UIViewController isOkToDismissViewController:self.imagePickerController] )
     {
         [_imagePickerController dismissViewControllerAnimated:animated completion:nil];
     }
@@ -155,9 +155,9 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXSelectedMedia] )
     {
-        if( [self selectedMedia] )
+        if( self.selectedMedia )
         {
-            returnValue = [NSString stringWithFormat:@"%@", [self selectedMedia]];
+            returnValue = [NSString stringWithFormat:@"%@", self.selectedMedia];
         }
     }
     else
@@ -180,7 +180,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 //        }
 //    }
 
-    [self setSelectedMedia:info[UIImagePickerControllerReferenceURL]];
+    self.selectedMedia = info[UIImagePickerControllerReferenceURL];
     
     [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
     
@@ -188,7 +188,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     
     if(info != nil)
     {
-        [[self actionContainer] executeActionsForEventNamed:@"did_load_media"];
+        [self.actionContainer executeActionsForEventNamed:@"did_load_media"];
     }
     
     //Here's the image!  [info objectForKey:@"UIImagePickerControllerOriginalImage"];

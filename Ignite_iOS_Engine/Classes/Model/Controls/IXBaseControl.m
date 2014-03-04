@@ -13,6 +13,7 @@
 #import "ColorUtils.h"
 #import "IXLayoutEngine.h"
 #import "IXControlLayoutInfo.h"
+#import "IXLogger.h"
 
 //
 // IXBaseControl Properties :
@@ -26,6 +27,7 @@ static NSString* const kIXBackgroundColor = @"color.background";
 static NSString* const kIXEnabled = @"enabled";
 static NSString* const kIXEnableTap = @"enable_tap";
 static NSString* const kIXEnableSwipe = @"enable_swipe";
+static NSString* const kIXEnablePinch = @"enable_pinch";
 static NSString* const kIXEnableShadow = @"enable_shadow";
 static NSString* const kIXShadowBlur = @"shadow_blur";
 static NSString* const kIXShadowAlpha = @"shadow_alpha";
@@ -48,6 +50,11 @@ static NSString* const kIXDown = @"down";
 static NSString* const kIXUp = @"up";
 static NSString* const kIXRight = @"right";
 static NSString* const kIXLeft = @"left";
+static NSString* const kIXPinchIn = @"pinch.in";
+static NSString* const kIXPinchOut = @"pinch.out";
+//static NSString* const kIXModifyOnPinch = @"modify_on_pinch"; //the property to modify on pinch: alpha
+static NSString* const kIXPinchZoom = @"pinch.zoom"; //both (default), horizontal, or vertical
+static NSString* const kIXPinchReset = @"pinch.reset";
 
 @interface IXBaseControl ()
 
@@ -217,6 +224,15 @@ static NSString* const kIXLeft = @"left";
     {
         [[self contentView] stopListeningForSwipeGestures];
     }
+    
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePinch defaultValue:NO] )
+    {
+        [[self contentView] beginListeningForPinchGestures];
+    }
+    else
+    {
+        [[self contentView] stopListeningForPinchGestures];
+    }
 }
 
 -(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -278,6 +294,70 @@ static NSString* const kIXLeft = @"left";
     if( swipeDirection )
     {
         [[self actionContainer] executeActionsForEventNamed:kIXSwipe propertyWithName:kIXSwipeDirection mustHaveValue:swipeDirection];
+    }
+}
+
+-(void)controlViewPinchGestureRecognized:(UIPinchGestureRecognizer *)pinchGestureRecognizer
+{
+    NSString* zoomDirection = [[self propertyContainer] getStringPropertyValue:kIXPinchZoom defaultValue:nil];
+    BOOL resetSize = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
+    if( zoomDirection != nil )
+    {
+        //static CGRect initialBounds;
+        //UIView *view = pinchGestureRecognizer.view;
+        //alpha stuff that didn't work out - cool though!
+        //CGFloat newAlpha = 0;
+//                if (pinchGestureRecognizer.scale < 1)
+//                    newAlpha = (self.contentView.alpha - 0.01);
+//                if (pinchGestureRecognizer.scale > 1)
+//                    newAlpha = (self.contentView.alpha + 0.01);
+//                if (newAlpha > 1) newAlpha = 1;
+//                if (newAlpha < 0) newAlpha = 0;
+        //[[self contentView] setAlpha:newAlpha];
+        // DDLogCDebug(@"%f.4", newAlpha);
+        
+        if(pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+        {
+            CGAffineTransform transform;
+            if ([zoomDirection isEqualToString:@"vertical"])
+            {
+                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, 1, pinchGestureRecognizer.scale);
+                
+            }
+            else if ([zoomDirection isEqualToString:@"horizontal"])
+            {
+                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, pinchGestureRecognizer.scale, 1);
+            }
+            else if ([zoomDirection isEqualToString:@"both"])
+            {
+                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+            }
+            pinchGestureRecognizer.view.transform = transform;
+            pinchGestureRecognizer.scale = 1;
+        }
+        if (resetSize)
+        {
+            if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded || pinchGestureRecognizer.state == UIGestureRecognizerStateCancelled)
+            {
+                [UIView animateWithDuration:0.2
+                                  animations:^{
+                                      pinchGestureRecognizer.view.transform = CGAffineTransformMakeScale(1, 1);
+                                  }];
+            }
+        }
+    }
+    if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        //Pinch out
+        if (pinchGestureRecognizer.scale > 1)
+        {
+            [[self actionContainer] executeActionsForEventNamed:kIXPinchOut];
+        }
+        //Pinch in
+        else if (pinchGestureRecognizer.scale < 1)
+        {
+            [[self actionContainer] executeActionsForEventNamed:kIXPinchIn];
+        }
     }
 }
 

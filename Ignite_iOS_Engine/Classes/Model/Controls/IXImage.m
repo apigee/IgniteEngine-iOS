@@ -131,6 +131,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     }
 }
 
+// todo: get this "isAnimating" property working with keyframe pngs
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = nil;
