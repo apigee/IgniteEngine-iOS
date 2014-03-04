@@ -17,7 +17,6 @@
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
-static NSString* const kIXImagesThumb = @"images.thumb";
 static NSString* const kIXGIFDuration = @"gif_duration";
 
 // IXImage Read-Only Properties
