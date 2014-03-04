@@ -14,10 +14,16 @@
 #import "IXWeakTimerTarget.h"
 #import "IXGIFImageView.h"
 
+#import "UIImage+ResizeMagick.h"
+
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXGIFDuration = @"gif_duration";
+
+// IXImage Manipulation -- use a resizedImageByMagick mask for these
+static NSString* const kIXImagesDefaultResize = @"images.default.resize";
+static NSString* const kIXImagesTouchResize = @"images.touch.resize";
 
 // IXImage Read-Only Properties
 static NSString* const kIXIsAnimating = @"is_animating";
@@ -86,21 +92,44 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     else
     {
         __weak IXImage* weakSelf = self;
+        
+        NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
+        NSString* resizeTouch = [self.propertyContainer getStringPropertyValue:kIXImagesTouchResize defaultValue:nil];
+        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXImagesTouch defaultValue:nil];
+        
         [[self propertyContainer] getImageProperty:kIXImagesDefault
                                       successBlock:^(UIImage *image) {
-                                          [weakSelf setDefaultImage:image];
+                                          
+                                          // if default image is to be resized, do that first
+                                          if (resizeDefault)
+                                              image = [image resizedImageByMagick:resizeDefault];
+                                          
+                                          weakSelf.defaultImage = image;
                                           [[weakSelf imageView] setImage:image];
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultLoaded];
                                       } failBlock:^(NSError *error) {
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
                                       }];
-        [[self propertyContainer] getImageProperty:kIXImagesTouch
-                                      successBlock:^(UIImage *image) {
-                                          [weakSelf setTouchedImage:image];
-                                          [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchLoaded];
-                                      } failBlock:^(NSError *error) {
-                                          [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchFailed];
-                                      }];
+        //Only load an image here if we've actually defined a touch image
+        if (touchImage)
+        {
+            [[self propertyContainer] getImageProperty:kIXImagesTouch
+                                          successBlock:^(UIImage *image) {
+                                              
+                                              // if touch image is to be resized, do that first
+                                              if (resizeTouch)
+                                                  image = [image resizedImageByMagick:resizeTouch];
+                                              // Contingency that if resize touch isn't defined, we're still
+                                              // going to want to resize the touch image to the default.
+                                              if (resizeDefault)
+                                                  image = [image resizedImageByMagick:resizeDefault];
+                                              
+                                              weakSelf.touchedImage = image;
+                                              [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchLoaded];
+                                          } failBlock:^(NSError *error) {
+                                              [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchFailed];
+                                          }];
+        }
     }
 }
 
