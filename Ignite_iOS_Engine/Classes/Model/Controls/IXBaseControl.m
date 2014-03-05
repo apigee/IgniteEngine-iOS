@@ -55,6 +55,8 @@ static NSString* const kIXPinchOut = @"pinch.out";
 //static NSString* const kIXModifyOnPinch = @"modify_on_pinch"; //the property to modify on pinch: alpha
 static NSString* const kIXPinchZoom = @"pinch.zoom"; //both (default), horizontal, or vertical
 static NSString* const kIXPinchReset = @"pinch.reset";
+static NSString* const kIXPinchMax = @"pinch.max";
+static NSString* const kIXPinchMin = @"pinch.min";
 
 @interface IXBaseControl ()
 
@@ -300,50 +302,85 @@ static NSString* const kIXPinchReset = @"pinch.reset";
 -(void)controlViewPinchGestureRecognized:(UIPinchGestureRecognizer *)pinchGestureRecognizer
 {
     NSString* zoomDirection = [[self propertyContainer] getStringPropertyValue:kIXPinchZoom defaultValue:nil];
-    BOOL resetSize = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
+    
     if( zoomDirection != nil )
     {
-        //static CGRect initialBounds;
-        //UIView *view = pinchGestureRecognizer.view;
-        //alpha stuff that didn't work out - cool though!
-        //CGFloat newAlpha = 0;
-//                if (pinchGestureRecognizer.scale < 1)
-//                    newAlpha = (self.contentView.alpha - 0.01);
-//                if (pinchGestureRecognizer.scale > 1)
-//                    newAlpha = (self.contentView.alpha + 0.01);
-//                if (newAlpha > 1) newAlpha = 1;
-//                if (newAlpha < 0) newAlpha = 0;
-        //[[self contentView] setAlpha:newAlpha];
-        // DDLogCDebug(@"%f.4", newAlpha);
         
-        if(pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+        BOOL resetSize = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
+        const CGFloat kMinScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMin defaultValue:1.0];
+        const CGFloat kMaxScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMax defaultValue:2.0];
+        CGFloat previousScale = 1;
+        
+        if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+            // Reset the last scale, necessary if there are multiple objects with different scales
+            previousScale = pinchGestureRecognizer.scale;
+        }
+        
+        if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
+           pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
         {
             CGAffineTransform transform;
+            CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:@"transform.scale"] floatValue];
+
+            CGFloat newScale = 1 - (previousScale - pinchGestureRecognizer.scale);
+            newScale = MIN(newScale, (kMaxScale + 0.25) / currentScale);
+            newScale = MAX(newScale, (kMinScale - 0.25) / currentScale);
             if ([zoomDirection isEqualToString:@"vertical"])
             {
-                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, 1, pinchGestureRecognizer.scale);
-                
+                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, 1, newScale);
             }
             else if ([zoomDirection isEqualToString:@"horizontal"])
             {
-                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, pinchGestureRecognizer.scale, 1);
+                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, newScale, 1);
             }
             else if ([zoomDirection isEqualToString:@"both"])
             {
-                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+                transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, newScale, newScale);
             }
             pinchGestureRecognizer.view.transform = transform;
-            pinchGestureRecognizer.scale = 1;
+            
         }
-        if (resetSize)
+        
+        if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded ||
+           pinchGestureRecognizer.state == UIGestureRecognizerStateCancelled)
         {
-            if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded || pinchGestureRecognizer.state == UIGestureRecognizerStateCancelled)
+            if (resetSize)
             {
-                [UIView animateWithDuration:0.2
-                                  animations:^{
-                                      pinchGestureRecognizer.view.transform = CGAffineTransformMakeScale(1, 1);
-                                  }];
+                CGAffineTransform resetTransform;
+                CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:@"transform.scale"] floatValue];
+                CGFloat resetWidth = currentScale;
+                CGFloat resetHeight = currentScale;
+                if (currentScale < kMinScale)
+                {
+                    resetWidth = kMinScale;
+                    resetHeight = kMinScale;
+                    
+                }
+                else if (currentScale > kMaxScale)
+                {
+                    resetWidth = kMaxScale;
+                    resetHeight = kMaxScale;
+                }
+                
+                if ([zoomDirection isEqualToString:@"vertical"])
+                    resetHeight = 1;
+                else if ([zoomDirection isEqualToString:@"horizontal"])
+                    resetWidth = 1;
+                
+                resetTransform = CGAffineTransformMakeScale(resetHeight, resetWidth);
+                
+                if (currentScale > kMaxScale || currentScale < kMinScale)
+                {
+                    [UIView animateWithDuration:0.2
+                                     animations:^{
+                                         pinchGestureRecognizer.view.transform = resetTransform;
+                                     }];
+                     
+                }
             }
+            previousScale = pinchGestureRecognizer.scale;
+            pinchGestureRecognizer.scale = 1;
+
         }
     }
     if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded)
