@@ -50,6 +50,10 @@ static NSString* const kIXDown = @"down";
 static NSString* const kIXUp = @"up";
 static NSString* const kIXRight = @"right";
 static NSString* const kIXLeft = @"left";
+
+//
+// Pinch handlers
+//
 static NSString* const kIXPinchIn = @"pinch.in";
 static NSString* const kIXPinchOut = @"pinch.out";
 //static NSString* const kIXModifyOnPinch = @"modify_on_pinch"; //the property to modify on pinch: alpha
@@ -57,6 +61,10 @@ static NSString* const kIXPinchZoom = @"pinch.zoom"; //both (default), horizonta
 static NSString* const kIXPinchReset = @"pinch.reset";
 static NSString* const kIXPinchMax = @"pinch.max";
 static NSString* const kIXPinchMin = @"pinch.min";
+static NSString* const kIXPinchElastic = @"pinch.elastic";
+static NSString* const kIXPinchHorizontal = @"horizontal";
+static NSString* const kIXPinchVertical = @"vertical";
+static NSString* const kIXPinchBoth = @"both";
 
 @interface IXBaseControl ()
 
@@ -309,6 +317,8 @@ static NSString* const kIXPinchMin = @"pinch.min";
         BOOL resetSize = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
         const CGFloat kMinScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMin defaultValue:1.0];
         const CGFloat kMaxScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMax defaultValue:2.0];
+        const CGFloat kElastic = [self.propertyContainer getFloatPropertyValue:kIXPinchElastic defaultValue:0.25];
+        
         CGFloat previousScale = 1;
         
         if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan) {
@@ -316,29 +326,29 @@ static NSString* const kIXPinchMin = @"pinch.min";
             previousScale = pinchGestureRecognizer.scale;
         }
         
-        if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
+        if(
            pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
         {
             CGAffineTransform transform;
             CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:@"transform.scale"] floatValue];
-
             CGFloat newScale = 1 - (previousScale - pinchGestureRecognizer.scale);
-            newScale = MIN(newScale, (kMaxScale + 0.25) / currentScale);
-            newScale = MAX(newScale, (kMinScale - 0.25) / currentScale);
-            if ([zoomDirection isEqualToString:@"vertical"])
+            newScale = MIN(newScale, (kMaxScale + kElastic) / currentScale);
+            newScale = MAX(newScale, (kMinScale - kElastic) / currentScale);
+            if ([zoomDirection isEqualToString:kIXPinchVertical])
             {
                 transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, 1, newScale);
             }
-            else if ([zoomDirection isEqualToString:@"horizontal"])
+            else if ([zoomDirection isEqualToString:kIXPinchHorizontal])
             {
                 transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, newScale, 1);
             }
-            else if ([zoomDirection isEqualToString:@"both"])
+            else if ([zoomDirection isEqualToString:kIXPinchBoth])
             {
                 transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, newScale, newScale);
             }
             pinchGestureRecognizer.view.transform = transform;
-            
+            previousScale = pinchGestureRecognizer.scale;
+            pinchGestureRecognizer.scale = 1;
         }
         
         if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded ||
@@ -362,9 +372,9 @@ static NSString* const kIXPinchMin = @"pinch.min";
                     resetHeight = kMaxScale;
                 }
                 
-                if ([zoomDirection isEqualToString:@"vertical"])
+                if ([zoomDirection isEqualToString:kIXPinchVertical])
                     resetHeight = 1;
-                else if ([zoomDirection isEqualToString:@"horizontal"])
+                else if ([zoomDirection isEqualToString:kIXPinchHorizontal])
                     resetWidth = 1;
                 
                 resetTransform = CGAffineTransformMakeScale(resetHeight, resetWidth);
@@ -378,8 +388,7 @@ static NSString* const kIXPinchMin = @"pinch.min";
                      
                 }
             }
-            previousScale = pinchGestureRecognizer.scale;
-            pinchGestureRecognizer.scale = 1;
+            
 
         }
     }
