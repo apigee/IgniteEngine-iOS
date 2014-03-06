@@ -28,6 +28,7 @@ static NSString* const kIXEnabled = @"enabled";
 static NSString* const kIXEnableTap = @"enable_tap";
 static NSString* const kIXEnableSwipe = @"enable_swipe";
 static NSString* const kIXEnablePinch = @"enable_pinch";
+static NSString* const kIXEnablePan = @"enable_pan";
 static NSString* const kIXEnableShadow = @"enable_shadow";
 static NSString* const kIXShadowBlur = @"shadow_blur";
 static NSString* const kIXShadowAlpha = @"shadow_alpha";
@@ -37,7 +38,7 @@ static NSString* const kIXShadowOffsetDown = @"shadow_offset_down";
 static NSString* const kIXVisible = @"visible";
 
 //
-// IXBaseControl Events
+// IXBaseControl gesture events
 //
 static NSString* const kIXTouch = @"touch";
 static NSString* const kIXTouchUp = @"touch_up";
@@ -50,13 +51,14 @@ static NSString* const kIXDown = @"down";
 static NSString* const kIXUp = @"up";
 static NSString* const kIXRight = @"right";
 static NSString* const kIXLeft = @"left";
+static NSString* const kIXPan = @"pan";
+static NSString* const kIXPanReset = @"pan.reset";
 
 //
-// Pinch handlers
+// IXBaseControl pinch events & handlers
 //
 static NSString* const kIXPinchIn = @"pinch.in";
 static NSString* const kIXPinchOut = @"pinch.out";
-//static NSString* const kIXModifyOnPinch = @"modify_on_pinch"; //the property to modify on pinch: alpha
 static NSString* const kIXPinchZoom = @"pinch.zoom"; //both (default), horizontal, or vertical
 static NSString* const kIXPinchReset = @"pinch.reset";
 static NSString* const kIXPinchMax = @"pinch.max";
@@ -243,6 +245,15 @@ static NSString* const kIXPinchBoth = @"both";
     {
         [[self contentView] stopListeningForPinchGestures];
     }
+    
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePan defaultValue:NO] )
+    {
+        [[self contentView] beginListeningForPanGestures];
+    }
+    else
+    {
+        [[self contentView] stopListeningForPanGestures];
+    }
 }
 
 -(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -317,7 +328,7 @@ static NSString* const kIXPinchBoth = @"both";
         BOOL resetSize = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
         const CGFloat kMinScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMin defaultValue:1.0];
         const CGFloat kMaxScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMax defaultValue:2.0];
-        const CGFloat kElastic = [self.propertyContainer getFloatPropertyValue:kIXPinchElastic defaultValue:0.25];
+        const CGFloat kElastic = [self.propertyContainer getFloatPropertyValue:kIXPinchElastic defaultValue:0.5];
         
         CGFloat previousScale = 1;
         
@@ -326,7 +337,7 @@ static NSString* const kIXPinchBoth = @"both";
             previousScale = pinchGestureRecognizer.scale;
         }
         
-        if(
+        if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
            pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
         {
             CGAffineTransform transform;
@@ -405,6 +416,36 @@ static NSString* const kIXPinchBoth = @"both";
             [[self actionContainer] executeActionsForEventNamed:kIXPinchIn];
         }
     }
+}
+
+-(void)controlViewPanGestureRecognized:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    BOOL resetPosition = [self.propertyContainer getBoolPropertyValue:kIXPanReset defaultValue:YES];
+    static CGPoint originalCenter;
+    UIView *draggedView = panGestureRecognizer.view;
+    CGPoint offset = [panGestureRecognizer translationInView:draggedView.superview];
+    CGPoint center = draggedView.center;
+    
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        originalCenter = draggedView.center;
+    }
+    
+    draggedView.center = CGPointMake(center.x + offset.x, center.y + offset.y);
+    // Reset translation to zero so on the next `panWasRecognized:` message, the
+    // translation will just be the additional movement of the touch since now.
+    
+    if ((panGestureRecognizer.state == UIGestureRecognizerStateEnded ||
+         panGestureRecognizer.state == UIGestureRecognizerStateCancelled)
+        && resetPosition)
+    {
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             draggedView.center = originalCenter;
+                         }];
+    }
+    
+    [panGestureRecognizer setTranslation:CGPointZero inView:draggedView.superview];
 }
 
 -(IXBaseControl*)getTouchedControl:(UITouch*)touch

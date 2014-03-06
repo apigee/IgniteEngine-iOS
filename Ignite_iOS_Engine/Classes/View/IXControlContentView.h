@@ -23,6 +23,7 @@
 -(void)controlViewTapGestureRecognized:(UITapGestureRecognizer*)tapGestureRecognizer;
 -(void)controlViewSwipeGestureRecognized:(UISwipeGestureRecognizer*)swipeGestureRecognizer;
 -(void)controlViewPinchGestureRecognized:(UIPinchGestureRecognizer*)pinchGestureRecognizer;
+-(void)controlViewPanGestureRecognized:(UIPanGestureRecognizer*)panGestureRecognizer;
 
 @end
 
@@ -35,8 +36,10 @@
 -(void)beginListeningForTapGestures;
 -(void)beginListeningForSwipeGestures;
 -(void)beginListeningForPinchGestures;
+-(void)beginListeningForPanGestures;
 -(void)stopListeningForTapGestures;
 -(void)stopListeningForSwipeGestures;
 -(void)stopListeningForPinchGestures;
+-(void)stopListeningForPanGestures;
 
 @end
