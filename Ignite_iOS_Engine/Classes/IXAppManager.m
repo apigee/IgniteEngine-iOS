@@ -44,7 +44,7 @@
     {
         _webViewForJS = [[UIWebView alloc] initWithFrame:CGRectZero];
         
-        _appConfigPath = [[NSBundle mainBundle] pathForResource:@"assets/IXAppConfig" ofType:@"json"];
+        _appConfigPath = [[NSBundle mainBundle] pathForResource:@"assets/_index" ofType:@"json"];
         _applicationSandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:[_appConfigPath stringByDeletingLastPathComponent]];
         
         _appProperties = [[IXPropertyContainer alloc] init];
