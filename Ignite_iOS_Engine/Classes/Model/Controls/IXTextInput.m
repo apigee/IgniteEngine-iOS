@@ -35,6 +35,7 @@
 #import "IXClickableScrollView.h"
 #import "IXProperty.h"
 #import "UITextField+IXAdditions.h"
+#import "IXLogger.h"
 
 static CGSize sIXKBSize;
 
@@ -102,7 +103,7 @@ static CGSize sIXKBSize;
     
     
     // JA: Added autocorrect
-    BOOL autoCorrect = [[self propertyContainer] getBoolPropertyValue:@"auto_correct" defaultValue:YES];
+    BOOL autoCorrect = [[self propertyContainer] getBoolPropertyValue:@"autocorrect" defaultValue:YES];
     if( autoCorrect )
     {
         [[self textField] setAutocorrectionType:UITextAutocorrectionTypeYes];
@@ -116,18 +117,13 @@ static CGSize sIXKBSize;
     [[self textField] setBackgroundColor:[UIColor whiteColor]];
     [[self textField] setTintColor:[UIColor redColor]];
     
-    
-//    textField.tintColor = [UIColor redColor];
-    //[[UITextField appearance] setTintColor:[UIColor redColor]];
-
-    
-    NSString* placeHolderText = [[self propertyContainer] getStringPropertyValue:@"placeholder_text" defaultValue:@"TextInputPlaceHolder"];
-    UIColor* placeHolderTextColor = [[self propertyContainer] getColorPropertyValue:@"placeholder_text_color" defaultValue:[UIColor lightGrayColor]];
+    NSString* placeHolderText = [self.propertyContainer getStringPropertyValue:@"text.placeholder" defaultValue:@""];
+    UIColor* placeHolderTextColor = [self.propertyContainer getColorPropertyValue:@"text.placeholder.color" defaultValue:[UIColor lightGrayColor]];
     NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
                                                                                 attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
     [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
-
-    [[self textField] setTintColor:[[self propertyContainer] getColorPropertyValue:@"tint_color" defaultValue:[self defaultTextFieldTintColor]]];
+    [[self textField] setTextColor:[self.propertyContainer getColorPropertyValue:@"text.color" defaultValue:[UIColor blackColor]]];
+    [[self textField] setTintColor:[self.propertyContainer getColorPropertyValue:@"cursor.color" defaultValue:[self defaultTextFieldTintColor]]];
     
     UIFont* font = [[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
     [[self textField] setFont:font];
@@ -285,7 +281,36 @@ static CGSize sIXKBSize;
 
 - (void)textDidChange:(NSNotification*)aNotification
 {
-    [[self actionContainer] executeActionsForEventNamed:@"text_changed"];
+    NSString *inputText = self.textField.text;
+    NSString *inputAllowedCharacters = [self.propertyContainer getStringPropertyValue:@"input.regex.allowed" defaultValue:nil];
+    NSString *inputDisallowedCharacters = [self.propertyContainer getStringPropertyValue:@"input.regex.disallowed" defaultValue:nil];
+    NSInteger maxAllowedCharacters = [self.propertyContainer getIntPropertyValue:@"input.max" defaultValue:0];
+    
+    if (maxAllowedCharacters > 0)
+    {
+        inputText = (inputText.length > maxAllowedCharacters) ? [inputText substringToIndex:maxAllowedCharacters] : inputText;
+    }
+    
+    if (inputDisallowedCharacters)
+    {
+        NSError *error = nil;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:inputDisallowedCharacters options:NSRegularExpressionCaseInsensitive error:&error];
+        inputText = [regex stringByReplacingMatchesInString:inputText options:0 range:NSMakeRange(0, inputText.length) withTemplate:@""];
+    }
+    if (inputAllowedCharacters)
+    {
+        NSError *error = nil;
+        if (inputAllowedCharacters.length > 1)
+        {
+            NSMutableString *tmp = [NSMutableString stringWithString:inputAllowedCharacters];
+            [tmp insertString:@"^" atIndex:1];
+            inputAllowedCharacters = tmp;
+        }
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:inputAllowedCharacters options:NSRegularExpressionCaseInsensitive error:&error];
+        inputText = [regex stringByReplacingMatchesInString:inputText options:0 range:NSMakeRange(0, inputText.length) withTemplate:@""];
+    }
+    self.textField.text = inputText;
+    [self.actionContainer executeActionsForEventNamed:@"text_changed"];
 }
 
 - (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
