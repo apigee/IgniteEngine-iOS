@@ -10,7 +10,7 @@
 
 @interface IXDeviceHardware : NSObject
 
-- (NSString *) model;
-- (NSString *) modelString;
++ (NSString *) model;
++ (NSString *) modelString;
 
 @end

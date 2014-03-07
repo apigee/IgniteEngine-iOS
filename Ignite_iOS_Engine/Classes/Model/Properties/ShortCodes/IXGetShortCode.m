@@ -51,8 +51,7 @@ static NSString* const kIXOrientation = @"orientation";
             returnValue = [NSString stringWithFormat:@"%.1f", [[UIScreen mainScreen] scale]];
         else if ([propertyName isEqualToString:kIXModel])
         {
-            IXDeviceHardware *hw = [[IXDeviceHardware alloc] init];
-            returnValue = [hw modelString];
+            returnValue = [IXDeviceHardware modelString];
         }
         else if ([propertyName isEqualToString:kIXType])
         {
@@ -90,9 +89,6 @@ static NSString* const kIXOrientation = @"orientation";
         {
             returnValue = nil;
         }
-        
-
-        
     }
     else if( [[self objectID] isEqualToString:@"app"] )
     {

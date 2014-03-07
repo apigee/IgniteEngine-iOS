@@ -48,11 +48,11 @@
 #define COCOAPODS_VERSION_MINOR_JASidePanels 3
 #define COCOAPODS_VERSION_PATCH_JASidePanels 2
 
-// Masonry
-#define COCOAPODS_POD_AVAILABLE_Masonry
-#define COCOAPODS_VERSION_MAJOR_Masonry 0
-#define COCOAPODS_VERSION_MINOR_Masonry 4
-#define COCOAPODS_VERSION_PATCH_Masonry 0
+// PPSSignatureView
+#define COCOAPODS_POD_AVAILABLE_PPSSignatureView
+#define COCOAPODS_VERSION_MAJOR_PPSSignatureView 0
+#define COCOAPODS_VERSION_MINOR_PPSSignatureView 1
+#define COCOAPODS_VERSION_PATCH_PPSSignatureView 0
 
 // RestKit
 #define COCOAPODS_POD_AVAILABLE_RestKit

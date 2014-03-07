@@ -169,7 +169,7 @@
         [self setNeedsStatusBarAppearanceUpdate];
     }
     
-    UIColor* backgroundColor = [propertyContainer getColorPropertyValue:@"color.background" defaultValue:[UIColor clearColor]];
+    UIColor* backgroundColor = [propertyContainer getColorPropertyValue:@"background.color" defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
 
     /*

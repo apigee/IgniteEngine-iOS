@@ -8,7 +8,7 @@ PODS:
     - CocoaLumberjack/Core
   - ColorUtils (1.1.2)
   - JASidePanels (1.3.2)
-  - Masonry (0.4.0)
+  - PPSSignatureView (0.1.0)
   - RestKit (0.20.3):
     - RestKit/Core
   - RestKit/Core (0.20.3):
@@ -39,7 +39,7 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 1.8.1)
   - ColorUtils (~> 1.1.1)
   - JASidePanels (~> 1.3.2)
-  - Masonry
+  - PPSSignatureView (~> 0.1)
   - RestKit (~> 0.20.0)
   - SDWebImage (~> 3.5)
   - SVPulsingAnnotationView (~> 0.3.0)
@@ -57,7 +57,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   ColorUtils: 5740b610eb7b50833f46d6d9863ebaa1da55301d
   JASidePanels: c0e642a7311ec9cc9adfa616fa4a795e4e169f20
-  Masonry: d673617c9cbc24aaea90fba20b10e47fd9970a39
+  PPSSignatureView: 83ffa630306afc93ad595e5a6e98a0dba1c8a49b
   RestKit: 1f181c180105a92f11ec4f6cd7de37625e516d83
   SDWebImage: fe7ce01ae4e0a884d168f59c9dd82d35baf8429e
   SOCKit: 2f3bc4d07910de12dcc202815e07db68a3802581

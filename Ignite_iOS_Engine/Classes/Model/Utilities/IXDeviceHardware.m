@@ -12,7 +12,7 @@
 
 @implementation IXDeviceHardware
 
-- (NSString *) model{
++ (NSString *) model{
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *machine = malloc(size);
@@ -22,8 +22,8 @@
     return model;
 }
 
-- (NSString *) modelString{
-    NSString *model = [self model];
++ (NSString *) modelString{
+    NSString *model = [IXDeviceHardware model];
     if ([model isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
     if ([model isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
     if ([model isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
