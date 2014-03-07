@@ -21,7 +21,7 @@
 
 -(void)execute
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     
     IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
     IXSandbox* sandbox = [ownerObject sandbox];

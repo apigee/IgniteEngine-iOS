@@ -21,7 +21,7 @@ static NSString* const kIXFunctionName = @"function_name";
 
 -(void)execute
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     NSString* functionName = [[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil];
     
     if( objectIDs != nil && functionName != nil )

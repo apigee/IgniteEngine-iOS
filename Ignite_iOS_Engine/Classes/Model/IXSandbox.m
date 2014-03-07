@@ -73,7 +73,7 @@ static NSString* const kIXCustomContainerControlRef = @"$custom";
 {
     BOOL didAddDataProvider = NO;
     
-    NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:kIX_ID defaultValue:nil];
+    NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:kIX_TARGET defaultValue:nil];
     if( dataProviderID.length > 0 )
     {
         if( [self dataProviders][dataProviderID] != nil )

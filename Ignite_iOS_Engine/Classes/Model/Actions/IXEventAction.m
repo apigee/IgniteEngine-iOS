@@ -24,7 +24,7 @@ static NSString* const kIXEventName = @"event_name";
 {
     IXPropertyContainer* actionProperties = [self actionProperties];
     
-    NSArray* objectIDs = [actionProperties getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [actionProperties getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     NSString* eventName = [actionProperties getStringPropertyValue:kIXEventName defaultValue:nil];
     
     if( objectIDs && eventName )

@@ -313,7 +313,7 @@ static NSCache* sCustomControlCache;
             IXPropertyContainer* propertyContainer = [IXJSONParser propertyContainerWithPropertyDictionary:propertiesDict];
             [action setActionProperties:propertyContainer];
             
-            id parametersDict = [actionValueDict objectForKey:@"parameters"];
+            id parametersDict = [actionValueDict objectForKey:@"set"];
             IXPropertyContainer* parameterContainer = [IXJSONParser propertyContainerWithPropertyDictionary:parametersDict];
             [action setParameterProperties:parameterContainer];
             

@@ -59,7 +59,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
 
 -(void)performModify
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     
     if( objectIDs != nil && [self parameterProperties] != nil )
     {
@@ -83,7 +83,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
                        withAnimationCurve:(UIViewAnimationCurve)animationCurve
                          withStaggerDelay:(CGFloat)staggerDelay
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_ID defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     if( objectIDs != nil && [self parameterProperties] != nil )
     {
         IXBaseObject* ownerObject = [[self actionContainer] ownerObject];

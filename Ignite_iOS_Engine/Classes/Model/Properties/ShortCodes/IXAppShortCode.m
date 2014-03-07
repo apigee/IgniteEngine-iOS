@@ -11,6 +11,8 @@
 #import "IXProperty.h"
 #import "IXBaseObject.h"
 
+//usage: [[app('random_number.40')]]
+
 static NSString* const kIXRandomNumber = @"random_number";
 
 @implementation IXAppShortCode
