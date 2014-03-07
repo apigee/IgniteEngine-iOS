@@ -101,6 +101,11 @@ static CGSize sIXKBSize;
     //JA: Please add justification for left/center/right
     [[self textField] setTextAlignment:NSTextAlignmentCenter];
     
+    NSString* inputText = [self.propertyContainer getStringPropertyValue:@"text" defaultValue:nil];
+    if (inputText)
+    {
+        self.textField.text =   inputText;
+    }
     
     // JA: Added autocorrect
     BOOL autoCorrect = [[self propertyContainer] getBoolPropertyValue:@"autocorrect" defaultValue:YES];
@@ -284,6 +289,7 @@ static CGSize sIXKBSize;
     NSString *inputText = self.textField.text;
     NSString *inputAllowedCharacters = [self.propertyContainer getStringPropertyValue:@"input.regex.allowed" defaultValue:nil];
     NSString *inputDisallowedCharacters = [self.propertyContainer getStringPropertyValue:@"input.regex.disallowed" defaultValue:nil];
+    NSString *inputTransform = [self.propertyContainer getStringPropertyValue:@"input.transform" defaultValue:nil];
     NSInteger maxAllowedCharacters = [self.propertyContainer getIntPropertyValue:@"input.max" defaultValue:0];
     
     if (maxAllowedCharacters > 0)
@@ -309,6 +315,29 @@ static CGSize sIXKBSize;
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:inputAllowedCharacters options:NSRegularExpressionCaseInsensitive error:&error];
         inputText = [regex stringByReplacingMatchesInString:inputText options:0 range:NSMakeRange(0, inputText.length) withTemplate:@""];
     }
+    if (inputTransform)
+    {
+        if ([inputTransform isEqualToString:@"lowercase"])
+        {
+            inputText = inputText.lowercaseString;
+        }
+        else if ([inputTransform isEqualToString:@"uppercase"])
+        {
+            inputText = inputText.uppercaseString;
+        }
+        else if ([inputTransform isEqualToString:@"capitalized"])
+        {
+            inputText = inputText.capitalizedString;
+        }
+        else if ([inputTransform isEqualToString:@"ucfirst"])
+        {
+            inputText = [NSString stringWithFormat:@"%@%@",
+                             [[inputText substringToIndex:1] uppercaseString],
+                             [inputText substringFromIndex:1]
+                         ];
+        }
+    }
+    
     self.textField.text = inputText;
     [self.actionContainer executeActionsForEventNamed:@"text_changed"];
 }

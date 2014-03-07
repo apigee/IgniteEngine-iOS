@@ -64,8 +64,8 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
     [super applySettings];
     
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:@"auto_load" defaultValue:NO]];
-    [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data_location" defaultValue:nil]];
-    [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:@"objects_path" defaultValue:nil]];
+    [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data.baseurl" defaultValue:nil]];
+    [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:@"data.path" defaultValue:nil]];
     [self setFetchPredicate:[[self propertyContainer] getStringPropertyValue:@"fetch_predicate" defaultValue:nil]];
     [self setFetchPredicateStrings:[[self propertyContainer] getStringPropertyValue:@"fetch_predicate_strings" defaultValue:nil]];
     [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil]];
