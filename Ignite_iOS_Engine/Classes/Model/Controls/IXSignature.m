@@ -77,6 +77,11 @@ static NSString* const kIXTo = @"to"; // Parameter of the "save_signature" funct
                 UIImage* signatureImage = [[self signatureView] signatureImage];
                 if( signatureImage )
                 {
+                    // Update the cache with the newly created image.
+                    [IXPropertyContainer storeImageInCache:signatureImage
+                                              withImageURL:[NSURL fileURLWithPath:saveToLocation]
+                                                    toDisk:NO];
+                    
                     NSData* imageData = UIImagePNGRepresentation(signatureImage);
                     if( imageData )
                     {

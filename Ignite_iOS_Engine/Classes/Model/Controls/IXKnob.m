@@ -64,7 +64,6 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     [_knobControl addTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
     [_knobControl addTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchCancel];
 
-
     [[self contentView] addSubview:_knobControl];
 }
 
