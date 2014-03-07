@@ -210,7 +210,7 @@ static NSString* const kIXPinchBoth = @"both";
                                              image = UIGraphicsGetImageFromCurrentImageContext();
                                              UIGraphicsEndImageContext();
                                          }
-                                         else if ([backgroundImageScale isEqualToString:@"repeat"])
+                                         else if ([backgroundImageScale isEqualToString:@"tile"])
                                          {
                                              backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
                                              image = [image resizedImageByMagick:backgroundImageResizeMask];
