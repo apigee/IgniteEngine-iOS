@@ -85,7 +85,7 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
     }
     else
     {
-        [[self actionContainer] executeActionsForEventNamed:@"fail"];
+        [[self actionContainer] executeActionsForEventNamed:@"failed"];
     }
     [[self actionContainer] executeActionsForEventNamed:@"finished"];
     
