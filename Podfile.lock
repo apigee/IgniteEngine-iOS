@@ -6,9 +6,9 @@ PODS:
   - CocoaLumberjack/Core (1.8.1)
   - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
-  - ColorUtils (1.1.1)
+  - ColorUtils (1.1.2)
   - JASidePanels (1.3.2)
-  - Masonry (0.3.0)
+  - Masonry (0.4.0)
   - RestKit (0.20.3):
     - RestKit/Core
   - RestKit/Core (0.20.3):
@@ -24,9 +24,9 @@ PODS:
   - RestKit/ObjectMapping (0.20.3)
   - RestKit/Support (0.20.3):
     - TransitionKit (= 1.1.1)
-  - SDWebImage (3.5):
+  - SDWebImage (3.5.2):
     - SDWebImage/Core
-  - SDWebImage/Core (3.5)
+  - SDWebImage/Core (3.5.2)
   - SOCKit (1.1)
   - SVPulsingAnnotationView (0.3.0)
   - SVWebViewController (1.0)
@@ -55,11 +55,11 @@ SPEC CHECKSUMS:
   AFNetworking: 61fdd49e2ffe6380378df37b3b6e70630bb9dd66
   ALMoviePlayerController: e4a22e60340ffe429711a71e6dfb813fd38f10d2
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
-  ColorUtils: 668e0b61f291793ba1323347e3bb2cdbbcf1f222
+  ColorUtils: 5740b610eb7b50833f46d6d9863ebaa1da55301d
   JASidePanels: c0e642a7311ec9cc9adfa616fa4a795e4e169f20
-  Masonry: f7e7e5692c9133b7ee44d1a17b1c64ad423cd64e
+  Masonry: d673617c9cbc24aaea90fba20b10e47fd9970a39
   RestKit: 1f181c180105a92f11ec4f6cd7de37625e516d83
-  SDWebImage: f1a72472f8a2d54445f1fedafe2090593d9caf7f
+  SDWebImage: fe7ce01ae4e0a884d168f59c9dd82d35baf8429e
   SOCKit: 2f3bc4d07910de12dcc202815e07db68a3802581
   SVPulsingAnnotationView: ce58bcff7c1aeb15022a1db6c26f88981c05b91c
   SVWebViewController: e576371f7015bce92c97c304c32336700064847b
@@ -67,4 +67,4 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 1eb635d4d844cb7abce4d839faefca2a3409950d
   ZBarSDK: 6ae54d2077fea894d6a24bd1d7035192c0a7471e
 
-COCOAPODS: 0.28.0
+COCOAPODS: 0.29.0

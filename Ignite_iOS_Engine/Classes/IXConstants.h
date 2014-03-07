@@ -29,6 +29,7 @@ extern NSString* const kIX_VIEW;
 extern NSString* const kIX_ALERT;
 extern NSString* const kIX_MODIFY;
 extern NSString* const kIX_REFRESH;
+extern NSString* const kIX_LOAD;
 extern NSString* const kIX_SET;
 extern NSString* const kIX_FUNCTION;
 extern NSString* const kIX_FINISHED;

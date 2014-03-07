@@ -22,6 +22,11 @@
 @property (assign, nonatomic) long long expectedSize;
 @property (strong, nonatomic) NSMutableData *imageData;
 @property (strong, nonatomic) NSURLConnection *connection;
+@property (strong, atomic) NSThread *thread;
+
+#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+@property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskId;
+#endif
 
 @end
 
@@ -50,15 +55,38 @@
 
 - (void)start
 {
-    if (self.isCancelled)
+    @synchronized(self)
     {
-        self.finished = YES;
-        [self reset];
-        return;
-    }
+        if (self.isCancelled)
+        {
+            self.finished = YES;
+            [self reset];
+            return;
+        }
 
-    self.executing = YES;
-    self.connection = [NSURLConnection.alloc initWithRequest:self.request delegate:self startImmediately:NO];
+#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+        if ([self shouldContinueWhenAppEntersBackground])
+        {
+            __weak __typeof__(self) wself = self;
+            self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^
+            {
+                __strong __typeof(wself)sself = wself;
+
+                if (sself)
+                {
+                    [sself cancel];
+
+                    [[UIApplication sharedApplication] endBackgroundTask:sself.backgroundTaskId];
+                    sself.backgroundTaskId = UIBackgroundTaskInvalid;
+                }
+            }];
+        }
+#endif
+
+        self.executing = YES;
+        self.connection = [NSURLConnection.alloc initWithRequest:self.request delegate:self startImmediately:NO];
+        self.thread = [NSThread currentThread];
+    }
 
     [self.connection start];
 
@@ -99,6 +127,27 @@
 
 - (void)cancel
 {
+    @synchronized(self)
+    {
+        if (self.thread)
+        {
+            [self performSelector:@selector(cancelInternalAndStop) onThread:self.thread withObject:nil waitUntilDone:NO];
+        }
+        else
+        {
+            [self cancelInternal];
+        }
+    }
+}
+
+- (void)cancelInternalAndStop
+{
+    [self cancelInternal];
+    CFRunLoopStop(CFRunLoopGetCurrent());
+}
+
+- (void)cancelInternal
+{
     if (self.isFinished) return;
     [super cancel];
     if (self.cancelBlock) self.cancelBlock();
@@ -131,6 +180,7 @@
     self.progressBlock = nil;
     self.connection = nil;
     self.imageData = nil;
+    self.thread = nil;
 }
 
 - (void)setFinished:(BOOL)finished
@@ -257,7 +307,7 @@
 
         CFRelease(imageSource);
     }
-    
+
     if (self.progressBlock)
     {
         self.progressBlock(self.imageData.length, self.expectedSize);
@@ -288,19 +338,19 @@
         }
         else
         {
-            
+
             UIImage *image = [UIImage sd_imageWithData:self.imageData];
-            
+
             image = [self scaledImageForKey:self.request.URL.absoluteString image:image];
-            
+
             if (!image.images) // Do not force decod animated GIFs
             {
                 image = [UIImage decodedImageWithImage:image];
             }
-            
+
             if (CGSizeEqualToSize(image.size, CGSizeZero))
             {
-                completionBlock(nil, nil, [NSError errorWithDomain:@"SDWebImageErrorDomain" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Downloaded image has 0 pIXls"}], YES);
+                completionBlock(nil, nil, [NSError errorWithDomain:@"SDWebImageErrorDomain" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Downloaded image has 0 pixels"}], YES);
             }
             else
             {
@@ -343,5 +393,26 @@
     }
 }
 
+- (BOOL)shouldContinueWhenAppEntersBackground
+{
+    return self.options & SDWebImageDownloaderContinueInBackground;
+}
+
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    BOOL trustAllCertificates = (self.options & SDWebImageDownloaderAllowInvalidSSLCertificates);
+    if (trustAllCertificates && [challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+    {
+        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
+             forAuthenticationChallenge:challenge];
+    }
+
+    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+}
 
 @end

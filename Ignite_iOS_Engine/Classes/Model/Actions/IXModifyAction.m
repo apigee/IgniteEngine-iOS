@@ -115,17 +115,20 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
     CGFloat duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
     CGFloat staggerDelay = [self.actionProperties getFloatPropertyValue:kIXStaggerDelay defaultValue:0.0f];
     NSString *animationStyle = [[self actionProperties] getStringPropertyValue:kIXAnimationStyle defaultValue:nil];
-    
     UIViewAnimationCurve animationCurve = UIViewAnimationCurveEaseInOut;
 
-    if ( [animationStyle isEqualToString:kIXEaseInOut] )
-        animationCurve = UIViewAnimationCurveEaseInOut;
-    else if ( [animationStyle isEqualToString:kIXEaseIn] )
-        animationCurve = UIViewAnimationCurveEaseIn;
-    else if ( [animationStyle isEqualToString:kIXEaseOut] )
-        animationCurve = UIViewAnimationCurveEaseOut;
-    else if ( [animationStyle isEqualToString:kIXLinear] )
-        animationCurve = UIViewAnimationCurveLinear;
+    if (animationStyle)
+    {
+
+        if ( [animationStyle isEqualToString:kIXEaseInOut] )
+            animationCurve = UIViewAnimationCurveEaseInOut;
+        else if ( [animationStyle isEqualToString:kIXEaseIn] )
+            animationCurve = UIViewAnimationCurveEaseIn;
+        else if ( [animationStyle isEqualToString:kIXEaseOut] )
+            animationCurve = UIViewAnimationCurveEaseOut;
+        else if ( [animationStyle isEqualToString:kIXLinear] )
+            animationCurve = UIViewAnimationCurveLinear;
+    }
     
     if( duration > 0.0f )
     {

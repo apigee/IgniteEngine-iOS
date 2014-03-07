@@ -15,9 +15,9 @@
 // IXAlertAction Properties
 static NSString* const kIXTitle = @"title";
 static NSString* const kIXSubtitle = @"subtitle";
-static NSString* const kIXConfirmButtonTitle = @"confirm_button_title";
+static NSString* const kIXConfirmButtonTitle = @"button.confirm.text";
 static NSString* const kIXShowsCancelButton = @"shows_cancel_button";
-static NSString* const kIXCancelButtonTitle = @"cancel_button_title";
+static NSString* const kIXCancelButtonTitle = @"button.cancel.text";
 
 // IXAlertAction Events
 static NSString* const kIXWillPresentAlert = @"will_present_alert";

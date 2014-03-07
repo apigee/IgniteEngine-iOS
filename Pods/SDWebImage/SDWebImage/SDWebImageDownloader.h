@@ -23,7 +23,23 @@ typedef enum
      * Call completion block with nil image/imageData if the image was read from NSURLCache
      * (to be combined with `SDWebImageDownloaderUseNSURLCache`).
      */
-    SDWebImageDownloaderIgnoreCachedResponse = 1 << 3
+    SDWebImageDownloaderIgnoreCachedResponse = 1 << 3,
+    /**
+     * In iOS 4+, continue the download of the image if the app goes to background. This is achieved by asking the system for
+     * extra time in background to let the request finish. If the background task expires the operation will be cancelled.
+     */
+    SDWebImageDownloaderContinueInBackground = 1 << 4,
+    /**
+     * Handles cookies stored in NSHTTPCookieStore by setting 
+     * NSMutableURLRequest.HTTPShouldHandleCookies = YES;
+     */
+    SDWebImageDownloaderHandleCookies = 1 << 5,
+    /**
+     * Enable to allow untrusted SSL ceriticates.
+     * Useful for testing purposes. Use with caution in production.
+     */
+    SDWebImageDownloaderAllowInvalidSSLCertificates = 1 << 6
+
 } SDWebImageDownloaderOptions;
 
 typedef enum
@@ -52,11 +68,32 @@ typedef void(^SDWebImageDownloaderCompletedBlock)(UIImage *image, NSData *data, 
 @property (assign, nonatomic) NSInteger maxConcurrentDownloads;
 
 /**
+ * Shows the current amount of downloads that still need to be downloaded
+ */
+
+@property (readonly, nonatomic) NSUInteger currentDownloadCount;
+
+
+/**
+ *  The timeout value (in seconds) for the download operation. Default: 15.0.
+ */
+@property (assign, nonatomic) NSTimeInterval downloadTimeout;
+
+
+/**
  * Changes download operations execution order. Default value is `SDWebImageDownloaderFIFOExecutionOrder`.
  */
 @property (assign, nonatomic) SDWebImageDownloaderExecutionOrder executionOrder;
 
 + (SDWebImageDownloader *)sharedDownloader;
+
+/**
+ * Set filter to pick headers for downloading image HTTP request.
+ *
+ * This block will be invoked for each downloading image request, returned
+ * NSDictionary will be used as headers in corresponding HTTP request.
+ */
+@property (nonatomic, strong) NSDictionary *(^headersFilter)(NSURL *url, NSDictionary *headers);
 
 /**
  * Set a value for a HTTP header to be appended to each download HTTP request.

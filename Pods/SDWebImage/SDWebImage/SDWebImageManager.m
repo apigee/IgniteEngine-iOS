@@ -144,6 +144,9 @@
             if (options & SDWebImageLowPriority) downloaderOptions |= SDWebImageDownloaderLowPriority;
             if (options & SDWebImageProgressiveDownload) downloaderOptions |= SDWebImageDownloaderProgressiveDownload;
             if (options & SDWebImageRefreshCached) downloaderOptions |= SDWebImageDownloaderUseNSURLCache;
+            if (options & SDWebImageContinueInBackground) downloaderOptions |= SDWebImageDownloaderContinueInBackground;
+            if (options & SDWebImageHandleCookies) downloaderOptions |= SDWebImageDownloaderHandleCookies;
+            if (options & SDWebImageAllowInvalidSSLCertificates) downloaderOptions |= SDWebImageDownloaderAllowInvalidSSLCertificates;
             if (image && options & SDWebImageRefreshCached)
             {
                 // force progressive off if image already cached but forced refreshing
@@ -197,8 +200,8 @@
 
                             if (transformedImage && finished)
                             {
-                                NSData *dataToStore = [transformedImage isEqual:downloadedImage] ? data : nil;
-                                [self.imageCache storeImage:transformedImage imageData:dataToStore forKey:key toDisk:cacheOnDisk];
+                                BOOL imageWasTransformed = ![transformedImage isEqual:downloadedImage];
+                                [self.imageCache storeImage:transformedImage recalculateFromImage:imageWasTransformed imageData:data forKey:key toDisk:cacheOnDisk];
                             }
                         });
                     }
@@ -211,7 +214,7 @@
 
                         if (downloadedImage && finished)
                         {
-                            [self.imageCache storeImage:downloadedImage imageData:data forKey:key toDisk:cacheOnDisk];
+                            [self.imageCache storeImage:downloadedImage recalculateFromImage:NO imageData:data forKey:key toDisk:cacheOnDisk];
                         }
                     }
                 }

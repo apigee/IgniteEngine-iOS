@@ -15,6 +15,9 @@
 #import "IXControlLayoutInfo.h"
 #import "IXLogger.h"
 
+#import "UIImage+ResizeMagick.h"
+
+
 //
 // IXBaseControl Properties :
 //      Note: See IXControlLayoutInfo.h for layout properties.
@@ -23,7 +26,9 @@ static NSString* const kIXAlpha = @"alpha";
 static NSString* const kIXBorderWidth = @"border_width";
 static NSString* const kIXBorderColor = @"border_color";
 static NSString* const kIXBorderRadius = @"border_radius";
-static NSString* const kIXBackgroundColor = @"color.background";
+static NSString* const kIXBackgroundColor = @"background.color";
+static NSString* const kIXBackgroundImage = @"background.image";
+static NSString* const kIXBackgroundImageScale = @"background.image.scale";
 static NSString* const kIXEnabled = @"enabled";
 static NSString* const kIXEnableTap = @"enable_tap";
 static NSString* const kIXEnableSwipe = @"enable_swipe";
@@ -173,7 +178,55 @@ static NSString* const kIXPinchBoth = @"both";
 
 -(void)applyContentViewSettings
 {
-    [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+    NSString* backgroundImage = [self.propertyContainer getStringPropertyValue:kIXBackgroundImage defaultValue:nil];
+    if (backgroundImage)
+    {
+        NSString* backgroundImageScale = [self.propertyContainer getStringPropertyValue:kIXBackgroundImageScale defaultValue:@"cover"];
+        [self.propertyContainer getImageProperty:kIXBackgroundImage
+                                     successBlock:^(UIImage *image) {
+                                         
+                                         NSString* backgroundImageResizeMask;
+                                         CGSize size = self.contentView.bounds.size;
+                                         if ([backgroundImageScale isEqualToString:@"cover"])
+                                         {
+                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f^", size.width, size.height];
+                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
+                                         }
+                                         else if ([backgroundImageScale isEqualToString:@"stretch"])
+                                         {
+                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f!", size.width, size.height];
+                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
+                                         }
+                                         else if ([backgroundImageScale isEqualToString:@"contain"])
+                                         {
+                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
+                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
+                                             
+                                             UIGraphicsBeginImageContext(size);
+                                             [[UIColor clearColor] setFill];
+                                             [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+                                             CGRect rect = CGRectMake(((size.width - image.size.width) / 2), ((size.height - image.size.height) / 2), image.size.width, image.size.height);
+                                             [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+                                             image = UIGraphicsGetImageFromCurrentImageContext();
+                                             UIGraphicsEndImageContext();
+                                         }
+                                         else if ([backgroundImageScale isEqualToString:@"repeat"])
+                                         {
+                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
+                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
+                                         }
+                                         
+                                         self.contentView.backgroundColor = [UIColor colorWithPatternImage:image];
+                                         
+                                     } failBlock:^(NSError *error) {
+                                         DDLogDebug(@"Background image failed to load at %@", kIXBackgroundImage);
+                                     }];
+    }
+    else
+    {
+        [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+    }
+    
     [[self contentView] setEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnabled defaultValue:YES]];
     [[self contentView] setHidden:![[self propertyContainer] getBoolPropertyValue:kIXVisible defaultValue:YES]];
     [[self contentView] setAlpha:[[self propertyContainer] getFloatPropertyValue:kIXAlpha defaultValue:1.0f]];
