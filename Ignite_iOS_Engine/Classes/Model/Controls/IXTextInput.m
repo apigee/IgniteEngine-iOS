@@ -119,6 +119,7 @@ static CGSize sIXKBSize;
     }
     
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:@"dismiss_on_return" defaultValue:YES]];
+    
     [[self textField] setBackgroundColor:[UIColor whiteColor]];
     [[self textField] setTintColor:[UIColor redColor]];
     
@@ -358,11 +359,11 @@ static CGSize sIXKBSize;
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
-    if( [functionName isEqualToString:@"keyboard_hide"] )
+    if( [functionName isEqualToString:@"keyboard_hide"] || [functionName isEqualToString:@"lose_focus"] )
     {
         [[self textField] resignFirstResponder];
     }
-    else if( [functionName isEqualToString:@"keyboard_show"] )
+    else if( [functionName isEqualToString:@"keyboard_show"] || [functionName isEqualToString:@"focus"] )
     {
         [[self textField] becomeFirstResponder];
     }

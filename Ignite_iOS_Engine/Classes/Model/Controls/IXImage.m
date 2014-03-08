@@ -17,8 +17,8 @@
 #import "UIImage+ResizeMagick.h"
 
 // IXImage Properties
-static NSString* const kIXImagesDefault = @"images.default";
-static NSString* const kIXImagesTouch = @"images.touch";
+static NSString* const kIXIconDefault = @"images.default";
+static NSString* const kIXIconTouch = @"images.touch";
 static NSString* const kIXGIFDuration = @"gif_duration";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
@@ -75,7 +75,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 {
     [super applySettings];
     
-    NSURL* imageURL = [[self propertyContainer] getURLPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
+    NSURL* imageURL = [[self propertyContainer] getURLPathPropertyValue:kIXIconDefault basePath:nil defaultValue:nil];
     [self setAnimatedGif:[[imageURL pathExtension] isEqualToString:kIX_GIF_EXTENSION]];
 
     if( [self isAnimatedGIF] )
@@ -95,9 +95,9 @@ static NSString* const kIXStopAnimation = @"stop_animation";
         
         NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
         NSString* resizeTouch = [self.propertyContainer getStringPropertyValue:kIXImagesTouchResize defaultValue:nil];
-        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXImagesTouch defaultValue:nil];
+        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXIconTouch defaultValue:nil];
         
-        [[self propertyContainer] getImageProperty:kIXImagesDefault
+        [[self propertyContainer] getImageProperty:kIXIconDefault
                                       successBlock:^(UIImage *image) {
                                           
                                           // if default image is to be resized, do that first
@@ -113,7 +113,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
         //Only load an image here if we've actually defined a touch image
         if (touchImage)
         {
-            [[self propertyContainer] getImageProperty:kIXImagesTouch
+            [[self propertyContainer] getImageProperty:kIXIconTouch
                                           successBlock:^(UIImage *image) {
                                               
                                               // if touch image is to be resized, do that first

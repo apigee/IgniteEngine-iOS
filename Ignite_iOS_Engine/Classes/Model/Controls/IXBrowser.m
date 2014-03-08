@@ -92,25 +92,7 @@
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
     
-    NSLog(@"modal, bitches!");
 
 }
-
-
-
-//-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
-//{
-//    
-//    if( [functionName compare:@"modal"] == NSOrderedSame )
-//    {
-//        NSLog(@"modal, bitches!");
-//        NSString* url = [parameterContainer getStringPropertyValue:@"url" defaultValue:nil];
-//        NSURL *URL = [NSURL URLWithString:url];
-//        //
-//        _modalWebViewController = [[SVModalWebViewController alloc] initWithURL:URL];
-//        [[[IXAppManager sharedInstance] rootViewController] presentViewController:_modalWebViewController animated:YES completion:NULL];
-//    }
-//    
-//}
 
 @end

@@ -16,20 +16,26 @@
 //static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([\\w\\.]+)(\\('?([^)]+)'\\)?)*?\\]\\]$";
 //static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([\\w\\.]+)\\(?\\'?(.+?)?\\'?\\)?\\]\\]$";
 static NSString* const kIXShortcodeMainComponents = @"^\\[\\[([$\\w\\.]+)\\(?(.+?)?\\)?\\]\\]$";
+static NSString* const kIXShortcodeJavascript = @"^\\{\\{(.+?)?\\}\\}$";
 
 static NSString* const kIXJSComponents = @"^\\*\\|([^\\*\\|]+)\\|\\*$";
 
 static NSString* const kIXShortcodeMainComponentsNoParams = @"^\\[([\\w-]+?)\\.([\\w-]+?)\\(\\)\\]$";
 static NSString* const kIXParamComponent = @"^'(.+?)'$";
+static NSString* const kIXShortcodeSquareBrackets = @"(\\[\\[[^\\]]+\\]\\])";
 
 static NSRegularExpression* sIXShortCodeMainComponentsRegex = nil;
+static NSRegularExpression* sIXShortCodeJavascript = nil;
 static NSRegularExpression* sIXShortCodeMainComponentsNoParamsRegex = nil;
 static NSRegularExpression* sIXShortCodeParamRegex = nil;
+static NSRegularExpression* sIXShortCodeSquareBrackets = nil;
 
 static NSString* const kIXOpenBracketString = @"[";
-static NSString* const kIXDoubleOpenBracketString = @"[[";
 static NSString* const kIXCloseBracketString = @"]";
+static NSString* const kIXDoubleOpenBracketString = @"[[";
 static NSString* const kIXDoubleCloseBracketString = @"]]";
+static NSString* const kIXDoubleOpenBracesString = @"{{";
+static NSString* const kIXDoubleCloseBracesString = @"}}";
 static NSString* const kIXEscapeBracketString = @"\\";
 static NSString* const kIXSingleQuoteString = @"'";
 static NSString* const kIXCommaString = @",";
@@ -52,6 +58,15 @@ static NSString* const kIXEmptyString = @"";
     sIXShortCodeMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponents
                                                                             options:NSRegularExpressionDotMatchesLineSeparators
                                                                               error:nil];
+    
+    sIXShortCodeJavascript = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeJavascript
+                                                                 options:NSRegularExpressionDotMatchesLineSeparators
+                                                                   error:nil];
+    
+    sIXShortCodeSquareBrackets = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeSquareBrackets
+                                                                      options:NSRegularExpressionDotMatchesLineSeparators
+                                                                        error:nil];
+    
 //    sIXShortCodeMainComponentsNoParamsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeMainComponentsNoParams
 //                                                                                    options:NSRegularExpressionDotMatchesLineSeparators
 //                                                                                      error:nil];
@@ -70,7 +85,7 @@ static NSString* const kIXEmptyString = @"";
         __block NSUInteger numberOfBracketsFound = 0;
         __block NSInteger startOfParameter = -1;
         __block NSInteger endOfParameter = -1;
-        
+
         [string enumerateSubstringsInRange:NSMakeRange(0, [string length])
                                    options:NSStringEnumerationByComposedCharacterSequences
                                 usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
@@ -143,55 +158,58 @@ static NSString* const kIXEmptyString = @"";
     NSUInteger stringLength = [string length];
     if( string != nil || stringLength > 0 )
     {
-        if( [string rangeOfString:kIXDoubleOpenBracketString].location == NSNotFound || [string rangeOfString:kIXDoubleCloseBracketString].location == NSNotFound )
-            return nil;
+        if ( [string rangeOfString:kIXDoubleOpenBracketString].location != NSNotFound && [string rangeOfString:kIXDoubleCloseBracketString].location != NSNotFound )
+        {
         
-        __block NSString* previousString = nil;
-        __block NSUInteger numberOfOpenBracketsFound = 0;
-        __block NSUInteger openBracketStartPosition = 0;
-        
-        [string enumerateSubstringsInRange:NSMakeRange(0, [string length])
-                                   options:NSStringEnumerationByComposedCharacterSequences
-                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                            
-                                    if( [substring isEqualToString:kIXOpenBracketString] || [substring isEqualToString:kIXCloseBracketString] )
-                                    {
-                                        if( substringRange.location > 0 && [previousString isEqualToString:kIXEscapeBracketString] )
+            __block NSString* previousString = nil;
+            __block NSUInteger numberOfOpenBracketsFound = 0;
+            __block NSUInteger openBracketStartPosition = 0;
+            
+            [string enumerateSubstringsInRange:NSMakeRange(0, [string length])
+                                       options:NSStringEnumerationByComposedCharacterSequences
+                                    usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                
+                                        if( [substring isEqualToString:kIXOpenBracketString] || [substring isEqualToString:kIXCloseBracketString] )
                                         {
-                                            if( numberOfOpenBracketsFound == 0 )
+                                            if( substringRange.location > 0 && [previousString isEqualToString:kIXEscapeBracketString] )
                                             {
-                                                if( !shortcodeRanges )
-                                                    shortcodeRanges = [[NSMutableArray alloc] init];
+                                                if( numberOfOpenBracketsFound == 0 )
+                                                {
+                                                    if( !shortcodeRanges )
+                                                        shortcodeRanges = [[NSMutableArray alloc] init];
+                                                    
+                                                    NSRange shortCodeRange = NSMakeRange(substringRange.location - 1, 2);
+                                                    [shortcodeRanges addObject:[NSValue valueWithRange:shortCodeRange]];
+                                                }
+                                            }
+                                            else if( [substring isEqualToString:kIXOpenBracketString] )
+                                            {
+                                                if( numberOfOpenBracketsFound == 0 )
+                                                {
+                                                    openBracketStartPosition = substringRange.location;
+                                                }
+                                                numberOfOpenBracketsFound++;
+                                            }
+                                            else if( numberOfOpenBracketsFound > 0 && [substring isEqualToString:kIXCloseBracketString] )
+                                            {
+                                                numberOfOpenBracketsFound--;
                                                 
-                                                NSRange shortCodeRange = NSMakeRange(substringRange.location - 1, 2);
-                                                [shortcodeRanges addObject:[NSValue valueWithRange:shortCodeRange]];
-                                            }
-                                        }
-                                        else if( [substring isEqualToString:kIXOpenBracketString] )
-                                        {
-                                            if( numberOfOpenBracketsFound == 0 )
-                                            {
-                                                openBracketStartPosition = substringRange.location;
-                                            }
-                                            numberOfOpenBracketsFound++;
-                                        }
-                                        else if( numberOfOpenBracketsFound > 0 && [substring isEqualToString:kIXCloseBracketString] )
-                                        {
-                                            numberOfOpenBracketsFound--;
-                                            
-                                            if( numberOfOpenBracketsFound == 0 )
-                                            {
-                                                if( !shortcodeRanges )
-                                                    shortcodeRanges = [[NSMutableArray alloc] init];
+                                                if( numberOfOpenBracketsFound == 0 )
+                                                {
+                                                    if( !shortcodeRanges )
+                                                        shortcodeRanges = [[NSMutableArray alloc] init];
 
-                                                NSRange shortCodeRange = NSMakeRange(openBracketStartPosition, (substringRange.location - openBracketStartPosition) + 1);
-                                                [shortcodeRanges addObject:[NSValue valueWithRange:shortCodeRange]];
+                                                    NSRange shortCodeRange = NSMakeRange(openBracketStartPosition, (substringRange.location - openBracketStartPosition) + 1);
+                                                    [shortcodeRanges addObject:[NSValue valueWithRange:shortCodeRange]];
+                                                }
                                             }
                                         }
-                                    }
-                                    previousString = substring;
-                                    
-        }];
+                                        previousString = substring;
+                                        
+            }];
+        }
+        else
+            return nil;
     }
     
     return shortcodeRanges;
