@@ -10,7 +10,6 @@
 
 @interface IXDeviceHardware : NSObject
 
-+ (NSString *) model;
-+ (NSString *) modelString;
++ (NSString *) getDevicePropertyNamed:(NSString*)propertyName;
 
 @end

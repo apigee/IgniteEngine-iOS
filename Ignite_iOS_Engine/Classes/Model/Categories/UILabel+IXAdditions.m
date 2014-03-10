@@ -8,6 +8,12 @@
 
 #import "UILabel+IXAdditions.h"
 
+static NSString* const kIXTextAlignmentCenter = @"center";
+static NSString* const kIXTextAlignmentLeft = @"left";
+static NSString* const kIXTextAlignmentRight = @"right";
+static NSString* const kIXTextAlignmentJustified = @"justified";
+static NSString* const kIXTextAlignmentNatural = @"natural";
+
 @implementation UILabel (IXAdditions)
 
 -(CGSize)sizeForFixedWidth:(float)fixedWidth
@@ -27,6 +33,21 @@
         returnSize.height = lineHeight * [self numberOfLines];
     
     return returnSize;
+}
+
++(NSTextAlignment)ix_textAlignmentFromString:(NSString*)textAlignmentString
+{
+    NSTextAlignment textAlignment = NSTextAlignmentLeft;
+    if( [textAlignmentString isEqualToString:kIXTextAlignmentCenter] ) {
+        textAlignment = NSTextAlignmentCenter;
+    } else if( [textAlignmentString isEqualToString:kIXTextAlignmentRight] ) {
+        textAlignment = NSTextAlignmentRight;
+    } else if( [textAlignmentString isEqualToString:kIXTextAlignmentJustified] ) {
+        textAlignment = NSTextAlignmentJustified;
+    } else if( [textAlignmentString isEqualToString:kIXTextAlignmentNatural] ) {
+        textAlignment = NSTextAlignmentNatural;
+    }
+    return textAlignment;
 }
 
 @end

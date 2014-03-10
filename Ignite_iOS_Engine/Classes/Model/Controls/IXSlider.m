@@ -163,7 +163,7 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXValue] )
     {
-        returnValue = [NSString stringFromFloat:[[self slider] value]];
+        returnValue = [NSString ix_stringFromFloat:[[self slider] value]];
     }
     else
     {

@@ -228,7 +228,7 @@ static NSString* const kIXPinchBoth = @"both";
     }
     
     [[self contentView] setEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnabled defaultValue:YES]];
-    [[self contentView] setHidden:![[self propertyContainer] getBoolPropertyValue:kIXVisible defaultValue:YES]];
+    [[self contentView] setHidden:[[self layoutInfo] isHidden]];
     [[self contentView] setAlpha:[[self propertyContainer] getFloatPropertyValue:kIXAlpha defaultValue:1.0f]];
     
     float borderWidth = [[self propertyContainer] getFloatPropertyValue:kIXBorderWidth defaultValue:0.0f];
@@ -567,11 +567,6 @@ static NSString* const kIXPinchBoth = @"both";
         }
         [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
     }
-}
-
--(void)executeControlSpecificFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameters
-{
-    
 }
 
 -(void)conserveMemory

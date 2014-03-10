@@ -10,7 +10,7 @@
 
 @interface NSString (IXAdditions)
 
-+(NSString*)stringFromBOOL:(BOOL)boolean;
-+(NSString*)stringFromFloat:(float)floatValue;
++(NSString*)ix_stringFromBOOL:(BOOL)boolean;
++(NSString*)ix_stringFromFloat:(float)floatValue;
 
 @end

@@ -237,7 +237,7 @@
 
 +(void)storeImageInCache:(UIImage*)image withImageURL:(NSURL*)imageURL toDisk:(BOOL)toDisk
 {
-    if( image && imageURL )
+    if( image && [imageURL absoluteString].length > 0 )
     {
         [[[SDWebImageManager sharedManager] imageCache] storeImage:image forKey:[imageURL absoluteString] toDisk:toDisk];
     }

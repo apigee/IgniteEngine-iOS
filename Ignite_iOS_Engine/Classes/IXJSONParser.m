@@ -448,26 +448,34 @@ static NSCache* sCustomControlCache;
         {
             IXCustom* customControl = (IXCustom*)childControl;
             NSString* pathToJSON = [[customControl propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
-            [customControl setPathToJSON:pathToJSON];
-            BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES];
-            [IXJSONParser populateControl:customControl
-                           withJSONAtPath:pathToJSON
-                                loadAsync:loadAsync
-                          completionBlock:^(BOOL didSucceed, NSError *error) {
-                              if( didSucceed )
-                              {
-                                  if( loadAsync )
+            if( pathToJSON == nil )
+            {
+                DDLogWarn(@"WARNING from %@ in %@ : Path to custom control is nil!!! \n Custom Control Description : %@",THIS_FILE,THIS_METHOD,[customControl description]);
+                [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
+            }
+            else
+            {
+                [customControl setPathToJSON:pathToJSON];
+                BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES];
+                [IXJSONParser populateControl:customControl
+                               withJSONAtPath:pathToJSON
+                                    loadAsync:loadAsync
+                              completionBlock:^(BOOL didSucceed, NSError *error) {
+                                  if( didSucceed )
                                   {
-                                      [[[customControl sandbox] containerControl] applySettings];
-                                      [[[customControl sandbox] containerControl] layoutControl];
+                                      if( loadAsync )
+                                      {
+                                          [[[customControl sandbox] containerControl] applySettings];
+                                          [[[customControl sandbox] containerControl] layoutControl];
+                                      }
+                                      [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
                                   }
-                                  [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
-                              }
-                              else
-                              {
-                                  [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
-                              }
-                          }];
+                                  else
+                                  {
+                                      [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
+                                  }
+                              }];
+            }
         }
         
         [IXJSONParser populateControlsCustomControlChildren:childControl];

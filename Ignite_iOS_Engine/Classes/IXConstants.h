@@ -44,4 +44,5 @@ extern NSString* const kIX_OK;
 extern NSString* const kIX_CANCEL;
 extern NSString* const kIX_TOUCH;
 extern NSString* const kIX_GIF_EXTENSION;
+extern NSString* const kIX_DEFAULT;
 

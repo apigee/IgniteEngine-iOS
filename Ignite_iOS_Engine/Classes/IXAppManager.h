@@ -15,6 +15,7 @@
 @class IXPropertyContainer;
 @class IXNavigationViewController;
 @class JASidePanelController;
+@class Reachability;
 
 @interface IXAppManager : NSObject
 
@@ -41,6 +42,7 @@
 @property (nonatomic,strong) NSString* versionNumberMinor;
 
 @property (nonatomic,strong) IXSandbox* applicationSandbox;
+@property (nonatomic,strong) Reachability* reachabilty;
 
 @property (nonatomic,assign,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
 

@@ -157,15 +157,15 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIX_Facebook_Available] )
     {
-        returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]];
+        returnValue = [NSString ix_stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]];
     }
     else if( [propertyName isEqualToString:kIX_Twitter_Available] )
     {
-        returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]];
+        returnValue = [NSString ix_stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]];
     }
     else if( [propertyName isEqualToString:kIX_Sina_Weibo_Available] )
     {
-        returnValue = [NSString stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]];
+        returnValue = [NSString ix_stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]];
     }
     else
     {

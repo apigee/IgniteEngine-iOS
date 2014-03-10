@@ -10,8 +10,9 @@
 
 @interface UITextField (IXAdditions)
 
-+(UIKeyboardAppearance)stringToKeyboardAppearance:(NSString*)keyboardAppearanceString;
-+(UIKeyboardType)stringToKeyboardType:(NSString*)keyboardTypeString;
-+(UIReturnKeyType)stringToReturnKeyType:(NSString*)returnKeyTypeString;
++(UIKeyboardAppearance)ix_stringToKeyboardAppearance:(NSString*)keyboardAppearanceString;
++(UIKeyboardType)ix_stringToKeyboardType:(NSString*)keyboardTypeString;
++(UIReturnKeyType)ix_stringToReturnKeyType:(NSString*)returnKeyTypeString;
++(NSTextAlignment)ix_textAlignmentFromString:(NSString*)textAlignmentString;
 
 @end

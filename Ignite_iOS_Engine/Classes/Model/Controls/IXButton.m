@@ -11,7 +11,6 @@
 #import "UIImage+IXAdditions.h"
 
 // IXImage Properties
-static NSString* const kIXDefault = @"default";
 static NSString* const kIXTouch = @"touch";
 static NSString* const kIXDisabled = @"disabled";
 static NSString* const kIXImagesDefault = @"images.default";
@@ -90,7 +89,7 @@ static NSString* const kIXTitleDisabledColor = @"title.disabled.color";
 
     UIColor* defaultTintColorForImages = nil;
     
-    NSArray* differentTitleStates = @[kIXDefault,kIXTouch,kIXDisabled];
+    NSArray* differentTitleStates = @[kIX_DEFAULT,kIXTouch,kIXDisabled];
     for( NSString* titleState in differentTitleStates )
     {
         UIControlState controlState = UIControlStateNormal;

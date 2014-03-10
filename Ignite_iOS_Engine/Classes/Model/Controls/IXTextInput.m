@@ -35,7 +35,43 @@
 #import "IXClickableScrollView.h"
 #import "IXProperty.h"
 #import "UITextField+IXAdditions.h"
-#import "IXLogger.h"
+
+// IXTextInput Properties
+static NSString* const kIXFont = @"font";
+static NSString* const kIXCursorColor = @"cursor.color";
+static NSString* const kIXAutoCorrect = @"autocorrect";
+static NSString* const kIXDismissOnReturn = @"dismiss_on_return";
+
+static NSString* const kIXText = @"text";
+static NSString* const kIXTextColor = @"text.color";
+static NSString* const kIXTextPlaceholder = @"text.placeholder";
+static NSString* const kIXTextPlaceholderColor = @"text.placeholder.color";
+static NSString* const kIXTextAlignment = @"text.alignment";
+
+static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
+static NSString* const kIXKeyboardType = @"keyboard.type";
+static NSString* const kIXKeyboardReturnKey = @"keyboard.return_key";
+
+static NSString* const kIXInputRegexAllowed = @"input.regex.allowed";
+static NSString* const kIXInputRegexDisAllowed = @"input.regex.disallowed";
+static NSString* const kIXInputMax = @"input.max";
+static NSString* const kIXInputTransform = @"input.transform";
+
+// kIXInputTransform Types
+static NSString* const kIXInputTransformCapitalized = @"capitalized";
+static NSString* const kIXInputTransformLowercase = @"lowercase";
+static NSString* const kIXInputTransformUppercase = @"uppercase";
+static NSString* const kIXInputTransformUppercaseFirst = @"ucfirst";
+
+// IXTextInput Functions
+static NSString* const kIXKeyboardHide = @"keyboard_hide";
+static NSString* const kIXKeyboardShow = @"keyboard_show";
+
+// IXTextInput Events
+static NSString* const kIXGotFocus = @"got_focus";
+static NSString* const kIXLostFocus = @"lost_focus";
+static NSString* const kIXReturnKeyPressed = @"return_key_pressed";
+static NSString* const kIXTextChanged = @"text_changed";
 
 static CGSize sIXKBSize;
 
@@ -45,6 +81,14 @@ static CGSize sIXKBSize;
 @property (nonatomic,strong) UITextField* textField;
 @property (nonatomic,strong) UIColor* defaultTextFieldTintColor;
 @property (nonatomic,assign,getter = shouldDismissOnReturn) BOOL dismissOnReturn;
+
+@property (nonatomic,assign) NSInteger inputMaxAllowedCharacters;
+@property (nonatomic,strong) NSString* inputTransform;
+@property (nonatomic,strong) NSString* inputAllowedRegexString;
+@property (nonatomic,strong) NSString* inputDisallowedRegexString;
+
+@property (nonatomic,strong) NSRegularExpression *inputAllowedRegex;
+@property (nonatomic,strong) NSRegularExpression *inputDisallowedRegex;
 
 @end
 
@@ -61,13 +105,13 @@ static CGSize sIXKBSize;
     [super buildView];
     
     _needsToRegisterForKeyboardNotifications = YES;
-    
+    _defaultTextFieldTintColor = [_textField tintColor];
+
     _textField = [[UITextField alloc] initWithFrame:[[self contentView] bounds]];
+    [_textField setBackgroundColor:[UIColor whiteColor]];
     [_textField setDelegate:self];
     
     [[self contentView] addSubview:_textField];
-    
-    _defaultTextFieldTintColor = [_textField tintColor];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -87,51 +131,74 @@ static CGSize sIXKBSize;
 {
     [super applySettings];
     
-    NSString* keyboardAppearance = [[self propertyContainer] getStringPropertyValue:@"keyboard.appearance" defaultValue:@"default"];
-    [[self textField] setKeyboardAppearance:[UITextField stringToKeyboardAppearance:keyboardAppearance]];
+    [[self textField] setEnabled:[[self contentView] isEnabled]];
     
-    NSString* keyboardType = [[self propertyContainer] getStringPropertyValue:@"keyboard.type" defaultValue:@"default"];
-    [[self textField] setKeyboardType:[UITextField stringToKeyboardType:keyboardType]];
-    
-    NSString* returnKey = [[self propertyContainer] getStringPropertyValue:@"keyboard.return_key" defaultValue:@"default"];
-    [[self textField] setReturnKeyType:[UITextField stringToReturnKeyType:returnKey]];
-    
-    //NSString* justification = [[self propertyContainer] getStringPropertyValue:@"justicication" defaultValue:@"UITextAlignmentLeft"];
-    
-    //JA: Please add justification for left/center/right
-    [[self textField] setTextAlignment:NSTextAlignmentCenter];
-    
-    NSString* inputText = [self.propertyContainer getStringPropertyValue:@"text" defaultValue:nil];
-    if (inputText)
+    NSString* placeHolderText = [[self propertyContainer] getStringPropertyValue:kIXTextPlaceholder defaultValue:nil];
+    if( [placeHolderText length] > 0 )
     {
-        self.textField.text =   inputText;
+        UIColor* placeHolderTextColor = [[self propertyContainer] getColorPropertyValue:kIXTextPlaceholderColor defaultValue:[UIColor lightGrayColor]];
+        NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
+                                                                                    attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
+        [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
     }
     
-    // JA: Added autocorrect
-    BOOL autoCorrect = [[self propertyContainer] getBoolPropertyValue:@"autocorrect" defaultValue:YES];
-    if( autoCorrect )
+    NSString* inputText = [[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil];
+    if ( [inputText length] > 0 )
     {
-        [[self textField] setAutocorrectionType:UITextAutocorrectionTypeYes];
+        [[self textField] setText:inputText];
+    }
+    
+    [[self textField] setFont:[[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
+    [[self textField] setTextColor:[[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]]];
+    [[self textField] setTintColor:[[self propertyContainer] getColorPropertyValue:kIXCursorColor defaultValue:[self defaultTextFieldTintColor]]];
+    [[self textField] setAutocorrectionType:[[self propertyContainer] getBoolPropertyValue:kIXAutoCorrect defaultValue:YES]];
+    [[self textField] setTextAlignment:[UITextField ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]]];
+    [[self textField] setKeyboardAppearance:[UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]]];
+    [[self textField] setKeyboardType:[UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]]];
+    [[self textField] setReturnKeyType:[UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]]];
+    
+    [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:kIXDismissOnReturn defaultValue:YES]];
+    [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
+    [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
+    [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
+
+    [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
+    if( [[self inputAllowedRegexString] length] > 1 )
+    {
+        NSMutableString *tmp = [[NSMutableString alloc] initWithString:[self inputAllowedRegexString]];
+        [tmp insertString:@"^" atIndex:1];
+        [self setInputAllowedRegexString:tmp];
+    }
+}
+
+- (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* readOnlyPropertyValue = nil;
+    if( [propertyName isEqualToString:kIXText] )
+    {
+        readOnlyPropertyValue = [[self textField] text];
     }
     else
     {
-        [[self textField] setAutocorrectionType:UITextAutocorrectionTypeNo];
+        readOnlyPropertyValue = [super getReadOnlyPropertyValue:propertyName];
     }
-    
-    [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:@"dismiss_on_return" defaultValue:YES]];
-    [[self textField] setBackgroundColor:[UIColor whiteColor]];
-    [[self textField] setTintColor:[UIColor redColor]];
-    
-    NSString* placeHolderText = [self.propertyContainer getStringPropertyValue:@"text.placeholder" defaultValue:@""];
-    UIColor* placeHolderTextColor = [self.propertyContainer getColorPropertyValue:@"text.placeholder.color" defaultValue:[UIColor lightGrayColor]];
-    NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
-                                                                                attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
-    [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
-    [[self textField] setTextColor:[self.propertyContainer getColorPropertyValue:@"text.color" defaultValue:[UIColor blackColor]]];
-    [[self textField] setTintColor:[self.propertyContainer getColorPropertyValue:@"cursor.color" defaultValue:[self defaultTextFieldTintColor]]];
-    
-    UIFont* font = [[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
-    [[self textField] setFont:font];
+    return readOnlyPropertyValue;
+}
+
+-(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+{
+    if( [functionName isEqualToString:kIXKeyboardHide] )
+    {
+        [[self textField] resignFirstResponder];
+    }
+    else if( [functionName isEqualToString:kIXKeyboardShow] )
+    {
+        [[self textField] becomeFirstResponder];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
 }
 
 - (void)registerForKeyboardNotifications
@@ -156,7 +223,6 @@ static CGSize sIXKBSize;
                                                  selector:@selector(textDidChange:)
                                                      name:UITextFieldTextDidChangeNotification
                                                    object:[self textField]];
-    
     }
 }
 
@@ -183,24 +249,21 @@ static CGSize sIXKBSize;
 
 - (void)keyboardWillChangeFrame:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
-    sIXKBSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    double animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    sIXKBSize = [[aNotification userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     [self adjustScrollViewForKeyboard:animationDuration];
 }
 
 - (void)keyboardWillShown:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
-    sIXKBSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    double animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    sIXKBSize = [[aNotification userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     [self adjustScrollViewForKeyboard:animationDuration];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
-    double animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     UIScrollView* scrollView = nil;
     UIViewController* visibleVC = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController];
@@ -247,7 +310,7 @@ static CGSize sIXKBSize;
                          CGRect textFieldScreenFrame = [[self contentView] convertRect:[[self textField] frame] toView:nil];
                          
                          if (!CGRectContainsPoint(aRect, textFieldScreenFrame.origin) ) {
-                             [scrollView scrollRectToVisible:[self textField].frame animated:YES];
+                             [scrollView scrollRectToVisible:[[self textField] frame] animated:YES];
                          }
                      }];
 }
@@ -256,9 +319,10 @@ static CGSize sIXKBSize;
 {
     [self unregisterForKeyboardNotifications];
     
-    //JA: Added lost_focus action
-    [[self actionContainer] executeActionsForEventNamed:@"lost_focus"];
-
+    [self setInputAllowedRegex:nil];
+    [self setInputDisallowedRegex:nil];
+    
+    [[self actionContainer] executeActionsForEventNamed:kIXLostFocus];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -266,116 +330,88 @@ static CGSize sIXKBSize;
     [self registerForKeyboardNotifications];
     [self adjustScrollViewForKeyboard:0.0f];
     
-    [[self actionContainer] executeActionsForEventNamed:@"got_focus"];
+    [self setInputAllowedRegex:nil];
+    [self setInputDisallowedRegex:nil];
+
+    if( [[self inputAllowedRegexString] length] > 0 )
+    {
+        [self setInputAllowedRegex:[NSRegularExpression regularExpressionWithPattern:[self inputAllowedRegexString]
+                                                                             options:NSRegularExpressionCaseInsensitive
+                                                                               error:nil]];
+    }
+    if( [[self inputDisallowedRegexString] length] > 0 )
+    {
+        [self setInputDisallowedRegex:[NSRegularExpression regularExpressionWithPattern:[self inputDisallowedRegexString]
+                                                                                options:NSRegularExpressionCaseInsensitive
+                                                                                  error:nil]];
+    }
+    
+    [[self actionContainer] executeActionsForEventNamed:kIXGotFocus];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     //JA: Added action for return key press
-    [[self actionContainer] executeActionsForEventNamed:@"return_key_pressed"];
+    [[self actionContainer] executeActionsForEventNamed:kIXReturnKeyPressed];
 
     BOOL shouldReturn = [self shouldDismissOnReturn];
     if( shouldReturn )
     {
         [textField resignFirstResponder];
         [self unregisterForKeyboardNotifications];
-        [[self actionContainer] executeActionsForEventNamed:@"lost_focus"];
+        [[self actionContainer] executeActionsForEventNamed:kIXLostFocus];
     }
     return shouldReturn;
 }
 
 - (void)textDidChange:(NSNotification*)aNotification
 {
-    NSString *inputText = self.textField.text;
-    NSString *inputAllowedCharacters = [self.propertyContainer getStringPropertyValue:@"input.regex.allowed" defaultValue:nil];
-    NSString *inputDisallowedCharacters = [self.propertyContainer getStringPropertyValue:@"input.regex.disallowed" defaultValue:nil];
-    NSString *inputTransform = [self.propertyContainer getStringPropertyValue:@"input.transform" defaultValue:nil];
-    NSInteger maxAllowedCharacters = [self.propertyContainer getIntPropertyValue:@"input.max" defaultValue:0];
+    NSString *inputText = [[self textField] text];
     
-    if (maxAllowedCharacters > 0)
+    NSInteger inputMaxAllowedCharacters = [self inputMaxAllowedCharacters];
+    if( inputMaxAllowedCharacters > 0 && [inputText length] > inputMaxAllowedCharacters )
     {
-        inputText = (inputText.length > maxAllowedCharacters) ? [inputText substringToIndex:maxAllowedCharacters] : inputText;
+        inputText = [inputText substringToIndex:inputMaxAllowedCharacters];
     }
     
-    if (inputDisallowedCharacters)
+    if( [self inputDisallowedRegex] )
     {
-        NSError *error = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:inputDisallowedCharacters options:NSRegularExpressionCaseInsensitive error:&error];
-        inputText = [regex stringByReplacingMatchesInString:inputText options:0 range:NSMakeRange(0, inputText.length) withTemplate:@""];
+        inputText = [[self inputDisallowedRegex] stringByReplacingMatchesInString:inputText
+                                                                          options:0
+                                                                            range:NSMakeRange(0, [inputText length])
+                                                                     withTemplate:@""];
     }
-    if (inputAllowedCharacters)
+    if ( [self inputAllowedRegex] )
     {
-        NSError *error = nil;
-        if (inputAllowedCharacters.length > 1)
-        {
-            NSMutableString *tmp = [NSMutableString stringWithString:inputAllowedCharacters];
-            [tmp insertString:@"^" atIndex:1];
-            inputAllowedCharacters = tmp;
-        }
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:inputAllowedCharacters options:NSRegularExpressionCaseInsensitive error:&error];
-        inputText = [regex stringByReplacingMatchesInString:inputText options:0 range:NSMakeRange(0, inputText.length) withTemplate:@""];
+        inputText = [[self inputAllowedRegex] stringByReplacingMatchesInString:inputText
+                                                                       options:0
+                                                                         range:NSMakeRange(0, [inputText length])
+                                                                  withTemplate:@""];
     }
-    if (inputTransform)
+    
+    NSString* inputTransform = [self inputTransform];
+    if ( inputTransform )
     {
-        if ([inputTransform isEqualToString:@"lowercase"])
+        if ([inputTransform isEqualToString:kIXInputTransformLowercase])
         {
-            inputText = inputText.lowercaseString;
+            inputText = [inputText lowercaseString];
         }
-        else if ([inputTransform isEqualToString:@"uppercase"])
+        else if ([inputTransform isEqualToString:kIXInputTransformUppercase])
         {
-            inputText = inputText.uppercaseString;
+            inputText = [inputText uppercaseString];
         }
-        else if ([inputTransform isEqualToString:@"capitalized"])
+        else if ([inputTransform isEqualToString:kIXInputTransformCapitalized])
         {
-            inputText = inputText.capitalizedString;
+            inputText = [inputText capitalizedString];
         }
-        else if ([inputTransform isEqualToString:@"ucfirst"])
+        else if ([inputTransform isEqualToString:kIXInputTransformUppercaseFirst])
         {
-            inputText = [NSString stringWithFormat:@"%@%@",
-                             [[inputText substringToIndex:1] uppercaseString],
-                             [inputText substringFromIndex:1]
-                         ];
+            inputText = [NSString stringWithFormat:@"%@%@",[[inputText substringToIndex:1] uppercaseString],[inputText substringFromIndex:1]];
         }
     }
     
-    self.textField.text = inputText;
-    [self.actionContainer executeActionsForEventNamed:@"text_changed"];
+    [[self textField] setText:inputText];
+    [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
 }
-
-- (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
-{
-    NSString* readOnlyPropertyValue = nil;
-    if( [propertyName isEqualToString:@"text"] )
-    {
-        readOnlyPropertyValue = [[self textField] text];
-    }
-    else
-    {
-        readOnlyPropertyValue = [super getReadOnlyPropertyValue:propertyName];
-    }
-    return readOnlyPropertyValue;
-}
-
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
-{
-    if( [functionName isEqualToString:@"keyboard_hide"] )
-    {
-        [[self textField] resignFirstResponder];
-    }
-    else if( [functionName isEqualToString:@"keyboard_show"] )
-    {
-        [[self textField] becomeFirstResponder];
-    }
-    else
-    {
-        [super applyFunction:functionName withParameters:parameterContainer];
-    }
-}
-
-// MAY HAVE A REASON TO IMPLEMENT THIS LATER
-//- (BOOL)textFieldShouldEndEditing:(UITextField *)textField;
-//{
-//    return YES;
-//}
 
 @end

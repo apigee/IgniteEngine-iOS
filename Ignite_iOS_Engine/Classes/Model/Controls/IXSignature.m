@@ -51,7 +51,7 @@ static NSString* const kIXTo = @"to"; // Parameter of the "save_signature" funct
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXHasSignature] )
     {
-        returnValue = [NSString stringFromBOOL:[[self signatureView] hasSignature]];
+        returnValue = [NSString ix_stringFromBOOL:[[self signatureView] hasSignature]];
     }
     else if( [propertyName isEqualToString:kIXLastSaveError] )
     {
