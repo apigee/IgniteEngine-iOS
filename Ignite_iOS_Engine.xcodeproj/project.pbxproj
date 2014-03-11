@@ -121,6 +121,7 @@
 		CA887C7E18B3D9470050B75B /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */; };
 		CA887C7F18B3D9470050B75B /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */; };
 		CAD81A7518BBCEA400EE08BD /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */; };
+		CADE34FC18CF944C009C99D0 /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CADE34FB18CF944C009C99D0 /* IXAttributedText.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -332,6 +333,8 @@
 		CA604CE418C10CF000D027E1 /* IXDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceHardware.h; sourceTree = "<group>"; };
 		CA604CE518C10CF000D027E1 /* IXDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceHardware.m; sourceTree = "<group>"; };
 		CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		CADE34FA18CF944C009C99D0 /* IXAttributedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAttributedText.h; sourceTree = "<group>"; };
+		CADE34FB18CF944C009C99D0 /* IXAttributedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAttributedText.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -498,6 +501,8 @@
 				13033F5B183ED8F200C29157 /* IXTableView.m */,
 				13033F5C183ED8F200C29157 /* IXText.h */,
 				13033F5D183ED8F200C29157 /* IXText.m */,
+				CADE34FA18CF944C009C99D0 /* IXAttributedText.h */,
+				CADE34FB18CF944C009C99D0 /* IXAttributedText.m */,
 				13033F5E183ED8F200C29157 /* IXTextHighlighter.h */,
 				13033F5F183ED8F200C29157 /* IXTextHighlighter.m */,
 				13033F60183ED8F200C29157 /* IXTextInput.h */,
@@ -921,6 +926,7 @@
 				63CC9AB118BD0BB000ECCECB /* IXWeakTimerTarget.m in Sources */,
 				6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
+				CADE34FC18CF944C009C99D0 /* IXAttributedText.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
