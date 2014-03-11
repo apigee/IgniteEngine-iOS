@@ -163,15 +163,17 @@
                                                      }];
             
             //Format code `code`
+            UIFont *codeFont = [UIFont fontWithName:@"Menlo-Regular" size:defaultFont.pointSize - 2];
             [self formatMarkdownCodeBlockWithAttributes:@{
                                                      //really wanted to add a code font size offset in here, but it breaks the computation of the outline box
-                                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-Regular" size:defaultFont.pointSize],
+                                                     NSFontAttributeName: codeFont,
                                                      NSForegroundColorAttributeName: codeColor
                                                      }
                                 withHighlightProperties:@{
                                                           @"backgroundColor": codeHighlightColor,
                                                           @"borderColor": codeHighlightBorderColor
-                                                          }];
+                                                          }
+                                         forFontSize:codeFont.pointSize];
             
             //And finally update textview one last time
             self.textView.attributedText = self.attributedString;
@@ -193,17 +195,15 @@
     {
         NSRange range = [rangeValue rangeValue];
         if (range.location != NSNotFound) {
-            for (id key in attributesDict)
-            {
-                id value = [attributesDict objectForKey:key];
-                [self.attributedString addAttribute:key value:value range:range];
-            }
+            [self.attributedString addAttributes:attributesDict range:range];
         }
     }
     [[self.attributedString mutableString] replaceOccurrencesOfString:removeRegex withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.attributedString.length)];
 }
 
-- (void)formatMarkdownCodeBlockWithAttributes:(NSDictionary *)attributesDict withHighlightProperties:(NSDictionary *)highlightProperties
+- (void)formatMarkdownCodeBlockWithAttributes:(NSDictionary *)attributesDict
+                      withHighlightProperties:(NSDictionary *)highlightProperties
+                               forFontSize:(CGFloat)pointSize
 {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"`.+?`" options:NO error:nil];
     NSArray *matchesArray = [regex matchesInString:[self.attributedString string] options:NO range:NSMakeRange(0, self.attributedString.length)];
@@ -212,35 +212,22 @@
         NSRange range = [match range];
         if (range.location != NSNotFound) {
             
-            //strip first and last `
-            [[self.attributedString mutableString] replaceOccurrencesOfString:@"(^`|`$)" withString:@"" options:NSRegularExpressionSearch range:range];
-
-            //range.length = range.length - 1;
-            //range.location = range.location - 1;
-            //[[self.attributedString mutableString] replaceCharactersInRange:NSMakeRange(range.location, 1) withString:@""];
-            //adjust range for stripping last `
-            //range.location = range.location - 1;
-            //range.length = range.length - 1;
-            
-            //[[self.attributedString mutableString] replaceCharactersInRange:NSMakeRange(range.location, 1) withString:@""];
-            //and adjust again
-            
+            DDLogDebug(@"%u", range.location);
             //Need to update text here so we can accurately determine code block locations
             self.textView.attributedText = self.attributedString;
             
-            CGRect codeRect = [self frameOfTextRange:range];
+            CGRect codeRect = [self frameOfTextRange:range forString:[[self.attributedString string] substringWithRange:range] forFontSize:pointSize];
             UIView *highlightView = [[UIView alloc] initWithFrame:codeRect];
             highlightView.layer.cornerRadius = 4;
             highlightView.layer.borderWidth = 1;
             highlightView.backgroundColor = [highlightProperties valueForKey:@"backgroundColor"];
             highlightView.layer.borderColor = [[highlightProperties valueForKey:@"borderColor"] CGColor];
             [self.contentView insertSubview:highlightView atIndex:0];
-            for (id key in attributesDict)
-            {
-                id value = [attributesDict objectForKey:key];
-                [self.attributedString addAttribute:key value:value range:range];
-            }
             
+            [self.attributedString addAttributes:attributesDict range:range];
+            
+            //strip first and last `
+            [[self.attributedString mutableString] replaceOccurrencesOfString:@"(^`|`$)" withString:@" " options:NSRegularExpressionSearch range:range];
         }
     }
 }
@@ -275,13 +262,18 @@
     return results;
 }
 
-- (CGRect)frameOfTextRange:(NSRange)range
+- (CGRect)frameOfTextRange:(NSRange)range forString:(NSString *)string forFontSize:(CGFloat)pointSize
 {
     UITextPosition *beginning = self.textView.beginningOfDocument;
     UITextPosition *start = [self.textView positionFromPosition:beginning offset:range.location];
     UITextPosition *end = [self.textView positionFromPosition:start offset:range.length];
     UITextRange *textRange = [self.textView textRangeFromPosition:start toPosition:end];
     CGRect rect = [self.textView firstRectForRange:textRange];
+    
+    rect.origin.y++;
+    rect.origin.x = rect.origin.x + 2;
+    //super fancy re-calculation hack of rect width given that we're using a monospaced font. Don't try this at home kids!
+    rect.size.width = (pointSize / 1.75) * string.length;
     
     return [self.textView convertRect:rect fromView:self.textView.textInputView];
 }

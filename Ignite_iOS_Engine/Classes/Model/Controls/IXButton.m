@@ -17,22 +17,22 @@ static NSString* const kIXDisabled = @"disabled";
 
 // IXButton properties
 static NSString* const kIXTextDefault = @"text";
-static NSString* const kIXTextDefaultFont = @"text.font";
+static NSString* const kIXTextDefaultFont = @"font";
 static NSString* const kIXTextDefaultColor = @"text.color";
 static NSString* const kIXIconDefault = @"icon";
-static NSString* const kIXIconDefaultTintColor = @"icon.tintcolor";
+static NSString* const kIXIconDefaultTintColor = @"icon.tintColor";
 
-static NSString* const kIXTextTouch = @"text.touch";
-static NSString* const kIXTextTouchFont = @"text.touch.font";
-static NSString* const kIXTextTouchColor = @"text.touch.color";
-static NSString* const kIXIconTouch = @"icon.touch";
-static NSString* const kIXIconTouchTintColor = @"icon.touch.tintcolor";
+static NSString* const kIXTouchText = @"touch.text";
+static NSString* const kIXTouchFont = @"touch.font";
+static NSString* const kIXTouchTextColor = @"touch.text.color";
+static NSString* const kIXTouchIcon = @"touch.icon";
+static NSString* const kIXTouchIconTintColor = @"touch.icon.tintColor";
 
-static NSString* const kIXTextDisabled = @"text.disabled";
-static NSString* const kIXTextDisabledFont = @"text.disabled.font";
-static NSString* const kIXTextDisabledColor = @"text.disabled.color";
-static NSString* const kIXIconDisabled = @"icon.disabled";
-static NSString* const kIXIconDisabledTintColor = @"icon.disabled.tintcolor";
+static NSString* const kIXDisabledText = @"disabled.text";
+static NSString* const kIXDisabledFont = @"disabled.font";
+static NSString* const kIXDisabledTextColor = @"disabled.text.color";
+static NSString* const kIXDisabledIcon = @"disabled.icon";
+static NSString* const kIXDisabledIconTintColor = @"disabled.icon.tintColor";
 
 static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
 
@@ -108,20 +108,20 @@ static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
         if( [titleState isEqualToString:kIXTouch] )
         {
             controlState = UIControlStateHighlighted;
-            titleTextPropertyName = kIXTextTouch;
-            titleColorPropertyName = kIXTextTouchColor;
-            titleFontPropertyName = kIXTextTouchFont;
-            imagePropertyName = kIXIconTouch;
-            imageTintColorPropertyName = kIXIconTouchTintColor;
+            titleTextPropertyName = kIXTouchText;
+            titleColorPropertyName = kIXTouchTextColor;
+            titleFontPropertyName = kIXTouchFont;
+            imagePropertyName = kIXTouchIcon;
+            imageTintColorPropertyName = kIXTouchIconTintColor;
         }
         else if( [titleState isEqualToString:kIXDisabled] )
         {
             controlState = UIControlStateDisabled;
-            titleTextPropertyName = kIXTextDisabled;
-            titleColorPropertyName = kIXTextDisabledColor;
-            titleFontPropertyName = kIXTextDisabledFont;
-            imagePropertyName = kIXIconDisabled;
-            imageTintColorPropertyName = kIXIconDisabledTintColor;
+            titleTextPropertyName = kIXDisabledText;
+            titleColorPropertyName = kIXDisabledTextColor;
+            titleFontPropertyName = kIXDisabledFont;
+            imagePropertyName = kIXDisabledIcon;
+            imageTintColorPropertyName = kIXDisabledIconTintColor;
         }
         
         NSString* titleText = [[self propertyContainer] getStringPropertyValue:titleTextPropertyName defaultValue:defaultTextForTitles];

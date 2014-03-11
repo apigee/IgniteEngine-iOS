@@ -18,7 +18,7 @@
 
 // IXImage Properties
 static NSString* const kIXIconDefault = @"images.default";
-static NSString* const kIXIconTouch = @"images.touch";
+static NSString* const kIXTouchIcon = @"images.touch";
 static NSString* const kIXGIFDuration = @"gif_duration";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
@@ -95,7 +95,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
         
         NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
         NSString* resizeTouch = [self.propertyContainer getStringPropertyValue:kIXImagesTouchResize defaultValue:nil];
-        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXIconTouch defaultValue:nil];
+        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXTouchIcon defaultValue:nil];
         
         [[self propertyContainer] getImageProperty:kIXIconDefault
                                       successBlock:^(UIImage *image) {
@@ -113,7 +113,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
         //Only load an image here if we've actually defined a touch image
         if (touchImage)
         {
-            [[self propertyContainer] getImageProperty:kIXIconTouch
+            [[self propertyContainer] getImageProperty:kIXTouchIcon
                                           successBlock:^(UIImage *image) {
                                               
                                               // if touch image is to be resized, do that first
