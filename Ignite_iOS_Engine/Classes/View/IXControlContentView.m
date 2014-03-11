@@ -14,8 +14,8 @@
 
 @property (nonatomic,strong) NSArray* tapGestureRecognizers;
 @property (nonatomic,strong) NSArray* swipeGestureRecognizers;
-@property (nonatomic,strong) NSArray* pinchGestureRecognizers;
-@property (nonatomic,strong) NSArray* panGestureRecognizers;
+@property (nonatomic,strong) UIPinchGestureRecognizer* pinchGestureRecognizer;
+@property (nonatomic,strong) UIPanGestureRecognizer* panGestureRecognizer;
 
 @end
 
@@ -83,37 +83,27 @@
 
 -(void)beginListeningForPinchGestures
 {
-    if( ![[self pinchGestureRecognizers] count] )
+    if( ![self pinchGestureRecognizer] )
     {
-        NSMutableArray* pinchRecognizers = [NSMutableArray array];
-        for( int i = 0; i < 4; i++ )
-        {
-            UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGestureRecognized:)];
-            pinchRecognizer.delaysTouchesEnded = NO;
-            pinchRecognizer.cancelsTouchesInView = NO;
-            
-            [self addGestureRecognizer:pinchRecognizer];
-            [pinchRecognizers addObject:pinchRecognizer];
-        }
-        self.pinchGestureRecognizers = pinchRecognizers;
+        UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGestureRecognized:)];
+        pinchRecognizer.delaysTouchesEnded = NO;
+        pinchRecognizer.cancelsTouchesInView = NO;
+        
+        [self addGestureRecognizer:pinchRecognizer];
+        [self setPinchGestureRecognizer:pinchRecognizer];
     }
 }
 
 -(void)beginListeningForPanGestures
 {
-    if( ![[self panGestureRecognizers] count] )
+    if( ![self panGestureRecognizer] )
     {
-        NSMutableArray* panRecognizers = [NSMutableArray array];
-        for( int i = 0; i < 4; i++ )
-        {
-            UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
-            panRecognizer.delaysTouchesEnded = NO;
-            panRecognizer.cancelsTouchesInView = NO;
-            
-            [self addGestureRecognizer:panRecognizer];
-            [panRecognizers addObject:panRecognizer];
-        }
-        self.panGestureRecognizers = panRecognizers;
+        UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
+        panRecognizer.delaysTouchesEnded = NO;
+        panRecognizer.cancelsTouchesInView = NO;
+        
+        [self addGestureRecognizer:panRecognizer];
+        [self setPanGestureRecognizer:panRecognizer];
     }
 }
 
@@ -139,22 +129,22 @@
 
 -(void)stopListeningForPinchGestures
 {
-    for( UIPinchGestureRecognizer* pinchRecognizer in [self pinchGestureRecognizers] )
+    if( [self pinchGestureRecognizer] )
     {
-        [pinchRecognizer removeTarget:self action:@selector(pinchGestureRecognized:)];
-        [self removeGestureRecognizer:pinchRecognizer];
+        [[self pinchGestureRecognizer] removeTarget:self action:@selector(pinchGestureRecognized:)];
+        [self removeGestureRecognizer:[self pinchGestureRecognizer]];
+        [self setPinchGestureRecognizer:nil];
     }
-    self.pinchGestureRecognizers = nil;
 }
 
 -(void)stopListeningForPanGestures
 {
-    for( UIPanGestureRecognizer* panRecognizer in [self panGestureRecognizers] )
+    if( [self panGestureRecognizer] )
     {
-        [panRecognizer removeTarget:self action:@selector(panGestureRecognized:)];
-        [self removeGestureRecognizer:panRecognizer];
+        [[self panGestureRecognizer] removeTarget:self action:@selector(panGestureRecognized:)];
+        [self removeGestureRecognizer:[self panGestureRecognizer]];
+        [self setPanGestureRecognizer:nil];
     }
-    self.panGestureRecognizers = nil;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -213,7 +203,7 @@
 
 -(void)pinchGestureRecognized:(UIPinchGestureRecognizer*)pinchRecognizer
 {
-    DDLogVerbose(@"PINCH RECOGNIZED WITH SWIPE DIRECTION %lu : %@", (unsigned long)nil, [[self controlContentViewTouchDelegate] description]);
+    DDLogVerbose(@"PINCH RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewPinchGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewPinchGestureRecognized:pinchRecognizer];
@@ -222,7 +212,7 @@
 
 -(void)panGestureRecognized:(UIPanGestureRecognizer*)panRecognizer
 {
-    DDLogVerbose(@"PAN RECOGNIZED WITH SWIPE DIRECTION %lu : %@", (unsigned long)nil, [[self controlContentViewTouchDelegate] description]);
+    DDLogVerbose(@"PAN RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewPanGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewPanGestureRecognized:panRecognizer];

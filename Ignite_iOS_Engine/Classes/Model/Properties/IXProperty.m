@@ -95,9 +95,9 @@
     {
         returnString = [[NSMutableString alloc] initWithString:returnString];
         
+        __weak typeof(self) weakSelf = self;
         __block NSInteger newCharsAdded = 0;
-        __block IXProperty* weakSelf = self;
-        __weak NSMutableString* weakString = (NSMutableString*)returnString;
+        __block NSMutableString* weakString = (NSMutableString*)returnString;
         
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
             

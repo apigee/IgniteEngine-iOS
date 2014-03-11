@@ -115,15 +115,15 @@ static NSString* const kIXStop = @"stop";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXIsPlaying] )
     {
-        returnValue = [NSString stringFromBOOL:[[self audioPlayer] isPlaying]];
+        returnValue = [NSString ix_stringFromBOOL:[[self audioPlayer] isPlaying]];
     }
     else if( [propertyName isEqualToString:kIXDuration] )
     {
-        returnValue = [NSString stringFromFloat:[[self audioPlayer] duration]];
+        returnValue = [NSString ix_stringFromFloat:[[self audioPlayer] duration]];
     }
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
-        returnValue = [NSString stringFromFloat:[[self audioPlayer] currentTime]];
+        returnValue = [NSString ix_stringFromFloat:[[self audioPlayer] currentTime]];
     }
     else if( [propertyName isEqualToString:kIXLastCreationError] )
     {

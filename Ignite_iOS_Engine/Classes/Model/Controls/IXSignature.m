@@ -51,7 +51,7 @@ static NSString* const kIXTo = @"to"; // Parameter of the "save_signature" funct
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXHasSignature] )
     {
-        returnValue = [NSString stringFromBOOL:[[self signatureView] hasSignature]];
+        returnValue = [NSString ix_stringFromBOOL:[[self signatureView] hasSignature]];
     }
     else if( [propertyName isEqualToString:kIXLastSaveError] )
     {
@@ -77,6 +77,11 @@ static NSString* const kIXTo = @"to"; // Parameter of the "save_signature" funct
                 UIImage* signatureImage = [[self signatureView] signatureImage];
                 if( signatureImage )
                 {
+                    // Update the cache with the newly created image.
+                    [IXPropertyContainer storeImageInCache:signatureImage
+                                              withImageURL:[NSURL fileURLWithPath:saveToLocation]
+                                                    toDisk:NO];
+                    
                     NSData* imageData = UIImagePNGRepresentation(signatureImage);
                     if( imageData )
                     {

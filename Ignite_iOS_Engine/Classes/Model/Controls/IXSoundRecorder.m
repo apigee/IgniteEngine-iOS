@@ -124,15 +124,15 @@ static NSString* const kIXFinished = @"finished";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXRecordPermissionGranted] )
     {
-        returnValue = [NSString stringFromBOOL:[self recordPermissionGranted]];
+        returnValue = [NSString ix_stringFromBOOL:[self recordPermissionGranted]];
     }
     else if( [propertyName isEqualToString:kIXIsRecording] )
     {
-        returnValue = [NSString stringFromBOOL:[[self audioRecorder] isRecording]];
+        returnValue = [NSString ix_stringFromBOOL:[[self audioRecorder] isRecording]];
     }
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
-        returnValue = [NSString stringFromFloat:[[self audioRecorder] currentTime]];
+        returnValue = [NSString ix_stringFromFloat:[[self audioRecorder] currentTime]];
     }
     else if( [propertyName isEqualToString:kIXLastErrorMessage] )
     {

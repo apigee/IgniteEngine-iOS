@@ -7,13 +7,20 @@
 //
 
 #import "UITextField+IXAdditions.h"
+#import "IXConstants.h"
+
+static NSString* const kIXTextAlignmentCenter = @"center";
+static NSString* const kIXTextAlignmentLeft = @"left";
+static NSString* const kIXTextAlignmentRight = @"right";
+static NSString* const kIXTextAlignmentJustified = @"justified";
+static NSString* const kIXTextAlignmentNatural = @"natural";
 
 @implementation UITextField (IXAdditions)
 
-+(UIKeyboardAppearance)stringToKeyboardAppearance:(NSString*)keyboardAppearanceString
++(UIKeyboardAppearance)ix_stringToKeyboardAppearance:(NSString*)keyboardAppearanceString
 {
     UIKeyboardAppearance returnAppearance = UIKeyboardAppearanceDefault;
-    if([keyboardAppearanceString isEqualToString:@"default"])
+    if([keyboardAppearanceString isEqualToString:kIX_DEFAULT])
     {
         returnAppearance = UIKeyboardAppearanceDefault;
     }
@@ -28,10 +35,10 @@
     return returnAppearance;
 }
 
-+(UIKeyboardType)stringToKeyboardType:(NSString*)keyboardTypeString
++(UIKeyboardType)ix_stringToKeyboardType:(NSString*)keyboardTypeString
 {
     UIKeyboardType returnType = UIKeyboardTypeDefault;
-    if([keyboardTypeString isEqualToString:@"default"])
+    if([keyboardTypeString isEqualToString:kIX_DEFAULT])
     {
         returnType = UIKeyboardTypeDefault;
     }
@@ -66,10 +73,10 @@
     return returnType;
 }
 
-+(UIReturnKeyType)stringToReturnKeyType:(NSString*)returnKeyTypeString
++(UIReturnKeyType)ix_stringToReturnKeyType:(NSString*)returnKeyTypeString
 {
     UIReturnKeyType returnKeyType = UIReturnKeyDefault;
-    if([returnKeyTypeString isEqualToString:@"default"])
+    if([returnKeyTypeString isEqualToString:kIX_DEFAULT])
     {
         returnKeyType = UIReturnKeyDefault;
     }
@@ -114,6 +121,21 @@
         returnKeyType = UIReturnKeyYahoo;
     }
     return returnKeyType;
+}
+
++(NSTextAlignment)ix_textAlignmentFromString:(NSString*)textAlignmentString
+{
+    NSTextAlignment textAlignment = NSTextAlignmentLeft;
+    if( [textAlignmentString isEqualToString:kIXTextAlignmentCenter] ) {
+        textAlignment = NSTextAlignmentCenter;
+    } else if( [textAlignmentString isEqualToString:kIXTextAlignmentRight] ) {
+        textAlignment = NSTextAlignmentRight;
+    } else if( [textAlignmentString isEqualToString:kIXTextAlignmentJustified] ) {
+        textAlignment = NSTextAlignmentJustified;
+    } else if( [textAlignmentString isEqualToString:kIXTextAlignmentNatural] ) {
+        textAlignment = NSTextAlignmentNatural;
+    }
+    return textAlignment;
 }
 
 @end

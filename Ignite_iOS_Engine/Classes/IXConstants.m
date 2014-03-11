@@ -34,4 +34,5 @@ NSString* const kIX_OK = @"OK";
 NSString* const kIX_CANCEL = @"Cancel";
 NSString* const kIX_TOUCH = @"touch";
 NSString* const kIX_GIF_EXTENSION = @"gif";
+NSString* const kIX_DEFAULT = @"default";
 

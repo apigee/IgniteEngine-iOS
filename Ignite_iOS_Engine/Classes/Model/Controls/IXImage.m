@@ -166,7 +166,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXIsAnimating] )
     {
-        returnValue = [NSString stringFromBOOL:[[self imageView] isGIFAnimating]];
+        returnValue = [NSString ix_stringFromBOOL:[[self imageView] isGIFAnimating]];
     }
     else
     {

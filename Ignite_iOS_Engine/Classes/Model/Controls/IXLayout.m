@@ -21,7 +21,6 @@ static NSString* const kIXVerticalScrollEnabled = @"vertical_scroll_enabled";
 static NSString* const kIXHorizontalScrollEnabled = @"horizontal_scroll_enabled";
 static NSString* const kIXEnableScrollsToTop = @"enable_scrolls_to_top";
 static NSString* const kIXScrollIndicatorStyle = @"scroll_indicator_style";
-static NSString* const kIXDefault = @"default";
 static NSString* const kIXBlack = @"black";
 static NSString* const kIXWhite = @"white";
 static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
@@ -90,7 +89,7 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
     [self setHorizontalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXHorizontalScrollEnabled defaultValue:YES]];
     [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:kIXEnableScrollsToTop defaultValue:NO]];
 
-    NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIXDefault];
+    NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIX_DEFAULT];
     if( [scrollIndicatorStyle isEqualToString:kIXBlack] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
     } else if( [scrollIndicatorStyle isEqualToString:kIXWhite] ) {

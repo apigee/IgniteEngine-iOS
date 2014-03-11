@@ -30,7 +30,6 @@ static NSString* const kIXNavStackTypePop = @"pop";
 static NSString* const kIXNavStackTypeReplace = @"replace";
 
 // kIXNavAnimationType Types
-static NSString* const kIXNavAnimationTypeDefault = @"default";
 static NSString* const kIXNavAnimationTypeFlipFromLeft = @"flip_from_left";
 static NSString* const kIXNavAnimationTypeFlipFromRight = @"flip_from_right";
 static NSString* const kIXNavAnimationTypeCurlUp = @"curl_up";
@@ -73,7 +72,7 @@ static BOOL sIXIsAttemptingNavigation = NO;
 
         NSString* navigateStackType = [[self actionProperties] getStringPropertyValue:kIXNavStackType defaultValue:kIXNavStackTypePush];
         
-        [self setNavAnimationTransitionType:[IXNavigateAction stringToViewAnimationTransition:[[self actionProperties] getStringPropertyValue:kIXNavAnimationType defaultValue:kIXNavAnimationTypeDefault]]];
+        [self setNavAnimationTransitionType:[IXNavigateAction stringToViewAnimationTransition:[[self actionProperties] getStringPropertyValue:kIXNavAnimationType defaultValue:kIX_DEFAULT]]];
         [self setNavAnimationDelay:[[self actionProperties] getFloatPropertyValue:kIXNavAnimationDelay defaultValue:0.0f]];
         [self setNavAnimationDuration:[[self actionProperties] getFloatPropertyValue:kIXNavAnimationDuration defaultValue:0.75f]];
         

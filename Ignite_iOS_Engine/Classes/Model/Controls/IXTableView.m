@@ -91,7 +91,7 @@
                                                    object:[self dataProvider]];
     }
     
-    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator_style" defaultValue:@"default"];
+    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator_style" defaultValue:kIX_DEFAULT];
     if( [seperatorStyle isEqualToString:@"none"] ) {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {

@@ -114,7 +114,7 @@
     [super applySettings];
     
     ALMoviePlayerControls* movieControls = [[self moviePlayer] controls];
-    NSString* controlsStyle = [[self propertyContainer] getStringPropertyValue:@"controls" defaultValue:@"default"];
+    NSString* controlsStyle = [[self propertyContainer] getStringPropertyValue:@"controls" defaultValue:kIX_DEFAULT];
     if( [controlsStyle isEqualToString:@"embedded"] )
     {
         [movieControls setStyle:ALMoviePlayerControlsStyleEmbedded];

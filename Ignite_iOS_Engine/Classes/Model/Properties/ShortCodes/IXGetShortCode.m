@@ -16,17 +16,9 @@
 #import "IXAppManager.h"
 #import "IXLayout.h"
 #import "IXDeviceHardware.h"
+#import "Reachability.h"
 
-// IXGetShortCode Read-Only Properties
-static NSString* const kIXScreenWidth = @"screen.width";
-static NSString* const kIXScreenHeight = @"screen.height";
-static NSString* const kIXScaleFactor = @"screen.scale";
-static NSString* const kIXModel = @"model"; //See IXDeviceHardware.m for complete list
-static NSString* const kIXType = @"type";
-static NSString* const kIXOSVersion = @"os.version";
-static NSString* const kIXOSVersionInteger = @"os.version.integer";
-static NSString* const kIXOSVersionMajor = @"os.version.major";
-static NSString* const kIXOrientation = @"orientation";
+#import "NSString+IXAdditions.h"
 
 @implementation IXGetShortCode
 
@@ -43,52 +35,7 @@ static NSString* const kIXOrientation = @"orientation";
     
     if( [[self objectID] isEqualToString:@"device"] )
     {
-        if ([propertyName isEqualToString:kIXScreenWidth])
-            returnValue = [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.width];
-        else if ([propertyName isEqualToString:kIXScreenHeight])
-            returnValue = [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.height];
-        else if ([propertyName isEqualToString:kIXScaleFactor])
-            returnValue = [NSString stringWithFormat:@"%.1f", [[UIScreen mainScreen] scale]];
-        else if ([propertyName isEqualToString:kIXModel])
-        {
-            returnValue = [IXDeviceHardware modelString];
-        }
-        else if ([propertyName isEqualToString:kIXType])
-        {
-            //potential return values: iPod touch, iPhone, iPhone Simulator, iPad, iPad Simulator
-            returnValue = [[UIDevice currentDevice] model];
-        }
-        else if ([propertyName isEqualToString:kIXOSVersion])
-        {
-            returnValue = [[UIDevice currentDevice] systemVersion];
-        }
-        else if ([propertyName isEqualToString:kIXOSVersionInteger])
-        {
-            NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"."];
-            returnValue = [[[[UIDevice currentDevice] systemVersion] componentsSeparatedByCharactersInSet: doNotWant] componentsJoinedByString: @""];
-        }
-        else if ([propertyName isEqualToString:kIXOSVersionMajor])
-        {
-            returnValue = [[[UIDevice currentDevice] systemVersion] substringToIndex:1];
-        }
-        else if ([propertyName isEqualToString:kIXOrientation])
-        {
-            int type = [[UIApplication sharedApplication] statusBarOrientation];
-            if (type == 1) {
-                returnValue = @"Portrait";
-            } else if (type == 2) {
-                returnValue = @"Portrait-UpsideDown";
-            } else if (type == 3) {
-                returnValue = @"Landscape-Right";
-            } else if (type == 4) {
-                returnValue = @"Landscape-Left";
-            } else
-                returnValue = nil;
-        }
-        else
-        {
-            returnValue = nil;
-        }
+        returnValue = [IXDeviceHardware getDevicePropertyNamed:propertyName];       
     }
     else if( [[self objectID] isEqualToString:@"app"] )
     {
@@ -101,6 +48,22 @@ static NSString* const kIXOrientation = @"orientation";
     else if( [[self objectID] isEqualToString:@"form"] )
     {
         returnValue = nil;
+    }
+    else if( [[self objectID] isEqualToString:@"network"] )
+    {
+        Reachability* reachability = [[IXAppManager sharedAppManager] reachabilty];
+        if( [propertyName isEqualToString:@"reachable"] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[reachability isReachable]];
+        }
+        else if( [propertyName isEqualToString:@"reachable.wifi"] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWiFi]];
+        }
+        else if( [propertyName isEqualToString:@"reachable.wwan"] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWWAN]];
+        }
     }
     else if( [[self objectID] isEqualToString:@"view"] )
     {

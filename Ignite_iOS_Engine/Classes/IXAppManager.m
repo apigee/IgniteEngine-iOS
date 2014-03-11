@@ -28,6 +28,7 @@
 #import "SDWebImageManager.h"
 #import "IXPathHandler.h"
 #import "IXLogger.h"
+#import "Reachability.h"
 
 @interface IXAppManager ()
 
@@ -51,6 +52,7 @@
         _sessionProperties = [[IXPropertyContainer alloc] init];
         
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
+        _reachabilty = [Reachability reachabilityForInternetConnection];
     }
     return self;
 }

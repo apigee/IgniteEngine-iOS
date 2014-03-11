@@ -11,5 +11,6 @@
 @interface UILabel (IXAdditions)
 
 -(CGSize)sizeForFixedWidth:(float)fixedWidth;
++(NSTextAlignment)ix_textAlignmentFromString:(NSString*)textAlignmentString;
 
 @end

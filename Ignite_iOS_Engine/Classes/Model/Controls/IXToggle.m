@@ -100,7 +100,7 @@
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:@"is_on"] )
     {
-        returnValue = [NSString stringFromBOOL:[[self toggleSwitch] isOn]];
+        returnValue = [NSString ix_stringFromBOOL:[[self toggleSwitch] isOn]];
     }
     else
     {

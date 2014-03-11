@@ -235,7 +235,20 @@
     return returnValue;
 }
 
++(void)storeImageInCache:(UIImage*)image withImageURL:(NSURL*)imageURL toDisk:(BOOL)toDisk
+{
+    if( image && [imageURL absoluteString].length > 0 )
+    {
+        [[[SDWebImageManager sharedManager] imageCache] storeImage:image forKey:[imageURL absoluteString] toDisk:toDisk];
+    }
+}
+
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock
+{
+    [self getImageProperty:propertyName successBlock:successBlock failBlock:failBlock shouldRefreshCachedImage:NO];
+}
+
+-(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage
 {
     NSURL* imageURL = [self getURLPathPropertyValue:propertyName basePath:nil defaultValue:nil];
     /*
@@ -278,7 +291,7 @@
         }
         else
         {
-            if( [IXPathHandler pathIsLocal:imageURLPath] )
+            if( !refreshCachedImage && [IXPathHandler pathIsLocal:imageURLPath] )
             {
                 UIImage* image = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:[imageURL absoluteString]];
                 if( image )
@@ -291,21 +304,23 @@
                 }            
             }
             
-            if( imageURL )
+            if( refreshCachedImage )
             {
-                [[SDWebImageManager sharedManager] downloadWithURL:imageURL
-                                                           options:SDWebImageCacheMemoryOnly
-                                                          progress:nil
-                                                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
-                                                             if (image) {
-                                                                 if( successBlock )
-                                                                    successBlock([UIImage imageWithCGImage:[image CGImage]]);
-                                                             } else {
-                                                                 if( failBlock )
-                                                                    failBlock(error);
-                                                             }
-                                                         }];
+                [[[SDWebImageManager sharedManager] imageCache] removeImageForKey:[imageURL absoluteString] fromDisk:YES];
             }
+            
+            [[SDWebImageManager sharedManager] downloadWithURL:imageURL
+                                                       options:SDWebImageCacheMemoryOnly
+                                                      progress:nil
+                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
+                                                         if (image) {
+                                                             if( successBlock )
+                                                                 successBlock([UIImage imageWithCGImage:[image CGImage]]);
+                                                         } else {
+                                                             if( failBlock )
+                                                                 failBlock(error);
+                                                         }
+                                                     }];
         }
     }
     else
