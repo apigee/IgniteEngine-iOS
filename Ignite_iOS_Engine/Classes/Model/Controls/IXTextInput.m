@@ -17,7 +17,7 @@
  * name="dismiss_on_return"         default="YES"               type="BOOL"
  * name="placeholder_text"          default=""                  type="String"
  * name="placeholder_text_color"    default="lightGrayColor"    type="Color"
-
+ 
  - EVENTS
  
  * name="got_focus"         when="Occurs when the user begins editing the text."
@@ -106,7 +106,7 @@ static CGSize sIXKBSize;
     
     _needsToRegisterForKeyboardNotifications = YES;
     _defaultTextFieldTintColor = [_textField tintColor];
-
+    
     _textField = [[UITextField alloc] initWithFrame:[[self contentView] bounds]];
     [_textField setBackgroundColor:[UIColor whiteColor]];
     [_textField setDelegate:self];
@@ -123,7 +123,7 @@ static CGSize sIXKBSize;
 }
 
 -(void)layoutControlContentsInRect:(CGRect)rect
-{    
+{
     [[self textField] setFrame:rect];
 }
 
@@ -161,7 +161,7 @@ static CGSize sIXKBSize;
     [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
     [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
     [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
-
+    
     [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
     if( [[self inputAllowedRegexString] length] > 1 )
     {
@@ -199,25 +199,6 @@ static CGSize sIXKBSize;
     {
         [super applyFunction:functionName withParameters:parameterContainer];
     }
-<<<<<<< HEAD
-    
-    [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:@"dismiss_on_return" defaultValue:YES]];
-    
-    [[self textField] setBackgroundColor:[UIColor whiteColor]];
-    [[self textField] setTintColor:[UIColor redColor]];
-    
-    NSString* placeHolderText = [self.propertyContainer getStringPropertyValue:@"text.placeholder" defaultValue:@""];
-    UIColor* placeHolderTextColor = [self.propertyContainer getColorPropertyValue:@"text.placeholder.color" defaultValue:[UIColor lightGrayColor]];
-    NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
-                                                                                attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
-    [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
-    [[self textField] setTextColor:[self.propertyContainer getColorPropertyValue:@"text.color" defaultValue:[UIColor blackColor]]];
-    [[self textField] setTintColor:[self.propertyContainer getColorPropertyValue:@"cursor.color" defaultValue:[self defaultTextFieldTintColor]]];
-    
-    UIFont* font = [[self propertyContainer] getFontPropertyValue:@"font" defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
-    [[self textField] setFont:font];
-=======
->>>>>>> b1f0e1e31ad532b3fb41e2ec3db7b0adaa89aa16
 }
 
 - (void)registerForKeyboardNotifications
@@ -283,7 +264,7 @@ static CGSize sIXKBSize;
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-
+    
     UIScrollView* scrollView = nil;
     UIViewController* visibleVC = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController];
     if( [visibleVC isKindOfClass:[IXViewController class]] )
@@ -297,7 +278,7 @@ static CGSize sIXKBSize;
                          scrollView.contentInset = contentInsets;
                          scrollView.scrollIndicatorInsets = contentInsets;
                          [scrollView setContentOffset:CGPointMake(0, -contentInsets.top) animated:YES];
-    }];
+                     }];
 }
 
 -(void)adjustScrollViewForKeyboard:(float)animationDuration
@@ -351,7 +332,7 @@ static CGSize sIXKBSize;
     
     [self setInputAllowedRegex:nil];
     [self setInputDisallowedRegex:nil];
-
+    
     if( [[self inputAllowedRegexString] length] > 0 )
     {
         [self setInputAllowedRegex:[NSRegularExpression regularExpressionWithPattern:[self inputAllowedRegexString]
@@ -372,7 +353,7 @@ static CGSize sIXKBSize;
 {
     //JA: Added action for return key press
     [[self actionContainer] executeActionsForEventNamed:kIXReturnKeyPressed];
-
+    
     BOOL shouldReturn = [self shouldDismissOnReturn];
     if( shouldReturn )
     {
@@ -429,43 +410,8 @@ static CGSize sIXKBSize;
         }
     }
     
-<<<<<<< HEAD
-    self.textField.text = inputText;
-    [self.actionContainer executeActionsForEventNamed:@"text_changed"];
-}
-
-- (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
-{
-    NSString* readOnlyPropertyValue = nil;
-    if( [propertyName isEqualToString:@"text"] )
-    {
-        readOnlyPropertyValue = [[self textField] text];
-    }
-    else
-    {
-        readOnlyPropertyValue = [super getReadOnlyPropertyValue:propertyName];
-    }
-    return readOnlyPropertyValue;
-}
-
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
-{
-    if( [functionName isEqualToString:@"keyboard_hide"] || [functionName isEqualToString:@"lose_focus"] )
-    {
-        [[self textField] resignFirstResponder];
-    }
-    else if( [functionName isEqualToString:@"keyboard_show"] || [functionName isEqualToString:@"focus"] )
-    {
-        [[self textField] becomeFirstResponder];
-    }
-    else
-    {
-        [super applyFunction:functionName withParameters:parameterContainer];
-    }
-=======
     [[self textField] setText:inputText];
     [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
->>>>>>> b1f0e1e31ad532b3fb41e2ec3db7b0adaa89aa16
 }
 
 @end
