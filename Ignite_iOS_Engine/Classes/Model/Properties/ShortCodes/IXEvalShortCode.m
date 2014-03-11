@@ -15,8 +15,8 @@
 
 -(NSString*)evaluate
 {
-    NSString* stringToEval = [self methodName];
-    if( !stringToEval )
+    NSString* stringToEval = nil;
+    if( [[self parameters] count] )
     {
         IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
         stringToEval = [parameterProperty getPropertyValue];

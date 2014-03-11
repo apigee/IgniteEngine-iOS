@@ -65,7 +65,7 @@
     }
     else
     {
-        [self setDataLocation:[[self propertyContainer] getPathPropertyValue:@"data_location" basePath:nil defaultValue:nil]];
+        [self setDataLocation:[[self propertyContainer] getPathPropertyValue:@"data.baseurl" basePath:nil defaultValue:nil]];
         [self setHttpClient:nil];
         [self setHttpMethod:nil];
     }

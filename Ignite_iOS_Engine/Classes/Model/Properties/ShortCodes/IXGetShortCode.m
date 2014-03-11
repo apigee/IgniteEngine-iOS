@@ -37,10 +37,6 @@
     {
         returnValue = [IXDeviceHardware getDevicePropertyNamed:propertyName];       
     }
-    else if( [[self objectID] isEqualToString:@"app"] )
-    {
-        returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:nil];
-    }
     else if( [[self objectID] isEqualToString:@"session"] )
     {
         returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
@@ -86,7 +82,8 @@
             }
         }
     }
-    return returnValue;
+    
+    return [self applyFunctionToString:returnValue];
 }
 
 @end

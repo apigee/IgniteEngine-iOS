@@ -7,11 +7,10 @@
 //
 
 #import "IXDatarowShortCode.h"
-#import "IXPropertyContainer.h"
+
 #import "IXProperty.h"
-#import "IXSandbox.h"
-#import "IXCoreDataDataProvider.h"
-#import <RestKit/CoreData.h>
+#import "IXPropertyContainer.h"
+#import "IXBaseDataProvider.h"
 
 @implementation IXDatarowShortCode
 
@@ -20,17 +19,23 @@
     NSString* returnValue = nil;
     
     IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
+    
     IXBaseDataProvider* baseDP = [sandbox dataProviderForRowData];
     NSIndexPath* rowIndexPath = [sandbox indexPathForRowData];
-    NSString* keyPath = [self methodName];
-    if( !keyPath )
-    {
-        IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        keyPath = [parameterProperty getPropertyValue];
-    }
-    returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
     
-    return returnValue;
+    if( baseDP && rowIndexPath )
+    {
+        NSString* keyPath = [self methodName];
+        if( !keyPath )
+        {
+            IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
+            keyPath = [parameterProperty getPropertyValue];
+        }
+        
+        returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    }
+    
+    return [self applyFunctionToString:returnValue];
 }
 
 @end

@@ -10,8 +10,9 @@
 
 #import "IXProperty.h"
 #import "IXBaseObject.h"
+#import "IXAppManager.h"
 
-//usage: [[app('random_number.40')]]
+//usage: [[app:random_number(40)]]
 
 static NSString* const kIXRandomNumber = @"random_number";
 
@@ -21,22 +22,15 @@ static NSString* const kIXRandomNumber = @"random_number";
 {
     NSString* returnValue = nil;
     
-    NSString* propertyName = [self methodName];
-    if( !propertyName )
+    if( [[self functionName] isEqualToString:kIXRandomNumber] )
     {
-        IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        propertyName = [parameterProperty getPropertyValue];
-    }
-    
-    if( [propertyName hasPrefix:kIXRandomNumber] )
-    {
-        NSUInteger upperBound = 100;
-        NSArray* stringArray = [propertyName componentsSeparatedByString:@"."];
-        if( [stringArray count] > 1 )
-        {
-            upperBound = [[stringArray lastObject] intValue];
-        }
+        NSUInteger upperBound = [[[[self parameters] firstObject] getPropertyValue] integerValue];
         returnValue = [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+    }
+    else
+    {
+        returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:[self methodName] defaultValue:nil];
+        returnValue = [self applyFunctionToString:returnValue];
     }
     
     return returnValue;

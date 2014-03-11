@@ -12,19 +12,10 @@
 
 @implementation IXBaseShortCode
 
--(instancetype)init
-{
-    self = [super init];
-    if( self )
-    {
-        
-    }
-    return self;
-}
-
 -(instancetype)initWithRawValue:(NSString*)rawValue
                        objectID:(NSString*)objectID
                      methodName:(NSString*)methodName
+                   functionName:(NSString*)functionName
                      parameters:(NSArray*)parameters
 {
     self = [self init];
@@ -32,6 +23,7 @@
     {
         _rawValue = [rawValue copy];
         _objectID = [objectID copy];
+        _functionName = [functionName copy];
         _methodName = [methodName copy];
         _parameters = parameters;
     }
@@ -41,22 +33,48 @@
 +(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
                                 objectID:(NSString*)objectID
                               methodName:(NSString*)methodName
+                            functionName:(NSString*)functionName
                               parameters:(NSArray*)parameters
 {
-    return [[[self class] alloc] initWithRawValue:rawValue objectID:objectID methodName:methodName parameters:parameters];
+    return [[[self class] alloc] initWithRawValue:rawValue objectID:objectID methodName:methodName functionName:functionName parameters:parameters];
 }
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    return [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
-                                                      objectID:[self objectID]
-                                                    methodName:[self methodName]
-                                                    parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]];
+    IXBaseShortCode* copy = [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
+                                                                       objectID:[self objectID]
+                                                                     methodName:[self methodName]
+                                                                   functionName:[self functionName]
+                                                                     parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]];
+    [copy setRangeInPropertiesText:[self rangeInPropertiesText]];
+    return copy;
 }
 
 -(NSString*)evaluate
 {
     return [self rawValue];
+}
+
+-(NSString*)applyFunctionToString:(NSString*)stringToModify
+{
+    NSString* returnValue = stringToModify;
+    NSString* functionName = [self functionName];
+    if( functionName && [stringToModify length] > 0 )
+    {
+        if( [functionName isEqualToString:@"to_lowercase"] )
+        {
+            returnValue = [stringToModify lowercaseString];
+        }
+        else if( [functionName isEqualToString:@"to_uppercase"] )
+        {
+            returnValue = [stringToModify uppercaseString];
+        }
+        else if( [functionName isEqualToString:@"capitalize"] )
+        {
+            returnValue = [stringToModify capitalizedString];
+        }
+    }
+    return returnValue;
 }
 
 @end

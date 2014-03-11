@@ -35,7 +35,6 @@
     self = [super init];
     if( self != nil )
     {
-        _readonly = NO;
         _propertyContainer = nil;
         
         _originalString = rawValue;
@@ -52,7 +51,6 @@
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXProperty *copiedProperty = [super copyWithZone:zone];
-    [copiedProperty setReadonly:[self isReadonly]];
     [copiedProperty setPropertyName:[self propertyName]];
     [copiedProperty setOriginalString:[self originalString]];
     [copiedProperty setStaticText:[self staticText]];
@@ -64,7 +62,6 @@
         {
             [copiedShortCode setProperty:copiedProperty];
         }
-        [copiedProperty setShortCodeRanges:[[NSMutableArray alloc] initWithArray:[self shortCodeRanges] copyItems:YES]];
     }
     return copiedProperty;
 }
@@ -95,13 +92,12 @@
     {
         returnString = [[NSMutableString alloc] initWithString:returnString];
         
-        __weak typeof(self) weakSelf = self;
         __block NSInteger newCharsAdded = 0;
         __block NSMutableString* weakString = (NSMutableString*)returnString;
         
         [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
             
-            NSRange shortCodeRange = [[[weakSelf shortCodeRanges] objectAtIndex:idx] rangeValue];
+            NSRange shortCodeRange = [shortCode rangeInPropertiesText];
             NSString *shortCodesValue = [shortCode evaluate];
             if( shortCodesValue == nil )
             {

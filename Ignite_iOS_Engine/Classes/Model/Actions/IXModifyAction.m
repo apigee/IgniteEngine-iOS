@@ -119,7 +119,6 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
 
     if (animationStyle)
     {
-
         if ( [animationStyle isEqualToString:kIXEaseInOut] )
             animationCurve = UIViewAnimationCurveEaseInOut;
         else if ( [animationStyle isEqualToString:kIXEaseIn] )
@@ -132,13 +131,13 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
     
     if( duration > 0.0f )
     {
-        __weak typeof(self) weakSelf = self;
         if (staggerDelay > 0)
         {
-            [weakSelf performStaggeredModifyWithDuration:duration withAnimationCurve:animationCurve withStaggerDelay:staggerDelay];
+            [self performStaggeredModifyWithDuration:duration withAnimationCurve:animationCurve withStaggerDelay:staggerDelay];
         }
         else
         {
+            __weak typeof(self) weakSelf = self;
             [UIView animateWithDuration:duration
                                   delay:0.0f
                                 options: animationCurve | UIViewAnimationOptionBeginFromCurrentState
