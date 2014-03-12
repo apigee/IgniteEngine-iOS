@@ -88,6 +88,8 @@ static NSString* const kIXStopAnimation = @"stop_animation";
             [[self imageView] setAnimatedGIFDuration:gifDuration];
             [[self imageView] setAnimatedGIFURL:[self animatedGIFURL]];
         }
+        
+        [[self imageView] setHidden:!(![[self contentView] isHidden] && [[self contentView] alpha] > 0.0f)];
     }
     else
     {

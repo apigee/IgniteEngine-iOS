@@ -63,6 +63,22 @@
     }
 }
 
+-(void)setHidden:(BOOL)hidden
+{
+    [super setHidden:hidden];
+    if( hidden )
+    {
+        [self stopGIFAnimation:YES];
+    }
+    else
+    {
+        if( ![self isGIFAnimating] && _animatedGIFImageRef )
+        {
+            [self startGIFAnimation:YES];
+        }
+    }
+}
+
 -(void)loadGIF
 {
     __weak __typeof(&*self)weakSelf = self;
@@ -88,8 +104,8 @@
                 [weakSelf setTimerTimeInterval:[self calculateGIFTimeInterval]];
                 
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    [weakSelf setNextFrame:0];
-                    [weakSelf setTimer:[[weakSelf weakTimerTarget] createTimerWithInterval:[weakSelf timerTimeInterval] repeats:YES]];
+                    if( ![weakSelf isHidden] )
+                        [weakSelf startGIFAnimation:YES];
                 });
             }
         }

@@ -328,7 +328,7 @@ static NSCache* sCustomControlCache;
 +(IXActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray
 {
     IXActionContainer* actionContainer = nil;
-    if( [actionsArray isKindOfClass:[NSArray class]] )
+    if( [actionsArray isKindOfClass:[NSArray class]] && [actionsArray count] )
     {
         actionContainer = [[IXActionContainer alloc] init];
         for( id actionValueDict in actionsArray )
@@ -680,7 +680,7 @@ static NSCache* sCustomControlCache;
 +(NSArray*)dataProviderConfigsWithJSONDataProviderArray:(NSArray*)dataProvidersValueArray
 {
     NSMutableArray* dataProviderConfigsArray = nil;
-    if( [dataProvidersValueArray isKindOfClass:[NSArray class]] )
+    if( [dataProvidersValueArray isKindOfClass:[NSArray class]] && [dataProvidersValueArray count] )
     {
         dataProviderConfigsArray = [NSMutableArray array];
         for( id dataProviderValueDict in dataProvidersValueArray )
