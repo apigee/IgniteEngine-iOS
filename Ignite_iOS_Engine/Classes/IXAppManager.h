@@ -49,6 +49,7 @@
 +(IXAppManager*)sharedAppManager;
 -(void)startApplication;
 -(IXViewController*)currentIXViewController;
+-(void)applyAppProperties;
 
 +(UIInterfaceOrientation)currentInterfaceOrientation;
 -(NSString*)evaluateJavascript:(NSString*)javascript;

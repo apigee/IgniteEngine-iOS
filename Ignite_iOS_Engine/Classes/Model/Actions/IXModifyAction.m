@@ -39,6 +39,12 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
         IXPropertyContainer* sessionProperties = [[IXAppManager sharedAppManager] sessionProperties];
         [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
     }
+    else if( [objectID isEqualToString:kIX_APP] )
+    {
+        IXPropertyContainer* appProperties = [[IXAppManager sharedAppManager] appProperties];
+        [appProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
+        [[IXAppManager sharedAppManager] applyAppProperties];
+    }
     else
     {
         NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithID:objectID

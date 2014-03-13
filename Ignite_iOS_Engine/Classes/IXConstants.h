@@ -21,6 +21,7 @@
 // SPECIAL
 extern NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME;
 extern NSString* const kIX_ID;
+extern NSString* const kIX_APP;
 extern NSString* const kIX_TARGET;
 extern NSString* const kIX_TYPE;
 extern NSString* const kIX_SESSION;
