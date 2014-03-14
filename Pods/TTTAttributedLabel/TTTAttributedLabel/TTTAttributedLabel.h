@@ -32,6 +32,12 @@ typedef enum {
     TTTAttributedLabelVerticalAlignmentBottom   = 2,
 } TTTAttributedLabelVerticalAlignment;
 
+
+typedef enum {
+    TTTAttributedLabelSelectionStateTouchUp      = 0,
+    TTTAttributedLabelSelectionStateLongPress    = 1,
+} TTTAttributedLabelSelectionState;
+
 /**
  Determines whether the text to which this attribute applies has a strikeout drawn through itself.
  */
@@ -41,6 +47,11 @@ extern NSString * const kTTTStrikeOutAttributeName;
  The background fill color. Value must be a `CGColorRef`. Default value is `nil` (no fill).
  */
 extern NSString * const kTTTBackgroundFillColorAttributeName;
+
+/**
+ The padding for the background fill. Value must be a `UIEdgeInsets`. Default value is `UIEdgeInsetsZero` (no padding).
+ */
+extern NSString * const kTTTBackgroundFillPaddingAttributeName;
 
 /**
  The background stroke color. Value must be a `CGColorRef`. Default value is `nil` (no stroke).
@@ -94,18 +105,23 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  
  @discussion A `TTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
  */
-@property (nonatomic, unsafe_unretained) id <TTTAttributedLabelDelegate> delegate;
+@property (nonatomic, unsafe_unretained) IBOutlet id <TTTAttributedLabelDelegate> delegate;
 
 ///--------------------------------------------
 /// @name Detecting, Accessing, & Styling Links
 ///--------------------------------------------
 
 /**
- A bitmask of `UIDataDetectorTypes` which are used to automatically detect links in the label text. This is `UIDataDetectorTypeNone` by default.
- 
- @warning You must specify `dataDetectorTypes` before setting the `text`, with either `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`.
+ @deprecated Use `enabledTextCheckingTypes` property instead.
  */
-@property (nonatomic, assign) UIDataDetectorTypes dataDetectorTypes;
+@property (nonatomic, assign) NSTextCheckingTypes dataDetectorTypes DEPRECATED_ATTRIBUTE;
+
+/**
+ A bitmask of `NSTextCheckingType` which are used to automatically detect links in the label text.
+
+ @warning You must specify `enabledTextCheckingTypes` before setting the `text`, with either `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`.
+ */
+@property (nonatomic, assign) NSTextCheckingTypes enabledTextCheckingTypes;
 
 /**
  An array of `NSTextCheckingResult` objects for links detected or manually added to the label text.
@@ -123,25 +139,6 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  A dictionary containing the `NSAttributedString` attributes to be applied to links when they are in the active state. Supply `nil` or an empty dictionary to opt out of active link styling. The default active link style is red and underlined.
  */
 @property (nonatomic, strong) NSDictionary *activeLinkAttributes;
-
-/**
- A dictionary containing the `NSAttributedString` attributes to be applied to links detected or manually added to the label text. The default link style is blue and underlined.
- 
- @warning You must specify `linkAttributes` before setting autodecting or manually-adding links for these attributes to be applied.
- */
-@property (nonatomic, strong) NSDictionary *hashtagAttributes;
-
-/**
- A dictionary containing the `NSAttributedString` attributes to be applied to links detected or manually added to the label text. The default link style is blue and underlined.
- 
- @warning You must specify `linkAttributes` before setting autodecting or manually-adding links for these attributes to be applied.
- */
-@property (nonatomic, strong) NSDictionary *accountAttributes;
-@property (nonatomic, strong) NSDictionary *phoneNumberAttributes;
-@property (nonatomic, strong) NSDictionary *addressAttributes;
-@property (nonatomic, strong) NSDictionary *emailAttributes;
-@property (nonatomic, strong) NSDictionary *dateAttributes;
-
 
 ///---------------------------------------
 /// @name Acccessing Text Style Attributes
@@ -204,12 +201,52 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  */
 @property (nonatomic, assign) TTTAttributedLabelVerticalAlignment verticalAlignment;
 
+///--------------------------------------------
+/// @name Accessing Truncation Token Appearance
+///--------------------------------------------
+
 /**
  The truncation token that appears at the end of the truncated line. `nil` by default.
 
  @discussion When truncation is enabled for the label, by setting `lineBreakMode` to either `UILineBreakModeHeadTruncation`, `UILineBreakModeTailTruncation`, or `UILineBreakModeMiddleTruncation`, the token used to terminate the truncated line will be `truncationTokenString` if defined, otherwise the Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026).
  */
 @property (nonatomic, strong) NSString *truncationTokenString;
+
+/**
+ The attributes to apply to the truncation token at the end of a truncated line. If unspecified, attributes will be inherited from the preceding character.
+ */
+@property (nonatomic, strong) NSDictionary *truncationTokenStringAttributes;
+
+///---------------------------------
+/// @name Long Press Gesture support
+///---------------------------------
+
+/**
+ The interval that activates the long press gesture. `0.65` by default, set `0` to disable.
+ */
+@property (nonatomic, assign) NSTimeInterval longPressInterval;
+
+/**
+ The selection state determines whether the user activates by tap/long press gesture.
+ */
+@property (nonatomic, readonly) TTTAttributedLabelSelectionState selectionState;
+
+///--------------------------------------------
+/// @name Calculating Size of Attributed String
+///--------------------------------------------
+
+/**
+ Calculate and return the size that best fits an attributed string, given the specified constraints on size and number of lines.
+
+ @param attributedString The attributed string.
+ @param size The maximum dimensions used to calculate size.
+ @param numberOfLines The maximum number of lines in the text to draw, if the constraining size cannot accomodate the full attributed string.
+ 
+ @return The size that fits the attributed string within the specified constraints.
+ */
++ (CGSize)sizeThatFitsAttributedString:(NSAttributedString *)attributedString
+                       withConstraints:(CGSize)size
+                limitedToNumberOfLines:(NSUInteger)numberOfLines;
 
 ///----------------------------------
 /// @name Setting the Text Attributes
@@ -315,6 +352,15 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
              duration:(NSTimeInterval)duration
             withRange:(NSRange)range;
 
+/**
+ Adds a link to transit information for a specified range in the label text.
+
+ @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
+ @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ */
+- (void)addLinkToTransitInformation:(NSDictionary *)components
+                          withRange:(NSRange)range;
+
 @end
 
 /**
@@ -335,33 +381,6 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  */
 - (void)attributedLabel:(TTTAttributedLabel *)label
    didSelectLinkWithURL:(NSURL *)url;
-
-/**
- Tells the delegate that the user did select a link to a hashtag(#) or mention (@).
- 
- @param label The label whose link was selected.
- @param url The URL for the selected hashtag(#) or mention (@).
- */
-- (void)attributedLabel:(TTTAttributedLabel *)label
-   didSelectHashtagOrMentionWithURL:(NSURL *)url;
-
-/**
- Tells the delegate that the user did select a link to a hashtag(#).
- 
- @param label The label whose link was selected.
- @param url The URL for the selected hashtag(#) or mention (@).
- */
-- (void)attributedLabel:(TTTAttributedLabel *)label
-didSelectHashtagWithURL:(NSURL *)url;
-
-/**
- Tells the delegate that the user did select a link to a mention (@).
- 
- @param label The label whose link was selected.
- @param url The URL for the selected hashtag(#) or mention (@).
- */
-- (void)attributedLabel:(TTTAttributedLabel *)label
-didSelectMentionWithURL:(NSURL *)url;
 
 /**
  Tells the delegate that the user did select a link to an address.
@@ -404,6 +423,15 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
                duration:(NSTimeInterval)duration;
 
 /**
+ Tells the delegate that the user did select a link to transit information
+
+ @param label The label whose link was selected.
+ @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didSelectLinkWithTransitInformation:(NSDictionary *)components;
+
+/**
  Tells the delegate that the user did select a link to a text checking result.
  
  @discussion This method is called if no other delegate method was called, which can occur by either now implementing the method in `TTTAttributedLabelDelegate` corresponding to a particular link, or the link was added by passing an instance of a custom `NSTextCheckingResult` subclass into `-addLinkWithTextCheckingResult:`.
@@ -413,8 +441,5 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
  */
 - (void)attributedLabel:(TTTAttributedLabel *)label
 didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
-
-- (void)attributedLabel:(TTTAttributedLabel *)label
-  didSelectEmailWithURL:(NSString *)emailAddress;
 
 @end
