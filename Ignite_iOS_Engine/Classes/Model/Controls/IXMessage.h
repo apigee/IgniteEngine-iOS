@@ -8,7 +8,6 @@
 
 #import "IXBaseControl.h"
 
-
 @interface IXMessage : IXBaseControl
 
 @end

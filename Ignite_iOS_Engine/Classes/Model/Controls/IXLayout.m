@@ -35,6 +35,11 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
 
 @interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
+@property (nonatomic,assign) BOOL zoomEnabled;
+@property (nonatomic,assign) BOOL layoutFlowVertical;
+@property (nonatomic,assign) BOOL verticalScrollEnabled;
+@property (nonatomic,assign) BOOL horizontalScrollEnabled;
+
 @property (nonatomic,strong) CAGradientLayer* gradientLayer;
 @property (nonatomic,strong) UITapGestureRecognizer* doubleTapZoomRecognizer;
 

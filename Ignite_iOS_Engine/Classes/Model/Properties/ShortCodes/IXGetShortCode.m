@@ -15,10 +15,6 @@
 #import "IXViewController.h"
 #import "IXAppManager.h"
 #import "IXLayout.h"
-#import "IXDeviceHardware.h"
-#import "Reachability.h"
-
-#import "NSString+IXAdditions.h"
 
 @implementation IXGetShortCode
 
@@ -33,33 +29,13 @@
         propertyName = [parameterProperty getPropertyValue];
     }
     
-    if( [[self objectID] isEqualToString:@"device"] )
-    {
-        returnValue = [IXDeviceHardware getDevicePropertyNamed:propertyName];       
-    }
-    else if( [[self objectID] isEqualToString:@"session"] )
+    if( [[self objectID] isEqualToString:@"session"] )
     {
         returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }
     else if( [[self objectID] isEqualToString:@"form"] )
     {
         returnValue = nil;
-    }
-    else if( [[self objectID] isEqualToString:@"network"] )
-    {
-        Reachability* reachability = [[IXAppManager sharedAppManager] reachabilty];
-        if( [propertyName isEqualToString:@"reachable"] )
-        {
-            returnValue = [NSString ix_stringFromBOOL:[reachability isReachable]];
-        }
-        else if( [propertyName isEqualToString:@"reachable.wifi"] )
-        {
-            returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWiFi]];
-        }
-        else if( [propertyName isEqualToString:@"reachable.wwan"] )
-        {
-            returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWWAN]];
-        }
     }
     else if( [[self objectID] isEqualToString:@"view"] )
     {

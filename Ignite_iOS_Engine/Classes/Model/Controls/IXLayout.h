@@ -15,9 +15,9 @@
 @property (nonatomic,strong,readonly) IXClickableScrollView* scrollView;
 @property (nonatomic,strong,readonly) UIView* scrollViewContentView;
 
-@property (nonatomic,assign,getter = isZoomEnabled)             BOOL zoomEnabled;
-@property (nonatomic,assign,getter = isLayoutFlowVertical)      BOOL layoutFlowVertical;
-@property (nonatomic,assign,getter = isVerticalScrollEnabled)   BOOL verticalScrollEnabled;
-@property (nonatomic,assign,getter = isHorizontalScrollEnabled) BOOL horizontalScrollEnabled;
+@property (nonatomic,assign,readonly,getter = isZoomEnabled)             BOOL zoomEnabled;
+@property (nonatomic,assign,readonly,getter = isLayoutFlowVertical)      BOOL layoutFlowVertical;
+@property (nonatomic,assign,readonly,getter = isVerticalScrollEnabled)   BOOL verticalScrollEnabled;
+@property (nonatomic,assign,readonly,getter = isHorizontalScrollEnabled) BOOL horizontalScrollEnabled;
 
 @end

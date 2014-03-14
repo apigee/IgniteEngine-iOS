@@ -8,27 +8,18 @@
 
 #import "IXAppManager.h"
 
-#import "IXConstants.h"
-#import "IXBaseControl.h"
-#import "IXBaseDataProvider.h"
-#import "IXBaseObject.h"
-#import "IXBaseConditionalObject.h"
-#import "IXBaseAction.h"
-#import "IXSandbox.h"
-#import "IXJSONParser.h"
-#import "IXPropertyContainer.h"
-#import "IXActionContainer.h"
-#import "IXProperty.h"
-#import "IXAlertAction.h"
-#import "ColorUtils.h"
-#import "IXViewController.h"
-#import "IXNavigationViewController.h"
-#import "IXJSONGrabber.h"
+#import "Reachability.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
-#import "IXPathHandler.h"
+
+#import "IXConstants.h"
+#import "IXJSONGrabber.h"
+#import "IXJSONParser.h"
 #import "IXLogger.h"
-#import "Reachability.h"
+#import "IXPathHandler.h"
+#import "IXNavigationViewController.h"
+#import "IXPropertyContainer.h"
+#import "IXSandbox.h"
 
 @interface IXAppManager ()
 
@@ -95,6 +86,7 @@
                                                 [self loadApplicationDefaultView];
                                             }
                                         }];
+    [self preloadImages];
 }
 
 -(void)preloadImages
@@ -148,7 +140,6 @@
         NSURL* url = [NSURL URLWithString:defaultViewProperty];
         [self setAppDefaultViewRootPath:[[url URLByDeletingLastPathComponent] absoluteString]];
     }
-    [self preloadImages];
 }
 
 -(void)loadApplicationDefaultView
