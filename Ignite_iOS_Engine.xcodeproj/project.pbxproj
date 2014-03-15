@@ -32,7 +32,7 @@
 		13033FA5183ED8F200C29157 /* IXSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F59183ED8F200C29157 /* IXSocial.m */; };
 		13033FA6183ED8F200C29157 /* IXTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5B183ED8F200C29157 /* IXTableView.m */; };
 		13033FA7183ED8F200C29157 /* IXText.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5D183ED8F200C29157 /* IXText.m */; };
-		13033FA8183ED8F200C29157 /* IXTextHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5F183ED8F200C29157 /* IXTextHighlighter.m */; };
+		13033FA8183ED8F200C29157 /* IX_deprecated_TextHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5F183ED8F200C29157 /* IX_deprecated_TextHighlighter.m */; };
 		13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F61183ED8F200C29157 /* IXTextInput.m */; };
 		13033FAA183ED8F200C29157 /* IXToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F63183ED8F200C29157 /* IXToggle.m */; };
 		13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */; };
@@ -181,8 +181,8 @@
 		13033F5B183ED8F200C29157 /* IXTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTableView.m; sourceTree = "<group>"; };
 		13033F5C183ED8F200C29157 /* IXText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXText.h; sourceTree = "<group>"; };
 		13033F5D183ED8F200C29157 /* IXText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXText.m; sourceTree = "<group>"; };
-		13033F5E183ED8F200C29157 /* IXTextHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTextHighlighter.h; sourceTree = "<group>"; };
-		13033F5F183ED8F200C29157 /* IXTextHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTextHighlighter.m; sourceTree = "<group>"; };
+		13033F5E183ED8F200C29157 /* IX_deprecated_TextHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IX_deprecated_TextHighlighter.h; sourceTree = "<group>"; };
+		13033F5F183ED8F200C29157 /* IX_deprecated_TextHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IX_deprecated_TextHighlighter.m; sourceTree = "<group>"; };
 		13033F60183ED8F200C29157 /* IXTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTextInput.h; sourceTree = "<group>"; };
 		13033F61183ED8F200C29157 /* IXTextInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTextInput.m; sourceTree = "<group>"; };
 		13033F62183ED8F200C29157 /* IXToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXToggle.h; sourceTree = "<group>"; };
@@ -509,8 +509,8 @@
 				13033F5D183ED8F200C29157 /* IXText.m */,
 				CADE34FA18CF944C009C99D0 /* IX_deprecated_AttributedText.h */,
 				CADE34FB18CF944C009C99D0 /* IX_deprecated_AttributedText.m */,
-				13033F5E183ED8F200C29157 /* IXTextHighlighter.h */,
-				13033F5F183ED8F200C29157 /* IXTextHighlighter.m */,
+				13033F5E183ED8F200C29157 /* IX_deprecated_TextHighlighter.h */,
+				13033F5F183ED8F200C29157 /* IX_deprecated_TextHighlighter.m */,
 				CAEB7E0618D26437005E1A2F /* IXAttributedText.h */,
 				CAEB7E0718D26437005E1A2F /* IXAttributedText.m */,
 				13033F60183ED8F200C29157 /* IXTextInput.h */,
@@ -925,7 +925,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13033FA8183ED8F200C29157 /* IXTextHighlighter.m in Sources */,
+				13033FA8183ED8F200C29157 /* IX_deprecated_TextHighlighter.m in Sources */,
 				63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */,
 				63311BCB1844439E0048C668 /* UIViewController+IXAdditions.m in Sources */,
 				13033FB6183ED8F200C29157 /* IXLayoutEngine.m in Sources */,

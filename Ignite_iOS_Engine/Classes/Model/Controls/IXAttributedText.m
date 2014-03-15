@@ -23,6 +23,8 @@ static NSURL* kIXCurrentTouchedUrl;
 static NSString* kIXDefinedMentionScheme;
 static NSString* kIXDefinedHashtagScheme;
 
+static UIColor* kIXBaseTextColor;
+
 //BOOLs - enable or disable these
 static NSString* const kIXShouldHighlightMentions = @"highlight_mentions"; //default = true
 static NSString* const kIXShouldHighlightHashtags = @"highlight_hashtags"; //true
@@ -184,7 +186,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
         BOOL highlightHyperlinks = [self.propertyContainer getBoolPropertyValue:kIXShouldHighlightHyperlinks defaultValue:true];
         BOOL shouldParseMarkdown = [self.propertyContainer getBoolPropertyValue:kIXShouldParseMarkdown defaultValue:false];
         
-        UIColor *textColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
+        kIXBaseTextColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
         UIColor *mentionColor = [self.propertyContainer getColorPropertyValue:kIXMentionColor defaultValue:[UIColor blackColor]];
         UIColor *hashtagColor = [self.propertyContainer getColorPropertyValue:kIXHashtagColor defaultValue:[UIColor blackColor]];
         UIColor *hyperlinkColor = [self.propertyContainer getColorPropertyValue:kIXHyperlinkColor defaultValue:[UIColor blackColor]];
@@ -204,7 +206,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
         NSRange lengthOfAttributedString = NSMakeRange(0, self.attributedString.length);
         
         //Set default text styling (font, size, color, kerning)
-        [self.attributedString addAttribute:NSForegroundColorAttributeName value:textColor range:lengthOfAttributedString];
+        [self.attributedString addAttribute:NSForegroundColorAttributeName value:kIXBaseTextColor range:lengthOfAttributedString];
         [self.attributedString addAttribute:NSFontAttributeName value:defaultFont range:lengthOfAttributedString];
         [self.attributedString addAttribute:NSKernAttributeName value:[NSNumber numberWithFloat:textKerning] range:lengthOfAttributedString];
        
@@ -424,9 +426,15 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
             NSArray *colorsArray = [colorList componentsSeparatedByString:@","];
             if (colorsArray.count > 0)
             {
-                
-                UIColor *foreColor = ( colorsArray[0] != nil ) ? [UIColor colorWithString:colorsArray[0]] : nil;
-                [self.attributedString addAttribute:NSForegroundColorAttributeName value:foreColor range:fullRange];
+                if (colorsArray[0] != nil)
+                {
+                    UIColor *foreColor;
+                    if ([colorsArray[0] isEqualToString:@""])
+                        foreColor = kIXBaseTextColor;
+                    else
+                        foreColor = [UIColor colorWithString:colorsArray[0]];
+                    [self.attributedString addAttribute:NSForegroundColorAttributeName value:foreColor range:fullRange];
+                }
             }
             if (colorsArray.count > 1)
             {

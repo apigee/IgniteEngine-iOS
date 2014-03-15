@@ -5,7 +5,7 @@
 //  Created by Robert Walsh on 10/15/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
-
+/*
 #import "IXBaseControl.h"
 #import "IXTextHighlighter.h"
 #import "TTTAttributedLabel.h"
@@ -265,3 +265,4 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents
 
 
 @end
+*/
