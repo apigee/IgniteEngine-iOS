@@ -256,9 +256,12 @@
      This way we don't have to specify several of the same image in the JSON.
      - B
     */
-    if( imageURL == nil && ![propertyName isEqualToString:@"images.default"] )
+    if( imageURL == nil )
     {
-        imageURL = [self getURLPathPropertyValue:@"images.default" basePath:nil defaultValue:nil];
+        if ([propertyName hasSuffix:@"icon"])
+            imageURL = [self getURLPathPropertyValue:@"icon" basePath:nil defaultValue:nil];
+        if ([propertyName hasPrefix:@"images"])
+            imageURL = [self getURLPathPropertyValue:@"images.default" basePath:nil defaultValue:nil];
     }
     
     if( imageURL != nil )

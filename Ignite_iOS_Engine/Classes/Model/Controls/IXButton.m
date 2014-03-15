@@ -35,6 +35,8 @@ static NSString* const kIXDisabledIcon = @"disabled.icon";
 static NSString* const kIXDisabledIconTintColor = @"disabled.icon.tintColor";
 
 static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
+static NSString* const kIXTouchDuration = @"touch.duration";
+static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 @interface IXButton ()
 
@@ -156,24 +158,47 @@ static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
                                           {
                                               image = [image tintedImageUsingColor:imageTintColor];
                                           }
-                                          [[weakSelf button] setBackgroundImage:image forState:controlState];
+                                          [[weakSelf button] setImage:image forState:controlState];
                                       } failBlock:nil];
     }
 }
 
 -(void)buttonTouchedDown:(id)sender
 {
-    [self processBeginTouch:YES];
+    CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.05];
+    [UIView transitionWithView:self.button
+                      duration:1.0
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        [self processBeginTouch:YES];
+                    }
+                    completion:nil];
+    
 }
 
 -(void)buttonTouchUpInside:(id)sender
 {
-    [self processEndTouch:YES];
-}
+    CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.4];
+    [UIView transitionWithView:self.button
+                      duration:1.0
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        //self.button.highlighted = YES;
+                        [self processEndTouch:YES];
+                    }
+                    completion:nil];}
 
 -(void)buttonTouchUpOutside:(id)sender
 {
-    [self processCancelTouch:YES];
-}
+    CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.4];
+    [UIView transitionWithView:self.button
+                      duration:1.0
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        //self.button.highlighted = YES;
+                        [self processCancelTouch:YES];
+                    }
+                    completion:nil];}
+
 
 @end

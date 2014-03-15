@@ -43,7 +43,7 @@ DEPENDENCIES:
   - PPSSignatureView (~> 0.1)
   - Reachability (~> 3.1)
   - RestKit (~> 0.20.0)
-  - SDWebImage (~> 3.5)
+  - SDWebImage (~> 3.5.4)
   - SVPulsingAnnotationView (~> 0.3.0)
   - SVWebViewController (~> 1.0)
   - TTTAttributedLabel (from `https://github.com/jamztang/TTTAttributedLabel.git`, branch `longpresssupport`)

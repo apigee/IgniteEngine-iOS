@@ -15,10 +15,15 @@
 #import "IXGIFImageView.h"
 
 #import "UIImage+ResizeMagick.h"
+#import "UIImage+IXAdditions.h"
+
 
 // IXImage Properties
-static NSString* const kIXIconDefault = @"images.default";
-static NSString* const kIXTouchIcon = @"images.touch";
+static NSString* const kIXImagesDefault = @"images.default";
+static NSString* const kIXImagesTouch = @"images.touch";
+static NSString* const kIXImagesDefaultTintColor = @"images.default.tintColor";
+static NSString* const kIXImagesTouchTintColor = @"images.touch.tintColor";
+
 static NSString* const kIXGIFDuration = @"gif_duration";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
@@ -75,7 +80,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 {
     [super applySettings];
     
-    NSURL* imageURL = [[self propertyContainer] getURLPathPropertyValue:kIXIconDefault basePath:nil defaultValue:nil];
+    NSURL* imageURL = [[self propertyContainer] getURLPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
     [self setAnimatedGif:[[imageURL pathExtension] isEqualToString:kIX_GIF_EXTENSION]];
 
     if( [self isAnimatedGIF] )
@@ -97,14 +102,19 @@ static NSString* const kIXStopAnimation = @"stop_animation";
         
         NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
         NSString* resizeTouch = [self.propertyContainer getStringPropertyValue:kIXImagesTouchResize defaultValue:nil];
-        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXTouchIcon defaultValue:nil];
+        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXImagesTouch defaultValue:nil];
+        UIColor *defaultTintColor = [self.propertyContainer getColorPropertyValue:kIXImagesDefaultTintColor defaultValue:nil];
+        UIColor *touchTintColor = [self.propertyContainer getColorPropertyValue:kIXImagesTouchTintColor defaultValue:nil];
         
-        [[self propertyContainer] getImageProperty:kIXIconDefault
+        [[self propertyContainer] getImageProperty:kIXImagesDefault
                                       successBlock:^(UIImage *image) {
                                           
                                           // if default image is to be resized, do that first
                                           if (resizeDefault)
                                               image = [image resizedImageByMagick:resizeDefault];
+                                          
+                                          if (defaultTintColor)
+                                              image = [image tintedImageUsingColor:defaultTintColor];
                                           
                                           weakSelf.defaultImage = image;
                                           [[weakSelf imageView] setImage:image];
@@ -115,16 +125,21 @@ static NSString* const kIXStopAnimation = @"stop_animation";
         //Only load an image here if we've actually defined a touch image
         if (touchImage)
         {
-            [[self propertyContainer] getImageProperty:kIXTouchIcon
+            [[self propertyContainer] getImageProperty:kIXImagesTouch
                                           successBlock:^(UIImage *image) {
                                               
                                               // if touch image is to be resized, do that first
                                               if (resizeTouch)
                                                   image = [image resizedImageByMagick:resizeTouch];
-                                              // Contingency that if resize touch isn't defined, we're still
+                                              if (touchTintColor)
+                                                  image = [image tintedImageUsingColor:touchTintColor];
+                                              
+                                              // Contingency that if resize or colored touch isn't defined, we're still
                                               // going to want to resize the touch image to the default.
                                               if (resizeDefault)
                                                   image = [image resizedImageByMagick:resizeDefault];
+                                              if (defaultTintColor)
+                                                  image = [image tintedImageUsingColor:defaultTintColor];
                                               
                                               weakSelf.touchedImage = image;
                                               [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchLoaded];
