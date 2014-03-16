@@ -38,6 +38,8 @@ static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
 static NSString* const kIXTouchDuration = @"touch.duration";
 static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
+static BOOL kIXShouldHighlightImageOnTouch;
+
 @interface IXButton ()
 
 @property (nonatomic,strong) UIButton* button;
@@ -50,8 +52,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 {
     [_button removeTarget:self action:@selector(buttonTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [_button removeTarget:self action:@selector(buttonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-    [_button removeTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-    [_button removeTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchCancel];
+    [_button removeTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
 }
 
 -(void)buildView
@@ -62,9 +63,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     
     [_button addTarget:self action:@selector(buttonTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [_button addTarget:self action:@selector(buttonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-    [_button addTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-    [_button addTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchCancel];
-
+    [_button addTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchUpOutside];
     [[self contentView] addSubview:_button];
 }
 
@@ -84,8 +83,8 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     
     [[self button] setEnabled:[[self contentView] isEnabled]];
     
-    BOOL darkensImageOnTouch = [[self propertyContainer] getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
-    [[self button] setAdjustsImageWhenHighlighted:darkensImageOnTouch];
+    kIXShouldHighlightImageOnTouch = [[self propertyContainer] getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
+    [[self button] setAdjustsImageWhenHighlighted:NO];
     
     [[self button] setAttributedTitle:nil forState:UIControlStateNormal];
     [[self button] setAttributedTitle:nil forState:UIControlStateHighlighted];
@@ -107,7 +106,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
         NSString* imagePropertyName = kIXIconDefault;
         NSString* imageTintColorPropertyName = kIXIconDefaultTintColor;
         
-        if( [titleState isEqualToString:kIXTouch] )
+        if( [titleState isEqualToString:kIXTouch])
         {
             controlState = UIControlStateHighlighted;
             titleTextPropertyName = kIXTouchText;
@@ -116,7 +115,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
             imagePropertyName = kIXTouchIcon;
             imageTintColorPropertyName = kIXTouchIconTintColor;
         }
-        else if( [titleState isEqualToString:kIXDisabled] )
+        else if( [titleState isEqualToString:kIXDisabled])
         {
             controlState = UIControlStateDisabled;
             titleTextPropertyName = kIXDisabledText;
@@ -165,40 +164,61 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 -(void)buttonTouchedDown:(id)sender
 {
-    CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.05];
-    [UIView transitionWithView:self.button
-                      duration:1.0
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self processBeginTouch:YES];
-                    }
-                    completion:nil];
-    
+    if (kIXShouldHighlightImageOnTouch)
+    {
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.075];
+        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXTouchIconTintColor defaultValue:nil];
+        [UIView transitionWithView:self.button
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                         animations:^{
+                             [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateHighlighted];
+                         }
+                         completion:^(BOOL finished){
+                             [self processBeginTouch:YES];
+                         }];
+    }
+    else
+        [self processBeginTouch:YES];
 }
 
 -(void)buttonTouchUpInside:(id)sender
 {
-    CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.4];
-    [UIView transitionWithView:self.button
-                      duration:1.0
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        //self.button.highlighted = YES;
-                        [self processEndTouch:YES];
-                    }
-                    completion:nil];}
+    if (kIXShouldHighlightImageOnTouch)
+    {
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
+        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
+        [UIView transitionWithView:self.button
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
+                        }
+                        completion:^(BOOL finished){
+                            [self processEndTouch:YES];
+                        }];
+    }
+    else
+        [self processEndTouch:YES];
+}
 
--(void)buttonTouchUpOutside:(id)sender
+-(void)buttonTouchCancelled:(id)sender
 {
-    CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.4];
-    [UIView transitionWithView:self.button
-                      duration:1.0
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        //self.button.highlighted = YES;
-                        [self processCancelTouch:YES];
-                    }
-                    completion:nil];}
-
+    if (kIXShouldHighlightImageOnTouch)
+    {
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
+        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
+        [UIView transitionWithView:self.button
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
+                        }
+                        completion:^(BOOL finished){
+                            [self processCancelTouch:YES];
+                        }];
+    }
+    else
+        [self processCancelTouch:YES];}
 
 @end
