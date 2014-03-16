@@ -9,6 +9,7 @@
 #import "IXButton.h"
 
 #import "UIImage+IXAdditions.h"
+#import "UIButton+IXAdditions.h"
 
 // IXButton states
 static NSString* const kIXNormal = @"normal";
@@ -37,8 +38,6 @@ static NSString* const kIXDisabledIconTintColor = @"disabled.icon.tintColor";
 static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
 static NSString* const kIXTouchDuration = @"touch.duration";
 static NSString* const kIXTouchUpDuration = @"touch_up.duration";
-
-static BOOL kIXShouldHighlightImageOnTouch;
 
 @interface IXButton ()
 
@@ -83,7 +82,7 @@ static BOOL kIXShouldHighlightImageOnTouch;
     
     [[self button] setEnabled:[[self contentView] isEnabled]];
     
-    kIXShouldHighlightImageOnTouch = [[self propertyContainer] getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
+    self.button.shouldHighlightImageOnTouch = [self.propertyContainer getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
     [[self button] setAdjustsImageWhenHighlighted:NO];
     
     [[self button] setAttributedTitle:nil forState:UIControlStateNormal];
@@ -164,7 +163,7 @@ static BOOL kIXShouldHighlightImageOnTouch;
 
 -(void)buttonTouchedDown:(id)sender
 {
-    if (kIXShouldHighlightImageOnTouch)
+    if (self.button.shouldHighlightImageOnTouch)
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.075];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXTouchIconTintColor defaultValue:nil];
@@ -184,7 +183,7 @@ static BOOL kIXShouldHighlightImageOnTouch;
 
 -(void)buttonTouchUpInside:(id)sender
 {
-    if (kIXShouldHighlightImageOnTouch)
+    if (self.button.shouldHighlightImageOnTouch)
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
@@ -204,7 +203,7 @@ static BOOL kIXShouldHighlightImageOnTouch;
 
 -(void)buttonTouchCancelled:(id)sender
 {
-    if (kIXShouldHighlightImageOnTouch)
+    if (self.button.shouldHighlightImageOnTouch)
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];

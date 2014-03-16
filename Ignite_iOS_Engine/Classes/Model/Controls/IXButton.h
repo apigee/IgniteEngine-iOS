@@ -9,5 +9,8 @@
 #import "IXBaseControl.h"
 
 @interface IXButton : IXBaseControl
+{
+    BOOL shouldHighlightImageOnTouch;
+}
 
 @end
