@@ -9,6 +9,7 @@
 #import "IXBaseShortCode.h"
 #import "IXProperty.h"
 #import "IXBaseObject.h"
+#import "NSString+IXAdditions.h"
 
 @implementation IXBaseShortCode
 
@@ -59,9 +60,17 @@
 {
     NSString* returnValue = stringToModify;
     NSString* functionName = [self functionName];
-    if( functionName && [stringToModify length] > 0 )
+    if( functionName )
     {
-        if( [functionName isEqualToString:@"to_lowercase"] )
+        if( [[self functionName] isEqualToString:@"is_empty"] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[stringToModify isEqualToString:@""]];
+        }
+        else if( [[self functionName] isEqualToString:@"is_nil"] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:(stringToModify == nil)];
+        }
+        else if( [functionName isEqualToString:@"to_lowercase"] )
         {
             returnValue = [stringToModify lowercaseString];
         }
