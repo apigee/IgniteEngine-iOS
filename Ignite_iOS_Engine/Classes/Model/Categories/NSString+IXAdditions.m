@@ -8,15 +8,15 @@
 
 #import "NSString+IXAdditions.h"
 
-static NSString* const kIXYES = @"YES";
-static NSString* const kIXNO = @"NO";
+static NSString* const kIXTrue = @"true";
+static NSString* const kIXFalse = @"false";
 static NSString* const kIXFloatFormat = @"%f";
 
 @implementation NSString (IXAdditions)
 
 +(NSString*)ix_stringFromBOOL:(BOOL)boolean
 {
-    return (boolean) ? kIXYES : kIXNO;
+    return (boolean) ? kIXTrue : kIXFalse;
 }
 
 +(NSString*)ix_stringFromFloat:(float)floatValue
