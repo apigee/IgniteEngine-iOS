@@ -22,7 +22,7 @@ static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* str
 static NSString* const kIXTruncate = @"truncate";
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     if (parameters.firstObject != nil)
-        return [NSString ix_truncateString:stringToModify toIndex:[parameters.firstObject intValue]];
+        return [NSString ix_truncateString:stringToModify toIndex:[[parameters.firstObject getPropertyValue] intValue]];
     else
         return stringToModify;
 };
@@ -107,6 +107,8 @@ static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString
             shortCodeFunction = kIXIsEmptyFunction;
         } else if( [functionName isEqualToString:kIXIsNil] ) {
             shortCodeFunction = kIXIsNilFunction;
+        } else if( [functionName isEqualToString:kIXTruncate] ) {
+            shortCodeFunction = kIXTruncateFunction;
         } else if( [functionName isEqualToString:kIXToLowercase] ){
             shortCodeFunction = kIXToLowerCaseFunction;
         } else if( [functionName isEqualToString:kIXToUppercase] ) {
