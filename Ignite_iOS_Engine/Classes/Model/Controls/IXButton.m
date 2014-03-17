@@ -165,7 +165,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.075];
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.06];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXTouchIconTintColor defaultValue:nil];
         [UIView transitionWithView:self.button
                           duration:duration

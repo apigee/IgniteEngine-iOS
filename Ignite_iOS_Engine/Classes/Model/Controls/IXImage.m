@@ -32,6 +32,8 @@ static NSString* const kIXImagesTouchResize = @"images.touch.resize";
 
 // IXImage Read-Only Properties
 static NSString* const kIXIsAnimating = @"is_animating";
+static NSString* const kIXImageHeight = @"image.height";
+static NSString* const kIXImageWidth = @"image.width";
 
 // IXImage Events
 static NSString* const kIXImagesDefaultLoaded = @"images_default_loaded";
@@ -184,6 +186,14 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     if( [propertyName isEqualToString:kIXIsAnimating] )
     {
         returnValue = [NSString ix_stringFromBOOL:[[self imageView] isGIFAnimating]];
+    }
+    else if ([propertyName isEqualToString:kIXImageHeight])
+    {
+        returnValue = [NSString ix_stringFromFloat:self.imageView.image.size.height];
+    }
+    else if ([propertyName isEqualToString:kIXImageWidth])
+    {
+        returnValue = [NSString ix_stringFromFloat:self.imageView.image.size.width];
     }
     else
     {
