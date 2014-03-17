@@ -78,10 +78,10 @@
                                             else
                                             {
                                                 NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.attributes"];
-                                                [self setAppProperties:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict]];
+                                                [[self appProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
                                                 
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
-                                                [self setSessionProperties:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict]];
+                                                [[self sessionProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
                                                 
                                                 [self applyAppProperties];
                                                 [self loadApplicationDefaultView];
