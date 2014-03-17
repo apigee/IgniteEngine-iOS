@@ -12,16 +12,9 @@
 #import "IXProperty.h"
 #import "IXActionContainer.h"
 #import "IXBaseObject.h"
+#import "IXAppManager.h"
 
 @implementation IXBaseAction
-
--(instancetype)init
-{
-    return [self initWithEventName:nil
-                  actionProperties:nil
-               parameterProperties:nil
-                subActionContainer:nil];
-}
 
 -(instancetype)initWithEventName:(NSString*)eventName
                 actionProperties:(IXPropertyContainer*)actionProperties
@@ -44,11 +37,91 @@
 {
     IXBaseAction* actionCopy = [super copyWithZone:zone];
     [actionCopy setActionContainer:[self actionContainer]];
-    [actionCopy setEventName:[self eventName]];
+    [actionCopy setEventName:[[self eventName] copy]];
     [actionCopy setActionProperties:[[self actionProperties] copy]];
     [actionCopy setParameterProperties:[[self parameterProperties] copy]];
     [actionCopy setSubActionContainer:[[self subActionContainer] copy]];
     return actionCopy;
+}
+
++(instancetype)actionWithEventName:(NSString*)eventName jsonDictionary:(NSDictionary*)actionJSONDict;
+{
+    IXBaseAction* action = nil;
+    if( [actionJSONDict allKeys] > 0 )
+    {
+        BOOL debugMode = [actionJSONDict[@"debug"] boolValue];
+        if( debugMode && [[IXAppManager sharedAppManager] appMode] != IXDebugMode )
+        {
+            return nil;
+        }
+        
+        id type = actionJSONDict[kIX_TYPE];
+        Class actionClass = nil;
+        if( [type isKindOfClass:[NSString class]] )
+        {
+            NSString* actionClassString = [NSString stringWithFormat:@"IX%@Action",[type capitalizedString]];
+            actionClass = NSClassFromString(actionClassString);
+        }
+        
+        if( [actionClass isSubclassOfClass:[IXBaseAction class]] )
+        {
+            id propertiesDict = actionJSONDict[@"attributes"];
+            
+            id enabled = actionJSONDict[@"enabled"];
+            if( enabled && !propertiesDict[@"enabled"] )
+            {
+                propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
+                [propertiesDict setObject:enabled forKey:@"enabled"];
+            }
+            
+            IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict];
+            IXPropertyContainer* parameterContainer = [IXPropertyContainer propertyContainerWithJSONDict:actionJSONDict[@"set"]];
+            IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:actionJSONDict[@"actions"]];
+            
+            action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:eventName
+                                                            actionProperties:propertyContainer
+                                                         parameterProperties:parameterContainer
+                                                          subActionContainer:subActionContainer];
+            
+            [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:actionJSONDict[@"orientation"]]];
+            [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:actionJSONDict[@"if"]]];
+        }
+    }
+    return action;
+}
+
++(NSArray*)actionsWithEventNames:(NSArray*)eventNames jsonDictionary:(NSDictionary*)actionJSONDict
+{
+    NSMutableArray* actionArray = nil;
+    if( [eventNames count] )
+    {
+        IXBaseAction* action = nil;
+        for( id eventName in eventNames )
+        {
+            if( [eventName isKindOfClass:[NSString class]] && [eventName length] > 0 )
+            {
+                if( action == nil )
+                {
+                    action = [IXBaseAction actionWithEventName:eventName jsonDictionary:actionJSONDict];
+                    if( action ) {
+                        actionArray = [NSMutableArray arrayWithObject:action];
+                    } else {
+                        break; // Break out of loop here if the action wasn't created on the first go around.
+                    }
+                }
+                else
+                {
+                    IXBaseAction* copiedAction = [action copy];
+                    [copiedAction setEventName:eventName];
+                    if( copiedAction )
+                    {
+                        [actionArray addObject:copiedAction];
+                    }
+                }
+            }
+        }
+    }
+    return actionArray;
 }
 
 -(void)execute

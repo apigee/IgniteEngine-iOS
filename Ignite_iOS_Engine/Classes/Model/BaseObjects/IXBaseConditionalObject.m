@@ -76,5 +76,21 @@
     return [self isConditionalValid] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
 }
 
++(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue
+{
+    UIInterfaceOrientationMask mask = UIInterfaceOrientationMaskAll;
+    if( [orientationValue isKindOfClass:[NSString class]] )
+    {
+        if( [orientationValue isEqualToString:@"landscape"] )
+        {
+            mask = UIInterfaceOrientationMaskLandscape;
+        }
+        else if( [orientationValue isEqualToString:@"portrait"] )
+        {
+            mask = UIInterfaceOrientationMaskPortrait;
+        }
+    }
+    return mask;
+}
 
 @end

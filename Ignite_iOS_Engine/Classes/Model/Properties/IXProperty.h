@@ -21,6 +21,8 @@
 
 -(instancetype)initWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
 +(instancetype)propertyWithPropertyName:(NSString*)propertyName rawValue:(NSString*)rawValue;
++(instancetype)propertyWithPropertyName:(NSString*)propertyName jsonObject:(id)jsonObject;
++(NSArray*)propertiesWithPropertyName:(NSString*)propertyName propertyValueJSONArray:(NSArray*)propertyValueJSONArray;
 
 -(NSString*)getPropertyValue;
 

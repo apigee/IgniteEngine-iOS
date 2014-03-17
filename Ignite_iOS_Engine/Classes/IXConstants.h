@@ -22,6 +22,7 @@
 extern NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME;
 extern NSString* const kIX_ID;
 extern NSString* const kIX_APP;
+extern NSString* const kIX_STYLE;
 extern NSString* const kIX_TARGET;
 extern NSString* const kIX_TYPE;
 extern NSString* const kIX_SESSION;
@@ -40,7 +41,6 @@ extern NSString* const kIX_FINISHED;
 extern NSString* const kIX_ANIMATED;
 extern NSString* const kIX_TITLE;
 extern NSString* const kIX_SUB_TITLE;
-extern NSString* const kIX_STYLE;
 extern NSString* const kIX_OK;
 extern NSString* const kIX_CANCEL;
 extern NSString* const kIX_TOUCH;

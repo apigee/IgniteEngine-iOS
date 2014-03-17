@@ -11,6 +11,27 @@
 #import "IXBaseObject.h"
 #import "NSString+IXAdditions.h"
 
+static NSString* const kIXIsEmpty = @"is_empty";
+static IXBaseShortCodeFunction const kIXIsEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [NSString ix_stringFromBOOL:[stringToModify isEqualToString:@""]];
+};
+static NSString* const kIXIsNil = @"is_nil";
+static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [NSString ix_stringFromBOOL:(stringToModify == nil)];
+};
+static NSString* const kIXToUppercase = @"to_uppercase";
+static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [stringToModify uppercaseString];
+};
+static NSString* const kIXToLowercase = @"to_lowercase";
+static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [stringToModify lowercaseString];
+};
+static NSString* const kIXCapitalize = @"capitalize";
+static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [stringToModify capitalizedString];
+};
+
 @implementation IXBaseShortCode
 
 -(instancetype)initWithRawValue:(NSString*)rawValue
@@ -24,18 +45,19 @@
     {
         _rawValue = [rawValue copy];
         _objectID = [objectID copy];
-        _functionName = [functionName copy];
         _methodName = [methodName copy];
         _parameters = parameters;
+        
+        [self setFunctionName:functionName];
     }
     return self;
 }
 
-+(IXBaseShortCode*)shortCodeWithRawValue:(NSString*)rawValue
-                                objectID:(NSString*)objectID
-                              methodName:(NSString*)methodName
-                            functionName:(NSString*)functionName
-                              parameters:(NSArray*)parameters
++(instancetype)shortCodeWithRawValue:(NSString*)rawValue
+                            objectID:(NSString*)objectID
+                          methodName:(NSString*)methodName
+                        functionName:(NSString*)functionName
+                          parameters:(NSArray*)parameters
 {
     return [[[self class] alloc] initWithRawValue:rawValue objectID:objectID methodName:methodName functionName:functionName parameters:parameters];
 }
@@ -51,39 +73,42 @@
     return copy;
 }
 
+-(NSString*)evaluateAndApplyFunction
+{
+    NSString* returnValue = [self evaluate];
+    IXBaseShortCodeFunction shortCodeFunction = [self shortCodeFunction];
+    if( shortCodeFunction )
+    {
+        returnValue = shortCodeFunction(returnValue,[self parameters]);
+    }
+    return returnValue;
+}
+
 -(NSString*)evaluate
 {
     return [self rawValue];
 }
 
--(NSString*)applyFunctionToString:(NSString*)stringToModify
+-(void)setFunctionName:(NSString *)functionName
 {
-    NSString* returnValue = stringToModify;
-    NSString* functionName = [self functionName];
-    if( functionName )
+    _functionName = [functionName copy];
+    
+    IXBaseShortCodeFunction shortCodeFunction = nil;
+    if( [_functionName length] > 0 )
     {
-        if( [[self functionName] isEqualToString:@"is_empty"] )
-        {
-            returnValue = [NSString ix_stringFromBOOL:[stringToModify isEqualToString:@""]];
-        }
-        else if( [[self functionName] isEqualToString:@"is_nil"] )
-        {
-            returnValue = [NSString ix_stringFromBOOL:(stringToModify == nil)];
-        }
-        else if( [functionName isEqualToString:@"to_lowercase"] )
-        {
-            returnValue = [stringToModify lowercaseString];
-        }
-        else if( [functionName isEqualToString:@"to_uppercase"] )
-        {
-            returnValue = [stringToModify uppercaseString];
-        }
-        else if( [functionName isEqualToString:@"capitalize"] )
-        {
-            returnValue = [stringToModify capitalizedString];
+        if( [functionName isEqualToString:kIXIsEmpty] ){
+            shortCodeFunction = kIXIsEmptyFunction;
+        } else if( [functionName isEqualToString:kIXIsNil] ) {
+            shortCodeFunction = kIXIsNilFunction;
+        } else if( [functionName isEqualToString:kIXToLowercase] ){
+            shortCodeFunction = kIXToLowerCaseFunction;
+        } else if( [functionName isEqualToString:kIXToUppercase] ) {
+            shortCodeFunction = kIXToUppercaseFunction;
+        } else if( [functionName isEqualToString:kIXCapitalize] ) {
+            shortCodeFunction = kIXCapitalizeFunction;
         }
     }
-    return returnValue;
+    [self setShortCodeFunction:shortCodeFunction];
 }
 
 @end

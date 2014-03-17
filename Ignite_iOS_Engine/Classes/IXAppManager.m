@@ -14,12 +14,13 @@
 
 #import "IXConstants.h"
 #import "IXJSONGrabber.h"
-#import "IXJSONParser.h"
 #import "IXLogger.h"
 #import "IXPathHandler.h"
 #import "IXNavigationViewController.h"
 #import "IXPropertyContainer.h"
 #import "IXSandbox.h"
+#import "IXPropertyContainer.h"
+#import "IXViewController.h"
 
 @interface IXAppManager ()
 
@@ -77,10 +78,10 @@
                                             else
                                             {
                                                 NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.attributes"];
-                                                [self setAppProperties:[IXJSONParser propertyContainerWithPropertyDictionary:appConfigPropertiesJSONDict]];
+                                                [self setAppProperties:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict]];
                                                 
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
-                                                [self setSessionProperties:[IXJSONParser propertyContainerWithPropertyDictionary:sessionDefaultsPropertiesJSONDict]];
+                                                [self setSessionProperties:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict]];
                                                 
                                                 [self applyAppProperties];
                                                 [self loadApplicationDefaultView];
@@ -144,18 +145,18 @@
 
 -(void)loadApplicationDefaultView
 {
-    [IXJSONParser viewControllerWithPathToJSON:[self appDefaultViewPath]
-                                     loadAsync:NO
-                               completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+    [IXViewController viewControllerWithPathToJSON:[self appDefaultViewPath]
+                                         loadAsync:NO
+                                   completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
                                    
-                                   if( didSucceed && viewController && error == nil )
-                                   {
-                                       [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
-                                   }
-                                   else
-                                   {
-                                       [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
-                                   }
+                                       if( didSucceed && viewController && error == nil )
+                                       {
+                                           [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
+                                       }
+                                       else
+                                       {
+                                           [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
+                                       }
     }];
 }
 

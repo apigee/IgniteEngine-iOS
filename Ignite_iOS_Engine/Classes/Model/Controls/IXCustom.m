@@ -10,7 +10,6 @@
 
 #import "IXAppManager.h"
 #import "IXSandbox.h"
-#import "IXJSONParser.h"
 #import "IXPathHandler.h"
 #import "IXBaseDataProvider.h"
 

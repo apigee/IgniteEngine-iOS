@@ -18,26 +18,13 @@
 @synthesize propertyContainer = _propertyContainer;
 @synthesize actionContainer = _actionContainer;
 
--(id)init
-{
-    self = [super init];
-    if( self )
-    {
-        _ID = nil;
-        _parentObject = nil;
-        _childObjects = nil;
-        _actionContainer = nil;
-        _propertyContainer = nil;
-    }
-    return self;
-}
-
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXBaseObject* baseObjectCopy = [[[self class] allocWithZone:zone] init];
     if( baseObjectCopy )
     {
         [baseObjectCopy setID:[[self ID] copy]];
+        [baseObjectCopy setStyleClass:[[self styleClass] copy]];
         if( [[self childObjects] count] )
         {
             NSArray* childObjectsCopy = [[NSMutableArray alloc] initWithArray:[self childObjects] copyItems:YES];

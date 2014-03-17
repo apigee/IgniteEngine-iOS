@@ -20,7 +20,9 @@
 @property (nonatomic,weak) IXBaseObject* parentObject;
 @property (nonatomic,weak) IXSandbox* sandbox;
 
-@property (nonatomic,strong) NSString* ID;
+@property (nonatomic,copy) NSString* ID;
+@property (nonatomic,copy) NSString* styleClass;
+
 @property (nonatomic,strong) NSMutableArray* childObjects;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;

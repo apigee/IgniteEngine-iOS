@@ -11,7 +11,7 @@
 #import "IXAppManager.h"
 #import "SDWebImageManager.h"
 #import "IXJSONGrabber.h"
-#import "IXJSONParser.h"
+#import "IXControlCacheContainer.h"
 
 @implementation IXWindow
 
@@ -26,7 +26,7 @@
         [[[SDWebImageManager sharedManager] imageCache] clearMemory];
         [[[SDWebImageManager sharedManager] imageCache] clearDisk];
         [IXJSONGrabber clearCache];
-        [IXJSONParser clearCache];
+        [IXControlCacheContainer clearCache];
         
         [[IXAppManager sharedAppManager] startApplication];
     }

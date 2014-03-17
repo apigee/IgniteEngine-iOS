@@ -13,9 +13,10 @@
 @class IXBaseDataProvider;
 @class IXEntityContainer;
 
-@interface IXBaseDataProviderConfig : NSObject
+@interface IXBaseDataProviderConfig : NSObject <NSCopying>
 
 @property (nonatomic,assign) Class dataProviderClass;
+@property (nonatomic,copy)   NSString* styleClass;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 @property (nonatomic,strong) IXPropertyContainer* requestParameters;
@@ -23,8 +24,17 @@
 @property (nonatomic,strong) IXPropertyContainer* fileAttachments;
 @property (nonatomic,strong) IXEntityContainer* entityContainer;
 
--(instancetype)initWithDataProviderClass:(Class)dataProviderClass propertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer requestParameters:(IXPropertyContainer*)requestParameters requestHeaders:(IXPropertyContainer*)requestHeaders andFileAttachments:(IXPropertyContainer*)fileAttachments;
-+(instancetype)baseDataProviderConfigWithDataProviderClass:(Class)dataProviderClass propertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer requestParameters:(IXPropertyContainer*)requestParameters requestHeaders:(IXPropertyContainer*)requestHeaders andFileAttachments:(IXPropertyContainer*)fileAttachments;
+-(instancetype)initWithDataProviderClass:(Class)dataProviderClass
+                              styleClass:(NSString*)styleClass
+                       propertyContainer:(IXPropertyContainer*)propertyContainer
+                         actionContainer:(IXActionContainer*)actionContainer
+                       requestParameters:(IXPropertyContainer*)requestParameters
+                          requestHeaders:(IXPropertyContainer*)requestHeaders
+                         fileAttachments:(IXPropertyContainer*)fileAttachments
+                         entityContainer:(IXEntityContainer*)entityContainer;
+
++(instancetype)dataProviderConfigWithJSONDictionary:(NSDictionary*)dataProviderJSONDict;
++(NSArray*)dataProviderConfigsWithJSONArray:(NSArray*)dataProviderValueArray;
 
 -(IXBaseDataProvider*)createDataProvider;
 

@@ -26,6 +26,9 @@
              parameterProperties:(IXPropertyContainer*)parameterProperties
               subActionContainer:(IXActionContainer*)subActionContainer;
 
++(instancetype)actionWithEventName:(NSString*)eventName jsonDictionary:(NSDictionary*)actionJSONDict;
++(NSArray*)actionsWithEventNames:(NSArray*)eventNames jsonDictionary:(NSDictionary*)actionJSONDict;
+
 -(void)execute;
 -(void)actionDidFinishWithEvents:(NSArray*)actionsToFire;
 

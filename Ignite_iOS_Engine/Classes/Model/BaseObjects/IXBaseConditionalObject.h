@@ -20,4 +20,6 @@
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation;
 -(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation;
 
++(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue;
+
 @end

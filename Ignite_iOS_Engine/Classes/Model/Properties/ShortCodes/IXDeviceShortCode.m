@@ -102,7 +102,7 @@ static NSString* sIXDeviceModelString = nil;
             returnValue = [[[UIDevice currentDevice] systemVersion] substringToIndex:1];
         }
     }
-    return [self applyFunctionToString:returnValue];
+    return returnValue;
 }
 
 @end

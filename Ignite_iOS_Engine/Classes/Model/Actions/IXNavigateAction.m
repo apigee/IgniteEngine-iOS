@@ -12,7 +12,6 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 #import "IXJSONGrabber.h"
-#import "IXJSONParser.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
 
@@ -175,20 +174,20 @@ static BOOL sIXIsAttemptingNavigation = NO;
     NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
     if( navigateTo )
     {
-        [IXJSONParser viewControllerWithPathToJSON:navigateTo
-                                         loadAsync:YES
-                                   completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+        [IXViewController viewControllerWithPathToJSON:navigateTo
+                                             loadAsync:YES
+                                       completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
                                        
-                                       if( didSucceed && viewController != nil )
-                                       {
-                                           [self finishPushNavigationTo:viewController
-                                                     isReplaceStackType:isReplaceStackType];
-                                       }
-                                       else
-                                       {
-                                           DDLogError(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
-                                           [self navigationActionDidFinish:NO];
-                                       }
+                                           if( didSucceed && viewController != nil )
+                                           {
+                                               [self finishPushNavigationTo:viewController
+                                                         isReplaceStackType:isReplaceStackType];
+                                           }
+                                           else
+                                           {
+                                               DDLogError(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
+                                               [self navigationActionDidFinish:NO];
+                                           }
         }];
     }
 }

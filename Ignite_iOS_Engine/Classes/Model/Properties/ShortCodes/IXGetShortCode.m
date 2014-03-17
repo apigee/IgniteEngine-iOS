@@ -59,7 +59,7 @@
         }
     }
     
-    return [self applyFunctionToString:returnValue];
+    return returnValue;
 }
 
 @end

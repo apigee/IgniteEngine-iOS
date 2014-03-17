@@ -12,8 +12,8 @@
 #import "IXLayout.h"
 #import "SDWebImageManager.h"
 #import "IXJSONGrabber.h"
-#import "IXJSONParser.h"
 #import "IXPropertyContainer.h"
+#import "IXControlCacheContainer.h"
 
 @interface IXNavigationViewController () <UINavigationControllerDelegate>
 
@@ -152,7 +152,7 @@
     [[[SDWebImageManager sharedManager] imageCache] clearMemory];
     [[[SDWebImageManager sharedManager] imageCache] clearDisk];
     [IXJSONGrabber clearCache];
-    [IXJSONParser clearCache];
+    [IXControlCacheContainer clearCache];
     for( UIViewController* viewController in [self viewControllers] )
     {
         if( [viewController isKindOfClass:[IXViewController class]] )

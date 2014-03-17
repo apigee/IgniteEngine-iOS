@@ -16,6 +16,8 @@
 
 @property (nonatomic,weak) IXBaseObject* ownerObject;
 
++(instancetype)actionContainerWithJSONActionsArray:(NSArray*)actionsArray;
+
 -(void)addAction:(IXBaseAction*)action;
 -(void)addActions:(NSArray*)actions;
 -(void)addActionsFromActionContainer:(IXActionContainer*)actionContainer;

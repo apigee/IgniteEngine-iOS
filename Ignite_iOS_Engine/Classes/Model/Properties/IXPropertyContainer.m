@@ -50,6 +50,39 @@
     return propertyContainerCopy;
 }
 
++(instancetype)propertyContainerWithJSONDict:(NSDictionary*)propertyJSONDictionary
+{
+    IXPropertyContainer* propertyContainer = nil;
+    if( [propertyJSONDictionary isKindOfClass:[NSDictionary class]] && [[propertyJSONDictionary allValues] count] > 0 )
+    {
+        propertyContainer = [[[self class] alloc] init];
+        [IXPropertyContainer populatePropertyContainer:propertyContainer withPropertyJSONDict:propertyJSONDictionary keyPrefix:nil];
+    }
+    return propertyContainer;
+}
+
++(void)populatePropertyContainer:(IXPropertyContainer*)propertyContainer withPropertyJSONDict:(NSDictionary*)propertyJSONDictionary keyPrefix:(NSString*)keyPrefix
+{
+    [propertyJSONDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        
+        NSString* propertiesKey = key;
+        if( [keyPrefix length] > 0 )
+        {
+            propertiesKey = [NSString stringWithFormat:@"%@.%@",keyPrefix,key];
+        }
+        
+        if( [obj isKindOfClass:[NSArray class]] ) {
+            [propertyContainer addProperties:[IXProperty propertiesWithPropertyName:propertiesKey propertyValueJSONArray:obj]];
+        }
+        else if( [obj isKindOfClass:[NSDictionary class]] ) {
+            [IXPropertyContainer populatePropertyContainer:propertyContainer withPropertyJSONDict:obj keyPrefix:propertiesKey];
+        }
+        else {
+            [propertyContainer addProperty:[IXProperty propertyWithPropertyName:propertiesKey jsonObject:obj]];
+        }
+    }];
+}
+
 -(NSMutableArray*)propertiesForPropertyNamed:(NSString*)propertyName
 {
     return [self propertiesDict][propertyName];
@@ -58,6 +91,18 @@
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName
 {
     return ([self getPropertyToEvaluate:propertyName] != nil);
+}
+
+-(BOOL)hasLayoutProperties
+{
+    BOOL hasLayoutProperties = NO;
+    for( NSString* propertyName in [[self propertiesDict] allKeys] )
+    {
+        hasLayoutProperties = [IXControlLayoutInfo doesPropertyNameTriggerLayout:propertyName];
+        if( hasLayoutProperties )
+            break;
+    }
+    return hasLayoutProperties;
 }
 
 -(void)addProperties:(NSArray*)properties
@@ -104,18 +149,6 @@
     {
         [propertyArray addObject:property];
     }
-}
-
--(BOOL)hasLayoutProperties
-{
-    BOOL hasLayoutProperties = NO;
-    for( NSString* propertyName in [[self propertiesDict] allKeys] )
-    {
-        hasLayoutProperties = [IXControlLayoutInfo doesPropertyNameTriggerLayout:propertyName];
-        if( hasLayoutProperties )
-            break;
-    }
-    return hasLayoutProperties;
 }
 
 -(void)addPropertiesFromPropertyContainer:(IXPropertyContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties

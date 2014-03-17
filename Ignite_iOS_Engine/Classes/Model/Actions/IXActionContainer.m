@@ -53,6 +53,44 @@
     return actionContainerCopy;
 }
 
++(IXActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray
+{
+    IXActionContainer* actionContainer = nil;
+    if( [actionsArray isKindOfClass:[NSArray class]] && [actionsArray count] )
+    {
+        actionContainer = [[IXActionContainer alloc] init];
+        for( id actionJSONDict in actionsArray )
+        {
+            if( [actionJSONDict isKindOfClass:[NSDictionary class]] )
+            {
+                id eventNameValue = actionJSONDict[@"on"];
+                NSArray* eventNameStrings = nil;
+                if( eventNameValue )
+                {
+                    if( [eventNameValue isKindOfClass:[NSString class]] )
+                    {
+                        eventNameStrings = [eventNameValue componentsSeparatedByString:@","];
+                    }
+                    else if( [eventNameValue isKindOfClass:[NSArray class]] )
+                    {
+                        eventNameStrings = eventNameValue;
+                    }
+                    
+                    if( [eventNameStrings count] > 1 )
+                    {
+                        [actionContainer addActions:[IXBaseAction actionsWithEventNames:eventNameStrings jsonDictionary:actionJSONDict]];
+                    }
+                    else
+                    {
+                        [actionContainer addAction:[IXBaseAction actionWithEventName:[eventNameStrings firstObject] jsonDictionary:actionJSONDict]];
+                    }
+                }
+            }
+        }
+    }
+    return actionContainer;
+}
+
 -(IXBaseObject*)ownerObject
 {
     return _ownerObject;

@@ -35,7 +35,7 @@
         returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
     }
     
-    return [self applyFunctionToString:returnValue];
+    return returnValue;
 }
 
 @end

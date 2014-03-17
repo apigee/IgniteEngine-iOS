@@ -11,7 +11,6 @@
 #import "IXAppManager.h"
 #import "IXLogger.h"
 
-#import "IXJSONParser.h"
 #import "IXJSONGrabber.h"
 
 #import "IXPropertyContainer.h"
@@ -85,7 +84,7 @@ static NSString* const kIXFailed = @"failed";
                                                     {
                                                         if( [jsonObject isKindOfClass:[NSDictionary class]] )
                                                         {
-                                                            controlConfig = [IXJSONParser controlConfigWithValueDictionary:jsonObject];
+                                                            controlConfig = [IXBaseControlConfig controlConfigWithJSONDictionary:jsonObject];
                                                             createdControl = [controlConfig createControl];
                                                             if( createdControl )
                                                             {

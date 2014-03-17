@@ -17,6 +17,7 @@
 #import "IXTextInput.h"
 #import "IXClickableScrollView.h"
 #import "IXPathHandler.h"
+#import "IXControlCacheContainer.h"
 
 @interface IXViewController ()
 
@@ -37,14 +38,17 @@
     return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil pathToJSON:nil];
 }
 
--(instancetype)initWithPathToJSON:(NSString*)pathToJSON
++(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXViewControllerCreationCompletionBlock)completionBlock
 {
-    return [self initWithNibName:nil bundle:nil pathToJSON:pathToJSON];
-}
-
-+(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON
-{
-    return [[[self class] alloc] initWithNibName:nil bundle:nil pathToJSON:pathToJSON];
+    IXViewController* viewController = [[[self class] alloc] initWithNibName:nil bundle:nil pathToJSON:pathToJSON];
+    [IXControlCacheContainer populateControl:[viewController containerControl]
+                              withJSONAtPath:pathToJSON
+                                   loadAsync:loadAsync
+                             completionBlock:^(BOOL didSucceed,NSError* error) {
+                                 if( completionBlock )
+                                     completionBlock(didSucceed,viewController,error);
+                             }];
+    return viewController;
 }
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil pathToJSON:(NSString*)pathToJSON

@@ -22,6 +22,8 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 
 @property (nonatomic,weak) IXBaseObject* ownerObject;
 
++(instancetype)propertyContainerWithJSONDict:(NSDictionary*)propertyDictionary;
+
 -(BOOL)hasLayoutProperties;
 
 -(void)addProperty:(IXProperty*)property;

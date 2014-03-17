@@ -15,4 +15,6 @@
 @property (nonatomic,strong) IXPropertyContainer* entityProperties;
 @property (nonatomic,strong) NSMutableArray* subEntities;
 
++(instancetype)entityContainerWithJSONEntityDict:(NSDictionary*)entityDict;
+
 @end

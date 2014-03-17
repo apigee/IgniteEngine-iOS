@@ -40,7 +40,7 @@
         returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWWAN]];
     }
     
-    return [self applyFunctionToString:returnValue];
+    return returnValue;
 }
 
 @end

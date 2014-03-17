@@ -12,15 +12,22 @@
 @class IXActionContainer;
 @class IXPropertyContainer;
 
-@interface IXBaseControlConfig : NSObject
+@interface IXBaseControlConfig : NSObject <NSCopying>
 
 @property (nonatomic,assign) Class controlClass;
+@property (nonatomic,copy)   NSString* styleClass;
 @property (nonatomic,strong) NSArray* childControlConfigs;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
 
--(instancetype)initWithControlClass:(Class)controlClass propertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer andChildControlConfigs:(NSArray*)childControlConfigs;
-+(instancetype)baseControlConfigWithControlClass:(Class)controlClass propertyContainer:(IXPropertyContainer*)propertyContainer actionContainer:(IXActionContainer*)actionContainer andChildControlConfigs:(NSArray*)childControlConfigs;
+-(instancetype)initWithControlClass:(Class)controlClass
+                         styleClass:(NSString*)styleClass
+                  propertyContainer:(IXPropertyContainer*)propertyContainer
+                    actionContainer:(IXActionContainer*)actionContainer
+             andChildControlConfigs:(NSArray*)childControlConfigs;
+
++(instancetype)controlConfigWithJSONDictionary:(NSDictionary*)controlJSONDict;
++(NSArray*)controlConfigsWithJSONControlArray:(NSArray*)controlsValueArray;
 
 -(IXBaseControl*)createControl;
 

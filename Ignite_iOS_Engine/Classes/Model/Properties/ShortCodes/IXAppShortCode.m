@@ -13,26 +13,35 @@
 #import "IXAppManager.h"
 
 //usage: [[app:random_number(40)]]
-
 static NSString* const kIXRandomNumber = @"random_number";
+static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    NSUInteger upperBound = [[[parameters firstObject] getPropertyValue] integerValue];
+    return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+};
 
 @implementation IXAppShortCode
+
+-(void)setFunctionName:(NSString *)functionName
+{
+    [super setFunctionName:functionName];
+    IXBaseShortCodeFunction shortCodeFunction = nil;
+    if( [functionName length] > 0 )
+    {
+        if( [functionName isEqualToString:kIXRandomNumber] ){
+            shortCodeFunction = kIXRandomNumberFunction;
+        }
+    }
+    [self setShortCodeFunction:shortCodeFunction];
+}
 
 -(NSString*)evaluate
 {
     NSString* returnValue = nil;
-    
-    if( [[self functionName] isEqualToString:kIXRandomNumber] )
+    NSString* methodName = [self methodName];
+    if( methodName )
     {
-        NSUInteger upperBound = [[[[self parameters] firstObject] getPropertyValue] integerValue];
-        returnValue = [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+        returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:methodName defaultValue:nil];
     }
-    else
-    {
-        returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:[self methodName] defaultValue:nil];
-        returnValue = [self applyFunctionToString:returnValue];
-    }
-    
     return returnValue;
 }
 
