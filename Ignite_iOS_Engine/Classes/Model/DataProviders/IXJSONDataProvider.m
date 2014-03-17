@@ -80,37 +80,18 @@
     [self setLastResponseStatusCode:0];
     [self setLastResponseErrorMessage:nil];
     
-    if( ![self isLocalPath] )
+    if (!!self.dataLocation)
     {
-        NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
-        [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
-        
-        __weak typeof(self) weakSelf = self;
-        IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        if( ![self isLocalPath] )
+        {
+            NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
+            [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
             
-            [weakSelf setLastResponseStatusCode:[response statusCode]];
-            
-            NSError* __autoreleasing jsonConvertError = nil;
-            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-            if( jsonConvertError == nil && jsonData )
-            {
-                NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                [weakSelf setRawResponse:jsonString];
-                [weakSelf setLastJSONResponse:JSON];
-                [weakSelf fireLoadFinishedEvents:YES];
-            }
-            else
-            {
-                [weakSelf setLastResponseErrorMessage:[jsonConvertError description]];
-                [weakSelf fireLoadFinishedEvents:NO];
-            }
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            
-            [weakSelf setLastResponseStatusCode:[response statusCode]];
-            [weakSelf setLastResponseErrorMessage:[error description]];
-            
-            @try {
+            __weak typeof(self) weakSelf = self;
+            IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                
+                [weakSelf setLastResponseStatusCode:[response statusCode]];
+                
                 NSError* __autoreleasing jsonConvertError = nil;
                 NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
                 if( jsonConvertError == nil && jsonData )
@@ -118,66 +99,92 @@
                     NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                     [weakSelf setRawResponse:jsonString];
                     [weakSelf setLastJSONResponse:JSON];
+                    [weakSelf fireLoadFinishedEvents:YES];
                 }
-            }
-            @catch (NSException *exception) {
-                DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
-            }
-            [weakSelf fireLoadFinishedEvents:NO];
-        }];
-        [[self httpClient] enqueueHTTPRequestOperation:operation];
-    }
-    else
-    {
-        NSString* dataPath = [self dataLocation];
-        if( ![[self dataLocation] hasSuffix:@"/"] && ![[self objectsPath] hasPrefix:@"/"] )
-        {
-            if( [self objectsPath].length )
-            {
-                dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self objectsPath]];
-            }
+                else
+                {
+                    [weakSelf setLastResponseErrorMessage:[jsonConvertError description]];
+                    [weakSelf fireLoadFinishedEvents:NO];
+                }
+                
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                
+                [weakSelf setLastResponseStatusCode:[response statusCode]];
+                [weakSelf setLastResponseErrorMessage:[error description]];
+                
+                @try {
+                    NSError* __autoreleasing jsonConvertError = nil;
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                    if( jsonConvertError == nil && jsonData )
+                    {
+                        NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        [weakSelf setRawResponse:jsonString];
+                        [weakSelf setLastJSONResponse:JSON];
+                    }
+                }
+                @catch (NSException *exception) {
+                    DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+                }
+                [weakSelf fireLoadFinishedEvents:NO];
+            }];
+            [[self httpClient] enqueueHTTPRequestOperation:operation];
         }
         else
         {
-            dataPath = [[self dataLocation] stringByAppendingString:[self objectsPath]];
-        }
-        
-        __weak typeof(self) weakSelf = self;
-        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
-                                                     asynch:YES
-                                                shouldCache:YES
-                                            completionBlock:^(id jsonObject, NSError *error) {
-                                                
-                                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                    NSError* jsonError = error;
-                                                    NSData* jsonData = nil;
-                                                    if( jsonObject )
-                                                    {
-                                                        NSError* __autoreleasing jsonConvertError = nil;
-                                                        jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-                                                        if( jsonConvertError != nil )
+            NSString* dataPath = [self dataLocation];
+            if( ![[self dataLocation] hasSuffix:@"/"] && ![[self objectsPath] hasPrefix:@"/"] )
+            {
+                if( [self objectsPath].length )
+                {
+                    dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self objectsPath]];
+                }
+            }
+            else
+            {
+                dataPath = [[self dataLocation] stringByAppendingString:[self objectsPath]];
+            }
+            
+            __weak typeof(self) weakSelf = self;
+            [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
+                                                         asynch:YES
+                                                    shouldCache:YES
+                                                completionBlock:^(id jsonObject, NSError *error) {
+                                                    
+                                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                        NSError* jsonError = error;
+                                                        NSData* jsonData = nil;
+                                                        if( jsonObject )
                                                         {
-                                                            jsonError = jsonConvertError;
+                                                            NSError* __autoreleasing jsonConvertError = nil;
+                                                            jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                                                            if( jsonConvertError != nil )
+                                                            {
+                                                                jsonError = jsonConvertError;
+                                                            }
                                                         }
-                                                    }
-                                                    if( jsonData )
-                                                    {
-                                                        NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                                                        [weakSelf setRawResponse:jsonString];
-                                                        [weakSelf setLastJSONResponse:jsonObject];
-                                                        IX_dispatch_main_sync_safe(^{
-                                                            [weakSelf fireLoadFinishedEvents:YES];
-                                                        });
-                                                    }
-                                                    else
-                                                    {
-                                                        [weakSelf setLastResponseErrorMessage:[jsonError description]];
-                                                        IX_dispatch_main_sync_safe(^{
-                                                            [weakSelf fireLoadFinishedEvents:NO];
-                                                        });
-                                                    }
-                                                });
-        }];
+                                                        if( jsonData )
+                                                        {
+                                                            NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                                            [weakSelf setRawResponse:jsonString];
+                                                            [weakSelf setLastJSONResponse:jsonObject];
+                                                            IX_dispatch_main_sync_safe(^{
+                                                                [weakSelf fireLoadFinishedEvents:YES];
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            [weakSelf setLastResponseErrorMessage:[jsonError description]];
+                                                            IX_dispatch_main_sync_safe(^{
+                                                                [weakSelf fireLoadFinishedEvents:NO];
+                                                            });
+                                                        }
+                                                    });
+            }];
+        }
+    }
+    else
+    {
+        DDLogError(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
     }
 }
 

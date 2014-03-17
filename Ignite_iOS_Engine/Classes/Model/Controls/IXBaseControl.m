@@ -58,6 +58,8 @@ static NSString* const kIXRight = @"right";
 static NSString* const kIXLeft = @"left";
 static NSString* const kIXPan = @"pan";
 static NSString* const kIXPanReset = @"pan.reset";
+static NSString* const kIXPanSnap = @"pan.snap_to_bounds";
+static BOOL kIXDidDetermineOriginalCenter = false;
 
 //
 // IXBaseControl pinch events & handlers
@@ -473,32 +475,73 @@ static NSString* const kIXPinchBoth = @"both";
 
 -(void)controlViewPanGestureRecognized:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-    BOOL resetPosition = [self.propertyContainer getBoolPropertyValue:kIXPanReset defaultValue:YES];
+    BOOL resetPosition = [self.propertyContainer getBoolPropertyValue:kIXPanReset defaultValue:NO];
+    BOOL snapToBounds = [self.propertyContainer getBoolPropertyValue:kIXPanSnap defaultValue:YES];
     static CGPoint originalCenter;
     UIView *draggedView = panGestureRecognizer.view;
     CGPoint offset = [panGestureRecognizer translationInView:draggedView.superview];
     CGPoint center = draggedView.center;
     
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan && !kIXDidDetermineOriginalCenter)
     {
         originalCenter = draggedView.center;
+        kIXDidDetermineOriginalCenter = true;
     }
     
     draggedView.center = CGPointMake(center.x + offset.x, center.y + offset.y);
-    // Reset translation to zero so on the next `panWasRecognized:` message, the
-    // translation will just be the additional movement of the touch since now.
     
     if ((panGestureRecognizer.state == UIGestureRecognizerStateEnded ||
-         panGestureRecognizer.state == UIGestureRecognizerStateCancelled)
-        && resetPosition)
+         panGestureRecognizer.state == UIGestureRecognizerStateCancelled))
     {
-        [UIView animateWithDuration:0.2
-                         animations:^{
-                             draggedView.center = originalCenter;
-                         }];
+        if (resetPosition)
+        {
+            [UIView animateWithDuration:0.2
+                             animations:^{
+                                 draggedView.center = originalCenter;
+                             }];
+        }
+        else if (snapToBounds)
+        {
+            [UIView animateWithDuration:0.2
+                             animations:^{
+                                 draggedView.center = [self correctCenterIfOutsideView:draggedView fromOriginalCenter:originalCenter];
+                                 //draggedView.center = originalCenter;
+                             }];
+        }
     }
     
+    
+    // Reset translation to zero so on the next `panWasRecognized:` message, the
+    // translation will just be the additional movement of the touch since now.
     [panGestureRecognizer setTranslation:CGPointZero inView:draggedView.superview];
+}
+
+-(CGPoint)correctCenterIfOutsideView:(UIView *)view fromOriginalCenter:(CGPoint)originalCenter
+{
+    CGFloat newCenterX = view.center.x;
+    CGFloat newCenterY = view.center.y;
+    
+    CGFloat currentLeft = view.frame.origin.x;
+    CGFloat currentRight = view.frame.origin.x + view.frame.size.width;
+    CGFloat currentTop = view.frame.origin.y;
+    CGFloat currentBottom = view.frame.origin.y + view.frame.size.height;
+    
+    CGFloat originalLeft = originalCenter.x - (view.bounds.size.width / 2);
+    CGFloat originalRight = originalCenter.x + (view.bounds.size.width / 2);
+    CGFloat originalTop = originalCenter.y - (view.bounds.size.height / 2);
+    CGFloat originalBottom = originalCenter.y + (view.bounds.size.height / 2);
+
+    if (currentLeft > originalLeft && currentRight > originalRight)
+        newCenterX = newCenterX - currentLeft + originalLeft;
+    else if (currentRight < originalRight && currentLeft < originalLeft)
+        newCenterX = newCenterX - currentRight + originalRight;
+    
+    if (currentTop > originalTop && currentBottom > originalBottom)
+        newCenterY = newCenterY - currentTop + originalTop;
+    else if (currentBottom < originalBottom && currentTop < originalTop)
+        newCenterY = newCenterY - currentBottom + originalBottom;
+    
+    return CGPointMake(newCenterX, newCenterY);
 }
 
 -(IXBaseControl*)getTouchedControl:(UITouch*)touch

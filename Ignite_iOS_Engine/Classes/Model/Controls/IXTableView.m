@@ -91,16 +91,16 @@
                                                    object:[self dataProvider]];
     }
     
-    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator_style" defaultValue:kIX_DEFAULT];
+    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator.style" defaultValue:kIX_DEFAULT];
     if( [seperatorStyle isEqualToString:@"none"] ) {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-        [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:@"seperator_color" defaultValue:[UIColor grayColor]]];
+        [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:@"seperator.color" defaultValue:[UIColor grayColor]]];
     }
     
     [[self tableView] setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"scrollable" defaultValue:YES]];
-    [[self tableView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"color.background" defaultValue:[UIColor whiteColor]]];
+    [[self tableView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"background.color" defaultValue:[UIColor whiteColor]]];
     
     [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
     [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:@"keep_row_highlighted_on_select" defaultValue:NO]];
