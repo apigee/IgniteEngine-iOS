@@ -19,6 +19,13 @@ static NSString* const kIXIsNil = @"is_nil";
 static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [NSString ix_stringFromBOOL:(stringToModify == nil)];
 };
+static NSString* const kIXTruncate = @"truncate";
+static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    if (parameters.firstObject != nil)
+        return [NSString ix_truncateString:stringToModify toIndex:[parameters.firstObject intValue]];
+    else
+        return stringToModify;
+};
 static NSString* const kIXToUppercase = @"to_uppercase";
 static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify uppercaseString];

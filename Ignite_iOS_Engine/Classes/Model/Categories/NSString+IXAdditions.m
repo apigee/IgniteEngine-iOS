@@ -24,4 +24,9 @@ static NSString* const kIXFloatFormat = @"%f";
     return [NSString stringWithFormat:kIXFloatFormat,floatValue];
 }
 
++(NSString*)ix_truncateString:(NSString*)string toIndex:(NSInteger)index
+{
+    return [NSString stringWithFormat:@"%@...", [string substringToIndex:MIN(index, string.length)]];
+}
+
 @end

@@ -66,6 +66,7 @@ static NSString* const kIXInputTransformUppercaseFirst = @"ucfirst";
 // IXTextInput Functions
 static NSString* const kIXKeyboardHide = @"keyboard_hide";
 static NSString* const kIXKeyboardShow = @"keyboard_show";
+static NSString* const kIXFocus = @"focus";
 
 // IXTextInput Events
 static NSString* const kIXGotFocus = @"got_focus";
@@ -192,7 +193,7 @@ static CGSize sIXKBSize;
     {
         [[self textField] resignFirstResponder];
     }
-    else if( [functionName isEqualToString:kIXKeyboardShow] )
+    else if( [functionName isEqualToString:kIXKeyboardShow] || [functionName isEqualToString:kIXFocus] )
     {
         [[self textField] becomeFirstResponder];
     }
