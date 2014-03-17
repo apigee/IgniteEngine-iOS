@@ -143,10 +143,11 @@ static CGSize sIXKBSize;
     }
     
     NSString* inputText = [[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil];
-    if ( [inputText length] > 0 )
-    {
-        [[self textField] setText:inputText];
-    }
+    // might need to put this if statement back in, but it's removed to allow setting .text to ""
+    //if ( [inputText length] > 0 )
+    //{
+    [[self textField] setText:inputText];
+    //}
     
     [[self textField] setFont:[[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
     [[self textField] setTextColor:[[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]]];
