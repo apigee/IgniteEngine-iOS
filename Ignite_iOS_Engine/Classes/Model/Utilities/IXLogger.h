@@ -14,7 +14,7 @@ extern int ddLogLevel;
 
 @interface IXLogger : NSObject
 
-@property (nonatomic,strong) NSString* appLogLevel;
+@property (nonatomic,copy) NSString* appLogLevel;
 
 +(instancetype)sharedLogger;
 

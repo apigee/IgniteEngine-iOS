@@ -198,7 +198,7 @@ IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* st
         sizeValuePercentage.isPercentage = [stringValue hasSuffix:@"\%"];
         if( sizeValuePercentage.isPercentage )
         {
-            sizeValuePercentage.value = [[stringValue stringByReplacingOccurrencesOfString:@"\%" withString:@""] floatValue] / 100.0f;
+            sizeValuePercentage.value = [[stringValue stringByReplacingOccurrencesOfString:@"\%" withString:kIX_EMPTY_STRING] floatValue] / 100.0f;
         }
         else
         {

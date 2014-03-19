@@ -129,9 +129,9 @@
         [entity setName:[[entityContainer entityProperties] getStringPropertyValue:@"entity_name" defaultValue:nil]];
         
         NSString* entityAttributesString = [[entityContainer entityProperties] getStringPropertyValue:@"entity_attributes" defaultValue:nil];
-        NSArray* entityAttributesCommaSeperatedArray = [entityAttributesString componentsSeparatedByString:@","];
+        NSArray* entityAttributesCommaSeperatedArray = [entityAttributesString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
         NSString* entityIdentificationAttributesString = [[entityContainer entityProperties] getStringPropertyValue:@"entity_identification_attributes" defaultValue:nil];
-        NSArray* entityIdentificationAttributesCommaSeperatedArray = [entityIdentificationAttributesString componentsSeparatedByString:@","];
+        NSArray* entityIdentificationAttributesCommaSeperatedArray = [entityIdentificationAttributesString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
         
         NSMutableArray* entityProperties = [[NSMutableArray alloc] initWithCapacity:[entityAttributesCommaSeperatedArray count]];
         for( NSString* attributeName in entityAttributesCommaSeperatedArray )

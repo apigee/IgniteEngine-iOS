@@ -63,13 +63,13 @@
         {
             if( [actionJSONDict isKindOfClass:[NSDictionary class]] )
             {
-                id eventNameValue = actionJSONDict[@"on"];
+                id eventNameValue = actionJSONDict[kIX_ON];
                 NSArray* eventNameStrings = nil;
                 if( eventNameValue )
                 {
                     if( [eventNameValue isKindOfClass:[NSString class]] )
                     {
-                        eventNameStrings = [eventNameValue componentsSeparatedByString:@","];
+                        eventNameStrings = [eventNameValue componentsSeparatedByString:kIX_COMMA_SEPERATOR];
                     }
                     else if( [eventNameValue isKindOfClass:[NSArray class]] )
                     {
@@ -194,7 +194,7 @@
     UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
     for( IXBaseAction* action in actionsForEventName )
     {
-        BOOL enabled = [[action actionProperties] getBoolPropertyValue:@"enabled" defaultValue:YES];
+        BOOL enabled = [[action actionProperties] getBoolPropertyValue:kIX_ENABLED defaultValue:YES];
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
             BOOL shouldFireAction = (value == nil || propertyName == nil );
@@ -209,7 +209,7 @@
             
             if( shouldFireAction )
             {
-                CGFloat delay = [[action actionProperties] getFloatPropertyValue:@"delay" defaultValue:0.0f];
+                CGFloat delay = [[action actionProperties] getFloatPropertyValue:kIX_DELAY defaultValue:0.0f];
                 
                 if( delay <= 0.0f )
                 {

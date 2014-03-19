@@ -38,7 +38,7 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
 {
     NSString* returnValue = nil;
     NSString* methodName = [self methodName];
-    if( methodName )
+    if( [methodName length] > 0 )
     {
         returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:methodName defaultValue:nil];
     }

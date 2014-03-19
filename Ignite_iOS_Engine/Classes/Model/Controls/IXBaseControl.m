@@ -42,6 +42,12 @@ static NSString* const kIXShadowOffsetRight = @"shadow_offset_right";
 static NSString* const kIXShadowOffsetDown = @"shadow_offset_down";
 static NSString* const kIXVisible = @"visible";
 
+// kIXBackgroundImageScale Types
+static NSString* const kIXBackgroundImageScaleCover = @"cover";
+static NSString* const kIXBackgroundImageScaleStretch = @"stretch";
+static NSString* const kIXBackgroundImageScaleTile = @"tile";
+static NSString* const kIXBackgroundImageScaleContain = @"contain";
+
 //
 // IXBaseControl gesture events
 //
@@ -180,49 +186,60 @@ static NSString* const kIXPinchBoth = @"both";
 
 -(void)applyContentViewSettings
 {
-    NSString* backgroundImage = [self.propertyContainer getStringPropertyValue:kIXBackgroundImage defaultValue:nil];
-    if (backgroundImage)
+    NSString* backgroundImage = [[self propertyContainer] getStringPropertyValue:kIXBackgroundImage defaultValue:nil];
+    if( backgroundImage )
     {
-        NSString* backgroundImageScale = [self.propertyContainer getStringPropertyValue:kIXBackgroundImageScale defaultValue:@"cover"];
-        [self.propertyContainer getImageProperty:kIXBackgroundImage
-                                     successBlock:^(UIImage *image) {
-                                         
-                                         NSString* backgroundImageResizeMask;
-                                         CGSize size = self.contentView.bounds.size;
-                                         if ([backgroundImageScale isEqualToString:@"cover"])
-                                         {
-                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f^", size.width, size.height];
-                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
-                                         }
-                                         else if ([backgroundImageScale isEqualToString:@"stretch"])
-                                         {
-                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f!", size.width, size.height];
-                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
-                                         }
-                                         else if ([backgroundImageScale isEqualToString:@"contain"])
-                                         {
-                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
-                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
-                                             
-                                             UIGraphicsBeginImageContext(size);
-                                             [[UIColor clearColor] setFill];
-                                             [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
-                                             CGRect rect = CGRectMake(((size.width - image.size.width) / 2), ((size.height - image.size.height) / 2), image.size.width, image.size.height);
-                                             [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
-                                             image = UIGraphicsGetImageFromCurrentImageContext();
-                                             UIGraphicsEndImageContext();
-                                         }
-                                         else if ([backgroundImageScale isEqualToString:@"tile"])
-                                         {
-                                             backgroundImageResizeMask = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
-                                             image = [image resizedImageByMagick:backgroundImageResizeMask];
-                                         }
-                                         
-                                         self.contentView.backgroundColor = [UIColor colorWithPatternImage:image];
-                                         
-                                     } failBlock:^(NSError *error) {
-                                         DDLogDebug(@"Background image failed to load at %@", kIXBackgroundImage);
-                                     }];
+        NSString* backgroundImageScale = [[self propertyContainer] getStringPropertyValue:kIXBackgroundImageScale
+                                                                             defaultValue:kIXBackgroundImageScaleCover];
+        
+        static NSDictionary *sIXBackgroundImageScaleFormatDictionary = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            sIXBackgroundImageScaleFormatDictionary = @{kIXBackgroundImageScaleCover: @"%.0fx%.0f^",
+                                                        kIXBackgroundImageScaleStretch: @"%.0fx%.0f!",
+                                                        kIXBackgroundImageScaleTile: @"%.0fx%.0f",
+                                                        kIXBackgroundImageScaleContain: @"%.0fx%.0f"};
+        });
+        
+        NSString* backgroundImageScaleFormat = sIXBackgroundImageScaleFormatDictionary[backgroundImageScale];
+        BOOL isScaleTypeContain = [backgroundImageScale isEqualToString:kIXBackgroundImageScaleContain];
+        
+        if( backgroundImageScaleFormat != nil )
+        {
+            __weak typeof(self) weakSelf = self;
+            [[self propertyContainer] getImageProperty:kIXBackgroundImage successBlock:^(UIImage *image) {
+                
+                CGSize size = [[weakSelf contentView] bounds].size;
+                
+                image = [image resizedImageByMagick:[NSString stringWithFormat:backgroundImageScaleFormat,size.width,size.height]];
+                
+                if( isScaleTypeContain )
+                {
+                    UIGraphicsBeginImageContext(size);
+                    
+                    [[UIColor clearColor] setFill];
+                    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+                    
+                    CGRect rect = CGRectMake(((size.width - image.size.width) / 2), ((size.height - image.size.height) / 2), image.size.width, image.size.height);
+                    [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+                    image = UIGraphicsGetImageFromCurrentImageContext();
+                    
+                    UIGraphicsEndImageContext();
+                }
+                
+                [[weakSelf contentView] setBackgroundColor:[UIColor colorWithPatternImage:image]];
+                
+            } failBlock:^(NSError *error) {
+
+                [[weakSelf contentView] setBackgroundColor:[[weakSelf propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+                
+                DDLogDebug(@"Background image failed to load at %@", kIXBackgroundImage);
+            }];
+        }
+        else
+        {
+            [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+        }
     }
     else
     {
@@ -395,7 +412,7 @@ static NSString* const kIXPinchBoth = @"both";
         if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
            pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
         {
-            CGAffineTransform transform;
+            CGAffineTransform transform = CGAffineTransformIdentity;
             CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:@"transform.scale"] floatValue];
             CGFloat newScale = 1 - (previousScale - pinchGestureRecognizer.scale);
             newScale = MIN(newScale, (kMaxScale + kElastic) / currentScale);

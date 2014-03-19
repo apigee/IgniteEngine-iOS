@@ -9,22 +9,17 @@
 #import "IXBaseShortCode.h"
 #import "IXProperty.h"
 #import "IXBaseObject.h"
+#import "IXEvalShortCode.h"
+#import "IXGetShortCode.h"
 #import "NSString+IXAdditions.h"
 
 static NSString* const kIXIsEmpty = @"is_empty";
 static IXBaseShortCodeFunction const kIXIsEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:[stringToModify isEqualToString:@""]];
+    return [NSString ix_stringFromBOOL:[stringToModify isEqualToString:kIX_EMPTY_STRING]];
 };
 static NSString* const kIXIsNil = @"is_nil";
 static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [NSString ix_stringFromBOOL:(stringToModify == nil)];
-};
-static NSString* const kIXTruncate = @"truncate";
-static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    if (parameters.firstObject != nil)
-        return [NSString ix_truncateString:stringToModify toIndex:[[parameters.firstObject getPropertyValue] intValue]];
-    else
-        return stringToModify;
 };
 static NSString* const kIXToUppercase = @"to_uppercase";
 static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
@@ -38,6 +33,29 @@ static NSString* const kIXCapitalize = @"capitalize";
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
 };
+static NSString* const kIXTruncate = @"truncate";
+static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    if ([parameters firstObject] != nil) {
+        return [NSString ix_truncateString:stringToModify toIndex:[[parameters.firstObject getPropertyValue] intValue]];
+    } else {
+        return stringToModify;
+    }
+};
+
+NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
+{
+    NSMutableArray* validRanges = [NSMutableArray array];
+    NSUInteger numberOfRanges = [textCheckingResult numberOfRanges];
+    for( int i = 0; i < numberOfRanges; i++)
+    {
+        NSRange range = [textCheckingResult rangeAtIndex:i];
+        if( range.location != NSNotFound )
+        {
+            [validRanges addObject:[NSValue valueWithRange:range]];
+        }
+    }
+    return validRanges;
+}
 
 @implementation IXBaseShortCode
 
@@ -47,7 +65,7 @@ static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString
                    functionName:(NSString*)functionName
                      parameters:(NSArray*)parameters
 {
-    self = [self init];
+    self = [super init];
     if( self )
     {
         _rawValue = [rawValue copy];
@@ -60,16 +78,7 @@ static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString
     return self;
 }
 
-+(instancetype)shortCodeWithRawValue:(NSString*)rawValue
-                            objectID:(NSString*)objectID
-                          methodName:(NSString*)methodName
-                        functionName:(NSString*)functionName
-                          parameters:(NSArray*)parameters
-{
-    return [[[self class] alloc] initWithRawValue:rawValue objectID:objectID methodName:methodName functionName:functionName parameters:parameters];
-}
-
--(id)copyWithZone:(NSZone *)zone
+-(instancetype)copyWithZone:(NSZone *)zone
 {
     IXBaseShortCode* copy = [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
                                                                        objectID:[self objectID]
@@ -78,6 +87,92 @@ static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString
                                                                      parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]];
     [copy setRangeInPropertiesText:[self rangeInPropertiesText]];
     return copy;
+}
+
++(instancetype)shortCodeFromString:(NSString*)checkedString
+                textCheckingResult:(NSTextCheckingResult*)textCheckingResult
+{
+    IXBaseShortCode* returnShortCode = nil;
+    if( textCheckingResult )
+    {
+        NSArray* validRanges = ix_ValidRangesFromTextCheckingResult(textCheckingResult);
+        
+        NSUInteger validRangesCount = [validRanges count];
+        if( validRangesCount >= 3 )
+        {
+            NSString* rawValue = [checkedString substringWithRange:[[validRanges firstObject] rangeValue]];
+            NSString* objectIDWithMethodString = [checkedString substringWithRange:[[validRanges objectAtIndex:2] rangeValue]];
+            
+            if( [rawValue hasPrefix:kIX_EVAL_BRACKETS] )
+            {
+                IXProperty* evalPropertyValue = [[IXProperty alloc] initWithPropertyName:nil rawValue:objectIDWithMethodString];
+                IXEvalShortCode* evalShortCode = [[IXEvalShortCode alloc] initWithRawValue:nil objectID:nil methodName:nil functionName:nil parameters:@[evalPropertyValue]];
+                returnShortCode = evalShortCode;
+            }
+            else
+            {
+                NSString* objectID = nil;
+                NSString* methodName = nil;
+                NSString* functionName = nil;
+                NSMutableArray* parameters = nil;
+                
+                NSMutableArray* objectIDWithMethodStringComponents = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_PERIOD_SEPERATOR]];
+                objectID = [objectIDWithMethodStringComponents firstObject];
+                
+                [objectIDWithMethodStringComponents removeObject:objectID];
+                if( [objectIDWithMethodStringComponents count] )
+                {
+                    methodName = [objectIDWithMethodStringComponents componentsJoinedByString:kIX_PERIOD_SEPERATOR];
+                }
+                
+                if( validRangesCount >= 4 )
+                {
+                    functionName = [checkedString substringWithRange:[[validRanges objectAtIndex:3] rangeValue]];
+                    if( validRangesCount >= 5 )
+                    {
+                        NSString* rawParameterString = [checkedString substringWithRange:[[validRanges objectAtIndex:4] rangeValue]];
+                        NSArray* parameterStrings = [rawParameterString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+                        for( NSString* parameter in parameterStrings )
+                        {
+                            IXProperty* parameterProperty = [[IXProperty alloc] initWithPropertyName:nil rawValue:parameter];
+                            if( parameterProperty )
+                            {
+                                if( !parameters )
+                                {
+                                    parameters = [[NSMutableArray alloc] init];
+                                }
+                                [parameters addObject:parameterProperty];
+                            }
+                        }
+                    }
+                }
+                
+                Class shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
+                if( !shortCodeClass )
+                {
+                    // If the class doesn't exist this must be a Get shortcode.
+                    shortCodeClass = [IXGetShortCode class];
+                }
+                else
+                {
+                    // If the class did exist then the objectID was really just the class of the shortcode in which case the objectID is not needed anymore.
+                    objectID = nil;
+                }
+                
+                if( [shortCodeClass isSubclassOfClass:[IXBaseShortCode class]] )
+                {
+                    returnShortCode = [[shortCodeClass alloc] initWithRawValue:rawValue
+                                                                      objectID:objectID
+                                                                    methodName:methodName
+                                                                  functionName:functionName
+                                                                    parameters:parameters];
+                    
+                    [returnShortCode setRangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
+                }
+            }
+        }
+    }
+    return returnShortCode;
 }
 
 -(NSString*)evaluateAndApplyFunction

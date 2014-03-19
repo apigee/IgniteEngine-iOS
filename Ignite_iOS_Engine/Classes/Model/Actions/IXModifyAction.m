@@ -90,7 +90,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
                          withStaggerDelay:(CGFloat)staggerDelay
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    if( objectIDs != nil && [self parameterProperties] != nil )
+    if( [objectIDs count] && [self parameterProperties] != nil )
     {
         IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
         IXSandbox* sandbox = [ownerObject sandbox];

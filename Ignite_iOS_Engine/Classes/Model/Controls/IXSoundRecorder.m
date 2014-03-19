@@ -33,8 +33,8 @@ static NSString* const kIXResumeRecording = @"resume_recording";
 static NSString* const kIXStopRecording = @"stop_recording";
 
 // IXSoundRecorder Events
-static NSString* const kIXError = @"error";
-static NSString* const kIXFinished = @"finished";
+// kIX_FINISHED -> Fires when the recording has finished.
+// kIX_ERROR    -> Fires when the sound recorder control throws an error when "record_permission_granted" is false as well as when "record_to_location" is an invalid path.
 
 @interface IXSoundRecorder () <AVAudioRecorderDelegate>
 
@@ -85,13 +85,13 @@ static NSString* const kIXFinished = @"finished";
         else
         {
             [self setLastErrorMessage:[NSString stringWithFormat:@"ERROR: Property named %@ must be a local path.",kIXRecordToLocation]];
-            [[self actionContainer] executeActionsForEventNamed:kIXError];
+            [[self actionContainer] executeActionsForEventNamed:kIX_ERROR];
         }
     }
     else
     {
         [self setLastErrorMessage:@"ERROR: Record Permission was not granted by user."];
-        [[self actionContainer] executeActionsForEventNamed:kIXError];
+        [[self actionContainer] executeActionsForEventNamed:kIX_ERROR];
     }
 }
 
@@ -159,7 +159,7 @@ static NSString* const kIXFinished = @"finished";
         if( audioRecorder == nil || error != nil )
         {
             [self setLastErrorMessage:[NSString stringWithFormat:@"ERROR: Problem Creating AVAudioRecorder using URL %@: \n\n%@",[[self recordToLocationURL] absoluteString],[error description]]];
-            [[self actionContainer] executeActionsForEventNamed:kIXError];
+            [[self actionContainer] executeActionsForEventNamed:kIX_ERROR];
             DDLogError(@"ERROR: from %@ in %@ : SOUNDRECORDER CONTROL ID:%@ CREATION ERROR USING URL %@: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[[self recordToLocationURL] absoluteString],[self lastErrorMessage]);
         }
         else
@@ -199,13 +199,13 @@ static NSString* const kIXFinished = @"finished";
     
     if( audioRecorderWasRecording )
     {
-        [[self actionContainer] executeActionsForEventNamed:kIXFinished];
+        [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
     }
 }
 
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    [[self actionContainer] executeActionsForEventNamed:kIXFinished];
+    [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
 }
 
 @end

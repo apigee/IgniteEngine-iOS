@@ -11,14 +11,14 @@
 #import "IXJSONGrabber.h"
 #import "IXPropertyContainer.h"
 #import "IXActionContainer.h"
-#import "IXViewController.h"
 #import "IXBaseControl.h"
 #import "IXCustom.h"
 #import "IXLogger.h"
 #import "IXBaseDataProviderConfig.h"
 #import "IXBaseControlConfig.h"
 
-static NSCache* sCustomControlCache;
+static NSCache* sControlCacheContainerCache;
+static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlCacheContainerCache";
 
 @implementation IXControlCacheContainer
 
@@ -26,25 +26,27 @@ static NSCache* sCustomControlCache;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sCustomControlCache = [[NSCache alloc] init];
-        [sCustomControlCache setName:@"com.ignite.CustomControlCache"];
+        sControlCacheContainerCache = [[NSCache alloc] init];
+        [sControlCacheContainerCache setName:kIXControlCacheContainerCacheName];
     });
 }
 
 +(void)clearCache
 {
-    [sCustomControlCache removeAllObjects];
+    [sControlCacheContainerCache removeAllObjects];
 }
 
--(instancetype)initWithStyleClass:(NSString*)styleClass
-                propertyContainer:(IXPropertyContainer*)propertyContainer
-                  actionContainer:(IXActionContainer*)actionContainer
-              childConfigControls:(NSArray*)childConfigControls
-              dataProviderConfigs:(NSArray*)dataProviderConfigs;
+-(instancetype)initWithControlType:(NSString*)controlType
+                        styleClass:(NSString*)styleClass
+                 propertyContainer:(IXPropertyContainer*)propertyContainer
+                   actionContainer:(IXActionContainer*)actionContainer
+               childConfigControls:(NSArray*)childConfigControls
+               dataProviderConfigs:(NSArray*)dataProviderConfigs;
 {
     self = [super init];
     if( self )
     {
+        _controlType = [controlType copy];
         _styleClass = [styleClass copy];
         _propertyContainer = propertyContainer;
         _actionContainer = actionContainer;
@@ -56,11 +58,24 @@ static NSCache* sCustomControlCache;
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    return [[[self class] allocWithZone:zone] initWithStyleClass:[self styleClass]
-                                               propertyContainer:[[self propertyContainer] copy]
-                                                 actionContainer:[[self actionContainer] copy]
-                                             childConfigControls:[[NSArray alloc] initWithArray:[self childConfigControls] copyItems:YES]
-                                             dataProviderConfigs:[[NSArray alloc] initWithArray:[self dataProviderConfigs] copyItems:YES]];
+    return [[[self class] allocWithZone:zone] initWithControlType:[self controlType]
+                                                       styleClass:[self styleClass]
+                                                propertyContainer:[[self propertyContainer] copy]
+                                                  actionContainer:[[self actionContainer] copy]
+                                              childConfigControls:[[NSArray alloc] initWithArray:[self childConfigControls] copyItems:YES]
+                                              dataProviderConfigs:[[NSArray alloc] initWithArray:[self dataProviderConfigs] copyItems:YES]];
+}
+
+-(Class)controlClass
+{
+    Class controlClass = nil;
+    NSString* controlType = [self controlType];
+    if( [controlType length] ) {
+        controlClass = NSClassFromString([NSString stringWithFormat:kIX_CONTROL_CLASS_NAME_FORMAT,controlType]);
+    } else {
+        controlClass = [IXLayout class];
+    }
+    return controlClass;
 }
 
 +(void)populateControlsCustomControlChildren:(IXBaseControl*)control
@@ -79,23 +94,23 @@ static NSCache* sCustomControlCache;
             else
             {
                 [customControl setPathToJSON:pathToJSON];
-                BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES];
+                BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES] && ![sControlCacheContainerCache objectForKey:pathToJSON];
                 [IXControlCacheContainer populateControl:customControl
                                           withJSONAtPath:pathToJSON
                                                loadAsync:loadAsync
-                                         completionBlock:^(BOOL didSucceed, NSError *error) {
+                                         completionBlock:^(BOOL didSucceed, IXBaseControl* populatedControl, NSError *error) {
                                               if( didSucceed )
                                               {
                                                   if( loadAsync )
                                                   {
-                                                      [[[customControl sandbox] containerControl] applySettings];
-                                                      [[[customControl sandbox] containerControl] layoutControl];
+                                                      [populatedControl applySettings];
+                                                      [populatedControl layoutControl];
                                                   }
-                                                  [[customControl actionContainer] executeActionsForEventNamed:@"did_load"];
+                                                  [[populatedControl actionContainer] executeActionsForEventNamed:@"did_load"];
                                               }
                                               else
                                               {
-                                                  [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
+                                                  [[populatedControl actionContainer] executeActionsForEventNamed:@"load_failed"];
                                               }
                                          }];
             }
@@ -105,32 +120,32 @@ static NSCache* sCustomControlCache;
     }
 }
 
-+(void)populateControl:(IXBaseControl *)control withCustomControlCacheContainer:(IXControlCacheContainer*)customControlCacheContainer completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock
++(void)populateControl:(IXBaseControl *)control controlCacheContainer:(IXControlCacheContainer*)controlCacheContainer completionBlock:(IXPopulateControlCompletionBlock)completionBlock
 {
-    if( customControlCacheContainer != nil )
+    if( control && controlCacheContainer != nil )
     {
         if( [control styleClass] == nil )
         {
-            [control setStyleClass:[customControlCacheContainer styleClass]];
+            [control setStyleClass:[controlCacheContainer styleClass]];
         }
         
         IXPropertyContainer* controlPropertyContainer = [control propertyContainer];
-        if( [customControlCacheContainer propertyContainer] )
+        if( [controlCacheContainer propertyContainer] )
         {
-            [control setPropertyContainer:[[customControlCacheContainer propertyContainer] copy]];
+            [control setPropertyContainer:[[controlCacheContainer propertyContainer] copy]];
             [[control propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
         }
         if( [control actionContainer] )
         {
-            [[control actionContainer] addActionsFromActionContainer:[[customControlCacheContainer actionContainer] copy]];
+            [[control actionContainer] addActionsFromActionContainer:[[controlCacheContainer actionContainer] copy]];
         }
         else
         {
-            [control setActionContainer:[[customControlCacheContainer actionContainer] copy]];
+            [control setActionContainer:[[controlCacheContainer actionContainer] copy]];
         }
         
         NSMutableArray* dataProviders = [[NSMutableArray alloc] init];
-        for( IXBaseDataProviderConfig* dataProviderConfig in [customControlCacheContainer dataProviderConfigs] )
+        for( IXBaseDataProviderConfig* dataProviderConfig in [controlCacheContainer dataProviderConfigs] )
         {
             IXBaseDataProvider* dataProvider = [dataProviderConfig createDataProvider];
             if( dataProvider )
@@ -148,7 +163,7 @@ static NSCache* sCustomControlCache;
             [[control sandbox] addDataProviders:dataProviders];
         }
         
-        for( IXBaseControlConfig* controlConfig in [customControlCacheContainer childConfigControls] )
+        for( IXBaseControlConfig* controlConfig in [controlCacheContainer childConfigControls] )
         {
             IXBaseControl* childControl = [controlConfig createControl];
             if( childControl )
@@ -159,75 +174,144 @@ static NSCache* sCustomControlCache;
         
         [IXControlCacheContainer populateControlsCustomControlChildren:control];
         
-        completionBlock(YES,nil);
+        completionBlock(YES,control,nil);
     }
     else
     {
-        completionBlock(NO,[NSError errorWithDomain:@"No control cache found." code:0 userInfo:nil] );
+        completionBlock(NO,control,[NSError errorWithDomain:@"No control cache found." code:0 userInfo:nil] );
     }
 }
 
-+(void)populateControl:(IXBaseControl*)control withJSONAtPath:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXJSONPopulateControlCompletionBlock)completionBlock
++(void)createControlWithControlCacheContainer:(IXControlCacheContainer*)controlCacheContainer
+                              completionBlock:(IXCreateControlCompletionBlock)completionBlock
 {
-    if( pathToJSON )
+    if( controlCacheContainer != nil )
     {
-        __block IXControlCacheContainer* customControlCacheContainer = [sCustomControlCache objectForKey:pathToJSON];
-        if( customControlCacheContainer == nil )
+        Class controlClass = [controlCacheContainer controlClass];
+        if( [controlClass isSubclassOfClass:[IXBaseControl class]] )
         {
-            [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:pathToJSON
-                                                         asynch:loadAsync
-                                                    shouldCache:NO
-                                                completionBlock:^(id jsonObject, NSError *error) {
-                                                    
-                if( [jsonObject isKindOfClass:[NSDictionary class]] )
-                {
-                    NSDictionary* controlJSONDictionary = jsonObject[@"view"];
-                    if( controlJSONDictionary == nil )
-                    {
-                        controlJSONDictionary = jsonObject;
-                    }
-                    
-                    NSDictionary* propertiesDictionary = controlJSONDictionary[@"attributes"];
-                    IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDictionary];
-                    
-                    NSString* controlStyleClass = propertiesDictionary[kIX_STYLE];
-                    if( controlStyleClass && ![controlStyleClass isKindOfClass:[NSString class]] )
-                    {
-                        controlStyleClass = nil;
-                    }
-                    
-                    IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDictionary[@"actions"]];
-                    NSArray* childConfigControls = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDictionary[@"controls"]];
-                    NSArray* dataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:controlJSONDictionary[@"data_providers"]];
-                    
-                    customControlCacheContainer = [[IXControlCacheContainer alloc] initWithStyleClass:controlStyleClass
-                                                                                          propertyContainer:propertyContainer
-                                                                                            actionContainer:actionContainer
-                                                                                        childConfigControls:childConfigControls
-                                                                                        dataProviderConfigs:dataProviderConfigs];
-                    
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                        [sCustomControlCache setObject:customControlCacheContainer forKey:pathToJSON];
-                    });
-                    
-                    if( customControlCacheContainer != nil )
-                    {
-                        [IXControlCacheContainer populateControl:control withCustomControlCacheContainer:customControlCacheContainer completionBlock:completionBlock];
-                    }
-                }
-                else
-                {
-                    completionBlock(NO,error);
-                    
-                    DDLogError(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
-                }
-            }];
+            [IXControlCacheContainer populateControl:[[controlClass alloc] init]
+                               controlCacheContainer:controlCacheContainer
+                                     completionBlock:^(BOOL didSucceed, IXBaseControl *populatedControl, NSError *error) {
+                                         
+                                         if( didSucceed && populatedControl )
+                                         {
+                                             completionBlock(YES,populatedControl,nil);
+                                         }
+                                         else
+                                         {
+                                             completionBlock(NO,nil,error);
+                                         }
+                                     }];
         }
         else
         {
-            [IXControlCacheContainer populateControl:control withCustomControlCacheContainer:customControlCacheContainer completionBlock:completionBlock];
+            completionBlock(NO,nil,[NSError errorWithDomain:@"ControlCacheContainer control type is invalid." code:0 userInfo:nil]);
         }
     }
+    else
+    {
+        completionBlock(NO,nil,[NSError errorWithDomain:@"ControlCacheContainer is nil. Cannot create control." code:0 userInfo:nil]);
+    }
+}
+
++(void)createControlWithPathToJSON:(NSString*)pathToJSON
+                         loadAsync:(BOOL)loadAsync
+                   completionBlock:(IXCreateControlCompletionBlock)completionBlock
+{
+    [IXControlCacheContainer controlCacheContainerWithJSONAtPath:pathToJSON
+                                                       loadAsync:loadAsync
+                                                 completionBlock:^(BOOL didSucceed, IXControlCacheContainer *controlCacheContainer, NSError *error) {
+                                                     
+                                                     if( didSucceed ) {
+                                                         [IXControlCacheContainer createControlWithControlCacheContainer:controlCacheContainer
+                                                                                                         completionBlock:completionBlock];
+                                                     } else {
+                                                         completionBlock(NO,nil,error);
+                                                     }
+                                                 }];
+}
+
++(void)controlCacheContainerWithJSONAtPath:(NSString*)pathToJSON
+                                 loadAsync:(BOOL)loadAsync
+                           completionBlock:(IXGetControlCacheContainerCompletionBlock)completionBlock
+{
+    IXControlCacheContainer* cachedControlCacheContainer = [sControlCacheContainerCache objectForKey:pathToJSON];
+    if( cachedControlCacheContainer == nil )
+    {
+        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:pathToJSON asynch:loadAsync shouldCache:NO completionBlock:^(id jsonObject, NSError *error) {
+            
+            if( [jsonObject isKindOfClass:[NSDictionary class]] )
+            {
+                NSDictionary* controlJSONDictionary = jsonObject[kIX_VIEW];
+                if( controlJSONDictionary == nil )
+                {
+                    controlJSONDictionary = jsonObject;
+                }
+                
+                NSMutableDictionary* propertiesDictionary = [NSMutableDictionary dictionaryWithDictionary:controlJSONDictionary[kIX_ATTRIBUTES]];
+                
+                NSString* controlType = controlJSONDictionary[kIX_TYPE];
+                if( !controlType ) {
+                    controlType = propertiesDictionary[kIX_TYPE];
+                }
+                NSString* controlStyleClass = controlJSONDictionary[kIX_STYLE];
+                if( !controlStyleClass ) {
+                    controlStyleClass = propertiesDictionary[kIX_STYLE];
+                }
+                id controlID = controlJSONDictionary[kIX_ID];
+                if( controlID && [propertiesDictionary objectForKey:kIX_ID] == nil ) {
+                    [propertiesDictionary setObject:controlID forKey:kIX_ID];
+                }
+                
+                IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDictionary];
+                
+                IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDictionary[kIX_ACTIONS]];
+                NSArray* childConfigControls = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDictionary[kIX_CONTROLS]];
+                NSArray* dataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:controlJSONDictionary[kIX_DATA_PROVIDERS]];
+                
+                IXControlCacheContainer* controlCacheContainer = [[IXControlCacheContainer alloc] initWithControlType:controlType
+                                                                                                           styleClass:controlStyleClass
+                                                                                                    propertyContainer:propertyContainer
+                                                                                                      actionContainer:actionContainer
+                                                                                                  childConfigControls:childConfigControls
+                                                                                                  dataProviderConfigs:dataProviderConfigs];
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    [sControlCacheContainerCache setObject:controlCacheContainer forKey:pathToJSON];
+                });
+                
+                completionBlock(YES,controlCacheContainer,nil);
+            }
+            else
+            {
+                completionBlock(NO,nil,error);
+                
+                DDLogError(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
+            }
+        }];
+    }
+    else
+    {
+        completionBlock(YES,cachedControlCacheContainer,nil);
+    }
+}
+
++(void)populateControl:(IXBaseControl*)control withJSONAtPath:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXPopulateControlCompletionBlock)completionBlock
+{
+    [IXControlCacheContainer controlCacheContainerWithJSONAtPath:pathToJSON loadAsync:loadAsync completionBlock:^(BOOL didSucceed, IXControlCacheContainer *controlCacheContainer, NSError *error) {
+                                                        
+        if( didSucceed && controlCacheContainer != nil )
+        {
+            [IXControlCacheContainer populateControl:control
+                               controlCacheContainer:controlCacheContainer
+                                     completionBlock:completionBlock];
+        }
+        else
+        {
+            completionBlock(NO,control,error);
+        }
+    }];
 }
 
 @end

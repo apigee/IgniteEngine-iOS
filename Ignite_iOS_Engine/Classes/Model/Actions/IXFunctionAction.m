@@ -24,7 +24,7 @@ static NSString* const kIXFunctionName = @"function_name";
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     NSString* functionName = [[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil];
     
-    if( objectIDs != nil && functionName != nil )
+    if( [objectIDs count] && [functionName length] > 0 )
     {
         IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
         IXSandbox* sandbox = [ownerObject sandbox];

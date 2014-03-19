@@ -57,11 +57,11 @@
     if( [controlJSONDict isKindOfClass:[NSDictionary class]] && [controlJSONDict allKeys] > 0 )
     {
         NSString* controlType = controlJSONDict[kIX_TYPE];
-        Class controlClass = NSClassFromString([NSString stringWithFormat:@"IX%@",controlType]);
+        Class controlClass = NSClassFromString([NSString stringWithFormat:kIX_CONTROL_CLASS_NAME_FORMAT,controlType]);
         if( [controlClass isSubclassOfClass:[IXBaseControl class]] )
         {
             IXPropertyContainer* propertyContainer = nil;
-            id propertiesDict = controlJSONDict[@"attributes"];
+            id propertiesDict = controlJSONDict[kIX_ATTRIBUTES];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
                 id controlID = controlJSONDict[kIX_ID];
@@ -79,8 +79,8 @@
                 controlStyleClass = nil;
             }
             
-            IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDict[@"actions"]];
-            NSArray* childControlConfigs = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDict[@"controls"]];
+            IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDict[kIX_ACTIONS]];
+            NSArray* childControlConfigs = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDict[kIX_CONTROLS]];
             
             controlConfig = [[IXBaseControlConfig alloc] initWithControlClass:controlClass
                                                                    styleClass:controlStyleClass

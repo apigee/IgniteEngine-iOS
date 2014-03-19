@@ -33,11 +33,8 @@ typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* pa
                    functionName:(NSString*)functionName
                      parameters:(NSArray*)parameters;
 
-+(instancetype)shortCodeWithRawValue:(NSString*)rawValue
-                            objectID:(NSString*)objectID
-                          methodName:(NSString*)methodName
-                        functionName:(NSString*)functionName
-                          parameters:(NSArray*)parameters;
++(instancetype)shortCodeFromString:(NSString*)checkedString
+                textCheckingResult:(NSTextCheckingResult*)textCheckingResult;
 
 -(NSString*)evaluate;
 -(NSString*)evaluateAndApplyFunction;

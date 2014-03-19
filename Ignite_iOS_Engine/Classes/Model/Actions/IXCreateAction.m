@@ -15,122 +15,76 @@
 
 #import "IXPropertyContainer.h"
 #import "IXBaseControlConfig.h"
+#import "IXControlCacheContainer.h"
 
 #import "IXBaseControl.h"
-
-static NSCache* sIXCreateControlCache;
-static NSString* const kIXCreateControlCacheName = @"com.ignite.CreateControlCache";
 
 // IXCreateAction Properties
 static NSString* const kIXControlLocation = @"control_location";
 static NSString* const kIXParentID = @"parent_id";
 
-// IXCreateAction Events
-static NSString* const kIXSuccess = @"success";
-static NSString* const kIXFailed = @"failed";
+// IXCreateAction Events: kIX_SUCCESS and kIX_FAILED
 
 @implementation IXCreateAction
-
-+(void)initialize
-{
-    @autoreleasepool {
-        sIXCreateControlCache = [[NSCache alloc] init];
-        [sIXCreateControlCache setName:kIXCreateControlCacheName];
-    }
-}
-
--(void)addCreatedControl:(IXBaseControl*)control withParentControlID:(NSString*)parentID
-{
-    IXBaseControl* parentControl = nil;
-    IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
-    if( parentID )
-    {
-        parentControl = [[sandbox getAllControlsWithID:parentID] firstObject];
-    }
-    else
-    {
-        parentControl = [sandbox containerControl];
-    }
-    
-    if( parentControl )
-    {
-        [parentControl addChildObject:control];
-        [control applySettings];
-        [parentControl layoutControl];
-        
-        [self actionDidFinishWithEvents:@[kIXSuccess]];
-    }
-    else
-    {
-        [self actionDidFinishWithEvents:@[kIXFailed]];
-    }
-}
-
--(IXBaseControl*)createdControlFromLocation:(NSString*)location
-{
-    __block IXBaseControl* createdControl = nil;
-    
-    if( location )
-    {
-        __block IXBaseControlConfig* controlConfig = [sIXCreateControlCache objectForKey:location];
-        if( createdControl == nil )
-        {
-            [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:location
-                                                         asynch:NO
-                                                    shouldCache:NO
-                                                completionBlock:^(id jsonObject, NSError *error) {
-                                                    
-                                                    if( jsonObject )
-                                                    {
-                                                        if( [jsonObject isKindOfClass:[NSDictionary class]] )
-                                                        {
-                                                            controlConfig = [IXBaseControlConfig controlConfigWithJSONDictionary:jsonObject];
-                                                            createdControl = [controlConfig createControl];
-                                                            if( createdControl )
-                                                            {
-                                                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                    [sIXCreateControlCache setObject:controlConfig forKey:location cost:0];
-                                                                });
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        DDLogError(@"ERROR: from %@ in %@ : Error grabbing create control actions JSON. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
-                                                    }
-                                                }];
-        }
-        else
-        {
-            createdControl = [controlConfig createControl];
-        }
-    }
-    
-    return createdControl;
-}
 
 -(void)execute
 {
     [super execute];
     
-    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:kIXControlLocation basePath:nil defaultValue:nil];
+    BOOL needsToSendFailed = YES;
+    
+    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:kIXControlLocation
+                                                                         basePath:nil
+                                                                     defaultValue:nil];
+    
     if( controlJSONLocation )
     {
-        IXBaseControl* createdControl = [[sIXCreateControlCache objectForKey:controlJSONLocation] copy];
-        if( createdControl == nil )
+        NSString* parentControlID = [[self actionProperties] getStringPropertyValue:kIXParentID
+                                                                       defaultValue:nil];
+
+        IXBaseControl* parentControl = nil;
+        IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
+        if( parentControlID != nil )
         {
-            createdControl = [self createdControlFromLocation:controlJSONLocation];
-        }
-        
-        if( createdControl )
-        {
-            NSString* parentControlID = [[self actionProperties] getStringPropertyValue:kIXParentID defaultValue:nil];
-            [self addCreatedControl:createdControl withParentControlID:parentControlID];
+            if( [parentControlID length] > 0 )
+            {
+                parentControl = [[sandbox getAllControlsWithID:parentControlID] firstObject];
+            }
         }
         else
         {
-            [self actionDidFinishWithEvents:@[kIXFailed]];
+            parentControl = [sandbox containerControl];
         }
+        
+        if( parentControl != nil )
+        {
+            needsToSendFailed = NO;
+            
+            __weak typeof(self) weakSelf = self;
+            __weak typeof(parentControl) weakParentControl = parentControl;
+            
+            [IXControlCacheContainer createControlWithPathToJSON:controlJSONLocation loadAsync:NO completionBlock:^(BOOL didSucceed, IXBaseControl *createdControl, NSError *error) {
+                                                     
+                 if( createdControl && weakParentControl )
+                 {
+                     [weakParentControl addChildObject:createdControl];
+                    
+                     [createdControl applySettings];
+                     [weakParentControl layoutControl];
+                     
+                     [weakSelf actionDidFinishWithEvents:@[kIX_SUCCESS]];
+                }
+                else
+                {
+                    [weakSelf actionDidFinishWithEvents:@[kIX_FAILED]];
+                }
+             }];
+        }
+    }
+    
+    if( needsToSendFailed )
+    {
+        [self actionDidFinishWithEvents:@[kIX_FAILED]];
     }
 }
 
