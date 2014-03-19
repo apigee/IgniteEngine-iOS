@@ -20,7 +20,11 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 
 static NSString* const kIXPredicateFormat = @"predicate.format"; //e.g. "%K CONTAINS[c] %@"
 static NSString* const kIXPredicateArguments = @"predicate.arguments"; //e.g. "email,[[inputbox.text]]"
-static NSString* const kIXSortOrder = @"sort_order"; //ascending, descending, none (default=none)
+static NSString* const kIXSortOrder = @"sort.order"; //ascending, descending, none (default=none)
+static NSString* const kIXSortKey = @"sort.key"; //dataRow key to sort on
+static NSString* const kIXDataBaseUrl = @"data.baseurl";
+static NSString* const kIXDataPath = @"data.path";
+static NSString* const kIXAutoLoad = @"auto_load";
 
 @interface IXBaseDataProvider ()
 
@@ -55,12 +59,12 @@ static NSString* const kIXSortOrder = @"sort_order"; //ascending, descending, no
 {
     [super applySettings];
     
-    [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:@"auto_load" defaultValue:NO]];
-    [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data.baseurl" defaultValue:nil]];
-    [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:@"data.path" defaultValue:nil]];
+    [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:kIXAutoLoad defaultValue:NO]];
+    [self setDataLocation:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
+    [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
     [self setPredicateFormat:[[self propertyContainer] getStringPropertyValue:kIXPredicateFormat defaultValue:nil]];
     [self setPredicateArguments:[[self propertyContainer] getStringPropertyValue:kIXPredicateArguments defaultValue:nil]];
-    [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil]];
+    [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:kIXSortKey defaultValue:nil]];
     [self setSortOrder:[[self propertyContainer] getStringPropertyValue:kIXSortOrder defaultValue:@"none"]];
 }
 
