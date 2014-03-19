@@ -303,11 +303,11 @@
     if(![currentNode isKindOfClass:[NSDictionary class]] && ![currentNode isKindOfClass:[NSArray class]]) {
         return currentNode;
     }
-    if ([jsonXPath hasPrefix:@"."]) {
+    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPERATOR]) {
         jsonXPath = [jsonXPath substringFromIndex:1];
     }
     
-    NSString *currentKey = [[jsonXPath componentsSeparatedByString:@"."] firstObject];
+    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPERATOR] firstObject];
     NSObject *nextNode;
     // if dict -> get value
     if ([currentNode isKindOfClass:[NSDictionary class]]) {
@@ -333,7 +333,7 @@
     }
     
     // remove the currently processed key from the xpath like path
-    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:@""];    
+    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
     if( nextXPath.length <= 0 )
     {
         return nextNode;

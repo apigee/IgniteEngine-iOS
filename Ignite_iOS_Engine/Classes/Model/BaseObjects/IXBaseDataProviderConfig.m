@@ -60,13 +60,13 @@
     if( [dataProviderJSONDict isKindOfClass:[NSDictionary class]] && [dataProviderJSONDict allKeys] > 0 )
     {
         NSString* dataProviderType = dataProviderJSONDict[kIX_TYPE];
-        NSString* dataProviderClassString = [NSString stringWithFormat:@"IX%@DataProvider",dataProviderType];
+        NSString* dataProviderClassString = [NSString stringWithFormat:kIX_DATA_PROVIDER_CLASS_NAME_FORMAT,dataProviderType];
         
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
         if( [dataProviderClass isSubclassOfClass:[IXBaseDataProvider class]]  )
         {
             IXPropertyContainer* propertyContainer = nil;
-            id propertiesDict = dataProviderJSONDict[@"attributes"];
+            id propertiesDict = dataProviderJSONDict[kIX_ATTRIBUTES];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
                 id dataProviderID = dataProviderJSONDict[kIX_ID];
@@ -84,15 +84,15 @@
                 dataProviderStyleClass = nil;
             }
             
-            IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:dataProviderJSONDict[@"actions"]];
-            IXPropertyContainer* requestParameters = [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[@"parameters"]];
-            IXPropertyContainer* requestHeaders = [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[@"headers"]];
-            IXPropertyContainer* fileAttachments = [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[@"attachments"]];
+            IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:dataProviderJSONDict[kIX_ACTIONS]];
+            IXPropertyContainer* requestParameters = [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_DP_PARAMETERS]];
+            IXPropertyContainer* requestHeaders = [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_DP_HEADERS]];
+            IXPropertyContainer* fileAttachments = [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_DP_ATTACHMENTS]];
             
             IXEntityContainer* entityContainer = nil;
             if( dataProviderClass == [IXCoreDataDataProvider class] )
             {
-                entityContainer = [IXEntityContainer entityContainerWithJSONEntityDict:dataProviderJSONDict[@"entity"]];
+                entityContainer = [IXEntityContainer entityContainerWithJSONEntityDict:dataProviderJSONDict[kIX_DP_ENTITY]];
             }
             
             dataProviderConfig = [[IXBaseDataProviderConfig alloc] initWithDataProviderClass:dataProviderClass

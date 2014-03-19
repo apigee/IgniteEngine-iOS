@@ -10,12 +10,11 @@
 
 #import "IXPropertyContainer.h"
 #import "IXBaseShortCode.h"
-#import "IXPropertyParser.h"
 #import "IXLogger.h"
 
-@interface IXProperty ()
+static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
 
-@property (nonatomic,copy) NSString *propertyValue;
+@interface IXProperty ()
 
 @end
 
@@ -41,10 +40,7 @@
         _originalString = rawValue;
         _propertyName = propertyName;
         
-        if( rawValue != nil )
-        {
-            [IXPropertyParser parseIXPropertyIntoComponents:self];
-        }
+        [self parseProperty];
     }
     return self;
 }
@@ -66,10 +62,10 @@
         if( [[jsonObject allKeys] count] > 0 )
         {
             NSDictionary* propertyValueDict = (NSDictionary*)jsonObject;
-            property = [IXProperty propertyWithPropertyName:propertyName jsonObject:propertyValueDict[@"value"]];
+            property = [IXProperty propertyWithPropertyName:propertyName jsonObject:propertyValueDict[kIX_VALUE]];
             
-            [property setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:propertyValueDict[@"orientation"]]];
-            [property setConditionalProperty:[IXProperty propertyWithPropertyName:nil jsonObject:propertyValueDict[@"if"]]];
+            [property setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:propertyValueDict[kIX_ORIENTATION]]];
+            [property setConditionalProperty:[IXProperty propertyWithPropertyName:nil jsonObject:propertyValueDict[kIX_IF]]];
         }
     }
     else if( jsonObject == nil || [jsonObject isKindOfClass:[NSNull class]] )
@@ -145,7 +141,6 @@
     [copiedProperty setPropertyName:[self propertyName]];
     [copiedProperty setOriginalString:[self originalString]];
     [copiedProperty setStaticText:[self staticText]];
-    [copiedProperty setPropertyValue:[self propertyValue]];
     if( [[self shortCodes] count] )
     {
         [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
@@ -155,6 +150,64 @@
         }
     }
     return copiedProperty;
+}
+
+-(void)parseProperty
+{
+    NSString* propertiesStaticText = [[self originalString] copy];
+    if( [propertiesStaticText length] > 0 )
+    {
+        static NSRegularExpression *shortCodeMainComponentsRegex = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSError* __autoreleasing error = nil;
+            shortCodeMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeRegexString
+                                                                                options:NSRegularExpressionDotMatchesLineSeparators
+                                                                                  error:&error];
+            if( error )
+                DDLogError(@"Critical Error!!! Shortcode regex invalid with error: %@.",[error description]);
+        });
+        
+        NSArray* matchesInStaticText = [shortCodeMainComponentsRegex matchesInString:propertiesStaticText
+                                                                             options:0
+                                                                               range:NSMakeRange(0, [propertiesStaticText length])];
+        if( [matchesInStaticText count] )
+        {
+            __block NSUInteger numberOfCharactersRemoved = 0;
+            __block NSMutableArray* propertiesShortCodes = nil;
+            __block NSMutableString* mutableStaticText = [[NSMutableString alloc] initWithString:propertiesStaticText];
+            
+            for( NSTextCheckingResult* matchInShortCodeString in matchesInStaticText )
+            {
+                IXBaseShortCode* shortCode = [IXBaseShortCode shortCodeFromString:propertiesStaticText
+                                                               textCheckingResult:matchInShortCodeString];
+                if( shortCode )
+                {
+                    [shortCode setProperty:self];
+                    
+                    if( !propertiesShortCodes )
+                    {
+                        propertiesShortCodes = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [propertiesShortCodes addObject:shortCode];
+                    
+                    NSRange shortCodeRange = [matchInShortCodeString rangeAtIndex:0];
+                    shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;
+                    [mutableStaticText replaceCharactersInRange:shortCodeRange withString:kIX_EMPTY_STRING];
+                    numberOfCharactersRemoved += shortCodeRange.length;
+                }
+            }
+            
+            [self setStaticText:mutableStaticText];
+            [self setShortCodes:propertiesShortCodes];
+        }
+        else
+        {
+            [self setStaticText:propertiesStaticText];
+            [self setShortCodes:nil];
+        }
+    }
 }
 
 -(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
@@ -175,9 +228,9 @@
 -(NSString*)getPropertyValue
 {
     if( [self originalString] == nil || [[self originalString] length] == 0 )
-        return @"";
+        return kIX_EMPTY_STRING;
     
-    NSString* returnString = ([self staticText] == nil) ? @"" : [self staticText];
+    NSString* returnString = ([self staticText] == nil) ? kIX_EMPTY_STRING : [self staticText];
     
     if( [[self shortCodes] count] > 0 )
     {
@@ -193,7 +246,7 @@
             NSString *shortCodesValue = [shortCode evaluateAndApplyFunction];
             if( shortCodesValue == nil )
             {
-                shortCodesValue = @"";
+                shortCodesValue = kIX_EMPTY_STRING;
             }            
             [weakString insertString:shortCodesValue atIndex:shortCodeRange.location + newCharsAdded];
             newCharsAdded += [shortCodesValue length] - shortCodeRange.length;

@@ -29,18 +29,6 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 }
 
--(id)init
-{
-    self = [super init];
-    if( self )
-    {
-        _requestParameterProperties = [[IXPropertyContainer alloc] init];
-        _requestHeaderProperties = [[IXPropertyContainer alloc] init];
-        _fileAttachmentProperties = [[IXPropertyContainer alloc] init];
-    }
-    return self;
-}
-
 -(void)setRequestHeaderProperties:(IXPropertyContainer *)requestHeaderProperties
 {
     _requestHeaderProperties = requestHeaderProperties;
@@ -81,15 +69,16 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 {
     if( loadDidSucceed )
     {
-        [[self actionContainer] executeActionsForEventNamed:@"success"];
+        [[self actionContainer] executeActionsForEventNamed:kIX_SUCCESS];
     }
     else
     {
-        [[self actionContainer] executeActionsForEventNamed:@"failed"];
+        [[self actionContainer] executeActionsForEventNamed:kIX_FAILED];
     }
-    [[self actionContainer] executeActionsForEventNamed:@"finished"];
+    [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification
+                                                        object:self];
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -121,7 +110,7 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 -(NSSortDescriptor*)sortDescriptor
 {
     NSSortDescriptor* sortDescriptor = nil;
-    if( [self sortDescriptorKey] != nil && ![[self sortDescriptorKey] isEqualToString:@""] )
+    if( [[self sortDescriptorKey] length] > 0 )
     {
         sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
                                                        ascending:[self sortAscending]
@@ -133,8 +122,8 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 -(NSPredicate*)predicate
 {
     NSPredicate* predicate = nil;
-    NSArray* fetchPredicateStringsArray = [[self fetchPredicateStrings] componentsSeparatedByString:@","];
-    if( [self fetchPredicate] != nil && ![[self fetchPredicate] isEqualToString:@""] && [fetchPredicateStringsArray count] > 0 )
+    NSArray* fetchPredicateStringsArray = [[self fetchPredicateStrings] componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+    if( [[self fetchPredicate] length] > 0 && [fetchPredicateStringsArray count] > 0 )
     {
         predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
         DDLogVerbose(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);

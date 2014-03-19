@@ -54,7 +54,7 @@ static NSString* const kIXLogLevelRelease = @"release";
 
 -(void)setAppLogLevel:(NSString *)appLogLevel
 {
-    _appLogLevel = appLogLevel;
+    _appLogLevel = [appLogLevel copy];
     
     int logLevelInt = ddLogLevel;
     if( [appLogLevel isEqualToString:kIXLogLevelVerbose] ) {

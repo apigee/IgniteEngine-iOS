@@ -381,14 +381,14 @@ static CGSize sIXKBSize;
         inputText = [[self inputDisallowedRegex] stringByReplacingMatchesInString:inputText
                                                                           options:0
                                                                             range:NSMakeRange(0, [inputText length])
-                                                                     withTemplate:@""];
+                                                                     withTemplate:kIX_EMPTY_STRING];
     }
     if ( [self inputAllowedRegex] )
     {
         inputText = [[self inputAllowedRegex] stringByReplacingMatchesInString:inputText
                                                                        options:0
                                                                          range:NSMakeRange(0, [inputText length])
-                                                                  withTemplate:@""];
+                                                                  withTemplate:kIX_EMPTY_STRING];
     }
     
     NSString* inputTransform = [self inputTransform];

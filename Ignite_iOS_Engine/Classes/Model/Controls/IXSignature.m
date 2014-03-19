@@ -17,8 +17,8 @@ static NSString* const kIXHasSignature = @"has_signature";
 static NSString* const kIXLastSaveError = @"last_save_error";
 
 // IXSignature Events
-static NSString* const kIXSuccess = @"success"; // Fires when the "save_signature" function finishes successfully.
-static NSString* const kIXFail = @"fail"; // Fires when the "save_signature" function fails to save the signature.
+// kIX_SUCCESS -> Fires when the "save_signature" function finishes successfully.
+// kIX_FAILED  -> Fires when the "save_signature" function fails to save the signature.
 
 // IXSignature Functions
 static NSString* const kIXSaveSignature = @"save_signature";
@@ -115,11 +115,11 @@ static NSString* const kIXTo = @"to"; // Parameter of the "save_signature" funct
         
         if( didSaveSignature )
         {
-            [[self actionContainer] executeActionsForEventNamed:kIXSuccess];
+            [[self actionContainer] executeActionsForEventNamed:kIX_SUCCESS];
         }
         else
         {
-            [[self actionContainer] executeActionsForEventNamed:kIXFail];
+            [[self actionContainer] executeActionsForEventNamed:kIX_FAILED];
         }
     }
     else

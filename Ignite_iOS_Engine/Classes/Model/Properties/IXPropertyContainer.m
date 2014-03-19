@@ -68,7 +68,7 @@
         NSString* propertiesKey = key;
         if( [keyPrefix length] > 0 )
         {
-            propertiesKey = [NSString stringWithFormat:@"%@.%@",keyPrefix,key];
+            propertiesKey = [NSString stringWithFormat:@"%@%@%@",keyPrefix,kIX_PERIOD_SEPERATOR,key];
         }
         
         if( [obj isKindOfClass:[NSArray class]] ) {
@@ -167,7 +167,8 @@
         }
         else
         {
-            NSArray* propertyArray = [propertyContainer propertiesForPropertyNamed:propertyName];
+            NSMutableArray* propertyArray = [[NSMutableArray alloc] initWithArray:[propertyContainer propertiesForPropertyNamed:propertyName]
+                                                                        copyItems:YES];
             for( IXProperty* property in propertyArray )
             {
                 [property setPropertyContainer:self];
@@ -185,7 +186,7 @@
     NSArray* propertyNames = [[self propertiesDict] allKeys];
     for( NSString* propertyName in propertyNames )
     {
-        NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:@""];
+        NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:kIX_EMPTY_STRING];
         
         [returnDictionary setObject:propertyValue forKey:propertyName];
     }
@@ -200,10 +201,10 @@
     
     IXProperty* propertyToEvaluate = nil;
     NSArray* propertyArray = [self propertiesForPropertyNamed:propertyName];
-    if( propertyArray != nil || [propertyArray count] > 0 )
+    if( [propertyArray count] > 0 )
     {
         UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
-        for( IXProperty* property in [[propertyArray reverseObjectEnumerator] allObjects] )
+        for( IXProperty* property in [propertyArray reverseObjectEnumerator] )
         {
             if( [property areConditionalAndOrientationMaskValid:currentOrientation] )
             {
@@ -219,7 +220,7 @@
 {
     IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyName];
     NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue] : defaultValue;
-    return returnValue;
+    return [returnValue copy];
 }
 
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue
@@ -228,7 +229,7 @@
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
     if( stringValue != nil )
     {
-        returnArray = [stringValue componentsSeparatedByString:@","];
+        returnArray = [stringValue componentsSeparatedByString:kIX_COMMA_SEPERATOR];
     }
     return returnArray;
 }
@@ -400,7 +401,7 @@
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
     if( stringValue )
     {
-        NSArray* fontComponents = [stringValue componentsSeparatedByString:@":"];
+        NSArray* fontComponents = [stringValue componentsSeparatedByString:kIX_COLON_SEPERATOR];
         
         NSString* fontName = [fontComponents firstObject];
         CGFloat fontSize = [[fontComponents lastObject] floatValue];

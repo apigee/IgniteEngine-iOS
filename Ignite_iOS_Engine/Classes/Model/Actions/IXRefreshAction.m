@@ -23,22 +23,25 @@
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
    
-    IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
-    IXSandbox* sandbox = [ownerObject sandbox];
-    NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
-                                                             withSelfObject:ownerObject];
-    
-    for( IXBaseObject* baseObject in objectsWithID )
+    if( [objectIDs count] )
     {
-        [baseObject applySettings];
+        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
+        IXSandbox* sandbox = [ownerObject sandbox];
+        NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
+                                                                 withSelfObject:ownerObject];
         
-        if( [baseObject isKindOfClass:[IXBaseControl class]] )
+        for( IXBaseObject* baseObject in objectsWithID )
         {
-            [((IXBaseControl*)baseObject) layoutControl];
-        }
-        else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
-        {
-            [((IXBaseDataProvider*)baseObject) loadData:YES];
+            [baseObject applySettings];
+            
+            if( [baseObject isKindOfClass:[IXBaseControl class]] )
+            {
+                [((IXBaseControl*)baseObject) layoutControl];
+            }
+            else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
+            {
+                [((IXBaseDataProvider*)baseObject) loadData:YES];
+            }
         }
     }
     

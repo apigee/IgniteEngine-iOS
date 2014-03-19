@@ -12,9 +12,7 @@
 #import "IXBaseControl.h"
 #import "IXPropertyContainer.h"
 
-// IXDeleteAction Events
-static NSString* kIXSuccess = @"success";
-static NSString* kIXFailed = @"failed";
+// IXDeleteAction Events: kIX_SUCCESS and kIX_FAILED
 
 @implementation IXDeleteAction
 
@@ -49,11 +47,11 @@ static NSString* kIXFailed = @"failed";
     
     if( didSucceed )
     {
-        [self actionDidFinishWithEvents:@[kIXSuccess]];
+        [self actionDidFinishWithEvents:@[kIX_SUCCESS]];
     }
     else
     {
-        [self actionDidFinishWithEvents:@[kIXFailed]];
+        [self actionDidFinishWithEvents:@[kIX_FAILED]];
     }
 }
 

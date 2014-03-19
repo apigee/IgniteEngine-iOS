@@ -8,13 +8,15 @@
 
 #import "IXDeviceShortCode.h"
 
+#import "IXConstants.h"
+
 #import "IXDeviceHardware.h"
 #import "IXAppManager.h"
 #import "IXProperty.h"
 
+// Other properties : "orientation"
 static NSString* const kIXModel = @"model";
 static NSString* const kIXType = @"type";
-static NSString* const kIXOrientation = @"orientation";
 
 static NSString* const kIXScreenPrefix = @"screen.";
 static NSString* const kIXScreenWidthSuffix = @"width";
@@ -54,7 +56,7 @@ static NSString* sIXDeviceModelString = nil;
         //potential return values: iPod touch, iPhone, iPhone Simulator, iPad, iPad Simulator
         returnValue = [[UIDevice currentDevice] model];
     }
-    else if ([propertyName isEqualToString:kIXOrientation])
+    else if ([propertyName isEqualToString:kIX_ORIENTATION])
     {
         switch ([IXAppManager currentInterfaceOrientation])
         {
@@ -95,7 +97,8 @@ static NSString* sIXDeviceModelString = nil;
         }
         else if ([propertyName hasSuffix:kIXOSVersionIntegerSuffix])
         {
-            returnValue = [[[UIDevice currentDevice] systemVersion] stringByReplacingOccurrencesOfString:@"." withString:@""];
+            returnValue = [[[UIDevice currentDevice] systemVersion] stringByReplacingOccurrencesOfString:kIX_PERIOD_SEPERATOR
+                                                                                              withString:kIX_EMPTY_STRING];
         }
         else if ([propertyName hasSuffix:kIXOSVersionMajorSuffix])
         {

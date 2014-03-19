@@ -34,9 +34,7 @@ static NSString* const kIXNavAnimationTypeFlipFromRight = @"flip_from_right";
 static NSString* const kIXNavAnimationTypeCurlUp = @"curl_up";
 static NSString* const kIXNavAnimationTypeCurlDown = @"curl_down";
 
-// IXNavigateAction Events
-static NSString* const kIXSuccess = @"success";
-static NSString* const kIXFailed = @"failed";
+// IXNavigateAction Events: kIX_SUCCESS and kIX_FAILED
 
 static BOOL sIXIsAttemptingNavigation = NO;
 
@@ -55,11 +53,11 @@ static BOOL sIXIsAttemptingNavigation = NO;
     sIXIsAttemptingNavigation = NO;
     if( didSucceed )
     {
-        [self actionDidFinishWithEvents:@[kIXSuccess]];
+        [self actionDidFinishWithEvents:@[kIX_SUCCESS]];
     }
     else
     {
-        [self actionDidFinishWithEvents:@[kIXFailed]];
+        [self actionDidFinishWithEvents:@[kIX_FAILED]];
     }
 }
 

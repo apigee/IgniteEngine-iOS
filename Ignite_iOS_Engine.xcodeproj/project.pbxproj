@@ -39,7 +39,6 @@
 		13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6E183ED8F200C29157 /* IXSandbox.m */; };
 		13033FB0183ED8F200C29157 /* IXProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F71183ED8F200C29157 /* IXProperty.m */; };
 		13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F73183ED8F200C29157 /* IXPropertyContainer.m */; };
-		13033FB2183ED8F200C29157 /* IXPropertyParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F75183ED8F200C29157 /* IXPropertyParser.m */; };
 		13033FB3183ED8F200C29157 /* IXAppShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F78183ED8F200C29157 /* IXAppShortCode.m */; };
 		13033FB4183ED8F200C29157 /* IXBaseShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7A183ED8F200C29157 /* IXBaseShortCode.m */; };
 		13033FB5183ED8F200C29157 /* IXControlLayoutInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */; };
@@ -197,8 +196,6 @@
 		13033F71183ED8F200C29157 /* IXProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXProperty.m; sourceTree = "<group>"; };
 		13033F72183ED8F200C29157 /* IXPropertyContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPropertyContainer.h; sourceTree = "<group>"; };
 		13033F73183ED8F200C29157 /* IXPropertyContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPropertyContainer.m; sourceTree = "<group>"; };
-		13033F74183ED8F200C29157 /* IXPropertyParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPropertyParser.h; sourceTree = "<group>"; };
-		13033F75183ED8F200C29157 /* IXPropertyParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPropertyParser.m; sourceTree = "<group>"; };
 		13033F77183ED8F200C29157 /* IXAppShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAppShortCode.h; sourceTree = "<group>"; };
 		13033F78183ED8F200C29157 /* IXAppShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAppShortCode.m; sourceTree = "<group>"; };
 		13033F79183ED8F200C29157 /* IXBaseShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseShortCode.h; sourceTree = "<group>"; };
@@ -551,8 +548,6 @@
 				13033F71183ED8F200C29157 /* IXProperty.m */,
 				13033F72183ED8F200C29157 /* IXPropertyContainer.h */,
 				13033F73183ED8F200C29157 /* IXPropertyContainer.m */,
-				13033F74183ED8F200C29157 /* IXPropertyParser.h */,
-				13033F75183ED8F200C29157 /* IXPropertyParser.m */,
 				13033F76183ED8F200C29157 /* ShortCodes */,
 			);
 			path = Properties;
@@ -962,7 +957,6 @@
 				63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */,
 				13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */,
 				63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */,
-				13033FB2183ED8F200C29157 /* IXPropertyParser.m in Sources */,
 				63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */,
 				13033F93183ED8F200C29157 /* IXBaseAction.m in Sources */,
 				13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */,

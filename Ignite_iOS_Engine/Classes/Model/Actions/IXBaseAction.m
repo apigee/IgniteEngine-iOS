@@ -25,7 +25,7 @@
     if( self )
     {
         _actionContainer = nil;
-        _eventName = eventName;
+        _eventName = [eventName copy];
         _actionProperties = actionProperties;
         _parameterProperties = parameterProperties;
         _subActionContainer = subActionContainer;
@@ -49,7 +49,7 @@
     IXBaseAction* action = nil;
     if( [actionJSONDict allKeys] > 0 )
     {
-        BOOL debugMode = [actionJSONDict[@"debug"] boolValue];
+        BOOL debugMode = [actionJSONDict[kIX_DEBUG] boolValue];
         if( debugMode && [[IXAppManager sharedAppManager] appMode] != IXDebugMode )
         {
             return nil;
@@ -59,32 +59,32 @@
         Class actionClass = nil;
         if( [type isKindOfClass:[NSString class]] )
         {
-            NSString* actionClassString = [NSString stringWithFormat:@"IX%@Action",[type capitalizedString]];
+            NSString* actionClassString = [NSString stringWithFormat:kIX_ACTION_CLASS_NAME_FORMAT,[type capitalizedString]];
             actionClass = NSClassFromString(actionClassString);
         }
         
         if( [actionClass isSubclassOfClass:[IXBaseAction class]] )
         {
-            id propertiesDict = actionJSONDict[@"attributes"];
+            id propertiesDict = actionJSONDict[kIX_ATTRIBUTES];
             
-            id enabled = actionJSONDict[@"enabled"];
-            if( enabled && !propertiesDict[@"enabled"] )
+            id enabled = actionJSONDict[kIX_ENABLED];
+            if( enabled && !propertiesDict[kIX_ENABLED] )
             {
                 propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
-                [propertiesDict setObject:enabled forKey:@"enabled"];
+                [propertiesDict setObject:enabled forKey:kIX_ENABLED];
             }
             
             IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict];
-            IXPropertyContainer* parameterContainer = [IXPropertyContainer propertyContainerWithJSONDict:actionJSONDict[@"set"]];
-            IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:actionJSONDict[@"actions"]];
+            IXPropertyContainer* parameterContainer = [IXPropertyContainer propertyContainerWithJSONDict:actionJSONDict[kIX_SET]];
+            IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:actionJSONDict[kIX_ACTIONS]];
             
             action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:eventName
                                                             actionProperties:propertyContainer
                                                          parameterProperties:parameterContainer
                                                           subActionContainer:subActionContainer];
             
-            [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:actionJSONDict[@"orientation"]]];
-            [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:actionJSONDict[@"if"]]];
+            [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:actionJSONDict[kIX_ORIENTATION]]];
+            [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:actionJSONDict[kIX_IF]]];
         }
     }
     return action;

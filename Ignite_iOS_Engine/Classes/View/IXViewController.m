@@ -44,7 +44,7 @@
     [IXControlCacheContainer populateControl:[viewController containerControl]
                               withJSONAtPath:pathToJSON
                                    loadAsync:loadAsync
-                             completionBlock:^(BOOL didSucceed,NSError* error) {
+                             completionBlock:^(BOOL didSucceed,IXBaseControl* populatedControl,NSError* error) {
                                  if( completionBlock )
                                      completionBlock(didSucceed,viewController,error);
                              }];
@@ -91,6 +91,9 @@
 {
     [super viewWillAppear:animated];
     
+    [self applySettings];
+    [self layoutControls];
+    
     if( ![self hasAppeared] )
     {
         [self setHasAppeared:YES];
@@ -98,9 +101,6 @@
         [self fireViewEventNamed:@"will_first_appear"];
     }
     
-    [self applySettings];
-    [self layoutControls];
-
     [self fireViewEventNamed:@"will_appear"];
 }
 
