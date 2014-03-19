@@ -17,6 +17,8 @@
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 
+static NSString* kIXShouldReloadData = @"reload_data";
+
 @implementation IXRefreshAction
 
 -(void)execute
@@ -40,7 +42,8 @@
             }
             else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
             {
-                [((IXBaseDataProvider*)baseObject) loadData:YES];
+                BOOL reloadData = [self.actionProperties getBoolPropertyValue:kIXShouldReloadData defaultValue:YES];
+                [((IXBaseDataProvider*)baseObject) loadData:reloadData];
             }
         }
     }
