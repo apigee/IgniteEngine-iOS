@@ -26,7 +26,10 @@ static NSString* const kIXFloatFormat = @"%f";
 
 +(NSString*)ix_truncateString:(NSString*)string toIndex:(NSInteger)index
 {
-    return [NSString stringWithFormat:@"%@...", [string substringToIndex:MIN(index, string.length)]];
+    if (index > 0)
+        return [NSString stringWithFormat:@"%@...", [string substringToIndex:MIN(index, string.length)]];
+    else
+        return string;
 }
 
 @end

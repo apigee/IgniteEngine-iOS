@@ -408,7 +408,8 @@ static CGSize sIXKBSize;
         }
         else if ([inputTransform isEqualToString:kIXInputTransformUppercaseFirst])
         {
-            inputText = [NSString stringWithFormat:@"%@%@",[[inputText substringToIndex:1] uppercaseString],[inputText substringFromIndex:1]];
+            if (inputText.length > 0)
+                inputText = [NSString stringWithFormat:@"%@%@",[[inputText substringToIndex:1] uppercaseString],[inputText substringFromIndex:1]];
         }
     }
     
