@@ -19,10 +19,10 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,copy) NSString* dataLocation;
 @property (nonatomic,copy) NSString* objectsPath;
-@property (nonatomic,copy) NSString* fetchPredicate;
-@property (nonatomic,copy) NSString* fetchPredicateStrings;
+@property (nonatomic,copy) NSString* predicateFormat;
+@property (nonatomic,copy) NSString* predicateArguments;
 @property (nonatomic,copy) NSString* sortDescriptorKey;
-@property (nonatomic,assign) BOOL sortAscending;
+@property (nonatomic,copy) NSString* sortOrder;
 
 @property (nonatomic,assign) NSInteger lastResponseStatusCode;
 @property (nonatomic,copy) NSString* rawResponse;

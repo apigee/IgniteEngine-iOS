@@ -18,6 +18,10 @@
 
 NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdateNotification";
 
+static NSString* const kIXPredicateFormat = @"predicate.format"; //e.g. "%K CONTAINS[c] %@"
+static NSString* const kIXPredicateArguments = @"predicate.arguments"; //e.g. "email,[[inputbox.text]]"
+static NSString* const kIXSortOrder = @"sort_order"; //ascending, descending, none (default=none)
+
 @interface IXBaseDataProvider ()
 
 @end
@@ -54,10 +58,10 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:@"auto_load" defaultValue:NO]];
     [self setDataLocation:[[self propertyContainer] getStringPropertyValue:@"data.baseurl" defaultValue:nil]];
     [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:@"data.path" defaultValue:nil]];
-    [self setFetchPredicate:[[self propertyContainer] getStringPropertyValue:@"fetch_predicate" defaultValue:nil]];
-    [self setFetchPredicateStrings:[[self propertyContainer] getStringPropertyValue:@"fetch_predicate_strings" defaultValue:nil]];
+    [self setPredicateFormat:[[self propertyContainer] getStringPropertyValue:kIXPredicateFormat defaultValue:nil]];
+    [self setPredicateArguments:[[self propertyContainer] getStringPropertyValue:kIXPredicateArguments defaultValue:nil]];
     [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:@"fetch_sort_descriptor_key" defaultValue:nil]];
-    [self setSortAscending:[[self propertyContainer] getBoolPropertyValue:@"fetch_sort_ascending" defaultValue:YES]];
+    [self setSortOrder:[[self propertyContainer] getStringPropertyValue:kIXSortOrder defaultValue:@"none"]];
 }
 
 -(void)loadData:(BOOL)forceGet
@@ -110,10 +114,13 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 -(NSSortDescriptor*)sortDescriptor
 {
     NSSortDescriptor* sortDescriptor = nil;
-    if( [[self sortDescriptorKey] length] > 0 )
+    if( [[self sortDescriptorKey] length] > 0 && ![[self sortOrder] isEqualToString:@"none"])
     {
+        BOOL sortAscending = YES;
+        if ([self.sortOrder isEqualToString:@"descending"])
+            sortAscending = NO;
         sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
-                                                       ascending:[self sortAscending]
+                                                       ascending:sortAscending
                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     }
     return sortDescriptor;
@@ -122,13 +129,20 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 -(NSPredicate*)predicate
 {
     NSPredicate* predicate = nil;
-    NSArray* fetchPredicateStringsArray = [[self fetchPredicateStrings] componentsSeparatedByString:kIX_COMMA_SEPERATOR];
-    if( [[self fetchPredicate] length] > 0 && [fetchPredicateStringsArray count] > 0 )
-    {
-        predicate = [NSPredicate predicateWithFormat:[self fetchPredicate] argumentArray:fetchPredicateStringsArray];
-        DDLogVerbose(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);
+    @try {
+        NSArray* predicateArgumentsArray = [[self predicateArguments] componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+        if( [[self predicateFormat] length] > 0 && [predicateArgumentsArray count] > 0 )
+        {
+            predicate = [NSPredicate predicateWithFormat:[self predicateFormat] argumentArray:predicateArgumentsArray];
+            DDLogVerbose(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);
+        }
+        return predicate;
     }
-    return predicate;
+    @catch (NSException *exception) {
+        DDLogError(@"ERROR - BAD PREDICATE: %@", exception);
+        return nil;
+    }
+    
 }
 
 -(NSUInteger)getRowCount

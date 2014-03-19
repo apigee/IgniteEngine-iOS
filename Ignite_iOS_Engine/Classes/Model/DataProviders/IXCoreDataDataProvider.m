@@ -47,10 +47,10 @@
 {
     NSString* previousDataLocation = [self dataLocation];
     NSString* objectsPath = [self objectsPath];
-    NSString* fetchPredicate = [self fetchPredicate];
-    NSString* fetchPredicateStrings = [self fetchPredicateStrings];
+    NSString* predicateFormat = [self predicateFormat];
+    NSString* predicateArguments = [self predicateArguments];
     NSString* sortDescriptorKey = [self sortDescriptorKey];
-    BOOL sortAscending = [self sortAscending];
+    NSString* sortOrder = [self sortOrder];
 
     [super applySettings];
     
@@ -89,15 +89,15 @@
     {
         _needsToPerformFetch = YES;
     }
-    else if( [self sortAscending] != sortAscending )
+    else if( ![[self sortOrder] isEqualToString:sortOrder] )
     {
         _needsToPerformFetch = YES;
     }
-    else if( ![[self fetchPredicate] isEqualToString:fetchPredicate] )
+    else if( ![[self predicateFormat] isEqualToString:predicateFormat] )
     {
         _needsToPerformFetch = YES;
     }
-    else if( ![[self fetchPredicateStrings] isEqualToString:fetchPredicateStrings] )
+    else if( ![[self predicateArguments] isEqualToString:predicateArguments] )
     {
         _needsToPerformFetch = YES;
     }
