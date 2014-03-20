@@ -12,6 +12,7 @@
 #import "IXBaseShortCode.h"
 #import "IXLogger.h"
 
+static NSString* const kIXIfRegexString = @"^if: *(.*),(.*$)";
 static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
 
 @interface IXProperty ()
@@ -45,6 +46,51 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     return self;
 }
 
++(instancetype)conditionalPropertyWithPropertyName:(NSString*)propertyName jsonObject:(id)jsonObject
+{
+    IXProperty* conditionalProperty = nil;
+    if( [jsonObject isKindOfClass:[NSString class]] )
+    {
+        NSString* stringValue = (NSString*)jsonObject;
+        if( [stringValue length] )
+        {
+            static NSRegularExpression *sIXIfRegex = nil;
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                NSError* __autoreleasing error = nil;
+                sIXIfRegex = [[NSRegularExpression alloc] initWithPattern:kIXIfRegexString
+                                                                  options:NSRegularExpressionDotMatchesLineSeparators
+                                                                    error:&error];
+                if( error )
+                    DDLogError(@"Critical Error!!! IF REGEX %@ invalid with error: %@.",kIXIfRegexString,[error description]);
+            });
+            
+            NSTextCheckingResult* conditionalMatch = [sIXIfRegex firstMatchInString:stringValue
+                                                                            options:0
+                                                                              range:NSMakeRange(0, [stringValue length])];
+            
+            NSUInteger rangeCount = [conditionalMatch numberOfRanges];
+            if( rangeCount > 2 )
+            {
+                conditionalProperty = [IXProperty propertyWithPropertyName:propertyName
+                                                                  rawValue:[stringValue substringWithRange:[conditionalMatch rangeAtIndex:2]]];
+                
+                [conditionalProperty setConditionalProperty:[IXProperty propertyWithPropertyName:nil
+                                                                                        rawValue:[stringValue substringWithRange:[conditionalMatch rangeAtIndex:1]]]];
+            }
+        }
+    }
+    else if( [jsonObject isKindOfClass:[NSDictionary class]] && [[jsonObject allKeys] count] > 0 )
+    {
+        NSDictionary* propertyValueDict = (NSDictionary*)jsonObject;
+        conditionalProperty = [IXProperty propertyWithPropertyName:propertyName jsonObject:propertyValueDict[kIX_VALUE]];
+            
+        [conditionalProperty setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:propertyValueDict[kIX_ORIENTATION]]];
+        [conditionalProperty setConditionalProperty:[IXProperty propertyWithPropertyName:nil jsonObject:propertyValueDict[kIX_IF]]];
+    }
+    return conditionalProperty;
+}
+
 +(instancetype)propertyWithPropertyName:(NSString*)propertyName jsonObject:(id)jsonObject
 {
     IXProperty* property = nil;
@@ -59,14 +105,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     }
     else if( [jsonObject isKindOfClass:[NSDictionary class]] )
     {
-        if( [[jsonObject allKeys] count] > 0 )
-        {
-            NSDictionary* propertyValueDict = (NSDictionary*)jsonObject;
-            property = [IXProperty propertyWithPropertyName:propertyName jsonObject:propertyValueDict[kIX_VALUE]];
-            
-            [property setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:propertyValueDict[kIX_ORIENTATION]]];
-            [property setConditionalProperty:[IXProperty propertyWithPropertyName:nil jsonObject:propertyValueDict[kIX_IF]]];
-        }
+        property = [IXProperty conditionalPropertyWithPropertyName:propertyName jsonObject:jsonObject];
     }
     else if( jsonObject == nil || [jsonObject isKindOfClass:[NSNull class]] )
     {
@@ -100,18 +139,31 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
         }
         else if( [propertyValueObject isKindOfClass:[NSString class]] )
         {
-            if( !commaSeperatedStringValueList ) {
-                commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:propertyValueObject];
-            } else {
-                [commaSeperatedStringValueList appendFormat:@",%@",propertyValueObject];
+            IXProperty* conditionalProperty = [IXProperty conditionalPropertyWithPropertyName:propertyName jsonObject:propertyValueObject];
+            if( conditionalProperty )
+            {
+                if( propertyArray == nil )
+                {
+                    propertyArray = [NSMutableArray array];
+                }
+                [propertyArray addObject:conditionalProperty];
+            }
+            else
+            {
+                if( !commaSeperatedStringValueList ) {
+                    commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:propertyValueObject];
+                } else {
+                    [commaSeperatedStringValueList appendFormat:@",%@",propertyValueObject];
+                }
             }
         }
         else if( [propertyValueObject isKindOfClass:[NSNumber class]] )
         {
+            NSString* stringValue = [propertyValueObject stringValue];
             if( !commaSeperatedStringValueList ) {
-                commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:propertyValueObject];
+                commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:stringValue];
             } else {
-                [commaSeperatedStringValueList appendFormat:@",%@",propertyValueObject];
+                [commaSeperatedStringValueList appendFormat:@",%@",stringValue];
             }
         }
         else
