@@ -572,7 +572,7 @@ static NSString* const kIXPinchBoth = @"both";
         IXControlContentView* baseControlView = [baseControl contentView];
         if( baseControlView )
         {
-            if( ![[baseControl contentView] isHidden] && [baseControlView alpha] > 0.0f )
+            if( ![[baseControl contentView] isHidden]) // previously: && [baseControlView alpha] > 0.0f
             {
                 if( CGRectContainsPoint([baseControlView bounds], [touch locationInView:baseControlView]) )
                 {

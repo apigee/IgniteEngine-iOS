@@ -33,6 +33,10 @@ static NSString* const kIXCapitalize = @"capitalize";
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
 };
+static NSString* const kIXLength = @"length";
+static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
+    return [NSString stringWithFormat:@"%u", [stringToEvaluate length]];
+};
 static NSString* const kIXTruncate = @"truncate";
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     if ([parameters firstObject] != nil) {
@@ -210,6 +214,8 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             shortCodeFunction = kIXToUppercaseFunction;
         } else if( [functionName isEqualToString:kIXCapitalize] ) {
             shortCodeFunction = kIXCapitalizeFunction;
+        } else if( [functionName isEqualToString:kIXLength] ) {
+            shortCodeFunction = kIXLengthFunction;
         }
     }
     [self setShortCodeFunction:shortCodeFunction];

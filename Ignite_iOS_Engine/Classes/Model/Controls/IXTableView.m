@@ -105,7 +105,7 @@
     [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
     [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:@"keep_row_highlighted_on_select" defaultValue:NO]];
     [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:@"animate_reload" defaultValue:NO]];
-    [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:@"animate_reload_duration" defaultValue:0.4f]];
+    [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:@"animate_reload.duration" defaultValue:0.2f]];
 
     [self startTableViewReload];
 }
@@ -118,7 +118,7 @@
     {
         [UIView transitionWithView:[self tableView]
                           duration:[self animateReloadDuration]
-                           options:UIViewAnimationOptionTransitionCrossDissolve
+                           options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationCurveEaseOut
                         animations: ^(void) {
                             [self.tableView reloadData];
                         } completion: ^(BOOL isFinished) {

@@ -57,6 +57,8 @@ static NSString* const kIXInputRegexDisAllowed = @"input.regex.disallowed";
 static NSString* const kIXInputMax = @"input.max";
 static NSString* const kIXInputTransform = @"input.transform";
 
+static NSString* const kIXFilterDatasource = @"filter_datasource"; //not implemented
+
 // kIXInputTransform Types
 static NSString* const kIXInputTransformCapitalized = @"capitalized";
 static NSString* const kIXInputTransformLowercase = @"lowercase";
@@ -87,6 +89,8 @@ static CGSize sIXKBSize;
 @property (nonatomic,strong) NSString* inputTransform;
 @property (nonatomic,strong) NSString* inputAllowedRegexString;
 @property (nonatomic,strong) NSString* inputDisallowedRegexString;
+@property (nonatomic) CGFloat textChangeDelay;
+@property (nonatomic,strong) NSArray* filterDatasource; //not implemented
 
 @property (nonatomic,strong) NSRegularExpression *inputAllowedRegex;
 @property (nonatomic,strong) NSRegularExpression *inputDisallowedRegex;
@@ -158,18 +162,19 @@ static CGSize sIXKBSize;
     [[self textField] setKeyboardAppearance:[UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]]];
     [[self textField] setKeyboardType:[UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]]];
     [[self textField] setReturnKeyType:[UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]]];
-    
+
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:kIXDismissOnReturn defaultValue:YES]];
     [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
     [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
     [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
+    [self setFilterDatasource:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXFilterDatasource defaultValue:nil]];
     
     [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
     if( [[self inputAllowedRegexString] length] > 1 )
     {
-        NSMutableString *tmp = [[NSMutableString alloc] initWithString:[self inputAllowedRegexString]];
-        [tmp insertString:@"^" atIndex:1];
-        [self setInputAllowedRegexString:tmp];
+        NSMutableString *positiveAssertion = [[NSMutableString alloc] initWithString:[self inputAllowedRegexString]];
+        [positiveAssertion insertString:@"^" atIndex:1];
+        [self setInputAllowedRegexString:positiveAssertion];
     }
 }
 
@@ -415,6 +420,8 @@ static CGSize sIXKBSize;
     
     [[self textField] setText:inputText];
     [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
+    
+    
 }
 
 @end
