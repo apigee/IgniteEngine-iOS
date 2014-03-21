@@ -210,14 +210,20 @@
             if( shouldFireAction )
             {
                 CGFloat delay = [[action actionProperties] getFloatPropertyValue:kIX_DELAY defaultValue:0.0f];
-                
-                if( delay <= 0.0f )
+                CGFloat repeatDelay = [[action actionProperties] getFloatPropertyValue:kIX_REPEAT_DELAY defaultValue:0.0f];
+
+                if (repeatDelay > 0.0f)
                 {
-                    [action execute];
+                    [NSObject cancelPreviousPerformRequestsWithTarget:action selector:@selector(execute) object:nil];
+                    [action performSelector:@selector(execute) withObject:nil afterDelay:repeatDelay];
+                }
+                else if( delay > 0.0f )
+                {
+                    [action performSelector:@selector(execute) withObject:nil afterDelay:delay];
                 }
                 else
                 {
-                    [action performSelector:@selector(execute) withObject:nil afterDelay:delay];
+                    [action execute];
                 }
             }
         }

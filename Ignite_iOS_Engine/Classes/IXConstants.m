@@ -34,6 +34,7 @@ NSString* const kIX_IF = @"if";
 NSString* const kIX_ENABLED = @"enabled";
 NSString* const kIX_ON = @"on";
 NSString* const kIX_DELAY = @"delay";
+NSString* const kIX_REPEAT_DELAY = @"repeat_delay";
 NSString* const kIX_TRUE = @"true";
 NSString* const kIX_FALSE = @"false";
 NSString* const kIX_EMPTY_STRING = @"";
