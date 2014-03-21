@@ -216,8 +216,6 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             shortCodeFunction = kIXToUppercaseFunction;
         } else if( [functionName isEqualToString:kIXCapitalize] ) {
             shortCodeFunction = kIXCapitalizeFunction;
-        } else if( [functionName isEqualToString:kIXLength] ) {
-            shortCodeFunction = kIXLengthFunction;
         }
     }
     [self setShortCodeFunction:shortCodeFunction];

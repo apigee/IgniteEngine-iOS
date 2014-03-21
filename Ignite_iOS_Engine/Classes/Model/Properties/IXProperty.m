@@ -12,7 +12,7 @@
 #import "IXBaseShortCode.h"
 #import "IXLogger.h"
 
-static NSString* const kIXIfRegexString = @"^if: *(.*),(.*$)";
+static NSString* const kIXIfRegexString = @"^if *:: *(.*) *:: *(.*$)";
 static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
 
 @interface IXProperty ()
