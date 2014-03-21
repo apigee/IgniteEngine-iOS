@@ -412,15 +412,15 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     NSArray *matches = [regex matchesInString:[self.attributedString string]
                                       options:0
                                         range:NSMakeRange(0, [[self.attributedString string] length])];
-    for (NSTextCheckingResult *match in matches)
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator])
     {
         @try {
             NSRange fullRange = [match rangeAtIndex:0];
-            NSRange titleRange = [match rangeAtIndex:1];
+            NSRange colorRange = [match rangeAtIndex:1];
             NSRange textRange = [match rangeAtIndex:2];
             
             NSString *fullString = [[self.attributedString string] substringWithRange:fullRange];
-            NSString *colorList = [[self.attributedString string] substringWithRange:titleRange];
+            NSString *colorList = [[self.attributedString string] substringWithRange:colorRange];
             NSString *text = [[self.attributedString string] substringWithRange:textRange];
             
             NSArray *colorsArray = [colorList componentsSeparatedByString:@","];

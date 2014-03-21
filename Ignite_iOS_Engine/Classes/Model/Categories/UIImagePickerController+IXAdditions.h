@@ -11,5 +11,6 @@
 @interface UIImagePickerController (IXAdditions)
 
 +(UIImagePickerControllerSourceType)stringToSourceType:(NSString*)sourceTypeString;
++(UIImagePickerControllerCameraDevice)stringToCameraDevice:(NSString*)cameraDeviceString;
 
 @end

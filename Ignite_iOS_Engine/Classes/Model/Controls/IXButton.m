@@ -144,6 +144,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
         }
         
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:imageTintColorPropertyName defaultValue:defaultTintColorForImages];
+        
         if( controlState == UIControlStateNormal )
         {
             defaultTintColorForImages = imageTintColor;

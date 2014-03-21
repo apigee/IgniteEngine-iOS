@@ -202,8 +202,8 @@
             //Format code `code`
             //This block will need to be replaced with the one below once we're ready to implement in production
             [self formatMarkdownBlockMatchingRegex:@"`.*?`"
-                      andReplaceCharsMatchingRegex:@"`"
-                                         withChars:@" "
+                      andReplaceCharsMatchingRegex:@""
+                                         withChars:@""
                                  thenAddAttributes:@{
                                                      NSFontAttributeName: codeFont,
                                                      NSForegroundColorAttributeName: codeColor,
@@ -223,10 +223,11 @@
             
             
             //Format code `code` with fancy backgrounds
+            
+             
+             //This bit sadly isn't up to snuff yet; commenting it out until we're ready to rock
+            
             /*
-             
-             This bit sadly isn't up to snuff yet; commenting it out until we're ready to rock
-             
              [self formatMarkdownBlockMatchingRegex:@"`.*?`"
                        andReplaceCharsMatchingRegex:@""
                                           withChars:@""
@@ -235,21 +236,21 @@
                                                      NSFontAttributeName: codeFont,
                                                      NSForegroundColorAttributeName: codeColor
                                                      }];
-             */
+            */
         }
         
         //Set alignment and apply text
         self.textView.attributedText = self.attributedString;
         self.textView.textAlignment = [self getTextAlignmentFromPropertyValue:[self.propertyContainer getStringPropertyValue:@"text.align" defaultValue:@"left"]];
         
-        /*
+        
          
         //update static length
         //lengthOfAttributedString = NSMakeRange(0, self.attributedString.length);
         
         //And then we have to draw the code block rectangles
         
-        The code block stuff that really isn't ready for production. It's miscalculating where to draw the rectangles
+        //The code block stuff that really isn't ready for production. It's miscalculating where to draw the rectangles
          
         if (shouldParseMarkdown)
         {
@@ -257,7 +258,7 @@
             UIColor *codeHighlightBorderColor = [self.propertyContainer getColorPropertyValue:@"code.highlight.border.color" defaultValue:[[UIColor alloc] initWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
             
             //Add code outlines
-            [self outlineCodeBlocksWithHighlightProperties:@{
+            [self formatMarkdownCodeBlockWithHighlightProperties:@{
                                                           @"backgroundColor": codeHighlightColor,
                                                           @"borderColor": codeHighlightBorderColor
                                                           }];
@@ -265,8 +266,6 @@
             //We have to do this once more after replacing the `
             self.textView.attributedText = self.attributedString;
         }
-        */
-
     }
     
     // If attributed text is NOT supported (iOS5-)
@@ -360,22 +359,20 @@
 
 /*
  
- Not implemented
- 
-- (void)outlineCodeBlocksWithHighlightProperties:(NSDictionary *)highlightProperties
+ //Not implemented
+ */
+- (void)formatMarkdownCodeBlockWithHighlightProperties:(NSDictionary *)highlightProperties
 {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"`.+?`" options:NO error:nil];
-    NSArray *matches = [regex matchesInString:[self.attributedString string] options:NO range:NSMakeRange(0, self.attributedString.length)];
-    for (NSTextCheckingResult *match in matches)
+    NSArray *matchesArray = [regex matchesInString:[self.attributedString string] options:NO range:NSMakeRange(0, self.attributedString.length)];
+    for (NSTextCheckingResult *match in matchesArray)
     {
         NSRange range = [match range];
         if (range.location != NSNotFound) {
             
-            //DDLogDebug(@"%u", range.location);
-            //Need to update text here so we can accurately determine code block locations
-            //self.textView.attributedText = self.attributedString;
+            self.textView.attributedText = self.attributedString;
             
-            CGRect codeRect = [self frameOfAttributedTextRange:range];
+            CGRect codeRect = [self frameOfTextRange:range];
             UIView *highlightView = [[UIView alloc] initWithFrame:codeRect];
             highlightView.layer.cornerRadius = 4;
             highlightView.layer.borderWidth = 1;
@@ -383,7 +380,9 @@
             highlightView.layer.borderColor = [[highlightProperties valueForKey:@"borderColor"] CGColor];
             [self.contentView insertSubview:highlightView atIndex:0];
             
-            //And strip `
+            //[self.attributedString addAttributes:attributesDict range:range];
+            
+            //strip first and last `
             [[self.attributedString mutableString] replaceOccurrencesOfString:@"(^`|`$)" withString:@" " options:NSRegularExpressionSearch range:range];
         }
     }
@@ -397,7 +396,7 @@
     NSArray *highlightsArray = [self rangesOfString:matchRegex inString:[self.attributedString string]];
     for (NSValue *rangeVal in highlightsArray)
     {
-        NSRange range = [rangeVal rangeVal];
+        NSRange range = [rangeVal rangeValue];
         if (range.location != NSNotFound) {
             [self.attributedString addAttribute:NSFontAttributeName value:font range:range];
             [self.attributedString addAttribute:NSForegroundColorAttributeName value:color range:range];
@@ -406,7 +405,7 @@
         }
     }
 }
-*/
+//*/
 
 
 - (NSArray *)rangesOfString:(NSString *)searchString inString:(NSString *)str {
@@ -423,19 +422,19 @@
 /*
  
  Not implemented
- 
-- (CGRect)frameOfAttributedTextRange:(NSRange)range
+ */
+- (CGRect)frameOfTextRange:(NSRange)range
 {
     self.textView.selectedRange = range;
     UITextRange *textRange = [self.textView selectedTextRange];
     CGRect rect = [self.textView firstRectForRange:textRange];
-    rect.origin.x+=1;
-    rect.origin.y+=1;
+    //These three lines are a workaround for getting the correct width of the string since I'm always using the monospaced Menlo font.
+    rect.origin.x+=2;
+    rect.origin.y+=2;
     return rect;
-    //http://stackoverflow.com/a/19202237/1214800
 }
 
- */
+ //*/
 
 - (NSTextAlignment)getTextAlignmentFromPropertyValue:(NSString *)property
 {

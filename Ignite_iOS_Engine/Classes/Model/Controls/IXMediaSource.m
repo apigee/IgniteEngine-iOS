@@ -70,9 +70,12 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 @interface  IXMediaSource() <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic,strong) NSString* sourceTypeString;
+@property (nonatomic,strong) NSString* cameraDeviceString;
 @property (nonatomic,assign) UIImagePickerControllerSourceType pickerSourceType;
+@property (nonatomic,assign) UIImagePickerControllerCameraDevice pickerDevice;
 @property (nonatomic,strong) UIImagePickerController* imagePickerController;
 @property (nonatomic,strong) NSURL* selectedMedia;
+@property (nonatomic) BOOL showCameraControls;
 
 @end
 
@@ -95,7 +98,11 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     [super applySettings];
     
     [self setSourceTypeString:[[self propertyContainer] getStringPropertyValue:@"source" defaultValue:@"camera"]];
+    [self setCameraDeviceString:[[self propertyContainer] getStringPropertyValue:@"camera" defaultValue:@"rear"]];
+    [self setShowCameraControls:[[self propertyContainer] getBoolPropertyValue:@"show_camera_controls" defaultValue:YES]];
+    
     [self setPickerSourceType:[UIImagePickerController stringToSourceType:[self sourceTypeString]]];
+    [self setPickerDevice:[UIImagePickerController stringToCameraDevice:[self cameraDeviceString]]];
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
@@ -123,6 +130,10 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     if( [UIImagePickerController isSourceTypeAvailable:[self pickerSourceType]] && [[self imagePickerController] presentingViewController] == nil )
     {
         [[self imagePickerController] setSourceType:[self pickerSourceType]];
+        
+        if (self.showCameraControls == NO)
+            self.imagePickerController.showsCameraControls = NO;
+        
         if( [[self sourceTypeString] isEqualToString:@"video"] )
         {
             //deprecated in 3.1, why do we need this?
@@ -170,28 +181,15 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 - (void)imagePickerController:(UIImagePickerController *)picker
         didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-//    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-    
-    // Handle a movie capture
-//    if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-//        NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
-//        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(moviePath)) {
-//            UISaveVideoAtPathToSavedPhotosAlbum(moviePath, self, nil, nil);
-//        }
-//    }
-
     self.selectedMedia = info[UIImagePickerControllerReferenceURL];
     
     [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
-    
-    DDLogInfo(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
+    DDLogVerbose(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
     
     if(info != nil)
     {
         [self.actionContainer executeActionsForEventNamed:@"did_load_media"];
     }
-    
-    //Here's the image!  [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 }
 
 

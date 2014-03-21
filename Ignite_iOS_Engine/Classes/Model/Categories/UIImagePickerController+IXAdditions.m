@@ -28,4 +28,14 @@
     return returnSourceType;
 }
 
++(UIImagePickerControllerCameraDevice)stringToCameraDevice:(NSString*)cameraDeviceString
+{
+    UIImagePickerControllerCameraDevice returnCameraDevice = UIImagePickerControllerCameraDeviceRear;
+    if ( [cameraDeviceString isEqualToString:@"front"] )
+        returnCameraDevice = UIImagePickerControllerCameraDeviceFront;
+    if ( [cameraDeviceString isEqualToString:@"rear"] )
+        returnCameraDevice = UIImagePickerControllerCameraDeviceRear;
+    return returnCameraDevice;
+}
+
 @end
