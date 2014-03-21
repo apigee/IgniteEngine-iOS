@@ -60,7 +60,7 @@ static NSString* const kIXInputTransform = @"input.transform";
 static NSString* const kIXFilterDatasource = @"filter_datasource"; //not implemented
 
 // kIXInputTransform Types
-static NSString* const kIXInputTransformCapitalized = @"capitalized";
+static NSString* const kIXInputTransformCapitalize = @"capitalize";
 static NSString* const kIXInputTransformLowercase = @"lowercase";
 static NSString* const kIXInputTransformUppercase = @"uppercase";
 static NSString* const kIXInputTransformUppercaseFirst = @"ucfirst";
@@ -407,7 +407,7 @@ static CGSize sIXKBSize;
         {
             inputText = [inputText uppercaseString];
         }
-        else if ([inputTransform isEqualToString:kIXInputTransformCapitalized])
+        else if ([inputTransform isEqualToString:kIXInputTransformCapitalize])
         {
             inputText = [inputText capitalizedString];
         }
