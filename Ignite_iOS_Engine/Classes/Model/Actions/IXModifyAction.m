@@ -100,7 +100,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
             //[NSThread sleepForTimeInterval:1];
             [UIView animateWithDuration:duration
                                   delay:delay
-                                options: animationCurve | UIViewAnimationOptionBeginFromCurrentState
+                                options: animationCurve | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
                              animations:^{
                                  [self modifyObjectID:objectID withOwnerObject:ownerObject withSandbox:sandbox];
                              } completion:nil];
@@ -146,7 +146,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
             __weak typeof(self) weakSelf = self;
             [UIView animateWithDuration:duration
                                   delay:0.0f
-                                options: animationCurve | UIViewAnimationOptionBeginFromCurrentState
+                                options: animationCurve | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
                              animations:^{
                                  [weakSelf performModify];
                              } completion:nil];
