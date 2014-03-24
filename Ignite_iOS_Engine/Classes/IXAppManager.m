@@ -21,6 +21,7 @@
 #import "IXSandbox.h"
 #import "IXPropertyContainer.h"
 #import "IXViewController.h"
+#import "IXDeviceInfo.h"
 
 @interface IXAppManager ()
 
@@ -42,7 +43,8 @@
         
         _appProperties = [[IXPropertyContainer alloc] init];
         _sessionProperties = [[IXPropertyContainer alloc] init];
-        
+        _deviceProperties = [[IXPropertyContainer alloc] init];
+
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
         _reachabilty = [Reachability reachabilityForInternetConnection];
     }
@@ -83,6 +85,20 @@
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
                                                 [[self sessionProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
                                                 
+                                                NSDictionary* deviceInfoPropertiesDict = @{
+                                                                                           @"model": [IXDeviceInfo deviceModel],
+                                                                                           @"type": [IXDeviceInfo deviceType],
+                                                                                           kIX_ORIENTATION: [IXDeviceInfo interfaceOrientation],
+                                                                                           @"screen.width": [IXDeviceInfo screenWidth],
+                                                                                           @"screen.height": [IXDeviceInfo screenHeight],
+                                                                                           @"screen.scale": [IXDeviceInfo screenScale],
+                                                                                           @"os.version": [IXDeviceInfo osVersion],
+                                                                                           @"os.version.integer": [IXDeviceInfo osVersionAsInteger],
+                                                                                           @"os.version.major": [IXDeviceInfo osMajorVersion]
+                                                                                           };
+                                                
+                                                [[self deviceProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:deviceInfoPropertiesDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+
                                                 [self applyAppProperties];
                                                 [self loadApplicationDefaultView];
                                             }

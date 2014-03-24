@@ -35,7 +35,7 @@ static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString
 };
 static NSString* const kIXLength = @"length";
 static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
-    return [NSString stringWithFormat:@"%u", [stringToEvaluate length]];
+    return [NSString stringWithFormat:@"%lu", (unsigned long)[stringToEvaluate length]];
 };
 static NSString* const kIXTruncate = @"truncate";
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){

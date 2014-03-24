@@ -149,7 +149,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
         {
             defaultTintColorForImages = imageTintColor;
         }
-        
+                
         __weak typeof(self) weakSelf = self;
         [[self propertyContainer] getImageProperty:imagePropertyName
                                       successBlock:^(UIImage *image) {

@@ -45,7 +45,6 @@ static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
     NSString* title = [actionProperties getStringPropertyValue:kIXTitle defaultValue:nil];
     NSString* subTitle = [actionProperties getStringPropertyValue:kIXSubtitle defaultValue:nil];
     NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:kIXConfirmButtonTitle defaultValue:kIX_OK];
-    
     NSString* cancelButtonTitle = [actionProperties getStringPropertyValue:kIXCancelButtonTitle defaultValue:nil];
 
     [[self alertView] setDelegate:nil];

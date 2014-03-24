@@ -23,9 +23,9 @@
 //      Note: See IXControlLayoutInfo.h for layout properties.
 //
 static NSString* const kIXAlpha = @"alpha";
-static NSString* const kIXBorderWidth = @"border_width";
-static NSString* const kIXBorderColor = @"border_color";
-static NSString* const kIXBorderRadius = @"border_radius";
+static NSString* const kIXBorderWidth = @"border.width";
+static NSString* const kIXBorderColor = @"border.color";
+static NSString* const kIXBorderRadius = @"border.radius";
 static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXBackgroundImage = @"background.image";
 static NSString* const kIXBackgroundImageScale = @"background.image.scale";

@@ -7,102 +7,47 @@
 //
 
 #import "IXDeviceShortCode.h"
-
 #import "IXConstants.h"
-
-#import "IXDeviceHardware.h"
-#import "IXAppManager.h"
+#import "IXDeviceInfo.h"
 #import "IXProperty.h"
+#import "IXBaseObject.h"
+#import "IXAppManager.h"
 
 // Other properties : "orientation"
 static NSString* const kIXModel = @"model";
 static NSString* const kIXType = @"type";
 
-static NSString* const kIXScreenPrefix = @"screen.";
-static NSString* const kIXScreenWidthSuffix = @"width";
-static NSString* const kIXScreenHeightSuffix = @"height";
-static NSString* const kIXScreenScaleFactorSuffix = @"scale";
+static NSString* const kIXScreenWidth = @"screen.width";
+static NSString* const kIXScreenHeight = @"screen.height";
+static NSString* const kIXScreenScaleFactor = @"screen.scale";
 
-static NSString* const kIXOSPrefix = @"os.";
-static NSString* const kIXOSVersionSuffix = @"version";
-static NSString* const kIXOSVersionIntegerSuffix = @"version.integer";
-static NSString* const kIXOSVersionMajorSuffix = @"version.major";
-
-static NSString* sIXDeviceModelString = nil;
+static NSString* const kIXOSVersion = @"os.version";
+static NSString* const kIXOSVersionInteger = @"os.version.integer";
+static NSString* const kIXOSVersionMajor = @"os.version.major";
 
 @implementation IXDeviceShortCode
 
 -(NSString *)evaluate
 {
     NSString* returnValue = nil;
-    
-    NSString* propertyName = [self methodName];
-    if( !propertyName )
+    NSString* methodName = [self methodName];
+    if( [methodName length] > 0 )
     {
-        IXProperty* parameterProperty = (IXProperty*)[[self parameters] firstObject];
-        propertyName = [parameterProperty getPropertyValue];
-    }
-    
-    if ([propertyName isEqualToString:kIXModel])
-    {
-        if( sIXDeviceModelString == nil )
+        if ([methodName isEqualToString:kIX_ORIENTATION])
         {
-            sIXDeviceModelString = [IXDeviceHardware modelString];
+            returnValue = [IXDeviceInfo interfaceOrientation];
         }
-        returnValue = [sIXDeviceModelString copy];
-    }
-    else if ([propertyName isEqualToString:kIXType])
-    {
-        //potential return values: iPod touch, iPhone, iPhone Simulator, iPad, iPad Simulator
-        returnValue = [[UIDevice currentDevice] model];
-    }
-    else if ([propertyName isEqualToString:kIX_ORIENTATION])
-    {
-        switch ([IXAppManager currentInterfaceOrientation])
+        else if( [methodName isEqualToString:kIXScreenWidth] )
         {
-            case UIInterfaceOrientationPortrait:
-                returnValue = @"Portrait";
-                break;
-            case UIInterfaceOrientationPortraitUpsideDown:
-                returnValue = @"Portrait-UpsideDown";
-                break;
-            case UIInterfaceOrientationLandscapeRight:
-                returnValue = @"Landscape-Right";
-                break;
-            case UIInterfaceOrientationLandscapeLeft:
-                returnValue = @"Landscape-Left";
-                break;
+            returnValue = [IXDeviceInfo screenWidth];
         }
-    }
-    else if ([propertyName hasPrefix:kIXScreenPrefix] )
-    {
-        if( [propertyName hasSuffix:kIXScreenWidthSuffix] )
+        else if( [methodName isEqualToString:kIXScreenHeight] )
         {
-            returnValue = [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.width];
+            returnValue = [IXDeviceInfo screenHeight];
         }
-        else if( [propertyName hasSuffix:kIXScreenHeightSuffix] )
+        else if( [methodName length] > 0 )
         {
-            returnValue = [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.height];
-        }
-        else if( [propertyName hasSuffix:kIXScreenScaleFactorSuffix] )
-        {
-            returnValue = [NSString stringWithFormat:@"%.1f", [[UIScreen mainScreen] scale]];
-        }
-    }
-    else if( [propertyName hasPrefix:kIXOSPrefix] )
-    {
-        if ([propertyName hasSuffix:kIXOSVersionSuffix])
-        {
-            returnValue = [[UIDevice currentDevice] systemVersion];
-        }
-        else if ([propertyName hasSuffix:kIXOSVersionIntegerSuffix])
-        {
-            returnValue = [[[UIDevice currentDevice] systemVersion] stringByReplacingOccurrencesOfString:kIX_PERIOD_SEPERATOR
-                                                                                              withString:kIX_EMPTY_STRING];
-        }
-        else if ([propertyName hasSuffix:kIXOSVersionMajorSuffix])
-        {
-            returnValue = [[[UIDevice currentDevice] systemVersion] substringToIndex:1];
+            returnValue = [[[IXAppManager sharedAppManager] deviceProperties] getStringPropertyValue:methodName defaultValue:nil];
         }
     }
     return returnValue;

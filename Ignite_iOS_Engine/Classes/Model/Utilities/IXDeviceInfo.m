@@ -1,18 +1,20 @@
 //
-//  IXDeviceHardware.m
+//  IXDeviceInfo.m
 //  Ignite_iOS_Engine
 //
 //  Created by Brandon on 2/28/14.
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //  Used to determine EXACT version of device software is running on.
 
-#import "IXDeviceHardware.h"
+#import "IXDeviceInfo.h"
 #include <sys/types.h>
 #include <sys/sysctl.h>
+#import "IXAppManager.h"
+#import "IXConstants.h"
 
-@implementation IXDeviceHardware
+@implementation IXDeviceInfo
 
-+ (NSString *) model{
++ (NSString *) verboseModel{
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *machine = malloc(size);
@@ -22,8 +24,8 @@
     return model;
 }
 
-+ (NSString *) modelString{
-    NSString *model = [IXDeviceHardware model];
++ (NSString *) deviceModel{
+    NSString *model = [IXDeviceInfo verboseModel];
     if ([model isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
     if ([model isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
     if ([model isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
@@ -63,5 +65,74 @@
     if ([model isEqualToString:@"x86_64"])       return @"Simulator";
     return model;
 }
+
++(NSString *)deviceType
+{
+    //potential return values: iPod touch, iPhone, iPhone Simulator, iPad, iPad Simulator
+    return [[UIDevice currentDevice] model];
+}
+
+
++(NSString *)interfaceOrientation
+{
+    switch ([IXAppManager currentInterfaceOrientation])
+    {
+        case UIInterfaceOrientationPortrait:
+            return @"Portrait";
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return @"Portrait-UpsideDown";
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            return @"Landscape-Right";
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            return @"Landscape-Left";
+            break;
+    }
+}
+
++(NSString *)screenHeight
+{
+    return [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.height];
+}
+
++(NSString *)screenWidth
+{
+    return [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.width];
+}
+
++(NSString *)screenScale
+{
+    return [NSString stringWithFormat:@"%.1f", [[UIScreen mainScreen] scale]];
+}
+
++(NSString *)osVersion
+{
+    return [[UIDevice currentDevice] systemVersion];
+}
+
++(NSString *)osVersionAsInteger
+{
+    NSString *ver = [[IXDeviceInfo osVersion]
+            stringByReplacingOccurrencesOfString:kIX_PERIOD_SEPERATOR
+            withString:kIX_EMPTY_STRING];
+        
+    if ([ver intValue] > 0 && [ver intValue] < 10)
+        return [NSString stringWithFormat:@"%@00", ver];
+    else if ([ver intValue] > 10 && [ver intValue] < 100)
+        return [NSString stringWithFormat:@"%@0", ver];
+    else if ([ver intValue] > 100)
+        return [NSString stringWithFormat:@"%@", ver];
+    else
+        return ver;
+}
+
++(NSString *)osMajorVersion
+{
+    return [[IXDeviceInfo osVersion] substringToIndex:1];
+}
+
+
 
 @end

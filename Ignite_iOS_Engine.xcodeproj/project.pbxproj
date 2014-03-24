@@ -119,7 +119,8 @@
 		CA1279EB18D69618007EEC5A /* IXCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1279EA18D69618007EEC5A /* IXCircle.m */; };
 		CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA28B85A18C9052E0067686C /* IXLoadAction.m */; };
 		CA28B85D18CAE2050067686C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA28B85C18CAE2050067686C /* CoreImage.framework */; };
-		CA604CE618C10CF000D027E1 /* IXDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceHardware.m */; };
+		CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5120C418DFCB6900C7D282 /* IXLogAction.m */; };
+		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
 		CA887C7E18B3D9470050B75B /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */; };
 		CA887C7F18B3D9470050B75B /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */; };
 		CAD81A7518BBCEA400EE08BD /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */; };
@@ -337,8 +338,10 @@
 		CA28B85918C9052E0067686C /* IXLoadAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLoadAction.h; sourceTree = "<group>"; };
 		CA28B85A18C9052E0067686C /* IXLoadAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLoadAction.m; sourceTree = "<group>"; };
 		CA28B85C18CAE2050067686C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
-		CA604CE418C10CF000D027E1 /* IXDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceHardware.h; sourceTree = "<group>"; };
-		CA604CE518C10CF000D027E1 /* IXDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceHardware.m; sourceTree = "<group>"; };
+		CA5120C318DFCB6900C7D282 /* IXLogAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLogAction.h; sourceTree = "<group>"; };
+		CA5120C418DFCB6900C7D282 /* IXLogAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLogAction.m; sourceTree = "<group>"; };
+		CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceInfo.h; sourceTree = "<group>"; };
+		CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceInfo.m; sourceTree = "<group>"; };
 		CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		CADE34FA18CF944C009C99D0 /* IX_deprecated_AttributedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IX_deprecated_AttributedText.h; sourceTree = "<group>"; };
 		CADE34FB18CF944C009C99D0 /* IX_deprecated_AttributedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IX_deprecated_AttributedText.m; sourceTree = "<group>"; };
@@ -434,14 +437,16 @@
 				633361441894593D004F3433 /* IXEventAction.m */,
 				13033F34183ED8F200C29157 /* IXFunctionAction.h */,
 				13033F35183ED8F200C29157 /* IXFunctionAction.m */,
+				CA28B85918C9052E0067686C /* IXLoadAction.h */,
+				CA28B85A18C9052E0067686C /* IXLoadAction.m */,
+				CA5120C318DFCB6900C7D282 /* IXLogAction.h */,
+				CA5120C418DFCB6900C7D282 /* IXLogAction.m */,
 				13033F36183ED8F200C29157 /* IXModifyAction.h */,
 				13033F37183ED8F200C29157 /* IXModifyAction.m */,
 				6314B51B1846B7A700C14F96 /* IXNavigateAction.h */,
 				6314B51C1846B7A700C14F96 /* IXNavigateAction.m */,
 				632B7284184E9E760077D603 /* IXRefreshAction.h */,
 				632B7285184E9E760077D603 /* IXRefreshAction.m */,
-				CA28B85918C9052E0067686C /* IXLoadAction.h */,
-				CA28B85A18C9052E0067686C /* IXLoadAction.m */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -587,8 +592,8 @@
 				63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */,
 				63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */,
 				63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */,
-				CA604CE418C10CF000D027E1 /* IXDeviceHardware.h */,
-				CA604CE518C10CF000D027E1 /* IXDeviceHardware.m */,
+				CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */,
+				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
 				63EAFBCF18D798830016CA69 /* IXControlCacheContainer.h */,
 				63EAFBD018D798830016CA69 /* IXControlCacheContainer.m */,
 			);
@@ -951,6 +956,7 @@
 				13033F9F183ED8F200C29157 /* IXMap.m in Sources */,
 				63F87BF318AC47AA00282DB8 /* MHRotaryKnob.m in Sources */,
 				63F87BEC18AC25BA00282DB8 /* UIImageView+IXAdditions.m in Sources */,
+				CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
 				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
@@ -981,7 +987,7 @@
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
 				63CC9AB918BD12C200ECCECB /* IXSoundRecorder.m in Sources */,
 				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
-				CA604CE618C10CF000D027E1 /* IXDeviceHardware.m in Sources */,
+				CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */,
 				CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */,
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,
 				635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */,
