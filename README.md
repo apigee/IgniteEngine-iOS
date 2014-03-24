@@ -19,7 +19,7 @@ A php preparser is used in the build process to parse int, float, and bool value
 ##Todo List
 
 ####Device properties
-- Fix up all except orientation to detect once at launch and not each time the function is called.
+- ~~Fix up all except orientation to detect once at launch and not each time the function is called.~~
 
 ####Text/Text input
 
@@ -86,6 +86,8 @@ so we can apply different states (and have it auto-detect image based on -active
 - Support for multiple ongoing projects running off the same framework
 - ~~swap "enabled: false" to "disabled: true" (industry standard)~~
 - ~~update self in actions to target just "self" instead of having to use [[self._id]]~~- 
+- Ability to get x,y coordinates and width/height of control
+- https://github.com/jaredsinclair/JSSlidingViewController and other awesome Jared Sinclair stuff here: https://github.com/jaredsinclair and in particular this: https://github.com/jaredsinclair/JTSSemanticReload
 
 ####Documentation:
 

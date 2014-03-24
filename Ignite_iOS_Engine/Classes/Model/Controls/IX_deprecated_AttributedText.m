@@ -243,7 +243,7 @@
         self.textView.attributedText = self.attributedString;
         self.textView.textAlignment = [self getTextAlignmentFromPropertyValue:[self.propertyContainer getStringPropertyValue:@"text.align" defaultValue:@"left"]];
         
-        
+        _textView.textAlignment = NSTextAlignmentCenter;
          
         //update static length
         //lengthOfAttributedString = NSMakeRange(0, self.attributedString.length);
@@ -258,7 +258,7 @@
             UIColor *codeHighlightBorderColor = [self.propertyContainer getColorPropertyValue:@"code.highlight.border.color" defaultValue:[[UIColor alloc] initWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
             
             //Add code outlines
-            [self formatMarkdownCodeBlockWithHighlightProperties:@{
+            [self formatMarkdownCodeBlockWithAttributes:@{
                                                           @"backgroundColor": codeHighlightColor,
                                                           @"borderColor": codeHighlightBorderColor
                                                           }];
@@ -266,6 +266,8 @@
             //We have to do this once more after replacing the `
             self.textView.attributedText = self.attributedString;
         }
+        self.textView.attributedText = self.attributedString;
+
     }
     
     // If attributed text is NOT supported (iOS5-)
@@ -361,29 +363,35 @@
  
  //Not implemented
  */
-- (void)formatMarkdownCodeBlockWithHighlightProperties:(NSDictionary *)highlightProperties
+- (void)formatMarkdownCodeBlockWithAttributes:(NSDictionary *)attributesDict
 {
+    NSMutableString *theString = [_textView.attributedText.string mutableCopy];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"`.+?`" options:NO error:nil];
-    NSArray *matchesArray = [regex matchesInString:[self.attributedString string] options:NO range:NSMakeRange(0, self.attributedString.length)];
+    NSArray *matchesArray = [regex matchesInString:theString options:NO range:NSMakeRange(0, theString.length)];
+    
+    NSMutableAttributedString *theAttributedString = self.attributedString;
+    for (NSTextCheckingResult *match in matchesArray)
+    {
+        NSRange range = [match range];
+        if (range.location != NSNotFound) {
+            [theAttributedString addAttributes:attributesDict range:range];
+        }
+    }
+    
+    _textView.attributedText = theAttributedString;
+    
     for (NSTextCheckingResult *match in matchesArray)
     {
         NSRange range = [match range];
         if (range.location != NSNotFound) {
             
-            self.textView.attributedText = self.attributedString;
-            
             CGRect codeRect = [self frameOfTextRange:range];
             UIView *highlightView = [[UIView alloc] initWithFrame:codeRect];
             highlightView.layer.cornerRadius = 4;
             highlightView.layer.borderWidth = 1;
-            highlightView.backgroundColor = [highlightProperties valueForKey:@"backgroundColor"];
-            highlightView.layer.borderColor = [[highlightProperties valueForKey:@"borderColor"] CGColor];
-            [self.contentView insertSubview:highlightView atIndex:0];
-            
-            //[self.attributedString addAttributes:attributesDict range:range];
-            
-            //strip first and last `
-            [[self.attributedString mutableString] replaceOccurrencesOfString:@"(^`|`$)" withString:@" " options:NSRegularExpressionSearch range:range];
+            highlightView.backgroundColor = [UIColor yellowColor];
+            highlightView.layer.borderColor = [[UIColor redColor] CGColor];
+            [_textView insertSubview:highlightView atIndex:0];
         }
     }
 }
@@ -428,9 +436,6 @@
     self.textView.selectedRange = range;
     UITextRange *textRange = [self.textView selectedTextRange];
     CGRect rect = [self.textView firstRectForRange:textRange];
-    //These three lines are a workaround for getting the correct width of the string since I'm always using the monospaced Menlo font.
-    rect.origin.x+=2;
-    rect.origin.y+=2;
     return rect;
 }
 

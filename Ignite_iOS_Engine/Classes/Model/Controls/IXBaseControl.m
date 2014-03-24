@@ -81,6 +81,11 @@ static NSString* const kIXPinchHorizontal = @"horizontal";
 static NSString* const kIXPinchVertical = @"vertical";
 static NSString* const kIXPinchBoth = @"both";
 
+// Read-only properties
+static NSString* const kIXLocation = @"location";
+static NSString* const kIXLocationX = @"location.x";
+static NSString* const kIXLocationY = @"location.y";
+
 @interface IXBaseControl ()
 
 @end
@@ -582,6 +587,24 @@ static NSString* const kIXPinchBoth = @"both";
         }
     }
     return returnControl;
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
+{
+    NSString* returnValue = nil;
+    if ( [propertyName hasPrefix:kIXLocation] && [[self propertyContainer] hasLayoutProperties] )
+    {
+        UIView* rootView = [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] view];
+        CGPoint location = [self.contentView convertPoint:self.contentView.frame.origin toView:rootView];
+        
+        if ( [propertyName isEqualToString:kIXLocationX] )
+            returnValue = [NSString stringWithFormat:@"%f", location.x];
+        if ( [propertyName isEqualToString:kIXLocationY] )
+            returnValue = [NSString stringWithFormat:@"%f", location.y];
+        if ( [propertyName isEqualToString:kIXLocation] )
+            returnValue = NSStringFromCGPoint(location);
+    }
+    return returnValue;
 }
 
 -(void)processBeginTouch:(BOOL)fireTouchActions

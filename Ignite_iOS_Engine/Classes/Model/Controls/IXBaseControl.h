@@ -38,6 +38,7 @@
 -(void)layoutControl;
 -(void)layoutControlContentsInRect:(CGRect)rect;
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size;
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName;
 
 -(void)processBeginTouch:(BOOL)fireTouchActions;
 -(void)processCancelTouch:(BOOL)fireTouchActions;
