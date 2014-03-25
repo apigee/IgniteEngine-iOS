@@ -16,6 +16,7 @@ static NSString* const kIXHeight = @"height";
 
 static NSString* const kIXStart = @"start";
 static NSString* const kIXStop = @"stop";
+static NSString* const kIXAutoStart = @"auto_start";
 
 static NSString* const kIXCamera = @"camera";
 static NSString* const kIXFront = @"front";
@@ -58,11 +59,11 @@ static NSString* const kIXRear = @"rear";
     if( [functionName isEqualToString:kIXStart] )
     {
         NSLog(@"started");
-        [_session startRunning];
+        [self startCamera];
     }
     else if( [functionName isEqualToString:kIXStop] )
     {
-        NSLog(@"started");
+        NSLog(@"stopped");
         [_session stopRunning];
     }
     else
@@ -87,11 +88,11 @@ static NSString* const kIXRear = @"rear";
     CGFloat height = [self.propertyContainer getSizeValue:kIXHeight maximumSize:[[IXDeviceInfo screenHeight] floatValue] defaultValue:320.0f];
     
     //this sets the video preview to crop to bounds
-    CGRect bounds = CGRectMake(0, 0, 400, 400);
+    CGRect bounds = CGRectMake(0, 0, width, height);
     
-    bounds = self.contentView.bounds;
+    //bounds = self.contentView.bounds;
     //Here you can see the bounds is 0,0,0,0. If you comment the line above out, it will define the bounds to whatever rect you set it to.
-    NSLog(NSStringFromCGRect(bounds));
+    //NSLog(NSStringFromCGRect(bounds));
     _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     _captureVideoPreviewLayer.frame = bounds;
     _captureVideoPreviewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
@@ -99,16 +100,24 @@ static NSString* const kIXRear = @"rear";
     [_cameraView.layer addSublayer:_captureVideoPreviewLayer];
     
     NSString* camera = [self.propertyContainer getStringPropertyValue:kIXCamera defaultValue:kIXRear];
-    AVCaptureDevice *device;
     if ([camera isEqualToString:kIXFront])
     {
-         device = [self frontCamera];
+         _device = [self frontCamera];
     }
     else
     {
-        device = [self rearCamera];
+        _device = [self rearCamera];
     }
     
+    BOOL autoStart = [self.propertyContainer getBoolPropertyValue:kIXAutoStart defaultValue:NO];
+    if (autoStart)
+    {
+        [self startCamera];
+    }
+}
+
+-(void)startCamera
+{
     NSError *error = nil;
     if ([NSString ix_string:[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
     {
@@ -116,9 +125,9 @@ static NSString* const kIXRear = @"rear";
     }
     else
     {
-        AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+        AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:&error];
         AVCaptureMovieFileOutput *output = [[AVCaptureMovieFileOutput alloc] init];
-
+        
         if (!input) {
             // Handle the error appropriately.
             DDLogError(@"ERROR: trying to open camera: %@", error);
@@ -139,7 +148,6 @@ static NSString* const kIXRear = @"rear";
             }
         }
     }
-
 }
 
 -(AVCaptureDevice *)frontCamera {
