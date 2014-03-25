@@ -32,4 +32,9 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
++(BOOL)ix_string:(NSString*)string containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options
+{
+    return [string rangeOfString:substring options:options].location != NSNotFound;
+}
+
 @end

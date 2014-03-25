@@ -13,5 +13,6 @@
 +(NSString*)ix_stringFromBOOL:(BOOL)boolean;
 +(NSString*)ix_stringFromFloat:(float)floatValue;
 +(NSString*)ix_truncateString:(NSString*)string toIndex:(NSInteger)index;
++(BOOL)ix_string:(NSString*)string containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;
 
 @end

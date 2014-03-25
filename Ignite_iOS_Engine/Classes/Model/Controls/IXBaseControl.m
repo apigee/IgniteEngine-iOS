@@ -598,11 +598,11 @@ static NSString* const kIXLocationY = @"location.y";
         CGPoint location = [self.contentView convertPoint:self.contentView.frame.origin toView:rootView];
         
         if ( [propertyName isEqualToString:kIXLocationX] )
-            returnValue = [NSString stringWithFormat:@"%f", location.x];
+            returnValue = [NSString stringWithFormat:@"%f", location.x / 2];
         if ( [propertyName isEqualToString:kIXLocationY] )
-            returnValue = [NSString stringWithFormat:@"%f", location.y];
+            returnValue = [NSString stringWithFormat:@"%f", location.y / 2];
         if ( [propertyName isEqualToString:kIXLocation] )
-            returnValue = NSStringFromCGPoint(location);
+            returnValue = NSStringFromCGPoint(CGPointMake(location.x / 2, location.y / 2));
     }
     return returnValue;
 }

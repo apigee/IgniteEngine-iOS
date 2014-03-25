@@ -46,8 +46,6 @@ static NSString* const kIXColor = @"color";
     self.circleView.layer.cornerRadius = size / 2;
     self.circleView.backgroundColor = color;
     [self.contentView addSubview:self.circleView];
-
-
 }
 
 @end

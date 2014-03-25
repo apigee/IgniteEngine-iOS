@@ -82,11 +82,11 @@ so we can apply different states (and have it auto-detect image based on -active
 - Define a default inheritable style in _index (font, color, etc.)
 - Support for raw retina position & dimension values (640px instead of 320pt)
 - Rename AppConfig to something else not RFML like
-- Implement 'self' (or 'this') for actions and properties
+- ~~Implement 'self' (or 'this') for actions and properties~~
 - Support for multiple ongoing projects running off the same framework
 - ~~swap "enabled: false" to "disabled: true" (industry standard)~~
 - ~~update self in actions to target just "self" instead of having to use [[self._id]]~~- 
-- Ability to get x,y coordinates and width/height of control
+- ~~Ability to get x,y coordinates and width/height of control~~
 - https://github.com/jaredsinclair/JSSlidingViewController and other awesome Jared Sinclair stuff here: https://github.com/jaredsinclair and in particular this: https://github.com/jaredsinclair/JTSSemanticReload
 
 ####Documentation:
