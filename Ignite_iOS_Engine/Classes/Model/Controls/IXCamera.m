@@ -43,7 +43,7 @@ static NSString* const kIXRear = @"rear";
 -(void)buildView
 {
     [super buildView];
-    _cameraView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    _cameraView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_cameraView];
 }
 
@@ -89,6 +89,9 @@ static NSString* const kIXRear = @"rear";
     //this sets the video preview to crop to bounds
     CGRect bounds = CGRectMake(0, 0, 400, 400);
     
+    bounds = self.contentView.bounds;
+    //Here you can see the bounds is 0,0,0,0. If you comment the line above out, it will define the bounds to whatever rect you set it to.
+    NSLog(NSStringFromCGRect(bounds));
     _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     _captureVideoPreviewLayer.frame = bounds;
     _captureVideoPreviewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));

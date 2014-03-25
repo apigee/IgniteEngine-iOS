@@ -18,7 +18,7 @@
 
 @interface IXCamera : IXBaseControl <AVCaptureFileOutputRecordingDelegate>
 
-@property (nonatomic,strong) UIScrollView* cameraView;
+@property (nonatomic,strong) UIView* cameraView;
 @property (nonatomic,strong) UIImage* capturedImage;
 @property (nonatomic) AVCaptureSession* session;
 @property (nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
