@@ -8,6 +8,20 @@
 
 #import "IXBaseControl.h"
 
-@interface IXCamera : IXBaseControl
+#import <AVFoundation/AVFoundation.h>
+
+#import "IXAppManager.h"
+#import "IXLogger.h"
+#import "IXDeviceInfo.h"
+
+#import "NSString+IXAdditions.h"
+
+@interface IXCamera : IXBaseControl <AVCaptureFileOutputRecordingDelegate>
+
+@property (nonatomic,strong) UIScrollView* cameraView;
+@property (nonatomic,strong) UIImage* capturedImage;
+@property (nonatomic) AVCaptureSession* session;
+@property (nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
+@property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 
 @end

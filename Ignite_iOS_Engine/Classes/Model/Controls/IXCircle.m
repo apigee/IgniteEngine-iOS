@@ -11,13 +11,7 @@
 static NSString* const kIXSize = @"size";
 static NSString* const kIXColor = @"color";
 
-@interface IXCircle ()
-
-@property (nonatomic,strong) UIView* circleView;
-
-@end
-
-@implementation IXCircle
+@implementation IXCircle : IXBaseControl
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {

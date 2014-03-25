@@ -6,30 +6,22 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+// todo: This will probably break if we try and add two Camera controls <running> at the same time.
+// Need to find a graceful way of deallocating previously started IXCameras.
+
 #import "IXCamera.h"
 
-#import <AVFoundation/AVFoundation.h>
-
-#import "IXAppManager.h"
-#import "IXLogger.h"
-#import "IXDeviceInfo.h"
-
-#import "NSString+IXAdditions.h"
-
-@interface IXCamera () <AVCaptureFileOutputRecordingDelegate>
-
-@property (nonatomic,strong) UIView* cameraView;
-@property (nonatomic,strong) UIImage* capturedImage;
-@property (nonatomic,strong) AVCaptureSession* session;
-@property (nonatomic,strong) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
-@property (nonatomic,strong) AVCaptureStillImageOutput *stillImageOutput;
-
-@end
+static NSString* const kIXWidth = @"width";
+static NSString* const kIXHeight = @"height";
 
 static NSString* const kIXStart = @"start";
 static NSString* const kIXStop = @"stop";
 
-@implementation IXCamera
+static NSString* const kIXCamera = @"camera";
+static NSString* const kIXFront = @"front";
+static NSString* const kIXRear = @"rear";
+
+@implementation IXCamera : IXBaseControl
 
 -(void)dealloc
 {
@@ -39,19 +31,20 @@ static NSString* const kIXStop = @"stop";
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return [self.cameraView sizeThatFits:size];
+    return [_cameraView sizeThatFits:size];
 }
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
-    [self.cameraView setFrame:rect];
+    [_cameraView setFrame:rect];
+    [_cameraView sizeToFit];
 }
 
 -(void)buildView
 {
     [super buildView];
-
-    _cameraView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    _cameraView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    [self.contentView addSubview:_cameraView];
 }
 
 -(void)applySettings
@@ -62,13 +55,14 @@ static NSString* const kIXStop = @"stop";
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-    NSLog(@"function");
     if( [functionName isEqualToString:kIXStart] )
     {
+        NSLog(@"started");
         [_session startRunning];
     }
     else if( [functionName isEqualToString:kIXStop] )
     {
+        NSLog(@"started");
         [_session stopRunning];
     }
     else
@@ -79,25 +73,38 @@ static NSString* const kIXStop = @"stop";
 
 -(void)createCameraView
 {
-    _session = [[AVCaptureSession alloc] init];
-    _session.sessionPreset = AVCaptureSessionPresetMedium;
+    _session = [AVCaptureSession new];
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-        [_session setSessionPreset:AVCaptureSessionPreset640x480];
+        _session.sessionPreset = AVCaptureSessionPreset640x480;
     else
-        [_session setSessionPreset:AVCaptureSessionPresetPhoto];
+        _session.sessionPreset = AVCaptureSessionPresetPhoto;
     
-    _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_session];
+    _captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
+
+    // Need to fix this; currently it takes the defined size - percentage size is not calculated based on parent size. Need it to grab contentView.bounds on viewDidLoad...?
+    CGFloat width = [self.propertyContainer getSizeValue:kIXWidth maximumSize:[[IXDeviceInfo screenWidth] floatValue] defaultValue:320.0f];
+    CGFloat height = [self.propertyContainer getSizeValue:kIXHeight maximumSize:[[IXDeviceInfo screenHeight] floatValue] defaultValue:320.0f];
     
     //this sets the video preview to crop to bounds
-    CGRect bounds = self.contentView.layer.bounds;
+    CGRect bounds = CGRectMake(0, 0, 400, 400);
+    
     _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    _captureVideoPreviewLayer.bounds = bounds;
+    _captureVideoPreviewLayer.frame = bounds;
     _captureVideoPreviewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
     
-    [self.cameraView.layer addSublayer:_captureVideoPreviewLayer];
+    [_cameraView.layer addSublayer:_captureVideoPreviewLayer];
     
-    AVCaptureDevice *device = [self frontCamera];
+    NSString* camera = [self.propertyContainer getStringPropertyValue:kIXCamera defaultValue:kIXRear];
+    AVCaptureDevice *device;
+    if ([camera isEqualToString:kIXFront])
+    {
+         device = [self frontCamera];
+    }
+    else
+    {
+        device = [self rearCamera];
+    }
     
     NSError *error = nil;
     if ([NSString ix_string:[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
@@ -121,20 +128,15 @@ static NSString* const kIXStop = @"stop";
             if([_session canAddOutput:output])
                 [_session addOutput:output];
             
-            dispatch_queue_t layerQ = dispatch_queue_create("layerQ", NULL);
-            dispatch_async(layerQ, ^{
-                [_session startRunning];
-                if ([_captureVideoPreviewLayer.connection isVideoOrientationSupported])
-                {
-                    [_captureVideoPreviewLayer.connection setVideoOrientation:[self videoOrientation]];
-                }
-                //to make sure were not modifying the UI on a thread other than the main thread, use dispatch_async w/ dispatch_get_main_queue
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.contentView addSubview:_cameraView];
-                });
-            });
+            [_session startRunning];
+            
+            if ([_captureVideoPreviewLayer.connection isVideoOrientationSupported])
+            {
+                [_captureVideoPreviewLayer.connection setVideoOrientation:[self videoOrientation]];
+            }
         }
     }
+
 }
 
 -(AVCaptureDevice *)frontCamera {

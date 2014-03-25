@@ -10,4 +10,6 @@
 
 @interface IXCircle : IXBaseControl
 
+@property (nonatomic,strong) UIView* circleView;
+
 @end
