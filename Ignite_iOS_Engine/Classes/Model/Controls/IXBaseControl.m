@@ -17,6 +17,7 @@
 
 #import "UIImage+ResizeMagick.h"
 
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
 //
 // IXBaseControl Properties :
@@ -85,6 +86,11 @@ static NSString* const kIXPinchBoth = @"both";
 static NSString* const kIXLocation = @"location";
 static NSString* const kIXLocationX = @"location.x";
 static NSString* const kIXLocationY = @"location.y";
+
+// Animations
+static BOOL kIXIsAnimating;
+static NSInteger kIXAnimationCounter;
+static NSString* const kIXSpin = @"spin";
 
 // Functions & Helpers
 static NSString* const kIXToggle = @"dev_toggle";
@@ -673,6 +679,49 @@ static NSString* const kIXToggle = @"dev_toggle";
         }
         [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
     }
+}
+
+-(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount
+{
+    if ([animation isEqualToString:kIXSpin])
+    {
+        if (!kIXIsAnimating) {
+            kIXIsAnimating = YES;
+            kIXAnimationCounter = 0;
+            [self spinWithOptions: UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount*4 - 1]; //*4 to = 360º
+        }
+    }
+}
+
+-(void)endAnimation:(NSString*)animation
+{
+    kIXIsAnimating = NO;
+}
+
+// ROTATE/SPIN ANIMATION
+
+- (void) spinWithOptions: (UIViewAnimationOptions) options duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount {
+    // this spin completes 360 degrees every 1/4 of duration
+    
+    [UIView animateWithDuration: duration / 4
+                          delay: 0.0f
+                        options: options
+                     animations: ^{
+                         self.contentView.transform = CGAffineTransformRotate(self.contentView.transform, DEGREES_TO_RADIANS(90));
+                     }
+                     completion: ^(BOOL finished) {
+                         if (finished) {
+                             if (kIXIsAnimating && (kIXAnimationCounter == 0 || kIXAnimationCounter < repeatCount)) {
+                                 if (repeatCount > 0)
+                                     kIXAnimationCounter++;
+                                 // if flag still set, keep spinning with constant speed
+                                 [self spinWithOptions: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount];
+                             } else if (options != UIViewAnimationOptionCurveEaseOut) {
+                                 // one last spin, with deceleration
+                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut duration:duration repeatCount:repeatCount];
+                             }
+                         }
+                     }];
 }
 
 -(void)conserveMemory

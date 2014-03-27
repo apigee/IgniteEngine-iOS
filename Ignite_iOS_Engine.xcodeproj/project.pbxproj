@@ -119,6 +119,7 @@
 		CA1279EB18D69618007EEC5A /* IXCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1279EA18D69618007EEC5A /* IXCircle.m */; };
 		CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA28B85A18C9052E0067686C /* IXLoadAction.m */; };
 		CA28B85D18CAE2050067686C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA28B85C18CAE2050067686C /* CoreImage.framework */; };
+		CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5021E618E3DE4500FC1FF6 /* IXAnimateAction.m */; };
 		CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5120C418DFCB6900C7D282 /* IXLogAction.m */; };
 		CA51499A18E0CAC000FA58DF /* IXCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51499918E0CAC000FA58DF /* IXCamera.m */; };
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
@@ -339,6 +340,8 @@
 		CA28B85918C9052E0067686C /* IXLoadAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLoadAction.h; sourceTree = "<group>"; };
 		CA28B85A18C9052E0067686C /* IXLoadAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLoadAction.m; sourceTree = "<group>"; };
 		CA28B85C18CAE2050067686C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		CA5021E518E3DE4500FC1FF6 /* IXAnimateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAnimateAction.h; sourceTree = "<group>"; };
+		CA5021E618E3DE4500FC1FF6 /* IXAnimateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAnimateAction.m; sourceTree = "<group>"; };
 		CA5120C318DFCB6900C7D282 /* IXLogAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLogAction.h; sourceTree = "<group>"; };
 		CA5120C418DFCB6900C7D282 /* IXLogAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLogAction.m; sourceTree = "<group>"; };
 		CA51499818E0CAC000FA58DF /* IXCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCamera.h; sourceTree = "<group>"; };
@@ -430,6 +433,8 @@
 				13033F2F183ED8F200C29157 /* IXActionContainer.m */,
 				13033F30183ED8F200C29157 /* IXAlertAction.h */,
 				13033F31183ED8F200C29157 /* IXAlertAction.m */,
+				CA5021E518E3DE4500FC1FF6 /* IXAnimateAction.h */,
+				CA5021E618E3DE4500FC1FF6 /* IXAnimateAction.m */,
 				13033F32183ED8F200C29157 /* IXBaseAction.h */,
 				13033F33183ED8F200C29157 /* IXBaseAction.m */,
 				6333614618971802004F3433 /* IXCreateAction.h */,
@@ -1028,6 +1033,7 @@
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,
 				13033FA7183ED8F200C29157 /* IXText.m in Sources */,
+				CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */,
 				13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */,
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
 				13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */,

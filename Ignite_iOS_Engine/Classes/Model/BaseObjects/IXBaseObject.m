@@ -148,6 +148,17 @@
     
 }
 
+
+-(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount
+{
+    
+}
+
+-(void)endAnimation:(NSString*)animation
+{
+    
+}
+
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
 {
     NSString* returnValue = nil;
