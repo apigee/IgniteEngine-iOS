@@ -16,6 +16,7 @@
 
 // IXFunctionAction Properties
 static NSString* const kIXFunctionName = @"function_name";
+static NSString* const kIXDuration = @"duration";
 
 @implementation IXFunctionAction
 
@@ -23,6 +24,7 @@ static NSString* const kIXFunctionName = @"function_name";
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     NSString* functionName = [[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil];
+    CGFloat duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
     
     if( [objectIDs count] && [functionName length] > 0 )
     {
@@ -30,10 +32,27 @@ static NSString* const kIXFunctionName = @"function_name";
         IXSandbox* sandbox = [ownerObject sandbox];
         NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
                                                                  withSelfObject:ownerObject];
-        for( IXBaseObject* baseObject in objectsWithID )
+        if (duration > 0)
         {
-            [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+            [UIView animateWithDuration:duration
+                              delay:0.0f
+                            options:UIViewAnimationOptionTransitionCrossDissolve
+                         animations:^{
+                             for( IXBaseObject* baseObject in objectsWithID )
+                             {
+                                 [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+                             }
+                         }
+                         completion:nil];
         }
+        else
+        {
+            for( IXBaseObject* baseObject in objectsWithID )
+            {
+                [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+            }
+        }
+
         
         [self actionDidFinishWithEvents:nil];
     }

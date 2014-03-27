@@ -11,23 +11,36 @@
 
 #import "IXCamera.h"
 
+// Temp properties
 static NSString* const kIXWidth = @"width";
 static NSString* const kIXHeight = @"height";
 
+// Functions
 static NSString* const kIXStart = @"start";
+static NSString* const kIXRestart = @"restart";
 static NSString* const kIXStop = @"stop";
 static NSString* const kIXAutoStart = @"auto_start";
+static NSString* const kIXCaptureImage = @"capture_image";
 
+// Properties
 static NSString* const kIXCamera = @"camera";
 static NSString* const kIXFront = @"front";
 static NSString* const kIXRear = @"rear";
+static NSString* const kIXCaptureResize = @"capture.resize";
+static NSString* const kIXCaptureDelay = @"capture.delay";
+static NSString* const kIXCapturedImage = @"captured_image";
+static NSString* const kIXAutoSaveToCameraRoll = @"auto_save_to_camera_roll";
+
+// Events
+static NSString* const kIXDidCaptureImage = @"did_capture_image";
+static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 
 @implementation IXCamera : IXBaseControl
 
 -(void)dealloc
 {
-    [_captureVideoPreviewLayer setDelegate:nil];
-    [_session stopRunning];
+    //[_captureVideoPreviewLayer setDelegate:nil];
+    //[_session stopRunning];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -58,13 +71,29 @@ static NSString* const kIXRear = @"rear";
 {
     if( [functionName isEqualToString:kIXStart] )
     {
-        NSLog(@"started");
-        [self startCamera];
+        [_session startRunning];
     }
     else if( [functionName isEqualToString:kIXStop] )
     {
-        NSLog(@"stopped");
         [_session stopRunning];
+    }
+    else if( [functionName isEqualToString:kIXRestart] )
+    {
+        [_session stopRunning];
+        [self createCameraView];
+        [_session startRunning];
+    }
+    else if( [functionName isEqualToString:kIXCaptureImage] )
+    {
+        CGFloat captureDelay = [self.propertyContainer getFloatPropertyValue:kIXCaptureDelay defaultValue:0.0f];
+        if (captureDelay > 0)
+        {
+            [self performSelector:@selector(captureStillImage) withObject:self afterDelay:captureDelay ];
+        }
+        else
+        {
+            [self captureStillImage];
+        }
     }
     else
     {
@@ -109,15 +138,6 @@ static NSString* const kIXRear = @"rear";
         _device = [self rearCamera];
     }
     
-    BOOL autoStart = [self.propertyContainer getBoolPropertyValue:kIXAutoStart defaultValue:NO];
-    if (autoStart)
-    {
-        [self startCamera];
-    }
-}
-
--(void)startCamera
-{
     NSError *error = nil;
     if ([NSString ix_string:[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
     {
@@ -126,7 +146,11 @@ static NSString* const kIXRear = @"rear";
     else
     {
         AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:&error];
-        AVCaptureMovieFileOutput *output = [[AVCaptureMovieFileOutput alloc] init];
+        
+        // Still image output stuff - we'll want to expand on this later to allow for video capture and other things
+        _stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+        NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
+        [_stillImageOutput setOutputSettings:outputSettings];
         
         if (!input) {
             // Handle the error appropriately.
@@ -137,10 +161,16 @@ static NSString* const kIXRear = @"rear";
             if([_session canAddInput:input])
                 [_session addInput:input];
             
-            if([_session canAddOutput:output])
-                [_session addOutput:output];
+            if([_session canAddOutput:_stillImageOutput])
+                [_session addOutput:_stillImageOutput];
             
-            [_session startRunning];
+            
+            
+            BOOL autoStart = [self.propertyContainer getBoolPropertyValue:kIXAutoStart defaultValue:NO];
+            if (autoStart)
+            {
+                [_session startRunning];
+            }
             
             if ([_captureVideoPreviewLayer.connection isVideoOrientationSupported])
             {
@@ -190,14 +220,118 @@ static NSString* const kIXRear = @"rear";
     }
 }
 
--(void)captureStillImage
+- (void)showShutter
 {
-    _stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)];
+    overlay.layer.backgroundColor = [[UIColor whiteColor] CGColor];
+    overlay.layer.opacity = 0.6f;
+    [UIView transitionWithView:self.contentView duration:0.1
+                       options:UIViewAnimationOptionCurveEaseIn //change to whatever animation you like
+                    animations:^ { [_cameraView addSubview: overlay]; }
+                    completion:^(BOOL finished) {
+                        [UIView transitionWithView:self.contentView duration:0.5
+                                           options:UIViewAnimationOptionCurveEaseIn //change to whatever animation you like
+                                        animations:^ { overlay.alpha = 0; }
+                                        completion:^(BOOL finished) {
+                                            [overlay removeFromSuperview];
+                                        }];
+                    }];
 }
 
--(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
+- (void)captureStillImage
 {
-    NSLog(@"poutput");
+    @try {
+        AVCaptureConnection *videoConnection = nil;
+        for (AVCaptureConnection *connection in _stillImageOutput.connections){
+            for (AVCaptureInputPort *port in [connection inputPorts]){
+                
+                if ([[port mediaType] isEqual:AVMediaTypeVideo]){
+                    
+                    videoConnection = connection;
+                    break;
+                }
+            }
+            if (videoConnection) {
+                break;
+            }
+        }
+        [self showShutter];
+        DDLogDebug(@"About to request a capture from: %@", [self stillImageOutput]);
+        [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:videoConnection
+                                                             completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+                                                                 
+                                                                 // This is here for when we need to implement Exif stuff. 
+                                                                 //CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+                                                                 
+                                                                 NSString* resizeMask = [[self propertyContainer] getStringPropertyValue:kIXCaptureResize defaultValue:nil];
+                                                                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+
+                                                                 // Create a UIImage from the sample buffer data
+                                                                 if (resizeMask)
+                                                                     _capturedImage = [[[UIImage alloc] initWithData:imageData] resizedImageByMagick:resizeMask];
+                                                                 else
+                                                                     _capturedImage = [[UIImage alloc] initWithData:imageData];
+                                                                 
+                                                                 [self.actionContainer executeActionsForEventNamed:kIXDidCaptureImage];
+                                                                 
+                                                                 // Hack for storing image in photo library. We need to fix this later on to be more robust and either cache it or have the image accessible to IXImage.
+                                                                 BOOL autoSave = [[self propertyContainer] getBoolPropertyValue:kIXAutoSaveToCameraRoll defaultValue:YES];
+                                                                 if (autoSave)
+                                                                 {
+                                                                     UIImageWriteToSavedPhotosAlbum(_capturedImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+                                                                 }
+
+                                                             }];
+    }
+    @catch (NSException *exception) {
+        DDLogError(@"ERROR: Unable to capture still image from IXCamera: %@", exception);
+    }
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo: (void *) contextInfo
+{
+    [self.actionContainer executeActionsForEventNamed:kIXDidFinishSavingCapture];
+}
+
+// Create a UIImage from sample buffer data
+-(UIImage *)imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer
+{
+    // Get a CMSampleBuffer's Core Video image buffer for the media data
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    // Lock the base address of the pixel buffer
+    CVPixelBufferLockBaseAddress(imageBuffer, 0);
+    
+    // Get the number of bytes per row for the pixel buffer
+    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
+    
+    // Get the number of bytes per row for the pixel buffer
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+    // Get the pixel buffer width and height
+    size_t width = CVPixelBufferGetWidth(imageBuffer);
+    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    
+    // Create a device-dependent RGB color space
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    // Create a bitmap graphics context with the sample buffer data
+    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8,
+                                                 bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    // Create a Quartz image from the pixel data in the bitmap graphics context
+    CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+    // Unlock the pixel buffer
+    CVPixelBufferUnlockBaseAddress(imageBuffer,0);
+    
+    // Free up the context and color space
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    
+    // Create an image object from the Quartz image
+    UIImage *image = [UIImage imageWithCGImage:quartzImage];
+    
+    // Release the Quartz image
+    CGImageRelease(quartzImage);
+    
+    return (image);
 }
 
 @end

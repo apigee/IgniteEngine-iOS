@@ -86,6 +86,9 @@ static NSString* const kIXLocation = @"location";
 static NSString* const kIXLocationX = @"location.x";
 static NSString* const kIXLocationY = @"location.y";
 
+// Functions & Helpers
+static NSString* const kIXToggle = @"dev_toggle";
+
 @interface IXBaseControl ()
 
 @end
@@ -605,6 +608,26 @@ static NSString* const kIXLocationY = @"location.y";
             returnValue = NSStringFromCGPoint(CGPointMake(location.x / 2, location.y / 2));
     }
     return returnValue;
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXToggle] )
+    {
+        if ([self isContentViewVisible])
+        {
+            self.contentView.alpha = 0.0f;
+            self.contentView.enabled = NO;
+        }
+        else
+        {
+            CGFloat originalAlpha = [[self propertyContainer] getFloatPropertyValue:kIXAlpha defaultValue:1.0f];
+            if (originalAlpha <= 0)
+                originalAlpha = 1;
+            self.contentView.alpha = originalAlpha;
+            self.contentView.enabled = YES;
+        }
+    }
 }
 
 -(void)processBeginTouch:(BOOL)fireTouchActions

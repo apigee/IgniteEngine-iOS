@@ -18,6 +18,9 @@ A php preparser is used in the build process to parse int, float, and bool value
 
 ##Todo List
 
+####Buttons
+- Add background touch/disabled colors
+
 ####Device properties
 - ~~Fix up all except orientation to detect once at launch and not each time the function is called.~~
 
@@ -32,6 +35,7 @@ A php preparser is used in the build process to parse int, float, and bool value
 - This: http://stackoverflow.com/questions/11259983/vertically-align-uilabel
 - Set up a "next_id" - automatically focuses on specified target when next is pressed.
 - set up "filter_datasource" for textInput - adds a hidden Refresh action that updates the filter on a datasource.
+- [In portrait, keyboard is always swinging over from left of screen](http://stackoverflow.com/questions/3214548/ipad-keyboard-appears-in-wrong-orientation)
 
 ####Actions/Events:
 
@@ -88,6 +92,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - ~~update self in actions to target just "self" instead of having to use [[self._id]]~~- 
 - ~~Ability to get x,y coordinates and width/height of control~~
 - https://github.com/jaredsinclair/JSSlidingViewController and other awesome Jared Sinclair stuff here: https://github.com/jaredsinclair and in particular this: https://github.com/jaredsinclair/JTSSemanticReload
+- **Add a default "toggle" event to all IXControls that sets toggles alpha and enabled**
 
 ####Documentation:
 
@@ -140,3 +145,21 @@ so we can apply different states (and have it auto-detect image based on -active
 
 ####Navigation
 - Option to save reference of viewController (for push pop navigation and saving state). This would require a "release" function on a view controller too.
+
+####Actions
+- Add separate action for variables, include UIImage/binary data too as type as well. Allow storing to local cache instead of RAM
+
+e.g.
+
+```
+{
+    "_type": "Set",
+    "attributes": {
+        "_target": "$session"
+    },
+    "on": "success",
+    "set": {
+        "emailAddress": "[[inputEmail.text]]"
+    }
+}
+```

@@ -13,4 +13,10 @@
 -(UIImage*)tintedImageUsingColor:(UIColor*)tintColor;
 +(UIImage *)ix_animatedGIFWithData:(NSData *)data withDuration:(NSUInteger)duration;
 
+//all 4 of these are broken? possibly need self.contentView.autoresizesSubviews = NO; as workaround
+-(UIImage *)imageRotatedByDegrees:(CGFloat)degrees;
+-(UIImage *)imageRotatedByRadians:(CGFloat)radians;
++(CGFloat)degreesToRadians:(CGFloat)degrees;
++(CGFloat)radiansToDegrees:(CGFloat)radians;
+
 @end

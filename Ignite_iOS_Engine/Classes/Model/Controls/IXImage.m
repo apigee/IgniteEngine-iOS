@@ -17,14 +17,18 @@
 #import "UIImage+ResizeMagick.h"
 #import "UIImage+IXAdditions.h"
 
+#import "IXLogger.h"
+
 
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXImagesDefaultTintColor = @"images.default.tintColor";
 static NSString* const kIXImagesTouchTintColor = @"images.touch.tintColor";
-
 static NSString* const kIXGIFDuration = @"gif_duration";
+static NSString* const kIXFlipHorizontal = @"flip_horizontal";
+static NSString* const kIXFlipVertical = @"flip_vertical";
+static NSString* const kIXRotate = @"rotate";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
 static NSString* const kIXImagesDefaultResize = @"images.default.resize";
@@ -45,6 +49,7 @@ static NSString* const kIXImagesTouchFailed = @"images_touch_failed";
 static NSString* const kIXStartAnimation = @"start_animation";
 static NSString* const kIXRestartAnimation = @"restart_animation";
 static NSString* const kIXStopAnimation = @"stop_animation";
+static NSString* const kIXLoadLastPhoto = @"load_last_photo";
 
 @interface IXImage ()
 
@@ -149,6 +154,26 @@ static NSString* const kIXStopAnimation = @"stop_animation";
                                               [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchFailed];
                                           }];
         }
+        
+        BOOL flipHorizontal = [[self propertyContainer] getBoolPropertyValue:kIXFlipHorizontal defaultValue:NO];
+        BOOL flipVertical = [[self propertyContainer] getBoolPropertyValue:kIXFlipVertical defaultValue:NO];
+        CGFloat rotate = [[self propertyContainer] getFloatPropertyValue:kIXRotate defaultValue:0.0f];
+        
+        if (flipHorizontal)
+        {
+            _imageView.transform = CGAffineTransformMakeScale(-1, 1);
+        }
+        if (flipVertical)
+        {
+            _imageView.transform = CGAffineTransformMakeScale(1, -1);
+        }
+        if (rotate != 0)
+        {
+            //todo: this only works with whole number rotations, 90, 180, 270 otherwise it squiches the resulting image.
+            CGAffineTransform transform = CGAffineTransformIdentity;
+            self.contentView.autoresizesSubviews = NO;
+            _imageView.transform = CGAffineTransformRotate(transform, [UIImage degreesToRadians:rotate] );
+        }
     }
 }
 
@@ -164,7 +189,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 -(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesCancelled:touches withEvent:event];
-    if( ![self isAnimatedGIF] )
+    if( ![self isAnimatedGIF] && [self defaultImage] )
     {
         [[self imageView] setImage:[self defaultImage]];
     }
@@ -173,7 +198,7 @@ static NSString* const kIXStopAnimation = @"stop_animation";
 -(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super controlViewTouchesEnded:touches withEvent:event];
-    if( ![self isAnimatedGIF] )
+    if( ![self isAnimatedGIF] && [self defaultImage] )
     {
         [[self imageView] setImage:[self defaultImage]];
     }
@@ -202,6 +227,39 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     return returnValue;
 }
 
+-(void)loadLastPhoto
+{
+    // todo: Currently this is a bit of a hack - we need this function here, but it should be wrapped properly in the getImage function instead
+    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
+                                 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+                                     if (nil != group) {
+                                         // be sure to filter the group so you only get photos
+                                         [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                                         
+                                         
+                                         [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
+                                                                 options:0
+                                                              usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                                                                  if (nil != result) {
+                                                                      ALAssetRepresentation *repr = [result defaultRepresentation];
+                                                                      // this is the most recent saved photo
+                                                                      UIImage *img = [UIImage imageWithCGImage:[repr fullResolutionImage]];
+                                                                      // we only need the first (most recent) photo -- stop the enumeration
+                                                                      *stop = YES;
+                                                                      [[self imageView] setImage:img];
+                                                                  }
+                                                              }];
+                                     }
+                                     
+                                     *stop = NO;
+                                 } failureBlock:^(NSError *error) {
+                                     DDLogError(@"ERROR: %@", error);
+                                 }];
+    
+    
+}
+
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStartAnimation] )
@@ -215,6 +273,10 @@ static NSString* const kIXStopAnimation = @"stop_animation";
     else if( [functionName isEqualToString:kIXStopAnimation] )
     {
         [[self imageView] stopGIFAnimation:NO];
+    }
+    else if( [functionName isEqualToString:kIXLoadLastPhoto] )
+    {
+        [self loadLastPhoto];
     }
     else
     {
