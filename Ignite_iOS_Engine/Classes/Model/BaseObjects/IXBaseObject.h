@@ -35,7 +35,7 @@
 
 -(void)applySettings;
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer;
--(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount;
+-(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount params:(NSDictionary*)params;
 -(void)endAnimation:(NSString*)animation;
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName;
 

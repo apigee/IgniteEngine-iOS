@@ -92,6 +92,9 @@ static BOOL kIXIsAnimating;
 static NSInteger kIXAnimationCounter;
 static NSString* const kIXSpin = @"spin";
 
+static NSString* const kIXDirection = @"direction";
+static NSString* const kIXReverse = @"reverse";
+
 // Functions & Helpers
 static NSString* const kIXToggle = @"dev_toggle";
 
@@ -681,14 +684,14 @@ static NSString* const kIXToggle = @"dev_toggle";
     }
 }
 
--(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount
+-(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount params:(NSDictionary*)params
 {
     if ([animation isEqualToString:kIXSpin])
     {
         if (!kIXIsAnimating) {
             kIXIsAnimating = YES;
             kIXAnimationCounter = 0;
-            [self spinWithOptions: UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount*4 - 1]; //*4 to = 360º
+            [self spinWithOptions: UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount*4 - 1 params:params]; //*4 to = 360º
         }
     }
 }
@@ -700,14 +703,20 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 // ROTATE/SPIN ANIMATION
 
-- (void) spinWithOptions: (UIViewAnimationOptions) options duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount {
+- (void) spinWithOptions: (UIViewAnimationOptions) options duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount params:(NSDictionary*)params {
     // this spin completes 360 degrees every 1/4 of duration
+    
+    NSInteger degrees = 90;
+    if ([[params objectForKey:kIXDirection] isEqualToString:kIXReverse])
+    {
+        degrees = -90;
+    }
     
     [UIView animateWithDuration: duration / 4
                           delay: 0.0f
                         options: options
                      animations: ^{
-                         self.contentView.transform = CGAffineTransformRotate(self.contentView.transform, DEGREES_TO_RADIANS(90));
+                         self.contentView.transform = CGAffineTransformRotate(self.contentView.transform, DEGREES_TO_RADIANS(degrees));
                      }
                      completion: ^(BOOL finished) {
                          if (finished) {
@@ -715,10 +724,10 @@ static NSString* const kIXToggle = @"dev_toggle";
                                  if (repeatCount > 0)
                                      kIXAnimationCounter++;
                                  // if flag still set, keep spinning with constant speed
-                                 [self spinWithOptions: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount];
+                                 [self spinWithOptions: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount params:params];
                              } else if (options != UIViewAnimationOptionCurveEaseOut) {
                                  // one last spin, with deceleration
-                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut duration:duration repeatCount:repeatCount];
+                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut duration:duration repeatCount:repeatCount params:params];
                              }
                          }
                      }];

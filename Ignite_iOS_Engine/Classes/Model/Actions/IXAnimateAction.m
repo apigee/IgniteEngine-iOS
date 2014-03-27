@@ -24,6 +24,9 @@ static NSString* const kIXRepeatCount = @"repeat_count";
 static NSString* const kIXStart = @"start";
 static NSString* const kIXStop = @"stop";
 
+// Animation Options
+static NSString* const kIXDirection = @"direction";
+
 // Animations are declared in IXBaseControl.m
 
 @implementation IXAnimateAction
@@ -34,6 +37,14 @@ static NSString* const kIXStop = @"stop";
     CGFloat duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
     NSString* animation = [[self actionProperties] getStringPropertyValue:kIXAnimation defaultValue:nil];
     NSInteger repeatCount = [[self actionProperties] getIntPropertyValue:kIXRepeatCount defaultValue:0];
+    NSString* direction = [[self actionProperties] getStringPropertyValue:kIXDirection defaultValue:nil];
+    
+    NSDictionary* params;
+    
+    if (direction)
+    {
+        params = @{kIXDirection: direction};
+    }
     
     if( objectIDs != nil && animation != nil)
     {
@@ -45,7 +56,7 @@ static NSString* const kIXStop = @"stop";
                                                                     withSelfObject:ownerObject];
             for( IXBaseObject* baseObject in objectsWithID )
             {
-                [baseObject beginAnimation:animation duration:duration repeatCount:repeatCount];
+                [baseObject beginAnimation:animation duration:duration repeatCount:repeatCount params:params];
             }
         }
         
