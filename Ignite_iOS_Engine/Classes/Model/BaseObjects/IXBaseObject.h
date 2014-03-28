@@ -13,6 +13,7 @@
 #import "IXActionContainer.h"
 #import "IXPropertyContainer.h"
 
+
 @class IXBaseAction;
 
 @interface IXBaseObject : NSObject <NSCopying>

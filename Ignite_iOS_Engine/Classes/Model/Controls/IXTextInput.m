@@ -312,14 +312,27 @@ static CGSize sIXKBSize;
                          scrollView.contentInset = contentInsets;
                          scrollView.scrollIndicatorInsets = contentInsets;
                          
-                         CGRect aRect = visibleVC.view.frame;
+                         CGRect aRect = self.contentView.superview.frame;
                          aRect.size.height -= keyboardHeight;
                          
+                         UIView* contentView;
+                         CGRect textFieldFrame;
+                         if ([self.parentObject isKindOfClass:[IXLayout class]])
+                         {
+                             contentView = self.contentView.superview;
+                             textFieldFrame = self.textField.superview.frame;
+                         }
+                         else
+                         {
+                             contentView = self.contentView;
+                             textFieldFrame = self.textField.frame;
+                         }
+                         
                          //scrollView converts the frame of subView.frame to the coordinate system of someOtherView
-                         CGRect textFieldScreenFrame = [[self contentView] convertRect:[[self textField] frame] toView:nil];
+                         CGRect textFieldScreenFrame = [contentView convertRect:textFieldFrame toView:nil];
                          
                          if (!CGRectContainsPoint(aRect, textFieldScreenFrame.origin) ) {
-                             [scrollView scrollRectToVisible:[[self textField] frame] animated:YES];
+                             [scrollView scrollRectToVisible:textFieldFrame animated:YES];
                          }
                      }];
 }
