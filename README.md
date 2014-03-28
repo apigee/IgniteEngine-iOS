@@ -36,6 +36,7 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Set up a "next_id" - automatically focuses on specified target when next is pressed.
 - set up "filter_datasource" for textInput - adds a hidden Refresh action that updates the filter on a datasource.
 - [In portrait, keyboard is always swinging over from left of screen](http://stackoverflow.com/questions/3214548/ipad-keyboard-appears-in-wrong-orientation)
+- Auto-sizing text
 
 ####Actions/Events:
 
@@ -51,6 +52,22 @@ A php preparser is used in the build process to parse int, float, and bool value
 - Add "unwind on _____" (e.g. unwind on touch_up)
 - darkens_image_on_touch actions working strangely around perimeter of device (40pt border) they don't work until you drag.
 - listening to [[someID.that_ids_event]] for performing actions when other controls' events fire?
+- Add separate action for variables, include UIImage/binary data too as type as well. Allow storing to local cache instead of RAM
+
+e.g.
+
+```
+{
+    "_type": "Set",
+    "attributes": {
+        "_target": "$session"
+    },
+    "on": "success",
+    "set": {
+        "emailAddress": "[[inputEmail.text]]"
+    }
+}
+```
 
 ####Data:
 
@@ -102,13 +119,16 @@ so we can apply different states (and have it auto-detect image based on -active
 
 - ~~Clean up implementation (use industry standards like {{}})~~
 - Regular expression validation : partially done
-- you can use {{ '[[id.text]]'.length }} - needs quotes. Or [[id.text:length]]
+- ~~you can use {{ '[[id.text]]'.length }} - needs quotes. Or [[id.text:length]]~~
 
 ####Tables:
 
 - Have a fade-out **option** for top and bottom (text fades as it slides out of view)
 - Allow action to be applied to entire table cell
 - Easy way of creating list objects? If not, data will do. How to implement local data sources? Should be able to define a local datasource directly in the table element
+- variable height (Jared Sinclair)
+- push, pop, unshift, check out Jared Sinclair stuff on GitHub.
+- Should be able to manipulate local json *and* CoreData implementations in order to append and remove objects. Interface should be the same, instead we only need to specify "coredata": true/false
 
 ####Formatting:
 - need to properly define shorthand margin/padding etc.
@@ -119,7 +139,7 @@ so we can apply different states (and have it auto-detect image based on -active
 
 ####Notes:
 
-- Visible YES/NO?? vs. Alpha 0? We should combine these
+- ~~Visible YES/NO?? vs. Alpha 0? We should combine these~~
 
 ####Layouts:
 
@@ -136,9 +156,11 @@ so we can apply different states (and have it auto-detect image based on -active
 
 ####Styles:
 
-- Programmatic font interface? else we include this in the docs
+- Programmatic font interface? else we include this in the docs- 
 - horizontal/vertical_alignment screws up 100% h/w. Need to be more clear how this is performed (or if alignment is defined, either ignore height/width or include it in the calculation)
 - Inheriting styles (default styles)- set default font, then it doesn't need to be defined (only font.size) (or color.text: inherit)
+- add font.size separately so we can apply a default font at the app level.
+- Ability to define font weights (font.weight: 300); defined at the app level
 
 ####Additional 3rd Party stuff
 - OvershareKit?
@@ -146,20 +168,9 @@ so we can apply different states (and have it auto-detect image based on -active
 ####Navigation
 - Option to save reference of viewController (for push pop navigation and saving state). This would require a "release" function on a view controller too.
 
-####Actions
-- Add separate action for variables, include UIImage/binary data too as type as well. Allow storing to local cache instead of RAM
+####Image managemet, custom Camera, & Image Picker
+- Add save to cache? ability to reference via [[$cache.<someId>]]
+- add multiple qualities (or use resizemagick?)
+- Ability to resize downloaded image (or even asset image using magick and have it store the lower res quality in the cache
+- video (for imagePicker too)
 
-e.g.
-
-```
-{
-    "_type": "Set",
-    "attributes": {
-        "_target": "$session"
-    },
-    "on": "success",
-    "set": {
-        "emailAddress": "[[inputEmail.text]]"
-    }
-}
-```

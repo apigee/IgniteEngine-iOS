@@ -45,6 +45,10 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
         return stringToModify;
     }
 };
+static NSString* const kIXMonogram = @"monogram";
+static IXBaseShortCodeFunction const kIXMonogramFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [NSString ix_monogramString:stringToModify];
+};
 
 NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
 {
@@ -210,6 +214,8 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             shortCodeFunction = kIXLengthFunction;
         } else if( [functionName isEqualToString:kIXTruncate] ) {
             shortCodeFunction = kIXTruncateFunction;
+        } else if( [functionName isEqualToString:kIXMonogram] ) {
+            shortCodeFunction = kIXMonogramFunction;
         } else if( [functionName isEqualToString:kIXToLowercase] ){
             shortCodeFunction = kIXToLowerCaseFunction;
         } else if( [functionName isEqualToString:kIXToUppercase] ) {

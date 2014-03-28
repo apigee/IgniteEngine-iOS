@@ -60,6 +60,7 @@ static NSString* const kIXDirection = @"direction";
             }
         }
         
+        //This isn't working properly yet! Need to work out how to fire completion events.
         [self actionDidFinishWithEvents:nil];
     }
 }

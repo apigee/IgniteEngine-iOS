@@ -32,6 +32,14 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
++(NSString*)ix_monogramString:(NSString *)string
+{
+    if (string.length > 0)
+        return [NSString stringWithFormat:@"%@.", [string substringToIndex:1]];
+    else
+        return string;
+}
+
 +(BOOL)ix_string:(NSString*)string containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options
 {
     return [string rangeOfString:substring options:options].location != NSNotFound;
