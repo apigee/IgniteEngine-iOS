@@ -219,19 +219,19 @@ static CGSize sIXKBSize;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShown:)
                                                      name:UIKeyboardWillShowNotification
-                                                   object:[self textField]];
+                                                   object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillBeHidden:)
                                                      name:UIKeyboardWillHideNotification
-                                                   object:[self textField]];
+                                                   object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillChangeFrame:)
                                                      name:UIKeyboardDidChangeFrameNotification
-                                                   object:[self textField]];
+                                                   object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(textDidChange:)
                                                      name:UITextFieldTextDidChangeNotification
-                                                   object:[self textField]];
+                                                   object:nil];
     }
 }
 
@@ -243,16 +243,16 @@ static CGSize sIXKBSize;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIKeyboardWillShowNotification
-                                                      object:[self textField]];
+                                                      object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIKeyboardWillHideNotification
-                                                      object:[self textField]];
+                                                      object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIKeyboardDidChangeFrameNotification
-                                                      object:[self textField]];
+                                                      object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UITextFieldTextDidChangeNotification
-                                                      object:[self textField]];
+                                                      object:nil];
     }
 }
 
@@ -375,6 +375,9 @@ static CGSize sIXKBSize;
 
 - (void)textDidChange:(NSNotification*)aNotification
 {
+    if( ![[self textField] isFirstResponder] )
+        return;
+    
     NSString *inputText = [[self textField] text];
     
     NSInteger inputMaxAllowedCharacters = [self inputMaxAllowedCharacters];
