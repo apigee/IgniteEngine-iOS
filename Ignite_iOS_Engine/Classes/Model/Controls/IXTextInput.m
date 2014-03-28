@@ -47,6 +47,7 @@ static NSString* const kIXTextColor = @"text.color";
 static NSString* const kIXTextPlaceholder = @"text.placeholder";
 static NSString* const kIXTextPlaceholderColor = @"text.placeholder.color";
 static NSString* const kIXTextAlignment = @"text.alignment";
+static NSString* const kIXBackgroundColor = @"background.color";
 
 static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
 static NSString* const kIXKeyboardType = @"keyboard.type";
@@ -162,7 +163,8 @@ static CGSize sIXKBSize;
     [[self textField] setKeyboardAppearance:[UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]]];
     [[self textField] setKeyboardType:[UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]]];
     [[self textField] setReturnKeyType:[UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]]];
-
+    [[self textField] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor whiteColor]]];
+    
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:kIXDismissOnReturn defaultValue:YES]];
     [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
     [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
