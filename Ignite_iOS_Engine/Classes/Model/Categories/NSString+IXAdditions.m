@@ -32,10 +32,17 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
-+(NSString*)ix_monogramString:(NSString *)string
++(NSString*)ix_monogramString:(NSString *)string ifLengthIsGreaterThan:(NSInteger)length
 {
     if (string.length > 0)
-        return [NSString stringWithFormat:@"%@.", [string substringToIndex:1]];
+    {
+        if (length > 0 && string.length > length)
+            return [NSString stringWithFormat:@"%@.", [string substringToIndex:1]];
+        else if (length == 0)
+            return [NSString stringWithFormat:@"%@.", [string substringToIndex:1]];
+        else
+            return string;
+    }
     else
         return string;
 }

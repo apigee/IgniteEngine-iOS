@@ -47,7 +47,11 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
 };
 static NSString* const kIXMonogram = @"monogram";
 static IXBaseShortCodeFunction const kIXMonogramFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_monogramString:stringToModify];
+    if ([parameters firstObject] != nil) {
+        return [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:[[parameters.firstObject getPropertyValue] intValue]];
+    } else {
+        return [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:0];
+    }
 };
 
 NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
