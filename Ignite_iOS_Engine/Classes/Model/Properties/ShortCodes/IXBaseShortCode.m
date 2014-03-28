@@ -53,6 +53,34 @@ static IXBaseShortCodeFunction const kIXMonogramFunction = ^NSString*(NSString* 
         return [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:0];
     }
 };
+static NSString* const kIXToBase64 = @"to_base64";
+static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
+    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
+    {
+        NSData *utf8data = [stringToEncode dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *base64String = [utf8data base64EncodedStringWithOptions:0];
+        return base64String;
+    }
+    else
+    {
+        //todo: need a fall back for < iOS7
+        return stringToEncode;
+    }
+};
+static NSString* const kIXFromBase64 = @"from_base64";
+static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* base64String,NSArray* parameters){
+    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
+    {
+        NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:base64String options:0];
+        NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+        return decodedString;
+    }
+    else
+    {
+        //todo: need a fall back for < iOS7
+        return base64String;
+    }
+};
 
 NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
 {
@@ -226,6 +254,10 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             shortCodeFunction = kIXToUppercaseFunction;
         } else if( [functionName isEqualToString:kIXCapitalize] ) {
             shortCodeFunction = kIXCapitalizeFunction;
+        } else if( [functionName isEqualToString:kIXToBase64] ) {
+            shortCodeFunction = kIXToBase64Function;
+        } else if( [functionName isEqualToString:kIXFromBase64] ) {
+            shortCodeFunction = kIXFromBase64Function;
         }
     }
     [self setShortCodeFunction:shortCodeFunction];
