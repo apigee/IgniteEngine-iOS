@@ -234,6 +234,17 @@
     return returnArray;
 }
 
+-(NSArray*)getPipeSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue
+{
+    NSArray* returnArray = defaultValue;
+    NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
+    if( stringValue != nil )
+    {
+        returnArray = [stringValue componentsSeparatedByString:kIX_PIPE_SEPERATOR];
+    }
+    return returnArray;
+}
+
 -(BOOL)getBoolPropertyValue:(NSString*)propertyName defaultValue:(BOOL)defaultValue
 {
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];

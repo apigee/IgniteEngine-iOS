@@ -14,16 +14,24 @@
 
 // IXAlertAction Properties
 static NSString* const kIXTitle = @"title";
-static NSString* const kIXSubtitle = @"subtitle";
+// Migration path - deprecated
+// static NSString* const kIXSubtitle = @"subtitle";
+static NSString* const kIXMessage = @"message";
+
 static NSString* const kIXConfirmButtonTitle = @"button.confirm.text";
-static NSString* const kIXShowsCancelButton = @"shows_cancel_button";
 static NSString* const kIXCancelButtonTitle = @"button.cancel.text";
+static NSString* const kIXOtherButtonTitle = @"button.other.text";
+static NSString* const kIXButtonTitles = @"button.titles"; //comma separated: OK,Cancel
+static NSString* const kIXButtonDefaultIndex = @"button.default"; //0-based index of default action
 
 // IXAlertAction Events
 static NSString* const kIXWillPresentAlert = @"will_present_alert";
 static NSString* const kIXDidPresentAlert = @"did_present_alert";
-static NSString* const kIXCancelButtonPressed = @"cancel_button_pressed";
-static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
+//static NSString* const kIXCancelButtonPressed = @"cancel_button_pressed";
+//static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
+//static NSString* const kIXOtherButtonPressed = @"other_button_pressed";
+static NSString* const kIXButtonPressed = @"button_pressed"; //default stand-in for index 0 (for laziness)
+static NSString* const kIXButtonIndexPressed = @"button_%u_pressed"; //0-based index of action to execute
 
 @interface IXAlertAction () <UIAlertViewDelegate>
 @property (nonatomic,strong) UIAlertView* alertView;
@@ -43,17 +51,32 @@ static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
     IXPropertyContainer* actionProperties = [self actionProperties];
     
     NSString* title = [actionProperties getStringPropertyValue:kIXTitle defaultValue:nil];
-    NSString* subTitle = [actionProperties getStringPropertyValue:kIXSubtitle defaultValue:nil];
-    NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:kIXConfirmButtonTitle defaultValue:kIX_OK];
-    NSString* cancelButtonTitle = [actionProperties getStringPropertyValue:kIXCancelButtonTitle defaultValue:nil];
-
+    NSString* message = [actionProperties getStringPropertyValue:kIXMessage defaultValue:nil];
+    // Deprecation statement, replace Subtitle with Text
+//    if (subTitle == nil)
+//    {
+//        subTitle = [actionProperties getStringPropertyValue:kIXMessage defaultValue:nil];
+//    }
+    //NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:kIXConfirmButtonTitle defaultValue:kIX_OK];
+    //NSString* cancelButtonTitle = [actionProperties getStringPropertyValue:kIXCancelButtonTitle defaultValue:nil];
+    NSArray* buttonTitles = [actionProperties getCommaSeperatedArrayListValue:kIXButtonTitles defaultValue:@[kIX_OK]];
+    NSInteger defaultButtonIndex = [actionProperties getIntPropertyValue:kIXButtonDefaultIndex defaultValue:buttonTitles.count - 1];
+    //failsafe for indexOutOfRange error
+    if (defaultButtonIndex > buttonTitles.count - 1)
+        defaultButtonIndex = buttonTitles.count - 1;
+    
     [[self alertView] setDelegate:nil];
     [[self alertView] dismissWithClickedButtonIndex:[[self alertView] cancelButtonIndex] animated:YES];
     [self setAlertView:[[UIAlertView alloc] initWithTitle:title
-                                                  message:subTitle
+                                                  message:message
                                                  delegate:self
-                                        cancelButtonTitle:cancelButtonTitle
-                                        otherButtonTitles:confirmButtonTitle,nil]];
+                                        cancelButtonTitle:nil
+                                        otherButtonTitles:nil]];
+    for ( NSString *title in buttonTitles )  {
+        [self.alertView addButtonWithTitle:title];
+    }
+    
+    self.alertView.cancelButtonIndex = defaultButtonIndex;
 
     
     [[self alertView] show];
@@ -76,15 +99,24 @@ static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
 {
     [[self alertView] setDelegate:nil];
     [self setAlertView:nil];
+    
+    NSString* actionName = [NSString stringWithFormat:kIXButtonIndexPressed, buttonIndex];
+    [self actionDidFinishWithEvents:@[actionName]];
+    if (buttonIndex == 0)
+    {
+        // This is here so we can use the alias action trigger (on) "button_pressed"
+        [self actionDidFinishWithEvents:@[kIXButtonPressed]];
+    }
 
-    if( buttonIndex == [alertView cancelButtonIndex] )
-    {
-        [self actionDidFinishWithEvents:@[kIXCancelButtonPressed]];
-    }
-    else
-    {
-        [self actionDidFinishWithEvents:@[kIXConfirmButtonPressed]];
-    }
+// deprecated
+//    if( buttonIndex == [alertView cancelButtonIndex] )
+//    {
+//        [self actionDidFinishWithEvents:@[kIXCancelButtonPressed]];
+//    }
+//    else
+//    {
+//        [self actionDidFinishWithEvents:@[kIXConfirmButtonPressed]];
+//    }
 }
 
 @end

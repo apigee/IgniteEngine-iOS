@@ -110,6 +110,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - ~~Ability to get x,y coordinates and width/height of control~~
 - https://github.com/jaredsinclair/JSSlidingViewController and other awesome Jared Sinclair stuff here: https://github.com/jaredsinclair and in particular this: https://github.com/jaredsinclair/JTSSemanticReload
 - **Add a default "toggle" event to all IXControls that sets toggles alpha and enabled**
+- Need a deprecation method and a process for upgrading control properties.
 
 ####Documentation:
 

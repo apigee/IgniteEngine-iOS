@@ -319,12 +319,12 @@ static CGSize sIXKBSize;
                          CGRect textFieldFrame;
                          if ([self.parentObject isKindOfClass:[IXLayout class]])
                          {
-                             contentView = self.contentView.superview;
+                             contentView = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController].view;
                              textFieldFrame = self.textField.superview.frame;
                          }
                          else
                          {
-                             contentView = self.contentView;
+                             contentView = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController].view;
                              textFieldFrame = self.textField.frame;
                          }
                          

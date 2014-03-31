@@ -39,6 +39,7 @@ NSString* const kIX_TRUE = @"true";
 NSString* const kIX_FALSE = @"false";
 NSString* const kIX_EMPTY_STRING = @"";
 NSString* const kIX_COMMA_SEPERATOR = @",";
+NSString* const kIX_PIPE_SEPERATOR = @"|";
 NSString* const kIX_PERIOD_SEPERATOR = @".";
 NSString* const kIX_COLON_SEPERATOR = @":";
 NSString* const kIX_EVAL_BRACKETS = @"{{";

@@ -49,6 +49,7 @@ extern NSString* const kIX_TRUE;
 extern NSString* const kIX_FALSE;
 extern NSString* const kIX_EMPTY_STRING;
 extern NSString* const kIX_COMMA_SEPERATOR;
+extern NSString* const kIX_PIPE_SEPERATOR;
 extern NSString* const kIX_PERIOD_SEPERATOR;
 extern NSString* const kIX_COLON_SEPERATOR;
 extern NSString* const kIX_EVAL_BRACKETS;
