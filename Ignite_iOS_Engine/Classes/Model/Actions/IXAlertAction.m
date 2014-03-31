@@ -6,6 +6,14 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/* From the docs:
+ 
+In a two-button alert that proposes a potentially risky action, the button that cancels the action should be on the right (and light-colored).
+
+In a two-button alert that proposes a benign action that people are likely to want, the button that cancels the action should be on the left (and dark-colored).
+ 
+*/
+
 #import "IXAlertAction.h"
 
 #import "IXAppManager.h"
@@ -14,22 +22,16 @@
 
 // IXAlertAction Properties
 static NSString* const kIXTitle = @"title";
-// Migration path - deprecated
-// static NSString* const kIXSubtitle = @"subtitle";
 static NSString* const kIXMessage = @"message";
-
-static NSString* const kIXConfirmButtonTitle = @"button.confirm.text";
-static NSString* const kIXCancelButtonTitle = @"button.cancel.text";
-static NSString* const kIXOtherButtonTitle = @"button.other.text";
 static NSString* const kIXButtonTitles = @"button.titles"; //comma separated: OK,Cancel
-static NSString* const kIXButtonDefaultIndex = @"button.default"; //0-based index of default action
+//static NSString* const kIXButtonDefaultIndex = @"button.default"; //0-based index of default action
+
+// as of iOS7 we can no longer customize which is the highlighted button - the last (right-most or bottom) is always default.
+// ref: http://stackoverflow.com/questions/19125249/highlight-top-button-in-uialertview
 
 // IXAlertAction Events
 static NSString* const kIXWillPresentAlert = @"will_present_alert";
 static NSString* const kIXDidPresentAlert = @"did_present_alert";
-//static NSString* const kIXCancelButtonPressed = @"cancel_button_pressed";
-//static NSString* const kIXConfirmButtonPressed = @"confirm_button_pressed";
-//static NSString* const kIXOtherButtonPressed = @"other_button_pressed";
 static NSString* const kIXButtonPressed = @"button_pressed"; //default stand-in for index 0 (for laziness)
 static NSString* const kIXButtonIndexPressed = @"button_%u_pressed"; //0-based index of action to execute
 
@@ -52,18 +54,8 @@ static NSString* const kIXButtonIndexPressed = @"button_%u_pressed"; //0-based i
     
     NSString* title = [actionProperties getStringPropertyValue:kIXTitle defaultValue:nil];
     NSString* message = [actionProperties getStringPropertyValue:kIXMessage defaultValue:nil];
-    // Deprecation statement, replace Subtitle with Text
-//    if (subTitle == nil)
-//    {
-//        subTitle = [actionProperties getStringPropertyValue:kIXMessage defaultValue:nil];
-//    }
-    //NSString* confirmButtonTitle = [actionProperties getStringPropertyValue:kIXConfirmButtonTitle defaultValue:kIX_OK];
-    //NSString* cancelButtonTitle = [actionProperties getStringPropertyValue:kIXCancelButtonTitle defaultValue:nil];
+    
     NSArray* buttonTitles = [actionProperties getCommaSeperatedArrayListValue:kIXButtonTitles defaultValue:@[kIX_OK]];
-    NSInteger defaultButtonIndex = [actionProperties getIntPropertyValue:kIXButtonDefaultIndex defaultValue:buttonTitles.count - 1];
-    //failsafe for indexOutOfRange error
-    if (defaultButtonIndex > buttonTitles.count - 1)
-        defaultButtonIndex = buttonTitles.count - 1;
     
     [[self alertView] setDelegate:nil];
     [[self alertView] dismissWithClickedButtonIndex:[[self alertView] cancelButtonIndex] animated:YES];
@@ -75,9 +67,6 @@ static NSString* const kIXButtonIndexPressed = @"button_%u_pressed"; //0-based i
     for ( NSString *title in buttonTitles )  {
         [self.alertView addButtonWithTitle:title];
     }
-    
-    self.alertView.cancelButtonIndex = defaultButtonIndex;
-
     
     [[self alertView] show];
 }
