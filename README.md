@@ -111,6 +111,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - https://github.com/jaredsinclair/JSSlidingViewController and other awesome Jared Sinclair stuff here: https://github.com/jaredsinclair and in particular this: https://github.com/jaredsinclair/JTSSemanticReload
 - **Add a default "toggle" event to all IXControls that sets toggles alpha and enabled**
 - Need a deprecation method and a process for upgrading control properties.
+- Fix up app level events and functions (currently only one for 'reset' needs to be implemented properly)
 
 ####Documentation:
 
@@ -130,6 +131,8 @@ so we can apply different states (and have it auto-detect image based on -active
 - variable height (Jared Sinclair)
 - push, pop, unshift, check out Jared Sinclair stuff on GitHub.
 - Should be able to manipulate local json *and* CoreData implementations in order to append and remove objects. Interface should be the same, instead we only need to specify "coredata": true/false
+- Ability to [move items from one table to another](http://4.bp.blogspot.com/_B28NJpJ61hA/TQ9w0juGjKI/AAAAAAAAAR0/2oMl9Rleuic/s1600/CropperCapture%255B41%255D.Gif)
+- Ability to programmatically manipulate a datasource (item.0:unshift, etc.)
 
 ####Formatting:
 - need to properly define shorthand margin/padding etc.

@@ -14,9 +14,17 @@
 #import "IXActionContainer.h"
 #import "IXBaseDataProvider.h"
 
+#import "IXAppManager.h"
+#import "SDWebImageManager.h"
+#import "IXJSONGrabber.h"
+#import "IXControlCacheContainer.h"
+
 // IXFunctionAction Properties
 static NSString* const kIXFunctionName = @"function_name";
 static NSString* const kIXDuration = @"duration";
+
+// $app level functions
+static NSString* const kIXReset = @"reset";
 
 @implementation IXFunctionAction
 
@@ -32,27 +40,44 @@ static NSString* const kIXDuration = @"duration";
         IXSandbox* sandbox = [ownerObject sandbox];
         NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
                                                                  withSelfObject:ownerObject];
-        if (duration > 0)
+        
+        // todo: We need to separate app/session/etc. level functionality out into a separate class or sub-class.
+        if ([[objectIDs objectAtIndex:0] isEqualToString:kIX_APP])
         {
-            [UIView animateWithDuration:duration
-                              delay:0.0f
-                            options:UIViewAnimationOptionTransitionCrossDissolve
-                         animations:^{
-                             for( IXBaseObject* baseObject in objectsWithID )
-                             {
-                                 [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
-                             }
-                         }
-                         completion:nil];
+            if ([functionName isEqualToString:kIXReset])
+            {
+                // Clear caches.
+                [[[SDWebImageManager sharedManager] imageCache] clearMemory];
+                [[[SDWebImageManager sharedManager] imageCache] clearDisk];
+                [IXJSONGrabber clearCache];
+                [IXControlCacheContainer clearCache];
+                
+                [[IXAppManager sharedAppManager] startApplication];
+            }
         }
         else
         {
-            for( IXBaseObject* baseObject in objectsWithID )
+            if (duration > 0)
             {
-                [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+                [UIView animateWithDuration:duration
+                                  delay:0.0f
+                                options:UIViewAnimationOptionTransitionCrossDissolve
+                             animations:^{
+                                 for( IXBaseObject* baseObject in objectsWithID )
+                                 {
+                                     [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+                                 }
+                             }
+                             completion:nil];
+            }
+            else
+            {
+                for( IXBaseObject* baseObject in objectsWithID )
+                {
+                    [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+                }
             }
         }
-
         
         [self actionDidFinishWithEvents:nil];
     }
