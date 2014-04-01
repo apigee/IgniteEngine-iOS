@@ -442,18 +442,17 @@ static NSString* const kIXNewLineString = @"\n";
     UIScrollView* scrollView = [[self layoutToScroll] scrollView];
 
     CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
+    
     CGPoint point = [scrollView contentOffset];
     point.y += [textInputView bounds].size.height - keyboardHeight;
+    
+    if( point.y < 0.0f )
+        point.y = 0.0f;
     
     [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
                           delay:0.0f
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         
-                         UIEdgeInsets contentInsets = UIEdgeInsetsMake(scrollView.contentInset.top, 0.0f, 0.0f, 0.0f);
-                         
-                         [scrollView setContentInset:contentInsets];
-                         [scrollView setScrollIndicatorInsets:contentInsets];
                          
                          [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
                          [scrollView setContentOffset:point animated:YES];
@@ -467,35 +466,41 @@ static NSString* const kIXNewLineString = @"\n";
         return;
     
     CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
-    
-    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-    UIView* textInputView = nil;
-    if( [self isUsingUITextView] )
+    if( keyboardHeight > 0 )
     {
-        textInputView = [self textView];
-    }
-    else
-    {
-        textInputView = [self textField];
-    }
-    
-    CGRect textInputBounds = [textInputView bounds];
-    CGRect convertedTextInputBounds = [textInputView convertRect:textInputBounds toView:scrollView];
-    CGFloat scrollViewHeight = [scrollView bounds].size.height;
-
-    CGPoint point = convertedTextInputBounds.origin;
-    point.x = 0.0f;
-    point.y -= scrollViewHeight - keyboardHeight - textInputBounds.size.height;
-    
-    if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
-    {
+        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+        UIView* textInputView = nil;
+        if( [self isUsingUITextView] )
+        {
+            textInputView = [self textView];
+        }
+        else
+        {
+            textInputView = [self textField];
+        }
+        
+        CGRect textInputBounds = [textInputView bounds];
+        CGRect convertedTextInputBounds = [textInputView convertRect:textInputBounds toView:scrollView];
+        CGFloat scrollViewHeight = [scrollView bounds].size.height;
+        
+        CGPoint point = convertedTextInputBounds.origin;
+        point.x = 0.0f;
+        point.y -= scrollViewHeight - keyboardHeight - textInputBounds.size.height;
+        
+        //    if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
+        //    {
         [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
                               delay:0.0f
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-                             [scrollView setContentSize:CGSizeMake([scrollView contentSize].width,scrollView.contentSize.height + keyboardHeight)];
+                             if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
+                             {
+                                 [scrollView setContentSize:CGSizeMake([scrollView contentSize].width,scrollView.contentSize.height + keyboardHeight)];
+                             }
                              [scrollView setContentOffset:point animated:NO];
                          } completion:nil];
+        //    }
+
     }
 }
 
