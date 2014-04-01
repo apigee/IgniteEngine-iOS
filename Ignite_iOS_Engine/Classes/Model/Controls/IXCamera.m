@@ -139,7 +139,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
     }
     
     NSError *error = nil;
-    if ([NSString ix_string:[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
+    if ([[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
     {
         DDLogError(@"ERROR: trying to open camera on simulator");
     }

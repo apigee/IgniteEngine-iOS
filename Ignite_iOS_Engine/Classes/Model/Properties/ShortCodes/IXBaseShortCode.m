@@ -12,74 +12,67 @@
 #import "IXEvalShortCode.h"
 #import "IXGetShortCode.h"
 #import "NSString+IXAdditions.h"
+#import "IXLogger.h"
 
 static NSString* const kIXIsEmpty = @"is_empty";
+static NSString* const kIXIsNil = @"is_nil";
+static NSString* const kIXToUppercase = @"to_uppercase";
+static NSString* const kIXToLowercase = @"to_lowercase";
+static NSString* const kIXCapitalize = @"capitalize";
+static NSString* const kIXLength = @"length";
+static NSString* const kIXTruncate = @"truncate";
+static NSString* const kIXMonogram = @"monogram";
+static NSString* const kIXMoment = @"moment";
+static NSString* const kIXToBase64 = @"to_base64";
+static NSString* const kIXFromBase64 = @"from_base64";
+
+//Ensure you also set the function in the if/else list at the bottom of this class
+
 static IXBaseShortCodeFunction const kIXIsEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [NSString ix_stringFromBOOL:[stringToModify isEqualToString:kIX_EMPTY_STRING]];
 };
-static NSString* const kIXIsNil = @"is_nil";
 static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [NSString ix_stringFromBOOL:(stringToModify == nil)];
 };
-static NSString* const kIXToUppercase = @"to_uppercase";
 static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify uppercaseString];
 };
-static NSString* const kIXToLowercase = @"to_lowercase";
 static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify lowercaseString];
 };
-static NSString* const kIXCapitalize = @"capitalize";
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
 };
-static NSString* const kIXLength = @"length";
 static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
     return [NSString stringWithFormat:@"%lu", (unsigned long)[stringToEvaluate length]];
 };
-static NSString* const kIXTruncate = @"truncate";
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    if ([parameters firstObject] != nil) {
-        return [NSString ix_truncateString:stringToModify toIndex:[[parameters.firstObject getPropertyValue] intValue]];
-    } else {
-        return stringToModify;
-    }
+    return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[parameters.firstObject getPropertyValue] intValue]] : stringToModify;
 };
-static NSString* const kIXMonogram = @"monogram";
 static IXBaseShortCodeFunction const kIXMonogramFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    if ([parameters firstObject] != nil) {
-        return [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:[[parameters.firstObject getPropertyValue] intValue]];
-    } else {
-        return [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:0];
+    return ([parameters firstObject] != nil) ? [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:[[parameters.firstObject getPropertyValue] intValue]] : [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:0];
+};
+static IXBaseShortCodeFunction const kIXMomentFunction = ^NSString*(NSString* dateToFormat,NSArray* parameters)
+{
+    if ([parameters count] == 2)
+    {
+        return [NSString ix_formatDateString:dateToFormat fromDateFormat:[[parameters objectAtIndex:0] originalString] toDateFormat:[[parameters objectAtIndex:1] originalString]];
+    }
+    else if ([parameters count] == 1)
+    {
+        return [NSString ix_formatDateString:dateToFormat fromDateFormat:nil toDateFormat:[[parameters objectAtIndex:0] originalString]];
+    }
+    else
+    {
+        return dateToFormat;
     }
 };
-static NSString* const kIXToBase64 = @"to_base64";
+
 static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
-    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
-    {
-        NSData *utf8data = [stringToEncode dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *base64String = [utf8data base64EncodedStringWithOptions:0];
-        return base64String;
-    }
-    else
-    {
-        //todo: need a fall back for < iOS7
-        return stringToEncode;
-    }
+    return [NSString ix_toBase64String:stringToEncode];
 };
-static NSString* const kIXFromBase64 = @"from_base64";
-static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* base64String,NSArray* parameters){
-    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
-    {
-        NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:base64String options:0];
-        NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
-        return decodedString;
-    }
-    else
-    {
-        //todo: need a fall back for < iOS7
-        return base64String;
-    }
+static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* stringToDecode,NSArray* parameters){
+    return [NSString ix_fromBase64String:stringToDecode];
 };
 
 NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
@@ -171,7 +164,17 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                     if( validRangesCount >= 5 )
                     {
                         NSString* rawParameterString = [checkedString substringWithRange:[[validRanges objectAtIndex:4] rangeValue]];
-                        NSArray* parameterStrings = [rawParameterString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+                        NSArray* parameterStrings;
+                        // Checks for pipe first, if no pipe, falls back to comma (need this for date formatting for example)
+                        if ([rawParameterString containsSubstring:kIX_PIPE_SEPERATOR options:NO])
+                        {
+                            parameterStrings = [rawParameterString componentsSeparatedByString:kIX_PIPE_SEPERATOR];
+                        }
+                        else
+                        {
+                            parameterStrings = [rawParameterString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+                        }
+                        
                         for( NSString* parameter in parameterStrings )
                         {
                             IXProperty* parameterProperty = [[IXProperty alloc] initWithPropertyName:nil rawValue:parameter];
@@ -238,29 +241,36 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
     IXBaseShortCodeFunction shortCodeFunction = nil;
     if( [_functionName length] > 0 )
     {
-        if( [functionName isEqualToString:kIXIsEmpty] ){
-            shortCodeFunction = kIXIsEmptyFunction;
-        } else if( [functionName isEqualToString:kIXIsNil] ) {
-            shortCodeFunction = kIXIsNilFunction;
-        } else if( [functionName isEqualToString:kIXLength] ) {
-            shortCodeFunction = kIXLengthFunction;
-        } else if( [functionName isEqualToString:kIXTruncate] ) {
-            shortCodeFunction = kIXTruncateFunction;
-        } else if( [functionName isEqualToString:kIXMonogram] ) {
-            shortCodeFunction = kIXMonogramFunction;
-        } else if( [functionName isEqualToString:kIXToLowercase] ){
-            shortCodeFunction = kIXToLowerCaseFunction;
-        } else if( [functionName isEqualToString:kIXToUppercase] ) {
-            shortCodeFunction = kIXToUppercaseFunction;
-        } else if( [functionName isEqualToString:kIXCapitalize] ) {
-            shortCodeFunction = kIXCapitalizeFunction;
-        } else if( [functionName isEqualToString:kIXToBase64] ) {
-            shortCodeFunction = kIXToBase64Function;
-        } else if( [functionName isEqualToString:kIXFromBase64] ) {
-            shortCodeFunction = kIXFromBase64Function;
+        @try {
+            if( [functionName isEqualToString:kIXIsEmpty] ){
+                shortCodeFunction = kIXIsEmptyFunction;
+            } else if( [functionName isEqualToString:kIXIsNil] ) {
+                shortCodeFunction = kIXIsNilFunction;
+            } else if( [functionName isEqualToString:kIXLength] ) {
+                shortCodeFunction = kIXLengthFunction;
+            } else if( [functionName isEqualToString:kIXTruncate] ) {
+                shortCodeFunction = kIXTruncateFunction;
+            } else if( [functionName isEqualToString:kIXMonogram] ) {
+                shortCodeFunction = kIXMonogramFunction;
+            } else if( [functionName isEqualToString:kIXToLowercase] ){
+                shortCodeFunction = kIXToLowerCaseFunction;
+            } else if( [functionName isEqualToString:kIXToUppercase] ) {
+                shortCodeFunction = kIXToUppercaseFunction;
+            } else if( [functionName isEqualToString:kIXCapitalize] ) {
+                shortCodeFunction = kIXCapitalizeFunction;
+            } else if( [functionName isEqualToString:kIXMoment] ) {
+                shortCodeFunction = kIXMomentFunction;
+            } else if( [functionName isEqualToString:kIXToBase64] ) {
+                shortCodeFunction = kIXToBase64Function;
+            } else if( [functionName isEqualToString:kIXFromBase64] ) {
+                shortCodeFunction = kIXFromBase64Function;
+            }
+            [self setShortCodeFunction:shortCodeFunction];
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"ERROR: Unknown short-code method: %@", exception);
         }
     }
-    [self setShortCodeFunction:shortCodeFunction];
 }
 
 @end

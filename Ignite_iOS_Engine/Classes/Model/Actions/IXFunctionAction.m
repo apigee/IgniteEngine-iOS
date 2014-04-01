@@ -41,7 +41,7 @@ static NSString* const kIXReset = @"reset";
         NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
                                                                  withSelfObject:ownerObject];
         
-        // todo: We need to separate app/session/etc. level functionality out into a separate class or sub-class.
+        // todo: We need to separate app/session/etc. level functionality out into a separate class or sub-class. Also should migrate the shake-to-reset function to run this method directly, and assign a property to make it optional.
         if ([[objectIDs objectAtIndex:0] isEqualToString:kIX_APP])
         {
             if ([functionName isEqualToString:kIXReset])

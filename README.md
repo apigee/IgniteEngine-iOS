@@ -121,6 +121,7 @@ so we can apply different states (and have it auto-detect image based on -active
 
 - ~~Clean up implementation (use industry standards like {{}})~~
 - Regular expression validation : partially done
+- Ability to use short-code methods on raw text w/out {{ }}
 - ~~you can use {{ '[[id.text]]'.length }} - needs quotes. Or [[id.text:length]]~~
 
 ####Tables:
@@ -168,6 +169,7 @@ so we can apply different states (and have it auto-detect image based on -active
 
 ####Additional 3rd Party stuff
 - OvershareKit?
+- https://github.com/YannickL/YLMoment
 
 ####Navigation
 - Option to save reference of viewController (for push pop navigation and saving state). This would require a "release" function on a view controller too.

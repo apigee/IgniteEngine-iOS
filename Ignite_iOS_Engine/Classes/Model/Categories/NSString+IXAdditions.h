@@ -14,6 +14,9 @@
 +(NSString*)ix_stringFromFloat:(float)floatValue;
 +(NSString*)ix_truncateString:(NSString*)string toIndex:(NSInteger)index;
 +(NSString*)ix_monogramString:(NSString*)string ifLengthIsGreaterThan:(NSInteger)length;
-+(BOOL)ix_string:(NSString*)string containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;
++(NSString*)ix_formatDateString:(NSString *)string fromDateFormat:(NSString*)fromDateFormat toDateFormat:(NSString*)toDateFormat;
++(NSString*)ix_toBase64String:(NSString*)string;
++(NSString*)ix_fromBase64String:(NSString*)string;
+-(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;
 
 @end

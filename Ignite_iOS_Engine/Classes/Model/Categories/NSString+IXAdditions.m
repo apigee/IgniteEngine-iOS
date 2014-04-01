@@ -9,6 +9,7 @@
 #import "NSString+IXAdditions.h"
 
 #import "IXConstants.h"
+#import "YLMoment.h"
 
 static NSString* const kIXFloatFormat = @"%f";
 
@@ -47,9 +48,59 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
-+(BOOL)ix_string:(NSString*)string containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options
++(NSString*)ix_toBase64String:(NSString *)string
 {
-    return [string rangeOfString:substring options:options].location != NSNotFound;
+    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
+    {
+        NSData *utf8data = [string dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *base64String = [utf8data base64EncodedStringWithOptions:0];
+        return base64String;
+    }
+    else
+    {
+        //todo: need a fall back for < iOS7
+        return string;
+    }
+}
+
++(NSString*)ix_fromBase64String:(NSString *)string
+{
+    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
+    {
+        NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:string options:0];
+        NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+        return decodedString;
+    }
+    else
+    {
+        //todo: need a fall back for < iOS7
+        return string;
+    }
+}
+
++(NSString*)ix_formatDateString:(NSString *)string fromDateFormat:(NSString*)fromDateFormat toDateFormat:(NSString*)toDateFormat
+{
+    YLMoment *moment;
+    
+    if (string.length > 0 && toDateFormat.length > 0)
+    {
+        if (fromDateFormat != nil && fromDateFormat.length > 0)
+        {
+            moment = [YLMoment momentWithDateAsString:string format:fromDateFormat];
+        }
+        else
+        {
+            moment = [YLMoment momentWithDateAsString:string];
+        }
+        return [NSString stringWithFormat:@"%@", [moment format:toDateFormat]];
+    }
+    else
+        return string;
+}
+
+-(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options
+{
+    return [self rangeOfString:substring options:options].location != NSNotFound;
 }
 
 @end

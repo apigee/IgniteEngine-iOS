@@ -33,6 +33,7 @@ PODS:
   - SVWebViewController (1.0)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.8.0)
+  - YLMoment (0.2.0)
   - ZBarSDK (1.3.1)
 
 DEPENDENCIES:
@@ -47,6 +48,7 @@ DEPENDENCIES:
   - SVPulsingAnnotationView (~> 0.3.0)
   - SVWebViewController (~> 1.0)
   - TTTAttributedLabel (from `https://github.com/jamztang/TTTAttributedLabel.git`, branch `longpresssupport`)
+  - YLMoment (~> 0.2.0)
   - ZBarSDK (~> 1.3.1)
 
 EXTERNAL SOURCES:
@@ -69,6 +71,7 @@ SPEC CHECKSUMS:
   SVWebViewController: e576371f7015bce92c97c304c32336700064847b
   TransitionKit: d0e3344aac92991395d4c2e72d9c5a8ceeb12910
   TTTAttributedLabel: cc759a194a485c1fdf2446bf2ee7a55bada1f08d
+  YLMoment: 609cf751d07305c6e807dc2c161a4b30987467fd
   ZBarSDK: 6ae54d2077fea894d6a24bd1d7035192c0a7471e
 
 COCOAPODS: 0.29.0

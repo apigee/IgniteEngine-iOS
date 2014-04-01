@@ -14,3 +14,4 @@ pod 'TTTAttributedLabel', :git => 'https://github.com/jamztang/TTTAttributedLabe
 pod 'CocoaLumberjack', '~> 1.8.1'
 pod 'PPSSignatureView', '~> 0.1'
 pod 'Reachability', '~> 3.1'
+pod 'YLMoment', '~> 0.2.0'
