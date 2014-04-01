@@ -17,6 +17,16 @@ static NSString* const kIXTextAlignmentNatural = @"natural";
 
 @implementation UITextField (IXAdditions)
 
++(UITextAutocorrectionType)ix_booleanToTextAutocorrectionType:(BOOL)autoCorrect
+{
+    UITextAutocorrectionType returnType = UITextAutocorrectionTypeDefault;
+    if( !autoCorrect )
+    {
+        returnType = UITextAutocorrectionTypeNo;
+    }
+    return returnType;
+}
+
 +(UIKeyboardAppearance)ix_stringToKeyboardAppearance:(NSString*)keyboardAppearanceString
 {
     UIKeyboardAppearance returnAppearance = UIKeyboardAppearanceDefault;

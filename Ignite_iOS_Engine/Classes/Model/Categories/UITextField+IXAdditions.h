@@ -10,6 +10,7 @@
 
 @interface UITextField (IXAdditions)
 
++(UITextAutocorrectionType)ix_booleanToTextAutocorrectionType:(BOOL)autoCorrect;
 +(UIKeyboardAppearance)ix_stringToKeyboardAppearance:(NSString*)keyboardAppearanceString;
 +(UIKeyboardType)ix_stringToKeyboardType:(NSString*)keyboardTypeString;
 +(UIReturnKeyType)ix_stringToReturnKeyType:(NSString*)returnKeyTypeString;

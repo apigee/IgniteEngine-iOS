@@ -41,8 +41,10 @@ static NSString* const kIXFont = @"font";
 static NSString* const kIXCursorColor = @"cursor.color";
 static NSString* const kIXAutoCorrect = @"autocorrect";
 static NSString* const kIXDismissOnReturn = @"dismiss_on_return";
+static NSString* const kIXLayoutToScroll = @"layout_to_scroll";
+static NSString* const kIXIsMultiLine = @"is_multiline";
 
-static NSString* const kIXText = @"text";
+static NSString* const kIXInitialText = @"initial_text";
 static NSString* const kIXTextColor = @"text.color";
 static NSString* const kIXTextPlaceholder = @"text.placeholder";
 static NSString* const kIXTextPlaceholderColor = @"text.placeholder.color";
@@ -66,7 +68,11 @@ static NSString* const kIXInputTransformLowercase = @"lowercase";
 static NSString* const kIXInputTransformUppercase = @"uppercase";
 static NSString* const kIXInputTransformUppercaseFirst = @"ucfirst";
 
+// IXTextInput ReadOnly Properties
+static NSString* const kIXText = @"text"; // To set the text use the kIXSetText function.
+
 // IXTextInput Functions
+static NSString* const kIXSetText = @"set_text"; // Parameter is kIXText.
 static NSString* const kIXKeyboardHide = @"keyboard_hide";
 static NSString* const kIXKeyboardShow = @"keyboard_show";
 static NSString* const kIXFocus = @"focus";
@@ -78,23 +84,32 @@ static NSString* const kIXReturnKeyPressed = @"return_key_pressed";
 static NSString* const kIXTextChanged = @"text_changed";
 
 static CGSize sIXKBSize;
+static CGFloat const kIXKeyboardAnimationDefaultDuration = 0.25f;
+static CGFloat const kIXMaxPreferredHeightForTextInput = 40.0f;
+static NSString* const kIXNewLineString = @"\n";
 
-@interface IXTextInput () <UITextFieldDelegate>
+@interface IXTextInput () <UITextFieldDelegate,UITextViewDelegate>
 
-@property (nonatomic,assign) BOOL needsToRegisterForKeyboardNotifications;
 @property (nonatomic,strong) UITextField* textField;
-@property (nonatomic,strong) UIColor* defaultTextFieldTintColor;
+@property (nonatomic,strong) UITextView* textView;
+@property (nonatomic,strong) UIColor* defaultTextInputTintColor;
+
+@property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
+@property (nonatomic,assign,getter = isUsingUITextView) BOOL usingUITextView;
 @property (nonatomic,assign,getter = shouldDismissOnReturn) BOOL dismissOnReturn;
+@property (nonatomic,assign,getter = isRegisteredForKeyboardNotifications) BOOL registeredForKeyboardNotifications;
+
+@property (nonatomic,weak) IXLayout* layoutToScroll;
+@property (nonatomic,assign) CGSize layoutContentSizeAtStartOfEditing;
 
 @property (nonatomic,assign) NSInteger inputMaxAllowedCharacters;
 @property (nonatomic,strong) NSString* inputTransform;
 @property (nonatomic,strong) NSString* inputAllowedRegexString;
 @property (nonatomic,strong) NSString* inputDisallowedRegexString;
-@property (nonatomic) CGFloat textChangeDelay;
-@property (nonatomic,strong) NSArray* filterDatasource; //not implemented
-
 @property (nonatomic,strong) NSRegularExpression *inputAllowedRegex;
 @property (nonatomic,strong) NSRegularExpression *inputDisallowedRegex;
+
+@property (nonatomic,strong) NSArray* filterDatasource; //not implemented
 
 @end
 
@@ -104,66 +119,134 @@ static CGSize sIXKBSize;
 {
     [self unregisterForKeyboardNotifications];
     [_textField setDelegate:nil];
+    [_textView setDelegate:nil];
 }
 
 -(void)buildView
 {
     [super buildView];
     
-    _needsToRegisterForKeyboardNotifications = YES;
-    _defaultTextFieldTintColor = [_textField tintColor];
-    
-    _textField = [[UITextField alloc] initWithFrame:[[self contentView] bounds]];
-    [_textField setBackgroundColor:[UIColor whiteColor]];
-    [_textField setDelegate:self];
-    
-    [[self contentView] addSubview:_textField];
+    _firstLoad = YES;
+    _registeredForKeyboardNotifications = NO;
+}
+
+-(void)createTextInputView
+{
+    if( [self isFirstLoad] )
+    {
+        [self setFirstLoad:NO];
+        
+        NSString* initialText = [[self propertyContainer] getStringPropertyValue:kIXInitialText defaultValue:nil];
+        
+        [self setUsingUITextView:[[self propertyContainer] getBoolPropertyValue:kIXIsMultiLine defaultValue:NO]];
+        
+        if( [self isUsingUITextView] )
+        {
+            [self setTextView:[[UITextView alloc] initWithFrame:[[self contentView] bounds]]];
+            [self setDefaultTextInputTintColor:[[self textView] tintColor]];
+
+            [[self textView] setDelegate:self];
+            [[self textView] setBackgroundColor:[UIColor whiteColor]];
+            [[self textView] setText:initialText];
+            
+            [[self contentView] addSubview:[self textView]];
+        }
+        else
+        {
+            [self setTextField:[[UITextField alloc] initWithFrame:[[self contentView] bounds]]];
+            [self setDefaultTextInputTintColor:[[self textField] tintColor]];
+
+            [[self textField] setDelegate:self];
+            [[self textField] setBackgroundColor:[UIColor whiteColor]];
+            [[self textField] setText:initialText];
+            
+            [[self contentView] addSubview:[self textField]];
+        }
+    }
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    CGSize returnSize = CGSizeMake(size.width, 40.0f);
-    float editorHeight = fmax(40.0f,[self textField].frame.size.height);
-    returnSize.height = editorHeight;
+    CGSize returnSize = CGSizeMake(size.width, kIXMaxPreferredHeightForTextInput);
+    
+    CGFloat textInputHeight = 0.0f;
+    if( [self isUsingUITextView] )
+    {
+        textInputHeight = [[self textView] frame].size.height;
+    }
+    else
+    {
+        textInputHeight = [[self textField] frame].size.height;
+    }
+    
+    returnSize.height = fmax(textInputHeight,kIXMaxPreferredHeightForTextInput);
     return returnSize;
 }
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
-    [[self textField] setFrame:rect];
+    if( [self isUsingUITextView] )
+    {
+        [[self textView] setFrame:rect];
+    }
+    else
+    {
+        [[self textField] setFrame:rect];
+    }
 }
 
 -(void)applySettings
 {
     [super applySettings];
     
-    [[self textField] setEnabled:[[self contentView] isEnabled]];
+    [self createTextInputView];
     
-    NSString* placeHolderText = [[self propertyContainer] getStringPropertyValue:kIXTextPlaceholder defaultValue:nil];
-    if( [placeHolderText length] > 0 )
+    UIFont* font = [[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    UIColor* textColor = [[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
+    UIColor* tintColor = [[self propertyContainer] getColorPropertyValue:kIXCursorColor defaultValue:[self defaultTextInputTintColor]];
+    UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor whiteColor]];
+    NSTextAlignment textAlignment = [UITextField ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]];
+    UITextAutocorrectionType autoCorrectionType = [UITextField ix_booleanToTextAutocorrectionType:[[self propertyContainer] getBoolPropertyValue:kIXAutoCorrect defaultValue:YES]];
+
+    UIKeyboardAppearance keyboardAppearance = [UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]];
+    UIKeyboardType keyboardType = [UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]];
+    UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
+    
+    if( ![self isUsingUITextView] )
     {
-        UIColor* placeHolderTextColor = [[self propertyContainer] getColorPropertyValue:kIXTextPlaceholderColor defaultValue:[UIColor lightGrayColor]];
-        NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
-                                                                                    attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
-        [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
+        [[self textField] setEnabled:[[self contentView] isEnabled]];
+        
+        NSString* placeHolderText = [[self propertyContainer] getStringPropertyValue:kIXTextPlaceholder defaultValue:nil];
+        if( [placeHolderText length] > 0 )
+        {
+            UIColor* placeHolderTextColor = [[self propertyContainer] getColorPropertyValue:kIXTextPlaceholderColor defaultValue:[UIColor lightGrayColor]];
+            NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
+                                                                                        attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
+            [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
+        }
+        
+        [[self textField] setFont:font];
+        [[self textField] setTextColor:textColor];
+        [[self textField] setTintColor:tintColor];
+        [[self textField] setAutocorrectionType:autoCorrectionType];
+        [[self textField] setTextAlignment:textAlignment];
+        [[self textField] setKeyboardAppearance:keyboardAppearance];
+        [[self textField] setKeyboardType:keyboardType];
+        [[self textField] setReturnKeyType:returnKeyType];
+        [[self textField] setBackgroundColor:backgroundColor];
     }
-    
-    NSString* inputText = [[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil];
-    // might need to put this if statement back in, but it's removed to allow setting .text to ""
-    //if ( [inputText length] > 0 )
-    //{
-    [[self textField] setText:inputText];
-    //}
-    
-    [[self textField] setFont:[[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
-    [[self textField] setTextColor:[[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]]];
-    [[self textField] setTintColor:[[self propertyContainer] getColorPropertyValue:kIXCursorColor defaultValue:[self defaultTextFieldTintColor]]];
-    [[self textField] setAutocorrectionType:[[self propertyContainer] getBoolPropertyValue:kIXAutoCorrect defaultValue:YES]];
-    [[self textField] setTextAlignment:[UITextField ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]]];
-    [[self textField] setKeyboardAppearance:[UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]]];
-    [[self textField] setKeyboardType:[UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]]];
-    [[self textField] setReturnKeyType:[UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]]];
-    [[self textField] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor whiteColor]]];
+    else
+    {
+        [[self textView] setFont:font];
+        [[self textView] setTextColor:textColor];
+        [[self textView] setTintColor:tintColor];
+        [[self textView] setAutocorrectionType:autoCorrectionType];
+        [[self textView] setTextAlignment:textAlignment];
+        [[self textView] setKeyboardAppearance:keyboardAppearance];
+        [[self textView] setKeyboardType:keyboardType];
+        [[self textView] setReturnKeyType:returnKeyType];
+        [[self textView] setBackgroundColor:backgroundColor];
+    }
     
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:kIXDismissOnReturn defaultValue:YES]];
     [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
@@ -178,6 +261,24 @@ static CGSize sIXKBSize;
         [positiveAssertion insertString:@"^" atIndex:1];
         [self setInputAllowedRegexString:positiveAssertion];
     }
+    
+    NSString* layoutToScrollID = [[self propertyContainer] getStringPropertyValue:kIXLayoutToScroll defaultValue:nil];
+    IXLayout* layoutToScroll = nil;
+    if( [layoutToScrollID length] > 0 )
+    {
+        IXBaseControl* controlFound = [[[self sandbox] getAllControlsWithID:layoutToScrollID] firstObject];
+        if( [controlFound isKindOfClass:[IXLayout class]] )
+        {
+            layoutToScroll = (IXLayout*)controlFound;
+        }
+    }
+    
+    if( layoutToScroll == nil )
+    {
+        layoutToScroll = [[[self sandbox] viewController] containerControl];
+    }
+    
+    [self setLayoutToScroll:layoutToScroll];
 }
 
 - (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -185,7 +286,14 @@ static CGSize sIXKBSize;
     NSString* readOnlyPropertyValue = nil;
     if( [propertyName isEqualToString:kIXText] )
     {
-        readOnlyPropertyValue = [[self textField] text];
+        if( [self isUsingUITextView] )
+        {
+            readOnlyPropertyValue = [[self textView] text];
+        }
+        else
+        {
+            readOnlyPropertyValue = [[self textField] text];
+        }
     }
     else
     {
@@ -198,11 +306,40 @@ static CGSize sIXKBSize;
 {
     if( [functionName isEqualToString:kIXKeyboardHide] )
     {
-        [[self textField] resignFirstResponder];
+        if( [self isUsingUITextView] )
+        {
+            [[self textView] resignFirstResponder];
+        }
+        else
+        {
+            [[self textField] resignFirstResponder];
+        }
     }
     else if( [functionName isEqualToString:kIXKeyboardShow] || [functionName isEqualToString:kIXFocus] )
     {
-        [[self textField] becomeFirstResponder];
+        if( [self isUsingUITextView] )
+        {
+            [[self textView] becomeFirstResponder];
+        }
+        else
+        {
+            [[self textField] becomeFirstResponder];
+        }
+    }
+    else if( [functionName isEqualToString:kIXSetText] )
+    {
+        NSString* text = [parameterContainer getStringPropertyValue:kIXText defaultValue:nil];
+        if( text != nil )
+        {
+            if( [self isUsingUITextView] )
+            {
+                [[self textView] setText:text];
+            }
+            else
+            {
+                [[self textField] setText:text];
+            }
+        }
     }
     else
     {
@@ -212,9 +349,9 @@ static CGSize sIXKBSize;
 
 - (void)registerForKeyboardNotifications
 {
-    if( _needsToRegisterForKeyboardNotifications )
+    if( ![self isRegisteredForKeyboardNotifications] )
     {
-        _needsToRegisterForKeyboardNotifications = NO;
+        [self setRegisteredForKeyboardNotifications:YES];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShown:)
@@ -228,18 +365,29 @@ static CGSize sIXKBSize;
                                                  selector:@selector(keyboardWillChangeFrame:)
                                                      name:UIKeyboardDidChangeFrameNotification
                                                    object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:nil];
+        if( [self isUsingUITextView] )
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(textDidChange:)
+                                                         name:UITextViewTextDidChangeNotification
+                                                       object:nil];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(textDidChange:)
+                                                         name:UITextFieldTextDidChangeNotification
+                                                       object:nil];
+        }
+        
     }
 }
 
 -(void)unregisterForKeyboardNotifications
 {
-    if( !_needsToRegisterForKeyboardNotifications )
+    if( [self isRegisteredForKeyboardNotifications] )
     {
-        _needsToRegisterForKeyboardNotifications = YES;
+        [self setRegisteredForKeyboardNotifications:NO];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIKeyboardWillShowNotification
@@ -250,9 +398,18 @@ static CGSize sIXKBSize;
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIKeyboardDidChangeFrameNotification
                                                       object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UITextFieldTextDidChangeNotification
-                                                      object:nil];
+        if( [self isUsingUITextView] )
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:UITextViewTextDidChangeNotification
+                                                          object:nil];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:UITextFieldTextDidChangeNotification
+                                                          object:nil];
+        }
     }
 }
 
@@ -274,71 +431,79 @@ static CGSize sIXKBSize;
 {
     double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    UIScrollView* scrollView = nil;
-    UIViewController* visibleVC = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController];
-    if( [visibleVC isKindOfClass:[IXViewController class]] )
-    {
-        IXViewController* IXVC = (IXViewController*) visibleVC;
-        scrollView = [[IXVC containerControl] scrollView];
+    UIView* textInputView = nil;
+    if( [self isUsingUITextView] ) {
+        textInputView = [self textView];
     }
-    [UIView animateWithDuration:animationDuration
+    else {
+        textInputView = [self textField];
+    }
+
+    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+
+    CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
+    CGPoint point = [scrollView contentOffset];
+    point.y += [textInputView bounds].size.height - keyboardHeight;
+    
+    [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
+                         
                          UIEdgeInsets contentInsets = UIEdgeInsetsMake(scrollView.contentInset.top, 0.0f, 0.0f, 0.0f);
-                         scrollView.contentInset = contentInsets;
-                         scrollView.scrollIndicatorInsets = contentInsets;
-                         [scrollView setContentOffset:CGPointMake(0, -contentInsets.top) animated:YES];
-                     }];
+                         
+                         [scrollView setContentInset:contentInsets];
+                         [scrollView setScrollIndicatorInsets:contentInsets];
+                         
+                         [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
+                         [scrollView setContentOffset:point animated:YES];
+                         
+                     } completion:nil];
 }
 
 -(void)adjustScrollViewForKeyboard:(float)animationDuration
 {
-    if( ![[self textField] isFirstResponder] )
+    if( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] )
         return;
     
     CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
     
-    UIScrollView* scrollView = nil;
-    UIViewController* visibleVC = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController];
-    if( [visibleVC isKindOfClass:[IXViewController class]] )
+    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+    UIView* textInputView = nil;
+    if( [self isUsingUITextView] )
     {
-        IXViewController* IXVC = (IXViewController*) visibleVC;
-        scrollView = [[IXVC containerControl] scrollView];
+        textInputView = [self textView];
+    }
+    else
+    {
+        textInputView = [self textField];
     }
     
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         UIEdgeInsets contentInsets = UIEdgeInsetsMake(scrollView.contentInset.top, 0.0f, keyboardHeight, 0.0f);
-                         
-                         scrollView.contentInset = contentInsets;
-                         scrollView.scrollIndicatorInsets = contentInsets;
-                         
-                         CGRect aRect = self.contentView.superview.frame;
-                         aRect.size.height -= keyboardHeight;
-                         
-                         UIView* contentView;
-                         CGRect textFieldFrame;
-                         if ([self.parentObject isKindOfClass:[IXLayout class]])
-                         {
-                             contentView = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController].view;
-                             textFieldFrame = self.textField.superview.frame;
-                         }
-                         else
-                         {
-                             contentView = [[[IXAppManager sharedAppManager] rootViewController] visibleViewController].view;
-                             textFieldFrame = self.textField.frame;
-                         }
-                         
-                         //scrollView converts the frame of subView.frame to the coordinate system of someOtherView
-                         CGRect textFieldScreenFrame = [contentView convertRect:textFieldFrame toView:nil];
-                         
-                         if (!CGRectContainsPoint(aRect, textFieldScreenFrame.origin) ) {
-                             [scrollView scrollRectToVisible:textFieldFrame animated:YES];
-                         }
-                     }];
+    CGRect textInputBounds = [textInputView bounds];
+    CGRect convertedTextInputBounds = [textInputView convertRect:textInputBounds toView:scrollView];
+    CGFloat scrollViewHeight = [scrollView bounds].size.height;
+
+    CGPoint point = convertedTextInputBounds.origin;
+    point.x = 0.0f;
+    point.y -= scrollViewHeight - keyboardHeight - textInputBounds.size.height;
+    
+    if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
+    {
+        [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             [scrollView setContentSize:CGSizeMake([scrollView contentSize].width,scrollView.contentSize.height + keyboardHeight)];
+                             [scrollView setContentOffset:point animated:NO];
+                         } completion:nil];
+    }
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+- (void)textInputDidEndEditing:(id<UITextInput>)textInput
 {
+    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+    [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
+    
     [self unregisterForKeyboardNotifications];
     
     [self setInputAllowedRegex:nil];
@@ -347,10 +512,13 @@ static CGSize sIXKBSize;
     [[self actionContainer] executeActionsForEventNamed:kIXLostFocus];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+-(void)textInputDidBeginEditing:(id<UITextInput>)textInput
 {
+    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+    [self setLayoutContentSizeAtStartOfEditing:[scrollView contentSize]];
+    
     [self registerForKeyboardNotifications];
-    [self adjustScrollViewForKeyboard:0.0f];
+    [self adjustScrollViewForKeyboard:kIXKeyboardAnimationDefaultDuration];
     
     [self setInputAllowedRegex:nil];
     [self setInputDisallowedRegex:nil];
@@ -371,27 +539,64 @@ static CGSize sIXKBSize;
     [[self actionContainer] executeActionsForEventNamed:kIXGotFocus];
 }
 
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [self textInputDidEndEditing:textView];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self textInputDidEndEditing:textField];
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [self textInputDidBeginEditing:textView];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self textInputDidBeginEditing:textField];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    //JA: Added action for return key press
+    return [self handleReturnKeyPressed:textField];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return (![text isEqualToString:kIXNewLineString]) ? YES : (![self handleReturnKeyPressed:textView]);
+}
+
+- (BOOL)handleReturnKeyPressed:(UIResponder*)textInput
+{
     [[self actionContainer] executeActionsForEventNamed:kIXReturnKeyPressed];
-    
-    BOOL shouldReturn = [self shouldDismissOnReturn];
-    if( shouldReturn )
+
+    BOOL shouldDismiss = [self shouldDismissOnReturn];
+    if( shouldDismiss )
     {
-        [textField resignFirstResponder];
+        [textInput resignFirstResponder];
         [self unregisterForKeyboardNotifications];
         [[self actionContainer] executeActionsForEventNamed:kIXLostFocus];
     }
-    return shouldReturn;
+    return shouldDismiss;
 }
 
 - (void)textDidChange:(NSNotification*)aNotification
 {
-    if( ![[self textField] isFirstResponder] )
+    if( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] )
         return;
     
-    NSString *inputText = [[self textField] text];
+    NSString *inputText = nil;
+    if( [self isUsingUITextView] )
+    {
+        inputText = [[self textView] text];
+    }
+    else
+    {
+        inputText = [[self textField] text];
+    }
     
     NSInteger inputMaxAllowedCharacters = [self inputMaxAllowedCharacters];
     if( inputMaxAllowedCharacters > 0 && [inputText length] > inputMaxAllowedCharacters )
@@ -436,10 +641,16 @@ static CGSize sIXKBSize;
         }
     }
     
-    [[self textField] setText:inputText];
+    if( [self isUsingUITextView] )
+    {
+        [[self textView] setText:inputText];
+    }
+    else
+    {
+        [[self textField] setText:inputText];
+    }
+    
     [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
-    
-    
 }
 
 @end
