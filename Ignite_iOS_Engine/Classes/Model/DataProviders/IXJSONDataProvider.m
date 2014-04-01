@@ -292,13 +292,34 @@
         {
             returnValue = (NSString*)jsonObject;
         }
+        else if( [jsonObject isKindOfClass:[NSNumber class]] )
+        {
+            returnValue = [((NSNumber*)jsonObject) stringValue];
+        }
+        else if( [jsonObject isKindOfClass:[NSNull class]] )
+        {
+            returnValue = nil;
+        }
         else
         {
             NSError* __autoreleasing jsonConvertError = nil;
-            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-            if( jsonConvertError == nil && jsonData )
+            if( [NSJSONSerialization isValidJSONObject:jsonObject] )
             {
-                returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+                                                                   options:NSJSONWritingPrettyPrinted
+                                                                     error:&jsonConvertError];
+                if( jsonConvertError == nil && jsonData )
+                {
+                    returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                }
+                else
+                {
+                    DDLogWarn(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
+                }
+            }
+            else
+            {
+                DDLogWarn(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
             }
         }
     }
