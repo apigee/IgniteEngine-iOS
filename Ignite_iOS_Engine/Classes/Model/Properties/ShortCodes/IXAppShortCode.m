@@ -11,12 +11,44 @@
 #import "IXProperty.h"
 #import "IXBaseObject.h"
 #import "IXAppManager.h"
+#import "YLMoment.h"
+#import "NSString+IXAdditions.h"
 
-//usage: [[app:random_number(40)]]
-static NSString* const kIXRandomNumber = @"random_number";
-static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static NSString* const kIXRandomNumber = @"random_number"; //usage: [[app:random_number(40)]]
+static NSString* const kIXNow = @"now";
+
+static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     NSUInteger upperBound = [[[parameters firstObject] getPropertyValue] integerValue];
     return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+};
+
+static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
+    YLMoment* moment = [YLMoment now];
+    
+    if (parameters.count == 1)
+    {
+        return [NSString ix_formatDateString:[moment format] fromDateFormat:nil toDateFormat:[[parameters objectAtIndex:0] originalString]];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"%@", [moment format]];
+    }
+};
+
+static IXBaseShortCodeFunction const kIXMomentFunction = ^NSString*(NSString* dateToFormat,NSArray* parameters)
+{
+    if ([parameters count] == 2)
+    {
+        return [NSString ix_formatDateString:dateToFormat fromDateFormat:[[parameters objectAtIndex:0] originalString] toDateFormat:[[parameters objectAtIndex:1] originalString]];
+    }
+    else if ([parameters count] == 1)
+    {
+        return [NSString ix_formatDateString:dateToFormat fromDateFormat:nil toDateFormat:[[parameters objectAtIndex:0] originalString]];
+    }
+    else
+    {
+        return dateToFormat;
+    }
 };
 
 @implementation IXAppShortCode
@@ -29,6 +61,9 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
     {
         if( [functionName isEqualToString:kIXRandomNumber] ){
             shortCodeFunction = kIXRandomNumberFunction;
+        }
+        else if( [functionName isEqualToString:kIXNow] ){
+            shortCodeFunction = kIXNowFunction;
         }
     }
     [self setShortCodeFunction:shortCodeFunction];

@@ -120,6 +120,7 @@
 		CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA28B85A18C9052E0067686C /* IXLoadAction.m */; };
 		CA28B85D18CAE2050067686C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA28B85C18CAE2050067686C /* CoreImage.framework */; };
 		CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5021E618E3DE4500FC1FF6 /* IXAnimateAction.m */; };
+		CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA50B3BB18EB9D39009282D0 /* YLMoment+IXAdditions.m */; };
 		CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5120C418DFCB6900C7D282 /* IXLogAction.m */; };
 		CA51499A18E0CAC000FA58DF /* IXCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51499918E0CAC000FA58DF /* IXCamera.m */; };
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
@@ -342,6 +343,8 @@
 		CA28B85C18CAE2050067686C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		CA5021E518E3DE4500FC1FF6 /* IXAnimateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAnimateAction.h; sourceTree = "<group>"; };
 		CA5021E618E3DE4500FC1FF6 /* IXAnimateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAnimateAction.m; sourceTree = "<group>"; };
+		CA50B3BA18EB9D39009282D0 /* YLMoment+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YLMoment+IXAdditions.h"; sourceTree = "<group>"; };
+		CA50B3BB18EB9D39009282D0 /* YLMoment+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YLMoment+IXAdditions.m"; sourceTree = "<group>"; };
 		CA5120C318DFCB6900C7D282 /* IXLogAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLogAction.h; sourceTree = "<group>"; };
 		CA5120C418DFCB6900C7D282 /* IXLogAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLogAction.m; sourceTree = "<group>"; };
 		CA51499818E0CAC000FA58DF /* IXCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCamera.h; sourceTree = "<group>"; };
@@ -720,6 +723,8 @@
 				CA1279E718D52B35007EEC5A /* UIButton+IXAdditions.m */,
 				CA00FA3918C666EB0090263D /* UIImage+ResizeMagick.h */,
 				CA00FA3A18C666EB0090263D /* UIImage+ResizeMagick.m */,
+				CA50B3BA18EB9D39009282D0 /* YLMoment+IXAdditions.h */,
+				CA50B3BB18EB9D39009282D0 /* YLMoment+IXAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -959,6 +964,7 @@
 				CADE34FC18CF944C009C99D0 /* IX_deprecated_AttributedText.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
+				CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
 				6333614818971802004F3433 /* IXCreateAction.m in Sources */,
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,

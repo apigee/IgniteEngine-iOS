@@ -10,6 +10,8 @@
 
 #import "IXConstants.h"
 #import "YLMoment.h"
+#import "YLMoment+IXAdditions.h"
+
 
 static NSString* const kIXFloatFormat = @"%f";
 
@@ -80,19 +82,35 @@ static NSString* const kIXFloatFormat = @"%f";
 
 +(NSString*)ix_formatDateString:(NSString *)string fromDateFormat:(NSString*)fromDateFormat toDateFormat:(NSString*)toDateFormat
 {
-    YLMoment *moment;
-    
     if (string.length > 0 && toDateFormat.length > 0)
     {
+        YLMoment* moment;
         if (fromDateFormat != nil && fromDateFormat.length > 0)
         {
-            moment = [YLMoment momentWithDateAsString:string format:fromDateFormat];
+            if ([fromDateFormat isEqualToString:@"unix"])
+                moment = [YLMoment momentFromUnix:[string integerValue]];
+            else if ([fromDateFormat isEqualToString:@"js"])
+                moment = [YLMoment momentFromJS:[string integerValue]];
+            else
+                moment = [YLMoment momentWithDateAsString:string format:fromDateFormat];
         }
         else
         {
-            moment = [YLMoment momentWithDateAsString:string];
+            moment = [YLMoment momentWithDateAsString:string format:@"yyyy-MM-dd'T'HH:mm:ssZ"];
         }
-        return [NSString stringWithFormat:@"%@", [moment format:toDateFormat]];
+        
+        if ([toDateFormat isEqualToString:@"unix"])
+        {
+            return [NSString stringWithFormat:@"%ld", (long)[YLMoment momentToUnix:moment]];
+        }
+        else if ([toDateFormat isEqualToString:@"js"])
+        {
+            return [NSString stringWithFormat:@"%ld", (long)[YLMoment momentToJS:moment]];
+        }
+        else
+        {
+            return [NSString stringWithFormat:@"%@", [moment format:toDateFormat]];
+        }
     }
     else
         return string;
