@@ -10,24 +10,24 @@
 
 @implementation YLMoment (IXAdditions)
 
-+(NSInteger)momentToUnix:(YLMoment*)moment
++(CGFloat)momentToUnix:(YLMoment*)moment
 {
     return [moment.date timeIntervalSince1970];
 }
 
-+(NSInteger)momentToJS:(YLMoment*)moment
++(CGFloat)momentToJS:(YLMoment*)moment
 {
     return [moment.date timeIntervalSince1970] * 1000;
 }
 
-+(YLMoment*)momentFromUnix:(NSInteger)date
++(YLMoment*)momentFromUnix:(NSString*)date
 {
-    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:date]];
+    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:[date intValue]]];
 }
 
-+(YLMoment*)momentFromJS:(NSInteger)date
++(YLMoment*)momentFromJS:(NSString*)date
 {
-    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:date / 1000]];
+    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:[date intValue] / 1000]];
 }
 
 @end

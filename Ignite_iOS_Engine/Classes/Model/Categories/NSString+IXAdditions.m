@@ -88,9 +88,9 @@ static NSString* const kIXFloatFormat = @"%f";
         if (fromDateFormat != nil && fromDateFormat.length > 0)
         {
             if ([fromDateFormat isEqualToString:@"unix"])
-                moment = [YLMoment momentFromUnix:[string integerValue]];
+                moment = [YLMoment momentFromUnix:string];
             else if ([fromDateFormat isEqualToString:@"js"])
-                moment = [YLMoment momentFromJS:[string integerValue]];
+                moment = [YLMoment momentFromJS:string];
             else
                 moment = [YLMoment momentWithDateAsString:string format:fromDateFormat];
         }
@@ -101,11 +101,11 @@ static NSString* const kIXFloatFormat = @"%f";
         
         if ([toDateFormat isEqualToString:@"unix"])
         {
-            return [NSString stringWithFormat:@"%ld", (long)[YLMoment momentToUnix:moment]];
+            return [NSString stringWithFormat:@"%0.f", [YLMoment momentToUnix:moment]];
         }
         else if ([toDateFormat isEqualToString:@"js"])
         {
-            return [NSString stringWithFormat:@"%ld", (long)[YLMoment momentToJS:moment]];
+            return [NSString stringWithFormat:@"%0.f", [YLMoment momentToJS:moment]];
         }
         else
         {

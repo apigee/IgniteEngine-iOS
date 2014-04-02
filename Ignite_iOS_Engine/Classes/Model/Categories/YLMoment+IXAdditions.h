@@ -10,9 +10,9 @@
 
 @interface YLMoment (IXAdditions)
 
-+(NSInteger)momentToUnix:(YLMoment*)moment;
-+(NSInteger)momentToJS:(YLMoment*)moment;
-+(YLMoment*)momentFromUnix:(NSInteger)date;
-+(YLMoment*)momentFromJS:(NSInteger)date;
++(CGFloat)momentToUnix:(YLMoment*)moment;
++(CGFloat)momentToJS:(YLMoment*)moment;
++(YLMoment*)momentFromUnix:(NSString*)date;
++(YLMoment*)momentFromJS:(NSString*)date;
 
 @end

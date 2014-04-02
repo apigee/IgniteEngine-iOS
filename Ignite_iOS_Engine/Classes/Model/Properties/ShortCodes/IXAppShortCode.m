@@ -24,7 +24,6 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
 
 static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     YLMoment* moment = [YLMoment now];
-    
     if (parameters.count == 1)
     {
         return [NSString ix_formatDateString:[moment format] fromDateFormat:nil toDateFormat:[[parameters objectAtIndex:0] originalString]];
@@ -32,22 +31,6 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
     else
     {
         return [NSString stringWithFormat:@"%@", [moment format]];
-    }
-};
-
-static IXBaseShortCodeFunction const kIXMomentFunction = ^NSString*(NSString* dateToFormat,NSArray* parameters)
-{
-    if ([parameters count] == 2)
-    {
-        return [NSString ix_formatDateString:dateToFormat fromDateFormat:[[parameters objectAtIndex:0] originalString] toDateFormat:[[parameters objectAtIndex:1] originalString]];
-    }
-    else if ([parameters count] == 1)
-    {
-        return [NSString ix_formatDateString:dateToFormat fromDateFormat:nil toDateFormat:[[parameters objectAtIndex:0] originalString]];
-    }
-    else
-    {
-        return dateToFormat;
     }
 };
 
