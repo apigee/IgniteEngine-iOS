@@ -134,7 +134,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
         kIXCurrentTouchedUrl = url;
         [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@_url", selector]];
     }
-
+    
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -178,6 +178,10 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     
     self.label.backgroundColor = [self.propertyContainer getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]];
     
+    //Set alignment
+    NSString* textAlignmentString = [self.propertyContainer getStringPropertyValue:kIXTextAlign defaultValue:@"left"];
+    NSTextAlignment textAlignment = [self getTextAlignmentFromPropertyValue:textAlignmentString];
+    
     //Double check that the label supports attributed text
     if ([self.label respondsToSelector:@selector(setAttributedText:)])
     {
@@ -209,13 +213,13 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
         [self.attributedString addAttribute:NSForegroundColorAttributeName value:kIXBaseTextColor range:lengthOfAttributedString];
         [self.attributedString addAttribute:NSFontAttributeName value:defaultFont range:lengthOfAttributedString];
         [self.attributedString addAttribute:NSKernAttributeName value:[NSNumber numberWithFloat:textKerning] range:lengthOfAttributedString];
-       
+        
         //Set paragraph styles
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
         if (lineSpacing != -0.01) paragraphStyle.lineSpacing = lineSpacing;
         if (minLineHeight != -0.01) paragraphStyle.minimumLineHeight = minLineHeight;
         if (maxLineHeight != -0.01) paragraphStyle.maximumLineHeight = maxLineHeight;
-        
+        paragraphStyle.alignment = textAlignment;
         [self.attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:lengthOfAttributedString];
         
         
@@ -345,21 +349,21 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
             }
         }
         
-        //Set alignment and apply text
+        //Set attributed text
         self.label.attributedText = self.attributedString;
-        self.label.textAlignment = [self getTextAlignmentFromPropertyValue:[self.propertyContainer getStringPropertyValue:kIXTextAlign defaultValue:@"left"]];
     }
     //If label doesn't support attributed text...
     else
     {
         self.label.text = text;
+        self.label.textAlignment = textAlignment;
     }
 }
 
 - (void)formatMarkdownBlockMatchingRegex:(NSString *)matchRegex
             andReplaceCharsMatchingRegex:(NSString *)removeRegex
                                withChars:(NSString *)replaceChars
-                       withAttributes:(NSDictionary *)attributes
+                          withAttributes:(NSDictionary *)attributes
 {
     NSArray *matches = [self rangesOfString:matchRegex inString:[self.attributedString string]];
     for (NSValue *rangeVal in matches)
@@ -485,7 +489,8 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     {
         return NSTextAlignmentNatural;
     }
-    return NSTextAlignmentLeft;
+    else
+        return NSTextAlignmentLeft;
 }
 
 @end
