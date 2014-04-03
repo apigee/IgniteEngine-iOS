@@ -110,7 +110,7 @@
 
 -(void)createObjectManager
 {
-    [self setObjectManager:[RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self dataLocation]]]];
+    [self setObjectManager:[[RKObjectManager alloc] initWithHTTPClient:[self httpClient]]];
     
     NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];

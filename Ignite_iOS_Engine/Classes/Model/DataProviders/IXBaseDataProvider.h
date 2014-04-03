@@ -10,6 +10,8 @@
 
 extern NSString* IXBaseDataProviderDidUpdateNotification;
 
+@class AFHTTPClient;
+
 @interface IXBaseDataProvider : IXBaseObject
 
 @property (nonatomic,strong) IXPropertyContainer* requestParameterProperties;
@@ -17,6 +19,8 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
+@property (nonatomic,strong) AFHTTPClient* httpClient;
+@property (nonatomic,copy) NSString* authType;
 @property (nonatomic,copy) NSString* dataLocation;
 @property (nonatomic,copy) NSString* objectsPath;
 @property (nonatomic,copy) NSString* predicateFormat;
@@ -32,6 +36,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 -(NSPredicate*)predicate;
 
 -(void)loadData:(BOOL)forceGet;
+-(void)authenticateAndEnqueRequestOperation:(AFHTTPRequestOperation*)requestOperation;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
 
 -(NSUInteger)getRowCount;

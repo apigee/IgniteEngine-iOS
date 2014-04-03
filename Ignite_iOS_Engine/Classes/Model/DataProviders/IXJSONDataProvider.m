@@ -9,6 +9,7 @@
 #import "IXJSONDataProvider.h"
 
 #import "AFHTTPClient.h"
+#import "AFOAuth2Client.h"
 
 #import "IXAFJSONRequestOperation.h"
 #import "IXAppManager.h"
@@ -19,8 +20,6 @@
 @interface IXJSONDataProvider ()
 
 @property (nonatomic,assign) BOOL isLocalPath;
-
-@property (nonatomic,strong) AFHTTPClient* httpClient;
 
 @property (nonatomic,copy) NSString* httpMethod;
 @property (nonatomic,copy) NSString* httpBody;
@@ -45,11 +44,7 @@
     
     if( ![self isLocalPath] )
     {
-        if( [self httpClient] == nil || ![[[[self httpClient] baseURL] absoluteString] isEqualToString:[self dataLocation]] )
-        {
-            [self setHttpClient:[AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[self dataLocation]]]];
-            [[self httpClient] setParameterEncoding:AFJSONParameterEncoding];
-        }
+        [[self httpClient] setParameterEncoding:AFJSONParameterEncoding];
         
         AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
         NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
@@ -77,11 +72,7 @@
     
     if (forceGet == NO)
     {
-        __weak typeof(self) weakSelf = self;
-        weakSelf.lastJSONResponse = self.lastJSONResponse;
-        weakSelf.lastResponseStatusCode = self.lastResponseStatusCode;
-        weakSelf.lastResponseErrorMessage = self.lastResponseErrorMessage;
-        [weakSelf fireLoadFinishedEvents:YES];
+        [self fireLoadFinishedEvents:YES];
     }
     else
     {
@@ -90,7 +81,7 @@
         [self setLastResponseStatusCode:0];
         [self setLastResponseErrorMessage:nil];
         
-        if (!!self.dataLocation)
+        if ( [self dataLocation] != nil )
         {
             if( ![self isLocalPath] )
             {
@@ -133,11 +124,12 @@
                         }
                     }
                     @catch (NSException *exception) {
-                        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+                        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,[exception description]);
                     }
                     [weakSelf fireLoadFinishedEvents:NO];
                 }];
-                [[self httpClient] enqueueHTTPRequestOperation:operation];
+                
+                [self authenticateAndEnqueRequestOperation:operation];
             }
             else
             {

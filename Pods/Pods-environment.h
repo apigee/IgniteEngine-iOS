@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking 3
 
+// AFOAuth2Client
+#define COCOAPODS_POD_AVAILABLE_AFOAuth2Client
+#define COCOAPODS_VERSION_MAJOR_AFOAuth2Client 0
+#define COCOAPODS_VERSION_MINOR_AFOAuth2Client 1
+#define COCOAPODS_VERSION_PATCH_AFOAuth2Client 2
+
 // ALMoviePlayerController
 #define COCOAPODS_POD_AVAILABLE_ALMoviePlayerController
 #define COCOAPODS_VERSION_MAJOR_ALMoviePlayerController 0

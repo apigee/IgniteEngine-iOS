@@ -81,6 +81,7 @@
 		6333614D18973DA6004F3433 /* IXDeleteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614C18973DA6004F3433 /* IXDeleteAction.m */; };
 		6333615118975672004F3433 /* ARSMaquettePro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */; };
 		6333615218975672004F3433 /* ARSMaquettePro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */; };
+		634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 634816E618EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m */; };
 		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
@@ -267,6 +268,8 @@
 		6333614C18973DA6004F3433 /* IXDeleteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeleteAction.m; sourceTree = "<group>"; };
 		6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Light.otf"; sourceTree = "<group>"; };
 		6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Medium.otf"; sourceTree = "<group>"; };
+		634816E518EDB5F400EC6FEE /* IXOAuthWebAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXOAuthWebAuthViewController.h; sourceTree = "<group>"; };
+		634816E618EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXOAuthWebAuthViewController.m; sourceTree = "<group>"; };
 		634895041863637A008C3760 /* UILabel+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+IXAdditions.h"; sourceTree = "<group>"; };
 		634895051863637A008C3760 /* UILabel+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+IXAdditions.m"; sourceTree = "<group>"; };
 		6348950718637B4F008C3760 /* IXUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUITableViewCell.h; sourceTree = "<group>"; };
@@ -773,6 +776,8 @@
 			children = (
 				13033F89183ED8F200C29157 /* IXNavigationViewController.h */,
 				13033F8A183ED8F200C29157 /* IXNavigationViewController.m */,
+				634816E518EDB5F400EC6FEE /* IXOAuthWebAuthViewController.h */,
+				634816E618EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m */,
 				13033F8B183ED8F200C29157 /* IXViewController.h */,
 				13033F8C183ED8F200C29157 /* IXViewController.m */,
 			);
@@ -960,6 +965,7 @@
 				63CC9AB118BD0BB000ECCECB /* IXWeakTimerTarget.m in Sources */,
 				6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */,
 				63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */,
+				634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
 				CADE34FC18CF944C009C99D0 /* IX_deprecated_AttributedText.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
