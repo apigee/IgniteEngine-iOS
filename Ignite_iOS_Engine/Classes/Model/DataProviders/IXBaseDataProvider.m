@@ -371,7 +371,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     else if( [functionName isEqualToString:kIXDeleteCookies] )
     {
         NSString* urlToDeleteCookiesFor = [parameterContainer getStringPropertyValue:kIXCookieURL defaultValue:nil];
-        if( urlToDeleteCookiesFor )
+        if( [urlToDeleteCookiesFor length] > 0 )
         {
             NSArray *cookiesToDelete = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlToDeleteCookiesFor]];
             for (NSHTTPCookie *cookie in cookiesToDelete )
