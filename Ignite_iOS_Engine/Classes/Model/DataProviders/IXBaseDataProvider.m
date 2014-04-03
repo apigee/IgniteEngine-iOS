@@ -26,6 +26,7 @@
 
 NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdateNotification";
 
+// IXBaseDataProvider Properties
 static NSString* const kIXPredicateFormat = @"predicate.format"; //e.g. "%K CONTAINS[c] %@"
 static NSString* const kIXPredicateArguments = @"predicate.arguments"; //e.g. "email,[[inputbox.text]]"
 static NSString* const kIXSortOrder = @"sort.order"; //ascending, descending, none (default=none)
@@ -38,6 +39,7 @@ static NSString* const kIXAuthType = @"auth_type";
 static NSString* const kIXOAuthClientID = @"oauth.client_id";
 static NSString* const kIXOAuthSecret = @"oauth.secret";
 static NSString* const kIXOAuthTokenStorageID = @"oauth.storage_id";
+static NSString* const kIXOAuthGrantType = @"oauth.grant_type";
 static NSString* const kIXOAuthAuthorizePath = @"oauth.authorize_path";
 static NSString* const kIXOAuthAccessTokenPath = @"oauth.access_token_path";
 static NSString* const kIXOAuthRedirectURI = @"oauth.redirect_uri";
@@ -46,6 +48,19 @@ static NSString* const kIXOAuthScope = @"oauth.scope";
 // kIXAuthType Types
 static NSString* const kIX_AuthType_OAuth2 = @"oauth2";
 
+// IXBaseDataProvider Read-Only Properties
+static NSString* const kIXRawDataResponse = @"raw_data_response";
+static NSString* const kIXStatusCode = @"status_code";
+static NSString* const kIXErrorMessage = @"error_message";
+static NSString* const kIXCount = @"count";
+static NSString* const kIXAccessToken = @"access_token";
+
+// IXBaseDataProvider Functions
+static NSString* const kIXClearAccessToken = @"clear_access_token"; // kIXOAuthTokenStorageID is the parameter for this.
+
+// IXBaseDataProvider Events
+static NSString* const kIXAuthSuccess = @"auth_success";
+static NSString* const kIXAuthFail = @"auth_fail";
 
 // Non Property constants.
 static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
@@ -62,6 +77,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 @property (nonatomic,copy) NSString* oAuthClientID;
 @property (nonatomic,copy) NSString* oAuthSecret;
 @property (nonatomic,copy) NSString* oAuthTokenStorageID;
+@property (nonatomic,copy) NSString* oAuthGrantType;
 @property (nonatomic,copy) NSString* oAuthAuthorizePath;
 @property (nonatomic,copy) NSString* oAuthAccessTokenPath;
 @property (nonatomic,copy) NSString* oAuthRedirectURI;
@@ -131,6 +147,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
         if( [[self authType] isEqualToString:kIX_AuthType_OAuth2] )
         {
             [self setOAuthTokenStorageID:[[self propertyContainer] getStringPropertyValue:kIXOAuthTokenStorageID defaultValue:nil]];
+            [self setOAuthGrantType:[[self propertyContainer] getStringPropertyValue:kIXOAuthGrantType defaultValue:nil]];
             [self setOAuthAuthorizePath:[[self propertyContainer] getStringPropertyValue:kIXOAuthAuthorizePath defaultValue:nil]];
             [self setOAuthAccessTokenPath:[[self propertyContainer] getStringPropertyValue:kIXOAuthAccessTokenPath defaultValue:nil]];
             [self setOAuthScope:[[self propertyContainer] getStringPropertyValue:kIXOAuthScope defaultValue:nil]];
@@ -146,6 +163,22 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 -(void)loadData:(BOOL)forceGet
 {
     // Base Provider does nothing... Might need to update this.
+}
+
+-(NSString*)buildAccessCodeURL
+{
+    NSMutableString* accessCodeURLString = [NSMutableString stringWithString:[[self dataLocation] stringByAppendingString:[self oAuthAuthorizePath]]];
+    [accessCodeURLString appendString:@"?response_type=code"];
+    if( [[self oAuthClientID] length] > 0 )
+        [accessCodeURLString appendFormat:@"&%@=%@",@"client_id",[self oAuthClientID]];
+    if( [[self oAuthScope] length] > 0 )
+        [accessCodeURLString appendFormat:@"&%@=%@",@"scope",[self oAuthScope]];
+    if( [[self oAuthGrantType] length] > 0 )
+        [accessCodeURLString appendFormat:@"&%@=%@",@"grant_type",[self oAuthGrantType]];
+    if( [[self oAuthRedirectURI] length] > 0 )
+        [accessCodeURLString appendFormat:@"&%@=%@",@"redirect_uri",[self oAuthRedirectURI]];
+    
+    return accessCodeURLString;
 }
 
 -(void)authenticateAndEnqueRequestOperation:(AFHTTPRequestOperation*)requestOperation
@@ -194,15 +227,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
             
             if( !foundValidStoredCredential && [self oAuthWebAuthViewController] == nil )
             {
-                NSMutableString* accessCodeURLString = [NSMutableString stringWithString:[[self dataLocation] stringByAppendingString:[self oAuthAuthorizePath]]];
-                [accessCodeURLString appendFormat:@"?%@=%@",@"response_type",@"code"];
-                if( [self oAuthClientID] )
-                    [accessCodeURLString appendFormat:@"&%@=%@",@"client_id",[self oAuthClientID]];
-                if( [self oAuthRedirectURI] )
-                    [accessCodeURLString appendFormat:@"&%@=%@",@"redirect_uri",[self oAuthRedirectURI]];
-                if( [self oAuthScope] )
-                    [accessCodeURLString appendFormat:@"&%@=%@",@"scope",[self oAuthScope]];
-                                
+                NSString* accessCodeURLString = [self buildAccessCodeURL];
                 NSURL* accessCodeURL = [NSURL URLWithString:accessCodeURLString];
                 NSURL* redirectURI = [NSURL URLWithString:[self oAuthRedirectURI]];
                 
@@ -248,26 +273,36 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     
     NSString* oauthStorageID = [self oAuthTokenStorageID];
 
+    AFHTTPClientParameterEncoding paramEncoding = [[self httpClient] parameterEncoding];
+    [[self httpClient] setParameterEncoding:AFFormURLParameterEncoding];
     [oAuth2Client authenticateUsingOAuthWithPath:[self oAuthAccessTokenPath]
                                             code:accessCode
                                      redirectURI:[self oAuthRedirectURI]
                                          success:^(AFOAuthCredential *credential) {
                                             
+                                             [[weakSelf httpClient] setParameterEncoding:paramEncoding];
+                                             [weakSelf setOAuthCredential:credential];
+                                             
+                                             DDLogVerbose(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[self ID],[credential accessToken]);
+                                             
                                              if( [oauthStorageID length] > 0 )
                                              {
                                                  [AFOAuthCredential storeCredential:credential withIdentifier:oauthStorageID];
                                              }
+                                             
+                                             [[weakSelf actionContainer] executeActionsForEventNamed:kIXAuthSuccess];
+                                             
                                              if( requestOperation )
                                              {
                                                  [weakOAuth2Client enqueueHTTPRequestOperation:requestOperation];
                                              }
-                                             [[weakSelf actionContainer] executeActionsForEventNamed:@"auth_success"];
 
                                          } failure:^(NSError *error) {
                                             
+                                             [[weakSelf httpClient] setParameterEncoding:paramEncoding];
                                              [weakSelf setRequestToEnqueAfterAuthentication:nil];
                                              [weakSelf setLastResponseErrorMessage:[error description]];
-                                             [weakSelf fireLoadFinishedEvents:@[@"auth_failed"]];
+                                             [weakSelf fireLoadFinishedEvents:@[kIXAuthFail]];
                                         }];
     
     if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
@@ -297,27 +332,47 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = nil;
-    if( [propertyName isEqualToString:@"raw_data_response"] )
+    if( [propertyName isEqualToString:kIXRawDataResponse] )
     {
         returnValue = [[self rawResponse] copy];
     }
-    else if( [propertyName isEqualToString:@"status_code"] )
+    else if( [propertyName isEqualToString:kIXStatusCode] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self lastResponseStatusCode]];
     }
-    else if( [propertyName isEqualToString:@"error_message"] )
+    else if( [propertyName isEqualToString:kIXErrorMessage] )
     {
         returnValue = [[self lastResponseErrorMessage] copy];
     }
-    else if( [propertyName isEqualToString:@"count"] )
+    else if( [propertyName isEqualToString:kIXCount] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self getRowCount]];
+    }
+    else if( [propertyName isEqualToString:kIXAccessToken] )
+    {
+        returnValue = [[[self oAuthCredential] accessToken] copy];
     }
     else
     {
         returnValue = [super getReadOnlyPropertyValue:propertyName];
     }
     return returnValue;
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXClearAccessToken] )
+    {
+        NSString* tokenStorageID = [parameterContainer getStringPropertyValue:kIXOAuthTokenStorageID defaultValue:nil];
+        if( [tokenStorageID length] > 0 )
+        {
+            [AFOAuthCredential deleteCredentialWithIdentifier:tokenStorageID];
+        }
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
 }
 
 -(NSSortDescriptor*)sortDescriptor

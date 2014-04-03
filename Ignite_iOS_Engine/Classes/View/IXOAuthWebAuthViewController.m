@@ -66,7 +66,7 @@
         NSRange rangeOfQuestionMarkInURL = [requestURLString rangeOfString:@"?"];
         if( rangeOfQuestionMarkInURL.location != NSNotFound )
         {
-            NSString* queryParamStringAllTogether = [requestURLString stringByReplacingCharactersInRange:NSMakeRange(0, rangeOfQuestionMarkInURL.location) withString:@""];
+            NSString* queryParamStringAllTogether = [requestURLString stringByReplacingCharactersInRange:NSMakeRange(0, rangeOfQuestionMarkInURL.location + 1) withString:@""];
             NSArray *queryParamsStrings = [queryParamStringAllTogether componentsSeparatedByString:@"&"];
             
             if( [queryParamsStrings count] > 0 )
@@ -77,6 +77,7 @@
                     if( [[paramStringComponents firstObject] isEqualToString:@"code"] )
                     {
                         oauthCode = [[paramStringComponents lastObject] copy];
+                        break;
                     }
                 }
             }

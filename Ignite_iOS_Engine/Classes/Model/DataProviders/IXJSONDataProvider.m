@@ -43,9 +43,7 @@
     [self setIsLocalPath:[IXPathHandler pathIsLocal:[self dataLocation]]];
     
     if( ![self isLocalPath] )
-    {
-        [[self httpClient] setParameterEncoding:AFJSONParameterEncoding];
-        
+    {        
         AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
         NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
         if( [parameterEncoding isEqualToString:@"form"] ) {
