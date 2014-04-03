@@ -186,64 +186,53 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     if( [[self httpClient] isKindOfClass:[AFOAuth2Client class]] )
     {
         AFOAuth2Client* oauth2Client = (AFOAuth2Client*)[self httpClient];
-        if( [self oAuthCredential] && ![[self oAuthCredential] isExpired] )
+        BOOL foundValidStoredCredential = NO;
+        NSString* storageID = [self oAuthTokenStorageID];
+        if( [storageID length] > 0 )
         {
-            [oauth2Client setAuthorizationHeaderWithCredential:[self oAuthCredential]];
-            
-            [self setRequestToEnqueAfterAuthentication:nil];
-            if( requestOperation )
+            AFOAuthCredential* storedCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:storageID];
+            if( storedCredential )
             {
-                [oauth2Client enqueueHTTPRequestOperation:requestOperation];
+                if( [storedCredential isExpired] )
+                {
+                    // FIXME: Need to try to get the token with the refresh token here instead of deleting it.
+                    [AFOAuthCredential deleteCredentialWithIdentifier:storageID];
+                }
+                else
+                {
+                    foundValidStoredCredential = YES;
+                    [self setOAuthCredential:storedCredential];
+                    [oauth2Client setAuthorizationHeaderWithCredential:storedCredential];
+                    
+                    [self setRequestToEnqueAfterAuthentication:nil];
+                    [[self actionContainer] executeActionsForEventNamed:kIXAuthSuccess];
+
+                    if( requestOperation )
+                    {
+                        [oauth2Client enqueueHTTPRequestOperation:requestOperation];
+                    }
+                }
             }
         }
-        else
+        
+        if( !foundValidStoredCredential && [self oAuthWebAuthViewController] == nil )
         {
-            BOOL foundValidStoredCredential = NO;
-            NSString* storageID = [self oAuthTokenStorageID];
-            if( [storageID length] > 0 )
-            {
-                AFOAuthCredential* storedCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:storageID];
-                if( storedCredential )
-                {
-                    if( [storedCredential isExpired] )
-                    {
-                        // FIXME: Need to try to get the token with the refresh token here instead of deleting it.
-                        [AFOAuthCredential deleteCredentialWithIdentifier:storageID];
-                    }
-                    else
-                    {
-                        foundValidStoredCredential = YES;
-                        [self setOAuthCredential:storedCredential];
-                        [oauth2Client setAuthorizationHeaderWithCredential:storedCredential];
-                        
-                        [self setRequestToEnqueAfterAuthentication:nil];
-                        if( requestOperation )
-                        {
-                            [oauth2Client enqueueHTTPRequestOperation:requestOperation];
-                        }
-                    }
-                }
-            }
+            NSString* accessCodeURLString = [self buildAccessCodeURL];
+            NSURL* accessCodeURL = [NSURL URLWithString:accessCodeURLString];
+            NSURL* redirectURI = [NSURL URLWithString:[self oAuthRedirectURI]];
             
-            if( !foundValidStoredCredential && [self oAuthWebAuthViewController] == nil )
+            IXOAuthWebAuthViewController* oauthWebAuthViewController = [[IXOAuthWebAuthViewController alloc] initWithDelegate:self
+                                                                                                                accessCodeURL:accessCodeURL
+                                                                                                                  redirectURI:redirectURI];
+            if( [UIViewController isOkToPresentViewController:oauthWebAuthViewController] )
             {
-                NSString* accessCodeURLString = [self buildAccessCodeURL];
-                NSURL* accessCodeURL = [NSURL URLWithString:accessCodeURLString];
-                NSURL* redirectURI = [NSURL URLWithString:[self oAuthRedirectURI]];
-                
-                IXOAuthWebAuthViewController* oauthWebAuthViewController = [[IXOAuthWebAuthViewController alloc] initWithDelegate:self
-                                                                                                                    accessCodeURL:accessCodeURL
-                                                                                                                      redirectURI:redirectURI];
-                if( [UIViewController isOkToPresentViewController:oauthWebAuthViewController] )
-                {
-                    [self setRequestToEnqueAfterAuthentication:requestOperation];
-                    [self setOAuthWebAuthViewController:oauthWebAuthViewController];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self oAuthWebAuthViewController]
-                                                                                           animated:YES
-                                                                                         completion:nil];
-                    });
-                }
+                [self setRequestToEnqueAfterAuthentication:requestOperation];
+                [self setOAuthWebAuthViewController:oauthWebAuthViewController];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self oAuthWebAuthViewController]
+                                                                                       animated:YES
+                                                                                     completion:nil];
+                });
             }
         }
     }
@@ -275,6 +264,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 
     AFHTTPClientParameterEncoding paramEncoding = [[self httpClient] parameterEncoding];
     [[self httpClient] setParameterEncoding:AFFormURLParameterEncoding];
+    
     [oAuth2Client authenticateUsingOAuthWithPath:[self oAuthAccessTokenPath]
                                             code:accessCode
                                      redirectURI:[self oAuthRedirectURI]
@@ -282,7 +272,8 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
                                             
                                              [[weakSelf httpClient] setParameterEncoding:paramEncoding];
                                              [weakSelf setOAuthCredential:credential];
-                                             
+                                             [weakSelf setRequestToEnqueAfterAuthentication:nil];
+
                                              DDLogVerbose(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[self ID],[credential accessToken]);
                                              
                                              if( [oauthStorageID length] > 0 )
