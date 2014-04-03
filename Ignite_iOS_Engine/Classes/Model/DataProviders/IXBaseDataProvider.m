@@ -249,6 +249,12 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     [self setRequestToEnqueAfterAuthentication:nil];
     [self setLastResponseErrorMessage:[error description]];
     [self fireLoadFinishedEvents:@[kIXAuthFail]];
+    
+    if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
+    {
+        [self setOAuthWebAuthViewController:nil];
+        [oAuthWebAuthViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 -(void)ixOAuthWebAuthViewController:(IXOAuthWebAuthViewController *)oAuthWebAuthViewController
