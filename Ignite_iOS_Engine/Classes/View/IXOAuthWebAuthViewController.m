@@ -8,6 +8,47 @@
 
 #import "IXOAuthWebAuthViewController.h"
 #import "IXLogger.h"
+#import "SVWebViewController.h"
+
+@interface IXSVWebViewController : SVWebViewController
+
+@end
+
+@interface IXOAuthWebAuthViewController ()
+
+-(void)doneButtonClicked:(id)sender;
+
+@end
+
+@interface SVWebViewController ()
+
+- (void)doneButtonClicked:(id)sender;
+
+@end
+
+@interface IXSVWebViewController ()
+
+@end
+
+@implementation IXSVWebViewController
+
+- (void)doneButtonClicked:(id)sender {
+    [((IXOAuthWebAuthViewController*)[self navigationController]) doneButtonClicked:sender];
+}
+
+@end
+
+@interface SVModalWebViewController ()
+
+@property (nonatomic, strong) SVWebViewController *webViewController;
+
+@end
+
+@interface SVWebViewController () <UIWebViewDelegate>
+
+@property (nonatomic, strong) UIWebView *webView;
+
+@end
 
 @interface IXOAuthWebAuthViewController () <UIWebViewDelegate>
 
@@ -22,14 +63,29 @@
     [_webView setDelegate:nil];
 }
 
-- (instancetype)initWithDelegate:(id<IXOAuthWebAuthViewControllerDelegate>)delegate
+- (id)initWithURL:(NSURL *)URL {
+    self.webViewController = [[IXSVWebViewController alloc] initWithURL:URL];
+    if (self = [super initWithRootViewController:self.webViewController]) {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                    target:self.webViewController
+                                                                                    action:@selector(doneButtonClicked:)];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            self.webViewController.navigationItem.leftBarButtonItem = doneButton;
+        else
+            self.webViewController.navigationItem.rightBarButtonItem = doneButton;
+    }
+    return self;
+}
+
+- (instancetype)initWithDelegate:(id<IXOAuthWebAuthViewControllerDelegate>)ixOAuthDelegate
                    accessCodeURL:(NSURL*)accessCodeURL
                      redirectURI:(NSURL*)redirectURI
 {
-    self = [super initWithNibName:nil bundle:nil];
+    self = [self initWithURL:accessCodeURL];
     if( self )
     {
-        _delegate = delegate;
+        _ixOAuthDelegate = ixOAuthDelegate;
         _accessCodeURL = [accessCodeURL copy];
         _redirectURI = [redirectURI copy];
     }
@@ -40,21 +96,27 @@
 {
     [super viewDidLoad];
     
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:[[self view] frame]];
-    [webView setDelegate:self];
-    [[self view] addSubview:webView];
+    self.webViewController.webView.delegate = self;
     
     DDLogVerbose(@"Trying authentication to OAuth2.0 Access Code URL : %@",[[self accessCodeURL] absoluteString]);
-
-    [webView loadRequest:[NSURLRequest requestWithURL:[self accessCodeURL]]];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    if( [[self delegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
+    [[self webViewController] webView:webView didFailLoadWithError:error];
+    if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
     {
-        [[self delegate] ixOAuthWebAuthViewController:self didFailWithError:error];
+        [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didFailWithError:error];
     }
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [[self webViewController] webViewDidStartLoad:webView];
+}
+
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [[self webViewController] webViewDidFinishLoad:webView];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -86,22 +148,30 @@
         
         if( [oauthCode length] > 0 )
         {
-            if( [[self delegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didRecieveOAuthCode:)] )
+            if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didRecieveOAuthCode:)] )
             {
-                [[self delegate] ixOAuthWebAuthViewController:self didRecieveOAuthCode:oauthCode];
+                [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didRecieveOAuthCode:oauthCode];
             }
         }
         else
         {
-            if( [[self delegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
+            if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
             {
-                [[self delegate] ixOAuthWebAuthViewController:self didFailWithError:[NSError errorWithDomain:@"No access code found in query params." code:0 userInfo:nil]];
+                [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didFailWithError:[NSError errorWithDomain:@"No access code found in query params." code:0 userInfo:nil]];
             }
         }
         
         return NO;
     }
 	return YES;
+}
+
+-(void)doneButtonClicked:(id)sender
+{
+    if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
+    {
+        [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didFailWithError:[NSError errorWithDomain:@"User pressed the done button" code:0 userInfo:nil]];
+    }
 }
 
 @end

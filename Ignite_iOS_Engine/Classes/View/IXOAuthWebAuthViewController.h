@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SVModalWebViewController.h"
 
 @class IXOAuthWebAuthViewController;
 
@@ -22,13 +23,13 @@
 
 @end
 
-@interface IXOAuthWebAuthViewController : UIViewController
+@interface IXOAuthWebAuthViewController : SVModalWebViewController
 
-@property (nonatomic,weak,readonly) id<IXOAuthWebAuthViewControllerDelegate> delegate;
+@property (nonatomic,weak,readonly) id<IXOAuthWebAuthViewControllerDelegate> ixOAuthDelegate;
 @property (nonatomic,copy,readonly) NSURL* accessCodeURL;
 @property (nonatomic,copy,readonly) NSURL* redirectURI;
 
-- (instancetype)initWithDelegate:(id<IXOAuthWebAuthViewControllerDelegate>)delegate
+- (instancetype)initWithDelegate:(id<IXOAuthWebAuthViewControllerDelegate>)ixOAuthDelegate
                    accessCodeURL:(NSURL*)accessCodeURL
                      redirectURI:(NSURL*)redirectURI;
 
