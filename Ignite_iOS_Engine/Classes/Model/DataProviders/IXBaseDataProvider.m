@@ -57,6 +57,8 @@ static NSString* const kIXAccessToken = @"access_token";
 
 // IXBaseDataProvider Functions
 static NSString* const kIXClearAccessToken = @"clear_access_token"; // kIXOAuthTokenStorageID is the parameter for this.
+static NSString* const kIXDeleteCookies = @"delete_cookies"; // kIXCookieURL is the parameter for this function.
+static NSString* const kIXCookieURL = @"cookie_url";
 
 // IXBaseDataProvider Events
 static NSString* const kIXAuthSuccess = @"auth_success";
@@ -364,6 +366,18 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
         if( [tokenStorageID length] > 0 )
         {
             [AFOAuthCredential deleteCredentialWithIdentifier:tokenStorageID];
+        }
+    }
+    else if( [functionName isEqualToString:kIXDeleteCookies] )
+    {
+        NSString* urlToDeleteCookiesFor = [parameterContainer getStringPropertyValue:kIXCookieURL defaultValue:nil];
+        if( urlToDeleteCookiesFor )
+        {
+            NSArray *cookiesToDelete = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlToDeleteCookiesFor]];
+            for (NSHTTPCookie *cookie in cookiesToDelete )
+            {
+                [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+            }
         }
     }
     else
