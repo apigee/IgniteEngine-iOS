@@ -16,10 +16,9 @@
 @class IXNavigationViewController;
 @class JASidePanelController;
 @class Reachability;
+@class ApigeeClient;
 
 @interface IXAppManager : NSObject
-
-@property (nonatomic,strong) IXBaseControl* testControl;
 
 @property (nonatomic,assign) IXAppMode appMode;
 
@@ -36,19 +35,24 @@
 @property (nonatomic,strong) IXPropertyContainer* appProperties;
 @property (nonatomic,strong) IXPropertyContainer* sessionProperties;
 
-@property (nonatomic,strong) NSString* appID;
-@property (nonatomic,strong) NSString* bundleID;
-@property (nonatomic,strong) NSString* versionNumberMajor;
-@property (nonatomic,strong) NSString* versionNumberMinor;
+@property (nonatomic,copy) NSString* appID;
+@property (nonatomic,copy) NSString* bundleID;
+@property (nonatomic,copy) NSString* versionNumberMajor;
+@property (nonatomic,copy) NSString* versionNumberMinor;
 
 @property (nonatomic,strong) IXSandbox* applicationSandbox;
 @property (nonatomic,strong) Reachability* reachabilty;
 
+@property (nonatomic,strong) ApigeeClient* apigeeClient;
+
 @property (nonatomic,assign,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
 
 +(IXAppManager*)sharedAppManager;
+
 -(void)startApplication;
+
 -(IXViewController*)currentIXViewController;
+
 -(void)applyAppProperties;
 
 +(UIInterfaceOrientation)currentInterfaceOrientation;

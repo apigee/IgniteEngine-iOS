@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import "IXLogger.h"
+#import "DDLog.h"
+#import "ApigeeLogger.h"
+
 #define IX_dispatch_main_sync_safe(block)\
     if ([NSThread isMainThread])\
     {\
@@ -16,6 +20,49 @@
     else\
     {\
         dispatch_sync(dispatch_get_main_queue(), block);\
+    }
+
+#define IX_APIGEE_LOG_TAG @"Ignite_iOS_Engine_Log"
+
+#define IX_LOG_VERBOSE(frmt, ...)   \
+    if( LOG_LEVEL_DEF & LOG_FLAG_VERBOSE ) { \
+        if( [[IXLogger sharedLogger] shouldLogUsingApigeeLogging] ) { \
+            ApigeeLogVerbose(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
+        } else { \
+            DDLogVerbose(frmt, ##__VA_ARGS__); \
+        } \
+    }
+#define IX_LOG_DEBUG(frmt, ...) \
+    if( LOG_LEVEL_DEF & LOG_FLAG_DEBUG ) { \
+        if( [[IXLogger sharedLogger] shouldLogUsingApigeeLogging] ) { \
+            ApigeeLogDebug(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
+        } else { \
+            DDLogDebug(frmt, ##__VA_ARGS__); \
+        } \
+    }
+#define IX_LOG_INFO(frmt, ...) \
+    if( LOG_LEVEL_DEF & LOG_FLAG_INFO ) { \
+        if( [[IXLogger sharedLogger] shouldLogUsingApigeeLogging] ) { \
+            ApigeeLogInfo(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
+        } else { \
+            DDLogInfo(frmt, ##__VA_ARGS__); \
+        } \
+    }
+#define IX_LOG_WARN(frmt, ...) \
+    if( LOG_LEVEL_DEF & LOG_FLAG_WARN ) { \
+        if( [[IXLogger sharedLogger] shouldLogUsingApigeeLogging] ) { \
+            ApigeeLogWarn(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
+        } else { \
+            DDLogWarn(frmt, ##__VA_ARGS__); \
+        } \
+    }
+#define IX_LOG_ERROR(frmt, ...) \
+    if( LOG_LEVEL_DEF & LOG_FLAG_ERROR ) { \
+        if( [[IXLogger sharedLogger] shouldLogUsingApigeeLogging] ) { \
+            ApigeeLogError(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
+        } else { \
+            DDLogError(frmt, ##__VA_ARGS__); \
+        } \
     }
 
 // SPECIAL

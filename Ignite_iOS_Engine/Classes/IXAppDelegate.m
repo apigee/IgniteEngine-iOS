@@ -12,34 +12,55 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "JASidePanelController.h"
+#import "IXLogger.h"
+#import "IXPropertyContainer.h"
+
+#import "ApigeeClient.h"
+#import "ApigeeDataClient.h"
 
 @implementation IXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.ixWindow = [[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.ixWindow.backgroundColor = [UIColor whiteColor];
-
-//    JASidePanelController* controller = [[JASidePanelController alloc] init];
-//    [controller.view setBackgroundColor:[UIColor magentaColor]];
-//    UIViewController* vc1 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-//    [vc1.view setBackgroundColor:[UIColor greenColor]];
-//    UIViewController* vc2 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-//    [vc2.view setBackgroundColor:[UIColor blueColor]];
-//    
-//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
-//    [controller setLeftPanel:vc1];
-//    [controller setRightPanel:vc2];
-//    [controller setCenterPanel:[[IXAppManager sharedAppManager] rootViewController]];
-//    
+    [self setIxWindow:[[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
     [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] rootViewController]];
     
     [[IXAppManager sharedAppManager] startApplication];
-    [self.ixWindow makeKeyAndVisible];
+    
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
+    NSDictionary* remoteNotificationInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if( remoteNotificationInfo != nil )
+    {
+        //[self handlePushNotification:remoteNotificationInfo forApplication:application];
+    }
+    
+    [[self ixWindow] makeKeyAndVisible];
 
     return YES;
 }
-							
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken
+{
+    IXAppManager* sharedAppManager = [IXAppManager sharedAppManager];
+
+    ApigeeDataClient* apigeeDataClient = [[sharedAppManager apigeeClient] dataClient];
+    if( apigeeDataClient != nil )
+    {
+        IXPropertyContainer* appProperties = [sharedAppManager appProperties];
+        NSString* apigeePushNotifier = [appProperties getStringPropertyValue:@"apigee_push_notifier"
+                                                                defaultValue:nil];
+        
+        ApigeeClientResponse *response = [apigeeDataClient setDevicePushToken:newDeviceToken
+                                                                  forNotifier:apigeePushNotifier];
+        
+        if( ![response completedSuccessfully])
+        {
+            DDLogError(@"Error Setting Push Token with ApigeeClient : %@", [response rawResponse]);
+        }
+    }
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -15,6 +15,16 @@
 
 @implementation IXWindow
 
+-(id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if( self )
+    {
+        [self setBackgroundColor:[UIColor whiteColor]];
+    }
+    return self;
+}
+
 - (void)motionBegan:(UIEventSubtype)motion
           withEvent:(UIEvent *)event
 {

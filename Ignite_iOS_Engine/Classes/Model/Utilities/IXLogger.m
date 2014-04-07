@@ -11,11 +11,12 @@
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 
+#import "IXAppManager.h"
+#import "IXConstants.h"
+
 #ifdef DEBUG
-BOOL kIXIsInDebugMode = YES;
 int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
-BOOL isInDebugMode = NO;
 int ddLogLevel = LOG_LEVEL_ERROR;
 #endif
 
@@ -34,6 +35,9 @@ static NSString* const kIXLogLevelRelease = @"release";
     self = [super init];
     if( self )
     {
+        _remoteLoggingEnabled = NO;
+        _apigeeClientAvailable = NO;
+        
         [DDLog addLogger:[DDASLLogger sharedInstance]];
         [DDLog addLogger:[DDTTYLogger sharedInstance]];
         
@@ -52,6 +56,12 @@ static NSString* const kIXLogLevelRelease = @"release";
     return sharedLogger;
 }
 
+-(BOOL)shouldLogUsingApigeeLogging
+{
+    // Return YES only if the _remoteLoggingEnabled is set to YES and if the apigeeClient is actually set up.
+    return ( _remoteLoggingEnabled && _apigeeClientAvailable );
+}
+
 -(void)setAppLogLevel:(NSString *)appLogLevel
 {
     _appLogLevel = [appLogLevel copy];
@@ -65,17 +75,15 @@ static NSString* const kIXLogLevelRelease = @"release";
         logLevelInt = LOG_LEVEL_INFO;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelWarn] ) {
         logLevelInt = LOG_LEVEL_WARN;
-    } else if ( [appLogLevel isEqualToString:kIXLogLevelError] ) {
-        logLevelInt = LOG_LEVEL_ERROR;
     } else if( [appLogLevel isEqualToString:kIXLogLevelOff] ) {
         logLevelInt = LOG_LEVEL_OFF;
-    } else if ( [appLogLevel isEqualToString:kIXLogLevelRelease] ) {
+    } else if ( [appLogLevel isEqualToString:kIXLogLevelError] || [appLogLevel isEqualToString:kIXLogLevelRelease] ) {
         logLevelInt = LOG_LEVEL_ERROR;
     }
-    
-    DDLogDebug(@"%@ : App Log Level Set To : %@",THIS_FILE,_appLogLevel);
 
     ddLogLevel = logLevelInt;
+    
+    IX_LOG_DEBUG(@"%@ : App Log Level Set To : %@",THIS_FILE,[self appLogLevel]);
 }
 
 @end

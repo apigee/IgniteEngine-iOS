@@ -15,7 +15,11 @@ extern int ddLogLevel;
 @interface IXLogger : NSObject
 
 @property (nonatomic,copy) NSString* appLogLevel;
+@property (nonatomic,assign,getter = isApigeeClientAvailable) BOOL apigeeClientAvailable;
+@property (nonatomic,assign,getter = isRemoteLoggingEnabled) BOOL remoteLoggingEnabled;
 
 +(instancetype)sharedLogger;
+
+-(BOOL)shouldLogUsingApigeeLogging;
 
 @end

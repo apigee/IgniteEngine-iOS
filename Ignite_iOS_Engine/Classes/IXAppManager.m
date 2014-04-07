@@ -23,6 +23,9 @@
 #import "IXViewController.h"
 #import "IXDeviceInfo.h"
 
+#import "ApigeeClient.h"
+#import "ApigeeDataClient.h"
+
 @interface IXAppManager ()
 
 @property (nonatomic,strong) UIWebView* webViewForJS;
@@ -75,7 +78,7 @@
                                             
                                             if( jsonObject == nil )
                                             {
-                                                [self showJSONAlertWithName:@"APP CONFIG" error:error];
+                                                [self showJSONAlertWithName:[self appConfigPath] error:error];
                                             }
                                             else
                                             {
@@ -125,6 +128,20 @@
 
 -(void)applyAppProperties
 {
+    NSString* apigeeOrgName = [[self appProperties] getStringPropertyValue:@"apigee_org_id" defaultValue:nil];
+    NSString* apigeeApplicationID = [[self appProperties] getStringPropertyValue:@"apigee_app_id" defaultValue:nil];
+    NSString* apigeeBaseURL = [[self appProperties] getStringPropertyValue:@"apigee_base_url" defaultValue:nil];
+    
+    if( [apigeeOrgName length] > 0 && [apigeeApplicationID length] > 0 )
+    {
+        [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName applicationId:apigeeApplicationID baseURL:apigeeBaseURL]];
+        [[[self apigeeClient] dataClient] setLogging:YES];
+        [[IXLogger sharedLogger] setApigeeClientAvailable:YES];
+    }
+    
+    BOOL remoteLoggingEnabled = [[self appProperties] getBoolPropertyValue:@"enable_remote_logging" defaultValue:NO];
+    [[IXLogger sharedLogger] setRemoteLoggingEnabled:remoteLoggingEnabled];
+
     NSString* appLogLevel = [[self appProperties] getStringPropertyValue:@"log_level" defaultValue:@"debug"];
     [[IXLogger sharedLogger] setAppLogLevel:appLogLevel];
 
