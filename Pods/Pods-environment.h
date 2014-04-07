@@ -24,6 +24,12 @@
 #define COCOAPODS_VERSION_MINOR_ALMoviePlayerController 3
 #define COCOAPODS_VERSION_PATCH_ALMoviePlayerController 0
 
+// ApigeeiOSSDK
+#define COCOAPODS_POD_AVAILABLE_ApigeeiOSSDK
+#define COCOAPODS_VERSION_MAJOR_ApigeeiOSSDK 2
+#define COCOAPODS_VERSION_MINOR_ApigeeiOSSDK 0
+#define COCOAPODS_VERSION_PATCH_ApigeeiOSSDK 10
+
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1

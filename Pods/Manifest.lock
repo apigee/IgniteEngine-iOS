@@ -3,6 +3,7 @@ PODS:
   - AFOAuth2Client (0.1.2):
     - AFNetworking (~> 1.3)
   - ALMoviePlayerController (0.3.0)
+  - ApigeeiOSSDK (2.0.10)
   - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
   - CocoaLumberjack/Core (1.8.1)
@@ -41,6 +42,7 @@ PODS:
 DEPENDENCIES:
   - AFOAuth2Client (~> 0.1)
   - ALMoviePlayerController (~> 0.3.0)
+  - ApigeeiOSSDK (~> 2.0)
   - CocoaLumberjack (~> 1.8.1)
   - ColorUtils (~> 1.1.1)
   - JASidePanels (~> 1.3.2)
@@ -63,6 +65,7 @@ SPEC CHECKSUMS:
   AFNetworking: 61fdd49e2ffe6380378df37b3b6e70630bb9dd66
   AFOAuth2Client: 579d6f298b0047dfd5a6eec6ab5b28c01f6b4547
   ALMoviePlayerController: e4a22e60340ffe429711a71e6dfb813fd38f10d2
+  ApigeeiOSSDK: dd189d8d3d94f7e0db930454ffa28385d3164593
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   ColorUtils: 5740b610eb7b50833f46d6d9863ebaa1da55301d
   JASidePanels: c0e642a7311ec9cc9adfa616fa4a795e4e169f20

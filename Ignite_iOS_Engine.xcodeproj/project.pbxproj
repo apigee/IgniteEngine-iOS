@@ -86,6 +86,8 @@
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
+		635D2DA818F32C6500CA82BD /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DA718F32C6500CA82BD /* CoreTelephony.framework */; };
+		635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */; };
 		6366D6D418A0A9D5000AEEA5 /* IXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D318A0A9D5000AEEA5 /* IXButton.m */; };
 		6366D6D718A18741000AEEA5 /* IXCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D618A18741000AEEA5 /* IXCustom.m */; };
 		6366D6DA18A1B9C7000AEEA5 /* IXWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D918A1B9C7000AEEA5 /* IXWindow.m */; };
@@ -278,6 +280,8 @@
 		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
 		635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCoreDataDataProvider.m; sourceTree = "<group>"; };
+		635D2DA718F32C6500CA82BD /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApigeeiOSSDK.framework; path = "Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib/ApigeeiOSSDK.framework"; sourceTree = "<group>"; };
 		6366D6D218A0A9D5000AEEA5 /* IXButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXButton.h; sourceTree = "<group>"; };
 		6366D6D318A0A9D5000AEEA5 /* IXButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXButton.m; sourceTree = "<group>"; };
 		6366D6D518A18741000AEEA5 /* IXCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustom.h; sourceTree = "<group>"; };
@@ -366,6 +370,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */,
+				635D2DA818F32C6500CA82BD /* CoreTelephony.framework in Frameworks */,
 				CAD81A7518BBCEA400EE08BD /* AssetsLibrary.framework in Frameworks */,
 				6324BF501835931C00748F27 /* Foundation.framework in Frameworks */,
 				6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */,
@@ -654,6 +660,8 @@
 		6324BF4E1835931C00748F27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */,
+				635D2DA718F32C6500CA82BD /* CoreTelephony.framework */,
 				CA28B85C18CAE2050067686C /* CoreImage.framework */,
 				CAD81A7318BBCCA700EE08BD /* AssetsLibrary.framework */,
 				131591EA18396B3E0046B16D /* libiconv.dylib */,
@@ -1143,6 +1151,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1169,6 +1181,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
