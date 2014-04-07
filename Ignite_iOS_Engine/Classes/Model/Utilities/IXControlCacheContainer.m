@@ -88,7 +88,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             NSString* pathToJSON = [[customControl propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
             if( pathToJSON == nil )
             {
-                DDLogWarn(@"WARNING from %@ in %@ : Path to custom control is nil!!! \n Custom Control Description : %@",THIS_FILE,THIS_METHOD,[customControl description]);
+                IX_LOG_WARN(@"WARNING from %@ in %@ : Path to custom control is nil!!! \n Custom Control Description : %@",THIS_FILE,THIS_METHOD,[customControl description]);
                 [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
             }
             else
@@ -287,7 +287,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             {
                 completionBlock(NO,nil,error);
                 
-                DDLogError(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
+                IX_LOG_ERROR(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
             }
         }];
     }

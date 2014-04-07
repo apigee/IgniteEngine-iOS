@@ -56,7 +56,7 @@
         
         if( ![response completedSuccessfully])
         {
-            DDLogError(@"Error Setting Push Token with ApigeeClient : %@", [response rawResponse]);
+            IX_LOG_ERROR(@"Error Setting Push Token with ApigeeClient : %@", [response rawResponse]);
         }
     }
 }

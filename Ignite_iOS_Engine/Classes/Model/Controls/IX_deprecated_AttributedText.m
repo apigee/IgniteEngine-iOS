@@ -315,7 +315,7 @@
             [[self.attributedString mutableString] replaceOccurrencesOfString:fullString withString:titleString options:NO range:fullRange];
         }
         @catch (NSException *exception) {
-            DDLogDebug(@"ERROR: %@", exception);
+            IX_LOG_DEBUG(@"ERROR: %@", exception);
         }
     }
 }
@@ -354,7 +354,7 @@
             [[self.attributedString mutableString] replaceOccurrencesOfString:fullString withString:text options:NO range:fullRange];
         }
         @catch (NSException *exception) {
-            DDLogDebug(@"ERROR: %@", exception);
+            IX_LOG_DEBUG(@"ERROR: %@", exception);
         }
     }
 }

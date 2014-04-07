@@ -98,7 +98,7 @@
     
     self.webViewController.webView.delegate = self;
     
-    DDLogVerbose(@"Trying authentication to OAuth2.0 Access Code URL : %@",[[self accessCodeURL] absoluteString]);
+    IX_LOG_VERBOSE(@"Trying authentication to OAuth2.0 Access Code URL : %@",[[self accessCodeURL] absoluteString]);
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

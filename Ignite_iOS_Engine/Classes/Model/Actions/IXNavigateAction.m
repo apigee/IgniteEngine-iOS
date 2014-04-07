@@ -183,7 +183,7 @@ static BOOL sIXIsAttemptingNavigation = NO;
                                            }
                                            else
                                            {
-                                               DDLogError(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
+                                               IX_LOG_ERROR(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
                                                [self navigationActionDidFinish:NO];
                                            }
         }];

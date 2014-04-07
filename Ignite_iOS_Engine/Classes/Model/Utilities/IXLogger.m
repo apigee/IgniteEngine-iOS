@@ -12,7 +12,6 @@
 #import "DDTTYLogger.h"
 
 #import "IXAppManager.h"
-#import "IXConstants.h"
 
 #ifdef DEBUG
 int ddLogLevel = LOG_LEVEL_VERBOSE;

@@ -141,7 +141,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
     NSError *error = nil;
     if ([[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
     {
-        DDLogError(@"ERROR: trying to open camera on simulator");
+        IX_LOG_ERROR(@"ERROR: trying to open camera on simulator");
     }
     else
     {
@@ -154,7 +154,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
         
         if (!input) {
             // Handle the error appropriately.
-            DDLogError(@"ERROR: trying to open camera: %@", error);
+            IX_LOG_ERROR(@"ERROR: trying to open camera: %@", error);
         }
         else
         {
@@ -256,7 +256,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
             }
         }
         [self showShutter];
-        DDLogDebug(@"About to request a capture from: %@", [self stillImageOutput]);
+        IX_LOG_DEBUG(@"About to request a capture from: %@", [self stillImageOutput]);
         [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:videoConnection
                                                              completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
                                                                  
@@ -284,7 +284,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
                                                              }];
     }
     @catch (NSException *exception) {
-        DDLogError(@"ERROR: Unable to capture still image from IXCamera: %@", exception);
+        IX_LOG_ERROR(@"ERROR: Unable to capture still image from IXCamera: %@", exception);
     }
 }
 

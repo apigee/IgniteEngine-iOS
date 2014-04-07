@@ -250,7 +250,7 @@ static NSString* const kIXToggle = @"dev_toggle";
 
                 [[weakSelf contentView] setBackgroundColor:[[weakSelf propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
                 
-                DDLogDebug(@"Background image failed to load at %@", kIXBackgroundImage);
+                IX_LOG_DEBUG(@"Background image failed to load at %@", kIXBackgroundImage);
             }];
         }
         else

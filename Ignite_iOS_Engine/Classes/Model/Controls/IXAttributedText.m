@@ -100,12 +100,12 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     if (self.label.selectionState == TTTAttributedLabelSelectionStateLongPress)
     {
         [self performActionsForSelector:@"long_press" withUrl:url];
-        DDLogDebug(@"Detected long_press for url: %@", url);
+        IX_LOG_DEBUG(@"Detected long_press for url: %@", url);
     }
     else if (self.label.selectionState == TTTAttributedLabelSelectionStateTouchUp)
     {
         [self performActionsForSelector:@"touch_up" withUrl:url];
-        DDLogDebug(@"Detected touch_up for url: %@", url);
+        IX_LOG_DEBUG(@"Detected touch_up for url: %@", url);
     }
 }
 
@@ -404,7 +404,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
             [[self.attributedString mutableString] replaceOccurrencesOfString:fullString withString:titleString options:NO range:fullRange];
         }
         @catch (NSException *exception) {
-            DDLogDebug(@"ERROR: %@", exception);
+            IX_LOG_DEBUG(@"ERROR: %@", exception);
         }
     }
 }
@@ -451,7 +451,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
             self.label.attributedText = self.attributedString;
         }
         @catch (NSException *exception) {
-            DDLogDebug(@"ERROR: %@", exception);
+            IX_LOG_DEBUG(@"ERROR: %@", exception);
         }
     }
 }

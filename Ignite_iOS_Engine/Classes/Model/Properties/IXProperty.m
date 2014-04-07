@@ -62,7 +62,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
                                                                   options:NSRegularExpressionDotMatchesLineSeparators
                                                                     error:&error];
                 if( error )
-                    DDLogError(@"Critical Error!!! IF REGEX %@ invalid with error: %@.",kIXIfRegexString,[error description]);
+                    IX_LOG_ERROR(@"Critical Error!!! IF REGEX %@ invalid with error: %@.",kIXIfRegexString,[error description]);
             });
             
             NSTextCheckingResult* conditionalMatch = [sIXIfRegex firstMatchInString:stringValue
@@ -113,7 +113,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     }
     else
     {
-        DDLogWarn(@"WARNING from %@ in %@ : Property value for %@ not a valid object %@",THIS_FILE,THIS_METHOD,propertyName,jsonObject);
+        IX_LOG_WARN(@"WARNING from %@ in %@ : Property value for %@ not a valid object %@",THIS_FILE,THIS_METHOD,propertyName,jsonObject);
     }
     return property;
 }
@@ -168,7 +168,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
         }
         else
         {
-            DDLogWarn(@"WARNING from %@ in %@ : Property value array for %@ does not have a dictionary objects",THIS_FILE,THIS_METHOD,propertyName);
+            IX_LOG_WARN(@"WARNING from %@ in %@ : Property value array for %@ does not have a dictionary objects",THIS_FILE,THIS_METHOD,propertyName);
         }
     }
     
@@ -217,7 +217,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
                                                                                 options:NSRegularExpressionDotMatchesLineSeparators
                                                                                   error:&error];
             if( error )
-                DDLogError(@"Critical Error!!! Shortcode regex invalid with error: %@.",[error description]);
+                IX_LOG_ERROR(@"Critical Error!!! Shortcode regex invalid with error: %@.",[error description]);
         });
         
         NSArray* matchesInStaticText = [shortCodeMainComponentsRegex matchesInString:propertiesStaticText

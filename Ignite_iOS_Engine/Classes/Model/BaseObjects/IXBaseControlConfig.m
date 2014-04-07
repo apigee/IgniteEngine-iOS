@@ -90,7 +90,7 @@
         }
         else
         {
-            DDLogError(@"ERROR from %@ in %@ : Control class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,controlType, [controlJSONDict description]);
+            IX_LOG_ERROR(@"ERROR from %@ in %@ : Control class with type: %@ was not found \n Description of control: \n %@",THIS_FILE,THIS_METHOD,controlType, [controlJSONDict description]);
         }
     }
     return controlConfig;

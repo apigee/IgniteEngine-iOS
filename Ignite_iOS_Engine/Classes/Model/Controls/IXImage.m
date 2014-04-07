@@ -254,7 +254,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                      
                                      *stop = NO;
                                  } failureBlock:^(NSError *error) {
-                                     DDLogError(@"ERROR: %@", error);
+                                     IX_LOG_ERROR(@"ERROR: %@", error);
                                  }];
     
     

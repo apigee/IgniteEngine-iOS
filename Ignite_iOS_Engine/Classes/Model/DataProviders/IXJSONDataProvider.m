@@ -122,7 +122,7 @@
                         }
                     }
                     @catch (NSException *exception) {
-                        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,[exception description]);
+                        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,[exception description]);
                     }
                     [weakSelf fireLoadFinishedEvents:NO];
                 }];
@@ -184,7 +184,7 @@
         }
         else
         {
-            DDLogError(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
+            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
         }
     }
 }
@@ -304,12 +304,12 @@
                 }
                 else
                 {
-                    DDLogWarn(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
+                    IX_LOG_WARN(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
                 }
             }
             else
             {
-                DDLogWarn(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
+                IX_LOG_WARN(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
             }
         }
     }
@@ -350,7 +350,7 @@
                         userInfo:nil];
         }
         @catch (NSException *exception) {
-            DDLogError(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
+            IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
         }
     }
     

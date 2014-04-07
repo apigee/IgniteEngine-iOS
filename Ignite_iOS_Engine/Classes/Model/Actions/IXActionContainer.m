@@ -162,7 +162,7 @@
     NSString* actionEventName = [action eventName];
     if( action == nil || actionEventName == nil )
     {
-        DDLogError(@"ERROR: Unable to add action with unknown type. Check your JSON configuration for a missing (or mis-spelled) _type property.");
+        IX_LOG_ERROR(@"ERROR: Unable to add action with unknown type. Check your JSON configuration for a missing (or mis-spelled) _type property.");
         return;
     }
 

@@ -45,7 +45,7 @@ static NSString* const kIXCustomContainerControlRef = @"$custom";
         
         if( _rootPath == nil )
         {
-            DDLogWarn(@"WARNING from %@ in %@ : INITIALIZING SANDBOX WITHOUT ROOT PATH!!!",THIS_FILE,THIS_METHOD);
+            IX_LOG_WARN(@"WARNING from %@ in %@ : INITIALIZING SANDBOX WITHOUT ROOT PATH!!!",THIS_FILE,THIS_METHOD);
         }
     }
     return self;
@@ -80,11 +80,11 @@ static NSString* const kIXCustomContainerControlRef = @"$custom";
         {
             if( [[self dataProviders][dataProviderID] isEqual:dataProvider] )
             {
-                DDLogWarn(@"WARNING from %@ in %@ :  ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE",THIS_FILE,THIS_METHOD);
+                IX_LOG_WARN(@"WARNING from %@ in %@ :  ATTEMPTING TO ADD SAME DATA PROVIDER TO SANDBOX TWICE",THIS_FILE,THIS_METHOD);
             }
             else
             {
-                DDLogError(@"ERROR from %@ in %@ :  CONFLICTING DATASOURCE IDS WITH ID : %@",THIS_FILE,THIS_METHOD,dataProviderID);
+                IX_LOG_ERROR(@"ERROR from %@ in %@ :  CONFLICTING DATASOURCE IDS WITH ID : %@",THIS_FILE,THIS_METHOD,dataProviderID);
             }
         }
         
@@ -103,7 +103,7 @@ static NSString* const kIXCustomContainerControlRef = @"$custom";
     }
     else
     {
-        DDLogError(@"ERROR from %@ in %@ :  ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID : %@",THIS_FILE,THIS_METHOD,[dataProvider description]);
+        IX_LOG_ERROR(@"ERROR from %@ in %@ :  ATTEMPTING TO ADD DATAPROVIDER WITHOUT ID : %@",THIS_FILE,THIS_METHOD,[dataProvider description]);
     }
     return didAddDataProvider;
 }

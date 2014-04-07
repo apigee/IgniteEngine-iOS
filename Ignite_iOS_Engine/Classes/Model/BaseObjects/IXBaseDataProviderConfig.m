@@ -106,7 +106,7 @@
         }
         else
         {
-            DDLogError(@"ERROR from %@ in %@ : DataProvider class with type: %@ was not found \n Description of data provider: \n %@",THIS_FILE,THIS_METHOD,dataProviderType, [dataProviderJSONDict description]);
+            IX_LOG_ERROR(@"ERROR from %@ in %@ : DataProvider class with type: %@ was not found \n Description of data provider: \n %@",THIS_FILE,THIS_METHOD,dataProviderType, [dataProviderJSONDict description]);
         }
     }
     return dataProviderConfig;

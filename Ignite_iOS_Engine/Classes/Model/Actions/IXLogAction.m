@@ -26,7 +26,7 @@ static NSString* const kIXDelay = @"delay";
     
     NSString* text = [actionProperties getStringPropertyValue:kIXText defaultValue:nil];
     
-    DDLogDebug(@"Log action: %@", text);
+    IX_LOG_DEBUG(@"Log action: %@", text);
 }
 
 @end

@@ -128,7 +128,7 @@
     NSString* propertyName = [property propertyName];
     if( property == nil || propertyName == nil )
     {
-        DDLogError(@"ERROR from %@ in %@ : TRYING TO ADD PROPERTY THAT IS NIL OR PROPERTIES NAME IS NIL",THIS_FILE,THIS_METHOD);
+        IX_LOG_ERROR(@"ERROR from %@ in %@ : TRYING TO ADD PROPERTY THAT IS NIL OR PROPERTIES NAME IS NIL",THIS_FILE,THIS_METHOD);
         return;
     }
     
@@ -334,7 +334,7 @@
                          }
                          
                      } failureBlock:^(NSError *err) {
-                         DDLogError(@"ERROR from %@ in %@ : Failed to load image from assets-library: %@",THIS_FILE,THIS_METHOD,[err localizedDescription]);
+                         IX_LOG_ERROR(@"ERROR from %@ in %@ : Failed to load image from assets-library: %@",THIS_FILE,THIS_METHOD,[err localizedDescription]);
                     }];
         }
         else

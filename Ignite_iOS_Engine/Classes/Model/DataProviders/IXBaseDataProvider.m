@@ -282,7 +282,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
                                              [weakSelf setOAuthCredential:credential];
                                              [weakSelf setRequestToEnqueAfterAuthentication:nil];
 
-                                             DDLogVerbose(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[self ID],[credential accessToken]);
+                                             IX_LOG_VERBOSE(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[self ID],[credential accessToken]);
                                              
                                              if( [oauthStorageID length] > 0 )
                                              {
@@ -409,12 +409,12 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
         if( [[self predicateFormat] length] > 0 && [predicateArgumentsArray count] > 0 )
         {
             predicate = [NSPredicate predicateWithFormat:[self predicateFormat] argumentArray:predicateArgumentsArray];
-            DDLogVerbose(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);
+            IX_LOG_VERBOSE(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);
         }
         return predicate;
     }
     @catch (NSException *exception) {
-        DDLogError(@"ERROR - BAD PREDICATE: %@", exception);
+        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
         return nil;
     }
     

@@ -149,7 +149,7 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    DDLogVerbose(@"TOUCHES BEGAN : %@", [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"TOUCHES BEGAN : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesBegan:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesBegan:touches withEvent:event];
@@ -158,7 +158,7 @@
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    DDLogVerbose(@"TOUCHES MOVED : %@", [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"TOUCHES MOVED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesMoved:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesMoved:touches withEvent:event];
@@ -167,7 +167,7 @@
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    DDLogVerbose(@"TOUCHES CANCELLED : %@", [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"TOUCHES CANCELLED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesCancelled:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesCancelled:touches withEvent:event];
@@ -176,7 +176,7 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    DDLogVerbose(@"TOUCHES ENDED : %@", [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"TOUCHES ENDED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTouchesEnded:withEvent:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTouchesEnded:touches withEvent:event];
@@ -185,7 +185,7 @@
 
 -(void)tapGestureRecognized:(UITapGestureRecognizer*)tapRecognizer
 {
-    DDLogVerbose(@"TAP RECOGNIZED WITH TAP COUNT %lu : %@", (unsigned long)[tapRecognizer numberOfTapsRequired], [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"TAP RECOGNIZED WITH TAP COUNT %lu : %@", (unsigned long)[tapRecognizer numberOfTapsRequired], [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewTapGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewTapGestureRecognized:tapRecognizer];
@@ -194,7 +194,7 @@
 
 -(void)swipeGestureRecognized:(UISwipeGestureRecognizer*)swipeRecognizer
 {
-    DDLogVerbose(@"SWIPE RECOGNIZED WITH SWIPE DIRECTION %lu : %@", (unsigned long)[swipeRecognizer direction], [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"SWIPE RECOGNIZED WITH SWIPE DIRECTION %lu : %@", (unsigned long)[swipeRecognizer direction], [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewSwipeGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewSwipeGestureRecognized:swipeRecognizer];
@@ -203,7 +203,7 @@
 
 -(void)pinchGestureRecognized:(UIPinchGestureRecognizer*)pinchRecognizer
 {
-    DDLogVerbose(@"PINCH RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"PINCH RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewPinchGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewPinchGestureRecognized:pinchRecognizer];
@@ -212,7 +212,7 @@
 
 -(void)panGestureRecognized:(UIPanGestureRecognizer*)panRecognizer
 {
-    DDLogVerbose(@"PAN RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
+    IX_LOG_VERBOSE(@"PAN RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewPanGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewPanGestureRecognized:panRecognizer];

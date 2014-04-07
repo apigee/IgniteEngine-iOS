@@ -274,7 +274,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             [self setShortCodeFunction:shortCodeFunction];
         }
         @catch (NSException *exception) {
-            DDLogDebug(@"ERROR: Unknown short-code method: %@", exception);
+            IX_LOG_DEBUG(@"ERROR: Unknown short-code method: %@", exception);
         }
     }
 }

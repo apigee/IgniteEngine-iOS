@@ -184,7 +184,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     self.selectedMedia = info[UIImagePickerControllerReferenceURL];
     
     [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
-    DDLogVerbose(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
+    IX_LOG_VERBOSE(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
     
     if(info != nil)
     {

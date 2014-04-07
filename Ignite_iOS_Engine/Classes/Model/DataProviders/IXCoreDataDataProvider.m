@@ -211,7 +211,7 @@
     }
     @catch (NSException * exception)
     {
-        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
         entity = nil;
     }
     return entity;
@@ -234,7 +234,7 @@
     }
     @catch (NSException * exception)
     {
-        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
@@ -280,7 +280,7 @@
     }
     @catch (NSException * exception)
     {
-        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
@@ -312,7 +312,7 @@
     }
     @catch (NSException * exception)
     {
-        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
@@ -325,7 +325,7 @@
             NSError* __autoreleasing error = nil;
             BOOL fetchSuccessful = [self.fetchedResultsController performFetch:&error];
             if (!fetchSuccessful) {
-                DDLogError(@"ERROR : %@ Error performing fetch in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
+                IX_LOG_ERROR(@"ERROR : %@ Error performing fetch in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
             }
             [self fireLoadFinishedEvents:fetchSuccessful];
         }
@@ -337,13 +337,13 @@
                                                [self.fetchedResultsController performFetch:nil];
                                            }
                                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                               DDLogError(@"ERROR : %@ Error performing get in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
+                                               IX_LOG_ERROR(@"ERROR : %@ Error performing get in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
                                            }];
         }
     }
     @catch (NSException * exception)
     {
-        DDLogError(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
+        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,exception);
     }
 }
 
