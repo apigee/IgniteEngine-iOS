@@ -12,6 +12,8 @@
 #import "IXPropertyContainer.h"
 #import "IXBaseDataProvider.h"
 
+static NSString* const kIXIndex = @"index";
+
 @implementation IXDatarowShortCode
 
 -(NSString*)evaluate
@@ -32,7 +34,14 @@
             keyPath = [parameterProperty getPropertyValue];
         }
         
-        returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+        if( [keyPath isEqualToString:kIXIndex] )
+        {
+            returnValue = [NSString stringWithFormat:@"%li",(long)rowIndexPath.row];
+        }
+        else
+        {
+            returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+        }
     }
     
     return returnValue;

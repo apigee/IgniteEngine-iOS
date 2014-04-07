@@ -27,6 +27,7 @@ static NSString* const kIXNavAnimationDuration = @"nav_animation_duration";
 static NSString* const kIXNavStackTypePush = @"push";
 static NSString* const kIXNavStackTypePop = @"pop";
 static NSString* const kIXNavStackTypeReplace = @"replace";
+static NSString* const kIXNavStackTypeExternal = @"external";
 
 // kIXNavAnimationType Types
 static NSString* const kIXNavAnimationTypeFlipFromLeft = @"flip_from_left";
@@ -84,6 +85,10 @@ static BOOL sIXIsAttemptingNavigation = NO;
         else if( [navigateStackType isEqualToString:kIXNavStackTypeReplace] )
         {
             [self performPushNavigation:YES];
+        }
+        else if( [navigateStackType isEqualToString:kIXNavStackTypeExternal] )
+        {
+            [self performExternalNavigation];
         }
         else
         {
@@ -188,6 +193,10 @@ static BOOL sIXIsAttemptingNavigation = NO;
                                            }
         }];
     }
+    else
+    {
+        [self navigationActionDidFinish:NO];
+    }
 }
 
 -(void)finishPushNavigationTo:(UIViewController*)viewController isReplaceStackType:(BOOL)isReplaceStackType
@@ -233,6 +242,21 @@ static BOOL sIXIsAttemptingNavigation = NO;
                              }];
         }
     }
+}
+
+-(void)performExternalNavigation
+{
+    BOOL didSucceed = NO;
+    NSString* navigateTo = [[self actionProperties] getStringPropertyValue:kIXTo defaultValue:nil];
+    if( [navigateTo length] > 0 )
+    {
+        NSURL* externalURL = [NSURL URLWithString:navigateTo];
+        if( externalURL && [[UIApplication sharedApplication] canOpenURL:externalURL] )
+        {
+            didSucceed = [[UIApplication sharedApplication] openURL:externalURL];
+        }
+    }
+    [self navigationActionDidFinish:didSucceed];
 }
 
 @end

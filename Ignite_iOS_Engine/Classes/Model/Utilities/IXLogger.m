@@ -13,6 +13,8 @@
 
 #import "IXAppManager.h"
 
+BOOL ixShouldLogUsingApigeeLogging = NO;
+
 #ifdef DEBUG
 int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
@@ -28,6 +30,9 @@ static NSString* const kIXLogLevelOff = @"off";
 static NSString* const kIXLogLevelRelease = @"release";
 
 @implementation IXLogger
+
+@synthesize remoteLoggingEnabled = _remoteLoggingEnabled;
+@synthesize apigeeClientAvailable = _apigeeClientAvailable;
 
 -(instancetype)init
 {
@@ -55,10 +60,16 @@ static NSString* const kIXLogLevelRelease = @"release";
     return sharedLogger;
 }
 
--(BOOL)shouldLogUsingApigeeLogging
+-(void)setApigeeClientAvailable:(BOOL)apigeeClientAvailable
 {
-    // Return YES only if the _remoteLoggingEnabled is set to YES and if the apigeeClient is actually set up.
-    return ( _remoteLoggingEnabled && _apigeeClientAvailable );
+    _apigeeClientAvailable = apigeeClientAvailable;
+    ixShouldLogUsingApigeeLogging = (_apigeeClientAvailable && _remoteLoggingEnabled);
+}
+
+-(void)setRemoteLoggingEnabled:(BOOL)remoteLoggingEnabled
+{
+    _remoteLoggingEnabled = remoteLoggingEnabled;
+    ixShouldLogUsingApigeeLogging = (_apigeeClientAvailable && _remoteLoggingEnabled);
 }
 
 -(void)setAppLogLevel:(NSString *)appLogLevel

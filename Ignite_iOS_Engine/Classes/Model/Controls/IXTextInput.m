@@ -42,6 +42,7 @@ static NSString* const kIXCursorColor = @"cursor.color";
 static NSString* const kIXAutoCorrect = @"autocorrect";
 static NSString* const kIXDismissOnReturn = @"dismiss_on_return";
 static NSString* const kIXLayoutToScroll = @"layout_to_scroll";
+static NSString* const kIXKeyboardAdjustsScreen = @"keyboard_adjusts_screen";
 static NSString* const kIXIsMultiLine = @"is_multiline";
 
 static NSString* const kIXInitialText = @"initial_text";
@@ -100,6 +101,7 @@ static NSString* const kIXNewLineString = @"\n";
 @property (nonatomic,assign,getter = isRegisteredForKeyboardNotifications) BOOL registeredForKeyboardNotifications;
 
 @property (nonatomic,weak) IXLayout* layoutToScroll;
+@property (nonatomic,assign) BOOL adjustsScrollWithScreen;
 @property (nonatomic,assign) CGSize layoutContentSizeAtStartOfEditing;
 
 @property (nonatomic,assign) NSInteger inputMaxAllowedCharacters;
@@ -127,6 +129,7 @@ static NSString* const kIXNewLineString = @"\n";
     [super buildView];
     
     _firstLoad = YES;
+    _adjustsScrollWithScreen = YES;
     _registeredForKeyboardNotifications = NO;
 }
 
@@ -273,7 +276,8 @@ static NSString* const kIXNewLineString = @"\n";
         }
     }
     
-    if( layoutToScroll == nil )
+    [self setAdjustsScrollWithScreen:[[self propertyContainer] getBoolPropertyValue:kIXKeyboardAdjustsScreen defaultValue:NO]];
+    if( layoutToScroll == nil && [self adjustsScrollWithScreen] )
     {
         layoutToScroll = [[[self sandbox] viewController] containerControl];
     }
@@ -429,40 +433,43 @@ static NSString* const kIXNewLineString = @"\n";
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    UIView* textInputView = nil;
-    if( [self isUsingUITextView] ) {
-        textInputView = [self textView];
+    if( [self adjustsScrollWithScreen] )
+    {
+        double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        UIView* textInputView = nil;
+        if( [self isUsingUITextView] ) {
+            textInputView = [self textView];
+        }
+        else {
+            textInputView = [self textField];
+        }
+        
+        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+        
+        CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
+        
+        CGPoint point = [scrollView contentOffset];
+        point.y += [textInputView bounds].size.height - keyboardHeight;
+        
+        if( point.y < 0.0f )
+            point.y = 0.0f;
+        
+        [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             
+                             [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
+                             [scrollView setContentOffset:point animated:YES];
+                             
+                         } completion:nil];
     }
-    else {
-        textInputView = [self textField];
-    }
-
-    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-
-    CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
-    
-    CGPoint point = [scrollView contentOffset];
-    point.y += [textInputView bounds].size.height - keyboardHeight;
-    
-    if( point.y < 0.0f )
-        point.y = 0.0f;
-    
-    [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
-                          delay:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^{
-                         
-                         [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
-                         [scrollView setContentOffset:point animated:YES];
-                         
-                     } completion:nil];
 }
 
 -(void)adjustScrollViewForKeyboard:(float)animationDuration
 {
-    if( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] )
+    if( ( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] ) || ![self adjustsScrollWithScreen] )
         return;
     
     CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
@@ -506,8 +513,11 @@ static NSString* const kIXNewLineString = @"\n";
 
 - (void)textInputDidEndEditing:(id<UITextInput>)textInput
 {
-    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-    [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
+    if( [self adjustsScrollWithScreen] )
+    {
+        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+        [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
+    }
     
     [self unregisterForKeyboardNotifications];
     
@@ -519,8 +529,11 @@ static NSString* const kIXNewLineString = @"\n";
 
 -(void)textInputDidBeginEditing:(id<UITextInput>)textInput
 {
-    UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-    [self setLayoutContentSizeAtStartOfEditing:[scrollView contentSize]];
+    if( [self adjustsScrollWithScreen] )
+    {
+        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
+        [self setLayoutContentSizeAtStartOfEditing:[scrollView contentSize]];
+    }
     
     [self registerForKeyboardNotifications];
     [self adjustScrollViewForKeyboard:kIXKeyboardAnimationDefaultDuration];

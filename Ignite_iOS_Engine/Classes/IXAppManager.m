@@ -132,11 +132,12 @@
     NSString* apigeeApplicationID = [[self appProperties] getStringPropertyValue:@"apigee_app_id" defaultValue:nil];
     NSString* apigeeBaseURL = [[self appProperties] getStringPropertyValue:@"apigee_base_url" defaultValue:nil];
     
-    if( [apigeeOrgName length] > 0 && [apigeeApplicationID length] > 0 )
+    BOOL apigeeOrgNameAndAppIDAreValid = ( [apigeeOrgName length] > 0 && [apigeeApplicationID length] > 0 );
+    [[IXLogger sharedLogger] setApigeeClientAvailable:apigeeOrgNameAndAppIDAreValid];
+    if( apigeeOrgNameAndAppIDAreValid )
     {
         [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName applicationId:apigeeApplicationID baseURL:apigeeBaseURL]];
         [[[self apigeeClient] dataClient] setLogging:YES];
-        [[IXLogger sharedLogger] setApigeeClientAvailable:YES];
     }
     
     BOOL remoteLoggingEnabled = [[self appProperties] getBoolPropertyValue:@"enable_remote_logging" defaultValue:NO];

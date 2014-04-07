@@ -11,6 +11,7 @@
 #import "IXConstants.h"
 
 extern int ddLogLevel;
+extern BOOL ixShouldLogUsingApigeeLogging;
 
 @interface IXLogger : NSObject
 
@@ -19,7 +20,5 @@ extern int ddLogLevel;
 @property (nonatomic,assign,getter = isRemoteLoggingEnabled) BOOL remoteLoggingEnabled;
 
 +(instancetype)sharedLogger;
-
--(BOOL)shouldLogUsingApigeeLogging;
 
 @end
