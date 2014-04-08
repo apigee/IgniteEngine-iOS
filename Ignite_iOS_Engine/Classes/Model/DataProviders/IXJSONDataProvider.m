@@ -334,7 +334,15 @@
     // if dict -> get value
     if ([currentNode isKindOfClass:[NSDictionary class]]) {
         NSDictionary *currentDict = (NSDictionary *) currentNode;
-        nextNode = currentDict[currentKey];
+        nextNode = currentDict[jsonXPath];
+        if( nextNode != nil )
+        {
+            return nextNode;
+        }
+        else
+        {
+            nextNode = currentDict[currentKey];
+        }
     }
     
     if ([currentNode isKindOfClass:[NSArray class]]) {
