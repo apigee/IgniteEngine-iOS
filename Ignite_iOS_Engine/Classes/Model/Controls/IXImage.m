@@ -13,6 +13,7 @@
 
 #import "IXWeakTimerTarget.h"
 #import "IXGIFImageView.h"
+#import "IXControlLayoutInfo.h"
 
 #import "UIImage+ResizeMagick.h"
 #import "UIImage+IXAdditions.h"
@@ -25,6 +26,8 @@ static NSString* const kIXImagesDefault = @"images.default";
 static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXImagesDefaultTintColor = @"images.default.tintColor";
 static NSString* const kIXImagesTouchTintColor = @"images.touch.tintColor";
+static NSString* const kIXImagesHeightMax = @"images.height.max";
+static NSString* const kIXImagesWidthMax = @"images.width.max";
 static NSString* const kIXGIFDuration = @"gif_duration";
 static NSString* const kIXFlipHorizontal = @"flip_horizontal";
 static NSString* const kIXFlipVertical = @"flip_vertical";
@@ -80,7 +83,32 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return size;
+    CGSize returnSize = CGSizeZero;
+    if( [[self imageView] image] != nil )
+    {
+        CGSize imageSize = [[[self imageView] image] size];
+        
+        float maxWidth = fminf(imageSize.width,[[self propertyContainer] getSizeValue:kIXImagesWidthMax
+                                                                          maximumSize:size.width
+                                                                         defaultValue:CGFLOAT_MAX]);
+        
+        float maxHeight = fminf(imageSize.height,[[self propertyContainer] getSizeValue:kIXImagesHeightMax
+                                                                            maximumSize:size.height
+                                                                           defaultValue:CGFLOAT_MAX]);
+
+        returnSize = CGSizeMake((int)maxWidth,(int)maxHeight);
+        
+        if( imageSize.width > maxWidth || imageSize.height > maxHeight )
+        {
+            float widthScaleFactor = maxWidth/imageSize.width;
+            float heightScaleFactor = maxHeight/imageSize.height;
+            float minScaleFactor = fminf(heightScaleFactor, widthScaleFactor);
+
+            returnSize.width = (int)(imageSize.width * minScaleFactor);
+            returnSize.height = (int)(imageSize.height * minScaleFactor);
+        }
+    }
+    return returnSize;
 }
 
 -(void)applySettings
@@ -105,7 +133,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
     }
     else
     {
-        __weak IXImage* weakSelf = self;
+        __weak typeof(self) weakSelf = self;
         
         NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
         NSString* resizeTouch = [self.propertyContainer getStringPropertyValue:kIXImagesTouchResize defaultValue:nil];
@@ -124,8 +152,25 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                               image = [image tintedImageUsingColor:defaultTintColor];
                                           
                                           weakSelf.defaultImage = image;
+                                          
+                                          BOOL needsToRefreshLayout = NO;
+                                          if( ![[self layoutInfo] heightWasDefined] || ![[self layoutInfo] widthWasDefined] )
+                                          {
+                                              CGSize oldSize = [[[weakSelf imageView] image] size];
+                                              CGSize newSize = [image size];
+                                              if( !CGSizeEqualToSize(oldSize, newSize) )
+                                              {
+                                                  needsToRefreshLayout = YES;
+                                              }
+                                          }
+                                          
                                           [[weakSelf imageView] setImage:image];
+                                          if( needsToRefreshLayout )
+                                          {
+                                              [self layoutControl];
+                                          }
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultLoaded];
+                                          
                                       } failBlock:^(NSError *error) {
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
                                       }];

@@ -78,7 +78,6 @@
 
 -(void)refreshLayoutInfo
 {
-    _hasSeenLayout = NO;
     _layoutRect = CGRectZero;
     
     _isHidden = ![[self propertyContainer] getBoolPropertyValue:@"visible" defaultValue:YES];

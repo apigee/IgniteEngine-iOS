@@ -33,7 +33,7 @@ static NSString* const kIXButtonTitles = @"button.titles"; //comma separated: OK
 static NSString* const kIXWillPresentAlert = @"will_present_alert";
 static NSString* const kIXDidPresentAlert = @"did_present_alert";
 static NSString* const kIXButtonPressed = @"button_pressed"; //default stand-in for index 0 (for laziness)
-static NSString* const kIXButtonIndexPressed = @"button_%u_pressed"; //0-based index of action to execute
+static NSString* const kIXButtonIndexPressed = @"button_%lu_pressed"; //0-based index of action to execute
 
 @interface IXAlertAction () <UIAlertViewDelegate>
 @property (nonatomic,strong) UIAlertView* alertView;

@@ -383,8 +383,6 @@
     for( IXBaseControl* control in [layoutControl childObjects] )
     {
         IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
-        [controlLayoutInfo setHasSeenLayout:YES];
-        
         if( [control contentView] == nil || [controlLayoutInfo isHidden] )
             continue;
         
