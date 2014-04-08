@@ -32,22 +32,61 @@ static NSString* const kIXNavStackTypeExternal = @"external";
 // kIXNavAnimationType Types
 static NSString* const kIXNavAnimationTypeFlipFromLeft = @"flip_from_left";
 static NSString* const kIXNavAnimationTypeFlipFromRight = @"flip_from_right";
+static NSString* const kIXNavAnimationTypeFlipFromTop = @"flip_from_top";
+static NSString* const kIXNavAnimationTypeFlipFromBottom = @"flip_from_bottom";
 static NSString* const kIXNavAnimationTypeCurlUp = @"curl_up";
 static NSString* const kIXNavAnimationTypeCurlDown = @"curl_down";
+static NSString* const kIXNavAnimationTypeCrossDissolve = @"cross_dissolve";
 
 // IXNavigateAction Events: kIX_SUCCESS and kIX_FAILED
 
 static BOOL sIXIsAttemptingNavigation = NO;
+typedef void(^IXNavAnimationCompletionBlock)();
 
 @interface IXNavigateAction ()
 
-@property (nonatomic,assign) UIViewAnimationTransition navAnimationTransitionType;
+@property (nonatomic,assign) BOOL isReplaceStackType;
+@property (nonatomic,assign) UIViewAnimationOptions navAnimationTransitionType;
 @property (nonatomic,assign) CGFloat navAnimationDelay;
 @property (nonatomic,assign) CGFloat navAnimationDuration;
 
 @end
 
 @implementation IXNavigateAction
+
++(UIViewAnimationOptions)stringToViewAnimationTransition:(NSString*)string
+{
+    UIViewAnimationOptions transition = UIViewAnimationOptionTransitionNone;
+    if( [string isEqualToString:kIXNavAnimationTypeFlipFromLeft] )
+    {
+        transition = UIViewAnimationOptionTransitionFlipFromLeft;
+    }
+    else if( [string isEqualToString:kIXNavAnimationTypeFlipFromRight] )
+    {
+        transition = UIViewAnimationOptionTransitionFlipFromRight;
+    }
+    else if( [string isEqualToString:kIXNavAnimationTypeFlipFromTop] )
+    {
+        transition = UIViewAnimationOptionTransitionFlipFromTop;
+    }
+    else if( [string isEqualToString:kIXNavAnimationTypeFlipFromBottom] )
+    {
+        transition = UIViewAnimationOptionTransitionFlipFromBottom;
+    }
+    else if( [string isEqualToString:kIXNavAnimationTypeCurlUp] )
+    {
+        transition = UIViewAnimationOptionTransitionCurlUp;
+    }
+    else if( [string isEqualToString:kIXNavAnimationTypeCurlDown] )
+    {
+        transition = UIViewAnimationOptionTransitionCurlDown;
+    }
+    else if( [string isEqualToString:kIXNavAnimationTypeCrossDissolve] )
+    {
+        transition = UIViewAnimationOptionTransitionCrossDissolve;
+    }
+    return transition;
+}
 
 -(void)navigationActionDidFinish:(BOOL)didSucceed
 {
@@ -78,45 +117,24 @@ static BOOL sIXIsAttemptingNavigation = NO;
         {
             [self performPopNavigation];
         }
-        if( [navigateStackType isEqualToString:kIXNavStackTypePush] )
+        else if( [navigateStackType isEqualToString:kIXNavStackTypePush] )
         {
-            [self performPushNavigation:NO];
-        }
-        else if( [navigateStackType isEqualToString:kIXNavStackTypeReplace] )
-        {
-            [self performPushNavigation:YES];
+            [self performPushNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypeExternal] )
         {
             [self performExternalNavigation];
+        }
+        else if( [navigateStackType isEqualToString:kIXNavStackTypeReplace] )
+        {
+            [self performPushNavigation];
+            [self setIsReplaceStackType:YES];
         }
         else
         {
             [self navigationActionDidFinish:NO];
         }
     }
-}
-
-+(UIViewAnimationTransition)stringToViewAnimationTransition:(NSString*)string
-{
-    UIViewAnimationTransition transition = UIViewAnimationTransitionNone;
-    if( [string isEqualToString:kIXNavAnimationTypeFlipFromLeft] )
-    {
-        transition = UIViewAnimationTransitionFlipFromLeft;
-    }
-    else if( [string isEqualToString:kIXNavAnimationTypeFlipFromRight] )
-    {
-        transition = UIViewAnimationTransitionFlipFromRight;
-    }
-    else if( [string isEqualToString:kIXNavAnimationTypeCurlUp] )
-    {
-        transition = UIViewAnimationTransitionCurlUp;
-    }
-    else if( [string isEqualToString:kIXNavAnimationTypeCurlDown] )
-    {
-        transition = UIViewAnimationTransitionCurlDown;
-    }
-    return transition;
 }
 
 -(void)performPopNavigation
@@ -126,53 +144,78 @@ static BOOL sIXIsAttemptingNavigation = NO;
     {
         NSString* popToViewID = [[self actionProperties] getStringPropertyValue:kIXNavPopToViewID defaultValue:nil];
         UIViewController* viewControllerToPopTo = [navController viewControllerWithID:popToViewID];
-                
-        if ( [self navAnimationTransitionType] == UIViewAnimationOptionTransitionNone )
+        if( viewControllerToPopTo == nil )
         {
-            [self finishPopToNavigationTo:viewControllerToPopTo animated:YES];
+            // If the view controller to pop to is nil then get the previous view controller and pop to that.
+            IXViewController* currentVC = [[IXAppManager sharedAppManager] currentIXViewController];
+            NSUInteger index = [[navController viewControllers] indexOfObject:currentVC];
+            if( index > 0 )
+            {
+                index--;
+            }
+            viewControllerToPopTo = [[navController viewControllers] objectAtIndex:index];
+        }
+        
+        if( viewControllerToPopTo == nil )
+        {
+            [self navigationActionDidFinish:NO];
         }
         else
         {
-            [UIView animateWithDuration:[self navAnimationDuration]
-                                  delay:[self navAnimationDelay]
-                                options:0
-                             animations:^{
-                                 
-                                 [self finishPopToNavigationTo:viewControllerToPopTo animated:NO];
-                                 [UIView setAnimationTransition:[self navAnimationTransitionType]
-                                                        forView:[navController view]
-                                                          cache:NO];
-                             } completion:nil];
-        }
-    }
-}
-
--(void)finishPopToNavigationTo:(UIViewController*)viewController animated:(BOOL)animated
-{
-    UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
-    if( [[navController viewControllers] count] > 1 )
-    {
-        if( viewController )
-        {
-            if( viewController == [[navController viewControllers] firstObject] )
+            if ( [self navAnimationTransitionType] == UIViewAnimationOptionTransitionNone )
             {
-                [navController popToRootViewControllerAnimated:animated];
+                UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+                if( viewControllerToPopTo == [[navController viewControllers] firstObject] )
+                {
+                    [navController popToRootViewControllerAnimated:YES];
+                }
+                else
+                {
+                    [navController popToViewController:viewControllerToPopTo animated:YES];
+                }                
+                [self navigationActionDidFinish:YES];
             }
             else
             {
-                [navController popToViewController:viewController animated:animated];
+                if( [self navAnimationDelay] > 0.0f )
+                {
+                    [self performSelector:@selector(animatePopToNavigationTo:)
+                               withObject:viewControllerToPopTo
+                               afterDelay:[self navAnimationDelay]];
+                }
+                else
+                {
+                    [self animatePopToNavigationTo:viewControllerToPopTo];
+                }
             }
+
+        }
+    }
+}
+
+-(void)animatePopToNavigationTo:(UIViewController*)viewController
+{
+    UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+    if( [[navController viewControllers] count] > 1 && viewController != nil )
+    {
+        [self performAnimationToView:[viewController view]];
+        
+        if( viewController == [[navController viewControllers] firstObject] )
+        {
+            [navController popToRootViewControllerAnimated:NO];
         }
         else
         {
-            [navController popViewControllerAnimated:animated];
+            [navController popToViewController:viewController animated:NO];
         }
     }
-    
-    [self navigationActionDidFinish:YES];
+    else
+    {
+        [self navigationActionDidFinish:NO];
+    }
 }
 
--(void)performPushNavigation:(BOOL)isReplaceStackType
+-(void)performPushNavigation
 {
     NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
     if( navigateTo )
@@ -183,8 +226,7 @@ static BOOL sIXIsAttemptingNavigation = NO;
                                        
                                            if( didSucceed && viewController != nil )
                                            {
-                                               [self finishPushNavigationTo:viewController
-                                                         isReplaceStackType:isReplaceStackType];
+                                               [self finishPushNavigationTo:viewController];
                                            }
                                            else
                                            {
@@ -199,14 +241,14 @@ static BOOL sIXIsAttemptingNavigation = NO;
     }
 }
 
--(void)finishPushNavigationTo:(UIViewController*)viewController isReplaceStackType:(BOOL)isReplaceStackType
+-(void)finishPushNavigationTo:(IXViewController*)viewController
 {
     if( viewController != nil )
     {
         UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
         if ( [self navAnimationTransitionType] == UIViewAnimationOptionTransitionNone )
         {
-            if( isReplaceStackType )
+            if( [self isReplaceStackType] )
             {
                 [navController setViewControllers:@[viewController] animated:YES];
             }
@@ -219,28 +261,43 @@ static BOOL sIXIsAttemptingNavigation = NO;
         }
         else
         {
-            [UIView animateWithDuration:[self navAnimationDuration]
-                                  delay:[self navAnimationDelay]
-                                options:0
-                             animations:^{
-                                 
-                                 if( isReplaceStackType )
-                                 {
-                                     [navController setViewControllers:@[viewController] animated:NO];
-                                 }
-                                 else
-                                 {
-                                     [navController pushViewController:viewController animated:NO];
-                                 }
-                                 
-                                 [UIView setAnimationTransition:[self navAnimationTransitionType]
-                                                        forView:[navController view]
-                                                          cache:NO];
-                                 
-                             } completion:^(BOOL finished) {
-                                 [self navigationActionDidFinish:YES];
-                             }];
+            if( [self navAnimationDelay] > 0.0f )
+            {
+                [self performSelector:@selector(animatePushToViewController:)
+                           withObject:viewController
+                           afterDelay:[self navAnimationDelay]];
+            }
+            else
+            {
+                [self animatePushToViewController:viewController];
+            }
         }
+    }
+    else
+    {
+        [self navigationActionDidFinish:NO];
+    }
+}
+
+-(void)animatePushToViewController:(UIViewController*)viewController
+{
+    if( viewController != nil )
+    {
+        [self performAnimationToView:[viewController view]];
+        
+        UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+        if( [self isReplaceStackType] )
+        {
+            [navController setViewControllers:@[viewController] animated:NO];
+        }
+        else
+        {
+            [navController pushViewController:viewController animated:NO];
+        }
+    }
+    else
+    {
+        [self navigationActionDidFinish:NO];
     }
 }
 
@@ -257,6 +314,17 @@ static BOOL sIXIsAttemptingNavigation = NO;
         }
     }
     [self navigationActionDidFinish:didSucceed];
+}
+
+-(void)performAnimationToView:(UIView*)toView
+{
+    [UIView transitionFromView:[[[IXAppManager sharedAppManager] currentIXViewController] view]
+                        toView:toView
+                      duration:[self navAnimationDuration]
+                       options:[self navAnimationTransitionType]
+                    completion:^(BOOL finished) {
+                        [self navigationActionDidFinish:YES];
+                    }];
 }
 
 @end
