@@ -154,7 +154,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                           weakSelf.defaultImage = image;
                                           
                                           BOOL needsToRefreshLayout = NO;
-                                          if( ![[self layoutInfo] heightWasDefined] || ![[self layoutInfo] widthWasDefined] )
+                                          if( ![[weakSelf layoutInfo] heightWasDefined] || ![[weakSelf layoutInfo] widthWasDefined] )
                                           {
                                               CGSize oldSize = [[[weakSelf imageView] image] size];
                                               CGSize newSize = [image size];
@@ -167,7 +167,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                           [[weakSelf imageView] setImage:image];
                                           if( needsToRefreshLayout )
                                           {
-                                              [self layoutControl];
+                                              [weakSelf layoutControl];
                                           }
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultLoaded];
                                           
