@@ -36,9 +36,9 @@
  *
  * these interfaces wrap all library functionality into an easy-to-use
  * package for a specific toolkit:
- * - the "GTK+ 2.x control" may be used with GTK GUI applications.  a
+ * - the "GTK+ 2.x widget" may be used with GTK GUI applications.  a
  *   Python wrapper is included for PyGtk
- * - the @ref zbar::QZBar "Qt4 control" may be used with Qt GUI
+ * - the @ref zbar::QZBar "Qt4 widget" may be used with Qt GUI
  *   applications
  * - the Processor interface (in @ref c-processor "C" or @ref
  *   zbar::Processor "C++") adds a scanning window to an application
@@ -656,7 +656,7 @@ extern void zbar_image_set_format(zbar_image_t *image,
 extern void zbar_image_set_sequence(zbar_image_t *image,
                                     unsigned sequence_num);
 
-/** specify the pIXl size of the image.
+/** specify the pixel size of the image.
  * @note this also resets the crop rectangle to the full image
  * (0, 0, width, height)
  * @note this does not affect the data!
@@ -702,7 +702,7 @@ extern void zbar_image_set_userdata(zbar_image_t *image,
 extern void *zbar_image_get_userdata(const zbar_image_t *image);
 
 /** dump raw image data to a file for debug.
- * the data will be prefIXd with a 16 byte header consisting of:
+ * the data will be prefixed with a 16 byte header consisting of:
  *   - 4 bytes uint = 0x676d697a ("zimg")
  *   - 4 bytes format fourcc
  *   - 2 bytes width

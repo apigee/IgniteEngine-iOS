@@ -16,6 +16,7 @@ extern BOOL ixShouldLogUsingApigeeLogging;
 @interface IXLogger : NSObject
 
 @property (nonatomic,copy) NSString* appLogLevel;
+@property (nonatomic,assign,getter = isRequestLoggingEnabled) BOOL requestLoggingEnabled;
 @property (nonatomic,assign,getter = isApigeeClientAvailable) BOOL apigeeClientAvailable;
 @property (nonatomic,assign,getter = isRemoteLoggingEnabled) BOOL remoteLoggingEnabled;
 

@@ -15,7 +15,7 @@ typedef struct qr_finder_line qr_finder_line;
 
 /*The number of bits of subpel precision to store image coordinates in.
   This helps when estimating positions in low-resolution images, which may have
-   a module pitch only a pIXl or two wide, making rounding errors matter a
+   a module pitch only a pixel or two wide, making rounding errors matter a
    great deal.*/
 #define QR_FINDER_SUBPREC (2)
 

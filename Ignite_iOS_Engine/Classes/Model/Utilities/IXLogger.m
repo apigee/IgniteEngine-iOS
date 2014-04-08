@@ -10,6 +10,7 @@
 
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
+#import "AFHTTPRequestOperationLogger.h"
 
 #import "IXAppManager.h"
 
@@ -31,6 +32,7 @@ static NSString* const kIXLogLevelRelease = @"release";
 
 @implementation IXLogger
 
+@synthesize requestLoggingEnabled = _requestLoggingEnabled;
 @synthesize remoteLoggingEnabled = _remoteLoggingEnabled;
 @synthesize apigeeClientAvailable = _apigeeClientAvailable;
 
@@ -39,6 +41,7 @@ static NSString* const kIXLogLevelRelease = @"release";
     self = [super init];
     if( self )
     {
+        _requestLoggingEnabled = NO;
         _remoteLoggingEnabled = NO;
         _apigeeClientAvailable = NO;
         
@@ -58,6 +61,21 @@ static NSString* const kIXLogLevelRelease = @"release";
         sharedLogger = [[IXLogger alloc] init];
     });
     return sharedLogger;
+}
+
+-(void)setRequestLoggingEnabled:(BOOL)requestLoggingEnabled
+{
+    _requestLoggingEnabled = requestLoggingEnabled;
+    if( requestLoggingEnabled )
+    {
+        [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
+        [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    }
+    else
+    {
+        [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelOff];
+        [[AFHTTPRequestOperationLogger sharedLogger] stopLogging];
+    }
 }
 
 -(void)setApigeeClientAvailable:(BOOL)apigeeClientAvailable

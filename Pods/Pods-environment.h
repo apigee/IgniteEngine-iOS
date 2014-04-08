@@ -6,6 +6,12 @@
 // project.
 
 
+// AFHTTPRequestOperationLogger
+#define COCOAPODS_POD_AVAILABLE_AFHTTPRequestOperationLogger
+#define COCOAPODS_VERSION_MAJOR_AFHTTPRequestOperationLogger 1
+#define COCOAPODS_VERSION_MINOR_AFHTTPRequestOperationLogger 0
+#define COCOAPODS_VERSION_PATCH_AFHTTPRequestOperationLogger 0
+
 // AFNetworking
 #define COCOAPODS_POD_AVAILABLE_AFNetworking
 #define COCOAPODS_VERSION_MAJOR_AFNetworking 1
