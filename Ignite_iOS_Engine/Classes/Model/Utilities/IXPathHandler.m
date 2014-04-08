@@ -16,6 +16,7 @@ static NSString* const kIXHTTPPrefix = @"http://";
 static NSString* const kIXHTTPSPrefix = @"https://";
 static NSString* const kIXDocsPrefix = @"docs://";
 static NSString* const kIXCachePrefix = @"cache://";
+static NSString* const kIXDevicePrefix = @"device://";
 static NSString* const kIXAssetsLibraryPrefix = @"assets-library://";
 
 @implementation IXPathHandler
@@ -46,6 +47,11 @@ static NSString* const kIXAssetsLibraryPrefix = @"assets-library://";
     return [path hasPrefix:kIXDocsPrefix];
 }
 
++(BOOL)pathIsDevice:(NSString*)path
+{
+    return [path hasPrefix:kIXDevicePrefix];
+}
+
 +(BOOL)pathIsCache:(NSString*)path
 {
     return [path hasPrefix:kIXCachePrefix];
@@ -61,6 +67,10 @@ static NSString* const kIXAssetsLibraryPrefix = @"assets-library://";
         if( [pathToNormalize hasPrefix:sIXBundleRootPath] )
         {
             normalizedPath = pathToNormalize;
+        }
+        else if( [IXPathHandler pathIsDevice:pathToNormalize] )
+        {
+            normalizedPath = [sIXBundleRootPath stringByAppendingPathComponent:[pathToNormalize substringFromIndex:[kIXDevicePrefix length]]];
         }
         else if( ![IXPathHandler pathIsLocal:pathToNormalize] || [IXPathHandler pathIsAssetsLibrary:pathToNormalize] )
         {

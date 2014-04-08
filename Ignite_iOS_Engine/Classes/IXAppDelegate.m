@@ -22,43 +22,32 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeAlert)];
+    
     [self setIxWindow:[[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
     [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] rootViewController]];
     
     [[IXAppManager sharedAppManager] startApplication];
     
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    [[self ixWindow] makeKeyAndVisible];
     
-    NSDictionary* remoteNotificationInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    NSDictionary* remoteNotificationInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if( remoteNotificationInfo != nil )
     {
-        //[self handlePushNotification:remoteNotificationInfo forApplication:application];
+        [[IXAppManager sharedAppManager] appDidRecieveRemoteNotification:remoteNotificationInfo];
     }
-    
-    [[self ixWindow] makeKeyAndVisible];
-
+        
     return YES;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken
 {
-    IXAppManager* sharedAppManager = [IXAppManager sharedAppManager];
+    [[IXAppManager sharedAppManager] appDidRegisterRemoteNotificationDeviceToken:newDeviceToken];
+}
 
-    ApigeeDataClient* apigeeDataClient = [[sharedAppManager apigeeClient] dataClient];
-    if( apigeeDataClient != nil )
-    {
-        IXPropertyContainer* appProperties = [sharedAppManager appProperties];
-        NSString* apigeePushNotifier = [appProperties getStringPropertyValue:@"apigee_push_notifier"
-                                                                defaultValue:nil];
-        
-        ApigeeClientResponse *response = [apigeeDataClient setDevicePushToken:newDeviceToken
-                                                                  forNotifier:apigeePushNotifier];
-        
-        if( ![response completedSuccessfully])
-        {
-            IX_LOG_ERROR(@"Error Setting Push Token with ApigeeClient : %@", [response rawResponse]);
-        }
-    }
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [[IXAppManager sharedAppManager] appDidRecieveRemoteNotification:userInfo];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

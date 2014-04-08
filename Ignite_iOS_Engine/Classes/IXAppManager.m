@@ -22,6 +22,8 @@
 #import "IXPropertyContainer.h"
 #import "IXViewController.h"
 #import "IXDeviceInfo.h"
+#import "IXBaseAction.h"
+#import "IXLayout.h"
 
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"
@@ -67,6 +69,38 @@
 -(IXViewController*)currentIXViewController
 {
     return (IXViewController*) [[self rootViewController] topViewController];
+}
+
+-(void)appDidRegisterRemoteNotificationDeviceToken:(NSData *)deviceToken
+{
+    ApigeeDataClient* apigeeDataClient = [[self apigeeClient] dataClient];
+    if( apigeeDataClient != nil )
+    {
+        IXPropertyContainer* appProperties = [self appProperties];
+        NSString* apigeePushNotifier = [appProperties getStringPropertyValue:@"apigee_push_notifier"
+                                                                defaultValue:nil];
+        
+        ApigeeClientResponse *response = [apigeeDataClient setDevicePushToken:deviceToken
+                                                                  forNotifier:apigeePushNotifier];
+        
+        if( ![response completedSuccessfully])
+        {
+            IX_LOG_ERROR(@"Error Setting Push Token with ApigeeClient : %@", [response rawResponse]);
+        }
+    }
+}
+
+-(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo
+{
+    // Example Push Notificaiton String = NSString* pushNotification = @"{\"apple\":{\"aps\":{\"alert\":\"[apns-test] Some Text!\",\"sound\":\"chime\",\"badge\":0},\"action\":[\"navigate\",{\"attributes\":{\"to\":\"device://assets/examples/IXButtonControlExample.json\"}}]}}";
+
+    IXBaseAction* action = [IXBaseAction actionWithRemoteNotificationInfo:userInfo[@"apple"]];
+    if( action )
+    {
+        IXViewController* currentVC = [self currentIXViewController];
+        [action setActionContainer:[[currentVC containerControl] actionContainer]];
+        [action execute];
+    }
 }
 
 -(void)startApplication

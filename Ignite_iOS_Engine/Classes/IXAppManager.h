@@ -50,6 +50,8 @@
 +(IXAppManager*)sharedAppManager;
 
 -(void)startApplication;
+-(void)appDidRegisterRemoteNotificationDeviceToken:(NSData *)deviceToken;
+-(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo;
 
 -(IXViewController*)currentIXViewController;
 

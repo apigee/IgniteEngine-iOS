@@ -26,8 +26,13 @@
              parameterProperties:(IXPropertyContainer*)parameterProperties
               subActionContainer:(IXActionContainer*)subActionContainer;
 
-+(instancetype)actionWithEventName:(NSString*)eventName jsonDictionary:(NSDictionary*)actionJSONDict;
-+(NSArray*)actionsWithEventNames:(NSArray*)eventNames jsonDictionary:(NSDictionary*)actionJSONDict;
++(instancetype)actionWithEventName:(NSString*)eventName
+                    jsonDictionary:(NSDictionary*)actionJSONDict;
+
++(instancetype)actionWithRemoteNotificationInfo:(NSDictionary *)remoteNotificationInfo;
+
++(NSArray*)actionsWithEventNames:(NSArray*)eventNames
+                  jsonDictionary:(NSDictionary*)actionJSONDict;
 
 -(void)execute;
 -(void)actionDidFinishWithEvents:(NSArray*)actionsToFire;

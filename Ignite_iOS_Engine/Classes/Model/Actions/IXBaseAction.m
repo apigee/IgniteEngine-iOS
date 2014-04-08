@@ -44,6 +44,42 @@
     return actionCopy;
 }
 
++(instancetype)actionWithRemoteNotificationInfo:(NSDictionary *)remoteNotificationInfo
+{
+    IXBaseAction* action = nil;
+    id actionArray = [remoteNotificationInfo objectForKey:@"action"];
+    if( [actionArray isKindOfClass:[NSArray class]] )
+    {
+        Class actionClass = nil;
+        id type = [actionArray firstObject];
+        if( [type isKindOfClass:[NSString class]] )
+        {
+            NSString* actionClassString = [NSString stringWithFormat:kIX_ACTION_CLASS_NAME_FORMAT,[type capitalizedString]];
+            actionClass = NSClassFromString(actionClassString);
+        }
+        
+        if( [actionClass isSubclassOfClass:[IXBaseAction class]] )
+        {
+            id attributesTopLevelDict = [actionArray objectAtIndex:1];
+            if( [attributesTopLevelDict isKindOfClass:[NSDictionary class]] )
+            {
+                IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:attributesTopLevelDict[kIX_ATTRIBUTES]];
+                IXPropertyContainer* parameterContainer = [IXPropertyContainer propertyContainerWithJSONDict:attributesTopLevelDict[kIX_SET]];;
+                IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:attributesTopLevelDict[kIX_ACTIONS]];
+                
+                action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:@"push_recieved"
+                                                                actionProperties:propertyContainer
+                                                             parameterProperties:parameterContainer
+                                                              subActionContainer:subActionContainer];
+                
+                [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:attributesTopLevelDict[kIX_ORIENTATION]]];
+                [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:attributesTopLevelDict[kIX_IF]]];
+            }
+        }
+    }
+    return action;
+}
+
 +(instancetype)actionWithEventName:(NSString*)eventName jsonDictionary:(NSDictionary*)actionJSONDict;
 {
     IXBaseAction* action = nil;
