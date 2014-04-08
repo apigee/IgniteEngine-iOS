@@ -174,6 +174,9 @@
         [[[self apigeeClient] dataClient] setLogging:YES];
     }
     
+    BOOL requestLoggingEnabled = [[self appProperties] getBoolPropertyValue:@"enable_request_logging" defaultValue:NO];
+    [[IXLogger sharedLogger] setRequestLoggingEnabled:requestLoggingEnabled];
+
     BOOL remoteLoggingEnabled = [[self appProperties] getBoolPropertyValue:@"enable_remote_logging" defaultValue:NO];
     [[IXLogger sharedLogger] setRemoteLoggingEnabled:remoteLoggingEnabled];
 
