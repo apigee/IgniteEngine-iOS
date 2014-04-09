@@ -197,8 +197,41 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
             {
                 if( [storedCredential isExpired] )
                 {
-                    // FIXME: Need to try to get the token with the refresh token here instead of deleting it.
-                    [AFOAuthCredential deleteCredentialWithIdentifier:storageID];
+                    __weak typeof(self) weakSelf = self;
+                    __weak typeof(oauth2Client) weakOAuth2Client = oauth2Client;
+
+                    AFHTTPClientParameterEncoding paramEncoding = [oauth2Client parameterEncoding];
+                    [oauth2Client setParameterEncoding:AFFormURLParameterEncoding];
+
+                    [oauth2Client authenticateUsingOAuthWithPath:[self oAuthAccessTokenPath]
+                                                    refreshToken:[storedCredential refreshToken]
+                                                         success:^(AFOAuthCredential *credential) {
+                                                             
+                                                             [weakOAuth2Client setParameterEncoding:paramEncoding];
+                                                             [weakSelf setOAuthCredential:credential];
+                                                             
+                                                             IX_LOG_VERBOSE(@"%@ : Did refresh access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[weakSelf ID],[credential accessToken]);
+                                                             
+                                                             if( [storageID length] > 0 )
+                                                             {
+                                                                 [AFOAuthCredential storeCredential:credential withIdentifier:storageID];
+                                                             }
+                                                             
+                                                             [[weakSelf actionContainer] executeActionsForEventNamed:kIXAuthSuccess];
+                                                             
+                                                             if( requestOperation )
+                                                             {
+                                                                 [weakOAuth2Client enqueueHTTPRequestOperation:requestOperation];
+                                                             }
+                                                             
+                                                         } failure:^(NSError *error) {
+                                                             
+                                                             [AFOAuthCredential deleteCredentialWithIdentifier:storageID];
+                                                             [weakOAuth2Client setParameterEncoding:paramEncoding];
+                                                             [weakSelf authenticateAndEnqueRequestOperation:requestOperation];
+                                                             
+                                                         }];
+                    return;
                 }
                 else
                 {
@@ -282,7 +315,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
                                              [weakSelf setOAuthCredential:credential];
                                              [weakSelf setRequestToEnqueAfterAuthentication:nil];
 
-                                             IX_LOG_VERBOSE(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[self ID],[credential accessToken]);
+                                             IX_LOG_VERBOSE(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[weakSelf ID],[credential accessToken]);
                                              
                                              if( [oauthStorageID length] > 0 )
                                              {
