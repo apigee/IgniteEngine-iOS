@@ -35,6 +35,7 @@ static NSString* const kIXDataBaseUrl = @"data.baseurl";
 static NSString* const kIXDataPath = @"data.path";
 static NSString* const kIXAutoLoad = @"auto_load";
 static NSString* const kIXAuthType = @"auth_type";
+static NSString* const kIXCacheID = @"cache_id";
 
 static NSString* const kIXOAuthClientID = @"oauth.client_id";
 static NSString* const kIXOAuthSecret = @"oauth.secret";
@@ -66,10 +67,13 @@ static NSString* const kIXAuthFail = @"auth_fail";
 
 // Non Property constants.
 static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
+static NSCache* sIXDataProviderCache = nil;
 
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
 
+@property (nonatomic,assign) BOOL isFirstLoad;
 @property (nonatomic,assign) BOOL isLocalPath;
+@property (nonatomic,copy) NSString* cacheID;
 
 @property (nonatomic,strong) AFHTTPRequestOperation* requestToEnqueAfterAuthentication;
 
@@ -92,6 +96,10 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 +(void)initialize
 {
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sIXDataProviderCache = [[NSCache alloc] init];
+    });
 }
 
 -(void)setRequestHeaderProperties:(IXPropertyContainer *)requestHeaderProperties
@@ -117,6 +125,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     [super applySettings];
     
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:kIXAutoLoad defaultValue:NO]];
+    [self setCacheID:[[self propertyContainer] getStringPropertyValue:kIXCacheID defaultValue:nil]];
     [self setDataLocation:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
     [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
     [self setPredicateFormat:[[self propertyContainer] getStringPropertyValue:kIXPredicateFormat defaultValue:nil]];
@@ -164,7 +173,15 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 
 -(void)loadData:(BOOL)forceGet
 {
-    // Base Provider does nothing... Might need to update this.
+    if( [self cacheID] != nil )
+    {
+        NSString* cachedResponse = [sIXDataProviderCache objectForKey:[self cacheID]];
+        if( [cachedResponse length] > 0 )
+        {
+            [self setRawResponse:cachedResponse];
+            [self fireLoadFinishedEventsFromCachedResponse];
+        }
+    }
 }
 
 -(NSString*)buildAccessCodeURL
@@ -283,7 +300,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 {
     [self setRequestToEnqueAfterAuthentication:nil];
     [self setLastResponseErrorMessage:[error description]];
-    [self fireLoadFinishedEvents:@[kIXAuthFail]];
+    [self fireLoadFinishedEvents:@[kIXAuthFail] shouldCacheResponse:NO];
     
     if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
     {
@@ -334,7 +351,7 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
                                              [[weakSelf httpClient] setParameterEncoding:paramEncoding];
                                              [weakSelf setRequestToEnqueAfterAuthentication:nil];
                                              [weakSelf setLastResponseErrorMessage:[error description]];
-                                             [weakSelf fireLoadFinishedEvents:@[kIXAuthFail]];
+                                             [weakSelf fireLoadFinishedEvents:@[kIXAuthFail] shouldCacheResponse:NO];
                                         }];
     
     if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
@@ -344,7 +361,12 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     }
 }
 
--(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
+-(void)fireLoadFinishedEventsFromCachedResponse
+{
+    [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
+}
+
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
 {
     if( loadDidSucceed )
     {
@@ -357,8 +379,19 @@ static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
     
     [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification
-                                                        object:self];
+    dispatch_async(dispatch_get_main_queue(),^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification
+                                                            object:self];
+    });
+
+    if( loadDidSucceed && shouldCacheResponse )
+    {
+        if ( [[self cacheID] length] > 0 && [[self rawResponse] length] > 0 )
+        {
+            [sIXDataProviderCache setObject:[self rawResponse]
+                                     forKey:[self cacheID]];
+        }
+    }
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName

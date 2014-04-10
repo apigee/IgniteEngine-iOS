@@ -327,7 +327,7 @@
             if (!fetchSuccessful) {
                 IX_LOG_ERROR(@"ERROR : %@ Error performing fetch in %@ : %@",THIS_FILE,THIS_METHOD,[error description]);
             }
-            [self fireLoadFinishedEvents:fetchSuccessful];
+            [self fireLoadFinishedEvents:fetchSuccessful shouldCacheResponse:NO];
         }
         if( _needsToPerformGet || forceGet )
         {
@@ -349,7 +349,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self fireLoadFinishedEvents:YES];
+    [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
 }
 
 -(NSUInteger)getRowCount

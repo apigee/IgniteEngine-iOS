@@ -37,7 +37,8 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 -(void)loadData:(BOOL)forceGet;
 -(void)authenticateAndEnqueRequestOperation:(AFHTTPRequestOperation*)requestOperation;
--(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
+-(void)fireLoadFinishedEventsFromCachedResponse;
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 
 -(NSUInteger)getRowCount;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;

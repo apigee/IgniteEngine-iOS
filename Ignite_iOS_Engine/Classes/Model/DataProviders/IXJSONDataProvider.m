@@ -64,13 +64,26 @@
     }
 }
 
+-(void)fireLoadFinishedEventsFromCachedResponse
+{
+    NSString* rawResponseString = [self rawResponse];
+    NSData* rawResponseData = [rawResponseString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError* __autoreleasing error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:rawResponseData options:0 error:&error];
+    if( jsonObject )
+    {
+        [self setLastJSONResponse:jsonObject];
+        [super fireLoadFinishedEventsFromCachedResponse];
+    }
+}
+
 -(void)loadData:(BOOL)forceGet
 {
     [super loadData:forceGet];
     
     if (forceGet == NO)
     {
-        [self fireLoadFinishedEvents:YES];
+        [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
     }
     else
     {
@@ -98,12 +111,12 @@
                         NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                         [weakSelf setRawResponse:jsonString];
                         [weakSelf setLastJSONResponse:JSON];
-                        [weakSelf fireLoadFinishedEvents:YES];
+                        [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
                     }
                     else
                     {
                         [weakSelf setLastResponseErrorMessage:[jsonConvertError description]];
-                        [weakSelf fireLoadFinishedEvents:NO];
+                        [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                     }
                     
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -124,7 +137,7 @@
                     @catch (NSException *exception) {
                         IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,[exception description]);
                     }
-                    [weakSelf fireLoadFinishedEvents:NO];
+                    [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                 }];
                 
                 [self authenticateAndEnqueRequestOperation:operation];
@@ -147,7 +160,7 @@
                 __weak typeof(self) weakSelf = self;
                 [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
                                                              asynch:YES
-                                                        shouldCache:YES
+                                                        shouldCache:NO
                                                     completionBlock:^(id jsonObject, NSError *error) {
                                                         
                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -168,14 +181,14 @@
                                                                 [weakSelf setRawResponse:jsonString];
                                                                 [weakSelf setLastJSONResponse:jsonObject];
                                                                 IX_dispatch_main_sync_safe(^{
-                                                                    [weakSelf fireLoadFinishedEvents:YES];
+                                                                    [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
                                                                 });
                                                             }
                                                             else
                                                             {
                                                                 [weakSelf setLastResponseErrorMessage:[jsonError description]];
                                                                 IX_dispatch_main_sync_safe(^{
-                                                                    [weakSelf fireLoadFinishedEvents:NO];
+                                                                    [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                                                                 });
                                                             }
                                                         });
@@ -189,7 +202,7 @@
     }
 }
 
--(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
 {
     [self setRowDataResults:nil];
     if( loadDidSucceed )
@@ -224,7 +237,7 @@
             [self setRowDataResults:rowDataResults];
         }
     }
-    [super fireLoadFinishedEvents:loadDidSucceed];
+    [super fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse];
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
