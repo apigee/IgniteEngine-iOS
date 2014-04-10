@@ -12,6 +12,10 @@
 #import "SDWebImageManager.h"
 #import "IXJSONGrabber.h"
 #import "IXControlCacheContainer.h"
+#import "IXDeviceInfo.h"
+#import "IXBaseDataProvider.h"
+
+#import "NSString+IXAdditions.h"
 
 @implementation IXWindow
 
@@ -32,13 +36,18 @@
     if (event.type == UIEventTypeMotion &&
         event.subtype == UIEventSubtypeMotionShake)
     {
-        // Clear caches.
-        [[[SDWebImageManager sharedManager] imageCache] clearMemory];
-        [[[SDWebImageManager sharedManager] imageCache] clearDisk];
-        [IXJSONGrabber clearCache];
-        [IXControlCacheContainer clearCache];
-        
-        [[IXAppManager sharedAppManager] startApplication];
+        if ([[IXDeviceInfo deviceType] containsSubstring:@"simulator" options:NSCaseInsensitiveSearch])
+        {
+            // Clear caches.
+            [[[SDWebImageManager sharedManager] imageCache] clearMemory];
+            [[[SDWebImageManager sharedManager] imageCache] clearDisk];
+            
+            [IXControlCacheContainer clearCache];
+            [IXBaseDataProvider clearCache];
+            [IXJSONGrabber clearCache];
+            
+            [[IXAppManager sharedAppManager] startApplication];
+        }
     }
 }
 

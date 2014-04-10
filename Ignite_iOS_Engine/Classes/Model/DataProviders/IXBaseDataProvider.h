@@ -43,4 +43,6 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 -(NSUInteger)getRowCount;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;
 
++(void)clearCache;
+
 @end
