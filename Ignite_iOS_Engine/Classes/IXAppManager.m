@@ -128,7 +128,7 @@
                                                 
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
                                                 [[self sessionProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
-                                                [self loadSessionSettings];
+                                                [self loadStoredSessionProperties];
 
                                                 NSDictionary* deviceInfoPropertiesDict = @{
                                                                                            @"model": [IXDeviceInfo deviceModel],
@@ -272,7 +272,7 @@
     }
 }
 
--(void)loadSessionSettings
+-(void)loadStoredSessionProperties
 {
     NSData* sessionPropertiesData = [[NSUserDefaults standardUserDefaults] dataForKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
     if( sessionPropertiesData )
