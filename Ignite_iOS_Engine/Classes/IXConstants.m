@@ -19,6 +19,7 @@ NSString* const kIX_DATA_PROVIDER_CLASS_NAME_FORMAT = @"IX%@DataProvider";
 NSString* const kIX_ACTION_CLASS_NAME_FORMAT = @"IX%@Action";
 NSString* const kIX_SHORTCODE_CLASS_NAME_FORMAT = @"IX%@ShortCode";
 NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME = @"IXDummyDataModelEntity";
+NSString* const kIX_STORED_SESSION_ATTRIBUTES_KEY = @"IXStoredSessionAttributes";
 NSString* const kIX_DEBUG = @"debug";
 NSString* const kIX_RELEASE = @"release";
 
