@@ -50,6 +50,22 @@
     return propertyContainerCopy;
 }
 
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self propertiesDict] forKey:@"propertiesDict"];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if( self )
+    {
+        _ownerObject = nil;
+        _propertiesDict = [aDecoder decodeObjectForKey:@"propertiesDict"];
+    }
+    return self;
+}
+
 +(instancetype)propertyContainerWithJSONDict:(NSDictionary*)propertyJSONDictionary
 {
     IXPropertyContainer* propertyContainer = nil;

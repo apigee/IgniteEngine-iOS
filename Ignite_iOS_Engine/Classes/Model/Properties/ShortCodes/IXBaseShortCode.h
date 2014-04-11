@@ -14,7 +14,7 @@
 
 typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* parameters);
 
-@interface IXBaseShortCode : NSObject <NSCopying>
+@interface IXBaseShortCode : NSObject <NSCopying,NSCoding>
 
 @property (nonatomic,weak) IXProperty* property;
 @property (nonatomic,assign) NSRange rangeInPropertiesText;

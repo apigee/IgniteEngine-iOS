@@ -187,6 +187,33 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     return propertyArray;
 }
 
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    
+    [aCoder encodeObject:[self propertyName] forKey:@"propertyName"];
+    [aCoder encodeObject:[self originalString] forKey:@"originalString"];
+    [aCoder encodeObject:[self staticText] forKey:@"staticText"];
+    if( [[self shortCodes] count] )
+    {
+        [aCoder encodeObject:[self shortCodes] forKey:@"shortCodes"];
+    }
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setPropertyName:[aDecoder decodeObjectForKey:@"propertyName"]];
+        [self setOriginalString:[aDecoder decodeObjectForKey:@"originalString"]];
+        [self setStaticText:[aDecoder decodeObjectForKey:@"staticText"]];
+        [self setShortCodes:[aDecoder decodeObjectForKey:@"shortCodes"]];
+    }
+    return self;
+}
+
+
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXProperty *copiedProperty = [super copyWithZone:zone];

@@ -43,13 +43,9 @@
     self = [super init];
     if( self )
     {
-        _webViewForJS = [[UIWebView alloc] initWithFrame:CGRectZero];
-        
         _appConfigPath = [[NSBundle mainBundle] pathForResource:@"assets/_index" ofType:@"json"];
-        _applicationSandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:[_appConfigPath stringByDeletingLastPathComponent]];
         
         _appProperties = [[IXPropertyContainer alloc] init];
-        _sessionProperties = [[IXPropertyContainer alloc] init];
         _deviceProperties = [[IXPropertyContainer alloc] init];
 
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
@@ -107,6 +103,11 @@
 
 -(void)startApplication
 {
+    [self setSessionProperties:[[IXPropertyContainer alloc] init]];
+
+    [self setWebViewForJS:[[UIWebView alloc] initWithFrame:CGRectZero]];
+    [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appConfigPath] stringByDeletingLastPathComponent]]];
+    
     [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
                                                  asynch:NO
                                             shouldCache:NO
@@ -127,7 +128,8 @@
                                                 
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
                                                 [[self sessionProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
-                                                
+                                                [self loadSessionSettings];
+
                                                 NSDictionary* deviceInfoPropertiesDict = @{
                                                                                            @"model": [IXDeviceInfo deviceModel],
                                                                                            @"type": [IXDeviceInfo deviceType],
@@ -258,6 +260,35 @@
                                delegate:nil
                       cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
+}
+
+-(void)storeSessionProperties
+{
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[self sessionProperties]];
+    if( data != nil )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
+        [[NSUserDefaults standardUserDefaults] synchronize];        
+    }
+}
+
+-(void)loadSessionSettings
+{
+    NSData* sessionPropertiesData = [[NSUserDefaults standardUserDefaults] dataForKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
+    if( sessionPropertiesData )
+    {
+        IXPropertyContainer* storedSessionPropertyContainer = [NSKeyedUnarchiver unarchiveObjectWithData:sessionPropertiesData];
+        if( [storedSessionPropertyContainer isKindOfClass:[IXPropertyContainer class]] )
+        {
+            [[self sessionProperties] addPropertiesFromPropertyContainer:storedSessionPropertyContainer
+                                                    evaluateBeforeAdding:NO
+                                   replaceOtherPropertiesWithTheSameName:YES];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
+        }
+    }
 }
 
 @end
