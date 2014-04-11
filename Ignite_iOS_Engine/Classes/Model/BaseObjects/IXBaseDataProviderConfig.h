@@ -36,6 +36,7 @@
 +(instancetype)dataProviderConfigWithJSONDictionary:(NSDictionary*)dataProviderJSONDict;
 +(NSArray*)dataProviderConfigsWithJSONArray:(NSArray*)dataProviderValueArray;
 
++(NSArray*)createDataProvidersFromConfigs:(NSArray*)dataProviderConfigs;
 -(IXBaseDataProvider*)createDataProvider;
 
 @end

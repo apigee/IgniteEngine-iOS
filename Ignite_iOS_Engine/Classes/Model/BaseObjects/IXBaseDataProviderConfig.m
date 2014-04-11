@@ -130,6 +130,30 @@
     return dataProviderConfigsArray;
 }
 
++(NSArray*)createDataProvidersFromConfigs:(NSArray*)dataProviderConfigs
+{
+    NSMutableArray* dataProviders = nil;
+    for( IXBaseDataProviderConfig* dataProviderConfig in dataProviderConfigs )
+    {
+        if( [dataProviderConfig isKindOfClass:[IXBaseDataProviderConfig class]] )
+        {
+            IXBaseDataProvider* dataProvider = [dataProviderConfig createDataProvider];
+            if( dataProvider )
+            {
+                if( dataProviders == nil )
+                {
+                    dataProviders = [NSMutableArray arrayWithObject:dataProvider];
+                }
+                else
+                {
+                    [dataProviders addObject:dataProvider];
+                }
+            }
+        }
+    }
+    return dataProviders;
+}
+
 -(IXBaseDataProvider*)createDataProvider
 {
     IXBaseDataProvider* dataProvider = [[[self dataProviderClass] alloc] init];

@@ -8,6 +8,11 @@
 
 #import "IXConstants.h"
 
+// APP LEVEL NOTIFICATIONS
+NSString* const kIXAppEnteredForegroundEvent = @"app_entered_foreground";
+NSString* const kIXAppEnteredBackgroundEvent = @"app_entered_background";
+NSString* const kIXPushRecievedEvent = @"push_recieved";
+
 // SPECIAL
 NSString* const kIX_CONTROL_CLASS_NAME_FORMAT = @"IX%@";
 NSString* const kIX_DATA_PROVIDER_CLASS_NAME_FORMAT = @"IX%@DataProvider";
@@ -25,6 +30,7 @@ NSString* const kIX_SESSION = @"session";
 NSString* const kIX_TARGET = @"_target";
 NSString* const kIX_VIEW = @"view";
 NSString* const kIX_CONTROLS = @"controls";
+NSString* const kIX_ACTION = @"action";
 NSString* const kIX_ACTIONS = @"actions";
 NSString* const kIX_ATTRIBUTES = @"attributes";
 NSString* const kIX_DATA_PROVIDERS = @"data_providers";

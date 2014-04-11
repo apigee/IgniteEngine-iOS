@@ -24,6 +24,8 @@
 #import "IXDeviceInfo.h"
 #import "IXBaseAction.h"
 #import "IXLayout.h"
+#import "IXBaseDataProvider.h"
+#import "IXBaseDataProviderConfig.h"
 
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"
@@ -116,6 +118,10 @@
                                             }
                                             else
                                             {
+                                                NSArray* appDataProvidersJSONArray = [jsonObject valueForKeyPath:@"app.data_providers"];
+                                                NSArray* appDataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:appDataProvidersJSONArray];
+                                                [[self applicationSandbox] addDataProviders:[IXBaseDataProviderConfig createDataProvidersFromConfigs:appDataProviderConfigs]];
+                                                
                                                 NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.attributes"];
                                                 [[self appProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
                                                 
@@ -138,6 +144,7 @@
 
                                                 [self applyAppProperties];
                                                 [self loadApplicationDefaultView];
+                                                [[self applicationSandbox] loadAllDataProviders];
                                             }
                                         }];
     [self preloadImages];

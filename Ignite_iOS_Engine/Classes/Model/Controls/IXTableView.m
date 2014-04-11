@@ -107,7 +107,9 @@
     [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:@"animate_reload" defaultValue:NO]];
     [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:@"animate_reload.duration" defaultValue:0.2f]];
 
-    [self startTableViewReload];
+    dispatch_async(dispatch_get_main_queue(),^{
+        [self startTableViewReload];
+    });
 }
 
 -(void)startTableViewReload

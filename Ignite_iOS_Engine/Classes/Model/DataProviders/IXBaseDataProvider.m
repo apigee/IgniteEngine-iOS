@@ -58,6 +58,7 @@ static NSString* const kIXAccessToken = @"access_token";
 
 // IXBaseDataProvider Functions
 static NSString* const kIXClearAccessToken = @"clear_access_token"; // kIXOAuthTokenStorageID is the parameter for this.
+static NSString* const kIXClearCache = @"clear_cache"; // Clears the cached data that is associated with this data providers kIXCacheID.
 static NSString* const kIXDeleteCookies = @"delete_cookies"; // kIXCookieURL is the parameter for this function.
 static NSString* const kIXCookieURL = @"cookie_url";
 
@@ -99,7 +100,13 @@ static NSCache* sIXDataProviderCache = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sIXDataProviderCache = [[NSCache alloc] init];
+        [sIXDataProviderCache setName:@"com.ignite.DataProviderCache"];
     });
+}
+
++(void)clearCache
+{
+    [sIXDataProviderCache removeAllObjects];
 }
 
 -(void)setRequestHeaderProperties:(IXPropertyContainer *)requestHeaderProperties
@@ -432,6 +439,13 @@ static NSCache* sIXDataProviderCache = nil;
         if( [tokenStorageID length] > 0 )
         {
             [AFOAuthCredential deleteCredentialWithIdentifier:tokenStorageID];
+        }
+    }
+    else if( [functionName isEqualToString:kIXClearCache] )
+    {
+        if( [[self cacheID] length] > 0 )
+        {
+            [sIXDataProviderCache removeObjectForKey:[self cacheID]];
         }
     }
     else if( [functionName isEqualToString:kIXDeleteCookies] )

@@ -65,6 +65,11 @@
         } \
     }
 
+// APP LEVEL EVENTS
+extern NSString* const kIXAppEnteredForegroundEvent;
+extern NSString* const kIXAppEnteredBackgroundEvent;
+extern NSString* const kIXPushRecievedEvent;
+
 // SPECIAL
 extern NSString* const kIX_CONTROL_CLASS_NAME_FORMAT;
 extern NSString* const kIX_DATA_PROVIDER_CLASS_NAME_FORMAT;
@@ -82,6 +87,7 @@ extern NSString* const kIX_TYPE;
 extern NSString* const kIX_SESSION;
 extern NSString* const kIX_VIEW;
 extern NSString* const kIX_CONTROLS;
+extern NSString* const kIX_ACTION;
 extern NSString* const kIX_ACTIONS;
 extern NSString* const kIX_ATTRIBUTES;
 extern NSString* const kIX_DATA_PROVIDERS;

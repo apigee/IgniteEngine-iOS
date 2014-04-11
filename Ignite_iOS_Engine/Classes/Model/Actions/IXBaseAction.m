@@ -14,7 +14,21 @@
 #import "IXBaseObject.h"
 #import "IXAppManager.h"
 
+@interface IXBaseAction ()
+
+@property (nonatomic,assign) BOOL didRegisterForNotifications;
+
+@end
+
 @implementation IXBaseAction
+
+-(void)dealloc
+{
+    if( _didRegisterForNotifications )
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+}
 
 -(instancetype)initWithEventName:(NSString*)eventName
                 actionProperties:(IXPropertyContainer*)actionProperties
@@ -25,10 +39,11 @@
     if( self )
     {
         _actionContainer = nil;
-        _eventName = [eventName copy];
         _actionProperties = actionProperties;
         _parameterProperties = parameterProperties;
         _subActionContainer = subActionContainer;
+        
+        [self setEventName:eventName];
     }
     return self;
 }
@@ -44,10 +59,58 @@
     return actionCopy;
 }
 
+-(void)setEventName:(NSString *)eventName
+{
+    [self unregisterForMatchingNotifications];
+    
+    _eventName = [eventName copy];
+    
+    [self registerForMatchingNotifications];
+}
+
+-(void)registerForMatchingNotifications
+{
+    if( ![self didRegisterForNotifications] && [[self eventName] length] > 0 )
+    {
+        if( [[self eventName] isEqualToString:kIXAppEnteredForegroundEvent] )
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(executeBecauseOfNotification:)
+                                                         name:UIApplicationWillEnterForegroundNotification
+                                                       object:nil];
+        }
+        else if( [[self eventName] isEqualToString:kIXAppEnteredBackgroundEvent] )
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(executeBecauseOfNotification:)
+                                                         name:UIApplicationDidEnterBackgroundNotification
+                                                       object:nil];
+        }
+        
+        [self setDidRegisterForNotifications:YES];
+    }
+}
+
+-(void)unregisterForMatchingNotifications
+{
+    if( [self didRegisterForNotifications] && [[self eventName] length] > 0 )
+    {
+        if( [[self eventName] isEqualToString:kIXAppEnteredForegroundEvent] )
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+        }
+        else if( [[self eventName] isEqualToString:kIXAppEnteredBackgroundEvent] )
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+        }
+    }
+    [self setDidRegisterForNotifications:NO];
+}
+
 +(instancetype)actionWithRemoteNotificationInfo:(NSDictionary *)remoteNotificationInfo
 {
     IXBaseAction* action = nil;
-    id actionArray = [remoteNotificationInfo objectForKey:@"action"];
+    id actionArray = [remoteNotificationInfo objectForKey:kIX_ACTION];
     if( [actionArray isKindOfClass:[NSArray class]] )
     {
         Class actionClass = nil;
@@ -67,7 +130,7 @@
                 IXPropertyContainer* parameterContainer = [IXPropertyContainer propertyContainerWithJSONDict:attributesTopLevelDict[kIX_SET]];;
                 IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:attributesTopLevelDict[kIX_ACTIONS]];
                 
-                action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:@"push_recieved"
+                action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:kIXPushRecievedEvent
                                                                 actionProperties:propertyContainer
                                                              parameterProperties:parameterContainer
                                                               subActionContainer:subActionContainer];
@@ -158,6 +221,13 @@
         }
     }
     return actionArray;
+}
+
+-(void)executeBecauseOfNotification:(NSNotification*)notification
+{
+    DDLogDebug(@"%@ : Did fire because of notification -> %@", NSStringFromClass([self class]),[notification name]);
+    
+    [self execute];
 }
 
 -(void)execute
