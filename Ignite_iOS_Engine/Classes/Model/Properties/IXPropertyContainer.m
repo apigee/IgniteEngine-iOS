@@ -61,7 +61,7 @@
     if( self )
     {
         _ownerObject = nil;
-        _propertiesDict = [aDecoder decodeObjectForKey:@"propertiesDict"];
+        _propertiesDict = [[aDecoder decodeObjectForKey:@"propertiesDict"] mutableCopy];
     }
     return self;
 }
