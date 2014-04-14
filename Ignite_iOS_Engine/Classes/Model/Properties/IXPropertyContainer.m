@@ -195,18 +195,119 @@
     }
 }
 
--(NSDictionary*)getAllPropertiesStringValues
+-(NSDictionary*)dictionaryWithKey:(NSString*)key subKeys:(NSMutableArray*)subKeys lastObjectValue:(NSString*)lastObjectValue
 {
-    NSMutableDictionary* returnDictionary = [[NSMutableDictionary alloc] init];
+    NSDictionary* dictionary = nil;
     
-    NSArray* propertyNames = [[self propertiesDict] allKeys];
-    for( NSString* propertyName in propertyNames )
+    if( [subKeys count] > 0 )
     {
-        NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:kIX_EMPTY_STRING];
+        NSString* nextKey = [subKeys firstObject];
+        [subKeys removeObject:nextKey];
         
-        [returnDictionary setObject:propertyValue forKey:propertyName];
+        NSDictionary* subDictionary = [self dictionaryWithKey:nextKey subKeys:subKeys lastObjectValue:lastObjectValue];
+        dictionary = @{key : subDictionary};
+    }
+    else
+    {
+        dictionary = @{key : lastObjectValue};
     }
     
+    return dictionary;
+}
+
+-(void)addValuesFromDictionary:(NSDictionary*)dict1 toMutableDictionary:(NSMutableDictionary*)dict2
+{
+    [dict1 enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        
+        if( [obj isKindOfClass:[NSDictionary class]] )
+        {
+            id objectFromDict2 = [dict2 objectForKey:key];
+            if( [objectFromDict2 isKindOfClass:[NSDictionary class]] )
+            {
+                NSMutableDictionary* mutableObjectFromDict2 = [NSMutableDictionary dictionaryWithDictionary:objectFromDict2];
+                
+                [self addValuesFromDictionary:obj
+                          toMutableDictionary:mutableObjectFromDict2];
+                
+                [dict2 setObject:mutableObjectFromDict2 forKey:key];
+            }
+            else
+            {
+                [dict2 setObject:obj forKey:key];
+            }
+        }
+        else
+        {
+            [dict2 setObject:obj forKey:key];
+        }
+        
+    }];
+}
+
+-(NSDictionary*)getAllPropertiesObjectValues
+{
+    NSMutableDictionary* returnDictionary = nil;
+    if( [[[self propertiesDict] allKeys] count] > 0 )
+    {
+        returnDictionary = [[NSMutableDictionary alloc] init];
+        
+        for( NSString* propertyName in [[self propertiesDict] allKeys] )
+        {
+            NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:kIX_EMPTY_STRING];
+            
+            NSMutableArray* propertyNameComponents = [NSMutableArray arrayWithArray:[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR]];
+            if( [propertyNameComponents count] > 1 )
+            {
+                NSString* firstKey = [propertyNameComponents firstObject];
+                [propertyNameComponents removeObject:firstKey];
+                
+                NSString* nextKey = [propertyNameComponents firstObject];
+                [propertyNameComponents removeObject:nextKey];
+                
+                NSDictionary* dictionaryFromPeriodSeperatedKey = [self dictionaryWithKey:nextKey
+                                                                                 subKeys:propertyNameComponents
+                                                                         lastObjectValue:propertyValue];
+                
+                NSDictionary* dictionaryInReturnDict = [returnDictionary objectForKey:firstKey];
+                
+                if( dictionaryInReturnDict )
+                {
+                    NSMutableDictionary* mutableDict = [NSMutableDictionary dictionaryWithDictionary:dictionaryInReturnDict];
+                    
+                    [self addValuesFromDictionary:dictionaryFromPeriodSeperatedKey
+                              toMutableDictionary:mutableDict];
+                    
+                    [returnDictionary setObject:mutableDict forKey:firstKey];
+                }
+                else
+                {
+                    [returnDictionary setObject:dictionaryFromPeriodSeperatedKey forKey:firstKey];
+                }
+            }
+            else
+            {
+                [returnDictionary setObject:propertyValue forKey:propertyName];
+            }
+        }
+    }
+    return returnDictionary;
+}
+
+-(NSDictionary*)getAllPropertiesStringValues
+{
+    NSMutableDictionary* returnDictionary = nil;
+    if( [[[self propertiesDict] allKeys] count] > 0 )
+    {
+        returnDictionary = [[NSMutableDictionary alloc] init];
+        
+        NSArray* propertyNames = [[self propertiesDict] allKeys];
+        for( NSString* propertyName in propertyNames )
+        {
+            NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:kIX_EMPTY_STRING];
+            
+            [returnDictionary setObject:propertyValue forKey:propertyName];
+        }
+    }
     return returnDictionary;
 }
 
@@ -436,6 +537,10 @@
         if( fontName )
         {
             returnFont = [UIFont fontWithName:fontName size:fontSize];
+            if( returnFont == nil )
+            {
+                returnFont = defaultValue;
+            }
         }
     }
     return returnFont;

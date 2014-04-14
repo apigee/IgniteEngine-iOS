@@ -96,7 +96,7 @@
         {
             if( ![self isLocalPath] )
             {
-                NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesStringValues]];
+                NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesObjectValues]];
                 [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
                 
                 __weak typeof(self) weakSelf = self;
