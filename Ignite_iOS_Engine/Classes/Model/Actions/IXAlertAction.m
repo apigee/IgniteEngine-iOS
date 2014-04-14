@@ -89,7 +89,7 @@ static NSString* const kIXButtonIndexPressed = @"button_%lu_pressed"; //0-based 
     [[self alertView] setDelegate:nil];
     [self setAlertView:nil];
     
-    NSString* actionName = [NSString stringWithFormat:kIXButtonIndexPressed, buttonIndex];
+    NSString* actionName = [NSString stringWithFormat:kIXButtonIndexPressed, (long)buttonIndex];
     [self actionDidFinishWithEvents:@[actionName]];
     if (buttonIndex == 0)
     {

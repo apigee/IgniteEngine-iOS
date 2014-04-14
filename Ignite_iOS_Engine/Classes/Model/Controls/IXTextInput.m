@@ -333,17 +333,28 @@ static NSString* const kIXNewLineString = @"\n";
     else if( [functionName isEqualToString:kIXSetText] )
     {
         NSString* text = [parameterContainer getStringPropertyValue:kIXText defaultValue:nil];
-        if( text != nil )
+        NSString* placeholderText = [parameterContainer getStringPropertyValue:kIXTextPlaceholder defaultValue:nil];
+        
+        if( [self isUsingUITextView] )
         {
-            if( [self isUsingUITextView] )
+            if( text != nil )
             {
                 [[self textView] setText:text];
             }
-            else
+        }
+        else
+        {
+            if( text != nil )
             {
                 [[self textField] setText:text];
             }
+            if( placeholderText != nil )
+            {
+                [[self textField] setPlaceholder:placeholderText];
+            }
         }
+        
+        
     }
     else
     {
