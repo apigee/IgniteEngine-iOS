@@ -126,6 +126,27 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
     return copy;
 }
 
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self rawValue] forKey:@"rawValue"];
+    [aCoder encodeObject:[self objectID] forKey:@"objectID"];
+    [aCoder encodeObject:[self methodName] forKey:@"methodName"];
+    [aCoder encodeObject:[self functionName] forKey:@"functionName"];
+    [aCoder encodeObject:[self parameters] forKey:@"parameters"];
+    [aCoder encodeObject:[NSValue valueWithRange:[self rangeInPropertiesText]] forKey:@"rangeInPropertiesText"];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    IXBaseShortCode* shortCode = [self initWithRawValue:[aDecoder decodeObjectForKey:@"rawValue"]
+                                               objectID:[aDecoder decodeObjectForKey:@"objectID"]
+                                             methodName:[aDecoder decodeObjectForKey:@"methodName"]
+                                           functionName:[aDecoder decodeObjectForKey:@"functionName"]
+                                             parameters:[aDecoder decodeObjectForKey:@"parameters"]];
+    [shortCode setRangeInPropertiesText:[[aDecoder decodeObjectForKey:@"rangeInPropertiesText"] rangeValue]];
+    return shortCode;
+}
+
 +(instancetype)shortCodeFromString:(NSString*)checkedString
                 textCheckingResult:(NSTextCheckingResult*)textCheckingResult
 {

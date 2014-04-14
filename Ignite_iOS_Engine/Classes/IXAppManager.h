@@ -56,6 +56,7 @@
 -(IXViewController*)currentIXViewController;
 
 -(void)applyAppProperties;
+-(void)storeSessionProperties;
 
 +(UIInterfaceOrientation)currentInterfaceOrientation;
 -(NSString*)evaluateJavascript:(NSString*)javascript;

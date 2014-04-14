@@ -11,7 +11,7 @@
 @class IXBaseObject;
 @class IXPropertyContainer;
 
-@interface IXProperty : IXBaseConditionalObject <NSCopying>
+@interface IXProperty : IXBaseConditionalObject <NSCopying,NSCoding>
 
 @property (nonatomic,weak) IXPropertyContainer* propertyContainer;
 @property (nonatomic,copy) NSString* propertyName;

@@ -16,24 +16,45 @@
 
 -(instancetype)init
 {
+    return [self initWithInterfaceOrientationMask:UIInterfaceOrientationMaskAll
+                              conditionalProperty:nil];
+}
+
++(instancetype)baseConditionalObjectWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
+                                             conditionalProperty:(IXProperty*)conditionalProperty
+{
+    return [[[self class] alloc] initWithInterfaceOrientationMask:interfaceOrientationMask
+                                              conditionalProperty:conditionalProperty];
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:[self interfaceOrientationMask] forKey:@"interfaceOrientationMask"];
+    [aCoder encodeObject:[self conditionalProperty] forKey:@"conditionalProperty"];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    return [self initWithInterfaceOrientationMask:[aDecoder decodeIntegerForKey:@"interfaceOrientationMask"]
+                              conditionalProperty:[aDecoder decodeObjectForKey:@"conditionalProperty"]];
+}
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    return [[[self class] allocWithZone:zone] initWithInterfaceOrientationMask:[self interfaceOrientationMask]
+                                                           conditionalProperty:[[self conditionalProperty] copy]];
+}
+
+-(instancetype)initWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
+                            conditionalProperty:(IXProperty*)conditionalProperty
+{
     self = [super init];
     if( self )
     {
-        _conditionalProperty = nil;
-        _interfaceOrientationMask = UIInterfaceOrientationMaskAll;
+        _interfaceOrientationMask = interfaceOrientationMask;
+        _conditionalProperty = conditionalProperty;
     }
     return self;
-}
-
--(instancetype)copyWithZone:(NSZone *)zone
-{
-    IXBaseConditionalObject* baseConditionalObjectCopy = [[[self class] allocWithZone:zone] init];
-    if( baseConditionalObjectCopy )
-    {
-        [baseConditionalObjectCopy setConditionalProperty:[[self conditionalProperty] copy]];
-        [baseConditionalObjectCopy setInterfaceOrientationMask:[self interfaceOrientationMask]];
-    }
-    return baseConditionalObjectCopy;
 }
 
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation
