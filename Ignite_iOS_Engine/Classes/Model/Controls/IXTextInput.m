@@ -350,6 +350,7 @@ static NSString* const kIXNewLineString = @"\n";
             }
             if( placeholderText != nil )
             {
+                [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:@"text.placeholder" rawValue:placeholderText] replaceOtherPropertiesWithTheSameName:YES];
                 [[self textField] setPlaceholder:placeholderText];
             }
         }
