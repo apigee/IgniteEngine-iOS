@@ -276,7 +276,7 @@ static NSString* const kIXNewLineString = @"\n";
         }
     }
     
-    [self setAdjustsScrollWithScreen:[[self propertyContainer] getBoolPropertyValue:kIXKeyboardAdjustsScreen defaultValue:NO]];
+    [self setAdjustsScrollWithScreen:[[self propertyContainer] getBoolPropertyValue:kIXKeyboardAdjustsScreen defaultValue:(layoutToScroll != nil)]];
     if( layoutToScroll == nil && [self adjustsScrollWithScreen] )
     {
         layoutToScroll = [[[self sandbox] viewController] containerControl];
@@ -350,7 +350,7 @@ static NSString* const kIXNewLineString = @"\n";
             }
             if( placeholderText != nil )
             {
-                [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:@"text.placeholder" rawValue:placeholderText] replaceOtherPropertiesWithTheSameName:YES];
+                [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:kIXTextPlaceholder rawValue:placeholderText] replaceOtherPropertiesWithTheSameName:YES];
                 [[self textField] setPlaceholder:placeholderText];
             }
         }

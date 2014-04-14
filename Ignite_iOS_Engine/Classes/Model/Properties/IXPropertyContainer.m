@@ -293,6 +293,26 @@
     return returnDictionary;
 }
 
+-(NSDictionary*)getAllPropertiesURLValues
+{
+    NSMutableDictionary* returnDictionary = nil;
+    if( [[[self propertiesDict] allKeys] count] > 0 )
+    {
+        returnDictionary = [[NSMutableDictionary alloc] init];
+        
+        NSArray* propertyNames = [[self propertiesDict] allKeys];
+        for( NSString* propertyName in propertyNames )
+        {
+            NSURL* propertyURL = [self getURLPathPropertyValue:propertyName basePath:nil defaultValue:nil];
+            if( [[propertyURL absoluteString] length] > 0 )
+            {
+                [returnDictionary setObject:propertyURL forKey:propertyName];
+            }
+        }
+    }
+    return returnDictionary;
+}
+
 -(NSDictionary*)getAllPropertiesStringValues
 {
     NSMutableDictionary* returnDictionary = nil;
