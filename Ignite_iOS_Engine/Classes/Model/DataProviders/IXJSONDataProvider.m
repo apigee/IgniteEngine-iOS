@@ -96,7 +96,25 @@
         {
             if( ![self isLocalPath] )
             {
-                NSMutableURLRequest* request = [[self httpClient] requestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesObjectValues]];
+                NSMutableURLRequest* request = nil;
+                NSDictionary* dictionaryOfFiles = [[self fileAttachmentProperties] getAllPropertiesURLValues];
+                if( [[dictionaryOfFiles allKeys] count] > 0 )
+                {
+                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestHeaderProperties] getAllPropertiesObjectValues] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                        [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                            if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
+                            {
+                                [formData appendPartWithFileURL:obj name:key error:nil];
+                            }
+                        }];
+                    }];
+                }
+                else
+                {
+                    request = [[self httpClient] requestWithMethod:[self httpMethod]
+                                                              path:[self objectsPath]
+                                                        parameters:[[self requestParameterProperties] getAllPropertiesObjectValues]];
+                }
                 [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
                 
                 __weak typeof(self) weakSelf = self;

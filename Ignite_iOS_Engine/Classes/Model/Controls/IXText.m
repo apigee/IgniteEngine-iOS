@@ -39,7 +39,7 @@ static NSString* const kIXSizeToFit = @"size_to_fit";
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
     CGSize sizeThatFits = [[self label] sizeThatFits:size];
-    float height = [[self label] sizeForFixedWidth:size.width].height;
+    float height = ceilf([[self label] sizeForFixedWidth:size.width].height);
     return CGSizeMake(sizeThatFits.width, height);
 }
 
