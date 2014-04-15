@@ -113,7 +113,7 @@
                 
                 if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
                 {
-                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestHeaderProperties] getAllPropertiesObjectValues] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesObjectValues] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                         
                         if( [imageControl isKindOfClass:[IXImage class]] )
                         {
