@@ -13,9 +13,16 @@
 
 #import "IXAFJSONRequestOperation.h"
 #import "IXAppManager.h"
+#import "IXImage.h"
 #import "IXJSONGrabber.h"
 #import "IXPathHandler.h"
 #import "IXLogger.h"
+
+@interface IXImage ()
+
+@property (nonatomic,strong) UIImage* defaultImage;
+
+@end
 
 @interface IXJSONDataProvider ()
 
@@ -97,10 +104,46 @@
             if( ![self isLocalPath] )
             {
                 NSMutableURLRequest* request = nil;
-                NSDictionary* dictionaryOfFiles = [[self fileAttachmentProperties] getAllPropertiesURLValues];
-                if( [[dictionaryOfFiles allKeys] count] > 0 )
+                
+                NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
+                [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType"]];
+
+                NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
+                IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
+                
+                if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
                 {
                     request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestHeaderProperties] getAllPropertiesObjectValues] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                        
+                        if( [imageControl isKindOfClass:[IXImage class]] )
+                        {
+                            NSString* attachementImageName = [[self fileAttachmentProperties] getStringPropertyValue:@"image.name"
+                                                                                                        defaultValue:nil];
+                            NSString* imageMimeType = [[self fileAttachmentProperties] getStringPropertyValue:@"image.mimeType"
+                                                                                                 defaultValue:nil];
+                            
+                            NSString* imageType = [[imageMimeType componentsSeparatedByString:@"/"] lastObject];
+                            
+                            NSData* imageData = nil;
+                            if( [imageType isEqualToString:@"png"] )
+                            {
+                                imageData = UIImagePNGRepresentation(imageControl.defaultImage);
+                            }
+                            else if( [imageType isEqualToString:@"jpeg"] )
+                            {
+                                float imageJPEGCompression = [[self fileAttachmentProperties] getFloatPropertyValue:@"image.jpegCompression" defaultValue:0.5f];
+                                imageData = UIImageJPEGRepresentation(imageControl.defaultImage, imageJPEGCompression);
+                            }
+                            
+                            if( imageData && [attachementImageName length] > 0 && [imageMimeType length] > 0 && [imageType length] > 0 )
+                            {
+                                [formData appendPartWithFileData:imageData
+                                                            name:attachementImageName
+                                                        fileName:[NSString stringWithFormat:@"%@.%@",attachementImageName,imageType]
+                                                        mimeType:imageMimeType];
+                            }
+                        }
+                        
                         [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                             if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
                             {
