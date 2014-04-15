@@ -106,7 +106,7 @@
                 NSMutableURLRequest* request = nil;
                 
                 NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
-                [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType"]];
+                [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
 
                 NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
                 IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
