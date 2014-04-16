@@ -301,9 +301,14 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                                                   if (nil != result) {
                                                                       ALAssetRepresentation *repr = [result defaultRepresentation];
                                                                       // this is the most recent saved photo
+                                                                      
+                                                                      /* Not using this currently
+                                                                         NSURL *assetsUrl = repr.url; */
+                                                                      
                                                                       UIImage *img = [UIImage imageWithCGImage:[repr fullResolutionImage]];
                                                                       // we only need the first (most recent) photo -- stop the enumeration
                                                                       *stop = YES;
+                                                                      
                                                                       weakSelf.defaultImage = img;
                                                                       [[self imageView] setImage:img];
                                                                   }

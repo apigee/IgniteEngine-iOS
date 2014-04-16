@@ -108,12 +108,22 @@
                 NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
                 [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
 
+                NSDictionary* parameters = nil;
+                if( [[self propertyContainer] getBoolPropertyValue:@"parse_parameters_as_object" defaultValue:YES] )
+                {
+                    parameters = [[self requestParameterProperties] getAllPropertiesObjectValues];
+                }
+                else
+                {
+                    parameters = [[self requestParameterProperties] getAllPropertiesStringValues];
+                }
+                
                 NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
                 IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
                 
                 if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
                 {
-                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestHeaderProperties] getAllPropertiesObjectValues] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                         
                         if( [imageControl isKindOfClass:[IXImage class]] )
                         {
@@ -156,7 +166,7 @@
                 {
                     request = [[self httpClient] requestWithMethod:[self httpMethod]
                                                               path:[self objectsPath]
-                                                        parameters:[[self requestParameterProperties] getAllPropertiesObjectValues]];
+                                                        parameters:parameters];
                 }
                 [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
                 

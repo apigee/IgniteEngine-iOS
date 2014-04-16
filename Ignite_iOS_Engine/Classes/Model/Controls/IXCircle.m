@@ -13,10 +13,6 @@ static NSString* const kIXColor = @"color";
 
 @implementation IXCircle : IXBaseControl
 
--(void)dealloc
-{
-    [self.contentView delete:self.circleView];
-}
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {

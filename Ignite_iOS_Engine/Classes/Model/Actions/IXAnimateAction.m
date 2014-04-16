@@ -20,10 +20,6 @@ static NSString* const kIXDuration = @"duration";
 static NSString* const kIXAnimation = @"animation";
 static NSString* const kIXRepeatCount = @"repeat_count";
 
-// Animation Functions
-static NSString* const kIXStart = @"start";
-static NSString* const kIXStop = @"stop";
-
 // Animation Options
 static NSString* const kIXDirection = @"direction";
 
@@ -69,6 +65,8 @@ static NSString* const kIXDirection = @"direction";
 {
     [self performAnimation];
 }
+
+
 
 
 @end

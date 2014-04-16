@@ -95,6 +95,10 @@ static NSString* const kIXSpin = @"spin";
 static NSString* const kIXDirection = @"direction";
 static NSString* const kIXReverse = @"reverse";
 
+// Animation Functions
+static NSString* const kIXStart = @"start";
+static NSString* const kIXStop = @"stop";
+
 // Functions & Helpers
 static NSString* const kIXToggle = @"dev_toggle";
 
@@ -637,6 +641,10 @@ static NSString* const kIXToggle = @"dev_toggle";
             self.contentView.enabled = YES;
         }
     }
+    else if ([functionName isEqualToString:kIXStop])
+    {
+        [self endAnimation];
+    }
 }
 
 -(void)processBeginTouch:(BOOL)fireTouchActions
@@ -696,7 +704,7 @@ static NSString* const kIXToggle = @"dev_toggle";
     }
 }
 
--(void)endAnimation:(NSString*)animation
+-(void)endAnimation
 {
     kIXIsAnimating = NO;
 }

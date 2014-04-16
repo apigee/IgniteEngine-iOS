@@ -180,3 +180,7 @@ so we can apply different states (and have it auto-detect image based on -active
 - Ability to resize downloaded image (or even asset image using magick and have it store the lower res quality in the cache
 - video (for imagePicker too)
 
+####Bugs todo later
+- Logging level -verbose causing action errors in Checkin app when taking photo. Investigate
+- Checkin app post to IP address:port with binary image not working in simulator. Investigate
+- Animate:spin stops working if app is backgrounded
