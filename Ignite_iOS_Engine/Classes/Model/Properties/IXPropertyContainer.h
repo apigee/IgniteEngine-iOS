@@ -26,6 +26,8 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 
 -(BOOL)hasLayoutProperties;
 
+-(void)removeAllProperties;
+
 -(void)addProperty:(IXProperty*)property;
 -(void)addProperty:(IXProperty*)property replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties;
 -(void)addProperties:(NSArray*)properties;

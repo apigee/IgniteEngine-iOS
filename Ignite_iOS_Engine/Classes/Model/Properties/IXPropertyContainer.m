@@ -121,6 +121,11 @@
     return hasLayoutProperties;
 }
 
+-(void)removeAllProperties
+{
+    [[self propertiesDict] removeAllObjects];
+}
+
 -(void)addProperties:(NSArray*)properties
 {
     [self addProperties:properties replaceOtherPropertiesWithTheSameName:NO];
