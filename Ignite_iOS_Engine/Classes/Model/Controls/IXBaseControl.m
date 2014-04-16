@@ -641,7 +641,7 @@ static NSString* const kIXToggle = @"dev_toggle";
             self.contentView.enabled = YES;
         }
     }
-    else if ([functionName isEqualToString:kIXStop])
+    else if ([functionName isEqualToString:kIXStopAnimation])
     {
         [self endAnimation];
     }
