@@ -96,8 +96,8 @@ static NSString* const kIXDirection = @"direction";
 static NSString* const kIXReverse = @"reverse";
 
 // Animation Functions
-static NSString* const kIXStart = @"start";
-static NSString* const kIXStop = @"stop";
+static NSString* const kIXStartAnimation = @"start_animation";
+static NSString* const kIXStopAnimation = @"stop_animation";
 
 // Functions & Helpers
 static NSString* const kIXToggle = @"dev_toggle";
