@@ -18,5 +18,6 @@
 -(UIImage *)imageRotatedByRadians:(CGFloat)radians;
 +(CGFloat)degreesToRadians:(CGFloat)degrees;
 +(CGFloat)radiansToDegrees:(CGFloat)radians;
++(NSString *)contentTypeForImageData:(NSData *)data;
 
 @end

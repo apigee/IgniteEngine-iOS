@@ -32,6 +32,7 @@ static NSString* const kIXGIFDuration = @"gif_duration";
 static NSString* const kIXFlipHorizontal = @"flip_horizontal";
 static NSString* const kIXFlipVertical = @"flip_vertical";
 static NSString* const kIXRotate = @"rotate";
+static NSString* const kIXImageBinary = @"image.binary";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
 static NSString* const kIXImagesDefaultResize = @"images.default.resize";
@@ -249,6 +250,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
     }
 }
 
+//
 // todo: get this "isAnimating" property working with keyframe pngs
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
@@ -265,6 +267,15 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
     {
         returnValue = [NSString ix_stringFromFloat:self.imageView.image.size.width];
     }
+    // Todo: Currently this is only going to spit out a .jpg; we need to figure out a way of getting it to return the proper format.
+    // +(NSString *)contentTypeForImageData:(NSData *)data was added to IXAdditions, but still requires a binary data stream of either
+    // JPEG or PNG.
+    // see http://stackoverflow.com/questions/17475392/when-should-i-use-uiimagejpegrepresentation-and-uiimagepngrepresentation-for-upl
+    else if ([propertyName isEqualToString:kIXImageBinary])
+    {
+        NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 1);
+        returnValue = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    }
     else
     {
         returnValue = [super getReadOnlyPropertyValue:propertyName];
@@ -274,6 +285,8 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
 
 -(void)loadLastPhoto
 {
+    
+    __weak typeof(self) weakSelf = self;
     // todo: Currently this is a bit of a hack - we need this function here, but it should be wrapped properly in the getImage function instead
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
@@ -282,16 +295,21 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                          // be sure to filter the group so you only get photos
                                          [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                                          
-                                         
                                          [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
                                                                  options:0
                                                               usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                                                                   if (nil != result) {
                                                                       ALAssetRepresentation *repr = [result defaultRepresentation];
                                                                       // this is the most recent saved photo
+                                                                      
+                                                                      /* Not using this currently
+                                                                         NSURL *assetsUrl = repr.url; */
+                                                                      
                                                                       UIImage *img = [UIImage imageWithCGImage:[repr fullResolutionImage]];
                                                                       // we only need the first (most recent) photo -- stop the enumeration
                                                                       *stop = YES;
+                                                                      
+                                                                      weakSelf.defaultImage = img;
                                                                       [[self imageView] setImage:img];
                                                                   }
                                                               }];
