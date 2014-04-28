@@ -32,6 +32,11 @@
 
 @implementation IXSVWebViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
+}
+
 - (void)doneButtonClicked:(id)sender {
     [((IXOAuthWebAuthViewController*)[self navigationController]) doneButtonClicked:sender];
 }
