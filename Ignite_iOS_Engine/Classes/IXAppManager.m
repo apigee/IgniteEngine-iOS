@@ -71,6 +71,9 @@
 
 -(void)appDidRegisterRemoteNotificationDeviceToken:(NSData *)deviceToken
 {
+    NSString* deviceTokenString = [[NSString alloc] initWithData:deviceToken encoding:NSUTF8StringEncoding];
+    [self setPushToken:deviceTokenString];
+    
     ApigeeDataClient* apigeeDataClient = [[self apigeeClient] dataClient];
     if( apigeeDataClient != nil )
     {

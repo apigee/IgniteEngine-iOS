@@ -14,12 +14,19 @@
 #import "YLMoment.h"
 #import "NSString+IXAdditions.h"
 
+static NSString* const kIXPushToken = @"push_token";
 static NSString* const kIXRandomNumber = @"random_number"; //usage: [[app:random_number(40)]]
+static NSString* const kIXDestroySessionAttributes = @"session.destroy";
 static NSString* const kIXNow = @"now";
 
 static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     NSUInteger upperBound = [[[parameters firstObject] getPropertyValue] integerValue];
     return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+};
+static IXBaseShortCodeFunction const kIXDestroySessionAttributesFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
+    [[[IXAppManager sharedAppManager] sessionProperties] removeAllProperties];
+    [[IXAppManager sharedAppManager] storeSessionProperties];
+    return nil;
 };
 
 static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
@@ -48,6 +55,9 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
         else if( [functionName isEqualToString:kIXNow] ){
             shortCodeFunction = kIXNowFunction;
         }
+        else if( [functionName isEqualToString:kIXDestroySessionAttributes] ){
+            shortCodeFunction = kIXDestroySessionAttributesFunction;
+        }
     }
     [self setShortCodeFunction:shortCodeFunction];
 }
@@ -58,7 +68,14 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
     NSString* methodName = [self methodName];
     if( [methodName length] > 0 )
     {
-        returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:methodName defaultValue:nil];
+        if( [methodName isEqualToString:@"push_token"] )
+        {
+            returnValue = [[IXAppManager sharedAppManager] pushToken];
+        }
+        else
+        {
+            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:methodName defaultValue:nil];
+        }
     }
     return returnValue;
 }
