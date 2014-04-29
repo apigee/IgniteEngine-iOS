@@ -325,6 +325,10 @@
                 {
                     returnValue = (NSString*)jsonObject;
                 }
+                else if( [jsonObject isKindOfClass:[NSNumber class]] )
+                {
+                    returnValue = [(NSNumber*)jsonObject stringValue];
+                }
                 else
                 {
                     NSError* __autoreleasing jsonConvertError = nil;
