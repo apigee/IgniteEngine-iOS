@@ -36,6 +36,7 @@
 @property (nonatomic,strong) IXPropertyContainer* sessionProperties;
 
 @property (nonatomic,copy) NSString* appID;
+@property (nonatomic,copy) NSString* pushToken;
 @property (nonatomic,copy) NSString* bundleID;
 @property (nonatomic,copy) NSString* versionNumberMajor;
 @property (nonatomic,copy) NSString* versionNumberMinor;
