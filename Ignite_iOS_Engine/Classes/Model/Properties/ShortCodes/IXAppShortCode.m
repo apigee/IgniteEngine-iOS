@@ -20,8 +20,19 @@ static NSString* const kIXDestroySessionAttributes = @"session.destroy";
 static NSString* const kIXNow = @"now";
 
 static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
-    NSUInteger upperBound = [[[parameters firstObject] getPropertyValue] integerValue];
-    return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+    if (parameters.count > 1)
+    {
+        NSUInteger lowerBound = [[[parameters firstObject] getPropertyValue] integerValue];
+        NSUInteger upperBound = [[[parameters objectAtIndex:1] getPropertyValue] integerValue];
+        return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound) + lowerBound];
+    }
+    else if (parameters.count == 1)
+    {   
+        NSUInteger upperBound = [[[parameters firstObject] getPropertyValue] integerValue];
+        return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound)];
+    }
+    else
+        return 0;
 };
 static IXBaseShortCodeFunction const kIXDestroySessionAttributesFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     [[[IXAppManager sharedAppManager] sessionProperties] removeAllProperties];
