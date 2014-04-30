@@ -97,14 +97,20 @@
 
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo
 {
+    IX_LOG_DEBUG(@"Push Notification Info : %@",[userInfo description]);
     // Example Push Notificaiton String = NSString* pushNotification = @"{\"apple\":{\"aps\":{\"alert\":\"[apns-test] Some Text!\",\"sound\":\"chime\",\"badge\":0},\"action\":[\"navigate\",{\"attributes\":{\"to\":\"device://assets/examples/IXButtonControlExample.json\"}}]}}";
 
-    IXBaseAction* action = [IXBaseAction actionWithRemoteNotificationInfo:userInfo[@"apple"]];
+    IXBaseAction* action = [IXBaseAction actionWithRemoteNotificationInfo:userInfo];
     if( action )
     {
         IXViewController* currentVC = [self currentIXViewController];
+        if( [[currentVC containerControl] actionContainer] == nil )
+        {
+            [[currentVC containerControl] setActionContainer:[[IXActionContainer alloc] init]];
+        }
         [action setActionContainer:[[currentVC containerControl] actionContainer]];
         [action execute];
+        [action setActionContainer:nil];
     }
 }
 
