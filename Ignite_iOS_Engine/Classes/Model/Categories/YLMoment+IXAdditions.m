@@ -22,12 +22,12 @@
 
 +(YLMoment*)momentFromUnix:(NSString*)date
 {
-    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:[date intValue]]];
+    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:[date longLongValue]]];
 }
 
 +(YLMoment*)momentFromJS:(NSString*)date
 {
-    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:[date intValue] / 1000]];
+    return [YLMoment momentWithDate:[NSDate dateWithTimeIntervalSince1970:[date longLongValue] / 1000]];
 }
 
 @end
