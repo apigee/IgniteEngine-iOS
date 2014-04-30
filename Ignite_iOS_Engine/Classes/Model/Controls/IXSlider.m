@@ -82,35 +82,35 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
 {
     [super applySettings];
     
-    NSString* maxInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMaximumCapInsets defaultValue:nil];
-    NSString* minInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMinimumCapInsets defaultValue:nil];
+    UIImage* maxImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesMaximum defaultValue:nil]];
+    if( maxImage )
+    {
+        NSString* maxInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMaximumCapInsets defaultValue:nil];
+        if( maxInsetsString )
+        {
+            UIEdgeInsets maxEdgeInsets = UIEdgeInsetsFromString(maxInsetsString);
+            maxImage = [maxImage resizableImageWithCapInsets:maxEdgeInsets];
+        }
+        [[self slider] setMaximumTrackImage:maxImage forState:UIControlStateNormal];
+    }
     
-    __weak typeof(self) weakSelf = self;
-    [[self propertyContainer] getImageProperty:kIXImagesMaximum
-                                  successBlock:^(UIImage *image) {
-                                      if( maxInsetsString )
-                                      {
-                                          UIEdgeInsets maxEdgeInsets = UIEdgeInsetsFromString(maxInsetsString);
-                                          image = [image resizableImageWithCapInsets:maxEdgeInsets];
-                                      }
-                                      [[weakSelf slider] setMaximumTrackImage:image forState:UIControlStateNormal];
-                                  } failBlock:^(NSError *error) {
-                                  }];
-    [[self propertyContainer] getImageProperty:kIXImagesMinimum
-                                  successBlock:^(UIImage *image) {
-                                      if( minInsetsString )
-                                      {
-                                          UIEdgeInsets minEdgeInsets = UIEdgeInsetsFromString(minInsetsString);
-                                          image = [image resizableImageWithCapInsets:minEdgeInsets];
-                                      }
-                                      [[weakSelf slider] setMinimumTrackImage:image forState:UIControlStateNormal];
-                                  } failBlock:^(NSError *error) {
-                                  }];
-    [[self propertyContainer] getImageProperty:kIXImagesThumb
-                                  successBlock:^(UIImage *image) {
-                                      [[weakSelf slider] setThumbImage:image forState:UIControlStateNormal];
-                                  } failBlock:^(NSError *error) {
-                                  }];
+    UIImage* minImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesMinimum defaultValue:nil]];
+    if( minImage )
+    {
+        NSString* minInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMinimumCapInsets defaultValue:nil];
+        if( minInsetsString )
+        {
+            UIEdgeInsets minEdgeInsets = UIEdgeInsetsFromString(minInsetsString);
+            minImage = [minImage resizableImageWithCapInsets:minEdgeInsets];
+        }
+        [[self slider] setMinimumTrackImage:minImage forState:UIControlStateNormal];
+    }
+    
+    UIImage* thumbImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesThumb defaultValue:nil]];
+    if( thumbImage )
+    {
+        [[self slider] setThumbImage:thumbImage forState:UIControlStateNormal];
+    }
     
     [[self slider] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
     [[self slider] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];
