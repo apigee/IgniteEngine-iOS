@@ -39,17 +39,8 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 
 -(void)dealloc
 {
-    AVCaptureInput* input = [_session.inputs firstObject];
-    if( input )
-    {
-        [_session removeInput:input];
-    }
-    AVCaptureVideoDataOutput* output = [_session.outputs firstObject];
-    if( output )
-    {
-        [_session removeOutput:output];
-    }
-    [_session stopRunning];
+    //[_captureVideoPreviewLayer setDelegate:nil];
+    //[_session stopRunning];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -112,18 +103,6 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 
 -(void)createCameraView
 {
-    AVCaptureInput* input = [_session.inputs firstObject];
-    if( input )
-    {
-        [_session removeInput:input];
-    }
-    AVCaptureVideoDataOutput* output = [_session.outputs firstObject];
-    if( output )
-    {
-        [_session removeOutput:output];
-    }
-    [_session stopRunning];
-    
     _session = [AVCaptureSession new];
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)

@@ -1170,7 +1170,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "77016B74-FEAF-4540-8CE5-AF45BCBF3B60";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1200,7 +1200,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "77016B74-FEAF-4540-8CE5-AF45BCBF3B60";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
