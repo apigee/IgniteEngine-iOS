@@ -63,6 +63,7 @@ static NSString* const kIXDeleteCookies = @"delete_cookies"; // kIXCookieURL is 
 static NSString* const kIXCookieURL = @"cookie_url";
 
 // IXBaseDataProvider Events
+static NSString* const kIXStarted = @"started";
 static NSString* const kIXAuthSuccess = @"auth_success";
 static NSString* const kIXAuthFail = @"auth_fail";
 
@@ -189,6 +190,8 @@ static NSCache* sIXDataProviderCache = nil;
             [self fireLoadFinishedEventsFromCachedResponse];
         }
     }
+    
+    [[self actionContainer] executeActionsForEventNamed:kIXStarted];
 }
 
 -(NSString*)buildAccessCodeURL
