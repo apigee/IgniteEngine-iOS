@@ -149,6 +149,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypeReplace] )
         {
+            [self setIsPushTransiton:YES];
             [self setIsReplaceStackType:YES];
             [self performPushNavigation];
         }
