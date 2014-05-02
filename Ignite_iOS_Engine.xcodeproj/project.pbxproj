@@ -100,6 +100,7 @@
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3118ABDD2000130BEA /* Nestsans.ttf */; };
 		63A10B3418ABDD2000130BEA /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3218ABDD2000130BEA /* NestsansBold.ttf */; };
+		63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */; };
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
@@ -304,6 +305,8 @@
 		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
 		63A10B3118ABDD2000130BEA /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nestsans.ttf; sourceTree = "<group>"; };
 		63A10B3218ABDD2000130BEA /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
+		63B05B8D19144BAC00D0B4FC /* IXCustomNavPushPopTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustomNavPushPopTransition.h; sourceTree = "<group>"; };
+		63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCustomNavPushPopTransition.m; sourceTree = "<group>"; };
 		63C0A7AF18CFDAB700F72064 /* IXNetworkShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNetworkShortCode.h; sourceTree = "<group>"; };
 		63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNetworkShortCode.m; sourceTree = "<group>"; };
 		63C0A7B218CFDB9600F72064 /* IXDeviceShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceShortCode.h; sourceTree = "<group>"; };
@@ -762,6 +765,15 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
+		63B05B901914543800D0B4FC /* Custom Transitions */ = {
+			isa = PBXGroup;
+			children = (
+				63B05B8D19144BAC00D0B4FC /* IXCustomNavPushPopTransition.h */,
+				63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */,
+			);
+			name = "Custom Transitions";
+			sourceTree = "<group>";
+		};
 		63CC9AB518BD0BF200ECCECB /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +794,7 @@
 		63CC9AB618BD0BFC00ECCECB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				63B05B901914543800D0B4FC /* Custom Transitions */,
 				13033F89183ED8F200C29157 /* IXNavigationViewController.h */,
 				13033F8A183ED8F200C29157 /* IXNavigationViewController.m */,
 				634816E518EDB5F400EC6FEE /* IXOAuthWebAuthViewController.h */,
@@ -1057,6 +1070,7 @@
 				13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */,
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
 				13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */,
+				63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */,
 				13033F9E183ED8F200C29157 /* IXLayout.m in Sources */,
 				63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */,
 			);

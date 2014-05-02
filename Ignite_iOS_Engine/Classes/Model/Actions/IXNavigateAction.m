@@ -14,6 +14,7 @@
 #import "IXJSONGrabber.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
+#import "IXCustomNavPushPopTransition.h"
 
 // IXNavigateAction Properties
 static NSString* const kIXTo = @"to";
@@ -37,14 +38,17 @@ static NSString* const kIXNavAnimationTypeFlipFromBottom = @"flip_from_bottom";
 static NSString* const kIXNavAnimationTypeCurlUp = @"curl_up";
 static NSString* const kIXNavAnimationTypeCurlDown = @"curl_down";
 static NSString* const kIXNavAnimationTypeCrossDissolve = @"cross_dissolve";
+static NSString* const kIXNavAnimationTypeMoveIn = @"move_in";
 
 // IXNavigateAction Events: kIX_SUCCESS and kIX_FAILED
 
 static BOOL sIXIsAttemptingNavigation = NO;
 typedef void(^IXNavAnimationCompletionBlock)();
 
-@interface IXNavigateAction ()
+@interface IXNavigateAction () <UINavigationControllerDelegate>
 
+@property (nonatomic,assign) BOOL isPushTransiton;
+@property (nonatomic,assign) BOOL usesCustomPushAndPopNavigationTransition;
 @property (nonatomic,assign) BOOL isReplaceStackType;
 @property (nonatomic,assign) UIViewAnimationOptions navAnimationTransitionType;
 @property (nonatomic,assign) CGFloat navAnimationDelay;
@@ -105,36 +109,62 @@ typedef void(^IXNavAnimationCompletionBlock)();
 {
     if( !sIXIsAttemptingNavigation )
     {
+        UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+        [navController setDelegate:nil];
+
         sIXIsAttemptingNavigation = YES;
 
         NSString* navigateStackType = [[self actionProperties] getStringPropertyValue:kIXNavStackType defaultValue:kIXNavStackTypePush];
         
-        [self setNavAnimationTransitionType:[IXNavigateAction stringToViewAnimationTransition:[[self actionProperties] getStringPropertyValue:kIXNavAnimationType defaultValue:kIX_DEFAULT]]];
+        NSString* navAnimationTransitionType = [[self actionProperties] getStringPropertyValue:kIXNavAnimationType defaultValue:kIX_DEFAULT];
+        
+        if( [navAnimationTransitionType isEqualToString:kIXNavAnimationTypeMoveIn] )
+        {
+            [self setNavAnimationTransitionType:UIViewAnimationOptionTransitionNone];
+            [self setUsesCustomPushAndPopNavigationTransition:YES];
+        }
+        else
+        {
+            [self setNavAnimationTransitionType:[IXNavigateAction stringToViewAnimationTransition:navAnimationTransitionType]];
+            [self setUsesCustomPushAndPopNavigationTransition:NO];
+        }
+        
         [self setNavAnimationDelay:[[self actionProperties] getFloatPropertyValue:kIXNavAnimationDelay defaultValue:0.0f]];
         [self setNavAnimationDuration:[[self actionProperties] getFloatPropertyValue:kIXNavAnimationDuration defaultValue:0.75f]];
         
         if( [navigateStackType isEqualToString:kIXNavStackTypePop] )
         {
+            [self setIsPushTransiton:NO];
             [self performPopNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypePush] )
         {
+            [self setIsPushTransiton:YES];
             [self performPushNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypeExternal] )
         {
+            [self setIsPushTransiton:NO];
             [self performExternalNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypeReplace] )
         {
-            [self performPushNavigation];
             [self setIsReplaceStackType:YES];
+            [self performPushNavigation];
         }
         else
         {
             [self navigationActionDidFinish:NO];
         }
     }
+}
+
+-(id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    IXCustomNavPushPopTransition* customNavPushPopTransition = [[IXCustomNavPushPopTransition alloc] init];
+    [customNavPushPopTransition setIsPushNavigation:[self isPushTransiton]];
+    [customNavPushPopTransition setDuration:[self navAnimationDuration]];
+    return customNavPushPopTransition;
 }
 
 -(void)performPopNavigation
@@ -165,6 +195,12 @@ typedef void(^IXNavAnimationCompletionBlock)();
             if ( [self navAnimationTransitionType] == UIViewAnimationOptionTransitionNone )
             {
                 UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+                
+                if( [self usesCustomPushAndPopNavigationTransition] )
+                {
+                    [navController setDelegate:self];
+                }
+                
                 if( viewControllerToPopTo == [[navController viewControllers] firstObject] )
                 {
                     [navController popToRootViewControllerAnimated:YES];
@@ -248,6 +284,11 @@ typedef void(^IXNavAnimationCompletionBlock)();
         UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
         if ( [self navAnimationTransitionType] == UIViewAnimationOptionTransitionNone )
         {
+            if( [self usesCustomPushAndPopNavigationTransition] )
+            {
+                [navController setDelegate:self];
+            }
+
             if( [self isReplaceStackType] )
             {
                 [navController setViewControllers:@[viewController] animated:YES];

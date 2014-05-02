@@ -11,10 +11,14 @@
 #import "IXProperty.h"
 #import "IXBaseObject.h"
 #import "IXAppManager.h"
+
 #import "YLMoment.h"
+#import "ApigeeDataClient.h"
+
 #import "NSString+IXAdditions.h"
 
 static NSString* const kIXPushToken = @"push_token";
+static NSString* const kIXApigeeDeviceUUID = @"apigee.device.uuid";
 static NSString* const kIXRandomNumber = @"random_number"; //usage: [[app:random_number(40)]]
 static NSString* const kIXDestroySessionAttributes = @"session.destroy";
 static NSString* const kIXNow = @"now";
@@ -79,9 +83,13 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
     NSString* methodName = [self methodName];
     if( [methodName length] > 0 )
     {
-        if( [methodName isEqualToString:@"push_token"] )
+        if( [methodName isEqualToString:kIXPushToken] )
         {
             returnValue = [[IXAppManager sharedAppManager] pushToken];
+        }
+        if( [methodName isEqualToString:kIXApigeeDeviceUUID] )
+        {
+            returnValue = [ApigeeDataClient getUniqueDeviceID];
         }
         else
         {

@@ -37,6 +37,14 @@ static NSString* const kIXAutoLoad = @"auto_load";
 static NSString* const kIXAuthType = @"auth_type";
 static NSString* const kIXCacheID = @"cache_id";
 
+// kIXAuthType Types
+static NSString* const kIX_AuthType_Basic = @"basic";
+
+static NSString* const kIXBasicUserName = @"basic.username";
+static NSString* const kIXBasicPassword = @"basic.password";
+
+static NSString* const kIX_AuthType_OAuth2 = @"oauth2";
+
 static NSString* const kIXOAuthClientID = @"oauth.client_id";
 static NSString* const kIXOAuthSecret = @"oauth.secret";
 static NSString* const kIXOAuthTokenStorageID = @"oauth.storage_id";
@@ -45,9 +53,6 @@ static NSString* const kIXOAuthAuthorizePath = @"oauth.authorize_path";
 static NSString* const kIXOAuthAccessTokenPath = @"oauth.access_token_path";
 static NSString* const kIXOAuthRedirectURI = @"oauth.redirect_uri";
 static NSString* const kIXOAuthScope = @"oauth.scope";
-
-// kIXAuthType Types
-static NSString* const kIX_AuthType_OAuth2 = @"oauth2";
 
 // IXBaseDataProvider Read-Only Properties
 static NSString* const kIXRawDataResponse = @"raw_data_response";
@@ -171,6 +176,18 @@ static NSCache* sIXDataProviderCache = nil;
             [self setOAuthAccessTokenPath:[[self propertyContainer] getStringPropertyValue:kIXOAuthAccessTokenPath defaultValue:nil]];
             [self setOAuthScope:[[self propertyContainer] getStringPropertyValue:kIXOAuthScope defaultValue:nil]];
             [self setOAuthRedirectURI:[[self propertyContainer] getStringPropertyValue:kIXOAuthRedirectURI defaultValue:kIX_Default_RedirectURI]];
+        }
+        if( [[self authType] isEqualToString:kIX_AuthType_Basic] )
+        {
+            NSString* userName = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
+            NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];
+
+            [[self httpClient] clearAuthorizationHeader];
+            
+            if( [userName length] > 0 && [password length] > 0 )
+            {
+                [[self httpClient] setAuthorizationHeaderWithUsername:userName password:password];
+            }
         }
     }
     else
