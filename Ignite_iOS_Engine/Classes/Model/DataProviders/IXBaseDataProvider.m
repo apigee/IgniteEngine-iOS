@@ -177,7 +177,7 @@ static NSCache* sIXDataProviderCache = nil;
             [self setOAuthScope:[[self propertyContainer] getStringPropertyValue:kIXOAuthScope defaultValue:nil]];
             [self setOAuthRedirectURI:[[self propertyContainer] getStringPropertyValue:kIXOAuthRedirectURI defaultValue:kIX_Default_RedirectURI]];
         }
-        if( [[self authType] isEqualToString:kIX_AuthType_Basic] )
+        else if( [[self authType] isEqualToString:kIX_AuthType_Basic] )
         {
             NSString* userName = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
             NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];

@@ -16,7 +16,7 @@
     if( self )
     {
         _isPushNavigation = NO;
-        _duration = 0.25f;
+        _duration = 0.75f;
     }
     return self;
 }
