@@ -69,6 +69,9 @@
         [self setHttpClient:nil];
         [self setHttpMethod:nil];
     }
+    
+    NSString* acceptedContentType = [[self propertyContainer] getStringPropertyValue:@"accepted_content_type" defaultValue:nil];
+    [IXAFJSONRequestOperation addAcceptedContentType:acceptedContentType];
 }
 
 -(void)fireLoadFinishedEventsFromCachedResponse
@@ -329,7 +332,7 @@
                 {
                     returnValue = [(NSNumber*)jsonObject stringValue];
                 }
-                else
+                else if( [NSJSONSerialization isValidJSONObject:jsonObject] )
                 {
                     NSError* __autoreleasing jsonConvertError = nil;
                     NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];

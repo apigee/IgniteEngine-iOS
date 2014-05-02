@@ -14,6 +14,7 @@
 @interface IXProperty : IXBaseConditionalObject <NSCopying,NSCoding>
 
 @property (nonatomic,weak) IXPropertyContainer* propertyContainer;
+@property (nonatomic,assign) BOOL wasAnArray;
 @property (nonatomic,copy) NSString* propertyName;
 @property (nonatomic,copy) NSString* originalString;
 @property (nonatomic,copy) NSString* staticText;

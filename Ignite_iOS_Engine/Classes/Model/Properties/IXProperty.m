@@ -175,6 +175,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     if( [commaSeperatedStringValueList length] > 0 )
     {
         IXProperty* commaSeperatedProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:commaSeperatedStringValueList];
+        [commaSeperatedProperty setWasAnArray:YES];
         if( commaSeperatedProperty )
         {
             if( propertyArray == nil )
@@ -194,6 +195,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     [aCoder encodeObject:[self propertyName] forKey:@"propertyName"];
     [aCoder encodeObject:[self originalString] forKey:@"originalString"];
     [aCoder encodeObject:[self staticText] forKey:@"staticText"];
+    [aCoder encodeBool:[self wasAnArray] forKey:@"wasAnArray"];
     if( [[self shortCodes] count] )
     {
         [aCoder encodeObject:[self shortCodes] forKey:@"shortCodes"];
@@ -209,6 +211,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
         [self setOriginalString:[aDecoder decodeObjectForKey:@"originalString"]];
         [self setStaticText:[aDecoder decodeObjectForKey:@"staticText"]];
         [self setShortCodes:[aDecoder decodeObjectForKey:@"shortCodes"]];
+        [self setWasAnArray:[aDecoder decodeBoolForKey:@"wasAnArray"]];
     }
     return self;
 }
@@ -220,6 +223,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     [copiedProperty setPropertyName:[self propertyName]];
     [copiedProperty setOriginalString:[self originalString]];
     [copiedProperty setStaticText:[self staticText]];
+    [copiedProperty setWasAnArray:[self wasAnArray]];
     if( [[self shortCodes] count] )
     {
         [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];

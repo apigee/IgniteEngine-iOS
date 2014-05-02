@@ -10,4 +10,6 @@
 
 @interface IXAFJSONRequestOperation : AFJSONRequestOperation
 
++(void)addAcceptedContentType:(NSString*)contentType;
+
 @end

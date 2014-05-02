@@ -291,7 +291,15 @@
             }
             else
             {
-                [returnDictionary setObject:propertyValue forKey:propertyName];
+                IXProperty* property = [self getPropertyToEvaluate:propertyName];
+                if( [property wasAnArray] )
+                {
+                    [returnDictionary setObject:[propertyValue componentsSeparatedByString:@","] forKey:propertyName];
+                }
+                else
+                {
+                    [returnDictionary setObject:propertyValue forKey:propertyName];
+                }
             }
         }
     }
