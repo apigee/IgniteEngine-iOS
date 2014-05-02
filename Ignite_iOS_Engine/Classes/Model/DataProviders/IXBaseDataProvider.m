@@ -327,7 +327,8 @@ static NSCache* sIXDataProviderCache = nil;
 {
     [self setRequestToEnqueAfterAuthentication:nil];
     [self setLastResponseErrorMessage:[error description]];
-    [self fireLoadFinishedEvents:@[kIXAuthFail] shouldCacheResponse:NO];
+    [[self actionContainer] executeActionsForEventNamed:kIXAuthFail];
+    [self fireLoadFinishedEvents:NO shouldCacheResponse:NO];
     
     if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
     {
@@ -378,7 +379,8 @@ static NSCache* sIXDataProviderCache = nil;
                                              [[weakSelf httpClient] setParameterEncoding:paramEncoding];
                                              [weakSelf setRequestToEnqueAfterAuthentication:nil];
                                              [weakSelf setLastResponseErrorMessage:[error description]];
-                                             [weakSelf fireLoadFinishedEvents:@[kIXAuthFail] shouldCacheResponse:NO];
+                                             [[weakSelf actionContainer] executeActionsForEventNamed:kIXAuthFail];
+                                             [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                                         }];
     
     if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
