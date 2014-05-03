@@ -47,7 +47,6 @@ typedef void(^IXNavAnimationCompletionBlock)();
 
 @interface IXNavigateAction () <UINavigationControllerDelegate>
 
-@property (nonatomic,assign) BOOL isPushTransiton;
 @property (nonatomic,assign) BOOL usesCustomPushAndPopNavigationTransition;
 @property (nonatomic,assign) BOOL isReplaceStackType;
 @property (nonatomic,assign) UIViewAnimationOptions navAnimationTransitionType;
@@ -94,6 +93,9 @@ typedef void(^IXNavAnimationCompletionBlock)();
 
 -(void)navigationActionDidFinish:(BOOL)didSucceed
 {
+    UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
+    [navController setDelegate:(id<UINavigationControllerDelegate>)navController];
+    
     sIXIsAttemptingNavigation = NO;
     if( didSucceed )
     {
@@ -110,7 +112,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
     if( !sIXIsAttemptingNavigation )
     {
         UINavigationController* navController = [[IXAppManager sharedAppManager] rootViewController];
-        [navController setDelegate:nil];
+        [navController setDelegate:(id<UINavigationControllerDelegate>)navController];
 
         sIXIsAttemptingNavigation = YES;
 
@@ -134,22 +136,18 @@ typedef void(^IXNavAnimationCompletionBlock)();
         
         if( [navigateStackType isEqualToString:kIXNavStackTypePop] )
         {
-            [self setIsPushTransiton:NO];
             [self performPopNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypePush] )
         {
-            [self setIsPushTransiton:YES];
             [self performPushNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypeExternal] )
         {
-            [self setIsPushTransiton:NO];
             [self performExternalNavigation];
         }
         else if( [navigateStackType isEqualToString:kIXNavStackTypeReplace] )
         {
-            [self setIsPushTransiton:YES];
             [self setIsReplaceStackType:YES];
             [self performPushNavigation];
         }
@@ -160,10 +158,13 @@ typedef void(^IXNavAnimationCompletionBlock)();
     }
 }
 
--(id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+-(id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                 animationControllerForOperation:(UINavigationControllerOperation)operation
+                                              fromViewController:(UIViewController *)fromVC
+                                                toViewController:(UIViewController *)toVC
 {
     IXCustomNavPushPopTransition* customNavPushPopTransition = [[IXCustomNavPushPopTransition alloc] init];
-    [customNavPushPopTransition setIsPushNavigation:[self isPushTransiton]];
+    [customNavPushPopTransition setIsPushNavigation:(operation == UINavigationControllerOperationPush)];
     [customNavPushPopTransition setDuration:[self navAnimationDuration]];
     return customNavPushPopTransition;
 }
