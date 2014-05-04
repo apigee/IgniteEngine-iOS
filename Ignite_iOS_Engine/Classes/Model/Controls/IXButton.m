@@ -20,18 +20,21 @@ static NSString* const kIXDisabled = @"disabled";
 static NSString* const kIXTextDefault = @"text";
 static NSString* const kIXTextDefaultFont = @"font";
 static NSString* const kIXTextDefaultColor = @"text.color";
+static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXIconDefault = @"icon";
 static NSString* const kIXIconDefaultTintColor = @"icon.tintColor";
 
 static NSString* const kIXTouchText = @"touch.text";
 static NSString* const kIXTouchFont = @"touch.font";
 static NSString* const kIXTouchTextColor = @"touch.text.color";
+static NSString* const kIXTouchBackgroundColor = @"touch.background.color";
 static NSString* const kIXTouchIcon = @"touch.icon";
 static NSString* const kIXTouchIconTintColor = @"touch.icon.tintColor";
 
 static NSString* const kIXDisabledText = @"disabled.text";
 static NSString* const kIXDisabledFont = @"disabled.font";
 static NSString* const kIXDisabledTextColor = @"disabled.text.color";
+static NSString* const kIXDisabledBackgroundColor = @"disabled.background.color";
 static NSString* const kIXDisabledIcon = @"disabled.icon";
 static NSString* const kIXDisabledIconTintColor = @"disabled.icon.tintColor";
 
@@ -82,7 +85,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     
     [[self button] setEnabled:[[self contentView] isEnabled]];
     
-    self.button.shouldHighlightImageOnTouch = [self.propertyContainer getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
+    self.button.shouldHighlightImageOnTouch = [self.propertyContainer getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:YES];
     [[self button] setAdjustsImageWhenHighlighted:NO];
     
     [[self button] setAttributedTitle:nil forState:UIControlStateNormal];
@@ -166,13 +169,21 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.06];
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.04];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXTouchIconTintColor defaultValue:nil];
+        UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXTouchBackgroundColor defaultValue:nil];
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                          animations:^{
-                             [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateHighlighted];
+                             if (imageTintColor)
+                             {
+                                 [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateHighlighted];
+                             }
+                             if (buttonBackgroundColor)
+                             {
+                                 self.contentView.backgroundColor = buttonBackgroundColor;
+                             }
                          }
                          completion:^(BOOL finished){
                              [self processBeginTouch:YES];
@@ -188,11 +199,19 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
+        UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:nil];
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
-                            [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
+                            if (imageTintColor)
+                            {
+                                [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
+                            }
+                            if (buttonBackgroundColor)
+                            {
+                                self.contentView.backgroundColor = buttonBackgroundColor;
+                            }
                         }
                         completion:^(BOOL finished){
                             [self processEndTouch:YES];
@@ -208,11 +227,19 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
+        UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:nil];
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
-                            [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
+                            if (imageTintColor)
+                            {
+                                [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
+                            }
+                            if (buttonBackgroundColor)
+                            {
+                                self.contentView.backgroundColor = buttonBackgroundColor;
+                            }
                         }
                         completion:^(BOOL finished){
                             [self processCancelTouch:YES];

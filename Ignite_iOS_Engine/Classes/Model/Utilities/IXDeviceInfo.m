@@ -75,6 +75,7 @@
 
 +(NSString *)interfaceOrientation
 {
+    IX_LOG_VERBOSE(@"Call to get interface orientation");
     switch ([IXAppManager currentInterfaceOrientation])
     {
         case UIInterfaceOrientationPortrait:
@@ -94,16 +95,19 @@
 
 +(NSString *)screenHeight
 {
+    IX_LOG_VERBOSE(@"Call to get screen height");
     return [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.height];
 }
 
 +(NSString *)screenWidth
 {
+    IX_LOG_VERBOSE(@"Call to get screen width");
     return [NSString stringWithFormat:@"%.0f", [[UIScreen mainScreen] bounds].size.width];
 }
 
 +(NSString *)screenScale
 {
+    IX_LOG_VERBOSE(@"Call to get screen scale");
     return [NSString stringWithFormat:@"%.1f", [[UIScreen mainScreen] scale]];
 }
 
