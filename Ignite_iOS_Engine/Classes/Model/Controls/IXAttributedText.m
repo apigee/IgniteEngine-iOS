@@ -168,9 +168,10 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     NSString* text = [self.propertyContainer getStringPropertyValue:kIXText defaultValue:@""];
     kIXDefinedMentionScheme = [self.propertyContainer getStringPropertyValue:kIXMentionScheme defaultValue:@"mention://"];
     kIXDefinedHashtagScheme = [self.propertyContainer getStringPropertyValue:kIXHashtagScheme defaultValue:@"hashtag://"];
+    kIXBaseTextColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
     
     self.label.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-    self.label.textColor = [UIColor blackColor];
+    self.label.textColor = kIXBaseTextColor;
     self.label.lineBreakMode = NSLineBreakByWordWrapping;
     self.label.numberOfLines = 0;
     self.label.userInteractionEnabled = YES;
@@ -190,7 +191,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
         BOOL highlightHyperlinks = [self.propertyContainer getBoolPropertyValue:kIXShouldHighlightHyperlinks defaultValue:true];
         BOOL shouldParseMarkdown = [self.propertyContainer getBoolPropertyValue:kIXShouldParseMarkdown defaultValue:false];
         
-        kIXBaseTextColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
+        
         UIColor *mentionColor = [self.propertyContainer getColorPropertyValue:kIXMentionColor defaultValue:[UIColor blackColor]];
         UIColor *hashtagColor = [self.propertyContainer getColorPropertyValue:kIXHashtagColor defaultValue:[UIColor blackColor]];
         UIColor *hyperlinkColor = [self.propertyContainer getColorPropertyValue:kIXHyperlinkColor defaultValue:[UIColor blackColor]];

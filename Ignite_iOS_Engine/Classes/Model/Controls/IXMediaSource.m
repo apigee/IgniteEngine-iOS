@@ -7,20 +7,6 @@
 //
 
 /*
- 
- CONTROL
- /--------------------/
- - TYPE : "___"
- - DESCRIPTION: "___ Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
  /--------------------/
  - Example
  /--------------------/
@@ -44,6 +30,18 @@
      "on": "touch_up"
  }
  
+ And after loaded:
+ 
+ {
+     "_type": "Modify",
+     "attributes": {
+        "_target": "session"
+     },
+    "on": "did_load_media",
+    "set": {
+        "selected_media": "[[$self.selected_media]]"
+     }
+ }
  
  
  /--------------------/
@@ -148,7 +146,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     if( [UIViewController isOkToPresentViewController:[self imagePickerController]] )
     {
         [[[IXAppManager sharedAppManager] rootViewController] presentViewController:self.imagePickerController
-                                                                         animated:animated
+                                                                         animated:UIViewAnimationOptionAllowAnimatedContent
                                                                        completion:nil];
     }
 }
@@ -189,6 +187,10 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     if(info != nil)
     {
         [self.actionContainer executeActionsForEventNamed:@"did_load_media"];
+    }
+    else
+    {
+        [self.actionContainer executeActionsForEventNamed:@"failed_load_media"];
     }
 }
 
