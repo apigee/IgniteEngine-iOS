@@ -23,6 +23,7 @@ static NSString* const kIXTextDefaultColor = @"text.color";
 static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXIconDefault = @"icon";
 static NSString* const kIXIconDefaultTintColor = @"icon.tintColor";
+static NSString* const kIXAlpha = @"alpha";
 
 static NSString* const kIXTouchText = @"touch.text";
 static NSString* const kIXTouchFont = @"touch.font";
@@ -30,6 +31,7 @@ static NSString* const kIXTouchTextColor = @"touch.text.color";
 static NSString* const kIXTouchBackgroundColor = @"touch.background.color";
 static NSString* const kIXTouchIcon = @"touch.icon";
 static NSString* const kIXTouchIconTintColor = @"touch.icon.tintColor";
+static NSString* const kIXTouchAlpha = @"touch.alpha";
 
 static NSString* const kIXDisabledText = @"disabled.text";
 static NSString* const kIXDisabledFont = @"disabled.font";
@@ -37,6 +39,7 @@ static NSString* const kIXDisabledTextColor = @"disabled.text.color";
 static NSString* const kIXDisabledBackgroundColor = @"disabled.background.color";
 static NSString* const kIXDisabledIcon = @"disabled.icon";
 static NSString* const kIXDisabledIconTintColor = @"disabled.icon.tintColor";
+static NSString* const kIXDisabledAlpha = @"disabled.alpha";
 
 static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
 static NSString* const kIXTouchDuration = @"touch.duration";
@@ -172,10 +175,15 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.04];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXTouchIconTintColor defaultValue:nil];
         UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXTouchBackgroundColor defaultValue:nil];
+        CGFloat buttonAlpha = [self.propertyContainer getFloatPropertyValue:kIXTouchAlpha defaultValue:1.0f];
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                          animations:^{
+                             if (buttonAlpha < 1)
+                             {
+                                 self.button.alpha = buttonAlpha;
+                             }
                              if (imageTintColor)
                              {
                                  [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateHighlighted];
@@ -200,10 +208,12 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
         UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:nil];
+        CGFloat buttonAlpha = [self.propertyContainer getFloatPropertyValue:kIXAlpha defaultValue:1.0f];
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
+                            self.button.alpha = buttonAlpha;
                             if (imageTintColor)
                             {
                                 [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
@@ -228,10 +238,12 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
         UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
         UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:nil];
+        CGFloat buttonAlpha = [self.propertyContainer getFloatPropertyValue:kIXAlpha defaultValue:1.0f];
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
+                            self.button.alpha = buttonAlpha;
                             if (imageTintColor)
                             {
                                 [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];

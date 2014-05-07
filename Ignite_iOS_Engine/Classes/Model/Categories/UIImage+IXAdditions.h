@@ -19,5 +19,6 @@
 +(CGFloat)degreesToRadians:(CGFloat)degrees;
 +(CGFloat)radiansToDegrees:(CGFloat)radians;
 +(NSString *)contentTypeForImageData:(NSData *)data;
++(UIImage *)setImage:(UIImage *)image withAlpha:(CGFloat)alpha;
 
 @end

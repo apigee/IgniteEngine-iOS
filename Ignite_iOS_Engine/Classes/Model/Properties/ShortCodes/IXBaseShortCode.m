@@ -18,6 +18,7 @@ static NSString* const kIXIsEmpty = @"is_empty";
 static NSString* const kIXIsNotEmpty = @"is_not_empty";
 static NSString* const kIXIsNil = @"is_nil";
 static NSString* const kIXIsNotNil = @"is_not_nil";
+static NSString* const kIXIsNilOrEmpty = @"is_nil_or_empty";
 static NSString* const kIXToUppercase = @"to_uppercase";
 static NSString* const kIXToLowercase = @"to_lowercase";
 static NSString* const kIXCapitalize = @"capitalize";
@@ -44,6 +45,12 @@ static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* str
 };
 static IXBaseShortCodeFunction const kIXIsNotNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [NSString ix_stringFromBOOL:(stringToModify != nil)];
+};
+static IXBaseShortCodeFunction const kIXIsNilOrEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    BOOL isEmptyOrNil = false;
+    if (stringToModify == nil || [stringToModify isEqualToString:kIX_EMPTY_STRING])
+        isEmptyOrNil = true;
+    return [NSString ix_stringFromBOOL:isEmptyOrNil];
 };
 static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify uppercaseString];
@@ -282,6 +289,8 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 shortCodeFunction = kIXIsNilFunction;
             } else if( [functionName isEqualToString:kIXIsNotNil] ) {
                 shortCodeFunction = kIXIsNotNilFunction;
+            } else if( [functionName isEqualToString:kIXIsNilOrEmpty] ) {
+                shortCodeFunction = kIXIsNilOrEmptyFunction;
             } else if( [functionName isEqualToString:kIXLength] ) {
                 shortCodeFunction = kIXLengthFunction;
             } else if( [functionName isEqualToString:kIXTruncate] ) {
