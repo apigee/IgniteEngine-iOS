@@ -19,6 +19,10 @@
 #import "IXCustom.h"
 #import <RestKit/CoreData.h>
 
+static NSString* const kIXDataproviderID = @"dataprovider_id";
+static NSString* const kIXLayoutFlow = @"layout_flow";
+static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
+
 @interface IXSandbox ()
 
 @property (nonatomic,strong) NSMutableDictionary* dataProviders;
@@ -77,7 +81,7 @@
 {
     [super applySettings];
     
-    [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:@"dataprovider_id" defaultValue:nil]];
+    [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:kIXDataproviderID defaultValue:nil]];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
 
@@ -99,8 +103,19 @@
         [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:@"seperator.color" defaultValue:[UIColor grayColor]]];
     }
     
+    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:@"vertical"];
+    if ([layoutFlow isEqualToString:@"horizontal"])
+    {
+        [[self tableView] setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
+    }
+    if (![[self propertyContainer] getBoolPropertyValue:kIXEnableScrollIndicators defaultValue:true])
+    {
+        [[self tableView] setShowsHorizontalScrollIndicator:false];
+        [[self tableView] setShowsVerticalScrollIndicator:false];
+    }
+    
     [[self tableView] setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"scrollable" defaultValue:YES]];
-    [[self tableView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"background.color" defaultValue:[UIColor whiteColor]]];
+    [[self tableView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"background.color" defaultValue:[UIColor clearColor]]];
     
     [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
     [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:@"keep_row_highlighted_on_select" defaultValue:NO]];
@@ -231,6 +246,12 @@
         }
     }
     
+    
+    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:@"vertical"];
+    if ([layoutFlow isEqualToString:@"horizontal"])
+    {
+        [cell setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+    }
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
 
     IXLayout* cellLayout = [cell layoutControl];
