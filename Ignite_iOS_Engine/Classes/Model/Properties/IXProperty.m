@@ -153,7 +153,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
                 if( !commaSeperatedStringValueList ) {
                     commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:propertyValueObject];
                 } else {
-                    [commaSeperatedStringValueList appendFormat:@",%@",propertyValueObject];
+                    [commaSeperatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,propertyValueObject];
                 }
             }
         }
@@ -163,7 +163,7 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
             if( !commaSeperatedStringValueList ) {
                 commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:stringValue];
             } else {
-                [commaSeperatedStringValueList appendFormat:@",%@",stringValue];
+                [commaSeperatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,stringValue];
             }
         }
         else

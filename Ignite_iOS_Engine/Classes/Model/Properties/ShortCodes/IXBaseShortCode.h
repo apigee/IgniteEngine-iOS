@@ -31,7 +31,8 @@ typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* pa
                        objectID:(NSString*)objectID
                      methodName:(NSString*)methodName
                    functionName:(NSString*)functionName
-                     parameters:(NSArray*)parameters;
+                     parameters:(NSArray*)parameters
+          rangeInPropertiesText:(NSRange)rangeInPropertiesText;
 
 +(instancetype)shortCodeFromString:(NSString*)checkedString
                 textCheckingResult:(NSTextCheckingResult*)textCheckingResult;

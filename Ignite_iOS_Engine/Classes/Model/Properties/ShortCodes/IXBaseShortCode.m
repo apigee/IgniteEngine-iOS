@@ -115,6 +115,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                      methodName:(NSString*)methodName
                    functionName:(NSString*)functionName
                      parameters:(NSArray*)parameters
+          rangeInPropertiesText:(NSRange)rangeInPropertiesText
 {
     self = [super init];
     if( self )
@@ -123,6 +124,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
         _objectID = [objectID copy];
         _methodName = [methodName copy];
         _parameters = parameters;
+        _rangeInPropertiesText = rangeInPropertiesText;
         
         [self setFunctionName:functionName];
     }
@@ -131,13 +133,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {
-    IXBaseShortCode* copy = [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
-                                                                       objectID:[self objectID]
-                                                                     methodName:[self methodName]
-                                                                   functionName:[self functionName]
-                                                                     parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]];
-    [copy setRangeInPropertiesText:[self rangeInPropertiesText]];
-    return copy;
+    return [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
+                                                      objectID:[self objectID]
+                                                    methodName:[self methodName]
+                                                  functionName:[self functionName]
+                                                    parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]
+                                         rangeInPropertiesText:[self rangeInPropertiesText]];
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
@@ -152,13 +153,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
-    IXBaseShortCode* shortCode = [self initWithRawValue:[aDecoder decodeObjectForKey:@"rawValue"]
-                                               objectID:[aDecoder decodeObjectForKey:@"objectID"]
-                                             methodName:[aDecoder decodeObjectForKey:@"methodName"]
-                                           functionName:[aDecoder decodeObjectForKey:@"functionName"]
-                                             parameters:[aDecoder decodeObjectForKey:@"parameters"]];
-    [shortCode setRangeInPropertiesText:[[aDecoder decodeObjectForKey:@"rangeInPropertiesText"] rangeValue]];
-    return shortCode;
+    return [self initWithRawValue:[aDecoder decodeObjectForKey:@"rawValue"]
+                         objectID:[aDecoder decodeObjectForKey:@"objectID"]
+                       methodName:[aDecoder decodeObjectForKey:@"methodName"]
+                     functionName:[aDecoder decodeObjectForKey:@"functionName"]
+                       parameters:[aDecoder decodeObjectForKey:@"parameters"]
+            rangeInPropertiesText:[[aDecoder decodeObjectForKey:@"rangeInPropertiesText"] rangeValue]];
 }
 
 +(instancetype)shortCodeFromString:(NSString*)checkedString
@@ -178,8 +178,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             if( [rawValue hasPrefix:kIX_EVAL_BRACKETS] )
             {
                 IXProperty* evalPropertyValue = [[IXProperty alloc] initWithPropertyName:nil rawValue:objectIDWithMethodString];
-                IXEvalShortCode* evalShortCode = [[IXEvalShortCode alloc] initWithRawValue:nil objectID:nil methodName:nil functionName:nil parameters:@[evalPropertyValue]];
-                returnShortCode = evalShortCode;
+                returnShortCode = [[IXEvalShortCode alloc] initWithRawValue:nil
+                                                                   objectID:nil
+                                                                 methodName:nil
+                                                               functionName:nil
+                                                                 parameters:@[evalPropertyValue]
+                                                      rangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
             }
             else
             {
@@ -247,9 +251,8 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                                                                       objectID:objectID
                                                                     methodName:methodName
                                                                   functionName:functionName
-                                                                    parameters:parameters];
-                    
-                    [returnShortCode setRangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
+                                                                    parameters:parameters
+                                                         rangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
                 }
             }
         }
