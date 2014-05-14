@@ -43,6 +43,8 @@
     {
         [self setDelegate:self];
         [[self navigationBar] setBackgroundColor:[UIColor clearColor]];
+        [self.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+        self.navigationBar.shadowImage = [[UIImage alloc] init];        
 //        [self setNavigationBarHidden:NO animated:NO];
 //        [self setToolbarHidden:YES animated:NO];
         
