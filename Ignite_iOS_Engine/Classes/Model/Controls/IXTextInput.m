@@ -34,6 +34,7 @@
 #import "IXViewController.h"
 #import "IXClickableScrollView.h"
 #import "IXProperty.h"
+#import "IXNavigateAction.h"
 #import "UITextField+IXAdditions.h"
 
 // IXTextInput Properties
@@ -536,7 +537,12 @@ static NSString* const kIXNewLineString = @"\n";
     [self setInputAllowedRegex:nil];
     [self setInputDisallowedRegex:nil];
     
-    [[self actionContainer] executeActionsForEventNamed:kIXLostFocus];
+    // Only fire actions if we arent navigating.
+    // Navigating automatically fires the resign of the keyboard so lets just not worry about actions associated with it.
+    if( ![IXNavigateAction isAttemptingNavigation] )
+    {
+        [[self actionContainer] executeActionsForEventNamed:kIXLostFocus];
+    }
 }
 
 -(void)textInputDidBeginEditing:(id<UITextInput>)textInput

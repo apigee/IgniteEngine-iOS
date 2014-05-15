@@ -57,6 +57,11 @@ typedef void(^IXNavAnimationCompletionBlock)();
 
 @implementation IXNavigateAction
 
++(BOOL)isAttemptingNavigation
+{
+    return sIXIsAttemptingNavigation;
+}
+
 +(UIViewAnimationOptions)stringToViewAnimationTransition:(NSString*)string
 {
     UIViewAnimationOptions transition = UIViewAnimationOptionTransitionNone;

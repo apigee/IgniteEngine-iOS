@@ -27,4 +27,6 @@
 
 @interface IXNavigateAction : IXBaseAction
 
++(BOOL)isAttemptingNavigation;
+
 @end

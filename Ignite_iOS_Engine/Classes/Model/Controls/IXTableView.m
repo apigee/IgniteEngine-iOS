@@ -23,6 +23,9 @@ static NSString* const kIXDataproviderID = @"dataprovider_id";
 static NSString* const kIXLayoutFlow = @"layout_flow";
 static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
 
+static NSString* const kIXWillDisplayCell = @"will_display_cell";
+static NSString* const kIXDidHideCell = @"did_hide_cell";
+
 @interface IXSandbox ()
 
 @property (nonatomic,strong) NSMutableDictionary* dataProviders;
@@ -48,7 +51,9 @@ static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:IXBaseDataProviderDidUpdateNotification
+                                                  object:[self dataProvider]];
     [_tableView setDataSource:nil];
     [_tableView setDelegate:nil];
 }
@@ -161,6 +166,26 @@ static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
 }
 
 #pragma mark UITableViewDataSource methods
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray* visibleIndexPaths = [tableView indexPathsForVisibleRows];
+    if( [cell isKindOfClass:[IXUITableViewCell class]] && [visibleIndexPaths indexOfObject:indexPath] != NSNotFound )
+    {
+        IXLayout* layout = [(IXUITableViewCell*)cell layoutControl];
+        [[layout actionContainer] executeActionsForEventNamed:kIXWillDisplayCell];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray* visibleIndexPaths = [tableView indexPathsForVisibleRows];
+    if( [cell isKindOfClass:[IXUITableViewCell class]] && [visibleIndexPaths indexOfObject:indexPath] == NSNotFound )
+    {
+        IXLayout* layout = [(IXUITableViewCell*)cell layoutControl];
+        [[layout actionContainer] executeActionsForEventNamed:kIXDidHideCell];
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
