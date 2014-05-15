@@ -56,7 +56,7 @@ static NSString* const kIXSizeToFit = @"size_to_fit";
 {
     [super applySettings];
     
-    [[self label] setEnabled:[[self contentView] isEnabled]];    
+    [[self label] setUserInteractionEnabled:[[self contentView] isEnabled]];
     [[self label] setText:[[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil]];
     [[self label] setTextColor:[[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]]];
     [[self label] setFont:[[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
