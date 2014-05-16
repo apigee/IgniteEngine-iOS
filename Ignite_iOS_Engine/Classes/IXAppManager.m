@@ -29,6 +29,7 @@
 
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"
+#import "ApigeeMonitoringOptions.h"
 
 @interface IXAppManager ()
 
@@ -121,6 +122,8 @@
     [self setWebViewForJS:[[UIWebView alloc] initWithFrame:CGRectZero]];
     [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appConfigPath] stringByDeletingLastPathComponent]]];
     
+    [self preloadImages];
+    
     [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
                                                  asynch:NO
                                             shouldCache:NO
@@ -162,7 +165,6 @@
                                                 [[self applicationSandbox] loadAllDataProviders];
                                             }
                                         }];
-    [self preloadImages];
 }
 
 -(void)preloadImages
@@ -170,14 +172,11 @@
     NSArray* imagesToPreload = [[self appProperties] getCommaSeperatedArrayListValue:@"preload_images" defaultValue:nil];
     for( NSString* imagePath in imagesToPreload )
     {
-        NSURL* imageURL = [[NSBundle mainBundle] URLForResource:imagePath withExtension:nil];
-        if( imageURL )
+        UIImage* image = [UIImage imageNamed:imagePath];
+        if( image )
         {
-            [[SDWebImageManager sharedManager] downloadWithURL:imageURL
-                                                       options:0
-                                                      progress:nil
-                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
-                                                     }];
+            NSURL* imageURL = [[NSBundle mainBundle] URLForResource:imagePath withExtension:nil];
+            [[[SDWebImageManager sharedManager] imageCache] storeImage:image forKey:[imageURL absoluteString]];
         }
     }
 }
@@ -192,7 +191,11 @@
     [[IXLogger sharedLogger] setApigeeClientAvailable:apigeeOrgNameAndAppIDAreValid];
     if( apigeeOrgNameAndAppIDAreValid )
     {
-        [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName applicationId:apigeeApplicationID baseURL:apigeeBaseURL]];
+        ApigeeMonitoringOptions* options = [[ApigeeMonitoringOptions alloc] init];
+        options.crashReportingEnabled = YES;
+        options.interceptNetworkCalls = NO;
+        
+        [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName applicationId:apigeeApplicationID baseURL:apigeeBaseURL options:options]];
         [[[self apigeeClient] dataClient] setLogging:YES];
     }
     
