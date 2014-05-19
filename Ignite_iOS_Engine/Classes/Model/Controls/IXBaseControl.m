@@ -88,8 +88,6 @@ static NSString* const kIXLocationX = @"location.x";
 static NSString* const kIXLocationY = @"location.y";
 
 // Animations
-static BOOL kIXIsAnimating;
-static NSInteger kIXAnimationCounter;
 static NSString* const kIXSpin = @"spin";
 
 static NSString* const kIXDirection = @"direction";
@@ -104,9 +102,17 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 @interface IXBaseControl ()
 
+@property (nonatomic,assign,getter = isAnimating) BOOL animating;
+@property (nonatomic,assign) NSInteger animationCounter;
+
 @end
 
 @implementation IXBaseControl
+
+-(void)dealloc
+{
+    [self endAnimation];
+}
 
 -(id)init
 {
@@ -116,6 +122,8 @@ static NSString* const kIXToggle = @"dev_toggle";
         _contentView = nil;
         _layoutInfo = nil;
         _notifyParentOfLayoutUpdates = YES;
+        _animating = NO;
+        _animationCounter = 0;
         
         [self buildView];
     }
@@ -696,9 +704,9 @@ static NSString* const kIXToggle = @"dev_toggle";
 {
     if ([animation isEqualToString:kIXSpin])
     {
-        if (!kIXIsAnimating) {
-            kIXIsAnimating = YES;
-            kIXAnimationCounter = 0;
+        if (![self isAnimating]) {
+            [self setAnimating:YES];
+            [self setAnimationCounter:0];
             [self spinWithOptions: UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount*4 - 1 params:params]; //*4 to = 360º
         }
     }
@@ -706,7 +714,7 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 -(void)endAnimation
 {
-    kIXIsAnimating = NO;
+    [self setAnimating:NO];
 }
 
 // ROTATE/SPIN ANIMATION
@@ -732,9 +740,12 @@ static NSString* const kIXToggle = @"dev_toggle";
                          }
                          completion: ^(BOOL finished) {
                              if (finished) {
-                                 if (kIXIsAnimating && (kIXAnimationCounter == 0 || kIXAnimationCounter < repeatCount)) {
+                                 if ([self isAnimating] && ([self animationCounter] == 0 || [self animationCounter] < repeatCount))
+                                 {
                                      if (repeatCount > 0)
-                                         kIXAnimationCounter++;
+                                     {
+                                         [self setAnimationCounter:[self animationCounter]+1];
+                                     }
                                      // if flag still set, keep spinning with constant speed
                                      [self spinWithOptions: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear duration:duration repeatCount:repeatCount params:params];
                                  } else if (options != UIViewAnimationOptionCurveEaseOut) {
