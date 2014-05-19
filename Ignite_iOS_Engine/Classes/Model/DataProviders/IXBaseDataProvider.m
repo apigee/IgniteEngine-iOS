@@ -231,6 +231,8 @@ static NSCache* sIXDataProviderCache = nil;
 {
     if( [[self httpClient] isKindOfClass:[AFOAuth2Client class]] )
     {
+        requestOperation = nil;
+        
         AFOAuth2Client* oauth2Client = (AFOAuth2Client*)[self httpClient];
         BOOL foundValidStoredCredential = NO;
         NSString* storageID = [self oAuthTokenStorageID];
