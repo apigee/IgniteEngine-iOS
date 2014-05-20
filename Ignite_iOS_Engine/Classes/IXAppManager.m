@@ -122,8 +122,6 @@
     [self setWebViewForJS:[[UIWebView alloc] initWithFrame:CGRectZero]];
     [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appConfigPath] stringByDeletingLastPathComponent]]];
     
-    [self preloadImages];
-    
     [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
                                                  asynch:NO
                                             shouldCache:NO
@@ -161,6 +159,7 @@
                                                 [[self deviceProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:deviceInfoPropertiesDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
 
                                                 [self applyAppProperties];
+                                                [self preloadImages];
                                                 [self loadApplicationDefaultView];
                                                 [[self applicationSandbox] loadAllDataProviders];
                                             }
