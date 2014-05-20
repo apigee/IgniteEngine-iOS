@@ -109,10 +109,10 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [[self webViewController] webView:webView didFailLoadWithError:error];
-    if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
-    {
-        [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didFailWithError:error];
-    }
+//    if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didFailWithError:)] )
+//    {
+//        [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didFailWithError:error];
+//    }
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
