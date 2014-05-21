@@ -12,7 +12,7 @@
 @class IXBaseObject;
 @class IXBaseAction;
 
-@interface IXActionContainer : NSObject <NSCopying>
+@interface IXActionContainer : NSObject <NSCoding,NSCopying>
 
 @property (nonatomic,weak) IXBaseObject* ownerObject;
 

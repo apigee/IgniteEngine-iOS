@@ -12,6 +12,8 @@
 
 @interface IXLayout : IXBaseControl
 
+@property (nonatomic,assign,getter = isTopLevelViewControllerLayout) BOOL topLevelViewControllerLayout;
+
 @property (nonatomic,strong,readonly) IXClickableScrollView* scrollView;
 @property (nonatomic,strong,readonly) UIView* scrollViewContentView;
 

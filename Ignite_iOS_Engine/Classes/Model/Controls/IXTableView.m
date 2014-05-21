@@ -161,7 +161,7 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
 
 -(void)dataProviderNotification:(NSNotification*)notification
 {
-    [self setCurrentRowCount:[[self dataProvider] getRowCount]];
+    [self setCurrentRowCount:[[self dataProvider] rowCount]];
     [self startTableViewReload];
 }
 
@@ -205,7 +205,7 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rowsInSection = [[self dataProvider] getRowCount];
+    NSInteger rowsInSection = [[self dataProvider] rowCount];
     return rowsInSection;
 }
 

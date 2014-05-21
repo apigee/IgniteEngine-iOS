@@ -32,10 +32,14 @@ static NSString* const kIXTouchUp = @"touch_up";
 static NSString* const kIXUpdateKnobValue = @"update_knob_value";
 static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_knob_value" function.
 
+// NSCoding Key Constants
+static NSString* const kIXValueNSCodingKey = @"value";
+
 @interface IXKnob ()
 
-@property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
 @property (nonatomic,strong) MHRotaryKnob* knobControl;
+@property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
+@property (nonatomic,strong) NSNumber* encodedValue;
 
 @end
 
@@ -48,6 +52,23 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     [_knobControl removeTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpInside];
     [_knobControl removeTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
     [_knobControl removeTarget:self action:@selector(knobDragEnded:) forControlEvents:UIControlEventTouchCancel];
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    
+    [aCoder encodeObject:[NSNumber numberWithFloat:[[self knobControl] value]] forKey:kIXValueNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setEncodedValue:[aDecoder decodeObjectForKey:kIXValueNSCodingKey]];
+    }
+    return self;
 }
 
 -(void)buildView
@@ -117,8 +138,15 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_kn
     if( [self isFirstLoad] )
     {
         [self setFirstLoad:NO];
-        CGFloat initialValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0];
-        [self updateKnobValueWithValue:initialValue animated:NO];
+        if( [self encodedValue] != nil )
+        {
+            [self updateKnobValueWithValue:[[self encodedValue] floatValue] animated:YES];
+        }
+        else
+        {
+            CGFloat initialSlideValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0.0f];
+            [self updateKnobValueWithValue:initialSlideValue animated:YES];
+        }
     }
 }
 

@@ -19,8 +19,14 @@
 #import "IXPathHandler.h"
 #import "IXControlCacheContainer.h"
 
+// NSCoding Key Constants
+static NSString* const kIXSandboxNSCodingKey = @"sandbox";
+static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
+
 @interface IXViewController ()
 
+@property (nonatomic,strong) IXSandbox* sandbox;
+@property (nonatomic,strong) IXLayout* containerControl;
 @property (nonatomic,assign) BOOL hasAppeared;
 @property (nonatomic,copy) NSString* statusBarPreferredStyleString;
 
@@ -70,9 +76,33 @@
         [_sandbox setViewController:self];
         
         _containerControl = [[IXLayout alloc] init];
+        [_containerControl setTopLevelViewControllerLayout:YES];
         [_containerControl setSandbox:_sandbox];
         
         [_sandbox setContainerControl:_containerControl];
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self sandbox] forKey:kIXSandboxNSCodingKey];
+    [aCoder encodeObject:[self containerControl] forKey:kIXContainerControlNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if( self != nil )
+    {
+        [self setSandbox:[aDecoder decodeObjectForKey:kIXSandboxNSCodingKey]];
+        [[self sandbox] setViewController:self];
+        
+        [self setContainerControl:[aDecoder decodeObjectForKey:kIXContainerControlNSCodingKey]];
+        [[self containerControl] setTopLevelViewControllerLayout:YES];
+        [[self containerControl] setSandbox:[self sandbox]];
+        
+        [[self sandbox] setContainerControl:[self containerControl]];
     }
     return self;
 }
@@ -125,20 +155,20 @@
     [self fireViewEventNamed:@"did_disappear"];
 }
 
-- (void) viewDidLayoutSubviews {
-    // only works for iOS 7+
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        CGRect viewBounds = self.view.bounds;
-        CGFloat topBarOffset = self.topLayoutGuide.length;
-        
-        // snaps the view under the status bar (iOS 6 style)
-        viewBounds.origin.y = topBarOffset * -1;
-        
-        // shrink the bounds of your view to compensate for the offset
-        viewBounds.size.height = viewBounds.size.height + (topBarOffset * -1);
-//        self.view.bounds = viewBounds;
-    }
-}
+//- (void) viewDidLayoutSubviews {
+//    // only works for iOS 7+
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+//        CGRect viewBounds = self.view.bounds;
+//        CGFloat topBarOffset = self.topLayoutGuide.length;
+//        
+//        // snaps the view under the status bar (iOS 6 style)
+//        viewBounds.origin.y = topBarOffset * -1;
+//        
+//        // shrink the bounds of your view to compensate for the offset
+//        viewBounds.size.height = viewBounds.size.height + (topBarOffset * -1);
+////        self.view.bounds = viewBounds;
+//    }
+//}
 
 -(void)layoutControls
 {
@@ -189,6 +219,23 @@
     }
     */
     [[self containerControl] applySettings];
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:@"save_state"] )
+    {
+        NSString* viewID = [[self containerControl] ID];
+        if( [viewID length] > 0 )
+        {
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+            if( data != nil )
+            {
+                [[NSUserDefaults standardUserDefaults] setObject:data forKey:viewID];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    }
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle

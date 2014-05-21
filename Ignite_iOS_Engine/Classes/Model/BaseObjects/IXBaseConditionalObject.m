@@ -12,6 +12,10 @@
 #import "IXProperty.h"
 #import "IXBaseObject.h"
 
+// NSCoding Key Constants
+static NSString* const kIXConditionalPropertyNSCodingKey = @"conditionalProperty";
+static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrientationMask";
+
 @implementation IXBaseConditionalObject
 
 -(instancetype)init
@@ -25,18 +29,6 @@
 {
     return [[[self class] alloc] initWithInterfaceOrientationMask:interfaceOrientationMask
                                               conditionalProperty:conditionalProperty];
-}
-
--(void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeInteger:[self interfaceOrientationMask] forKey:@"interfaceOrientationMask"];
-    [aCoder encodeObject:[self conditionalProperty] forKey:@"conditionalProperty"];
-}
-
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    return [self initWithInterfaceOrientationMask:[aDecoder decodeIntegerForKey:@"interfaceOrientationMask"]
-                              conditionalProperty:[aDecoder decodeObjectForKey:@"conditionalProperty"]];
 }
 
 -(id)copyWithZone:(NSZone *)zone
@@ -55,6 +47,18 @@
         _conditionalProperty = conditionalProperty;
     }
     return self;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    return [self initWithInterfaceOrientationMask:[aDecoder decodeIntegerForKey:kIXInterfaceOrientationMaskNSCodingKey]
+                              conditionalProperty:[aDecoder decodeObjectForKey:kIXConditionalPropertyNSCodingKey]];
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:[self interfaceOrientationMask] forKey:kIXInterfaceOrientationMaskNSCodingKey];
+    [aCoder encodeObject:[self conditionalProperty] forKey:kIXConditionalPropertyNSCodingKey];
 }
 
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -86,7 +90,7 @@
         {
             NSString* conditionalPropertyValueReturned = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];
             
-            conditionalPropertyIsValid = !( conditionalPropertyValueReturned == nil || [conditionalPropertyValueReturned length] <= 0 || [conditionalPropertyValueReturned isEqualToString:@"0"] || [conditionalPropertyValueReturned isEqualToString:@"false"] );
+            conditionalPropertyIsValid = !( conditionalPropertyValueReturned == nil || [conditionalPropertyValueReturned length] <= 0 || [conditionalPropertyValueReturned isEqualToString:kIX_ZERO] || [conditionalPropertyValueReturned isEqualToString:kIX_FALSE] );
         }
     }
     return conditionalPropertyIsValid;
@@ -102,11 +106,11 @@
     UIInterfaceOrientationMask mask = UIInterfaceOrientationMaskAll;
     if( [orientationValue isKindOfClass:[NSString class]] )
     {
-        if( [orientationValue isEqualToString:@"landscape"] )
+        if( [orientationValue isEqualToString:kIX_LANDSCAPE] )
         {
             mask = UIInterfaceOrientationMaskLandscape;
         }
-        else if( [orientationValue isEqualToString:@"portrait"] )
+        else if( [orientationValue isEqualToString:kIX_PORTRAIT] )
         {
             mask = UIInterfaceOrientationMaskPortrait;
         }

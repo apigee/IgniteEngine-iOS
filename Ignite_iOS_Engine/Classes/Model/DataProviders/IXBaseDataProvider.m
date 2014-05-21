@@ -74,11 +74,16 @@ static NSString* const kIXAuthFail = @"auth_fail";
 
 // Non Property constants.
 static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
+static NSString* const KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
 static NSCache* sIXDataProviderCache = nil;
+
+// NSCoding Key Constants
+static NSString* const kIXRequestParameterPropertiesNSCodingKey = @"requestParameterProperties";
+static NSString* const kIXRequestHeaderPropertiesNSCodingKey = @"requestHeaderProperties";
+static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachmentProperties";
 
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
 
-@property (nonatomic,assign) BOOL isFirstLoad;
 @property (nonatomic,assign) BOOL isLocalPath;
 @property (nonatomic,copy) NSString* cacheID;
 
@@ -106,8 +111,38 @@ static NSCache* sIXDataProviderCache = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sIXDataProviderCache = [[NSCache alloc] init];
-        [sIXDataProviderCache setName:@"com.ignite.DataProviderCache"];
+        [sIXDataProviderCache setName:KIXDataProviderCacheName];
     });
+}
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    IXBaseDataProvider *copiedDataProvider = [super copyWithZone:zone];
+    [copiedDataProvider setRequestParameterProperties:[[self requestParameterProperties] copy]];
+    [copiedDataProvider setRequestHeaderProperties:[[self requestHeaderProperties] copy]];
+    [copiedDataProvider setFileAttachmentProperties:[[self fileAttachmentProperties] copy]];
+    return copiedDataProvider;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    
+    [aCoder encodeObject:[self requestParameterProperties] forKey:kIXRequestParameterPropertiesNSCodingKey];
+    [aCoder encodeObject:[self requestHeaderProperties] forKey:kIXRequestHeaderPropertiesNSCodingKey];
+    [aCoder encodeObject:[self fileAttachmentProperties] forKey:kIXFileAttachmentPropertiesNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self != nil )
+    {
+        [self setRequestParameterProperties:[aDecoder decodeObjectForKey:kIXRequestParameterPropertiesNSCodingKey]];
+        [self setRequestHeaderProperties:[aDecoder decodeObjectForKey:kIXRequestHeaderPropertiesNSCodingKey]];
+        [self setFileAttachmentProperties:[aDecoder decodeObjectForKey:kIXFileAttachmentPropertiesNSCodingKey]];
+    }
+    return self;
 }
 
 +(void)clearCache

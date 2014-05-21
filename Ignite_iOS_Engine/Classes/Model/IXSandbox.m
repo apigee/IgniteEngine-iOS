@@ -20,6 +20,11 @@ static NSString* const kIXSelfControlRef = @"$self";
 static NSString* const kIXViewControlRef = @"$view";
 static NSString* const kIXCustomContainerControlRef = @"$custom";
 
+// NSCoding Key Constants
+static NSString* const kIXBasePathNSCodingKey = @"basePath";
+static NSString* const kIXRootPathNSCodingKey = @"rootPath";
+static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
+
 @interface IXSandbox ()
 
 @property (nonatomic,strong) NSMutableDictionary* dataProviders;
@@ -47,6 +52,25 @@ static NSString* const kIXCustomContainerControlRef = @"$custom";
         {
             IX_LOG_WARN(@"WARNING from %@ in %@ : INITIALIZING SANDBOX WITHOUT ROOT PATH!!!",THIS_FILE,THIS_METHOD);
         }
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self basePath] forKey:kIXBasePathNSCodingKey];
+    [aCoder encodeObject:[self rootPath] forKey:kIXRootPathNSCodingKey];
+    [aCoder encodeObject:[self dataProviders] forKey:kIXDataProvidersNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [self initWithBasePath:[aDecoder decodeObjectForKey:kIXBasePathNSCodingKey]
+                         rootPath:[aDecoder decodeObjectForKey:kIXRootPathNSCodingKey]];
+    NSDictionary* dataProviders = [aDecoder decodeObjectForKey:kIXDataProvidersNSCodingKey];
+    for( IXBaseDataProvider* dataProvider in [dataProviders allValues] )
+    {
+        [self addDataProvider:dataProvider];
     }
     return self;
 }
@@ -123,7 +147,7 @@ static NSString* const kIXCustomContainerControlRef = @"$custom";
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
     IXBaseDataProvider* returnDataProvider = [self dataProviders][dataProviderID];
-    if( returnDataProvider == nil && ![self isEqual:[[IXAppManager sharedAppManager] applicationSandbox]] )
+    if( returnDataProvider == nil && (self != [[IXAppManager sharedAppManager] applicationSandbox]) )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
     }

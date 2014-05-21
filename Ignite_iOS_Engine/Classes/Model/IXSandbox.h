@@ -30,7 +30,7 @@
 @class IXBaseDataProvider;
 @class IXCoreDataDataProvider;
 
-@interface IXSandbox : NSObject
+@interface IXSandbox : NSObject <NSCoding>
 
 @property (nonatomic,weak) IXViewController* viewController;
 @property (nonatomic,weak) IXBaseControl* containerControl;

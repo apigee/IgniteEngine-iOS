@@ -14,6 +14,12 @@
 #import "IXBaseObject.h"
 #import "IXAppManager.h"
 
+// NSCoding Key Constants
+static NSString* const kIXEventNameNSCodingKey = @"eventName";
+static NSString* const kIXActionPropertiesNSCodingKey = @"actionProperties";
+static NSString* const kIXParameterPropertiesNSCodingKey = @"parameterProperties";
+static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
+
 @interface IXBaseAction ()
 
 @property (nonatomic,assign) BOOL didRegisterForNotifications;
@@ -51,12 +57,38 @@
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXBaseAction* actionCopy = [super copyWithZone:zone];
-    [actionCopy setActionContainer:[self actionContainer]];
-    [actionCopy setEventName:[[self eventName] copy]];
-    [actionCopy setActionProperties:[[self actionProperties] copy]];
-    [actionCopy setParameterProperties:[[self parameterProperties] copy]];
-    [actionCopy setSubActionContainer:[[self subActionContainer] copy]];
+    if( actionCopy )
+    {
+        [actionCopy setActionContainer:[self actionContainer]];
+        [actionCopy setEventName:[[self eventName] copy]];
+        [actionCopy setActionProperties:[[self actionProperties] copy]];
+        [actionCopy setParameterProperties:[[self parameterProperties] copy]];
+        [actionCopy setSubActionContainer:[[self subActionContainer] copy]];
+    }
     return actionCopy;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setEventName:[aDecoder decodeObjectForKey:kIXEventNameNSCodingKey]];
+        [self setActionProperties:[aDecoder decodeObjectForKey:kIXActionPropertiesNSCodingKey]];
+        [self setParameterProperties:[aDecoder decodeObjectForKey:kIXParameterPropertiesNSCodingKey]];
+        [self setSubActionContainer:[aDecoder decodeObjectForKey:kIXSubActionContainerNSCodingKey]];
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    
+    [aCoder encodeObject:[self eventName] forKey:kIXEventNameNSCodingKey];
+    [aCoder encodeObject:[self actionProperties] forKey:kIXActionPropertiesNSCodingKey];
+    [aCoder encodeObject:[self parameterProperties] forKey:kIXParameterPropertiesNSCodingKey];
+    [aCoder encodeObject:[self subActionContainer] forKey:kIXSubActionContainerNSCodingKey];
 }
 
 -(void)setEventName:(NSString *)eventName

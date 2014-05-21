@@ -11,7 +11,7 @@
 @class IXBaseObject;
 @class IXPropertyContainer;
 
-@interface IXProperty : IXBaseConditionalObject <NSCopying,NSCoding>
+@interface IXProperty : IXBaseConditionalObject
 
 @property (nonatomic,weak) IXPropertyContainer* propertyContainer;
 @property (nonatomic,assign) BOOL wasAnArray;

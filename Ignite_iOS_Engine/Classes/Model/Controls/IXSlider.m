@@ -32,10 +32,14 @@ static NSString* const kIXTouchUp = @"touch_up";
 static NSString* const kIXUpdateSliderValue = @"update_slider_value";
 static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_slider_value" function.
 
+// NSCoding Key Constants
+static NSString* const kIXValueNSCodingKey = @"value";
+
 @interface IXSlider ()
 
 @property (nonatomic,strong) UISlider* slider;
 @property (nonatomic,assign,getter=isFirstLoad) BOOL firstLoad;
+@property (nonatomic,strong) NSNumber* encodedValue;
 
 @end
 
@@ -48,6 +52,23 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
     [_slider removeTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchUpInside];
     [_slider removeTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchUpOutside];
     [_slider removeTarget:self action:@selector(sliderDragEnded:) forControlEvents:UIControlEventTouchCancel];
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    
+    [aCoder encodeObject:[NSNumber numberWithFloat:[[self slider] value]] forKey:kIXValueNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setEncodedValue:[aDecoder decodeObjectForKey:kIXValueNSCodingKey]];
+    }
+    return self;
 }
 
 -(void)buildView
@@ -118,8 +139,15 @@ static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_sl
     if( [self isFirstLoad] )
     {
         [self setFirstLoad:NO];
-        CGFloat initialSlideValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0.0f];
-        [self updateSliderValueWithValue:initialSlideValue animated:YES];
+        if( [self encodedValue] != nil )
+        {
+            [self updateSliderValueWithValue:[[self encodedValue] floatValue] animated:YES];
+        }
+        else
+        {
+            CGFloat initialSlideValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0.0f];
+            [self updateSliderValueWithValue:initialSlideValue animated:YES];
+        }
     }
 }
 

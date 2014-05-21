@@ -12,7 +12,7 @@
 @class IXActionContainer;
 @class IXPropertyContainer;
 
-@interface IXBaseAction : IXBaseConditionalObject <NSCopying>
+@interface IXBaseAction : IXBaseConditionalObject
 
 @property (nonatomic,weak) IXActionContainer* actionContainer;
 

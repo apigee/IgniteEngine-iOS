@@ -82,7 +82,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSInteger rowsInSection = [[self dataProvider] getRowCount];
+    NSInteger rowsInSection = [[self dataProvider] rowCount];
     return rowsInSection;
 }
 

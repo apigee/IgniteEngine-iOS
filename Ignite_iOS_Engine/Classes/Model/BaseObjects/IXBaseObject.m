@@ -12,6 +12,16 @@
 #import "IXActionContainer.h"
 #import "IXBaseControl.h"
 
+// IXBaseObject ReadOnly Attributes
+static NSString* kIXDescription = @"description";
+
+// NSCoding Key Constants
+static NSString* kIXIDNSCodingKey = @"ID";
+static NSString* kIXStyleClassNSCodingKey = @"styleClass";
+static NSString* kIXActionContainerNSCodingKey = @"actionContainer";
+static NSString* kIXPropertyContainerNSCodingKey = @"propertyContainer";
+static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
+
 @implementation IXBaseObject
 
 @synthesize sandbox = _sandbox;
@@ -34,6 +44,29 @@
         [baseObjectCopy setPropertyContainer:[[self propertyContainer] copy]];
     }
     return baseObjectCopy;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self ID] forKey:kIXIDNSCodingKey];
+    [aCoder encodeObject:[self styleClass] forKey:kIXStyleClassNSCodingKey];
+    [aCoder encodeObject:[self actionContainer] forKey:kIXActionContainerNSCodingKey];
+    [aCoder encodeObject:[self propertyContainer] forKey:kIXPropertyContainerNSCodingKey];
+    [aCoder encodeObject:[self childObjects] forKey:kIXChildObjectsNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [self init];
+    if( self != nil )
+    {
+        [self setID:[aDecoder decodeObjectForKey:kIXIDNSCodingKey]];
+        [self setStyleClass:[aDecoder decodeObjectForKey:kIXStyleClassNSCodingKey]];
+        [self setActionContainer:[aDecoder decodeObjectForKey:kIXActionContainerNSCodingKey]];
+        [self setPropertyContainer:[aDecoder decodeObjectForKey:kIXPropertyContainerNSCodingKey]];
+        [self addChildObjects:[aDecoder decodeObjectForKey:kIXChildObjectsNSCodingKey]];
+    }
+    return self;
 }
 
 -(IXSandbox*)sandbox
@@ -162,7 +195,7 @@
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
 {
     NSString* returnValue = nil;
-    if( [propertyName isEqualToString:@"description"] )
+    if( [propertyName isEqualToString:kIXDescription] )
     {
         returnValue = [self description];
     }

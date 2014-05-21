@@ -19,6 +19,9 @@
 #import "IXAlertAction.h"
 #import "IXLogger.h"
 
+// NSCoding Key Constants
+static NSString* const kIXActionsDictNSCodingKey = @"actionsDict";
+
 @interface IXActionContainer ()
 
 @property (nonatomic,strong) NSMutableDictionary* actionsDict;
@@ -51,6 +54,25 @@
         }];
     }
     return actionContainerCopy;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [self init];
+    if( self )
+    {
+        NSDictionary* actionsDictionary = [aDecoder decodeObjectForKey:kIXActionsDictNSCodingKey];
+        for( NSArray* actionsArray in [actionsDictionary allValues] )
+        {
+            [self addActions:actionsArray];
+        }
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self actionsDict] forKey:kIXActionsDictNSCodingKey];
 }
 
 +(IXActionContainer*)actionContainerWithJSONActionsArray:(NSArray*)actionsArray

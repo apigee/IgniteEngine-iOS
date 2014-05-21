@@ -20,6 +20,9 @@
 #import "UIImage+IXAdditions.h"
 #import "IXLogger.h"
 
+// NSCoding Key Constants
+static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
+
 @interface IXPropertyContainer ()
 
 @property (nonatomic,strong) NSMutableDictionary* propertiesDict;
@@ -52,7 +55,7 @@
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:[self propertiesDict] forKey:@"propertiesDict"];
+    [aCoder encodeObject:[self propertiesDict] forKey:kIXPropertiesDictNSCodingKey];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -61,7 +64,13 @@
     if( self )
     {
         _ownerObject = nil;
-        _propertiesDict = [[aDecoder decodeObjectForKey:@"propertiesDict"] mutableCopy];
+        _propertiesDict = [[NSMutableDictionary alloc] init];
+        
+        NSDictionary* encodedPropertiesDictionary = [aDecoder decodeObjectForKey:kIXPropertiesDictNSCodingKey];
+        for( NSArray* propertiesArray in [encodedPropertiesDictionary allValues] )
+        {
+            [self addProperties:propertiesArray replaceOtherPropertiesWithTheSameName:NO];
+        }
     }
     return self;
 }

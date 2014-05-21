@@ -13,6 +13,10 @@
 #import "IXPathHandler.h"
 #import "IXBaseDataProvider.h"
 
+// NSCoding Key Constants
+static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
+static NSString* const kIXPathToJSONNSCodingKey = @"pathToJSON";
+
 @interface IXSandbox ()
 
 @property (nonatomic,strong) NSMutableDictionary* dataProviders;
@@ -41,6 +45,23 @@
     [super buildView];
     
     _firstLoad = YES;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self pathToJSON] forKey:kIXPathToJSONNSCodingKey];
+    [aCoder encodeObject:[self dataProviders] forKey:kIXDataProvidersNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setDataProviders:[aDecoder decodeObjectForKey:kIXDataProvidersNSCodingKey]];
+        [self setPathToJSON:[aDecoder decodeObjectForKey:kIXPathToJSONNSCodingKey]];
+    }
+    return self;
 }
 
 -(void)setSandbox:(IXSandbox *)sandbox

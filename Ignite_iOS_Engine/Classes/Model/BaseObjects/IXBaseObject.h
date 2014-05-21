@@ -16,7 +16,7 @@
 
 @class IXBaseAction;
 
-@interface IXBaseObject : NSObject <NSCopying>
+@interface IXBaseObject : NSObject <NSCopying,NSCoding>
 
 @property (nonatomic,weak) IXBaseObject* parentObject;
 @property (nonatomic,weak) IXSandbox* sandbox;

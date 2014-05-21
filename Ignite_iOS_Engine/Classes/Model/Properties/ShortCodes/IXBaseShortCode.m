@@ -29,6 +29,14 @@ static NSString* const kIXMoment = @"moment";
 static NSString* const kIXToBase64 = @"to_base64";
 static NSString* const kIXFromBase64 = @"from_base64";
 
+// NSCoding Key Constants
+static NSString* const kIXRawValueNSCodingKey = @"rawValue";
+static NSString* const kIXObjectIDNSCodingKey = @"objectID";
+static NSString* const kIXMethodNameNSCodingKey = @"methodName";
+static NSString* const kIXFunctionNameNSCodingKey = @"functionName";
+static NSString* const kIXParametersNSCodingKey = @"parameters";
+static NSString* const kIXRangeInPropertiesTextNSCodingKey = @"rangeInPropertiesText";
+
 //Ensure you also set the function in the if/else list at the bottom of this class
 
 static IXBaseShortCodeFunction const kIXIsEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
@@ -143,22 +151,22 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:[self rawValue] forKey:@"rawValue"];
-    [aCoder encodeObject:[self objectID] forKey:@"objectID"];
-    [aCoder encodeObject:[self methodName] forKey:@"methodName"];
-    [aCoder encodeObject:[self functionName] forKey:@"functionName"];
-    [aCoder encodeObject:[self parameters] forKey:@"parameters"];
-    [aCoder encodeObject:[NSValue valueWithRange:[self rangeInPropertiesText]] forKey:@"rangeInPropertiesText"];
+    [aCoder encodeObject:[self rawValue] forKey:kIXRawValueNSCodingKey];
+    [aCoder encodeObject:[self objectID] forKey:kIXObjectIDNSCodingKey];
+    [aCoder encodeObject:[self methodName] forKey:kIXMethodNameNSCodingKey];
+    [aCoder encodeObject:[self functionName] forKey:kIXFunctionNameNSCodingKey];
+    [aCoder encodeObject:[self parameters] forKey:kIXParametersNSCodingKey];
+    [aCoder encodeObject:[NSValue valueWithRange:[self rangeInPropertiesText]] forKey:kIXRangeInPropertiesTextNSCodingKey];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
-    return [self initWithRawValue:[aDecoder decodeObjectForKey:@"rawValue"]
-                         objectID:[aDecoder decodeObjectForKey:@"objectID"]
-                       methodName:[aDecoder decodeObjectForKey:@"methodName"]
-                     functionName:[aDecoder decodeObjectForKey:@"functionName"]
-                       parameters:[aDecoder decodeObjectForKey:@"parameters"]
-            rangeInPropertiesText:[[aDecoder decodeObjectForKey:@"rangeInPropertiesText"] rangeValue]];
+    return [self initWithRawValue:[aDecoder decodeObjectForKey:kIXRawValueNSCodingKey]
+                         objectID:[aDecoder decodeObjectForKey:kIXObjectIDNSCodingKey]
+                       methodName:[aDecoder decodeObjectForKey:kIXMethodNameNSCodingKey]
+                     functionName:[aDecoder decodeObjectForKey:kIXFunctionNameNSCodingKey]
+                       parameters:[aDecoder decodeObjectForKey:kIXParametersNSCodingKey]
+            rangeInPropertiesText:[[aDecoder decodeObjectForKey:kIXRangeInPropertiesTextNSCodingKey] rangeValue]];
 }
 
 +(instancetype)shortCodeFromString:(NSString*)checkedString

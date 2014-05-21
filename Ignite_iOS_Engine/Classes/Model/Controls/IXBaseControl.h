@@ -25,7 +25,7 @@
 @class IXSandbox;
 @class IXControlLayoutInfo;
 
-@interface IXBaseControl : IXBaseObject  <NSCopying,IXControlContentViewTouchDelegate>
+@interface IXBaseControl : IXBaseObject  <IXControlContentViewTouchDelegate>
 
 @property (nonatomic,strong,readonly) IXControlContentView* contentView;
 @property (nonatomic,strong,readonly) IXControlLayoutInfo* layoutInfo;
@@ -38,7 +38,6 @@
 -(void)layoutControl;
 -(void)layoutControlContentsInRect:(CGRect)rect;
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size;
--(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName;
 
 -(void)processBeginTouch:(BOOL)fireTouchActions;
 -(void)processCancelTouch:(BOOL)fireTouchActions;

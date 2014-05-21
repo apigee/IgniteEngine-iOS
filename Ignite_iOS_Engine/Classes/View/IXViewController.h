@@ -17,7 +17,7 @@
 
 typedef void(^IXViewControllerCreationCompletionBlock)(BOOL didSucceed, IXViewController* viewController, NSError* error);
 
-@interface IXViewController : UIViewController
+@interface IXViewController : UIViewController <NSCoding>
 
 @property (nonatomic,strong,readonly) IXSandbox* sandbox;
 @property (nonatomic,strong,readonly) IXLayout* containerControl;
@@ -28,5 +28,6 @@ typedef void(^IXViewControllerCreationCompletionBlock)(BOOL didSucceed, IXViewCo
 
 -(void)fireViewEventNamed:(NSString*)eventName;
 -(NSString*)getViewPropertyNamed:(NSString*)propertyName;
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer;
 
 @end

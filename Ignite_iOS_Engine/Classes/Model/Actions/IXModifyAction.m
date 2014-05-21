@@ -38,6 +38,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
     {
         IXPropertyContainer* sessionProperties = [[IXAppManager sharedAppManager] sessionProperties];
         [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
+        [[IXAppManager sharedAppManager] storeSessionProperties];
     }
     else if( [objectID isEqualToString:kIX_APP] )
     {

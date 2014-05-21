@@ -32,15 +32,15 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,copy) NSString* rawResponse;
 @property (nonatomic,copy) NSString* lastResponseErrorMessage;
 
--(NSSortDescriptor*)sortDescriptor;
--(NSPredicate*)predicate;
+@property (readonly) NSSortDescriptor* sortDescriptor;
+@property (readonly) NSPredicate* predicate;
+@property (readonly) NSUInteger rowCount;
 
 -(void)loadData:(BOOL)forceGet;
 -(void)authenticateAndEnqueRequestOperation:(AFHTTPRequestOperation*)requestOperation;
 -(void)fireLoadFinishedEventsFromCachedResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 
--(NSUInteger)getRowCount;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;
 
 +(void)clearCache;

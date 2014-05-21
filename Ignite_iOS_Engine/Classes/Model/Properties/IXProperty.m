@@ -15,6 +15,13 @@
 static NSString* const kIXIfRegexString = @"^if *:: *(.*) *:: *(.*$)";
 static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
 
+// NSCoding Key Constants
+static NSString* const kIXPropertyNameNSCodingKey = @"propertyName";
+static NSString* const kIXOriginalStringNSCodingKey = @"originalString";
+static NSString* const kIXStaticTextNSCodingKey = @"staticText";
+static NSString* const kIXWasAnArrayNSCodingKey = @"wasAnArray";
+static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
+
 @interface IXProperty ()
 
 @end
@@ -192,13 +199,13 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
 {
     [super encodeWithCoder:aCoder];
     
-    [aCoder encodeObject:[self propertyName] forKey:@"propertyName"];
-    [aCoder encodeObject:[self originalString] forKey:@"originalString"];
-    [aCoder encodeObject:[self staticText] forKey:@"staticText"];
-    [aCoder encodeBool:[self wasAnArray] forKey:@"wasAnArray"];
+    [aCoder encodeObject:[self propertyName] forKey:kIXPropertyNameNSCodingKey];
+    [aCoder encodeObject:[self originalString] forKey:kIXOriginalStringNSCodingKey];
+    [aCoder encodeObject:[self staticText] forKey:kIXStaticTextNSCodingKey];
+    [aCoder encodeBool:[self wasAnArray] forKey:kIXWasAnArrayNSCodingKey];
     if( [[self shortCodes] count] )
     {
-        [aCoder encodeObject:[self shortCodes] forKey:@"shortCodes"];
+        [aCoder encodeObject:[self shortCodes] forKey:kIXShortCodesNSCodingKey];
     }
 }
 
@@ -207,15 +214,19 @@ static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.
     self = [super initWithCoder:aDecoder];
     if( self )
     {
-        [self setPropertyName:[aDecoder decodeObjectForKey:@"propertyName"]];
-        [self setOriginalString:[aDecoder decodeObjectForKey:@"originalString"]];
-        [self setStaticText:[aDecoder decodeObjectForKey:@"staticText"]];
-        [self setShortCodes:[aDecoder decodeObjectForKey:@"shortCodes"]];
-        [self setWasAnArray:[aDecoder decodeBoolForKey:@"wasAnArray"]];
+        [self setPropertyName:[aDecoder decodeObjectForKey:kIXPropertyNameNSCodingKey]];
+        [self setOriginalString:[aDecoder decodeObjectForKey:kIXOriginalStringNSCodingKey]];
+        [self setStaticText:[aDecoder decodeObjectForKey:kIXStaticTextNSCodingKey]];
+        [self setWasAnArray:[aDecoder decodeBoolForKey:kIXWasAnArrayNSCodingKey]];
+        
+        [self setShortCodes:[aDecoder decodeObjectForKey:kIXShortCodesNSCodingKey]];
+        for( IXBaseShortCode* shortcode in [self shortCodes] )
+        {
+            [shortcode setProperty:self];
+        }
     }
     return self;
 }
-
 
 -(instancetype)copyWithZone:(NSZone *)zone
 {

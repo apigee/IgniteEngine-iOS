@@ -62,6 +62,7 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
     _layoutFlowVertical = YES;
     _verticalScrollEnabled = YES;
     _horizontalScrollEnabled = YES;
+    _topLevelViewControllerLayout = NO;
     _gradientLayer = [CAGradientLayer layer];
 
     _scrollView = [[IXClickableScrollView alloc] initWithFrame:CGRectZero];
@@ -182,6 +183,16 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
     return [IXLayoutEngine getPreferredSizeForLayoutControl:self forSuggestedSize:size];
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [self isTopLevelViewControllerLayout] )
+    {
+        [[[self sandbox] viewController] applyFunction:functionName withParameters:parameterContainer];
+    }
+    
+    [super applyFunction:functionName withParameters:parameterContainer];
 }
 
 @end

@@ -85,6 +85,10 @@ static NSString* const kIXLostFocus = @"lost_focus";
 static NSString* const kIXReturnKeyPressed = @"return_key_pressed";
 static NSString* const kIXTextChanged = @"text_changed";
 
+// NSCoding Key Constants
+static NSString* const kIXTextFieldNSCodingKey = @"textField";
+static NSString* const kIXTextViewNSCodingKey = @"textView";
+
 static CGSize sIXKBSize;
 static CGFloat const kIXKeyboardAnimationDefaultDuration = 0.25f;
 static CGFloat const kIXMaxPreferredHeightForTextInput = 40.0f;
@@ -125,6 +129,25 @@ static NSString* const kIXNewLineString = @"\n";
     [_textView setDelegate:nil];
 }
 
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    
+    [aCoder encodeObject:[self textView] forKey:kIXTextViewNSCodingKey];
+    [aCoder encodeObject:[self textField] forKey:kIXTextFieldNSCodingKey];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setTextView:[aDecoder decodeObjectForKey:kIXTextViewNSCodingKey]];
+        [self setTextField:[aDecoder decodeObjectForKey:kIXTextFieldNSCodingKey]];
+    }
+    return self;
+}
+
 -(void)buildView
 {
     [super buildView];
@@ -146,23 +169,29 @@ static NSString* const kIXNewLineString = @"\n";
         
         if( [self isUsingUITextView] )
         {
-            [self setTextView:[[UITextView alloc] initWithFrame:[[self contentView] bounds]]];
+            if( [self textView] == nil )
+            {
+                [self setTextView:[[UITextView alloc] initWithFrame:[[self contentView] bounds]]];
+                [[self textView] setText:initialText];
+            }
             [self setDefaultTextInputTintColor:[[self textView] tintColor]];
 
             [[self textView] setDelegate:self];
             [[self textView] setBackgroundColor:[UIColor whiteColor]];
-            [[self textView] setText:initialText];
             
             [[self contentView] addSubview:[self textView]];
         }
         else
         {
-            [self setTextField:[[UITextField alloc] initWithFrame:[[self contentView] bounds]]];
+            if( [self textField] == nil )
+            {
+                [self setTextField:[[UITextField alloc] initWithFrame:[[self contentView] bounds]]];
+                [[self textField] setText:initialText];
+            }
             [self setDefaultTextInputTintColor:[[self textField] tintColor]];
 
             [[self textField] setDelegate:self];
             [[self textField] setBackgroundColor:[UIColor whiteColor]];
-            [[self textField] setText:initialText];
             
             [[self contentView] addSubview:[self textField]];
         }

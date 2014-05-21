@@ -28,7 +28,7 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
     {
         NSUInteger lowerBound = [[[parameters firstObject] getPropertyValue] integerValue];
         NSUInteger upperBound = [[[parameters objectAtIndex:1] getPropertyValue] integerValue];
-        return [NSString stringWithFormat:@"%i",arc4random_uniform((u_int32_t)upperBound) + lowerBound];
+        return [NSString stringWithFormat:@"%lu",arc4random_uniform((u_int32_t)upperBound) + lowerBound];
     }
     else if (parameters.count == 1)
     {   
@@ -52,7 +52,7 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
     }
     else
     {
-        return [NSString stringWithFormat:@"%@", [moment format]];
+        return [moment format];
     }
 };
 
