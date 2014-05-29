@@ -28,6 +28,7 @@ static NSString* const kIXMonogram = @"monogram";
 static NSString* const kIXMoment = @"moment";
 static NSString* const kIXToBase64 = @"to_base64";
 static NSString* const kIXFromBase64 = @"from_base64";
+static NSString* const kIXCurrency = @"currency";
 
 // NSCoding Key Constants
 static NSString* const kIXRawValueNSCodingKey = @"rawValue";
@@ -99,6 +100,13 @@ static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* 
 };
 static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* stringToDecode,NSArray* parameters){
     return [NSString ix_fromBase64String:stringToDecode];
+};
+static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters)
+{
+    NSDecimalNumber* amount = [[NSDecimalNumber alloc] initWithString:stringToModify];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    return [formatter stringFromNumber:amount];
 };
 
 NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
@@ -320,6 +328,8 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 shortCodeFunction = kIXToBase64Function;
             } else if( [functionName isEqualToString:kIXFromBase64] ) {
                 shortCodeFunction = kIXFromBase64Function;
+            } else if( [functionName isEqualToString:kIXCurrency] ) {
+                shortCodeFunction = kIXCurrencyFunction;
             }
             [self setShortCodeFunction:shortCodeFunction];
         }
