@@ -307,7 +307,19 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
                 }
                 else
                 {
-                    [returnDictionary setObject:propertyValue forKey:propertyName];
+                        NSData *data = [propertyValue dataUsingEncoding:NSUTF8StringEncoding];
+                        if( [data length] > 0 )
+                        {
+                            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                            if( json != nil )
+                            {
+                                [returnDictionary setObject:json forKey:propertyName];
+                            }
+                            else
+                            {
+                                [returnDictionary setObject:propertyValue forKey:propertyName];
+                            }
+                        }
                 }
             }
         }
