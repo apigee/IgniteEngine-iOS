@@ -103,9 +103,19 @@ static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString
 };
 static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters)
 {
-    NSDecimalNumber* amount = [[NSDecimalNumber alloc] initWithString:stringToModify];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    static NSNumberFormatter *formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    });
+    
+    NSDecimalNumber* amount = [NSDecimalNumber zero];
+    if( [stringToModify length] > 0 )
+    {
+        amount = [[NSDecimalNumber alloc] initWithString:stringToModify];
+    }
+    
     return [formatter stringFromNumber:amount];
 };
 
