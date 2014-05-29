@@ -358,6 +358,22 @@
     return returnValue;
 }
 
+-(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath
+{
+    NSInteger rowCount = [self rowCount];
+    NSDecimalNumber* rowTotal = [NSDecimalNumber zero];
+    for( int i = 0; i < rowCount; i++ )
+    {
+        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath];
+        if( rowDataForIndex )
+        {
+            NSDecimalNumber* decimalNumber = [NSDecimalNumber decimalNumberWithString:rowDataForIndex];
+            rowTotal = [rowTotal decimalNumberByAdding:decimalNumber];
+        }
+    }
+    return [rowTotal stringValue];
+}
+
 -(NSUInteger)rowCount
 {
     return [[self rowDataResults] count];

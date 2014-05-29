@@ -75,6 +75,7 @@ static NSString* const kIXAuthFail = @"auth_fail";
 // Non Property constants.
 static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 static NSString* const KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
+static NSString* const kIXDataRowTotal = @"dataRowTotal.";
 static NSCache* sIXDataProviderCache = nil;
 
 // NSCoding Key Constants
@@ -467,6 +468,14 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     {
         returnValue = [[self rawResponse] copy];
     }
+    else if( [propertyName hasPrefix:kIXDataRowTotal] )
+    {
+        NSString* keyPath = [propertyName stringByReplacingOccurrencesOfString:kIXDataRowTotal withString:kIX_EMPTY_STRING];
+        if( [keyPath length] > 0 )
+        {
+            returnValue = [self rowDataTotalForKeyPath:keyPath];
+        }
+    }
     else if( [propertyName isEqualToString:kIXStatusCode] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self lastResponseStatusCode]];
@@ -567,6 +576,11 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
 {
     return nil;
+}
+
+-(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath
+{
+    return 0;
 }
 
 @end
