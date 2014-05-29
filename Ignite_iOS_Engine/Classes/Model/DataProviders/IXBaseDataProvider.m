@@ -477,7 +477,7 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     }
     else if( [propertyName isEqualToString:kIXCount] )
     {
-        returnValue = [NSString stringWithFormat:@"%li",(long)[self getRowCount]];
+        returnValue = [NSString stringWithFormat:@"%li",(long)[self rowCount]];
     }
     else if( [propertyName isEqualToString:kIXAccessToken] )
     {
@@ -559,7 +559,7 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     
 }
 
--(NSUInteger)getRowCount
+-(NSUInteger)rowCount
 {
     return 0;
 }
