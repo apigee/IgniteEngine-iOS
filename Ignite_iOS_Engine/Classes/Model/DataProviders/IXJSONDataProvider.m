@@ -354,7 +354,7 @@
     {
         NSError *error;
         NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self rowDataResults]
-                                                           options:NSJSONWritingPrettyPrinted
+                                                           options:0
                                                              error:&error];
         if( [jsonData length] > 0 && error == nil )
         {
@@ -386,7 +386,10 @@
         if( rowDataForIndex )
         {
             NSDecimalNumber* decimalNumber = [NSDecimalNumber decimalNumberWithString:rowDataForIndex];
-            rowTotal = [rowTotal decimalNumberByAdding:decimalNumber];
+            if( decimalNumber != nil )
+            {
+                rowTotal = [rowTotal decimalNumberByAdding:decimalNumber];
+            }
         }
     }
     return [rowTotal stringValue];
