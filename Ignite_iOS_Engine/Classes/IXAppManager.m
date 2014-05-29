@@ -192,7 +192,7 @@
     {
         ApigeeMonitoringOptions* options = [[ApigeeMonitoringOptions alloc] init];
         options.crashReportingEnabled = YES;
-        options.interceptNetworkCalls = NO;
+        options.interceptNetworkCalls = YES;
         
         [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName applicationId:apigeeApplicationID baseURL:apigeeBaseURL options:options]];
         [[[self apigeeClient] dataClient] setLogging:YES];
