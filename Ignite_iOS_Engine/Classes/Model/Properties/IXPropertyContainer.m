@@ -310,10 +310,11 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
                         NSData *data = [propertyValue dataUsingEncoding:NSUTF8StringEncoding];
                         if( [data length] > 0 )
                         {
-                            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                            if( json != nil )
+                            NSError __autoreleasing *error;
+                            id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                            if( jsonObject != nil && error == nil )
                             {
-                                [returnDictionary setObject:json forKey:propertyName];
+                                [returnDictionary setObject:jsonObject forKey:propertyName];
                             }
                             else
                             {
