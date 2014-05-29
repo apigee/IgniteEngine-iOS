@@ -352,7 +352,7 @@
     [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
 }
 
--(NSUInteger)getRowCount
+-(NSUInteger)rowCount
 {
     return [[[self fetchedResultsController] fetchedObjects] count];
 }

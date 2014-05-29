@@ -358,7 +358,7 @@
     return returnValue;
 }
 
--(NSUInteger)getRowCount
+-(NSUInteger)rowCount
 {
     return [[self rowDataResults] count];
 }
