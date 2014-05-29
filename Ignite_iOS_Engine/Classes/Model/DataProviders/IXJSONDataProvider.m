@@ -347,6 +347,24 @@
     return returnValue;
 }
 
+-(NSString*)rowDataRawJSONResponse
+{
+    NSString* returnValue = nil;
+    if( [[self rowDataResults] count] > 0 )
+    {
+        NSError *error;
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self rowDataResults]
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:&error];
+        if( [jsonData length] > 0 && error == nil )
+        {
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            returnValue = jsonString;
+        }
+    }
+    return returnValue;
+}
+
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
 {
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];

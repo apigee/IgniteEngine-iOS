@@ -75,7 +75,8 @@ static NSString* const kIXAuthFail = @"auth_fail";
 // Non Property constants.
 static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
 static NSString* const KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
-static NSString* const kIXDataRowTotal = @"dataRowTotal.";
+static NSString* const kIXDataRow = @"dataRow.";
+static NSString* const kIXTotal = @"total.";
 static NSCache* sIXDataProviderCache = nil;
 
 // NSCoding Key Constants
@@ -468,12 +469,23 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     {
         returnValue = [[self rawResponse] copy];
     }
-    else if( [propertyName hasPrefix:kIXDataRowTotal] )
+    else if( [propertyName hasPrefix:kIXDataRow] )
     {
-        NSString* keyPath = [propertyName stringByReplacingOccurrencesOfString:kIXDataRowTotal withString:kIX_EMPTY_STRING];
-        if( [keyPath length] > 0 )
+        NSString* remainingKeyPathString = [propertyName stringByReplacingOccurrencesOfString:kIXDataRow withString:kIX_EMPTY_STRING];
+        if( [remainingKeyPathString length] > 0 )
         {
-            returnValue = [self rowDataTotalForKeyPath:keyPath];
+            if( [remainingKeyPathString isEqualToString:kIXRawDataResponse] )
+            {
+                returnValue = [self rowDataRawJSONResponse];
+            }
+            else if( [remainingKeyPathString hasPrefix:kIXTotal] )
+            {
+                remainingKeyPathString = [remainingKeyPathString stringByReplacingOccurrencesOfString:kIXTotal withString:kIX_EMPTY_STRING];
+                if( [remainingKeyPathString length] > 0 )
+                {
+                    returnValue = [self rowDataTotalForKeyPath:remainingKeyPathString];
+                }
+            }
         }
     }
     else if( [propertyName isEqualToString:kIXStatusCode] )
@@ -571,6 +583,11 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 -(NSUInteger)rowCount
 {
     return 0;
+}
+
+-(NSString*)rowDataRawJSONResponse
+{
+    return nil;
 }
 
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath

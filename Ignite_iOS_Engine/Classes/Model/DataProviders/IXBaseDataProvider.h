@@ -41,6 +41,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 -(void)fireLoadFinishedEventsFromCachedResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 
+-(NSString*)rowDataRawJSONResponse;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;
 -(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath;
 
