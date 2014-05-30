@@ -25,7 +25,6 @@ static NSString* const kIXPathToJSONNSCodingKey = @"pathToJSON";
 
 @interface IXCustom ()
 
-@property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
 @property (nonatomic,strong) IXSandbox* customControlSandox;
 
 @end

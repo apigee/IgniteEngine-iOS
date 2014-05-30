@@ -103,6 +103,10 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
                                               {
                                                   if( loadAsync )
                                                   {
+                                                      if( [populatedControl isKindOfClass:[IXCustom class]] )
+                                                      {
+                                                          [((IXCustom*)populatedControl) setFirstLoad:YES];
+                                                      }
                                                       [populatedControl applySettings];
                                                       [populatedControl layoutControl];
                                                   }

@@ -10,6 +10,7 @@
 
 @interface IXCustom : IXLayout
 
+@property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
 @property (nonatomic,strong) NSString* pathToJSON;
 @property (nonatomic,strong) NSArray* dataProviders;
 
