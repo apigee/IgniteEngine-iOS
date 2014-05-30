@@ -477,19 +477,22 @@
         // current key must be an number
         NSArray * currentArray = (NSArray *) currentNode;
         @try {
-            if ([currentArray count] > 0)
-                nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
-            else
-                @throw [NSException
-                        exceptionWithName:@"NSRangeException"
-                        reason:@"Specified array index is out of bounds"
-                        userInfo:nil];
-        }
-        @catch (NSException *exception) {
             if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
             {
                 return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
             }
+            else if ([currentArray count] > 0)
+            {
+                nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
+            }
+            else
+            {
+                @throw [NSException exceptionWithName:@"NSRangeException"
+                                               reason:@"Specified array index is out of bounds"
+                                             userInfo:nil];
+            }
+        }
+        @catch (NSException *exception) {
             IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
         }
     }
