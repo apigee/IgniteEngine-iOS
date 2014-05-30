@@ -236,6 +236,15 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
             }
         }
     }
+    else if( [functionName isEqualToString:@"clear_saved_state"] )
+    {
+        NSString* viewID = [parameterContainer getStringPropertyValue:@"cache_id" defaultValue:nil];
+        if( viewID != nil )
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:viewID];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
