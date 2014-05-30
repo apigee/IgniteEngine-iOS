@@ -55,6 +55,7 @@ static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXClearsOnBeginEditing = @"clears_on_begin_editing"; // Only works on non multiline input.
 static NSString* const kIXRightImage = @"image.right"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
 static NSString* const kIXLeftImage = @"image.left"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
+static NSString* const kIXBackgroundImage = @"image.background"; // Only works on non multiline input.
 static NSString* const kIXHidesImagesWhenEmpty = @"image.hides_when_empty"; // Only works on non multiline input.
 
 static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
@@ -100,6 +101,7 @@ static NSString* const kIXNewLineString = @"\n";
 
 @interface IXTextInput () <UITextFieldDelegate,UITextViewDelegate>
 
+@property (nonatomic,strong) UIImageView* backgroundImage;
 @property (nonatomic,strong) UITextField* textField;
 @property (nonatomic,strong) UITextView* textView;
 @property (nonatomic,strong) UIColor* defaultTextInputTintColor;
@@ -167,6 +169,9 @@ static NSString* const kIXNewLineString = @"\n";
     if( [self isFirstLoad] )
     {
         [self setFirstLoad:NO];
+     
+        [self setBackgroundImage:[[UIImageView alloc] initWithFrame:CGRectZero]];
+        [[self contentView] addSubview:[self backgroundImage]];
         
         NSString* initialText = [[self propertyContainer] getStringPropertyValue:kIXInitialText defaultValue:nil];
         
@@ -231,6 +236,8 @@ static NSString* const kIXNewLineString = @"\n";
     {
         [[self textField] setFrame:rect];
     }
+    
+    [[self backgroundImage] setFrame:rect];
 }
 
 -(void)applySettings
@@ -242,7 +249,7 @@ static NSString* const kIXNewLineString = @"\n";
     UIFont* font = [[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
     UIColor* textColor = [[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
     UIColor* tintColor = [[self propertyContainer] getColorPropertyValue:kIXCursorColor defaultValue:[self defaultTextInputTintColor]];
-    UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor whiteColor]];
+    UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]];
     NSTextAlignment textAlignment = [UITextField ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]];
     UITextAutocorrectionType autoCorrectionType = [UITextField ix_booleanToTextAutocorrectionType:[[self propertyContainer] getBoolPropertyValue:kIXAutoCorrect defaultValue:YES]];
 
@@ -250,7 +257,7 @@ static NSString* const kIXNewLineString = @"\n";
     UIKeyboardType keyboardType = [UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]];
     UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
     
-    [self setHideImagesWhenEmpty:[[self propertyContainer] getBoolPropertyValue:kIXHidesImagesWhenEmpty defaultValue:NO]];
+    [self setHideImagesWhenEmpty:[[self propertyContainer] getBoolPropertyValue:kIXHidesImagesWhenEmpty defaultValue:YES]];
     
     if( ![self isUsingUITextView] )
     {
@@ -297,6 +304,7 @@ static NSString* const kIXNewLineString = @"\n";
         
         if( [self shouldHideImagesWhenEmpty] && [[[self textField] text] length] <= 0 )
         {
+            [[self backgroundImage] setHidden:YES];
             [[[self textField] rightView] setHidden:YES];
             [[[self textField] leftView] setHidden:YES];
         }
@@ -313,6 +321,14 @@ static NSString* const kIXNewLineString = @"\n";
         [[self textView] setReturnKeyType:returnKeyType];
         [[self textView] setBackgroundColor:backgroundColor];
     }
+    
+    __weak typeof(self) weakSelf = self;
+    [[self propertyContainer] getImageProperty:kIXBackgroundImage
+                                  successBlock:^(UIImage *image) {
+                                      [[weakSelf backgroundImage] setImage:image];
+                                  } failBlock:^(NSError *error) {
+                                      [[weakSelf backgroundImage] setImage:nil];
+                                  }];
     
     [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:kIXDismissOnReturn defaultValue:YES]];
     [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
@@ -636,6 +652,7 @@ static NSString* const kIXNewLineString = @"\n";
     
     if( ![self isUsingUITextView] && [[[self textField] text] length] <= 0 && [self shouldHideImagesWhenEmpty] )
     {
+        [[self backgroundImage] setHidden:YES];
         [[[self textField] rightView] setHidden:YES];
         [[[self textField] leftView] setHidden:YES];
     }
@@ -757,11 +774,13 @@ static NSString* const kIXNewLineString = @"\n";
         {
             if( [inputText length] > 0 )
             {
+                [[self backgroundImage] setHidden:NO];
                 [[self textField].rightView setHidden:NO];
                 [[[self textField] leftView] setHidden:NO];
             }
             else
             {
+                [[self backgroundImage] setHidden:YES];
                 [[self textField].rightView setHidden:YES];
                 [[[self textField] leftView] setHidden:YES];
             }
