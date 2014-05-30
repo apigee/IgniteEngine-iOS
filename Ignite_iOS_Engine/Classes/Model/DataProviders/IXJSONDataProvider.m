@@ -473,8 +473,6 @@
         }
     }
     
-    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
-    
     if ([currentNode isKindOfClass:[NSArray class]]) {
         // current key must be an number
         NSArray * currentArray = (NSArray *) currentNode;
@@ -488,7 +486,7 @@
                         userInfo:nil];
         }
         @catch (NSException *exception) {
-            if( [nextXPath isEqualToString:@"$count"] || [nextXPath isEqualToString:@".$count"] )
+            if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
             {
                 return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
             }
@@ -496,6 +494,7 @@
         }
     }
     
+    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
     if( nextXPath.length <= 0 )
     {
         return nextNode;
