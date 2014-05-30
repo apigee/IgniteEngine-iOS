@@ -52,6 +52,10 @@ static NSString* const kIXTextPlaceholder = @"text.placeholder";
 static NSString* const kIXTextPlaceholderColor = @"text.placeholder.color";
 static NSString* const kIXTextAlignment = @"text.alignment";
 static NSString* const kIXBackgroundColor = @"background.color";
+static NSString* const kIXClearsOnBeginEditing = @"clears_on_begin_editing"; // Only works on non multiline input.
+static NSString* const kIXRightImage = @"image.right"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
+static NSString* const kIXLeftImage = @"image.left"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
+static NSString* const kIXHidesImagesWhenEmpty = @"image.hides_when_empty"; // Only works on non multiline input.
 
 static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
 static NSString* const kIXKeyboardType = @"keyboard.type";
@@ -103,6 +107,7 @@ static NSString* const kIXNewLineString = @"\n";
 @property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
 @property (nonatomic,assign,getter = isUsingUITextView) BOOL usingUITextView;
 @property (nonatomic,assign,getter = shouldDismissOnReturn) BOOL dismissOnReturn;
+@property (nonatomic,assign,getter = shouldHideImagesWhenEmpty) BOOL hideImagesWhenEmpty;
 @property (nonatomic,assign,getter = isRegisteredForKeyboardNotifications) BOOL registeredForKeyboardNotifications;
 
 @property (nonatomic,weak) IXLayout* layoutToScroll;
@@ -245,6 +250,8 @@ static NSString* const kIXNewLineString = @"\n";
     UIKeyboardType keyboardType = [UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]];
     UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
     
+    [self setHideImagesWhenEmpty:[[self propertyContainer] getBoolPropertyValue:kIXHidesImagesWhenEmpty defaultValue:NO]];
+    
     if( ![self isUsingUITextView] )
     {
         [[self textField] setEnabled:[[self contentView] isEnabled]];
@@ -267,6 +274,32 @@ static NSString* const kIXNewLineString = @"\n";
         [[self textField] setKeyboardType:keyboardType];
         [[self textField] setReturnKeyType:returnKeyType];
         [[self textField] setBackgroundColor:backgroundColor];
+        
+        [[self textField] setClearsOnBeginEditing:[[self propertyContainer] getBoolPropertyValue:kIXClearsOnBeginEditing defaultValue:NO]];
+        
+        [[self textField] setRightViewMode:UITextFieldViewModeAlways];
+        [[self textField] setLeftViewMode:UITextFieldViewModeAlways];
+        
+        [[self textField] setRightView:nil];
+        [[self textField] setLeftView:nil];
+        
+        NSString* rightImage = [[self propertyContainer] getStringPropertyValue:kIXRightImage defaultValue:nil];
+        if( [rightImage length] > 0 )
+        {
+            [[self textField] setRightView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:rightImage]]];
+        }
+        
+        NSString* leftImage = [[self propertyContainer] getStringPropertyValue:kIXRightImage defaultValue:nil];
+        if( [leftImage length] > 0 )
+        {
+            [[self textField] setLeftView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:leftImage]]];
+        }
+        
+        if( [self shouldHideImagesWhenEmpty] && [[[self textField] text] length] <= 0 )
+        {
+            [[[self textField] rightView] setHidden:YES];
+            [[[self textField] leftView] setHidden:YES];
+        }
     }
     else
     {
@@ -601,6 +634,12 @@ static NSString* const kIXNewLineString = @"\n";
                                                                                   error:nil]];
     }
     
+    if( ![self isUsingUITextView] && [[[self textField] text] length] <= 0 && [self shouldHideImagesWhenEmpty] )
+    {
+        [[[self textField] rightView] setHidden:YES];
+        [[[self textField] leftView] setHidden:YES];
+    }
+    
     [[self actionContainer] executeActionsForEventNamed:kIXGotFocus];
 }
 
@@ -713,6 +752,20 @@ static NSString* const kIXNewLineString = @"\n";
     else
     {
         [[self textField] setText:inputText];
+        
+        if( [self shouldHideImagesWhenEmpty] )
+        {
+            if( [inputText length] > 0 )
+            {
+                [[self textField].rightView setHidden:NO];
+                [[[self textField] leftView] setHidden:NO];
+            }
+            else
+            {
+                [[self textField].rightView setHidden:YES];
+                [[[self textField] leftView] setHidden:YES];
+            }
+        }
     }
     
     [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
