@@ -60,12 +60,9 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super init];
+    self = [self init];
     if( self )
-    {
-        _ownerObject = nil;
-        _propertiesDict = [[NSMutableDictionary alloc] init];
-        
+    {        
         NSDictionary* encodedPropertiesDictionary = [aDecoder decodeObjectForKey:kIXPropertiesDictNSCodingKey];
         for( NSArray* propertiesArray in [encodedPropertiesDictionary allValues] )
         {

@@ -12,6 +12,9 @@
 #import "IXActionContainer.h"
 #import "IXPropertyContainer.h"
 #import "IXLogger.h"
+#import "IXTableView.h"
+
+static NSString* const kIXControlsSuffix = @"controls";
 
 @implementation IXBaseControlConfig
 
@@ -21,14 +24,15 @@
                            styleClass:nil
                     propertyContainer:nil
                       actionContainer:nil
-               andChildControlConfigs:nil];
+              controlConfigDictionary:nil];
 }
 
 -(instancetype)initWithControlClass:(Class)controlClass
                          styleClass:(NSString*)styleClass
                   propertyContainer:(IXPropertyContainer*)propertyContainer
                     actionContainer:(IXActionContainer*)actionContainer
-             andChildControlConfigs:(NSArray*)childControlConfigs
+            controlConfigDictionary:(NSDictionary*)controlConfigDictionary
+
 {
     self = [super init];
     if( self )
@@ -37,7 +41,7 @@
         _styleClass = [styleClass copy];
         _propertyContainer = propertyContainer;
         _actionContainer = actionContainer;
-        _childControlConfigs = childControlConfigs;
+        _controlConfigDictionary = controlConfigDictionary;
     }
     return self;
 }
@@ -48,7 +52,7 @@
                                                         styleClass:[self styleClass]
                                                  propertyContainer:[[self propertyContainer] copy]
                                                    actionContainer:[[self actionContainer] copy]
-                                            andChildControlConfigs:[[NSArray alloc] initWithArray:[self childControlConfigs] copyItems:YES]];
+                                           controlConfigDictionary:[[NSDictionary alloc] initWithDictionary:[self controlConfigDictionary] copyItems:YES]];
 }
 
 +(instancetype)controlConfigWithJSONDictionary:(NSDictionary*)controlJSONDict
@@ -80,13 +84,32 @@
             }
             
             IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDict[kIX_ACTIONS]];
-            NSArray* childControlConfigs = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDict[kIX_CONTROLS]];
+            
+            NSMutableDictionary __block *controlConfigDictionary = nil;
+            [controlJSONDict enumerateKeysAndObjectsUsingBlock:^(NSString* key, id obj, BOOL *stop) {
+                if( [key hasSuffix:kIXControlsSuffix] && [obj isKindOfClass:[NSArray class]] )
+                {
+                    NSArray* subControlArray = (NSArray*)obj;
+                    if( [subControlArray count] > 0 )
+                    {
+                        NSArray* subControlConfigs = [IXBaseControlConfig controlConfigsWithJSONControlArray:subControlArray];
+                        if( [subControlConfigs count] > 0 )
+                        {
+                            if( controlConfigDictionary == nil )
+                            {
+                                controlConfigDictionary = [NSMutableDictionary dictionary];
+                            }
+                            [controlConfigDictionary setObject:subControlConfigs forKey:key];
+                        }
+                    }
+                }
+            }];
             
             controlConfig = [[IXBaseControlConfig alloc] initWithControlClass:controlClass
                                                                    styleClass:controlStyleClass
                                                             propertyContainer:propertyContainer
                                                               actionContainer:actionContainer
-                                                       andChildControlConfigs:childControlConfigs];
+                                                      controlConfigDictionary:controlConfigDictionary];
         }
         else
         {
@@ -122,15 +145,47 @@
         [control setStyleClass:[[self styleClass] copy]];
         [control setPropertyContainer:[[self propertyContainer] copy]];
         [control setActionContainer:[[self actionContainer] copy]];
-        if( [self childControlConfigs] )
+        
+        if( [[[self controlConfigDictionary] allValues] count] > 0 )
         {
-            for( IXBaseControlConfig* childControlConfig in [self childControlConfigs] )
-            {
-                IXBaseControl* childControl = [childControlConfig createControl];
-                if( childControl )
+            NSMutableDictionary __block *subControlsDictionary = nil;
+            
+            [[self controlConfigDictionary] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSArray* obj, BOOL *stop) {
+                
+                BOOL isChildControls = [key isEqualToString:kIXControlsSuffix];
+                
+                NSMutableArray *subControlArray = nil;
+                for( IXBaseControlConfig* subControlConfig in obj)
                 {
-                    [control addChildObject:childControl];
+                    IXBaseControl* baseControl = [subControlConfig createControl];
+                    if( baseControl )
+                    {
+                        if( isChildControls )
+                        {
+                            [control addChildObject:baseControl];
+                        }
+                        else
+                        {
+                            if( subControlArray == nil ) {
+                                subControlArray = [NSMutableArray array];
+                            }
+                            [subControlArray addObject:baseControl];
+                        }
+                    }
                 }
+                
+                if( [subControlArray count] > 0 )
+                {
+                    if( subControlsDictionary == nil ) {
+                        subControlsDictionary = [NSMutableDictionary dictionary];
+                    }
+                    [subControlsDictionary setObject:subControlArray forKey:key];
+                }
+            }];
+            
+            if( [[subControlsDictionary allValues] count] > 0 )
+            {
+                [control setSubControlsDictionary:subControlsDictionary];
             }
         }
     }

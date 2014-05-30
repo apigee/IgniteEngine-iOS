@@ -30,6 +30,7 @@
 @property (nonatomic,strong,readonly) IXControlContentView* contentView;
 @property (nonatomic,strong,readonly) IXControlLayoutInfo* layoutInfo;
 @property (nonatomic,assign,getter = shouldNotifyParentOfLayoutUpdates) BOOL notifyParentOfLayoutUpdates;
+@property (nonatomic,strong) NSDictionary* subControlsDictionary;
 
 -(void)buildView;
 -(BOOL)isContentViewVisible;

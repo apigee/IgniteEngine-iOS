@@ -25,6 +25,7 @@ static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
 
 static NSString* const kIXWillDisplayCell = @"will_display_cell";
 static NSString* const kIXDidHideCell = @"did_hide_cell";
+static NSString* const kIXBackgroundControls = @"background_controls";
 
 @interface IXSandbox ()
 
@@ -44,6 +45,7 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
 @property (nonatomic, assign) BOOL keepRowHighlightedOnSelect;
 @property (nonatomic, assign) BOOL animateReload;
 @property (nonatomic, assign) CGFloat animateReloadDuration;
+@property (nonatomic, assign) CGFloat backgroundViewSwipeWidth;
 
 @end
 
@@ -127,6 +129,8 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
     [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:@"animate_reload" defaultValue:NO]];
     [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:@"animate_reload.duration" defaultValue:0.2f]];
 
+    [self setBackgroundViewSwipeWidth:[[self propertyContainer] getFloatPropertyValue:@"background_swipe_width" defaultValue:100.0f]];
+    
     dispatch_async(dispatch_get_main_queue(),^{
         [self startTableViewReload];
     });
@@ -222,6 +226,7 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     [layoutControl setActionContainer:[[self actionContainer] copy]];
     
+    NSString* backgroundColor = [[self propertyContainer] getStringPropertyValue:@"background.color" defaultValue:@""];
     IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
     [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
@@ -229,7 +234,8 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
                                              [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
                                              [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
                                              [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
-                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
+                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"],
+                                             [IXProperty propertyWithPropertyName:@"background.color" rawValue:backgroundColor]]];
     
     IXSandbox* tableViewSandbox = [self sandbox];
     IXSandbox* rowSandbox = [[IXSandbox alloc] initWithBasePath:[tableViewSandbox basePath] rootPath:[tableViewSandbox rootPath]];
@@ -243,6 +249,31 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
     [cell setCellSandbox:rowSandbox];
     [layoutControl setSandbox:rowSandbox];
     [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self childObjects] copyItems:YES]];
+    
+    return layoutControl;
+}
+
+-(IXLayout*)backgroundViewForCellWithRowSandbox:(IXSandbox*)rowSandbox
+{
+    IXLayout* layoutControl = [[IXLayout alloc] init];
+    [[layoutControl contentView] setClipsToBounds:NO];
+    [layoutControl setParentObject:self];
+    [layoutControl setNotifyParentOfLayoutUpdates:NO];
+    
+    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
+    [layoutControl setPropertyContainer:layoutPropertyContainer];
+    [layoutControl setActionContainer:[[self actionContainer] copy]];
+
+    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
+                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
+                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
+                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
+    
+    // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
+    [layoutControl setSandbox:rowSandbox];
+    [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self subControlsDictionary][kIXBackgroundControls] copyItems:YES]];
     
     return layoutControl;
 }
@@ -263,14 +294,12 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
             [cell setClipsToBounds:YES];
             [cell setBackgroundColor:[UIColor clearColor]];
             [[cell contentView] removeAllSubviews];
-            [[cell contentView] setBackgroundColor:[UIColor clearColor]];
+            [[cell contentView] setBackgroundColor:[[self tableView] backgroundColor]];
             
             IXLayout *layoutControlForCellContentView = [self layoutForCell:cell];
             [cell setLayoutControl:layoutControlForCellContentView];
-            [[cell contentView] addSubview:[[cell layoutControl] contentView]];
         }
     }
-    
     
     NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:@"vertical"];
     if ([layoutFlow isEqualToString:@"horizontal"])
@@ -299,6 +328,27 @@ static NSString* const kIXDidHideCell = @"did_hide_cell";
 
         [[cellLayout contentView] setFrame:layoutRect];
         [cellLayout layoutControl];
+        
+        IXLayout* backgroundLayoutControl = [cell backgroundLayoutControl];
+        if( backgroundLayoutControl != nil )
+        {
+            [backgroundLayoutControl setSandbox:[cellLayout sandbox]];
+            [backgroundLayoutControl applySettings];
+            [[backgroundLayoutControl contentView] setFrame:layoutRect];
+            [backgroundLayoutControl layoutControl];
+        }
+        else if( [[self subControlsDictionary][kIXBackgroundControls] count] > 0 )
+        {
+            IXLayout* backgroundLayoutControl = [self backgroundViewForCellWithRowSandbox:[cellLayout sandbox]];
+            [cell setBackgroundLayoutControl:backgroundLayoutControl];
+            
+            [backgroundLayoutControl applySettings];
+            [[backgroundLayoutControl contentView] setFrame:layoutRect];
+            [backgroundLayoutControl layoutControl];
+        }
+        
+        [cell setSwipeWidth:[self backgroundViewSwipeWidth]];
+        [cell enablePanGesture:( [cell backgroundLayoutControl] != nil )];
     }
     
     return cell;

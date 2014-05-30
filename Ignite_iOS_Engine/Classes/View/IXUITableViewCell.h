@@ -18,4 +18,9 @@
 @property (nonatomic,strong) IXSandbox* cellSandbox;
 @property (nonatomic,strong) IXLayout* layoutControl;
 
+@property (nonatomic,assign) CGFloat swipeWidth;
+@property (nonatomic,strong) IXLayout* backgroundLayoutControl;
+
+-(void)enablePanGesture:(BOOL)enableGesture;
+
 @end

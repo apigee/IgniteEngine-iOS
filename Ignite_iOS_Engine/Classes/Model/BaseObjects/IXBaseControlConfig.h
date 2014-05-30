@@ -16,15 +16,15 @@
 
 @property (nonatomic,assign) Class controlClass;
 @property (nonatomic,copy)   NSString* styleClass;
-@property (nonatomic,strong) NSArray* childControlConfigs;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) IXPropertyContainer* propertyContainer;
+@property (nonatomic,strong) NSDictionary* controlConfigDictionary;
 
 -(instancetype)initWithControlClass:(Class)controlClass
                          styleClass:(NSString*)styleClass
                   propertyContainer:(IXPropertyContainer*)propertyContainer
                     actionContainer:(IXActionContainer*)actionContainer
-             andChildControlConfigs:(NSArray*)childControlConfigs;
+            controlConfigDictionary:(NSDictionary*)controlConfigDictionary;
 
 +(instancetype)controlConfigWithJSONDictionary:(NSDictionary*)controlJSONDict;
 +(NSArray*)controlConfigsWithJSONControlArray:(NSArray*)controlsValueArray;

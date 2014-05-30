@@ -130,9 +130,16 @@ static NSString* const kIXToggle = @"dev_toggle";
     return self;
 }
 
--(instancetype)copyWithZone:(NSZone *)zone
+-(id)copyWithZone:(NSZone *)zone
 {
     IXBaseControl* baseControl = [super copyWithZone:zone];
+    if( baseControl )
+    {
+        if( [self subControlsDictionary] )
+        {
+            [baseControl setSubControlsDictionary:[[NSDictionary alloc] initWithDictionary:[self subControlsDictionary] copyItems:YES]];
+        }
+    }
     return baseControl;
 }
 
