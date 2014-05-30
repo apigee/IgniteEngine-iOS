@@ -473,10 +473,12 @@
         }
     }
     
+    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
+    
     if ([currentNode isKindOfClass:[NSArray class]]) {
         // current key must be an number
+        NSArray * currentArray = (NSArray *) currentNode;
         @try {
-            NSArray * currentArray = (NSArray *) currentNode;
             if ([currentArray count] > 0)
                 nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
             else
@@ -486,12 +488,14 @@
                         userInfo:nil];
         }
         @catch (NSException *exception) {
+            if( [nextXPath isEqualToString:@"$count"] || [nextXPath isEqualToString:@".$count"] )
+            {
+                return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
+            }
             IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
         }
     }
     
-    // remove the currently processed key from the xpath like path
-    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
     if( nextXPath.length <= 0 )
     {
         return nextNode;
