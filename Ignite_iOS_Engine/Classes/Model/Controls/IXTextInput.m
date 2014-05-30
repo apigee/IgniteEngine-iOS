@@ -458,9 +458,24 @@ static NSString* const kIXNewLineString = @"\n";
                 [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:kIXTextPlaceholder rawValue:placeholderText] replaceOtherPropertiesWithTheSameName:YES];
                 [[self textField] setPlaceholder:placeholderText];
             }
+            
+            if( [self shouldHideImagesWhenEmpty] )
+            {
+                if( [[[self textField] text] length] > 0 )
+                {
+                    [[self backgroundImage] setHidden:NO];
+                    [[self textField].rightView setHidden:NO];
+                    [[[self textField] leftView] setHidden:NO];
+                }
+                else
+                {
+                    [[self backgroundImage] setHidden:YES];
+                    [[self textField].rightView setHidden:YES];
+                    [[[self textField] leftView] setHidden:YES];
+                }
+            }
+
         }
-        
-        
     }
     else
     {
