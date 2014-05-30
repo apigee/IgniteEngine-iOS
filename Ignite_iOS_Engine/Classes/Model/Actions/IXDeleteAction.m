@@ -22,7 +22,7 @@
     
     BOOL didSucceed = NO;
 
-    NSString* deleteControlID = [[self actionProperties] getStringPropertyValue:kIX_ID defaultValue:nil];
+    NSString* deleteControlID = [[self actionProperties] getStringPropertyValue:kIX_TARGET defaultValue:nil];
     if( deleteControlID )
     {
         NSMutableArray* parentsNeedingLayout = [NSMutableArray array];
