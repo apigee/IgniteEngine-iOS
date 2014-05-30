@@ -55,7 +55,7 @@ static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXClearsOnBeginEditing = @"clears_on_begin_editing"; // Only works on non multiline input.
 static NSString* const kIXRightImage = @"image.right"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
 static NSString* const kIXLeftImage = @"image.left"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
-static NSString* const kIXBackgroundImage = @"image.background"; // Only works on non multiline input.
+static NSString* const kIXBackgroundImage = @"image.background";
 static NSString* const kIXHidesImagesWhenEmpty = @"image.hides_when_empty"; // Only works on non multiline input.
 
 static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
@@ -89,6 +89,8 @@ static NSString* const kIXGotFocus = @"got_focus";
 static NSString* const kIXLostFocus = @"lost_focus";
 static NSString* const kIXReturnKeyPressed = @"return_key_pressed";
 static NSString* const kIXTextChanged = @"text_changed";
+static NSString* const kIXImageRightTapped = @"image.right.tapped";
+static NSString* const kIXImageLeftTapped = @"image.left.tapped";
 
 // NSCoding Key Constants
 static NSString* const kIXTextFieldNSCodingKey = @"textField";
@@ -293,13 +295,27 @@ static NSString* const kIXNewLineString = @"\n";
         NSString* rightImage = [[self propertyContainer] getStringPropertyValue:kIXRightImage defaultValue:nil];
         if( [rightImage length] > 0 )
         {
-            [[self textField] setRightView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:rightImage]]];
+            UIImageView* rightImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:rightImage]];
+            [rightImageView setUserInteractionEnabled:YES];
+            
+            UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightViewTapDetected:)];
+            [tapGestureRecognizer setNumberOfTapsRequired:1];
+            [rightImageView addGestureRecognizer:tapGestureRecognizer];
+            
+            [[self textField] setRightView:rightImageView];
         }
         
-        NSString* leftImage = [[self propertyContainer] getStringPropertyValue:kIXRightImage defaultValue:nil];
+        NSString* leftImage = [[self propertyContainer] getStringPropertyValue:kIXLeftImage defaultValue:nil];
         if( [leftImage length] > 0 )
         {
-            [[self textField] setLeftView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:leftImage]]];
+            UIImageView* leftImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:leftImage]];
+            [leftImageView setUserInteractionEnabled:YES];
+            
+            UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leftViewTapDetected:)];
+            [tapGestureRecognizer setNumberOfTapsRequired:1];
+            [leftImageView addGestureRecognizer:tapGestureRecognizer];
+            
+            [[self textField] setLeftView:leftImageView];
         }
         
         if( [self shouldHideImagesWhenEmpty] && [[[self textField] text] length] <= 0 )
@@ -362,6 +378,16 @@ static NSString* const kIXNewLineString = @"\n";
     }
     
     [self setLayoutToScroll:layoutToScroll];
+}
+
+-(void)rightViewTapDetected:(UITapGestureRecognizer*)tapRecognizer
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXImageRightTapped];
+}
+
+-(void)leftViewTapDetected:(UITapGestureRecognizer*)tapRecognizer
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXImageLeftTapped];
 }
 
 - (NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
