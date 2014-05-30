@@ -260,27 +260,49 @@ typedef void(^IXNavAnimationCompletionBlock)();
 
 -(void)performPushNavigation
 {
-    NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
-    if( navigateTo )
+    NSString* archivedViewControllerID = [[self actionProperties] getStringPropertyValue:@"cache_id" defaultValue:nil];
+    IXViewController* archivedViewController = nil;
+    if( [archivedViewControllerID length] > 0 )
+    {        
+        NSData* archivedViewControllerData = [[NSUserDefaults standardUserDefaults] dataForKey:archivedViewControllerID];
+        if( archivedViewControllerData )
+        {
+            @try {
+                archivedViewController = [NSKeyedUnarchiver unarchiveObjectWithData:archivedViewControllerData];
+            } @catch (NSException *exception) {
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:archivedViewControllerID];
+            }
+        }
+    }
+    
+    if( archivedViewController != nil )
     {
-        [IXViewController viewControllerWithPathToJSON:navigateTo
-                                             loadAsync:YES
-                                       completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
-                                       
-                                           if( didSucceed && viewController != nil )
-                                           {
-                                               [self finishPushNavigationTo:viewController];
-                                           }
-                                           else
-                                           {
-                                               IX_LOG_ERROR(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
-                                               [self navigationActionDidFinish:NO];
-                                           }
-        }];
+        [self finishPushNavigationTo:archivedViewController];
     }
     else
     {
-        [self navigationActionDidFinish:NO];
+        NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
+        if( navigateTo )
+        {
+            [IXViewController viewControllerWithPathToJSON:navigateTo
+                                                 loadAsync:YES
+                                           completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+                                               
+                                               if( didSucceed && viewController != nil )
+                                               {
+                                                   [self finishPushNavigationTo:viewController];
+                                               }
+                                               else
+                                               {
+                                                   IX_LOG_ERROR(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
+                                                   [self navigationActionDidFinish:NO];
+                                               }
+                                           }];
+        }
+        else
+        {
+            [self navigationActionDidFinish:NO];
+        }
     }
 }
 
