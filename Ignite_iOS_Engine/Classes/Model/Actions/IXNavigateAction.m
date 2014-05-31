@@ -14,7 +14,9 @@
 #import "IXJSONGrabber.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
+#import "IXSandbox.h"
 #import "IXCustomNavPushPopTransition.h"
+#import "IXLayout.h"
 
 // IXNavigateAction Properties
 static NSString* const kIXTo = @"to";
@@ -104,6 +106,10 @@ typedef void(^IXNavAnimationCompletionBlock)();
     sIXIsAttemptingNavigation = NO;
     if( didSucceed )
     {
+        IXSandbox* appSandbox = [[IXAppManager sharedAppManager] applicationSandbox];
+        [appSandbox setViewController:[[IXAppManager sharedAppManager] currentIXViewController]];
+        [appSandbox setContainerControl:[[[IXAppManager sharedAppManager] currentIXViewController] containerControl]];
+        
         [self actionDidFinishWithEvents:@[kIX_SUCCESS]];
     }
     else

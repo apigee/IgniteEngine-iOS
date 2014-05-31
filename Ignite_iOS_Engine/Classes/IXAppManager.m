@@ -246,6 +246,10 @@
                                    
                                        if( didSucceed && viewController && error == nil )
                                        {
+                                           IXSandbox* appSandbox = [[IXAppManager sharedAppManager] applicationSandbox];
+                                           [appSandbox setViewController:viewController];
+                                           [appSandbox setContainerControl:[viewController containerControl]];
+
                                            [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
                                        }
                                        else
