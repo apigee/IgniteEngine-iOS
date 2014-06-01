@@ -12,7 +12,7 @@
 
 @interface IXUITableViewCell ()
 
-@property (nonatomic,assign) NSInteger cellsStartingCenterPosition;
+@property (nonatomic,assign) NSInteger cellsStartingCenterXPosition;
 @property (nonatomic,assign) NSInteger startXPosition;
 @property (nonatomic,strong) UIPanGestureRecognizer* panGestureRecognizer;
 @property (nonatomic,strong) UITapGestureRecognizer* tapGestureRecognizer;
@@ -25,6 +25,7 @@
 {
     [[_layoutControl contentView] removeGestureRecognizer:_panGestureRecognizer];
     [_panGestureRecognizer setDelegate:nil];
+    [_tapGestureRecognizer setDelegate:nil];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -91,7 +92,26 @@
     }
     [super setFrame:frame];
     
-    [self setCellsStartingCenterPosition:[self center].x];
+    [self setCellsStartingCenterXPosition:[self center].x];
+}
+
+-(void)resetCellPosition
+{
+    CGFloat centerX = [[[self layoutControl] contentView] center].x;
+    if( centerX != [self cellsStartingCenterXPosition] )
+    {
+        UIView* layoutControlsView = [[self layoutControl] contentView];
+        CGFloat halfOfCellsWidth = ([self frame].size.width/2);
+        
+        CGFloat animationDuration = (ABS(halfOfCellsWidth)*0.0002f)+0.2f;
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             [[[self layoutControl] contentView] setCenter:CGPointMake([self cellsStartingCenterXPosition], [layoutControlsView center].y)];
+                         }];
+    }
+    
+    [[self tapGestureRecognizer] setEnabled:NO];
 }
 
 -(void)enablePanGesture:(BOOL)enableGesture
@@ -108,21 +128,7 @@
 
 -(void)tapGestureRecognized:(UITapGestureRecognizer*)tapGesture
 {
-    CGFloat centerX = [[tapGesture view] center].x;
-    if( centerX != [self cellsStartingCenterPosition] )
-    {
-        UIView* layoutControlsView = [[self layoutControl] contentView];
-        CGFloat halfOfCellsWidth = ([self frame].size.width/2);
-        
-        CGFloat animationDuration = (ABS(halfOfCellsWidth)*.0002)+.2;
-        
-        [UIView animateWithDuration:animationDuration
-                         animations:^{
-                             [[tapGesture view] setCenter:CGPointMake([self cellsStartingCenterPosition], [layoutControlsView center].y)];
-                         }];
-    }
-
-    [[self tapGestureRecognizer] setEnabled:NO];
+    [self resetCellPosition];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -169,7 +175,7 @@
     
     if ([panRecognizer state] == UIGestureRecognizerStateEnded || [panRecognizer state] == UIGestureRecognizerStateCancelled)
     {
-        CGFloat velocityX = (0.2 * [panRecognizer velocityInView:layoutControlsView].x );
+        CGFloat velocityX = (0.2f * [panRecognizer velocityInView:layoutControlsView].x );
         
         CGFloat finalX = translatedPoint.x + velocityX;
         
@@ -182,9 +188,9 @@
             finalX = halfOfCellsWidth;
         }
         
-        CGFloat animationDuration = (ABS(velocityX)*.0002)+.2;
+        CGFloat animationDuration = (ABS(velocityX)*0.0002f)+0.2f;
         
-        [[self tapGestureRecognizer] setEnabled:( finalX != [self cellsStartingCenterPosition] )];
+        [[self tapGestureRecognizer] setEnabled:( finalX != [self cellsStartingCenterXPosition] )];
         
         [UIView animateWithDuration:animationDuration
                          animations:^{

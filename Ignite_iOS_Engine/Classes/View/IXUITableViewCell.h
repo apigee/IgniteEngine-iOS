@@ -21,6 +21,7 @@
 @property (nonatomic,assign) CGFloat swipeWidth;
 @property (nonatomic,strong) IXLayout* backgroundLayoutControl;
 
+-(void)resetCellPosition;
 -(void)enablePanGesture:(BOOL)enableGesture;
 
 @end

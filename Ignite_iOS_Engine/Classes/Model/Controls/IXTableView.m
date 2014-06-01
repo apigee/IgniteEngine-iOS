@@ -354,6 +354,14 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     return cell;
 }
 
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
+    {
+        [cell resetCellPosition];
+    }
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if( ![self keepRowHighlightedOnSelect] )
