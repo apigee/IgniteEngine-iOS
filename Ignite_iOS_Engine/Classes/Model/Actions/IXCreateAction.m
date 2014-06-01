@@ -44,12 +44,9 @@ static NSString* const kIXParentID = @"parent_id";
 
         IXBaseControl* parentControl = nil;
         IXSandbox* sandbox = [[[self actionContainer] ownerObject] sandbox];
-        if( parentControlID != nil )
+        if( [parentControlID length] > 0 )
         {
-            if( [parentControlID length] > 0 )
-            {
-                parentControl = [[sandbox getAllControlsWithID:parentControlID] firstObject];
-            }
+            parentControl = [[sandbox getAllControlsWithID:parentControlID] firstObject];
         }
         else
         {

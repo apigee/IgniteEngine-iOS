@@ -25,6 +25,8 @@ static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
 
 static NSString* const kIXWillDisplayCell = @"will_display_cell";
 static NSString* const kIXDidHideCell = @"did_hide_cell";
+static NSString* const kIXStartedScrolling = @"started_scrolling";
+static NSString* const kIXEndedScrolling = @"ended_scrolling";
 static NSString* const kIXBackgroundControls = @"background_controls";
 
 @interface IXSandbox ()
@@ -360,6 +362,13 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     {
         [cell resetCellPosition];
     }
+    
+    [[self actionContainer] executeActionsForEventNamed:kIXStartedScrolling];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXEndedScrolling];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
