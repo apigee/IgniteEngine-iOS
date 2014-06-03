@@ -24,6 +24,7 @@ static NSString* const kIXControlLocation = @"control_location";
 static NSString* const kIXParentID = @"parent_id";
 
 // IXCreateAction Events: kIX_SUCCESS and kIX_FAILED
+static NSString* const kIXCreated = @"created"; // Fires on the actual created control. 
 
 @implementation IXCreateAction
 
@@ -68,6 +69,9 @@ static NSString* const kIXParentID = @"parent_id";
                     
                      [createdControl applySettings];
                      [weakParentControl layoutControl];
+                     
+                     // Fire the created action on the actual created control (not on the action).
+                     [[createdControl actionContainer] executeActionsForEventNamed:kIXCreated];
                      
                      [weakSelf actionDidFinishWithEvents:@[kIX_SUCCESS]];
                 }
