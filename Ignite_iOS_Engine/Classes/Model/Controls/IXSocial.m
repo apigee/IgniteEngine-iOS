@@ -143,11 +143,19 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller
 {
     if( [functionName isEqualToString:kIX_Present_Share_Controller] )
     {
-        [self presentComposeViewController:[parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [self presentComposeViewController:animated];
     }
     else if( [functionName isEqualToString:kIX_Dismiss_Share_Controller] )
     {
-        [self dismissComposeViewController:[parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [self dismissComposeViewController:animated];
     }
     else
     {

@@ -101,11 +101,19 @@
 {
     if( [functionName isEqualToString:@"present_text_message_controller"] )
     {
-        [self presentEmailController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [self presentEmailController:animated];
     }
     else if( [functionName isEqualToString:@"present_email_controller"] )
     {
-        [self presentTextMessageController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [self presentTextMessageController:animated];
     }
     else
     {

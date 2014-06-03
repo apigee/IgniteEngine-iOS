@@ -110,12 +110,23 @@ static NSString* const kIXSelectedMedia = @"selected_media";
         if( [[self imagePickerController] presentingViewController] == nil )
         {
             [self configurePickerController];
-            [self presentPickerController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+            
+            BOOL animated = YES;
+            if( parameterContainer ) {
+                animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            }
+            
+            [self presentPickerController:animated];
         }
     }
     else if( [functionName isEqualToString:@"dismiss_picker"] )
     {
-        [self dismissPickerController:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        
+        [self dismissPickerController:animated];
     }
     else
     {

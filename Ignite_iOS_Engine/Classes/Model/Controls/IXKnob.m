@@ -29,8 +29,7 @@ static NSString* const kIXTouch = @"touch";
 static NSString* const kIXTouchUp = @"touch_up";
 
 // Knob Functions
-static NSString* const kIXUpdateKnobValue = @"update_knob_value";
-static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_knob_value" function.
+static NSString* const kIXUpdateKnobValue = @"update_knob_value"; // Params : "animated"
 
 // NSCoding Key Constants
 static NSString* const kIXValueNSCodingKey = @"value";
@@ -176,7 +175,10 @@ static NSString* const kIXValueNSCodingKey = @"value";
     if( [functionName isEqualToString:kIXUpdateKnobValue] )
     {
         CGFloat knobValue = [parameterContainer getFloatPropertyValue:kIXValue defaultValue:[[self knobControl] value]];
-        BOOL animated = [parameterContainer getBoolPropertyValue:kIXAnimated defaultValue:YES];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
         [self updateKnobValueWithValue:knobValue animated:animated];
     }
     else

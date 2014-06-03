@@ -143,8 +143,14 @@ static NSString* const kIXControlsSuffix = @"controls";
     if( control )
     {
         [control setStyleClass:[[self styleClass] copy]];
-        [control setPropertyContainer:[[self propertyContainer] copy]];
         [control setActionContainer:[[self actionContainer] copy]];
+        [control setPropertyContainer:[[self propertyContainer] copy]];
+        
+        if( [control propertyContainer] == nil )
+        {
+            // We need to have a property container for the default values and modifies to work!
+            [control setPropertyContainer:[[IXPropertyContainer alloc] init]];
+        }
         
         if( [[[self controlConfigDictionary] allValues] count] > 0 )
         {

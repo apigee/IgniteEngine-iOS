@@ -81,12 +81,18 @@ static ZBarReaderViewController* sReaderViewController = nil;
 {
     if( [functionName isEqualToString:@"present_reader"] )
     {
-        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
         [self presentReader:animated];
     }
     else if( [functionName isEqualToString:@"dismiss_reader"] )
     {
-        BOOL animated = [parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
         [self closeReader:animated];
     }
     else

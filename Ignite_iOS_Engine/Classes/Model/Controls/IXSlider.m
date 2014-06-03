@@ -29,8 +29,7 @@ static NSString* const kIXTouch = @"touch";
 static NSString* const kIXTouchUp = @"touch_up";
 
 // Slider Functions
-static NSString* const kIXUpdateSliderValue = @"update_slider_value";
-static NSString* const kIXAnimated = @"animated"; // Parameter of the "update_slider_value" function.
+static NSString* const kIXUpdateSliderValue = @"update_slider_value"; // Params : "animated"
 
 // NSCoding Key Constants
 static NSString* const kIXValueNSCodingKey = @"value";
@@ -177,7 +176,10 @@ static NSString* const kIXValueNSCodingKey = @"value";
     if( [functionName isEqualToString:kIXUpdateSliderValue] )
     {
         CGFloat sliderValue = [parameterContainer getFloatPropertyValue:kIXValue defaultValue:[[self slider] value]];
-        BOOL animated = [parameterContainer getBoolPropertyValue:kIXAnimated defaultValue:YES];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
         [self updateSliderValueWithValue:sliderValue animated:animated];
     }
     else

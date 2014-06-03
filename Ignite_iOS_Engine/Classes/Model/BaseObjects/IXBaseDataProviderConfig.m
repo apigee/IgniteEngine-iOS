@@ -160,11 +160,18 @@
     if( dataProvider )
     {
         [dataProvider setStyleClass:[[self styleClass] copy]];
-        [dataProvider setPropertyContainer:[[self propertyContainer] copy]];
         [dataProvider setActionContainer:[[self actionContainer] copy]];
         [dataProvider setRequestParameterProperties:[[self requestParameters] copy]];
         [dataProvider setRequestHeaderProperties:[[self requestHeaders] copy]];
         [dataProvider setFileAttachmentProperties:[[self fileAttachments] copy]];
+        [dataProvider setPropertyContainer:[[self propertyContainer] copy]];
+        
+        if( [dataProvider propertyContainer] == nil )
+        {
+            // We need to have a property container for the default values and modifies to work!
+            [dataProvider setPropertyContainer:[[IXPropertyContainer alloc] init]];
+        }
+        
         if( [dataProvider isKindOfClass:[IXCoreDataDataProvider class]] )
         {
             [((IXCoreDataDataProvider*)dataProvider) setEntityContainer:[[self entityContainer] copy]];

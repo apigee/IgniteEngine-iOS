@@ -79,15 +79,27 @@
 {
     if( [functionName isEqualToString:@"toggle"] )
     {
-        [[self toggleSwitch] setOn:![[self toggleSwitch] isOn] animated:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [[self toggleSwitch] setOn:![[self toggleSwitch] isOn] animated:animated];
     }
     else if( [functionName isEqualToString:@"toggle_on"] )
     {
-        [[self toggleSwitch] setOn:YES animated:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [[self toggleSwitch] setOn:YES animated:animated];
     }
     else if( [functionName isEqualToString:@"toggle_off"] )
     {
-        [[self toggleSwitch] setOn:NO animated:[parameterContainer getBoolPropertyValue:@"animated" defaultValue:YES]];
+        BOOL animated = YES;
+        if( parameterContainer ) {
+            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+        }
+        [[self toggleSwitch] setOn:NO animated:animated];
     }
     else
     {
