@@ -49,6 +49,10 @@ static NSString* const kIXBackgroundControls = @"background_controls";
 @property (nonatomic, assign) CGFloat animateReloadDuration;
 @property (nonatomic, assign) CGFloat backgroundViewSwipeWidth;
 
+@property (nonatomic, strong) IXUITableViewCell *cellToCalculateHeight;
+@property (nonatomic, strong) IXLayout *cellLayoutToCalculateHeight;
+
+
 @end
 
 @implementation IXTableView
@@ -195,19 +199,41 @@ static NSString* const kIXBackgroundControls = @"background_controls";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat itemHeight = 0.0f;
-    IXUITableViewCell* cell = (IXUITableViewCell*) [self tableView:[self tableView] cellForRowAtIndexPath:indexPath];
-    if( [cell layoutControl] )
-    {
-        itemHeight = [[[cell layoutControl] contentView] bounds].size.height;
-    }
+    CGFloat itemHeight = [self heightForCellAtIndexPath:indexPath];
     return itemHeight;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return [self itemSize].height;
-//}
+- (float)heightForCellAtIndexPath:(NSIndexPath*)indexPath
+{
+    if( [self cellToCalculateHeight] == nil )
+    {
+        [self setCellToCalculateHeight:[[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil]];
+        [self setCellLayoutToCalculateHeight:[self layoutForCell:[self cellToCalculateHeight]]];
+    }
+    
+    IXLayout *cellLayout = [self cellLayoutToCalculateHeight];
+    if( cellLayout )
+    {
+        [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
+        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
+        
+        NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
+        for( IXCustom* customControl in childrenThatAreCustomControls )
+        {
+            [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
+            [[customControl sandbox] setIndexPathForRowData:indexPath];
+        }
+        [cellLayout applySettings];
+        
+        // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
+        CGSize layoutSize = [IXLayoutEngine getControlSize:cellLayout forLayoutSize:[self itemSize]];
+        CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
+        
+        [[cellLayout contentView] setFrame:layoutRect];
+        [cellLayout layoutControl];
+    }
+    return [[cellLayout contentView] bounds].size.height;
+}
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 {
@@ -280,17 +306,13 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     return layoutControl;
 }
 
--(IXLayout*)layoutForCellBackgroundView
-{
-    return nil;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    IXUITableViewCell* cell = [[self tableView] dequeueReusableCellWithIdentifier:@"IXUITableViewCell"];
+    static NSString *kIXCellIdentifier = @"IXUITableViewCell";
+    IXUITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kIXCellIdentifier];
     if( cell == nil )
     {
-        cell = [[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"IXUITableViewCell"];
+        cell = [[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kIXCellIdentifier];
         if( cell )
         {
             [cell setClipsToBounds:YES];
