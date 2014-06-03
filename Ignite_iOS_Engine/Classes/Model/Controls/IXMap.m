@@ -32,8 +32,12 @@
 #import "SVPulsingAnnotationView.h"
 #import "SVAnnotation.h"
 
+// IXMap Attributes
 static NSString* const kIXDataProviderID = @"dataprovider_id";
 static NSString* const kIXShowsUserLocation = @"shows_user_location";
+static NSString* const kIXShowsPointsOfInterest = @"shows_points_of_interest";
+static NSString* const kIXShowsBuildings = @"shows_buildings";
+static NSString* const kIXMapType = @"map_type";
 
 static NSString* const kIXAnnotationImage = @"annotation.image";
 static NSString* const kIXAnnotationTitle = @"annotation.title";
@@ -41,8 +45,30 @@ static NSString* const kIXAnnotationSubTitle = @"annotation.subtitle";
 static NSString* const kIXAnnotationLatitude = @"annotation.latitude";
 static NSString* const kIXAnnotationLongitude = @"annotation.longitude";
 
+static NSString* const kIXAnnoationPinColor = @"annotation.pin.color";
+static NSString* const kIXAnnoationPinAnimatesDrop = @"annotation.pin.animates_drop";
+
+// kIXMapType Accepted Values
+static NSString* const kIXMapTypeStandard = @"standard";
+static NSString* const kIXMapTypeSatellite = @"satellite";
+static NSString* const kIXMapTypeHybrid = @"hybrid";
+
+// kIXAnnoationPinColor Accepted Values
+static NSString* const kIXAnnoationPinColorRed = @"red";
+static NSString* const kIXAnnoationPinColorGreen = @"green";
+static NSString* const kIXAnnoationPinColorPurple = @"purple";
+
+// IXMap Functions
+static NSString* const kIXReloadAnnotations = @"reload_annotations";
+static NSString* const kIXShowAllAnnotations = @"show_all_annotations";
+
+// IXMap Events
 static NSString* const kIXTouch = @"touch";
 static NSString* const kIXTouchUp = @"touch_up";
+
+// Reuseable Annotation Ident
+static NSString* const kIXMapPinAnnotationIdentifier = @"kIXMapPinAnnotationIdentifier";
+static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotationIdentifier";
 
 @implementation SVAnnotation
 
@@ -60,6 +86,9 @@ static NSString* const kIXTouchUp = @"touch_up";
                              title:(NSString*)title
                           subtitle:(NSString*)subTitle
                   dataRowIndexPath:(NSIndexPath*)dataRowIndexPath;
+
++(instancetype)mapAnnotationWithPropertyContainer:(IXPropertyContainer*)propertyContainer
+                                     rowIndexPath:(NSIndexPath*)rowIndexPath;
 
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic, copy) NSString *title;
@@ -86,22 +115,31 @@ static NSString* const kIXTouchUp = @"touch_up";
     return self;
 }
 
++(instancetype)mapAnnotationWithPropertyContainer:(IXPropertyContainer*)propertyContainer
+                                     rowIndexPath:(NSIndexPath*)rowIndexPath
+{
+    CGFloat annotationLatitude = [propertyContainer getFloatPropertyValue:kIXAnnotationLatitude defaultValue:0.0f];
+    CGFloat annotationLongitude = [propertyContainer getFloatPropertyValue:kIXAnnotationLongitude defaultValue:0.0f];
+    
+    IXMapAnnotation *annotation = [[[self class] alloc] initWithCoordinate:CLLocationCoordinate2DMake(annotationLatitude, annotationLongitude)
+                                                                     title:[propertyContainer getStringPropertyValue:kIXAnnotationTitle
+                                                                                                                  defaultValue:nil]
+                                                                  subtitle:[propertyContainer getStringPropertyValue:kIXAnnotationSubTitle
+                                                                                                                  defaultValue:nil]
+                                                          dataRowIndexPath:rowIndexPath];
+    
+    return annotation;
+}
+
 @end
 
 @interface IXMap () <MKMapViewDelegate>
 
-@property (nonatomic,strong) MKMapView* mapView;
-
-@property (nonatomic, strong) NSString* dataProviderID;
 @property (nonatomic,weak) IXBaseDataProvider* dataProvider;
+@property (nonatomic,assign) BOOL usesDataProviderForAnnotationData;
 
+@property (nonatomic,strong) MKMapView* mapView;
 @property (nonatomic,strong) NSMutableArray* annotations;
-
-@property (nonatomic,copy) NSString* annotationImagePath;
-@property (nonatomic,copy) NSString* annotationTitlePath;
-@property (nonatomic,copy) NSString* annotationSubTitlePath;
-@property (nonatomic,copy) NSString* annotationLatitudePath;
-@property (nonatomic,copy) NSString* annotationLongitudePath;
 
 @end
 
@@ -141,22 +179,38 @@ static NSString* const kIXTouchUp = @"touch_up";
 {
     [super applySettings];
     
+    [[self mapView] setShowsUserLocation:[[self propertyContainer] getBoolPropertyValue:kIXShowsUserLocation defaultValue:NO]];
+    [[self mapView] setShowsPointsOfInterest:[[self propertyContainer] getBoolPropertyValue:kIXShowsPointsOfInterest defaultValue:YES]];
+    [[self mapView] setShowsBuildings:[[self propertyContainer] getBoolPropertyValue:kIXShowsBuildings defaultValue:YES]];
+
+    NSString* mapType = [[self propertyContainer] getStringPropertyValue:kIXMapType defaultValue:kIXMapTypeStandard];
+    if( [mapType isEqualToString:kIXMapTypeSatellite] ) {
+        [[self mapView] setMapType:MKMapTypeSatellite];
+    } else if( [mapType isEqualToString:kIXMapTypeHybrid] ) {
+        [[self mapView] setMapType:MKMapTypeHybrid];
+    } else {
+        [[self mapView] setMapType:MKMapTypeStandard];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:IXBaseDataProviderDidUpdateNotification
                                                   object:[self dataProvider]];
     
-    [self setDataProviderID:[[self propertyContainer] getStringPropertyValue:kIXDataProviderID defaultValue:nil]];
-    [self setDataProvider:[[self sandbox] getDataProviderWithID:[self dataProviderID]]];
+    NSString* dataProviderID = [[self propertyContainer] getStringPropertyValue:kIXDataProviderID defaultValue:nil];
+    [self setUsesDataProviderForAnnotationData:([dataProviderID length] > 0)];
     
-    if( [self dataProvider] )
+    if( [self usesDataProviderForAnnotationData] )
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(dataProviderNotification:)
-                                                     name:IXBaseDataProviderDidUpdateNotification
-                                                   object:[self dataProvider]];
+        [self setDataProvider:[[self sandbox] getDataProviderWithID:dataProviderID]];
+        
+        if( [self dataProvider] )
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(dataProviderNotification:)
+                                                         name:IXBaseDataProviderDidUpdateNotification
+                                                       object:[self dataProvider]];
+        }
     }
-    
-    [[self mapView] setShowsUserLocation:[[self propertyContainer] getBoolPropertyValue:kIXShowsUserLocation defaultValue:NO]];
     
     [self reloadMapAnnotations];
 }
@@ -171,33 +225,39 @@ static NSString* const kIXTouchUp = @"touch_up";
     [[self mapView] removeAnnotations:[self annotations]];
     [[self annotations] removeAllObjects];
     
-    // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we set up the annotations.
-    NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
-    IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
-    
-    [[self sandbox] setDataProviderForRowData:[self dataProvider]];
-    for( int i = 0; i < [[self dataProvider] rowCount]; i++ )
+    if( [self usesDataProviderForAnnotationData] && [[self dataProvider] rowCount] > 0 )
     {
-        [[self sandbox] setIndexPathForRowData:[NSIndexPath indexPathForRow:i inSection:0]];
+        // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we set up the annotations.
+        NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
+        IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
         
-        CGFloat annotationLatitude = [[self propertyContainer] getFloatPropertyValue:kIXAnnotationLatitude defaultValue:0.0f];
-        CGFloat annotationLongitude = [[self propertyContainer] getFloatPropertyValue:kIXAnnotationLongitude defaultValue:0.0f];
+        [[self sandbox] setDataProviderForRowData:[self dataProvider]];
+        for( int i = 0; i < [[self dataProvider] rowCount]; i++ )
+        {
+            NSIndexPath* rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [[self sandbox] setIndexPathForRowData:rowIndexPath];
+            
+            IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self propertyContainer]
+                                                                                 rowIndexPath:rowIndexPath];
+            if( annotation )
+            {
+                [[self annotations] addObject:annotation];
+            }
+        }
         
-        IXMapAnnotation *annotation = [[IXMapAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(annotationLatitude, annotationLongitude)
-                                                                            title:[[self propertyContainer] getStringPropertyValue:kIXAnnotationTitle
-                                                                                                                      defaultValue:nil]
-                                                                         subtitle:[[self propertyContainer] getStringPropertyValue:kIXAnnotationSubTitle
-                                                                                                                      defaultValue:nil]
-                                                                 dataRowIndexPath:[[self sandbox] indexPathForRowData]];
+        // Reset the Map controls sandbox values.
+        [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
+        [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
+    }
+    else
+    {
+        IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self propertyContainer]
+                                                                             rowIndexPath:nil];
         if( annotation )
         {
             [[self annotations] addObject:annotation];
         }
     }
-    
-    // Reset the Map controls sandbox values.
-    [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
-    [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
     
     [[self mapView] showAnnotations:[self annotations] animated:YES];
 }
@@ -214,13 +274,15 @@ static NSString* const kIXTouchUp = @"touch_up";
         IXMapAnnotation* mapAnnotation = (IXMapAnnotation*)annotation;
         NSIndexPath* indexPathForAnnotation = [mapAnnotation dataRowIndexPath];
         
-        [[self sandbox] setIndexPathForRowData:indexPathForAnnotation];
-        [[self sandbox] setDataProviderForRowData:[self dataProvider]];
+        if( [self usesDataProviderForAnnotationData] )
+        {
+            [[self sandbox] setIndexPathForRowData:indexPathForAnnotation];
+            [[self sandbox] setDataProviderForRowData:[self dataProvider]];
+        }
         
         NSString* imageLocation = [[self propertyContainer] getStringPropertyValue:kIXAnnotationImage defaultValue:nil];
         if( [imageLocation length] > 0 )
         {
-            static NSString *kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotationIdentifier";
             annotationView = [[self mapView] dequeueReusableAnnotationViewWithIdentifier:kIXMapImageAnnotationIdentifier];
             
             if( annotationView == nil )
@@ -241,17 +303,28 @@ static NSString* const kIXTouchUp = @"touch_up";
         }
         else
         {
-            static NSString *kIXMapPinAnnotationIdentifier = @"kIXMapPinAnnotationIdentifier";
             annotationView = (MKPinAnnotationView*)[[self mapView] dequeueReusableAnnotationViewWithIdentifier:kIXMapPinAnnotationIdentifier];
             
             if( annotationView == nil )
             {
                 annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kIXMapPinAnnotationIdentifier];
                 [annotationView setCanShowCallout:YES];
+                
+                BOOL animatesDrop = [[self propertyContainer] getBoolPropertyValue:kIXAnnoationPinAnimatesDrop defaultValue:YES];
+                [(MKPinAnnotationView*)annotationView setAnimatesDrop:animatesDrop];
+                
+                NSString* pinColor = [[self propertyContainer] getStringPropertyValue:kIXAnnoationPinColor defaultValue:kIXAnnoationPinColorRed];
+                if( [pinColor isEqualToString:kIXAnnoationPinColorGreen] ) {
+                    [(MKPinAnnotationView*)annotationView setPinColor:MKPinAnnotationColorGreen];
+                } else if( [pinColor isEqualToString:kIXAnnoationPinColorPurple] ) {
+                    [(MKPinAnnotationView*)annotationView setPinColor:MKPinAnnotationColorPurple];
+                } else {
+                    [(MKPinAnnotationView*)annotationView setPinColor:MKPinAnnotationColorRed];
+                }
             }
         }
         
-        if( [self actionContainer] != nil )
+        if( [[self actionContainer] hasActionsForEvent:kIXTouch] || [[self actionContainer] hasActionsForEvent:kIXTouchUp] )
         {
             [annotationView setRightCalloutAccessoryView:[UIButton buttonWithType:UIButtonTypeDetailDisclosure]];
         }
@@ -260,9 +333,12 @@ static NSString* const kIXTouchUp = @"touch_up";
             [annotationView setRightCalloutAccessoryView:nil];
         }
         
-        // Reset the Map controls sandbox values.
-        [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
-        [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
+        if( [self usesDataProviderForAnnotationData] )
+        {
+            // Reset the Map controls sandbox values.
+            [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
+            [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
+        }
     }
     return annotationView;
 }
@@ -271,22 +347,48 @@ static NSString* const kIXTouchUp = @"touch_up";
 {
     if( [control isEqual:[view rightCalloutAccessoryView]] && [[view annotation] isKindOfClass:[IXMapAnnotation class]] )
     {
-        // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we fire the actions on the annotations.
-        NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
-        IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
+        if( [self usesDataProviderForAnnotationData] )
+        {
+            // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we fire the actions on the annotations.
+            NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
+            IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
+            
+            IXMapAnnotation* mapAnnotation = (IXMapAnnotation*)[view annotation];
+            NSIndexPath* indexPathForAnnotation = [mapAnnotation dataRowIndexPath];
+            
+            [[self sandbox] setIndexPathForRowData:indexPathForAnnotation];
+            [[self sandbox] setDataProviderForRowData:[self dataProvider]];
+            
+            [[self actionContainer] executeActionsForEventNamed:kIXTouch];
+            [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
+            
+            // Reset the Map controls sandbox values.
+            [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
+            [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
+        }
+        else
+        {
+            [[self actionContainer] executeActionsForEventNamed:kIXTouch];
+            [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
+        }
+    }
+}
 
-        IXMapAnnotation* mapAnnotation = (IXMapAnnotation*)[view annotation];
-        NSIndexPath* indexPathForAnnotation = [mapAnnotation dataRowIndexPath];
-
-        [[self sandbox] setIndexPathForRowData:indexPathForAnnotation];
-        [[self sandbox] setDataProviderForRowData:[self dataProvider]];
-        
-        [[self actionContainer] executeActionsForEventNamed:kIXTouch];
-        [[self actionContainer] executeActionsForEventNamed:kIXTouchUp];
-
-        // Reset the Map controls sandbox values.
-        [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
-        [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXReloadAnnotations] )
+    {
+        [self reloadMapAnnotations];
+    }
+    else if( [functionName isEqualToString:kIXShowAllAnnotations] )
+    {
+        BOOL animated = (parameterContainer == nil) ? YES : [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:YES];
+        [[self mapView] showAnnotations:[self annotations]
+                               animated:animated];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
     }
 }
 
