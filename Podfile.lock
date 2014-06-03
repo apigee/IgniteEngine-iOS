@@ -31,9 +31,9 @@ PODS:
   - RestKit/ObjectMapping (0.20.3)
   - RestKit/Support (0.20.3):
     - TransitionKit (= 1.1.1)
-  - SDWebImage (3.5.4):
+  - SDWebImage (HEAD based on 3.6):
     - SDWebImage/Core
-  - SDWebImage/Core (3.5.4)
+  - SDWebImage/Core (HEAD based on 3.6)
   - SOCKit (1.1)
   - SVPulsingAnnotationView (0.3.0)
   - SVWebViewController (1.0)
@@ -54,7 +54,7 @@ DEPENDENCIES:
   - PPSSignatureView (~> 0.1)
   - Reachability (~> 3.1)
   - RestKit (~> 0.20.0)
-  - SDWebImage (~> 3.5.4)
+  - SDWebImage (HEAD)
   - SVPulsingAnnotationView (~> 0.3.0)
   - SVWebViewController (~> 1.0)
   - TTTAttributedLabel (from `https://github.com/jamztang/TTTAttributedLabel.git`, branch `longpresssupport`)
@@ -79,7 +79,7 @@ SPEC CHECKSUMS:
   PPSSignatureView: 9a1a1b601ab9642d69e8268b99784fd7f9ed88bc
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   RestKit: 7f9490e709ee745e166c4d2aa7a8d132831275b0
-  SDWebImage: 571295c8acbb699505a0f68e54506147c3de9ea7
+  SDWebImage: c6989652c1cdf27cbdf3f56957e2030f825af5bc
   SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6
   SVWebViewController: fbf917baa92744c54cfb89a52a4c056e409973a4

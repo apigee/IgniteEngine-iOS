@@ -1,7 +1,7 @@
 Web Image
 =========
 
-This library provides a category for UIImageVIew with support for remote images coming from the web.
+This library provides a category for UIImageView with support for remote images coming from the web.
 
 It provides:
 
@@ -91,7 +91,7 @@ Here is a simple example of how to use SDWebImageManager:
 SDWebImageManager *manager = [SDWebImageManager sharedManager];
 [manager downloadWithURL:imageURL
                  options:0
-                 progress:^(NSUInteger receivedSize, long long expectedSize)
+                 progress:^(NSInteger receivedSize, NSInteger expectedSize)
                  {
                      // progression tracking code
                  }
@@ -111,7 +111,7 @@ It's also possible to use the async image downloader independently:
 ```objective-c
 [SDWebImageDownloader.sharedDownloader downloadImageWithURL:imageURL
                                                     options:0
-                                                   progress:^(NSUInteger receivedSize, long long expectedSize)
+                                                   progress:^(NSInteger receivedSize, NSInteger expectedSize)
                                                    {
                                                        // progression tracking code
                                                    }
@@ -214,7 +214,20 @@ See this category: https://github.com/JJSaccolo/UIActivityIndicator-for-SDWebIma
 Installation
 ------------
 
-There are two ways to use this in your project: copy all the files into your project, or import the project as a static library.
+There are three ways to use SDWebImage in your project:
+- using Cocoapods
+- copying all the files into your project
+- importing the project as a static library
+
+### Installation with CocoaPods
+
+[CocoaPods](http://cocoapods.org/) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries in your projects. See the [Get Started](http://cocoapods.org/#get_started) section for more details.
+
+#### Podfile
+```
+platform :ios, '6.1'
+pod 'SDWebImage', '~>3.6'
+```
 
 ### Add the SDWebImage project to your project
 

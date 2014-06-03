@@ -123,15 +123,15 @@ static ZBarReaderViewController* sReaderViewController = nil;
         ZBarSymbolSet* symbols = [info objectForKey:ZBarReaderControllerResults];
         if(symbols != nil)
         {
-            for(ZBarSymbol *symbol in symbols)
-            {
-                /* 
-                 
-                 Set the code type and returned data here.
-                 
-                 */
-                break;
-            }
+//            for(ZBarSymbol *symbol in symbols)
+//            {
+//                /* 
+//                 
+//                 Set the code type and returned data here.
+//                 
+//                 */
+//                break;
+//            }
             
             [[self actionContainer] executeActionsForEventNamed:@"scanned"];
         }

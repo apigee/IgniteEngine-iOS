@@ -152,6 +152,10 @@ static NSString *const kCompletedCallbackKey = @"completed";
                                                                      SDWebImageDownloader *sself = wself;
                                                                      [sself removeCallbacksForURL:url];
                                                                  }];
+        
+        if (options & SDWebImageDownloaderHighPriority) {
+            operation.queuePriority = NSOperationQueuePriorityHigh;
+        }
 
         [wself.downloadQueue addOperation:operation];
         if (wself.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
@@ -206,6 +210,10 @@ static NSString *const kCompletedCallbackKey = @"completed";
     dispatch_barrier_async(self.barrierQueue, ^{
         [self.URLCallbacks removeObjectForKey:url];
     });
+}
+
+- (void)setSuspended:(BOOL)suspended {
+    [self.downloadQueue setSuspended:suspended];
 }
 
 @end

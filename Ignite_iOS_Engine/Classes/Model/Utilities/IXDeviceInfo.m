@@ -90,6 +90,9 @@
         case UIInterfaceOrientationLandscapeLeft:
             return @"Landscape-Left";
             break;
+        default:
+            return @"Unknown";
+            break;
     }
 }
 
