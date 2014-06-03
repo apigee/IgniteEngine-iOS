@@ -6,15 +6,6 @@
 #ifdef __OBJC__
 #import <CoreData/CoreData.h>
 #endif /* __OBJC__*/
-
-#ifdef __OBJC__
-#import <CoreData/CoreData.h>
-#endif /* __OBJC__*/
-
-#ifdef __OBJC__
-#import <CoreData/CoreData.h>
-#endif /* __OBJC__*/
-
 #import <Availability.h>
 
 #define _AFNETWORKING_PIN_SSL_CERTIFICATES_
@@ -28,11 +19,3 @@
   #import <CoreServices/CoreServices.h>
   #import <Security/Security.h>
 #endif
-
-#ifdef __OBJC__
-#import <CoreData/CoreData.h>
-#endif /* __OBJC__*/
-
-#ifdef __OBJC__
-#import <CoreData/CoreData.h>
-#endif /* __OBJC__*/

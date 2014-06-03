@@ -89,7 +89,7 @@ RKMappingResult, RKRequestDescriptor, RKResponseDescriptor;
  
  ### Escaping Path Patterns
  
- Note that path patterns will by default interpret anything prefIXd with a period that follows a dynamic path segment as a key path. This can cause an issue if you have a dynamic path segment that is followed by a file extension. For example, a path pattern of '/categories/:categoryID.json' would be erroneously interpretted as containing a dynamic path segment whose value is interpolated from the 'categoryID.json' key path. This key path evaluation behavior can be suppressed by escaping the period preceding the non-dynamic part of the pattern with two leading slashes, as in '/categories/:categoryID\\.json'.
+ Note that path patterns will by default interpret anything prefixed with a period that follows a dynamic path segment as a key path. This can cause an issue if you have a dynamic path segment that is followed by a file extension. For example, a path pattern of '/categories/:categoryID.json' would be erroneously interpretted as containing a dynamic path segment whose value is interpolated from the 'categoryID.json' key path. This key path evaluation behavior can be suppressed by escaping the period preceding the non-dynamic part of the pattern with two leading slashes, as in '/categories/:categoryID\\.json'.
  
  ## Request and Response Descriptors
  

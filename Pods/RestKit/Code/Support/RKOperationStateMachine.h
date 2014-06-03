@@ -2,7 +2,7 @@
 //  RKOperationStateMachine.h
 //  RestKit
 //
-//  Created by Blake Watters on 4/11.
+//  Created by Blake Watters on 4/11/13.
 //  Copyright (c) 2013 RestKit. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");

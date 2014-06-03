@@ -7,19 +7,8 @@
 //
 
 #import "IXBaseControl.h"
-#import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
-
 
 @interface IXMap : IXBaseControl
-{
-    MKMapView* _mapView;
-}
-@property (nonatomic, strong) NSArray *mIXtemList;
-@property (nonatomic, assign) MKCoordinateRegion boundingRegion;
-@property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *subtitle;
 
 @end
 

@@ -17,11 +17,14 @@
 #import "IXProperty.h"
 #import "IXLayoutEngine.h"
 #import "IXCustom.h"
+#import "UIScrollView+APParallaxHeader.h"
 #import <RestKit/CoreData.h>
 
 static NSString* const kIXDataproviderID = @"dataprovider_id";
 static NSString* const kIXLayoutFlow = @"layout_flow";
 static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
+static NSString* const kIXImageParallax = @"image.parallax";
+static NSString* const kIXImageParallaxHeight = @"image.parallax.height";
 
 static NSString* const kIXWillDisplayCell = @"will_display_cell";
 static NSString* const kIXDidHideCell = @"did_hide_cell";
@@ -83,6 +86,13 @@ static NSString* const kIXBackgroundControls = @"background_controls";
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
     [[self tableView] setFrame:rect];
+    
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXImageParallax] )
+    {
+        CGSize contentViewSize = [[self contentView] bounds].size;
+        CGFloat parallaxHeight = [[self propertyContainer] getSizeValue:kIXImageParallaxHeight maximumSize:contentViewSize.height defaultValue:0.0f];
+        [[self tableView] addParallaxWithImage:[[[[self tableView] parallaxView] imageView] image] andHeight:parallaxHeight];
+    }
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -95,6 +105,18 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     [super applySettings];
     
     [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:kIXDataproviderID defaultValue:nil]];
+    
+    __weak typeof(self) weakSelf = self;
+    [[self propertyContainer] getImageProperty:kIXImageParallax
+                                  successBlock:^(UIImage *image) {
+                                      
+                                      CGSize contentViewSize = [[self contentView] bounds].size;
+                                      CGFloat parallaxHeight = [[self propertyContainer] getSizeValue:kIXImageParallaxHeight maximumSize:contentViewSize.height defaultValue:0.0f];
+                                      
+                                      [[weakSelf tableView] addParallaxWithImage:image andHeight:parallaxHeight];
+                                      [[[weakSelf tableView] parallaxView] layoutIfNeeded];
+                                      
+                                  } failBlock:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
 

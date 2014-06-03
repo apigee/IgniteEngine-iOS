@@ -11,6 +11,17 @@
 
 #import "IXCamera.h"
 
+@import AVFoundation;
+@import ImageIO;
+
+#import "IXAppManager.h"
+#import "IXLogger.h"
+#import "IXDeviceInfo.h"
+#import "UIImage+IXAdditions.h"
+#import "UIImage+ResizeMagick.h"
+
+#import "NSString+IXAdditions.h"
+
 // Temp properties
 static NSString* const kIXWidth = @"width";
 static NSString* const kIXHeight = @"height";
@@ -34,6 +45,18 @@ static NSString* const kIXAutoSaveToCameraRoll = @"auto_save_to_camera_roll";
 // Events
 static NSString* const kIXDidCaptureImage = @"did_capture_image";
 static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
+
+@interface IXCamera ()
+
+@property (nonatomic,strong) UIView* cameraView;
+@property (nonatomic,strong) UIImage* capturedImage;
+
+@property (nonatomic,strong) AVCaptureSession* session;
+@property (nonatomic,strong) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
+@property (nonatomic,strong) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic,strong) AVCaptureDevice *device;
+
+@end
 
 @implementation IXCamera : IXBaseControl
 
@@ -66,6 +89,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 -(void)buildView
 {
     [super buildView];
+    
     _cameraView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_cameraView];
 }

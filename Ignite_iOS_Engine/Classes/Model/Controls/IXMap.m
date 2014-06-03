@@ -24,16 +24,23 @@
  */
 
 #import "IXMap.h"
+
+@import MapKit;
+
 #import "SVPulsingAnnotationView.h"
 #import "SVAnnotation.h"
-
 
 @interface IXMap ()
 
 @property (nonatomic,strong) MKMapView* mapView;
-
+@property (nonatomic,strong) NSArray *mIXtemList;
+@property (nonatomic,assign) MKCoordinateRegion boundingRegion;
+@property (nonatomic,readwrite) CLLocationCoordinate2D coordinate;
+@property (nonatomic,copy) NSString *title;
+@property (nonatomic,copy) NSString *subtitle;
 
 @end
+
 @implementation SVAnnotation
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate {
@@ -43,6 +50,7 @@
 }
 
 @end
+
 @implementation IXMap
 
 -(void)buildView

@@ -2,7 +2,7 @@
 //  TKState.h
 //  TransitionKit
 //
-//  Created by Blake Watters on 3/17.
+//  Created by Blake Watters on 3/17/13.
 //  Copyright (c) 2013 Blake Watters. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");

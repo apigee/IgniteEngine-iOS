@@ -64,11 +64,11 @@
 // - Code completion support
 //   The library provides symbols for log components and log levels which work
 //   with Xcode's code completion. All symbols, e.g. values or functions, which
-//   are relevant when using the logging library in an application, are prefIXd
+//   are relevant when using the logging library in an application, are prefixed
 //   with 'RKlcl_'. Internal symbols, which are needed when working with meta
 //   data, when defining log components, or when writing a logging back-end, are
-//   prefIXd with '_RKlcl_'. Internal symbols, which are only used by the logging
-//   library itself, are prefIXd with '__RKlcl_'.
+//   prefixed with '_RKlcl_'. Internal symbols, which are only used by the logging
+//   library itself, are prefixed with '__RKlcl_'.
 //
 // - Meta data
 //   The library provides public data structures which contain information about
@@ -100,7 +100,7 @@ extern "C" {
 //
 
 
-// Log levels, prefIXd with 'RKlcl_v'.
+// Log levels, prefixed with 'RKlcl_v'.
 enum _RKlcl_enum_level_t {
     RKlcl_vOff = 0,
 
@@ -126,7 +126,7 @@ typedef uint8_t  _RKlcl_level_narrow_t;
 //
 
 
-// Log components, prefIXd with 'RKlcl_c'.
+// Log components, prefixed with 'RKlcl_c'.
 enum _RKlcl_enum_component_t {
 #   define  _RKlcl_component(_identifier, _header, _name)                        \
     RKlcl_c##_identifier,                                                        \
@@ -300,7 +300,7 @@ extern const char * const _RKlcl_level_name[_RKlcl_level_t_count];
 // Version.
 extern const char * const _RKlcl_version;
 
-// Log level symbols used by RKlcl_log, prefIXd with '__RKlcl_log_symbol_RKlcl_v'.
+// Log level symbols used by RKlcl_log, prefixed with '__RKlcl_log_symbol_RKlcl_v'.
 enum {
   __RKlcl_log_symbol_RKlcl_vCritical = RKlcl_vCritical,
   __RKlcl_log_symbol_RKlcl_vError    = RKlcl_vError,

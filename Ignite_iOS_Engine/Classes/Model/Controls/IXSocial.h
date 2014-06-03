@@ -7,9 +7,6 @@
 //
 
 #import "IXBaseControl.h"
-#import "Social/Social.h"
-
-
 
 @interface IXSocial : IXBaseControl
 

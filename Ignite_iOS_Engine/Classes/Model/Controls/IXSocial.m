@@ -46,6 +46,9 @@
  */
 
 #import "IXSocial.h"
+
+@import Social;
+
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"

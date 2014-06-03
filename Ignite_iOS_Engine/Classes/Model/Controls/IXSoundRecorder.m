@@ -8,7 +8,8 @@
 
 #import "IXSoundRecorder.h"
 
-#import <AVFoundation/AVFoundation.h>
+@import AVFoundation.AVAudioSession;
+@import AVFoundation.AVAudioRecorder;
 
 #import "NSString+IXAdditions.h"
 

@@ -8,7 +8,7 @@
 
 #import "IXSound.h"
 
-#import <AVFoundation/AVFoundation.h>
+@import AVFoundation.AVAudioPlayer;
 
 #import "IXAppManager.h"
 #import "IXLogger.h"

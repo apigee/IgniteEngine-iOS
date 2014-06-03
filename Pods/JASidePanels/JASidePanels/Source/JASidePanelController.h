@@ -73,7 +73,7 @@ typedef enum _JASidePanelState {
 // size the left panel based on % of total screen width
 @property (nonatomic) CGFloat leftGapPercentage; 
 
-// size the left panel based on this fIXd size. overrides leftGapPercentage
+// size the left panel based on this fixed size. overrides leftGapPercentage
 @property (nonatomic) CGFloat leftFixedWidth;
 
 // the visible width of the left panel
@@ -82,7 +82,7 @@ typedef enum _JASidePanelState {
 // size the right panel based on % of total screen width
 @property (nonatomic) CGFloat rightGapPercentage;
 
-// size the right panel based on this fIXd size. overrides rightGapPercentage
+// size the right panel based on this fixed size. overrides rightGapPercentage
 @property (nonatomic) CGFloat rightFixedWidth;
 
 // the visible width of the right panel

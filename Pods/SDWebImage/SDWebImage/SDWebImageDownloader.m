@@ -67,7 +67,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
         _downloadQueue = [NSOperationQueue new];
         _downloadQueue.maxConcurrentOperationCount = 2;
         _URLCallbacks = [NSMutableDictionary new];
-        _HTTPHeaders = [NSMutableDictionary dictionaryWithObject:@"en-US,en;q=0.8" forKey:@"Accept-Language"];
+        _HTTPHeaders = [NSMutableDictionary dictionaryWithObject:@"image/webp,image/*;q=0.8" forKey:@"Accept"];
         _barrierQueue = dispatch_queue_create("com.hackemist.SDWebImageDownloaderBarrierQueue", DISPATCH_QUEUE_CONCURRENT);
         _downloadTimeout = 15.0;
     }

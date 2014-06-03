@@ -2,7 +2,7 @@
 //  ALMoviePlayerController.m
 //  ALMoviePlayerController
 //
-//  Created by Anthony Lobianco on 10/8.
+//  Created by Anthony Lobianco on 10/8/13.
 //  Copyright (c) 2013 Anthony Lobianco. All rights reserved.
 //
 
@@ -105,7 +105,7 @@ static const NSTimeInterval fullscreenAnimationDuration = 0.3;
     }
     [super setContentURL:contentURL];
     [[NSNotificationCenter defaultCenter] postNotificationName:ALMoviePlayerContentURLDidChangeNotification object:nil];
-//    [self play];
+    [self play];
 }
 
 - (void)setControls:(ALMoviePlayerControls *)controls {

@@ -18,3 +18,4 @@ pod 'YLMoment', '~> 0.2.0'
 pod 'AFOAuth2Client', '~> 0.1'
 pod 'AFHTTPRequestOperationLogger', '~> 1.0'
 pod 'ApigeeiOSSDK', '~> 2.0'
+pod 'APParallaxHeader', :head
