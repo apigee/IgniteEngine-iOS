@@ -275,10 +275,16 @@
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
     if( keyPath && rowIndexPath && [self dataRowCount] > rowIndexPath.row )
     {
-        NSInteger keyPathRow = rowIndexPath.row + 1; // +1 because xpath is not 0 based.
-        NSString* rootKeyPath = [NSString stringWithFormat:@"%@[%li]%@",[self rowBaseDataPath],keyPathRow,keyPath];
+        NSString* rowXPath = keyPath;
+        if( ![rowXPath hasPrefix:@"/"] )
+        {
+            rowXPath = [@"/" stringByAppendingString:keyPath];
+        }
         
-        RXMLElement* elementForKeyPath = [[[self lastXMLResponse] childrenWithRootXPath:rootKeyPath] firstObject];
+        NSInteger xPathRow = rowIndexPath.row + 1; // +1 because xpath is not 0 based.
+        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",[self rowBaseDataPath],xPathRow,rowXPath];
+        
+        RXMLElement* elementForKeyPath = [[[self lastXMLResponse] childrenWithRootXPath:rootXPath] firstObject];
         returnValue = [elementForKeyPath text];
     }
     return returnValue;
