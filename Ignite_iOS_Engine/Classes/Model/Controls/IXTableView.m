@@ -340,12 +340,13 @@ static NSString* const kIXBackgroundControls = @"background_controls";
             [cell setClipsToBounds:YES];
             [cell setBackgroundColor:[UIColor clearColor]];
             [[cell contentView] removeAllSubviews];
-            [[cell contentView] setBackgroundColor:[[self tableView] backgroundColor]];
             
             IXLayout *layoutControlForCellContentView = [self layoutForCell:cell];
             [cell setLayoutControl:layoutControlForCellContentView];
         }
     }
+    
+    [[cell contentView] setBackgroundColor:[[self tableView] backgroundColor]];
     
     NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:@"vertical"];
     if ([layoutFlow isEqualToString:@"horizontal"])
