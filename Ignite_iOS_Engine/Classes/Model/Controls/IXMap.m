@@ -27,6 +27,8 @@
 
 @import MapKit;
 
+#import "MKMapView+IXAdditions.h"
+
 #import "IXBaseDataProvider.h"
 
 #import "SVPulsingAnnotationView.h"
@@ -38,6 +40,7 @@ static NSString* const kIXShowsUserLocation = @"shows_user_location";
 static NSString* const kIXShowsPointsOfInterest = @"shows_points_of_interest";
 static NSString* const kIXShowsBuildings = @"shows_buildings";
 static NSString* const kIXMapType = @"map_type";
+static NSString* const kIXZoomLevel = @"zoom_level";
 
 static NSString* const kIXAnnotationImage = @"annotation.image";
 static NSString* const kIXAnnotationTitle = @"annotation.title";
@@ -259,7 +262,25 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
         }
     }
     
-    [[self mapView] showAnnotations:[self annotations] animated:YES];
+    [self zoomToFitAnnotationsAndZoomLevel];
+}
+
+-(void)zoomToFitAnnotationsAndZoomLevel
+{
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXZoomLevel] )
+    {
+        int mapsZoomLevel = (int)[[self mapView] ix_zoomLevel];
+        int zoomLevel = [[self propertyContainer] getIntPropertyValue:kIXZoomLevel defaultValue:mapsZoomLevel];
+        
+        [[self mapView] showAnnotations:[self annotations] animated:NO];
+        [[self mapView] ix_setCenterCoordinate:[[self mapView] centerCoordinate]
+                                     zoomLevel:zoomLevel
+                                      animated:YES];
+    }
+    else
+    {
+        [[self mapView] showAnnotations:[self annotations] animated:YES];
+    }
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation

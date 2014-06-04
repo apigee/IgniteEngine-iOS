@@ -98,6 +98,7 @@
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3118ABDD2000130BEA /* Nestsans.ttf */; };
 		63A10B3418ABDD2000130BEA /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3218ABDD2000130BEA /* NestsansBold.ttf */; };
+		63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */; };
 		63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */; };
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
@@ -299,6 +300,8 @@
 		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
 		63A10B3118ABDD2000130BEA /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nestsans.ttf; sourceTree = "<group>"; };
 		63A10B3218ABDD2000130BEA /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
+		63AEA732193F7D760088F480 /* MKMapView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+IXAdditions.h"; sourceTree = "<group>"; };
+		63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+IXAdditions.m"; sourceTree = "<group>"; };
 		63B05B8D19144BAC00D0B4FC /* IXCustomNavPushPopTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustomNavPushPopTransition.h; sourceTree = "<group>"; };
 		63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCustomNavPushPopTransition.m; sourceTree = "<group>"; };
 		63C0A7AF18CFDAB700F72064 /* IXNetworkShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNetworkShortCode.h; sourceTree = "<group>"; };
@@ -701,6 +704,8 @@
 		63311BC518442F070048C668 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				63AEA732193F7D760088F480 /* MKMapView+IXAdditions.h */,
+				63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */,
 				63311BCF18444D600048C668 /* NSString+IXAdditions.h */,
 				63311BD018444D600048C668 /* NSString+IXAdditions.m */,
 				6366D6DB18A30BC7000AEEA5 /* UIImage+IXAdditions.h */,
@@ -1036,6 +1041,7 @@
 				63CC9ABC18BD1D8700ECCECB /* IXPathHandler.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
 				63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */,
+				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
 				63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */,
