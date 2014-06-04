@@ -8,7 +8,7 @@
 
 #import "IXControlCacheContainer.h"
 
-#import "IXJSONGrabber.h"
+#import "IXDataGrabber.h"
 #import "IXPropertyContainer.h"
 #import "IXActionContainer.h"
 #import "IXBaseControl.h"
@@ -243,7 +243,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
     IXControlCacheContainer* cachedControlCacheContainer = [sControlCacheContainerCache objectForKey:pathToJSON];
     if( cachedControlCacheContainer == nil )
     {
-        [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:pathToJSON asynch:loadAsync shouldCache:NO completionBlock:^(id jsonObject, NSError *error) {
+        [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:pathToJSON asynch:loadAsync shouldCache:NO completionBlock:^(id jsonObject, NSString* stringValue, NSError *error) {
             
             if( [jsonObject isKindOfClass:[NSDictionary class]] )
             {

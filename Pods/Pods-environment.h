@@ -78,6 +78,12 @@
 #define COCOAPODS_VERSION_MINOR_PPSSignatureView 1
 #define COCOAPODS_VERSION_PATCH_PPSSignatureView 0
 
+// RaptureXML
+#define COCOAPODS_POD_AVAILABLE_RaptureXML
+#define COCOAPODS_VERSION_MAJOR_RaptureXML 1
+#define COCOAPODS_VERSION_MINOR_RaptureXML 0
+#define COCOAPODS_VERSION_PATCH_RaptureXML 1
+
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability
 #define COCOAPODS_VERSION_MAJOR_Reachability 3

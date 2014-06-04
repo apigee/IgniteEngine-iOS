@@ -11,7 +11,6 @@
 #import "IXPropertyContainer.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
-#import "IXJSONGrabber.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
 #import "IXSandbox.h"

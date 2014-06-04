@@ -13,7 +13,7 @@
 #import "SDWebImageManager.h"
 
 #import "IXConstants.h"
-#import "IXJSONGrabber.h"
+#import "IXDataGrabber.h"
 #import "IXLogger.h"
 #import "IXPathHandler.h"
 #import "IXNavigationViewController.h"
@@ -122,10 +122,10 @@
     [self setWebViewForJS:[[UIWebView alloc] initWithFrame:CGRectZero]];
     [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appConfigPath] stringByDeletingLastPathComponent]]];
     
-    [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:[self appConfigPath]
+    [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:[self appConfigPath]
                                                  asynch:NO
                                             shouldCache:NO
-                                        completionBlock:^(id jsonObject, NSError *error) {
+                                        completionBlock:^(id jsonObject, NSString* stringValue, NSError *error) {
                                             
                                             if( jsonObject == nil )
                                             {

@@ -16,7 +16,7 @@
 
 #import "IXAppManager.h"
 #import "SDWebImageManager.h"
-#import "IXJSONGrabber.h"
+#import "IXDataGrabber.h"
 #import "IXControlCacheContainer.h"
 
 // IXFunctionAction Properties
@@ -50,7 +50,7 @@ static NSString* const kIXDestorySession = @"session.destroy";
                 // Clear caches.
                 [[[SDWebImageManager sharedManager] imageCache] clearMemory];
                 [[[SDWebImageManager sharedManager] imageCache] clearDisk];
-                [IXJSONGrabber clearCache];
+                [IXDataGrabber clearCache];
                 [IXControlCacheContainer clearCache];
                 
                 [[IXAppManager sharedAppManager] startApplication];

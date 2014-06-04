@@ -11,7 +11,7 @@
 #import "IXViewController.h"
 #import "IXLayout.h"
 #import "SDWebImageManager.h"
-#import "IXJSONGrabber.h"
+#import "IXDataGrabber.h"
 #import "IXPropertyContainer.h"
 #import "IXControlCacheContainer.h"
 
@@ -153,7 +153,7 @@
     [super didReceiveMemoryWarning];
     [[[SDWebImageManager sharedManager] imageCache] clearMemory];
     [[[SDWebImageManager sharedManager] imageCache] clearDisk];
-    [IXJSONGrabber clearCache];
+    [IXDataGrabber clearCache];
     [IXControlCacheContainer clearCache];
     for( UIViewController* viewController in [self viewControllers] )
     {

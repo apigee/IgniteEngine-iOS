@@ -597,7 +597,21 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 
 -(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath
 {
-    return 0;
+    NSInteger rowCount = [self rowCount];
+    NSDecimalNumber* rowTotal = [NSDecimalNumber zero];
+    for( int i = 0; i < rowCount; i++ )
+    {
+        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath];
+        if( rowDataForIndex )
+        {
+            NSDecimalNumber* decimalNumber = [NSDecimalNumber decimalNumberWithString:rowDataForIndex];
+            if( decimalNumber != nil )
+            {
+                rowTotal = [rowTotal decimalNumberByAdding:decimalNumber];
+            }
+        }
+    }
+    return [rowTotal stringValue];
 }
 
 @end

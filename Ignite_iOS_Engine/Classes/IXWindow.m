@@ -10,7 +10,7 @@
 
 #import "IXAppManager.h"
 #import "SDWebImageManager.h"
-#import "IXJSONGrabber.h"
+#import "IXDataGrabber.h"
 #import "IXControlCacheContainer.h"
 #import "IXDeviceInfo.h"
 #import "IXBaseDataProvider.h"
@@ -44,7 +44,7 @@
             
             [IXControlCacheContainer clearCache];
             [IXBaseDataProvider clearCache];
-            [IXJSONGrabber clearCache];
+            [IXDataGrabber clearCache];
             
             [[IXAppManager sharedAppManager] startApplication];
         }

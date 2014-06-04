@@ -11,8 +11,6 @@
 #import "IXAppManager.h"
 #import "IXLogger.h"
 
-#import "IXJSONGrabber.h"
-
 #import "IXPropertyContainer.h"
 #import "IXBaseControlConfig.h"
 #import "IXControlCacheContainer.h"
