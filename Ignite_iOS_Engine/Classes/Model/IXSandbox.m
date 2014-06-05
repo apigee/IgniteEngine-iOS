@@ -147,7 +147,7 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID
 {
     IXBaseDataProvider* returnDataProvider = [self dataProviders][dataProviderID];
-    if( returnDataProvider == nil && (self != [[IXAppManager sharedAppManager] applicationSandbox]) )
+    if( [dataProviderID length] > 0 && returnDataProvider == nil && (self != [[IXAppManager sharedAppManager] applicationSandbox]) )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
     }
@@ -162,7 +162,7 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
 -(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject
 {
     NSMutableArray* returnArray = nil;
-    if( [objectIDs count] )
+    if( [objectIDs count] > 0 )
     {
         returnArray = [[NSMutableArray alloc] init];
         for( NSString* objectID in objectIDs )
@@ -178,59 +178,63 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
 -(NSArray*)getAllControlsAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject
 {
     NSArray* returnArray = nil;
-    
-    NSMutableArray* arrayOfObjects = [[NSMutableArray alloc] initWithArray:[self getAllControlsWithID:objectID withSelfObject:selfObject]];
-    
-    IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
-    if( dataProviderWithObjectID )
+    if( [objectID length] > 0 )
     {
-        [arrayOfObjects addObject:dataProviderWithObjectID];
+        NSMutableArray* arrayOfObjects = [[NSMutableArray alloc] initWithArray:[self getAllControlsWithID:objectID withSelfObject:selfObject]];
+        
+        IXBaseDataProvider* dataProviderWithObjectID = [self getDataProviderWithID:objectID];
+        if( dataProviderWithObjectID )
+        {
+            [arrayOfObjects addObject:dataProviderWithObjectID];
+        }
+        
+        if( [arrayOfObjects count] )
+        {
+            returnArray = arrayOfObjects;
+        }
     }
-    
-    if( [arrayOfObjects count] )
-    {
-        returnArray = arrayOfObjects;
-    }
-    
     return returnArray;
 }
 
 -(NSArray*)getAllControlsWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject
 {
     NSArray* returnArray = nil;
-    if( [objectID isEqualToString:kIXSelfControlRef] )
+    if( [objectID length] > 0 )
     {
-        if( selfObject )
+        if( [objectID isEqualToString:kIXSelfControlRef] )
         {
-            returnArray = @[selfObject];
+            if( selfObject )
+            {
+                returnArray = @[selfObject];
+            }
         }
-    }
-    else if( [objectID isEqualToString:kIXCustomContainerControlRef] )
-    {
-        if( [self customControlContainer] )
+        else if( [objectID isEqualToString:kIXCustomContainerControlRef] )
         {
-            returnArray = @[[self customControlContainer]];
+            if( [self customControlContainer] )
+            {
+                returnArray = @[[self customControlContainer]];
+            }
         }
-    }
-    else if( [objectID isEqualToString:kIXViewControlRef] )
-    {
-        if( [[self viewController] containerControl] )
+        else if( [objectID isEqualToString:kIXViewControlRef] )
         {
-            returnArray = @[[[self viewController] containerControl]];
+            if( [[self viewController] containerControl] )
+            {
+                returnArray = @[[[self viewController] containerControl]];
+            }
         }
-    }
-    else
-    {
-        NSMutableArray* arrayOfControls = [NSMutableArray array];
-        if( [self customControlContainer] )
+        else
         {
-            [arrayOfControls addObjectsFromArray:[[self customControlContainer] childrenWithID:objectID]];
+            NSMutableArray* arrayOfControls = [NSMutableArray array];
+            if( [self customControlContainer] )
+            {
+                [arrayOfControls addObjectsFromArray:[[self customControlContainer] childrenWithID:objectID]];
+            }
+            if( ![arrayOfControls count] )
+            {
+                [arrayOfControls addObjectsFromArray:[[self containerControl] childrenWithID:objectID]];
+            }
+            returnArray = arrayOfControls;
         }
-        if( ![arrayOfControls count] )
-        {
-            [arrayOfControls addObjectsFromArray:[[self containerControl] childrenWithID:objectID]];
-        }
-        returnArray = arrayOfControls;
     }
     return returnArray;
 }
