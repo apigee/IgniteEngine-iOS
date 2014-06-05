@@ -139,6 +139,10 @@
     
     if ([panRecognizer state] == UIGestureRecognizerStateBegan)
     {
+        if( [[self delegate] respondsToSelector:@selector(cellBackgroundWillBeginToOpen:)] )
+        {
+            [[self delegate] cellBackgroundWillBeginToOpen:[self cellView]];
+        }
         [self setStartXPosition:[[panRecognizer view] center].x];
     }
     

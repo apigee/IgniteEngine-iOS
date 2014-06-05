@@ -11,8 +11,14 @@
 @class IXLayout;
 @class IXSandbox;
 
+@protocol IXCellBackgroundSwipeControllerDelegate <NSObject>
+@optional
+-(void)cellBackgroundWillBeginToOpen:(UIView*)cellView;
+@end
+
 @interface IXCellBackgroundSwipeController : NSObject
 
+@property (nonatomic,weak) id<IXCellBackgroundSwipeControllerDelegate> delegate;
 @property (nonatomic,weak) UIView* cellView;
 @property (nonatomic,weak) IXLayout* layoutControl;
 @property (nonatomic,weak) IXLayout* backgroundLayoutControl;

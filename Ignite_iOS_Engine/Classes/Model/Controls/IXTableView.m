@@ -144,6 +144,17 @@ static NSString* const kIXCellIdentifier = @"IXUITableViewCell";
     }
 }
 
+-(void)cellBackgroundWillBeginToOpen:(UIView *)cellView
+{
+    for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
+    {
+        if( cell != cellView )
+        {
+            [[cell cellBackgroundSwipeController] resetCellPosition];
+        }
+    }
+}
+
 #pragma mark UITableViewDataSource and UITableViewDelegate  methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

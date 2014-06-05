@@ -89,6 +89,17 @@ static NSString* const kIXCellIdentifier = @"IXUICollectionViewCell";
     }
 }
 
+-(void)cellBackgroundWillBeginToOpen:(UIView *)cellView
+{
+    for( IXUICollectionViewCell* cell in [[self collectionView] visibleCells] )
+    {
+        if( cell != cellView )
+        {
+            [[cell cellBackgroundSwipeController] resetCellPosition];
+        }
+    }
+}
+
 #pragma mark UICollectionViewDataSource methods
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -134,6 +145,5 @@ static NSString* const kIXCellIdentifier = @"IXUICollectionViewCell";
 {
     [[self actionContainer] executeActionsForEventNamed:kIXEndedScrolling];
 }
-
 
 @end

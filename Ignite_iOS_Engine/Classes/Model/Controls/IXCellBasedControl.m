@@ -275,6 +275,7 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
             }
             [cell setAdjustsBackgroundAlphaWithSwipe:[self backgroundSwipeAdjustsBackgroundAlpha]];
             [cell enableBackgroundSwipe:( [cell backgroundLayoutControl] != nil ) swipeWidth:[self backgroundViewSwipeWidth]];
+            [[cell cellBackgroundSwipeController] setDelegate:self];
         }
     }
 }

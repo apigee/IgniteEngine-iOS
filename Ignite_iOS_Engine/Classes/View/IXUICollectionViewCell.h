@@ -17,11 +17,9 @@
 @interface IXUICollectionViewCell : UICollectionViewCell <IXCellContainerDelegate>
 
 @property (nonatomic,strong,readonly) IXCellBackgroundSwipeController* cellBackgroundSwipeController;
-
 @property (nonatomic,strong) IXSandbox* cellSandbox;
 @property (nonatomic,strong) IXLayout* layoutControl;
 @property (nonatomic,strong) IXLayout* backgroundLayoutControl;
-
 @property (nonatomic,assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic,assign) BOOL adjustsBackgroundAlphaWithSwipe;
 

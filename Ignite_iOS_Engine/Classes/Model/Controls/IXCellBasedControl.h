@@ -8,8 +8,9 @@
 
 #import "IXBaseControl.h"
 
+#import "IXCellBackgroundSwipeController.h"
+
 @class IXBaseDataProvider;
-@class IXCellBackgroundSwipeController;
 @class IXLayout;
 @class IXSandbox;
 
@@ -27,7 +28,7 @@
 
 @end
 
-@interface IXCellBasedControl : IXBaseControl
+@interface IXCellBasedControl : IXBaseControl <IXCellBackgroundSwipeControllerDelegate>
 
 @property (nonatomic,weak,readonly) IXBaseDataProvider* dataProvider;
 @property (nonatomic,assign,readonly) BOOL animateReload;
