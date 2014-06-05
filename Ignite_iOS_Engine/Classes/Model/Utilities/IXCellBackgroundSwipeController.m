@@ -34,6 +34,7 @@
     {
         _cellView = cellView;        
         _swipeWidth = 100;
+        _adjustsBackgroundAlphaWithSwipe = NO;
     }
     return self;
 }
@@ -61,6 +62,20 @@
     }
 }
 
+-(void)setAdjustsBackgroundAlphaWithSwipe:(BOOL)adjustsBackgroundAlphaWithSwipe
+{
+    _adjustsBackgroundAlphaWithSwipe = adjustsBackgroundAlphaWithSwipe;
+    
+    if( _adjustsBackgroundAlphaWithSwipe )
+    {
+        [[_backgroundLayoutControl contentView] setAlpha:0];
+    }
+    else
+    {
+        [[_backgroundLayoutControl contentView] setAlpha:1];
+    }
+}
+
 -(void)enablePanGesture:(BOOL)enableGesture
 {
     if (enableGesture)
@@ -77,8 +92,6 @@
             [_tapGestureRecognizer setNumberOfTapsRequired:1];
             [_tapGestureRecognizer setEnabled:NO];
             [[[self layoutControl] contentView] addGestureRecognizer:[self tapGestureRecognizer]];
-            
-            [[_backgroundLayoutControl contentView] setAlpha:0];
         }
     }
     else
@@ -108,11 +121,14 @@
 
 -(void)adjustBackgroundViewsAlpha
 {
-    CGPoint origin = [[_layoutControl contentView] frame].origin;
-    CGFloat originsXPosition = fabsf(origin.x);
-    CGFloat percentage = originsXPosition/[self swipeWidth];
-    
-    [[[self backgroundLayoutControl] contentView] setAlpha:percentage];
+    if( [self adjustsBackgroundAlphaWithSwipe] )
+    {
+        CGPoint origin = [[_layoutControl contentView] frame].origin;
+        CGFloat originsXPosition = fabsf(origin.x);
+        CGFloat percentage = originsXPosition/[self swipeWidth];
+        
+        [[[self backgroundLayoutControl] contentView] setAlpha:percentage];
+    }
 }
 
 -(void)panGestureRecognized:(UIPanGestureRecognizer*)panRecognizer

@@ -91,8 +91,16 @@
     UIView* backgroundView = [_backgroundLayoutControl contentView];
     if( backgroundView != nil )
     {
-        [[self contentView] addSubview:backgroundView];
-        [[self contentView] sendSubviewToBack:backgroundView];
+        if( [self backgroundSlidesInFromSide] )
+        {
+            backgroundView.frame = CGRectMake([[_layoutControl contentView] frame].size.width, 0, backgroundView.frame.size.width, backgroundView.frame.size.height);
+            [[[self layoutControl] contentView] addSubview:backgroundView];
+        }
+        else
+        {
+            [[self contentView] addSubview:backgroundView];
+            [[self contentView] sendSubviewToBack:backgroundView];
+        }
     }
     
     [[self cellBackgroundSwipeController] setBackgroundLayoutControl:_backgroundLayoutControl];
@@ -107,6 +115,7 @@
         [[self cellBackgroundSwipeController] setSwipeWidth:swipeWidth];
         [[self cellBackgroundSwipeController] setLayoutControl:[self layoutControl]];
         [[self cellBackgroundSwipeController] setBackgroundLayoutControl:[self backgroundLayoutControl]];
+        [[self cellBackgroundSwipeController] setAdjustsBackgroundAlphaWithSwipe:[self adjustsBackgroundAlphaWithSwipe]];
         [[self cellBackgroundSwipeController] enablePanGesture:YES];
     }
     else

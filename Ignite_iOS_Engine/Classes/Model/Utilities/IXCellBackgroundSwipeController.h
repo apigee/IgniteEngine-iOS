@@ -17,6 +17,7 @@
 @property (nonatomic,weak) IXLayout* layoutControl;
 @property (nonatomic,weak) IXLayout* backgroundLayoutControl;
 
+@property (nonatomic,assign) BOOL adjustsBackgroundAlphaWithSwipe;
 @property (nonatomic,assign) NSInteger cellsStartingCenterXPosition;
 @property (nonatomic,assign) NSInteger startXPosition;
 

@@ -26,6 +26,8 @@ static NSString* const kIXAnimateReload = @"animate_reload";
 static NSString* const kIXAnimateReloadDuration = @"animate_reload.duration";
 static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXBackgroundSwipeWidth = @"background_swipe_width";
+static NSString* const kIXBackgroundSlidesInFromSide = @"background_slides_in_from_side";
+static NSString* const kIXBackgroundSwipeAdjustsBackgroundAlpha = @"background_swipe_adjusts_background_alpha";
 static NSString* const kIXBackgroundControls = @"background_controls";
 static NSString* const kIXDataproviderID = @"dataprovider_id";
 static NSString* const kIXItemWidth = @"item_width";
@@ -49,6 +51,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
 @property (nonatomic, assign) BOOL animateReload;
 @property (nonatomic, assign) CGFloat animateReloadDuration;
 @property (nonatomic, assign) CGFloat backgroundViewSwipeWidth;
+@property (nonatomic, assign) CGFloat backgroundSwipeAdjustsBackgroundAlpha;
+@property (nonatomic, assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic, assign) BOOL scrollEnabled;
 @property (nonatomic, assign) BOOL showsScrollIndicators;
 @property (nonatomic, assign) UIScrollViewIndicatorStyle scrollIndicatorStyle;
@@ -98,6 +102,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
     }
     
     [self setBackgroundViewSwipeWidth:[[self propertyContainer] getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:100.0f]];
+    [self setBackgroundSwipeAdjustsBackgroundAlpha:[[self propertyContainer] getBoolPropertyValue:kIXBackgroundSwipeAdjustsBackgroundAlpha defaultValue:NO]];
+    [self setBackgroundSlidesInFromSide:[[self propertyContainer] getBoolPropertyValue:kIXBackgroundSlidesInFromSide defaultValue:NO]];
     [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:kIXAnimateReload defaultValue:NO]];
     [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimateReloadDuration defaultValue:0.2f]];
     [self setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXScrollable defaultValue:YES]];
@@ -245,6 +251,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
         
         if( !isDummy )
         {
+            [cell setBackgroundSlidesInFromSide:[self backgroundSlidesInFromSide]];
+            
             IXLayout* backgroundLayoutControl = [cell backgroundLayoutControl];
             if( backgroundLayoutControl != nil )
             {
@@ -256,13 +264,14 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
             else if( [[self subControlsDictionary][kIXBackgroundControls] count] > 0 )
             {
                 IXLayout* backgroundLayoutControl = [self backgroundViewForCell:cell withRowSandbox:[cellLayout sandbox]];
-                [cell setBackgroundLayoutControl:backgroundLayoutControl];
                 
                 [backgroundLayoutControl applySettings];
                 [[backgroundLayoutControl contentView] setFrame:layoutRect];
                 [backgroundLayoutControl layoutControl];
+                [cell setBackgroundLayoutControl:backgroundLayoutControl];
+
             }
-            
+            [cell setAdjustsBackgroundAlphaWithSwipe:[self backgroundSwipeAdjustsBackgroundAlpha]];
             [cell enableBackgroundSwipe:( [cell backgroundLayoutControl] != nil ) swipeWidth:[self backgroundViewSwipeWidth]];
         }
     }

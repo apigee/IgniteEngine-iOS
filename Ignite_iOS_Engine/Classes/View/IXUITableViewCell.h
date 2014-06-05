@@ -24,6 +24,9 @@
 @property (nonatomic,strong) IXLayout* layoutControl;
 @property (nonatomic,strong) IXLayout* backgroundLayoutControl;
 
+@property (nonatomic,assign) BOOL backgroundSlidesInFromSide;
+@property (nonatomic,assign) BOOL adjustsBackgroundAlphaWithSwipe;
+
 -(IXPropertyContainer*)layoutPropertyContainerForCell;
 -(void)enableBackgroundSwipe:(BOOL)enableBackgroundSwipe swipeWidth:(CGFloat)swipeWidth;
 
