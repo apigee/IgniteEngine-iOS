@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-#import "IXBaseControl.h"
+#import "IXCellBasedControl.h"
 
-@interface IXTableView : IXBaseControl
+@interface IXTableView : IXCellBasedControl
 
 @end

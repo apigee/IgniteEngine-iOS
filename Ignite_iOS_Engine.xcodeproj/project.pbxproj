@@ -62,6 +62,7 @@
 		13BF0469183EBE7E00894760 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BF0466183EBE7E00894760 /* main.m */; };
 		13ECEA5F183EBF39004BC638 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 13ECEA5E183EBF38004BC638 /* assets */; };
 		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
+		6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */; };
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
@@ -94,6 +95,7 @@
 		638226BE18ADF48D00E856ED /* IXTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 638226BD18ADF48D00E856ED /* IXTimer.m */; };
 		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
+		6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */; };
 		63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXKnob.m */; };
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3118ABDD2000130BEA /* Nestsans.ttf */; };
@@ -239,6 +241,8 @@
 		2A47E3A147B84D9DB0C78D60 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
+		6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBackgroundSwipeController.h; sourceTree = "<group>"; };
+		6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCellBackgroundSwipeController.m; sourceTree = "<group>"; };
 		6324BF4C1835931C00748F27 /* Ignite_iOS_Engine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ignite_iOS_Engine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6324BF4F1835931C00748F27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -297,6 +301,8 @@
 		638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDatarowShortCode.m; sourceTree = "<group>"; };
 		638DE47D1860E80D00F2E36A /* UIView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IXAdditions.h"; sourceTree = "<group>"; };
 		638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IXAdditions.m"; sourceTree = "<group>"; };
+		6394F453193FD59A009EE1C4 /* IXCellBasedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBasedControl.h; sourceTree = "<group>"; };
+		6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCellBasedControl.m; sourceTree = "<group>"; };
 		63A10B2018AAD7E200130BEA /* IXKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXKnob.h; sourceTree = "<group>"; };
 		63A10B2118AAD7E200130BEA /* IXKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXKnob.m; sourceTree = "<group>"; };
 		63A10B2E18AAF9D900130BEA /* IXSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSound.h; sourceTree = "<group>"; };
@@ -502,6 +508,8 @@
 				6366D6D318A0A9D5000AEEA5 /* IXButton.m */,
 				CA51499818E0CAC000FA58DF /* IXCamera.h */,
 				CA51499918E0CAC000FA58DF /* IXCamera.m */,
+				6394F453193FD59A009EE1C4 /* IXCellBasedControl.h */,
+				6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */,
 				CA1279E918D69618007EEC5A /* IXCircle.h */,
 				CA1279EA18D69618007EEC5A /* IXCircle.m */,
 				63F8A400187368BC00250994 /* IXCollection.h */,
@@ -609,20 +617,22 @@
 		13033F7B183ED8F200C29157 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */,
+				6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */,
+				63EAFBCF18D798830016CA69 /* IXControlCacheContainer.h */,
+				63EAFBD018D798830016CA69 /* IXControlCacheContainer.m */,
 				13033F7C183ED8F200C29157 /* IXControlLayoutInfo.h */,
 				13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */,
+				CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */,
+				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
 				13033F7E183ED8F200C29157 /* IXLayoutEngine.h */,
 				13033F7F183ED8F200C29157 /* IXLayoutEngine.m */,
 				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
 				63CC9ABE18BE8AB600ECCECB /* IXLogger.m */,
-				63CC9AAF18BD0BB000ECCECB /* IXWeakTimerTarget.h */,
-				63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */,
 				63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */,
 				63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */,
-				CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */,
-				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
-				63EAFBCF18D798830016CA69 /* IXControlCacheContainer.h */,
-				63EAFBD018D798830016CA69 /* IXControlCacheContainer.m */,
+				63CC9AAF18BD0BB000ECCECB /* IXWeakTimerTarget.h */,
+				63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1006,6 +1016,7 @@
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
 				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
+				6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */,
 				63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */,
 				13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */,
 				63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */,
@@ -1025,6 +1036,7 @@
 				13033FB5183ED8F200C29157 /* IXControlLayoutInfo.m in Sources */,
 				6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */,
 				63AEA72E193EA4080088F480 /* IXAFXMLRequestOperation.m in Sources */,
+				6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */,
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				CA1279E818D52B35007EEC5A /* UIButton+IXAdditions.m in Sources */,
 				13033FA3183ED8F200C29157 /* IXPanel.m in Sources */,

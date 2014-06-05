@@ -7,54 +7,44 @@
 //
 
 #import "IXTableView.h"
-#import "IXBaseDataProvider.h"
-#import "IXSandbox.h"
-#import "IXUITableViewCell.h"
-#import "UIView+IXAdditions.h"
-#import "IXLayout.h"
-#import "IXText.h"
-#import "IXPropertyContainer.h"
-#import "IXProperty.h"
-#import "IXLayoutEngine.h"
-#import "IXCustom.h"
-#import "UIScrollView+APParallaxHeader.h"
-#import <RestKit/CoreData.h>
 
-static NSString* const kIXDataproviderID = @"dataprovider_id";
-static NSString* const kIXLayoutFlow = @"layout_flow";
-static NSString* const kIXEnableScrollIndicators = @"enable_scroll_indicators";
+#import "IXLayout.h"
+#import "IXUITableViewCell.h"
+#import "IXCellBackgroundSwipeController.h"
+
+#import "UIScrollView+APParallaxHeader.h"
+
+// IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
+static NSString* const kIXRowSelectEnabled = @"row_select_enabled";
+static NSString* const kIXKeepRowHighlightedOnSelect = @"keep_row_highlighted_on_select";
+
 static NSString* const kIXImageParallax = @"image.parallax";
 static NSString* const kIXImageParallaxHeight = @"image.parallax.height";
 
-static NSString* const kIXWillDisplayCell = @"will_display_cell";
-static NSString* const kIXDidHideCell = @"did_hide_cell";
+static NSString* const kIXLayoutFlow = @"layout_flow";
+static NSString* const kIXLayoutFlowVertical = @"vertical";
+static NSString* const kIXLayoutFlowHorizontal = @"horizontal";
+
+static NSString* const kIXSeperatorColor = @"separator.color";
+static NSString* const kIXSeperatorStyle = @"separator.style";
+static NSString* const kIXSeperatorStyleNone = @"none";
+static NSString* const kIXSeperatorStyleDefault = @"default";
+
+// IXTableView Events
 static NSString* const kIXStartedScrolling = @"started_scrolling";
 static NSString* const kIXEndedScrolling = @"ended_scrolling";
-static NSString* const kIXBackgroundControls = @"background_controls";
 
-@interface IXSandbox ()
+// These Events fired on the actual cells. (aka dataRow will work)
+static NSString* const kIXWillDisplayCell = @"will_display_cell";
+static NSString* const kIXDidHideCell = @"did_hide_cell";
 
-@property (nonatomic,strong) NSMutableDictionary* dataProviders;
-
-@end
+// Non property constants
+static NSString* const kIXCellIdentifier = @"IXUITableViewCell";
 
 @interface IXTableView () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
-@property (nonatomic, strong) NSString* dataSourceID;
-@property (nonatomic, weak) IXBaseDataProvider* dataProvider;
-@property (nonatomic, strong) NSMutableDictionary* sectionNumbersAndRowCount;
-
-@property (nonatomic, assign) CGSize itemSize;
-@property (nonatomic, assign) NSInteger currentRowCount;
 @property (nonatomic, assign) BOOL keepRowHighlightedOnSelect;
-@property (nonatomic, assign) BOOL animateReload;
-@property (nonatomic, assign) CGFloat animateReloadDuration;
-@property (nonatomic, assign) CGFloat backgroundViewSwipeWidth;
-
-@property (nonatomic, strong) IXUITableViewCell *cellToCalculateHeight;
-@property (nonatomic, strong) IXLayout *cellLayoutToCalculateHeight;
-
 
 @end
 
@@ -62,9 +52,6 @@ static NSString* const kIXBackgroundControls = @"background_controls";
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:IXBaseDataProviderDidUpdateNotification
-                                                  object:[self dataProvider]];
     [_tableView setDataSource:nil];
     [_tableView setDelegate:nil];
 }
@@ -77,14 +64,14 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [_tableView setSeparatorInset:UIEdgeInsetsZero];
-
-    _sectionNumbersAndRowCount = nil;
     
     [[self contentView] addSubview:_tableView];
 }
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
+    [super layoutControlContentsInRect:rect];
+    
     [[self tableView] setFrame:rect];
     
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXImageParallax] )
@@ -95,16 +82,9 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     }
 }
 
--(CGSize)preferredSizeForSuggestedSize:(CGSize)size
-{
-    return size;
-}
-
 -(void)applySettings
 {
     [super applySettings];
-    
-    [self setDataSourceID:[[self propertyContainer] getStringPropertyValue:kIXDataproviderID defaultValue:nil]];
     
     __weak typeof(self) weakSelf = self;
     [[self propertyContainer] getImageProperty:kIXImageParallax
@@ -118,55 +98,36 @@ static NSString* const kIXBackgroundControls = @"background_controls";
                                       
                                   } failBlock:nil];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:IXBaseDataProviderDidUpdateNotification object:[self dataProvider]];
+    [[self tableView] setBackgroundColor:[[self contentView] backgroundColor]];
+    [[self tableView] setScrollEnabled:[self scrollEnabled]];
+    [[self tableView] setShowsHorizontalScrollIndicator:[self showsScrollIndicators]];
+    [[self tableView] setShowsVerticalScrollIndicator:[self showsScrollIndicators]];
+    [[self tableView] setIndicatorStyle:[self scrollIndicatorStyle]];
+    [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:kIXRowSelectEnabled defaultValue:YES]];
+    [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:kIXKeepRowHighlightedOnSelect defaultValue:NO]];
 
-    [self setDataProvider:[[self sandbox] getDataProviderWithID:[self dataSourceID]]];
-    
-    if( [self dataProvider] )
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(dataProviderNotification:)
-                                                     name:IXBaseDataProviderDidUpdateNotification
-                                                   object:[self dataProvider]];
-    }
-    
-    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:@"separator.style" defaultValue:kIX_DEFAULT];
-    if( [seperatorStyle isEqualToString:@"none"] ) {
+    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:kIXSeperatorStyle defaultValue:kIXSeperatorStyleDefault];
+    if( [seperatorStyle isEqualToString:kIXSeperatorStyleNone] ) {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-        [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:@"seperator.color" defaultValue:[UIColor grayColor]]];
+        [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:kIXSeperatorColor defaultValue:[UIColor grayColor]]];
     }
     
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:@"vertical"];
-    if ([layoutFlow isEqualToString:@"horizontal"])
+    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
+    if ([layoutFlow isEqualToString:kIXLayoutFlowHorizontal])
     {
         [[self tableView] setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
     }
-    if (![[self propertyContainer] getBoolPropertyValue:kIXEnableScrollIndicators defaultValue:true])
-    {
-        [[self tableView] setShowsHorizontalScrollIndicator:false];
-        [[self tableView] setShowsVerticalScrollIndicator:false];
-    }
-    
-    [[self tableView] setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:@"scrollable" defaultValue:YES]];
-    [[self tableView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:@"background.color" defaultValue:[UIColor clearColor]]];
-    
-    [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:@"row_select_enabled" defaultValue:YES]];
-    [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:@"keep_row_highlighted_on_select" defaultValue:NO]];
-    [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:@"animate_reload" defaultValue:NO]];
-    [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:@"animate_reload.duration" defaultValue:0.2f]];
-
-    [self setBackgroundViewSwipeWidth:[[self propertyContainer] getFloatPropertyValue:@"background_swipe_width" defaultValue:100.0f]];
     
     dispatch_async(dispatch_get_main_queue(),^{
-        [self startTableViewReload];
+        [self reload];
     });
 }
 
--(void)startTableViewReload
+-(void)reload
 {
-    [self setItemSize:[self getItemSize]];
+    [super reload];
     
     if( [self animateReload] && [self animateReloadDuration] > 0.0f )
     {
@@ -174,9 +135,8 @@ static NSString* const kIXBackgroundControls = @"background_controls";
                           duration:[self animateReloadDuration]
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationCurveEaseOut
                         animations: ^(void) {
-                            [self.tableView reloadData];
-                        } completion: ^(BOOL isFinished) {
-                        }];
+                            [[self tableView] reloadData];
+                        } completion:nil];
     }
     else
     {
@@ -184,20 +144,7 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     }
 }
 
--(CGSize)getItemSize
-{
-    CGSize contentViewSize = [[self contentView] bounds].size;
-    return CGSizeMake([[self propertyContainer] getSizeValue:@"item_width" maximumSize:contentViewSize.width defaultValue:contentViewSize.width],
-                      [[self propertyContainer] getSizeValue:@"item_height" maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
-}
-
--(void)dataProviderNotification:(NSNotification*)notification
-{
-    [self setCurrentRowCount:[[self dataProvider] rowCount]];
-    [self startTableViewReload];
-}
-
-#pragma mark UITableViewDataSource methods
+#pragma mark UITableViewDataSource and UITableViewDelegate  methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -221,199 +168,39 @@ static NSString* const kIXBackgroundControls = @"background_controls";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat itemHeight = [self heightForCellAtIndexPath:indexPath];
-    return itemHeight;
-}
-
-- (float)heightForCellAtIndexPath:(NSIndexPath*)indexPath
-{
-    if( [self cellToCalculateHeight] == nil )
-    {
-        [self setCellToCalculateHeight:[[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil]];
-        [self setCellLayoutToCalculateHeight:[self layoutForCell:[self cellToCalculateHeight]]];
-    }
-    
-    IXLayout *cellLayout = [self cellLayoutToCalculateHeight];
-    if( cellLayout )
-    {
-        [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
-        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
-        
-        NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
-        for( IXCustom* customControl in childrenThatAreCustomControls )
-        {
-            [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
-            [[customControl sandbox] setIndexPathForRowData:indexPath];
-        }
-        [cellLayout applySettings];
-        
-        // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
-        CGSize layoutSize = [IXLayoutEngine getControlSize:cellLayout forLayoutSize:[self itemSize]];
-        CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
-        
-        [[cellLayout contentView] setFrame:layoutRect];
-        [cellLayout layoutControl];
-    }
-    return [[cellLayout contentView] bounds].size.height;
+    CGSize itemSize = [self sizeForCellAtIndexPath:indexPath];
+    return itemSize.height;
 }
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rowsInSection = [[self dataProvider] rowCount];
-    return rowsInSection;
+    return [self rowCountForSection:section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
-}
-
--(IXLayout*)layoutForCell:(IXUITableViewCell*)cell
-{
-    IXLayout* layoutControl = [[IXLayout alloc] init];
-    [[layoutControl contentView] setClipsToBounds:NO];
-    [layoutControl setParentObject:self];
-    [layoutControl setNotifyParentOfLayoutUpdates:NO];
-    [layoutControl setActionContainer:[[self actionContainer] copy]];
-    
-    NSString* backgroundColor = [[self propertyContainer] getStringPropertyValue:@"background.color" defaultValue:@""];
-    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
-    [layoutControl setPropertyContainer:layoutPropertyContainer];
-    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
-                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
-                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
-                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"],
-                                             [IXProperty propertyWithPropertyName:@"background.color" rawValue:backgroundColor]]];
-    
-    IXSandbox* tableViewSandbox = [self sandbox];
-    IXSandbox* rowSandbox = [[IXSandbox alloc] initWithBasePath:[tableViewSandbox basePath] rootPath:[tableViewSandbox rootPath]];
-    [rowSandbox setViewController:[tableViewSandbox viewController]];
-    [rowSandbox setContainerControl:[tableViewSandbox containerControl]];
-    [rowSandbox setBasePath:[tableViewSandbox basePath]];
-    [rowSandbox setRootPath:[tableViewSandbox rootPath]];
-    [rowSandbox setDataProviders:[tableViewSandbox dataProviders]];
-    
-    // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
-    [cell setCellSandbox:rowSandbox];
-    [layoutControl setSandbox:rowSandbox];
-    [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self childObjects] copyItems:YES]];
-    
-    return layoutControl;
-}
-
--(IXLayout*)backgroundViewForCellWithRowSandbox:(IXSandbox*)rowSandbox
-{
-    IXLayout* layoutControl = [[IXLayout alloc] init];
-    [[layoutControl contentView] setClipsToBounds:NO];
-    [layoutControl setParentObject:self];
-    [layoutControl setNotifyParentOfLayoutUpdates:NO];
-    
-    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
-    [layoutControl setPropertyContainer:layoutPropertyContainer];
-    [layoutControl setActionContainer:[[self actionContainer] copy]];
-
-    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
-                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
-                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
-                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
-    
-    // FIXME: NEED TO DO MEMORY CHECK ON THIS!!
-    [layoutControl setSandbox:rowSandbox];
-    [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self subControlsDictionary][kIXBackgroundControls] copyItems:YES]];
-    
-    return layoutControl;
+    return [self numberOfSections];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *kIXCellIdentifier = @"IXUITableViewCell";
     IXUITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kIXCellIdentifier];
     if( cell == nil )
     {
         cell = [[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kIXCellIdentifier];
-        if( cell )
-        {
-            [cell setClipsToBounds:YES];
-            [cell setBackgroundColor:[UIColor clearColor]];
-            [[cell contentView] removeAllSubviews];
-            
-            IXLayout *layoutControlForCellContentView = [self layoutForCell:cell];
-            [cell setLayoutControl:layoutControlForCellContentView];
-        }
+        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     }
     
     [[cell contentView] setBackgroundColor:[[self tableView] backgroundColor]];
+    [self configureCell:cell withIndexPath:indexPath];
     
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:@"vertical"];
-    if ([layoutFlow isEqualToString:@"horizontal"])
+    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
+    if ([layoutFlow isEqualToString:kIXLayoutFlowHorizontal])
     {
         [cell setTransform:CGAffineTransformMakeRotation(M_PI_2)];
     }
-    [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
-
-    IXLayout* cellLayout = [cell layoutControl];
-    if( cellLayout )
-    {
-        [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
-        [[cellLayout sandbox] setIndexPathForRowData:indexPath];
-        
-        NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
-        for( IXCustom* customControl in childrenThatAreCustomControls )
-        {
-            [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
-            [[customControl sandbox] setIndexPathForRowData:indexPath];
-        }
-        [cellLayout applySettings];
-
-        // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
-        CGSize layoutSize = [IXLayoutEngine getControlSize:cellLayout forLayoutSize:[self itemSize]];
-        CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
-
-        [[cellLayout contentView] setFrame:layoutRect];
-        [cellLayout layoutControl];
-        
-        IXLayout* backgroundLayoutControl = [cell backgroundLayoutControl];
-        if( backgroundLayoutControl != nil )
-        {
-            [backgroundLayoutControl setSandbox:[cellLayout sandbox]];
-            [backgroundLayoutControl applySettings];
-            [[backgroundLayoutControl contentView] setFrame:layoutRect];
-            [backgroundLayoutControl layoutControl];
-        }
-        else if( [[self subControlsDictionary][kIXBackgroundControls] count] > 0 )
-        {
-            IXLayout* backgroundLayoutControl = [self backgroundViewForCellWithRowSandbox:[cellLayout sandbox]];
-            [cell setBackgroundLayoutControl:backgroundLayoutControl];
-            
-            [backgroundLayoutControl applySettings];
-            [[backgroundLayoutControl contentView] setFrame:layoutRect];
-            [backgroundLayoutControl layoutControl];
-        }
-        
-        [cell setSwipeWidth:[self backgroundViewSwipeWidth]];
-        [cell enablePanGesture:( [cell backgroundLayoutControl] != nil )];
-    }
     
     return cell;
-}
-
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
-    {
-        [cell resetCellPosition];
-    }
-    
-    [[self actionContainer] executeActionsForEventNamed:kIXStartedScrolling];
-}
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [[self actionContainer] executeActionsForEventNamed:kIXEndedScrolling];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -424,13 +211,22 @@ static NSString* const kIXBackgroundControls = @"background_controls";
     }
 }
 
--(void)processEndTouch:(BOOL)fireTouchActions
+#pragma mark UIScrollViewDelegate methods
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    // TableView doesnt need to fire any touch actions.
+    for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
+    {
+        [[cell cellBackgroundSwipeController] resetCellPosition];
+    }
+    
+    [[self actionContainer] executeActionsForEventNamed:kIXStartedScrolling];
 }
--(void)processBeginTouch:(BOOL)fireTouchActions
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    // TableView doesnt need to fire any touch actions.
+    [[self actionContainer] executeActionsForEventNamed:kIXEndedScrolling];
 }
+
 
 @end

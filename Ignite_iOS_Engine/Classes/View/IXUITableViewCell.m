@@ -8,70 +8,44 @@
 
 #import "IXUITableViewCell.h"
 
+#import "IXCellBackgroundSwipeController.h"
 #import "IXLayout.h"
+#import "IXProperty.h"
+#import "UIView+IXAdditions.h"
 
 @interface IXUITableViewCell ()
 
-@property (nonatomic,assign) NSInteger cellsStartingCenterXPosition;
-@property (nonatomic,assign) NSInteger startXPosition;
-@property (nonatomic,strong) UIPanGestureRecognizer* panGestureRecognizer;
-@property (nonatomic,strong) UITapGestureRecognizer* tapGestureRecognizer;
+@property (nonatomic,strong) IXCellBackgroundSwipeController* cellBackgroundSwipeController;
 
 @end
 
 @implementation IXUITableViewCell
-
--(void)dealloc
-{
-    [[_layoutControl contentView] removeGestureRecognizer:_panGestureRecognizer];
-    [_panGestureRecognizer setDelegate:nil];
-    [_tapGestureRecognizer setDelegate:nil];
-}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self)
     {
-        _swipeWidth = 100;
         _forceSize = NO;
         _forcedSize = CGSizeZero;
-        _layoutControl = nil;
-        _backgroundLayoutControl = nil;
         
-        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
-        [_panGestureRecognizer setMinimumNumberOfTouches:1];
-        [_panGestureRecognizer setMaximumNumberOfTouches:1];
-        [_panGestureRecognizer setDelegate:self];
-        
-        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
-        [_tapGestureRecognizer setNumberOfTapsRequired:1];
+        [self setClipsToBounds:YES];
+        [self setBackgroundColor:[UIColor clearColor]];
+        [[self contentView] removeAllSubviews];
     }
     return self;
 }
 
--(void)setLayoutControl:(IXLayout *)layoutControl
+-(IXPropertyContainer*)layoutPropertyContainerForCell
 {
-    _layoutControl = layoutControl;
-    
-    if( [layoutControl contentView] != nil )
-    {
-        [[self contentView] addSubview:[layoutControl contentView]];
-        [[[self layoutControl] contentView] addGestureRecognizer:[self panGestureRecognizer]];
-        [[[self layoutControl] contentView] addGestureRecognizer:[self tapGestureRecognizer]];
-        [[self tapGestureRecognizer] setEnabled:NO];
-    }
-}
-
--(void)setBackgroundLayoutControl:(IXLayout *)backgroundLayoutControl
-{
-    _backgroundLayoutControl = backgroundLayoutControl;
-    
-    if( [backgroundLayoutControl contentView] != nil )
-    {
-        [[self contentView] addSubview:[backgroundLayoutControl contentView]];
-        [[self contentView] sendSubviewToBack:[backgroundLayoutControl contentView]];
-    }
+    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
+    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
+                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
+                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
+                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
+    return layoutPropertyContainer;
 }
 
 -(CGRect)frame
@@ -92,113 +66,53 @@
     }
     [super setFrame:frame];
     
-    [self setCellsStartingCenterXPosition:[self center].x];
+    [[self cellBackgroundSwipeController] setCellsStartingCenterXPosition:[self center].x];
 }
 
--(void)resetCellPosition
+-(void)setLayoutControl:(IXLayout *)layoutControl
 {
-    CGFloat centerX = [[[self layoutControl] contentView] center].x;
-    if( centerX != [self cellsStartingCenterXPosition] )
+    [[_layoutControl contentView] removeFromSuperview];
+    _layoutControl = layoutControl;
+    
+    UIView* layoutView = [_layoutControl contentView];
+    if( layoutView != nil )
     {
-        UIView* layoutControlsView = [[self layoutControl] contentView];
-        CGFloat halfOfCellsWidth = ([self frame].size.width/2);
-        
-        CGFloat animationDuration = (ABS(halfOfCellsWidth)*0.0002f)+0.2f;
-        
-        [UIView animateWithDuration:animationDuration
-                         animations:^{
-                             [[[self layoutControl] contentView] setCenter:CGPointMake([self cellsStartingCenterXPosition], [layoutControlsView center].y)];
-                         }];
+        [[self contentView] addSubview:layoutView];
     }
     
-    [[self tapGestureRecognizer] setEnabled:NO];
+    [[self cellBackgroundSwipeController] setLayoutControl:_layoutControl];
 }
 
--(void)enablePanGesture:(BOOL)enableGesture
+-(void)setBackgroundLayoutControl:(IXLayout *)backgroundLayoutControl
 {
-    if (enableGesture)
+    [[_backgroundLayoutControl contentView] removeFromSuperview];
+    _backgroundLayoutControl = backgroundLayoutControl;
+    
+    UIView* backgroundView = [_backgroundLayoutControl contentView];
+    if( backgroundView != nil )
     {
-        [[[self layoutControl] contentView] addGestureRecognizer:[self panGestureRecognizer]];
+        [[self contentView] addSubview:backgroundView];
+        [[self contentView] sendSubviewToBack:backgroundView];
+    }
+    
+    [[self cellBackgroundSwipeController] setBackgroundLayoutControl:_backgroundLayoutControl];
+}
+
+-(void)enableBackgroundSwipe:(BOOL)enableBackgroundSwipe swipeWidth:(CGFloat)swipeWidth
+{
+    if( enableBackgroundSwipe )
+    {
+        [self setCellBackgroundSwipeController:[[IXCellBackgroundSwipeController alloc] initWithCellView:self]];
+        [[self cellBackgroundSwipeController] setCellsStartingCenterXPosition:[self center].x];
+        [[self cellBackgroundSwipeController] setSwipeWidth:swipeWidth];
+        [[self cellBackgroundSwipeController] setLayoutControl:[self layoutControl]];
+        [[self cellBackgroundSwipeController] setBackgroundLayoutControl:[self backgroundLayoutControl]];
+        [[self cellBackgroundSwipeController] enablePanGesture:YES];
     }
     else
     {
-        [[[self layoutControl] contentView] removeGestureRecognizer:[self panGestureRecognizer]];
+        [self setCellBackgroundSwipeController:nil];
     }
-}
-
--(void)tapGestureRecognized:(UITapGestureRecognizer*)tapGesture
-{
-    [self resetCellPosition];
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    BOOL returnValue = NO;
-    if ([gestureRecognizer class] == [UIPanGestureRecognizer class])
-    {
-        CGPoint point = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self];
-        returnValue = ( fabsf(point.x) > fabsf(point.y) );
-    }
-    return returnValue;
-}
-
--(void)panGestureRecognized:(UIPanGestureRecognizer*)panRecognizer
-{
-    UIView* layoutControlsView = [[self layoutControl] contentView];
-    
-    CGPoint translatedPoint = [panRecognizer translationInView:layoutControlsView];
-    
-    if ([panRecognizer state] == UIGestureRecognizerStateBegan)
-    {
-        [self setStartXPosition:[[panRecognizer view] center].x];
-    }
-    
-    CGFloat halfOfCellsWidth = ([self frame].size.width/2);
-    CGFloat centerXOffsetByStartX = [self startXPosition] + translatedPoint.x;
-    
-    translatedPoint.y = [layoutControlsView center].y;
-    
-    if ( centerXOffsetByStartX > halfOfCellsWidth )
-    {
-        translatedPoint.x = halfOfCellsWidth;
-    }
-    else if ( centerXOffsetByStartX < (halfOfCellsWidth - [self swipeWidth]) )
-    {
-        translatedPoint.x = halfOfCellsWidth - [self swipeWidth];
-    }
-    else
-    {
-        translatedPoint.x = centerXOffsetByStartX;
-    }
-    
-    [[panRecognizer view] setCenter:translatedPoint];
-    
-    if ([panRecognizer state] == UIGestureRecognizerStateEnded || [panRecognizer state] == UIGestureRecognizerStateCancelled)
-    {
-        CGFloat velocityX = (0.2f * [panRecognizer velocityInView:layoutControlsView].x );
-        
-        CGFloat finalX = translatedPoint.x + velocityX;
-        
-        if (finalX < halfOfCellsWidth - ([self swipeWidth]/2) )
-        {
-            finalX = halfOfCellsWidth - [self swipeWidth];
-        }
-        else
-        {
-            finalX = halfOfCellsWidth;
-        }
-        
-        CGFloat animationDuration = (ABS(velocityX)*0.0002f)+0.2f;
-        
-        [[self tapGestureRecognizer] setEnabled:( finalX != [self cellsStartingCenterXPosition] )];
-        
-        [UIView animateWithDuration:animationDuration
-                         animations:^{
-                             [[panRecognizer view] setCenter:CGPointMake(finalX, [layoutControlsView center].y)];
-                         }];
-
-    }
-    
 }
 
 @end

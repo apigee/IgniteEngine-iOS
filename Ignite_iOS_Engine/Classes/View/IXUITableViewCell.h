@@ -8,20 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+#import "IXCellBasedControl.h"
+
 @class IXLayout;
 @class IXSandbox;
 
-@interface IXUITableViewCell : UITableViewCell
+@interface IXUITableViewCell : UITableViewCell <IXCellContainerDelegate>
+
+@property (nonatomic,strong,readonly) IXCellBackgroundSwipeController* cellBackgroundSwipeController;
 
 @property (nonatomic,assign) BOOL forceSize;
 @property (nonatomic,assign) CGSize forcedSize;
+
 @property (nonatomic,strong) IXSandbox* cellSandbox;
 @property (nonatomic,strong) IXLayout* layoutControl;
-
-@property (nonatomic,assign) CGFloat swipeWidth;
 @property (nonatomic,strong) IXLayout* backgroundLayoutControl;
 
--(void)resetCellPosition;
--(void)enablePanGesture:(BOOL)enableGesture;
+-(IXPropertyContainer*)layoutPropertyContainerForCell;
+-(void)enableBackgroundSwipe:(BOOL)enableBackgroundSwipe swipeWidth:(CGFloat)swipeWidth;
 
 @end

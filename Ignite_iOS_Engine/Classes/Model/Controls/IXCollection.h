@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
-#import "IXBaseControl.h"
+#import "IXCellBasedControl.h"
 
-@interface IXCollection : IXBaseControl
+@interface IXCollection : IXCellBasedControl
 
 @end
