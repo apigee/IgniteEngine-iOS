@@ -260,6 +260,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
                 [backgroundLayoutControl applySettings];
                 [[backgroundLayoutControl contentView] setFrame:layoutRect];
                 [backgroundLayoutControl layoutControl];
+                
+                [cell setBackgroundLayoutControl:backgroundLayoutControl];
             }
             else if( [[self subControlsDictionary][kIXBackgroundControls] count] > 0 )
             {
@@ -268,8 +270,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
                 [backgroundLayoutControl applySettings];
                 [[backgroundLayoutControl contentView] setFrame:layoutRect];
                 [backgroundLayoutControl layoutControl];
+                
                 [cell setBackgroundLayoutControl:backgroundLayoutControl];
-
             }
             [cell setAdjustsBackgroundAlphaWithSwipe:[self backgroundSwipeAdjustsBackgroundAlpha]];
             [cell enableBackgroundSwipe:( [cell backgroundLayoutControl] != nil ) swipeWidth:[self backgroundViewSwipeWidth]];
