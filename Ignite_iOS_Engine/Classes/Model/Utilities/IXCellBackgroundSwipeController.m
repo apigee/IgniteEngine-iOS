@@ -77,6 +77,8 @@
             [_tapGestureRecognizer setNumberOfTapsRequired:1];
             [_tapGestureRecognizer setEnabled:NO];
             [[[self layoutControl] contentView] addGestureRecognizer:[self tapGestureRecognizer]];
+            
+            [[_backgroundLayoutControl contentView] setAlpha:0];
         }
     }
     else
