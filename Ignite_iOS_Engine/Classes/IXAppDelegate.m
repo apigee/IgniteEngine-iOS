@@ -11,12 +11,12 @@
 #import "IXWindow.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
-#import "JASidePanelController.h"
 #import "IXLogger.h"
 #import "IXPropertyContainer.h"
 
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"
+#import "MMDrawerController.h"
 
 @implementation IXAppDelegate
 
@@ -25,7 +25,7 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeAlert)];
     
     [self setIxWindow:[[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
-    [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] rootViewController]];
+    [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] drawerController]];
     
     [[IXAppManager sharedAppManager] startApplication];
     

@@ -8,6 +8,7 @@
 
 #import "IXSandbox.h"
 
+#import "IXAppManager.h"
 #import "IXBaseObject.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
@@ -198,6 +199,11 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
 
 -(NSArray*)getAllControlsWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject
 {
+    return [self getAllControlsWithID:objectID withSelfObject:selfObject alreadySearchedSandboxes:nil];
+}
+
+-(NSArray*)getAllControlsWithID:(NSString*)objectID withSelfObject:(IXBaseObject *)selfObject alreadySearchedSandboxes:(NSArray*)searchedSandboxes
+{
     NSArray* returnArray = nil;
     if( [objectID length] > 0 )
     {
@@ -232,6 +238,33 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
             if( ![arrayOfControls count] )
             {
                 [arrayOfControls addObjectsFromArray:[[self containerControl] childrenWithID:objectID]];
+            }
+            if( ![arrayOfControls count] )
+            {
+                NSMutableArray* sandboxesToSkip = [NSMutableArray arrayWithArray:searchedSandboxes];
+                [sandboxesToSkip addObject:self];
+                
+                IXSandbox* currentViewControllerSandbox = [[[IXAppManager sharedAppManager] currentIXViewController] sandbox];
+                IXSandbox* leftDrawerSandbox = [[[IXAppManager sharedAppManager] leftDrawerViewController] sandbox];
+                IXSandbox* rightDrawerSandbox = [[[IXAppManager sharedAppManager] rightDrawerViewController] sandbox];
+                
+                if( currentViewControllerSandbox != nil && ![sandboxesToSkip containsObject:currentViewControllerSandbox] && [self containerControl] == [currentViewControllerSandbox containerControl] )
+                {
+                    [sandboxesToSkip addObject:currentViewControllerSandbox];
+                }
+                
+                if( currentViewControllerSandbox != nil && ![sandboxesToSkip containsObject:currentViewControllerSandbox] )
+                {
+                    [arrayOfControls addObjectsFromArray:[currentViewControllerSandbox getAllControlsWithID:objectID withSelfObject:nil alreadySearchedSandboxes:sandboxesToSkip]];
+                }
+                else if( leftDrawerSandbox != nil && ![sandboxesToSkip containsObject:leftDrawerSandbox] )
+                {
+                    [arrayOfControls addObjectsFromArray:[leftDrawerSandbox getAllControlsWithID:objectID withSelfObject:nil alreadySearchedSandboxes:sandboxesToSkip]];
+                }
+                else if( rightDrawerSandbox != nil && ![sandboxesToSkip containsObject:rightDrawerSandbox] )
+                {
+                    [arrayOfControls addObjectsFromArray:[rightDrawerSandbox getAllControlsWithID:objectID withSelfObject:nil alreadySearchedSandboxes:sandboxesToSkip]];
+                }
             }
             returnArray = arrayOfControls;
         }

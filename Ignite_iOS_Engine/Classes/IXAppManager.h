@@ -17,18 +17,21 @@
 @class JASidePanelController;
 @class Reachability;
 @class ApigeeClient;
+@class MMDrawerController;
 
 @interface IXAppManager : NSObject
 
 @property (nonatomic,assign) IXAppMode appMode;
 
-@property (nonatomic,strong) JASidePanelController* sidePanelController;
+@property (nonatomic,strong) MMDrawerController* drawerController;
 @property (nonatomic,strong) IXNavigationViewController* rootViewController;
-@property (nonatomic,strong) IXViewController* rightPanel;
-@property (nonatomic,strong) IXViewController* leftPanel;
+@property (nonatomic,strong) IXViewController* rightDrawerViewController;
+@property (nonatomic,strong) IXViewController* leftDrawerViewController;
 
 @property (nonatomic,copy) NSString* appConfigPath;
 @property (nonatomic,copy) NSString* appDefaultViewPath;
+@property (nonatomic,copy) NSString* appLeftDrawerViewPath;
+@property (nonatomic,copy) NSString* appRightDrawerViewPath;
 @property (nonatomic,copy) NSString* appDefaultViewRootPath;
 
 @property (nonatomic,strong) IXPropertyContainer* deviceProperties;

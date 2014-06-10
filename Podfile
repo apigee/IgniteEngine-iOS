@@ -2,7 +2,6 @@ platform :ios, '7.0'
 
 pod 'ALMoviePlayerController', '~> 0.3.0'
 pod 'ColorUtils', '~> 1.1.1'
-pod 'JASidePanels', '~> 1.3.2'
 pod 'RestKit', '~> 0.20.0'
 pod 'SDWebImage', :head
 pod 'SVPulsingAnnotationView', '~> 0.3.0'
@@ -20,3 +19,4 @@ pod 'AFHTTPRequestOperationLogger', '~> 1.0'
 pod 'ApigeeiOSSDK', '~> 2.0'
 pod 'APParallaxHeader', :head
 pod 'RaptureXML', '~> 1.0'
+pod 'MMDrawerController', '~> 0.5.6'

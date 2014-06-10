@@ -12,6 +12,8 @@
 #import "DDLog.h"
 #import "ApigeeLogger.h"
 
+#define IX_STATIC_CONST_STRING static NSString* const
+
 #define IX_dispatch_main_sync_safe(block)\
     if ([NSThread isMainThread])\
     {\

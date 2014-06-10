@@ -8,6 +8,7 @@
 
 #import "IXAppManager.h"
 
+#import "MMDrawerController.h"
 #import "Reachability.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
@@ -48,8 +49,13 @@
         
         _appProperties = [[IXPropertyContainer alloc] init];
         _deviceProperties = [[IXPropertyContainer alloc] init];
-
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
+        _drawerController = [[MMDrawerController alloc] initWithCenterViewController:_rootViewController
+                                                            leftDrawerViewController:nil
+                                                           rightDrawerViewController:nil];
+        [_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
+        [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeBezelPanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+
         _reachabilty = [Reachability reachabilityForInternetConnection];
     }
     return self;
@@ -224,17 +230,37 @@
     }
     
     NSString* defaultViewProperty = [[self appProperties] getStringPropertyValue:@"default_view" defaultValue:nil];
+    NSString* leftDrawerViewProperty = [[self appProperties] getStringPropertyValue:@"left_drawer_view" defaultValue:nil];
+    NSString* rightDrawerViewProperty = [[self appProperties] getStringPropertyValue:@"right_drawer_view" defaultValue:nil];
     if( [IXPathHandler pathIsLocal:defaultViewProperty] )
     {
         [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
         [self setAppDefaultViewRootPath:[[NSBundle mainBundle] pathForResource:@"assets" ofType:nil]];
+        if( [leftDrawerViewProperty length] )
+        {
+            [self setAppLeftDrawerViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",leftDrawerViewProperty] ofType:nil]];
+        }
+        else
+        {
+            [self setAppLeftDrawerViewPath:nil];
+        }
+        if( [rightDrawerViewProperty length] )
+        {
+            [self setAppRightDrawerViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",rightDrawerViewProperty] ofType:nil]];
+        }
+        else
+        {
+            [self setAppRightDrawerViewPath:nil];
+        }
     }
     else
     {
         [self setAppDefaultViewPath:defaultViewProperty];
-        
         NSURL* url = [NSURL URLWithString:defaultViewProperty];
         [self setAppDefaultViewRootPath:[[url URLByDeletingLastPathComponent] absoluteString]];
+
+        [self setAppLeftDrawerViewPath:leftDrawerViewProperty];
+        [self setAppRightDrawerViewPath:rightDrawerViewProperty];
     }
 }
 
@@ -257,6 +283,45 @@
                                            [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
                                        }
     }];
+    
+    if( [[self appLeftDrawerViewPath] length] > 0 ) {
+        
+        [IXViewController viewControllerWithPathToJSON:[self appLeftDrawerViewPath]
+                                             loadAsync:NO
+                                       completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+                                           
+                                           if( didSucceed && viewController && error == nil )
+                                           {
+                                               [self setLeftDrawerViewController:viewController];
+                                               [[self drawerController] setLeftDrawerViewController:viewController];
+                                               [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
+                                               [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
+                                           }
+                                           else
+                                           {
+                                               [self showJSONAlertWithName:@"Left Drawer View" error:error];
+                                           }
+                                       }];
+    }
+    if( [[self appRightDrawerViewPath] length] > 0 ) {
+        
+        [IXViewController viewControllerWithPathToJSON:[self appLeftDrawerViewPath]
+                                             loadAsync:NO
+                                       completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+                                           
+                                           if( didSucceed && viewController && error == nil )
+                                           {
+                                               [self setRightDrawerViewController:viewController];
+                                               [[self drawerController] setRightDrawerViewController:viewController];
+                                               [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
+                                               [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];
+                                           }
+                                           else
+                                           {
+                                               [self showJSONAlertWithName:@"Right Drawer View" error:error];
+                                           }
+                                       }];
+    }
 }
 
 +(UIInterfaceOrientation)currentInterfaceOrientation

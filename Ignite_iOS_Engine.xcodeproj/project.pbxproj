@@ -26,7 +26,6 @@
 		13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4F183ED8F200C29157 /* IXMediaPlayer.m */; };
 		13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F51183ED8F200C29157 /* IXMediaSource.m */; };
 		13033FA2183ED8F200C29157 /* IXMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F53183ED8F200C29157 /* IXMessage.m */; };
-		13033FA3183ED8F200C29157 /* IXPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F55183ED8F200C29157 /* IXPanel.m */; };
 		13033FA4183ED8F200C29157 /* IXScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F57183ED8F200C29157 /* IXScanner.m */; };
 		13033FA5183ED8F200C29157 /* IXSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F59183ED8F200C29157 /* IXSocial.m */; };
 		13033FA6183ED8F200C29157 /* IXTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5B183ED8F200C29157 /* IXTableView.m */; };
@@ -105,6 +104,7 @@
 		63AEA731193EA6D50088F480 /* IXXMLDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA730193EA6D50088F480 /* IXXMLDataProvider.m */; };
 		63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */; };
 		63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */; };
+		63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */; };
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
@@ -180,8 +180,6 @@
 		13033F51183ED8F200C29157 /* IXMediaSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMediaSource.m; sourceTree = "<group>"; };
 		13033F52183ED8F200C29157 /* IXMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMessage.h; sourceTree = "<group>"; };
 		13033F53183ED8F200C29157 /* IXMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMessage.m; sourceTree = "<group>"; };
-		13033F54183ED8F200C29157 /* IXPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPanel.h; sourceTree = "<group>"; };
-		13033F55183ED8F200C29157 /* IXPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPanel.m; sourceTree = "<group>"; };
 		13033F56183ED8F200C29157 /* IXScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXScanner.h; sourceTree = "<group>"; };
 		13033F57183ED8F200C29157 /* IXScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXScanner.m; sourceTree = "<group>"; };
 		13033F58183ED8F200C29157 /* IXSocial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSocial.h; sourceTree = "<group>"; };
@@ -318,6 +316,8 @@
 		63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+IXAdditions.m"; sourceTree = "<group>"; };
 		63B05B8D19144BAC00D0B4FC /* IXCustomNavPushPopTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustomNavPushPopTransition.h; sourceTree = "<group>"; };
 		63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCustomNavPushPopTransition.m; sourceTree = "<group>"; };
+		63B0E9AB19476D37002BF48E /* IXShortCodeFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXShortCodeFunction.h; sourceTree = "<group>"; };
+		63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXShortCodeFunction.m; sourceTree = "<group>"; };
 		63C0A7AF18CFDAB700F72064 /* IXNetworkShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNetworkShortCode.h; sourceTree = "<group>"; };
 		63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNetworkShortCode.m; sourceTree = "<group>"; };
 		63C0A7B218CFDB9600F72064 /* IXDeviceShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceShortCode.h; sourceTree = "<group>"; };
@@ -530,8 +530,6 @@
 				13033F51183ED8F200C29157 /* IXMediaSource.m */,
 				13033F52183ED8F200C29157 /* IXMessage.h */,
 				13033F53183ED8F200C29157 /* IXMessage.m */,
-				13033F54183ED8F200C29157 /* IXPanel.h */,
-				13033F55183ED8F200C29157 /* IXPanel.m */,
 				13033F56183ED8F200C29157 /* IXScanner.h */,
 				13033F57183ED8F200C29157 /* IXScanner.m */,
 				63259DC018CA52EF00DDECB4 /* IXSignature.h */,
@@ -596,6 +594,8 @@
 		13033F76183ED8F200C29157 /* ShortCodes */ = {
 			isa = PBXGroup;
 			children = (
+				63B0E9AB19476D37002BF48E /* IXShortCodeFunction.h */,
+				63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */,
 				13033F79183ED8F200C29157 /* IXBaseShortCode.h */,
 				13033F7A183ED8F200C29157 /* IXBaseShortCode.m */,
 				13033F77183ED8F200C29157 /* IXAppShortCode.h */,
@@ -1039,7 +1039,6 @@
 				6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */,
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				CA1279E818D52B35007EEC5A /* UIButton+IXAdditions.m in Sources */,
-				13033FA3183ED8F200C29157 /* IXPanel.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
 				CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */,
 				63A10B3018AAF9D900130BEA /* IXSound.m in Sources */,
@@ -1091,6 +1090,7 @@
 				63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */,
 				13033F9E183ED8F200C29157 /* IXLayout.m in Sources */,
 				63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */,
+				63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,9 @@
 
 @interface IXNavigationViewController : UINavigationController
 
+@property (nonatomic,strong,readonly) UIScreenEdgePanGestureRecognizer* rightScreenPanGestureRecognizer;
+@property (nonatomic,strong,readonly) UIScreenEdgePanGestureRecognizer* leftScreenPanGestureRecognizer;
+
 -(IXViewController*)viewControllerWithID:(NSString*)viewControllerID;
 
 @end

@@ -17,6 +17,8 @@
 #import "IXCustomNavPushPopTransition.h"
 #import "IXLayout.h"
 
+#import "MMDrawerController.h"
+
 // IXNavigateAction Properties
 static NSString* const kIXTo = @"to";
 static NSString* const kIXNavStackType = @"nav_stack_type";
@@ -105,11 +107,13 @@ typedef void(^IXNavAnimationCompletionBlock)();
     sIXIsAttemptingNavigation = NO;
     if( didSucceed )
     {
-        IXSandbox* appSandbox = [[IXAppManager sharedAppManager] applicationSandbox];
-        [appSandbox setViewController:[[IXAppManager sharedAppManager] currentIXViewController]];
-        [appSandbox setContainerControl:[[[IXAppManager sharedAppManager] currentIXViewController] containerControl]];
-        
-        [self actionDidFinishWithEvents:@[kIX_SUCCESS]];
+        [[[IXAppManager sharedAppManager] drawerController] closeDrawerAnimated:YES completion:^(BOOL finished) {
+            IXSandbox* appSandbox = [[IXAppManager sharedAppManager] applicationSandbox];
+            [appSandbox setViewController:[[IXAppManager sharedAppManager] currentIXViewController]];
+            [appSandbox setContainerControl:[[[IXAppManager sharedAppManager] currentIXViewController] containerControl]];
+            
+            [self actionDidFinishWithEvents:@[kIX_SUCCESS]];
+        }];
     }
     else
     {

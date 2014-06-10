@@ -8,27 +8,11 @@
 
 #import "IXBaseShortCode.h"
 #import "IXProperty.h"
-#import "IXBaseObject.h"
 #import "IXEvalShortCode.h"
 #import "IXGetShortCode.h"
+#import "IXShortCodeFunction.h"
 #import "NSString+IXAdditions.h"
 #import "IXLogger.h"
-
-static NSString* const kIXIsEmpty = @"is_empty";
-static NSString* const kIXIsNotEmpty = @"is_not_empty";
-static NSString* const kIXIsNil = @"is_nil";
-static NSString* const kIXIsNotNil = @"is_not_nil";
-static NSString* const kIXIsNilOrEmpty = @"is_nil_or_empty";
-static NSString* const kIXToUppercase = @"to_uppercase";
-static NSString* const kIXToLowercase = @"to_lowercase";
-static NSString* const kIXCapitalize = @"capitalize";
-static NSString* const kIXLength = @"length";
-static NSString* const kIXTruncate = @"truncate";
-static NSString* const kIXMonogram = @"monogram";
-static NSString* const kIXMoment = @"moment";
-static NSString* const kIXToBase64 = @"to_base64";
-static NSString* const kIXFromBase64 = @"from_base64";
-static NSString* const kIXCurrency = @"currency";
 
 // NSCoding Key Constants
 static NSString* const kIXRawValueNSCodingKey = @"rawValue";
@@ -37,87 +21,6 @@ static NSString* const kIXMethodNameNSCodingKey = @"methodName";
 static NSString* const kIXFunctionNameNSCodingKey = @"functionName";
 static NSString* const kIXParametersNSCodingKey = @"parameters";
 static NSString* const kIXRangeInPropertiesTextNSCodingKey = @"rangeInPropertiesText";
-
-//Ensure you also set the function in the if/else list at the bottom of this class
-
-static IXBaseShortCodeFunction const kIXIsEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:[stringToModify isEqualToString:kIX_EMPTY_STRING]];
-};
-static IXBaseShortCodeFunction const kIXIsNotEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    BOOL isEmptyAndNotNil = false;
-    if (stringToModify != nil && ![stringToModify isEqualToString:kIX_EMPTY_STRING])
-         isEmptyAndNotNil = true;
-    return [NSString ix_stringFromBOOL:isEmptyAndNotNil];
-};
-static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:(stringToModify == nil)];
-};
-static IXBaseShortCodeFunction const kIXIsNotNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:(stringToModify != nil)];
-};
-static IXBaseShortCodeFunction const kIXIsNilOrEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    BOOL isEmptyOrNil = false;
-    if (stringToModify == nil || [stringToModify isEqualToString:kIX_EMPTY_STRING])
-        isEmptyOrNil = true;
-    return [NSString ix_stringFromBOOL:isEmptyOrNil];
-};
-static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [stringToModify uppercaseString];
-};
-static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [stringToModify lowercaseString];
-};
-static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [stringToModify capitalizedString];
-};
-static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
-    return [NSString stringWithFormat:@"%lu", (unsigned long)[stringToEvaluate length]];
-};
-static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[parameters.firstObject getPropertyValue] intValue]] : stringToModify;
-};
-static IXBaseShortCodeFunction const kIXMonogramFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return ([parameters firstObject] != nil) ? [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:[[parameters.firstObject getPropertyValue] intValue]] : [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:0];
-};
-static IXBaseShortCodeFunction const kIXMomentFunction = ^NSString*(NSString* dateToFormat,NSArray* parameters)
-{
-    if ([parameters count] == 2)
-    {
-        return [NSString ix_formatDateString:dateToFormat fromDateFormat:[[parameters objectAtIndex:0] originalString] toDateFormat:[[parameters objectAtIndex:1] originalString]];
-    }
-    else if ([parameters count] == 1)
-    {
-        return [NSString ix_formatDateString:dateToFormat fromDateFormat:nil toDateFormat:[[parameters objectAtIndex:0] originalString]];
-    }
-    else
-    {
-        return dateToFormat;
-    }
-};
-
-static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
-    return [NSString ix_toBase64String:stringToEncode];
-};
-static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* stringToDecode,NSArray* parameters){
-    return [NSString ix_fromBase64String:stringToDecode];
-};
-static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters)
-{
-    static NSNumberFormatter *formatter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    });
-    
-    NSDecimalNumber* amount = [NSDecimalNumber zero];
-    if( [stringToModify length] > 0 )
-    {
-        amount = [[NSDecimalNumber alloc] initWithString:stringToModify];
-    }
-    
-    return [formatter stringFromNumber:amount];
-};
 
 NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textCheckingResult)
 {
@@ -305,46 +208,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
 -(void)setFunctionName:(NSString *)functionName
 {
     _functionName = [functionName copy];
-    
-    IXBaseShortCodeFunction shortCodeFunction = nil;
-    if( [_functionName length] > 0 )
-    {
-        @try {
-            if( [functionName isEqualToString:kIXIsEmpty] ){
-                shortCodeFunction = kIXIsEmptyFunction;
-            } else if( [functionName isEqualToString:kIXIsNotEmpty] ) {
-                shortCodeFunction = kIXIsNotEmptyFunction;
-            } else if( [functionName isEqualToString:kIXIsNil] ) {
-                shortCodeFunction = kIXIsNilFunction;
-            } else if( [functionName isEqualToString:kIXIsNotNil] ) {
-                shortCodeFunction = kIXIsNotNilFunction;
-            } else if( [functionName isEqualToString:kIXIsNilOrEmpty] ) {
-                shortCodeFunction = kIXIsNilOrEmptyFunction;
-            } else if( [functionName isEqualToString:kIXLength] ) {
-                shortCodeFunction = kIXLengthFunction;
-            } else if( [functionName isEqualToString:kIXTruncate] ) {
-                shortCodeFunction = kIXTruncateFunction;
-            } else if( [functionName isEqualToString:kIXMonogram] ) {
-                shortCodeFunction = kIXMonogramFunction;
-            } else if( [functionName isEqualToString:kIXToLowercase] ){
-                shortCodeFunction = kIXToLowerCaseFunction;
-            } else if( [functionName isEqualToString:kIXToUppercase] ) {
-                shortCodeFunction = kIXToUppercaseFunction;
-            } else if( [functionName isEqualToString:kIXCapitalize] ) {
-                shortCodeFunction = kIXCapitalizeFunction;
-            } else if( [functionName isEqualToString:kIXMoment] ) {
-                shortCodeFunction = kIXMomentFunction;
-            } else if( [functionName isEqualToString:kIXToBase64] ) {
-                shortCodeFunction = kIXToBase64Function;
-            } else if( [functionName isEqualToString:kIXFromBase64] ) {
-                shortCodeFunction = kIXFromBase64Function;
-            } else if( [functionName isEqualToString:kIXCurrency] ) {
-                shortCodeFunction = kIXCurrencyFunction;
-            }
-            [self setShortCodeFunction:shortCodeFunction];
-        }
-        @catch (NSException *exception) {
-            IX_LOG_DEBUG(@"ERROR: Unknown short-code method: %@", exception);
+    _shortCodeFunction = nil;
+    if( [_functionName length] > 0 ) {
+        
+        _shortCodeFunction = [IXShortCodeFunction shortCodeFunctionWithName:_functionName];
+        if( _shortCodeFunction == nil ) {
+            IX_LOG_DEBUG(@"ERROR: Unknown short-code function with name: %@", _functionName);
         }
     }
 }
