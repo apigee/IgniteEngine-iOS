@@ -24,7 +24,7 @@
 
 IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                 -> String value capitalized
 IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency]]                   -> String value in currency form
-IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]          -> Removes all session attributes from memory
+IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]          -> Removes all session attributes from memory. Returns nil.
 IX_STATIC_CONST_STRING kIXFromBase64 = @"from_base64";          // [[?:from_base64]]                -> Base64 value to string
 IX_STATIC_CONST_STRING kIXIsEmpty = @"is_empty";                // [[?:is_empty]]                   -> True if the string is empty (aka "")
 IX_STATIC_CONST_STRING kIXIsNil = @"is_nil";                    // [[?:is_nil]]                     -> True if the string is nil
@@ -32,7 +32,7 @@ IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"is_nil_or_empty";    // [[?:is_nil_or
 IX_STATIC_CONST_STRING kIXIsNotEmpty = @"is_not_empty";         // [[?:is_not_empty]]               -> True if the string is not empty
 IX_STATIC_CONST_STRING kIXIsNotNil = @"is_not_nil";             // [[?:is_not_nil]]                 -> True if the string is not nil
 IX_STATIC_CONST_STRING kIXLength = @"length";                   // [[?:length]]                     -> Length of the attributes string
-IX_STATIC_CONST_STRING kIXMoment = @"moment";                   // [[?:moment(toDateFormat)]]       -> True if the string is nil (can have 2 params)
+IX_STATIC_CONST_STRING kIXMoment = @"moment";                   // [[?:moment(toDateFormat)]]       -> String as date with the given format (can have 2 params)
 IX_STATIC_CONST_STRING kIXMonogram = @"monogram";               // [[?:monogram]]                   -> String monogram value
 IX_STATIC_CONST_STRING kIXNow = @"now";                         // [[app:now]]                      -> Current date as string (can specify dateFormat)
 IX_STATIC_CONST_STRING kIXRandomNumber = @"random_number";      // [[app:random_number(upBounds)]]  -> Random number generator (can specify lower bounds)
