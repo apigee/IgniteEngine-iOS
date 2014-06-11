@@ -61,14 +61,14 @@ static NSString* const kIXToggleDrawerRight = @"toggleDrawer.right";
             }
             else if([functionName isEqualToString:kIXToggleDrawerLeft] )
             {
-                if( [[IXAppManager sharedAppManager] leftDrawerViewController] )
+                if( [[[IXAppManager sharedAppManager] drawerController] leftDrawerViewController] )
                 {
                     [[[IXAppManager sharedAppManager] drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
                 }
             }
             else if([functionName isEqualToString:kIXToggleDrawerRight] )
             {
-                if( [[IXAppManager sharedAppManager] rightDrawerViewController] )
+                if( [[[IXAppManager sharedAppManager] drawerController] rightDrawerViewController] )
                 {
                     [[[IXAppManager sharedAppManager] drawerController] toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
                 }

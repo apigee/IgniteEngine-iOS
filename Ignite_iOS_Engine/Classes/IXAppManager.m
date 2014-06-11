@@ -34,7 +34,27 @@
 
 @interface IXAppManager ()
 
-@property (nonatomic,strong) UIWebView* webViewForJS;
+@property (nonatomic,assign) IXAppMode appMode;
+@property (nonatomic,assign) BOOL layoutDebuggingEnabled;
+@property (nonatomic,strong) IXSandbox *applicationSandbox;
+
+@property (nonatomic,strong) MMDrawerController *drawerController;
+@property (nonatomic,strong) IXNavigationViewController *rootViewController;
+
+@property (nonatomic,copy) NSString *pushToken;
+@property (nonatomic,copy) NSString *appIndexFilePath;
+@property (nonatomic,copy) NSString *appDefaultViewPath;
+@property (nonatomic,copy) NSString *appLeftDrawerViewPath;
+@property (nonatomic,copy) NSString *appRightDrawerViewPath;
+
+@property (nonatomic,strong) IXPropertyContainer *deviceProperties;
+@property (nonatomic,strong) IXPropertyContainer *appProperties;
+@property (nonatomic,strong) IXPropertyContainer *sessionProperties;
+
+@property (nonatomic,strong) Reachability *reachabilty;
+@property (nonatomic,strong) ApigeeClient *apigeeClient;
+
+@property (nonatomic,strong) UIWebView *webViewForJS;
 
 @end
 
@@ -45,14 +65,16 @@
     self = [super init];
     if( self )
     {
-        _appConfigPath = [[NSBundle mainBundle] pathForResource:@"assets/_index" ofType:@"json"];
+        _appIndexFilePath = [[NSBundle mainBundle] pathForResource:@"assets/_index" ofType:@"json"];
         
         _appProperties = [[IXPropertyContainer alloc] init];
         _deviceProperties = [[IXPropertyContainer alloc] init];
+        
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
         _drawerController = [[MMDrawerController alloc] initWithCenterViewController:_rootViewController
                                                             leftDrawerViewController:nil
                                                            rightDrawerViewController:nil];
+        
         [_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
         [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeBezelPanningCenterView|MMCloseDrawerGestureModeTapCenterView];
 
@@ -61,7 +83,7 @@
     return self;
 }
 
-+(IXAppManager*)sharedAppManager
++(instancetype)sharedAppManager
 {
     static IXAppManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -123,19 +145,24 @@
 
 -(void)startApplication
 {
+    [[self drawerController] setLeftDrawerViewController:nil];
+    [[self drawerController] setRightDrawerViewController:nil];
+    [self setAppLeftDrawerViewPath:nil];
+    [self setAppRightDrawerViewPath:nil];
+
     [self setSessionProperties:[[IXPropertyContainer alloc] init]];
 
     [self setWebViewForJS:[[UIWebView alloc] initWithFrame:CGRectZero]];
-    [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appConfigPath] stringByDeletingLastPathComponent]]];
+    [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appIndexFilePath] stringByDeletingLastPathComponent]]];
     
-    [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:[self appConfigPath]
+    [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:[self appIndexFilePath]
                                                  asynch:NO
                                             shouldCache:NO
                                         completionBlock:^(id jsonObject, NSString* stringValue, NSError *error) {
                                             
                                             if( jsonObject == nil )
                                             {
-                                                [self showJSONAlertWithName:[self appConfigPath] error:error];
+                                                [self showJSONAlertWithName:[self appIndexFilePath] error:error];
                                             }
                                             else
                                             {
@@ -235,30 +262,18 @@
     if( [IXPathHandler pathIsLocal:defaultViewProperty] )
     {
         [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
-        [self setAppDefaultViewRootPath:[[NSBundle mainBundle] pathForResource:@"assets" ofType:nil]];
         if( [leftDrawerViewProperty length] )
         {
             [self setAppLeftDrawerViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",leftDrawerViewProperty] ofType:nil]];
-        }
-        else
-        {
-            [self setAppLeftDrawerViewPath:nil];
         }
         if( [rightDrawerViewProperty length] )
         {
             [self setAppRightDrawerViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",rightDrawerViewProperty] ofType:nil]];
         }
-        else
-        {
-            [self setAppRightDrawerViewPath:nil];
-        }
     }
     else
     {
         [self setAppDefaultViewPath:defaultViewProperty];
-        NSURL* url = [NSURL URLWithString:defaultViewProperty];
-        [self setAppDefaultViewRootPath:[[url URLByDeletingLastPathComponent] absoluteString]];
-
         [self setAppLeftDrawerViewPath:leftDrawerViewProperty];
         [self setAppRightDrawerViewPath:rightDrawerViewProperty];
     }
@@ -292,7 +307,6 @@
                                            
                                            if( didSucceed && viewController && error == nil )
                                            {
-                                               [self setLeftDrawerViewController:viewController];
                                                [[self drawerController] setLeftDrawerViewController:viewController];
                                                [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
@@ -303,6 +317,7 @@
                                            }
                                        }];
     }
+    
     if( [[self appRightDrawerViewPath] length] > 0 ) {
         
         [IXViewController viewControllerWithPathToJSON:[self appLeftDrawerViewPath]
@@ -311,7 +326,6 @@
                                            
                                            if( didSucceed && viewController && error == nil )
                                            {
-                                               [self setRightDrawerViewController:viewController];
                                                [[self drawerController] setRightDrawerViewController:viewController];
                                                [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];

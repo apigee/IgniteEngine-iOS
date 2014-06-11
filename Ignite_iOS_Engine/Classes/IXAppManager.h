@@ -7,62 +7,95 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IXEnums.h"
 
-@class IXBaseControl;
+typedef enum {
+    IXDebugMode,
+    IXReleaseMode
+} IXAppMode;
+
+@class IXNavigationViewController;
+@class IXPropertyContainer;
 @class IXSandbox;
 @class IXViewController;
-@class IXPropertyContainer;
-@class IXNavigationViewController;
-@class JASidePanelController;
-@class Reachability;
+
 @class ApigeeClient;
 @class MMDrawerController;
+@class Reachability;
 
 @interface IXAppManager : NSObject
 
-@property (nonatomic,assign) IXAppMode appMode;
+@property (nonatomic,assign,readonly) IXAppMode appMode;
+@property (nonatomic,assign,readonly,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
+@property (nonatomic,strong,readonly) IXSandbox *applicationSandbox;
 
-@property (nonatomic,strong) MMDrawerController* drawerController;
-@property (nonatomic,strong) IXNavigationViewController* rootViewController;
-@property (nonatomic,strong) IXViewController* rightDrawerViewController;
-@property (nonatomic,strong) IXViewController* leftDrawerViewController;
+@property (nonatomic,strong,readonly) MMDrawerController *drawerController;
+@property (nonatomic,strong,readonly) IXNavigationViewController *rootViewController;
+@property (nonatomic,assign,readonly) IXViewController* currentIXViewController;
 
-@property (nonatomic,copy) NSString* appConfigPath;
-@property (nonatomic,copy) NSString* appDefaultViewPath;
-@property (nonatomic,copy) NSString* appLeftDrawerViewPath;
-@property (nonatomic,copy) NSString* appRightDrawerViewPath;
-@property (nonatomic,copy) NSString* appDefaultViewRootPath;
+@property (nonatomic,copy,readonly) NSString *pushToken;
+@property (nonatomic,copy,readonly) NSString *appDefaultViewPath;
+@property (nonatomic,copy,readonly) NSString *appLeftDrawerViewPath;
+@property (nonatomic,copy,readonly) NSString *appRightDrawerViewPath;
 
-@property (nonatomic,strong) IXPropertyContainer* deviceProperties;
-@property (nonatomic,strong) IXPropertyContainer* appProperties;
-@property (nonatomic,strong) IXPropertyContainer* sessionProperties;
+@property (nonatomic,strong,readonly) IXPropertyContainer *deviceProperties;
+@property (nonatomic,strong,readonly) IXPropertyContainer *appProperties;
+@property (nonatomic,strong,readonly) IXPropertyContainer *sessionProperties;
 
-@property (nonatomic,copy) NSString* appID;
-@property (nonatomic,copy) NSString* pushToken;
-@property (nonatomic,copy) NSString* bundleID;
-@property (nonatomic,copy) NSString* versionNumberMajor;
-@property (nonatomic,copy) NSString* versionNumberMinor;
+@property (nonatomic,strong,readonly) Reachability *reachabilty;
+@property (nonatomic,strong,readonly) ApigeeClient *apigeeClient;
 
-@property (nonatomic,strong) IXSandbox* applicationSandbox;
-@property (nonatomic,strong) Reachability* reachabilty;
+/**
+ *  The singleton application manager which manages the entire IX application
+ *
+ *  @return The singleton instance of IXAppManager
+ */
++(instancetype)sharedAppManager;
 
-@property (nonatomic,strong) ApigeeClient* apigeeClient;
-
-@property (nonatomic,assign,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
-
-+(IXAppManager*)sharedAppManager;
-
+/**
+ *  Starts the application.
+ */
 -(void)startApplication;
+
+/**
+ *  Applies the appProperties instance variable.
+ */
+-(void)applyAppProperties;
+
+/**
+ *  Tells the manager when that the application has registered a device token.
+ *  This method should be called from application:didRegisterForRemoteNotificationsWithDeviceToken: in your application delegate.
+ *
+ *  @param deviceToken The applications remote notification device token.
+ */
 -(void)appDidRegisterRemoteNotificationDeviceToken:(NSData *)deviceToken;
+
+/**
+ *  Tells the manager that a remote notification has been recieved.
+ *  This method should be called from application:didReceiveRemoteNotification: in your application delegate.
+ *
+ *  @param userInfo The remote notification's user info dictionary.
+ */
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo;
 
--(IXViewController*)currentIXViewController;
-
--(void)applyAppProperties;
+/**
+ *  Stores the current sessionProperties object onto the disk for retrieval when the app starts again.
+ */
 -(void)storeSessionProperties;
 
-+(UIInterfaceOrientation)currentInterfaceOrientation;
+/**
+ *  Evaluates the given javascript.
+ *
+ *  @param javascript The javascript to be evaluated.
+ *
+ *  @return The string result from evaluating the javascript.
+ */
 -(NSString*)evaluateJavascript:(NSString*)javascript;
+
+/**
+ *  Convenience method used to get the current interface orientation of the keyWindow's rootViewController.
+ *
+ *  @return The current interface orientation.
+ */
++(UIInterfaceOrientation)currentInterfaceOrientation;
 
 @end

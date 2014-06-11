@@ -17,6 +17,8 @@
 #import "IXCustom.h"
 #import "IXViewController.h"
 
+#import "MMDrawerController.h"
+
 static NSString* const kIXSelfControlRef = @"$self";
 static NSString* const kIXViewControlRef = @"$view";
 static NSString* const kIXCustomContainerControlRef = @"$custom";
@@ -245,8 +247,8 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
                 [sandboxesToSkip addObject:self];
                 
                 IXSandbox* currentViewControllerSandbox = [[[IXAppManager sharedAppManager] currentIXViewController] sandbox];
-                IXSandbox* leftDrawerSandbox = [[[IXAppManager sharedAppManager] leftDrawerViewController] sandbox];
-                IXSandbox* rightDrawerSandbox = [[[IXAppManager sharedAppManager] rightDrawerViewController] sandbox];
+                IXSandbox* leftDrawerSandbox = [(IXViewController*)[[[IXAppManager sharedAppManager] drawerController] leftDrawerViewController] sandbox];
+                IXSandbox* rightDrawerSandbox = [(IXViewController*)[[[IXAppManager sharedAppManager] drawerController] rightDrawerViewController] sandbox];
                 
                 if( currentViewControllerSandbox != nil && ![sandboxesToSkip containsObject:currentViewControllerSandbox] && [self containerControl] == [currentViewControllerSandbox containerControl] )
                 {

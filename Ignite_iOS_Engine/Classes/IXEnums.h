@@ -15,12 +15,6 @@ typedef enum
 
 typedef enum
 {
-    IXDebugMode,
-    IXReleaseMode
-} IXAppMode;
-
-typedef enum
-{
     IXLayoutHorizontalAlignmentRight,
     IXLayoutHorizontalAlignmentCenter,
     IXLayoutHorizontalAlignmentLeft
