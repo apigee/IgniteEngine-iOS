@@ -32,7 +32,6 @@
 #import "IXBaseDataProvider.h"
 
 #import "SVPulsingAnnotationView.h"
-#import "SVAnnotation.h"
 
 // IXMap Attributes
 static NSString* const kIXDataProviderID = @"dataprovider_id";
@@ -72,16 +71,6 @@ static NSString* const kIXTouchUp = @"touch_up";
 // Reuseable Annotation Ident
 static NSString* const kIXMapPinAnnotationIdentifier = @"kIXMapPinAnnotationIdentifier";
 static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotationIdentifier";
-
-@implementation SVAnnotation
-
-- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate {
-    if(self = [super init])
-        self.coordinate = coordinate;
-    return self;
-}
-
-@end
 
 @interface IXMapAnnotation : NSObject <MKAnnotation>
 

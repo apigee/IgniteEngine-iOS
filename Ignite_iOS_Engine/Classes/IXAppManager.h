@@ -73,6 +73,8 @@ typedef enum {
  *  Tells the manager that a remote notification has been recieved.
  *  This method should be called from application:didReceiveRemoteNotification: in your application delegate.
  *
+ *  Example Push Notificaiton String = NSString* pushNotification = @"{\"apple\":{\"aps\":{\"alert\":\"[apns-test] Some Text!\",\"sound\":\"chime\",\"badge\":0},\"action\":[\"navigate\",{\"attributes\":{\"to\":\"device://assets/examples/IXButtonControlExample.json\"}}]}}";
+ *
  *  @param userInfo The remote notification's user info dictionary.
  */
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo;

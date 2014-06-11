@@ -23,4 +23,6 @@
                    basePath:(NSString *)basePath
                    rootPath:(NSString *)rootPath;
 
++(NSString*)localPathWithRelativeFilePath:(NSString *)filePath;
+
 @end

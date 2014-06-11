@@ -126,5 +126,14 @@ static NSString* const kIXAssetsLibraryPrefix = @"assets-library://";
     return normalizedURL;
 }
 
++(NSString*)localPathWithRelativeFilePath:(NSString *)filePath
+{
+    NSString* localPath = nil;
+    if( [filePath length] > 0 )
+    {
+        localPath = [[NSBundle mainBundle] pathForResource:filePath ofType:nil];
+    }
+    return localPath;
+}
 
 @end

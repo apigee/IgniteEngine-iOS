@@ -23,9 +23,7 @@
 
 // IXImage Properties
 static NSString* const kIXImagesDefault = @"images.default";
-static NSString* const kIXImagesTouch = @"images.touch";
 static NSString* const kIXImagesDefaultTintColor = @"images.default.tintColor";
-static NSString* const kIXImagesTouchTintColor = @"images.touch.tintColor";
 static NSString* const kIXImagesHeightMax = @"images.height.max";
 static NSString* const kIXImagesWidthMax = @"images.width.max";
 static NSString* const kIXGIFDuration = @"gif_duration";
@@ -36,7 +34,6 @@ static NSString* const kIXImageBinary = @"image.binary";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
 static NSString* const kIXImagesDefaultResize = @"images.default.resize";
-static NSString* const kIXImagesTouchResize = @"images.touch.resize";
 
 // IXImage Read-Only Properties
 static NSString* const kIXIsAnimating = @"is_animating";
@@ -45,9 +42,7 @@ static NSString* const kIXImageWidth = @"image.width";
 
 // IXImage Events
 static NSString* const kIXImagesDefaultLoaded = @"images_default_loaded";
-static NSString* const kIXImagesTouchLoaded = @"images_touch_loaded";
 static NSString* const kIXImagesDefaultFailed = @"images_default_failed";
-static NSString* const kIXImagesTouchFailed = @"images_touch_failed";
 
 // IXImage Functions
 static NSString* const kIXStartAnimation = @"start_animation";
@@ -58,9 +53,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
 @interface IXImage ()
 
 @property (nonatomic,strong) IXGIFImageView* imageView;
-
 @property (nonatomic,strong) UIImage* defaultImage;
-@property (nonatomic,strong) UIImage* touchedImage;
 
 @property (nonatomic,assign,getter = isAnimatedGIF) BOOL animatedGif;
 @property (nonatomic,strong) NSURL* animatedGIFURL;
@@ -130,17 +123,14 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
             [[self imageView] setAnimatedGIFURL:[self animatedGIFURL]];
         }
         
-        [[self imageView] setHidden:!(![[self contentView] isHidden] && [[self contentView] alpha] > 0.0f)];
+        [[self imageView] setHidden:!([self isContentViewVisible])];
     }
     else
     {
         __weak typeof(self) weakSelf = self;
         
         NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
-        NSString* resizeTouch = [self.propertyContainer getStringPropertyValue:kIXImagesTouchResize defaultValue:nil];
-        NSString* touchImage = [self.propertyContainer getStringPropertyValue:kIXImagesTouch defaultValue:nil];
         UIColor *defaultTintColor = [self.propertyContainer getColorPropertyValue:kIXImagesDefaultTintColor defaultValue:nil];
-        UIColor *touchTintColor = [self.propertyContainer getColorPropertyValue:kIXImagesTouchTintColor defaultValue:nil];
         
         [[self propertyContainer] getImageProperty:kIXImagesDefault
                                       successBlock:^(UIImage *image) {
@@ -175,32 +165,7 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                       } failBlock:^(NSError *error) {
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
                                       }];
-        //Only load an image here if we've actually defined a touch image
-        if (touchImage)
-        {
-            [[self propertyContainer] getImageProperty:kIXImagesTouch
-                                          successBlock:^(UIImage *image) {
-                                              
-                                              // if touch image is to be resized, do that first
-                                              if (resizeTouch)
-                                                  image = [image resizedImageByMagick:resizeTouch];
-                                              if (touchTintColor)
-                                                  image = [image tintedImageUsingColor:touchTintColor];
-                                              
-                                              // Contingency that if resize or colored touch isn't defined, we're still
-                                              // going to want to resize the touch image to the default.
-                                              if (resizeDefault)
-                                                  image = [image resizedImageByMagick:resizeDefault];
-                                              if (defaultTintColor)
-                                                  image = [image tintedImageUsingColor:defaultTintColor];
-                                              
-                                              weakSelf.touchedImage = image;
-                                              [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchLoaded];
-                                          } failBlock:^(NSError *error) {
-                                              [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesTouchFailed];
-                                          }];
-        }
-        
+
         BOOL flipHorizontal = [[self propertyContainer] getBoolPropertyValue:kIXFlipHorizontal defaultValue:NO];
         BOOL flipVertical = [[self propertyContainer] getBoolPropertyValue:kIXFlipVertical defaultValue:NO];
         CGFloat rotate = [[self propertyContainer] getFloatPropertyValue:kIXRotate defaultValue:0.0f];
@@ -220,33 +185,6 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
             self.contentView.autoresizesSubviews = NO;
             _imageView.transform = CGAffineTransformRotate(transform, [UIImage degreesToRadians:rotate] );
         }
-    }
-}
-
--(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super controlViewTouchesBegan:touches withEvent:event];
-    if( ![self isAnimatedGIF] && [self touchedImage] )
-    {
-        [[self imageView] setImage:[self touchedImage]];
-    }
-}
-
--(void)controlViewTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super controlViewTouchesCancelled:touches withEvent:event];
-    if( ![self isAnimatedGIF] && [self defaultImage] )
-    {
-        [[self imageView] setImage:[self defaultImage]];
-    }
-}
-
--(void)controlViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super controlViewTouchesEnded:touches withEvent:event];
-    if( ![self isAnimatedGIF] && [self defaultImage] )
-    {
-        [[self imageView] setImage:[self defaultImage]];
     }
 }
 

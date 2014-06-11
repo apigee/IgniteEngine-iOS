@@ -8,29 +8,63 @@
 
 #import "IXAppManager.h"
 
+#import "IXBaseAction.h"
+#import "IXBaseDataProvider.h"
+#import "IXBaseDataProviderConfig.h"
+#import "IXConstants.h"
+#import "IXDataGrabber.h"
+#import "IXDeviceInfo.h"
+#import "IXLayout.h"
+#import "IXLogger.h"
+#import "IXNavigationViewController.h"
+#import "IXPathHandler.h"
+#import "IXPropertyContainer.h"
+#import "IXSandbox.h"
+#import "IXViewController.h"
+
+#import "ApigeeClient.h"
+#import "ApigeeDataClient.h"
+#import "ApigeeMonitoringOptions.h"
 #import "MMDrawerController.h"
 #import "Reachability.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
 
-#import "IXConstants.h"
-#import "IXDataGrabber.h"
-#import "IXLogger.h"
-#import "IXPathHandler.h"
-#import "IXNavigationViewController.h"
-#import "IXPropertyContainer.h"
-#import "IXSandbox.h"
-#import "IXPropertyContainer.h"
-#import "IXViewController.h"
-#import "IXDeviceInfo.h"
-#import "IXBaseAction.h"
-#import "IXLayout.h"
-#import "IXBaseDataProvider.h"
-#import "IXBaseDataProviderConfig.h"
+// Top Level Containers
+IX_STATIC_CONST_STRING kIXAppAttributes = @"app.attributes";
+IX_STATIC_CONST_STRING kIXAppDataProviders = @"app.data_providers";
+IX_STATIC_CONST_STRING kIXSessionDefaults = @"session.defaults";
 
-#import "ApigeeClient.h"
-#import "ApigeeDataClient.h"
-#import "ApigeeMonitoringOptions.h"
+// App Attributes
+IX_STATIC_CONST_STRING kIXAppMode = @"mode";
+IX_STATIC_CONST_STRING kIXLogLevel = @"log_level";
+IX_STATIC_CONST_STRING kIXDefaultView = @"default_view";
+IX_STATIC_CONST_STRING kIXLeftDrawerView = @"left_drawer_view";
+IX_STATIC_CONST_STRING kIXRightDrawerView = @"right_drawer_view";
+IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"enable_layout_debugging";
+IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"enable_request_logging";
+IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"enable_remote_logging";
+IX_STATIC_CONST_STRING kIXShowsNavigationBar = @"shows_navigation_bar";
+IX_STATIC_CONST_STRING kIXPreloadImages = @"preload_images";
+IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee_org_id";
+IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee_app_id";
+IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee_base_url";
+IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee_push_notifier";
+
+// Device Readonly Attributes
+IX_STATIC_CONST_STRING kIXDeviceModel = @"model";
+IX_STATIC_CONST_STRING kIXDeviceType = @"type";
+IX_STATIC_CONST_STRING kIXDeviceScreenWidth = @"screen.width";
+IX_STATIC_CONST_STRING kIXDeviceScreenHeight = @"screen.height";
+IX_STATIC_CONST_STRING kIXDeviceScreenScale = @"screen.scale";
+IX_STATIC_CONST_STRING kIXDeviceOSVersion = @"os.version";
+IX_STATIC_CONST_STRING kIXDeviceOSVersionInteger = @"os.version.integer";
+IX_STATIC_CONST_STRING kIXDeviceOSVersionMajor = @"os.version.major";
+
+// Non attribute constants
+IX_STATIC_CONST_STRING kIXAssetsBasePath = @"assets/";
+IX_STATIC_CONST_STRING kIXDefaultIndexPath = @"assets/_index.json";
+IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x";
 
 @interface IXAppManager ()
 
@@ -65,7 +99,7 @@
     self = [super init];
     if( self )
     {
-        _appIndexFilePath = [[NSBundle mainBundle] pathForResource:@"assets/_index" ofType:@"json"];
+        _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPath];
         
         _appProperties = [[IXPropertyContainer alloc] init];
         _deviceProperties = [[IXPropertyContainer alloc] init];
@@ -101,17 +135,18 @@
 -(void)appDidRegisterRemoteNotificationDeviceToken:(NSData *)deviceToken
 {
     const unsigned *tokenBytes = [deviceToken bytes];
-    NSString *hexToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
+    NSString *hexToken = [NSString stringWithFormat:kIXTokenStringFormat,
                           ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
                           ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
                           ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+    
     [self setPushToken:hexToken];
     
     ApigeeDataClient* apigeeDataClient = [[self apigeeClient] dataClient];
     if( apigeeDataClient != nil )
     {
         IXPropertyContainer* appProperties = [self appProperties];
-        NSString* apigeePushNotifier = [appProperties getStringPropertyValue:@"apigee_push_notifier"
+        NSString* apigeePushNotifier = [appProperties getStringPropertyValue:kIXApigeePushNotifier
                                                                 defaultValue:nil];
         
         ApigeeClientResponse *response = [apigeeDataClient setDevicePushToken:deviceToken
@@ -127,7 +162,6 @@
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo
 {
     IX_LOG_DEBUG(@"Push Notification Info : %@",[userInfo description]);
-    // Example Push Notificaiton String = NSString* pushNotification = @"{\"apple\":{\"aps\":{\"alert\":\"[apns-test] Some Text!\",\"sound\":\"chime\",\"badge\":0},\"action\":[\"navigate\",{\"attributes\":{\"to\":\"device://assets/examples/IXButtonControlExample.json\"}}]}}";
 
     IXBaseAction* action = [IXBaseAction actionWithRemoteNotificationInfo:userInfo];
     if( action )
@@ -166,27 +200,27 @@
                                             }
                                             else
                                             {
-                                                NSArray* appDataProvidersJSONArray = [jsonObject valueForKeyPath:@"app.data_providers"];
+                                                NSArray* appDataProvidersJSONArray = [jsonObject valueForKeyPath:kIXAppDataProviders];
                                                 NSArray* appDataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:appDataProvidersJSONArray];
                                                 [[self applicationSandbox] addDataProviders:[IXBaseDataProviderConfig createDataProvidersFromConfigs:appDataProviderConfigs]];
                                                 
-                                                NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:@"app.attributes"];
+                                                NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:kIXAppAttributes];
                                                 [[self appProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
                                                 
-                                                NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:@"session_defaults"];
+                                                NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:kIXSessionDefaults];
                                                 [[self sessionProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
                                                 [self loadStoredSessionProperties];
 
                                                 NSDictionary* deviceInfoPropertiesDict = @{
-                                                                                           @"model": [IXDeviceInfo deviceModel],
-                                                                                           @"type": [IXDeviceInfo deviceType],
+                                                                                           kIXDeviceModel: [IXDeviceInfo deviceModel],
+                                                                                           kIXDeviceType: [IXDeviceInfo deviceType],
                                                                                            kIX_ORIENTATION: [IXDeviceInfo interfaceOrientation],
-                                                                                           @"screen.width": [IXDeviceInfo screenWidth],
-                                                                                           @"screen.height": [IXDeviceInfo screenHeight],
-                                                                                           @"screen.scale": [IXDeviceInfo screenScale],
-                                                                                           @"os.version": [IXDeviceInfo osVersion],
-                                                                                           @"os.version.integer": [IXDeviceInfo osVersionAsInteger],
-                                                                                           @"os.version.major": [IXDeviceInfo osMajorVersion]
+                                                                                           kIXDeviceScreenWidth: [IXDeviceInfo screenWidth],
+                                                                                           kIXDeviceScreenHeight: [IXDeviceInfo screenHeight],
+                                                                                           kIXDeviceScreenScale: [IXDeviceInfo screenScale],
+                                                                                           kIXDeviceOSVersion: [IXDeviceInfo osVersion],
+                                                                                           kIXDeviceOSVersionInteger: [IXDeviceInfo osVersionAsInteger],
+                                                                                           kIXDeviceOSVersionMajor: [IXDeviceInfo osMajorVersion]
                                                                                            };
                                                 
                                                 [[self deviceProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:deviceInfoPropertiesDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
@@ -201,7 +235,7 @@
 
 -(void)preloadImages
 {
-    NSArray* imagesToPreload = [[self appProperties] getCommaSeperatedArrayListValue:@"preload_images" defaultValue:nil];
+    NSArray* imagesToPreload = [[self appProperties] getCommaSeperatedArrayListValue:kIXPreloadImages defaultValue:nil];
     for( NSString* imagePath in imagesToPreload )
     {
         UIImage* image = [UIImage imageNamed:imagePath];
@@ -215,9 +249,28 @@
 
 -(void)applyAppProperties
 {
-    NSString* apigeeOrgName = [[self appProperties] getStringPropertyValue:@"apigee_org_id" defaultValue:nil];
-    NSString* apigeeApplicationID = [[self appProperties] getStringPropertyValue:@"apigee_app_id" defaultValue:nil];
-    NSString* apigeeBaseURL = [[self appProperties] getStringPropertyValue:@"apigee_base_url" defaultValue:nil];
+    if( [[[self appProperties] getStringPropertyValue:kIXAppMode defaultValue:kIX_RELEASE] isEqualToString:kIX_DEBUG] ) {
+        [self setAppMode:IXDebugMode];
+        RKLogConfigureByName("*", RKLogLevelOff);
+    } else {
+        [self setAppMode:IXReleaseMode];
+        RKLogConfigureByName("*", RKLogLevelOff);
+    }
+    
+    [[IXLogger sharedLogger] setRequestLoggingEnabled:[[self appProperties] getBoolPropertyValue:kIXEnableRequestLogging defaultValue:NO]];
+    [[IXLogger sharedLogger] setRemoteLoggingEnabled:[[self appProperties] getBoolPropertyValue:kIXEnableRemoteLogging defaultValue:NO]];
+    [[IXLogger sharedLogger] setAppLogLevel:[[self appProperties] getStringPropertyValue:kIXLogLevel defaultValue:kIX_DEBUG]];
+    [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:kIXEnableLayoutDebugging defaultValue:NO]];
+
+    [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolPropertyValue:kIXShowsNavigationBar defaultValue:YES] animated:YES];
+    if( [[self rootViewController] isNavigationBarHidden] )
+    {
+        [[[self rootViewController] interactivePopGestureRecognizer] setDelegate:nil];
+    }
+    
+    NSString* apigeeOrgName = [[self appProperties] getStringPropertyValue:kIXApigeeOrgID defaultValue:nil];
+    NSString* apigeeApplicationID = [[self appProperties] getStringPropertyValue:kIXApigeeAppID defaultValue:nil];
+    NSString* apigeeBaseURL = [[self appProperties] getStringPropertyValue:kIXApigeeBaseURL defaultValue:nil];
     
     BOOL apigeeOrgNameAndAppIDAreValid = ( [apigeeOrgName length] > 0 && [apigeeApplicationID length] > 0 );
     [[IXLogger sharedLogger] setApigeeClientAvailable:apigeeOrgNameAndAppIDAreValid];
@@ -231,51 +284,21 @@
         [[[self apigeeClient] dataClient] setLogging:YES];
     }
     
-    BOOL requestLoggingEnabled = [[self appProperties] getBoolPropertyValue:@"enable_request_logging" defaultValue:NO];
-    [[IXLogger sharedLogger] setRequestLoggingEnabled:requestLoggingEnabled];
-
-    BOOL remoteLoggingEnabled = [[self appProperties] getBoolPropertyValue:@"enable_remote_logging" defaultValue:NO];
-    [[IXLogger sharedLogger] setRemoteLoggingEnabled:remoteLoggingEnabled];
-
-    NSString* appLogLevel = [[self appProperties] getStringPropertyValue:@"log_level" defaultValue:@"debug"];
-    [[IXLogger sharedLogger] setAppLogLevel:appLogLevel];
-
-    if( [[[self appProperties] getStringPropertyValue:@"mode" defaultValue:@"release"] isEqualToString:@"debug"] ) {
-        [self setAppMode:IXDebugMode];
-        RKLogConfigureByName("*", RKLogLevelOff);
-    } else {
-        [self setAppMode:IXReleaseMode];
-        RKLogConfigureByName("*", RKLogLevelOff);
-    }
+    [self setAppDefaultViewPath:[[self appProperties] getStringPropertyValue:kIXDefaultView defaultValue:nil]];
+    [self setAppLeftDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXLeftDrawerView defaultValue:nil]];
+    [self setAppRightDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXRightDrawerView defaultValue:nil]];
     
-    [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:@"enable_layout_debugging" defaultValue:NO]];
-    [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolPropertyValue:@"shows_navigation_bar" defaultValue:YES] animated:YES];
-    
-    if( [[self rootViewController] isNavigationBarHidden] )
+    if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
     {
-        [[[self rootViewController] interactivePopGestureRecognizer] setDelegate:nil];
+        [self setAppDefaultViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appDefaultViewPath]]]];
     }
-    
-    NSString* defaultViewProperty = [[self appProperties] getStringPropertyValue:@"default_view" defaultValue:nil];
-    NSString* leftDrawerViewProperty = [[self appProperties] getStringPropertyValue:@"left_drawer_view" defaultValue:nil];
-    NSString* rightDrawerViewProperty = [[self appProperties] getStringPropertyValue:@"right_drawer_view" defaultValue:nil];
-    if( [IXPathHandler pathIsLocal:defaultViewProperty] )
+    if( [[self appLeftDrawerViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appLeftDrawerViewPath]] )
     {
-        [self setAppDefaultViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",defaultViewProperty] ofType:nil]];
-        if( [leftDrawerViewProperty length] )
-        {
-            [self setAppLeftDrawerViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",leftDrawerViewProperty] ofType:nil]];
-        }
-        if( [rightDrawerViewProperty length] )
-        {
-            [self setAppRightDrawerViewPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"assets/%@",rightDrawerViewProperty] ofType:nil]];
-        }
+        [self setAppLeftDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appLeftDrawerViewPath]]]];
     }
-    else
+    if( [[self appRightDrawerViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appRightDrawerViewPath]] )
     {
-        [self setAppDefaultViewPath:defaultViewProperty];
-        [self setAppLeftDrawerViewPath:leftDrawerViewProperty];
-        [self setAppRightDrawerViewPath:rightDrawerViewProperty];
+        [self setAppLeftDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appRightDrawerViewPath]]]];
     }
 }
 
@@ -295,7 +318,7 @@
                                        }
                                        else
                                        {
-                                           [self showJSONAlertWithName:@"DEFAULT VIEW" error:error];
+                                           [self showJSONAlertWithName:kIXDefaultView error:error];
                                        }
     }];
     
@@ -313,7 +336,7 @@
                                            }
                                            else
                                            {
-                                               [self showJSONAlertWithName:@"Left Drawer View" error:error];
+                                               [self showJSONAlertWithName:kIXLeftDrawerView error:error];
                                            }
                                        }];
     }
@@ -332,7 +355,7 @@
                                            }
                                            else
                                            {
-                                               [self showJSONAlertWithName:@"Right Drawer View" error:error];
+                                               [self showJSONAlertWithName:kIXRightDrawerView error:error];
                                            }
                                        }];
     }
@@ -354,7 +377,7 @@
 -(void)showJSONAlertWithName:(NSString*)name error:(NSError*)error
 {
     [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"JSON Parse Error"]
-                                message:[NSString stringWithFormat:@"Your root JSON configuration file %@ could not be parsed.",name]
+                                message:[NSString stringWithFormat:@"Your %@ JSON configuration file could not be parsed. Error: %@",name,[error description]]
                                delegate:nil
                       cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
