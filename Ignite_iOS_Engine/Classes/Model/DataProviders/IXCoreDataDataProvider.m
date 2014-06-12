@@ -46,7 +46,7 @@
 -(void)applySettings
 {
     NSString* previousDataLocation = [self dataLocation];
-    NSString* objectsPath = [self objectsPath];
+    NSString* objectsPath = [self dataPath];
     NSString* predicateFormat = [self predicateFormat];
     NSString* predicateArguments = [self predicateArguments];
     NSString* sortDescriptorKey = [self sortDescriptorKey];
@@ -68,7 +68,7 @@
         _needsToPerformGet = YES;
         [self setPathPattern:pathPattern];
     }
-    if( ![[self objectsPath] isEqualToString:objectsPath] )
+    if( ![[self dataPath] isEqualToString:objectsPath] )
     {
         _needsToPerformGet = YES;
     }
@@ -331,7 +331,7 @@
         }
         if( _needsToPerformGet || forceGet )
         {
-            [[self objectManager] getObjectsAtPath:[self objectsPath]
+            [[self objectManager] getObjectsAtPath:[self dataPath]
                                         parameters:nil
                                            success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
                                                [self.fetchedResultsController performFetch:nil];

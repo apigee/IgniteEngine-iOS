@@ -8,25 +8,14 @@
 
 #import "IXXMLDataProvider.h"
 
-#import "IXImage.h"
-#import "IXPathHandler.h"
 #import "IXAFXMLRequestOperation.h"
 #import "IXDataGrabber.h"
 
 #import "RXMLElement.h"
 
-@interface IXImage ()
-
-@property (nonatomic,strong) UIImage* defaultImage;
-
-@end
-
 @interface IXXMLDataProvider ()
 
 @property (nonatomic,assign) BOOL isLocalPath;
-
-@property (nonatomic,copy) NSString* httpMethod;
-@property (nonatomic,copy) NSString* rowBaseDataPath;
 
 @property (nonatomic,assign) NSUInteger dataRowCount;
 @property (nonatomic,strong) RXMLElement* lastXMLResponse;
@@ -42,32 +31,10 @@
     if( [self dataLocation] == nil )
         return;
     
-    [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"datarow.basepath" defaultValue:nil]];
-    [self setIsLocalPath:[IXPathHandler pathIsLocal:[self dataLocation]]];
-    
-    if( ![self isLocalPath] )
+    if( [self acceptedContentType] )
     {
-        AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
-        NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
-        if( [parameterEncoding isEqualToString:@"form"] ) {
-            paramEncoding = AFFormURLParameterEncoding;
-        } else if( [parameterEncoding isEqualToString:@"plist"] ) {
-            paramEncoding = AFPropertyListParameterEncoding;
-        }
-        
-        [[self httpClient] setParameterEncoding:paramEncoding];
-        
-        [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
+        [IXAFXMLRequestOperation addAcceptedContentType:[self acceptedContentType]];
     }
-    else
-    {
-        [self setDataLocation:[[self propertyContainer] getPathPropertyValue:@"data.baseurl" basePath:nil defaultValue:nil]];
-        [self setHttpClient:nil];
-        [self setHttpMethod:nil];
-    }
-    
-    NSString* acceptedContentType = [[self propertyContainer] getStringPropertyValue:@"accepted_content_type" defaultValue:nil];
-    [IXAFXMLRequestOperation addAcceptedContentType:acceptedContentType];
 }
 
 -(void)fireLoadFinishedEventsFromCachedResponse
@@ -99,76 +66,8 @@
         {
             if( ![self isLocalPath] )
             {
-                NSMutableURLRequest* request = nil;
-                
-                NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
-                [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
-                
-                NSDictionary* parameters = nil;
-                if( [[self propertyContainer] getBoolPropertyValue:@"parse_parameters_as_object" defaultValue:YES] )
-                {
-                    parameters = [[self requestParameterProperties] getAllPropertiesObjectValues];
-                }
-                else
-                {
-                    parameters = [[self requestParameterProperties] getAllPropertiesStringValues];
-                }
-                
-                NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
-                IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
-                
-                if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
-                {
-                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                        
-                        if( [imageControl isKindOfClass:[IXImage class]] )
-                        {
-                            NSString* attachementImageName = [[self fileAttachmentProperties] getStringPropertyValue:@"image.name"
-                                                                                                        defaultValue:nil];
-                            NSString* imageMimeType = [[self fileAttachmentProperties] getStringPropertyValue:@"image.mimeType"
-                                                                                                 defaultValue:nil];
-                            
-                            NSString* imageType = [[imageMimeType componentsSeparatedByString:@"/"] lastObject];
-                            
-                            NSData* imageData = nil;
-                            if( [imageType isEqualToString:@"png"] )
-                            {
-                                imageData = UIImagePNGRepresentation(imageControl.defaultImage);
-                            }
-                            else if( [imageType isEqualToString:@"jpeg"] )
-                            {
-                                float imageJPEGCompression = [[self fileAttachmentProperties] getFloatPropertyValue:@"image.jpegCompression" defaultValue:0.5f];
-                                imageData = UIImageJPEGRepresentation(imageControl.defaultImage, imageJPEGCompression);
-                            }
-                            
-                            if( imageData && [attachementImageName length] > 0 && [imageMimeType length] > 0 && [imageType length] > 0 )
-                            {
-                                [formData appendPartWithFileData:imageData
-                                                            name:attachementImageName
-                                                        fileName:[NSString stringWithFormat:@"%@.%@",attachementImageName,imageType]
-                                                        mimeType:imageMimeType];
-                            }
-                        }
-                        
-                        [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                            if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
-                            {
-                                [formData appendPartWithFileURL:obj name:key error:nil];
-                            }
-                        }];
-                    }];
-                }
-                else
-                {
-                    request = [[self httpClient] requestWithMethod:[self httpMethod]
-                                                              path:[self objectsPath]
-                                                        parameters:parameters];
-                }
-                [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
-
                 __weak typeof(self) weakSelf = self;
-                
-                IXAFXMLRequestOperation *xmlOperation = [[IXAFXMLRequestOperation alloc] initWithRequest:request];
+                IXAFXMLRequestOperation *xmlOperation = [[IXAFXMLRequestOperation alloc] initWithRequest:[self urlRequest]];
                 [xmlOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, RXMLElement* responseObject) {
                     
                     [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
@@ -204,16 +103,16 @@
             else
             {
                 NSString* dataPath = [self dataLocation];
-                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self objectsPath] hasPrefix:@"/"] )
+                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self dataPath] hasPrefix:@"/"] )
                 {
-                    if( [self objectsPath].length )
+                    if( [self dataPath].length )
                     {
-                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self objectsPath]];
+                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self dataPath]];
                     }
                 }
                 else
                 {
-                    dataPath = [[self dataLocation] stringByAppendingString:[self objectsPath]];
+                    dataPath = [[self dataLocation] stringByAppendingString:[self dataPath]];
                 }
                 
                 __weak typeof(self) weakSelf = self;
@@ -251,7 +150,7 @@
     [self setDataRowCount:0];
     if( loadDidSucceed )
     {
-        [self setDataRowCount:[[[self lastXMLResponse] childrenWithRootXPath:[self rowBaseDataPath]] count]];
+        [self setDataRowCount:[[[self lastXMLResponse] childrenWithRootXPath:[self dataRowBasePath]] count]];
     }
     [super fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse];
 }
@@ -282,7 +181,7 @@
         }
         
         NSInteger xPathRow = rowIndexPath.row + 1; // +1 because xpath is not 0 based.
-        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",[self rowBaseDataPath],xPathRow,rowXPath];
+        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",[self dataRowBasePath],xPathRow,rowXPath];
         
         RXMLElement* elementForKeyPath = [[[self lastXMLResponse] childrenWithRootXPath:rootXPath] firstObject];
         returnValue = [elementForKeyPath text];

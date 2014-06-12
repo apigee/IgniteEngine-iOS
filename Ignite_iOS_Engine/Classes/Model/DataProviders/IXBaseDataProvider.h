@@ -18,11 +18,15 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,strong) IXPropertyContainer* requestHeaderProperties;
 @property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
 
+@property (nonatomic,assign) BOOL isLocalPath;
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,strong) AFHTTPClient* httpClient;
+@property (nonatomic,copy) NSString* acceptedContentType;
+@property (nonatomic,copy) NSString* httpMethod;
 @property (nonatomic,copy) NSString* authType;
 @property (nonatomic,copy) NSString* dataLocation;
-@property (nonatomic,copy) NSString* objectsPath;
+@property (nonatomic,copy) NSString* dataPath;
+@property (nonatomic,copy) NSString* dataRowBasePath;
 @property (nonatomic,copy) NSString* predicateFormat;
 @property (nonatomic,copy) NSString* predicateArguments;
 @property (nonatomic,copy) NSString* sortDescriptorKey;
@@ -32,6 +36,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,copy) NSString* rawResponse;
 @property (nonatomic,copy) NSString* lastResponseErrorMessage;
 
+@property (readonly) NSURLRequest* urlRequest;
 @property (readonly) NSSortDescriptor* sortDescriptor;
 @property (readonly) NSPredicate* predicate;
 @property (readonly) NSUInteger rowCount;

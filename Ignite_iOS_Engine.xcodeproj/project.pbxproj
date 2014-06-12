@@ -30,7 +30,6 @@
 		13033FA5183ED8F200C29157 /* IXSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F59183ED8F200C29157 /* IXSocial.m */; };
 		13033FA6183ED8F200C29157 /* IXTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5B183ED8F200C29157 /* IXTableView.m */; };
 		13033FA7183ED8F200C29157 /* IXText.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5D183ED8F200C29157 /* IXText.m */; };
-		13033FA8183ED8F200C29157 /* IX_deprecated_TextHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5F183ED8F200C29157 /* IX_deprecated_TextHighlighter.m */; };
 		13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F61183ED8F200C29157 /* IXTextInput.m */; };
 		13033FAA183ED8F200C29157 /* IXToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F63183ED8F200C29157 /* IXToggle.m */; };
 		13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */; };
@@ -99,6 +98,8 @@
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3118ABDD2000130BEA /* Nestsans.ttf */; };
 		63A10B3418ABDD2000130BEA /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3218ABDD2000130BEA /* NestsansBold.ttf */; };
+		63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */; };
+		63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */; };
 		63AEA72B193EA3DC0088F480 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AEA72A193EA3DC0088F480 /* libxml2.dylib */; };
 		63AEA72E193EA4080088F480 /* IXAFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */; };
 		63AEA731193EA6D50088F480 /* IXXMLDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA730193EA6D50088F480 /* IXXMLDataProvider.m */; };
@@ -133,7 +134,6 @@
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
 		CA887C7E18B3D9470050B75B /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */; };
 		CA887C7F18B3D9470050B75B /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */; };
-		CADE34FC18CF944C009C99D0 /* IX_deprecated_AttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CADE34FB18CF944C009C99D0 /* IX_deprecated_AttributedText.m */; };
 		CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEB7E0718D26437005E1A2F /* IXAttributedText.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -188,8 +188,6 @@
 		13033F5B183ED8F200C29157 /* IXTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTableView.m; sourceTree = "<group>"; };
 		13033F5C183ED8F200C29157 /* IXText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXText.h; sourceTree = "<group>"; };
 		13033F5D183ED8F200C29157 /* IXText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXText.m; sourceTree = "<group>"; };
-		13033F5E183ED8F200C29157 /* IX_deprecated_TextHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IX_deprecated_TextHighlighter.h; sourceTree = "<group>"; };
-		13033F5F183ED8F200C29157 /* IX_deprecated_TextHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IX_deprecated_TextHighlighter.m; sourceTree = "<group>"; };
 		13033F60183ED8F200C29157 /* IXTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTextInput.h; sourceTree = "<group>"; };
 		13033F61183ED8F200C29157 /* IXTextInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTextInput.m; sourceTree = "<group>"; };
 		13033F62183ED8F200C29157 /* IXToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXToggle.h; sourceTree = "<group>"; };
@@ -307,6 +305,9 @@
 		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
 		63A10B3118ABDD2000130BEA /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nestsans.ttf; sourceTree = "<group>"; };
 		63A10B3218ABDD2000130BEA /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
+		63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFileDataProvider.h; sourceTree = "<group>"; };
+		63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFileDataProvider.m; sourceTree = "<group>"; };
 		63AEA72A193EA3DC0088F480 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFXMLRequestOperation.h; sourceTree = "<group>"; };
 		63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFXMLRequestOperation.m; sourceTree = "<group>"; };
@@ -371,8 +372,6 @@
 		CA51499918E0CAC000FA58DF /* IXCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCamera.m; sourceTree = "<group>"; };
 		CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceInfo.h; sourceTree = "<group>"; };
 		CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceInfo.m; sourceTree = "<group>"; };
-		CADE34FA18CF944C009C99D0 /* IX_deprecated_AttributedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IX_deprecated_AttributedText.h; sourceTree = "<group>"; };
-		CADE34FB18CF944C009C99D0 /* IX_deprecated_AttributedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IX_deprecated_AttributedText.m; sourceTree = "<group>"; };
 		CAEB7E0618D26437005E1A2F /* IXAttributedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAttributedText.h; sourceTree = "<group>"; };
 		CAEB7E0718D26437005E1A2F /* IXAttributedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAttributedText.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -382,6 +381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */,
 				63AEA72B193EA3DC0088F480 /* libxml2.dylib in Frameworks */,
 				131591EB18396B3E0046B16D /* libiconv.dylib in Frameworks */,
 				DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */,
@@ -546,10 +546,6 @@
 				13033F5B183ED8F200C29157 /* IXTableView.m */,
 				13033F5C183ED8F200C29157 /* IXText.h */,
 				13033F5D183ED8F200C29157 /* IXText.m */,
-				CADE34FA18CF944C009C99D0 /* IX_deprecated_AttributedText.h */,
-				CADE34FB18CF944C009C99D0 /* IX_deprecated_AttributedText.m */,
-				13033F5E183ED8F200C29157 /* IX_deprecated_TextHighlighter.h */,
-				13033F5F183ED8F200C29157 /* IX_deprecated_TextHighlighter.m */,
 				CAEB7E0618D26437005E1A2F /* IXAttributedText.h */,
 				CAEB7E0718D26437005E1A2F /* IXAttributedText.m */,
 				13033F60183ED8F200C29157 /* IXTextInput.h */,
@@ -569,6 +565,8 @@
 				13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */,
 				13033F6B183ED8F200C29157 /* IXEntityContainer.h */,
 				13033F6C183ED8F200C29157 /* IXEntityContainer.m */,
+				63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */,
+				63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */,
 				635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */,
 				635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */,
 				635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */,
@@ -675,6 +673,7 @@
 		6324BF4E1835931C00748F27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */,
 				63AEA72A193EA3DC0088F480 /* libxml2.dylib */,
 				131591EA18396B3E0046B16D /* libiconv.dylib */,
 				05D522CE73164D978B4CF70F /* libPods.a */,
@@ -989,7 +988,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13033FA8183ED8F200C29157 /* IX_deprecated_TextHighlighter.m in Sources */,
 				63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */,
 				63311BCB1844439E0048C668 /* UIViewController+IXAdditions.m in Sources */,
 				13033FB6183ED8F200C29157 /* IXLayoutEngine.m in Sources */,
@@ -1001,7 +999,6 @@
 				63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */,
 				634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
-				CADE34FC18CF944C009C99D0 /* IX_deprecated_AttributedText.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */,
@@ -1081,6 +1078,7 @@
 				6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */,
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
+				63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,
 				13033FA7183ED8F200C29157 /* IXText.m in Sources */,
 				CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */,

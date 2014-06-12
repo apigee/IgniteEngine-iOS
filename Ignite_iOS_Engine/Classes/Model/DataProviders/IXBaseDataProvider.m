@@ -10,6 +10,7 @@
 
 #import "AFHTTPClient.h"
 #import "AFOAuth2Client.h"
+#import "IXImage.h"
 #import "IXPropertyContainer.h"
 #import "IXTableView.h"
 #import "IXEntityContainer.h"
@@ -27,66 +28,81 @@
 NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdateNotification";
 
 // IXBaseDataProvider Properties
-static NSString* const kIXPredicateFormat = @"predicate.format"; //e.g. "%K CONTAINS[c] %@"
-static NSString* const kIXPredicateArguments = @"predicate.arguments"; //e.g. "email,[[inputbox.text]]"
-static NSString* const kIXSortOrder = @"sort.order"; //ascending, descending, none (default=none)
-static NSString* const kIXSortKey = @"sort.key"; //dataRow key to sort on
-static NSString* const kIXDataBaseUrl = @"data.baseurl";
-static NSString* const kIXDataPath = @"data.path";
-static NSString* const kIXAutoLoad = @"auto_load";
-static NSString* const kIXAuthType = @"auth_type";
-static NSString* const kIXCacheID = @"cache_id";
+IX_STATIC_CONST_STRING kIXDataBaseUrl = @"data.baseurl";
+IX_STATIC_CONST_STRING kIXDataPath = @"data.path";
+IX_STATIC_CONST_STRING kIXDataRowBasePath = @"datarow.basepath";
+IX_STATIC_CONST_STRING kIXAutoLoad = @"auto_load";
+IX_STATIC_CONST_STRING kIXAuthType = @"auth_type";
+IX_STATIC_CONST_STRING kIXCacheID = @"cache_id";
+IX_STATIC_CONST_STRING kIXHTTPMethod = @"http_method";
+IX_STATIC_CONST_STRING kIXBasicUserName = @"basic.username";
+IX_STATIC_CONST_STRING kIXBasicPassword = @"basic.password";
+IX_STATIC_CONST_STRING kIXParameterEncoding = @"parameter_encoding";
+IX_STATIC_CONST_STRING kIXParseParametsAsObject = @"parse_parameters_as_object";
+IX_STATIC_CONST_STRING kIXAcceptedContentType = @"accepted_content_type";
+IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.g. "%K CONTAINS[c] %@"
+IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
+IX_STATIC_CONST_STRING kIXSortOrder = @"sort.order";
+IX_STATIC_CONST_STRING kIXSortKey = @"sort.key";                            //dataRow key to sort on
+IX_STATIC_CONST_STRING kIXOAuthClientID = @"oauth.client_id";
+IX_STATIC_CONST_STRING kIXOAuthSecret = @"oauth.secret";
+IX_STATIC_CONST_STRING kIXOAuthTokenStorageID = @"oauth.storage_id";
+IX_STATIC_CONST_STRING kIXOAuthGrantType = @"oauth.grant_type";
+IX_STATIC_CONST_STRING kIXOAuthAuthorizePath = @"oauth.authorize_path";
+IX_STATIC_CONST_STRING kIXOAuthAccessTokenPath = @"oauth.access_token_path";
+IX_STATIC_CONST_STRING kIXOAuthRedirectURI = @"oauth.redirect_uri";
+IX_STATIC_CONST_STRING kIXOAuthScope = @"oauth.scope";
 
-// kIXAuthType Types
-static NSString* const kIX_AuthType_Basic = @"basic";
+// kIXSortOrder Accepted Types
+IX_STATIC_CONST_STRING kIXSortOrderNone = @"none";
+IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending";
+IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending";
 
-static NSString* const kIXBasicUserName = @"basic.username";
-static NSString* const kIXBasicPassword = @"basic.password";
+// kIXAuthType Accepted Types
+IX_STATIC_CONST_STRING kIXAuthTypeBasic = @"basic";
+IX_STATIC_CONST_STRING kIXAuthTypeOAuth2 = @"oauth2";
 
-static NSString* const kIX_AuthType_OAuth2 = @"oauth2";
-
-static NSString* const kIXOAuthClientID = @"oauth.client_id";
-static NSString* const kIXOAuthSecret = @"oauth.secret";
-static NSString* const kIXOAuthTokenStorageID = @"oauth.storage_id";
-static NSString* const kIXOAuthGrantType = @"oauth.grant_type";
-static NSString* const kIXOAuthAuthorizePath = @"oauth.authorize_path";
-static NSString* const kIXOAuthAccessTokenPath = @"oauth.access_token_path";
-static NSString* const kIXOAuthRedirectURI = @"oauth.redirect_uri";
-static NSString* const kIXOAuthScope = @"oauth.scope";
+// kIXParameterEncoding Accepted Types
+IX_STATIC_CONST_STRING kIXParameterEncodingJSON = @"json";
+IX_STATIC_CONST_STRING kIXParameterEncodingPList = @"plist";
+IX_STATIC_CONST_STRING kIXParameterEncodingForm = @"form";
 
 // IXBaseDataProvider Read-Only Properties
-static NSString* const kIXRawDataResponse = @"raw_data_response";
-static NSString* const kIXStatusCode = @"status_code";
-static NSString* const kIXErrorMessage = @"error_message";
-static NSString* const kIXCount = @"count";
-static NSString* const kIXAccessToken = @"access_token";
+IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
+IX_STATIC_CONST_STRING kIXStatusCode = @"status_code";
+IX_STATIC_CONST_STRING kIXErrorMessage = @"error_message";
+IX_STATIC_CONST_STRING kIXCount = @"count";
+IX_STATIC_CONST_STRING kIXAccessToken = @"access_token";
 
 // IXBaseDataProvider Functions
-static NSString* const kIXClearAccessToken = @"clear_access_token"; // kIXOAuthTokenStorageID is the parameter for this.
-static NSString* const kIXClearCache = @"clear_cache"; // Clears the cached data that is associated with this data providers kIXCacheID.
-static NSString* const kIXDeleteCookies = @"delete_cookies"; // kIXCookieURL is the parameter for this function.
-static NSString* const kIXCookieURL = @"cookie_url";
+IX_STATIC_CONST_STRING kIXClearAccessToken = @"clear_access_token"; // kIXOAuthTokenStorageID is the parameter for this.
+IX_STATIC_CONST_STRING kIXClearCache = @"clear_cache"; // Clears the cached data that is associated with this data providers kIXCacheID.
+IX_STATIC_CONST_STRING kIXDeleteCookies = @"delete_cookies"; // kIXCookieURL is the parameter for this function.
+IX_STATIC_CONST_STRING kIXCookieURL = @"cookie_url";
 
 // IXBaseDataProvider Events
-static NSString* const kIXStarted = @"started";
-static NSString* const kIXAuthSuccess = @"auth_success";
-static NSString* const kIXAuthFail = @"auth_fail";
+IX_STATIC_CONST_STRING kIXStarted = @"started";
+IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth_success";
+IX_STATIC_CONST_STRING kIXAuthFail = @"auth_fail";
 
 // Non Property constants.
-static NSString* const kIX_Default_RedirectURI = @"ix://callback:oauth";
-static NSString* const KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
-static NSString* const kIXDataRow = @"dataRow.";
-static NSString* const kIXTotal = @"total.";
+IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
+IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
+IX_STATIC_CONST_STRING kIXDataRow = @"dataRow.";
+IX_STATIC_CONST_STRING kIXTotal = @"total.";
 static NSCache* sIXDataProviderCache = nil;
 
 // NSCoding Key Constants
-static NSString* const kIXRequestParameterPropertiesNSCodingKey = @"requestParameterProperties";
-static NSString* const kIXRequestHeaderPropertiesNSCodingKey = @"requestHeaderProperties";
-static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachmentProperties";
+IX_STATIC_CONST_STRING kIXRequestParameterPropertiesNSCodingKey = @"requestParameterProperties";
+IX_STATIC_CONST_STRING kIXRequestHeaderPropertiesNSCodingKey = @"requestHeaderProperties";
+IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachmentProperties";
+
+@interface IXImage ()
+@property (nonatomic,strong) UIImage* defaultImage;
+@end
 
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
 
-@property (nonatomic,assign) BOOL isLocalPath;
 @property (nonatomic,copy) NSString* cacheID;
 
 @property (nonatomic,strong) AFHTTPRequestOperation* requestToEnqueAfterAuthentication;
@@ -174,15 +190,18 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 {
     [super applySettings];
     
+    [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:kIXHTTPMethod defaultValue:@"GET"]];
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:kIXAutoLoad defaultValue:NO]];
     [self setCacheID:[[self propertyContainer] getStringPropertyValue:kIXCacheID defaultValue:nil]];
     [self setDataLocation:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
-    [self setObjectsPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
+    [self setDataPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
+    [self setDataRowBasePath:[[self propertyContainer] getStringPropertyValue:kIXDataRowBasePath defaultValue:nil]];
     [self setPredicateFormat:[[self propertyContainer] getStringPropertyValue:kIXPredicateFormat defaultValue:nil]];
     [self setPredicateArguments:[[self propertyContainer] getStringPropertyValue:kIXPredicateArguments defaultValue:nil]];
     [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:kIXSortKey defaultValue:nil]];
-    [self setSortOrder:[[self propertyContainer] getStringPropertyValue:kIXSortOrder defaultValue:@"none"]];
-    
+    [self setSortOrder:[[self propertyContainer] getStringPropertyValue:kIXSortOrder defaultValue:kIXSortOrderNone]];
+    [self setAcceptedContentType:[[self propertyContainer] getStringPropertyValue:kIXAcceptedContentType defaultValue:nil]];
+
     [self setIsLocalPath:[IXPathHandler pathIsLocal:[self dataLocation]]];
     
     [self setAuthType:[[self propertyContainer] getStringPropertyValue:kIXAuthType defaultValue:nil]];
@@ -191,7 +210,7 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
         if( [self httpClient] == nil || ![[[[self httpClient] baseURL] absoluteString] isEqualToString:[self dataLocation]] )
         {
             NSURL* baseURL = [NSURL URLWithString:[self dataLocation]];
-            if( [[self authType] isEqualToString:kIX_AuthType_OAuth2] )
+            if( [[self authType] isEqualToString:kIXAuthTypeOAuth2] )
             {
                 [self setOAuthClientID:[[self propertyContainer] getStringPropertyValue:kIXOAuthClientID defaultValue:nil]];
                 [self setOAuthSecret:[[self propertyContainer] getStringPropertyValue:kIXOAuthSecret defaultValue:nil]];
@@ -205,7 +224,17 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
             }
         }
         
-        if( [[self authType] isEqualToString:kIX_AuthType_OAuth2] )
+        AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
+        NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:kIXParameterEncoding defaultValue:kIXParameterEncodingJSON];
+        if( [parameterEncoding isEqualToString:kIXParameterEncodingForm] ) {
+            paramEncoding = AFFormURLParameterEncoding;
+        } else if( [parameterEncoding isEqualToString:kIXParameterEncodingPList] ) {
+            paramEncoding = AFPropertyListParameterEncoding;
+        }
+        
+        [[self httpClient] setParameterEncoding:paramEncoding];
+        
+        if( [[self authType] isEqualToString:kIXAuthTypeOAuth2] )
         {
             [self setOAuthTokenStorageID:[[self propertyContainer] getStringPropertyValue:kIXOAuthTokenStorageID defaultValue:nil]];
             [self setOAuthGrantType:[[self propertyContainer] getStringPropertyValue:kIXOAuthGrantType defaultValue:nil]];
@@ -214,7 +243,7 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
             [self setOAuthScope:[[self propertyContainer] getStringPropertyValue:kIXOAuthScope defaultValue:nil]];
             [self setOAuthRedirectURI:[[self propertyContainer] getStringPropertyValue:kIXOAuthRedirectURI defaultValue:kIX_Default_RedirectURI]];
         }
-        else if( [[self authType] isEqualToString:kIX_AuthType_Basic] )
+        else if( [[self authType] isEqualToString:kIXAuthTypeBasic] )
         {
             NSString* userName = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
             NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];
@@ -546,13 +575,84 @@ static NSString* const kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     }
 }
 
+-(NSURLRequest*)urlRequest
+{
+    NSMutableURLRequest* request = nil;
+    
+    NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
+    [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
+    
+    NSDictionary* parameters = nil;
+    if( [[self propertyContainer] getBoolPropertyValue:kIXParseParametsAsObject defaultValue:YES] )
+    {
+        parameters = [[self requestParameterProperties] getAllPropertiesObjectValues];
+    }
+    else
+    {
+        parameters = [[self requestParameterProperties] getAllPropertiesStringValues];
+    }
+    
+    NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
+    IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
+    
+    if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
+    {
+        request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self dataPath] parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            
+            if( [imageControl isKindOfClass:[IXImage class]] )
+            {
+                NSString* attachementImageName = [[self fileAttachmentProperties] getStringPropertyValue:@"image.name"
+                                                                                            defaultValue:nil];
+                NSString* imageMimeType = [[self fileAttachmentProperties] getStringPropertyValue:@"image.mimeType"
+                                                                                     defaultValue:nil];
+                
+                NSString* imageType = [[imageMimeType componentsSeparatedByString:@"/"] lastObject];
+                
+                NSData* imageData = nil;
+                if( [imageType isEqualToString:@"png"] )
+                {
+                    imageData = UIImagePNGRepresentation(imageControl.defaultImage);
+                }
+                else if( [imageType isEqualToString:@"jpeg"] )
+                {
+                    float imageJPEGCompression = [[self fileAttachmentProperties] getFloatPropertyValue:@"image.jpegCompression" defaultValue:0.5f];
+                    imageData = UIImageJPEGRepresentation(imageControl.defaultImage, imageJPEGCompression);
+                }
+                
+                if( imageData && [attachementImageName length] > 0 && [imageMimeType length] > 0 && [imageType length] > 0 )
+                {
+                    [formData appendPartWithFileData:imageData
+                                                name:attachementImageName
+                                            fileName:[NSString stringWithFormat:@"%@.%@",attachementImageName,imageType]
+                                            mimeType:imageMimeType];
+                }
+            }
+            
+            [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
+                {
+                    [formData appendPartWithFileURL:obj name:key error:nil];
+                }
+            }];
+        }];
+    }
+    else
+    {
+        request = [[self httpClient] requestWithMethod:[self httpMethod]
+                                                  path:[self dataPath]
+                                            parameters:parameters];
+    }
+    [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
+    return request;
+}
+
 -(NSSortDescriptor*)sortDescriptor
 {
     NSSortDescriptor* sortDescriptor = nil;
-    if( [[self sortDescriptorKey] length] > 0 && ![[self sortOrder] isEqualToString:@"none"])
+    if( [[self sortDescriptorKey] length] > 0 && ![[self sortOrder] isEqualToString:kIXSortOrderNone])
     {
         BOOL sortAscending = YES;
-        if ([self.sortOrder isEqualToString:@"descending"])
+        if ([self.sortOrder isEqualToString:kIXSortOrderDescending])
             sortAscending = NO;
         sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
                                                        ascending:sortAscending

@@ -13,26 +13,12 @@
 
 #import "IXAFJSONRequestOperation.h"
 #import "IXAppManager.h"
-#import "IXImage.h"
 #import "IXDataGrabber.h"
-#import "IXPathHandler.h"
 #import "IXLogger.h"
-
-@interface IXImage ()
-
-@property (nonatomic,strong) UIImage* defaultImage;
-
-@end
 
 @interface IXJSONDataProvider ()
 
-@property (nonatomic,assign) BOOL isLocalPath;
-
-@property (nonatomic,copy) NSString* httpMethod;
-@property (nonatomic,copy) NSString* httpBody;
-@property (nonatomic,copy) NSString* rowBaseDataPath;
 @property (nonatomic,strong) NSArray* rowDataResults;
-
 @property (nonatomic,strong) id lastJSONResponse;
 
 @end
@@ -43,35 +29,10 @@
 {
     [super applySettings];
  
-    if( [self dataLocation] == nil )
-        return;
-    
-    [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"datarow.basepath" defaultValue:nil]];
-    [self setIsLocalPath:[IXPathHandler pathIsLocal:[self dataLocation]]];
-    
-    if( ![self isLocalPath] )
-    {        
-        AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
-        NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
-        if( [parameterEncoding isEqualToString:@"form"] ) {
-            paramEncoding = AFFormURLParameterEncoding;
-        } else if( [parameterEncoding isEqualToString:@"plist"] ) {
-            paramEncoding = AFPropertyListParameterEncoding;
-        }
-        
-        [[self httpClient] setParameterEncoding:paramEncoding];
-        
-        [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
-    }
-    else
+    if( [self acceptedContentType] )
     {
-        [self setDataLocation:[[self propertyContainer] getPathPropertyValue:@"data.baseurl" basePath:nil defaultValue:nil]];
-        [self setHttpClient:nil];
-        [self setHttpMethod:nil];
+        [IXAFJSONRequestOperation addAcceptedContentType:[self acceptedContentType]];
     }
-    
-    NSString* acceptedContentType = [[self propertyContainer] getStringPropertyValue:@"accepted_content_type" defaultValue:nil];
-    [IXAFJSONRequestOperation addAcceptedContentType:acceptedContentType];
 }
 
 -(void)fireLoadFinishedEventsFromCachedResponse
@@ -106,75 +67,8 @@
         {
             if( ![self isLocalPath] )
             {
-                NSMutableURLRequest* request = nil;
-                
-                NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
-                [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
-
-                NSDictionary* parameters = nil;
-                if( [[self propertyContainer] getBoolPropertyValue:@"parse_parameters_as_object" defaultValue:YES] )
-                {
-                    parameters = [[self requestParameterProperties] getAllPropertiesObjectValues];
-                }
-                else
-                {
-                    parameters = [[self requestParameterProperties] getAllPropertiesStringValues];
-                }
-                
-                NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
-                IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
-                
-                if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
-                {
-                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                        
-                        if( [imageControl isKindOfClass:[IXImage class]] )
-                        {
-                            NSString* attachementImageName = [[self fileAttachmentProperties] getStringPropertyValue:@"image.name"
-                                                                                                        defaultValue:nil];
-                            NSString* imageMimeType = [[self fileAttachmentProperties] getStringPropertyValue:@"image.mimeType"
-                                                                                                 defaultValue:nil];
-                            
-                            NSString* imageType = [[imageMimeType componentsSeparatedByString:@"/"] lastObject];
-                            
-                            NSData* imageData = nil;
-                            if( [imageType isEqualToString:@"png"] )
-                            {
-                                imageData = UIImagePNGRepresentation(imageControl.defaultImage);
-                            }
-                            else if( [imageType isEqualToString:@"jpeg"] )
-                            {
-                                float imageJPEGCompression = [[self fileAttachmentProperties] getFloatPropertyValue:@"image.jpegCompression" defaultValue:0.5f];
-                                imageData = UIImageJPEGRepresentation(imageControl.defaultImage, imageJPEGCompression);
-                            }
-                            
-                            if( imageData && [attachementImageName length] > 0 && [imageMimeType length] > 0 && [imageType length] > 0 )
-                            {
-                                [formData appendPartWithFileData:imageData
-                                                            name:attachementImageName
-                                                        fileName:[NSString stringWithFormat:@"%@.%@",attachementImageName,imageType]
-                                                        mimeType:imageMimeType];
-                            }
-                        }
-                        
-                        [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                            if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
-                            {
-                                [formData appendPartWithFileURL:obj name:key error:nil];
-                            }
-                        }];
-                    }];
-                }
-                else
-                {
-                    request = [[self httpClient] requestWithMethod:[self httpMethod]
-                                                              path:[self objectsPath]
-                                                        parameters:parameters];
-                }
-                [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
-                
                 __weak typeof(self) weakSelf = self;
-                IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:request];
+                IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self urlRequest]];
                 [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                     
                     [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
@@ -210,16 +104,16 @@
             else
             {
                 NSString* dataPath = [self dataLocation];
-                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self objectsPath] hasPrefix:@"/"] )
+                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self dataPath] hasPrefix:@"/"] )
                 {
-                    if( [self objectsPath].length )
+                    if( [self dataPath].length )
                     {
-                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self objectsPath]];
+                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self dataPath]];
                     }
                 }
                 else
                 {
-                    dataPath = [[self dataLocation] stringByAppendingString:[self objectsPath]];
+                    dataPath = [[self dataLocation] stringByAppendingString:[self dataPath]];
                 }
                 
                 __weak typeof(self) weakSelf = self;
@@ -262,13 +156,13 @@
     if( loadDidSucceed )
     {
         NSObject* jsonObject = nil;
-        if( [self rowBaseDataPath].length <= 0 && [[self lastJSONResponse] isKindOfClass:[NSArray class]] )
+        if( [self dataRowBasePath].length <= 0 && [[self lastJSONResponse] isKindOfClass:[NSArray class]] )
         {
             jsonObject = [self lastJSONResponse];
         }
         else
         {
-            jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
+            jsonObject = [self objectForPath:[self dataRowBasePath] container:[self lastJSONResponse]];
         }
 
         NSArray* rowDataResults = nil;
