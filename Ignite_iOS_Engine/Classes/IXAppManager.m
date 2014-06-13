@@ -12,6 +12,7 @@
 #import "IXBaseDataProvider.h"
 #import "IXBaseDataProviderConfig.h"
 #import "IXConstants.h"
+#import "IXControlCacheContainer.h"
 #import "IXDataGrabber.h"
 #import "IXDeviceInfo.h"
 #import "IXLayout.h"
@@ -39,8 +40,9 @@ IX_STATIC_CONST_STRING kIXSessionDefaults = @"session.defaults";
 IX_STATIC_CONST_STRING kIXAppMode = @"mode";
 IX_STATIC_CONST_STRING kIXLogLevel = @"log_level";
 IX_STATIC_CONST_STRING kIXDefaultView = @"default_view";
-IX_STATIC_CONST_STRING kIXLeftDrawerView = @"left_drawer_view";
-IX_STATIC_CONST_STRING kIXRightDrawerView = @"right_drawer_view";
+IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawer.view.left";
+IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawer.view.right";
+IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.toggle.velocity";
 IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"enable_layout_debugging";
 IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"enable_request_logging";
 IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"enable_remote_logging";
@@ -50,6 +52,12 @@ IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee_org_id";
 IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee_app_id";
 IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee_base_url";
 IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee_push_notifier";
+
+// App Functions
+IX_STATIC_CONST_STRING kIXReset = @"reset";
+IX_STATIC_CONST_STRING kIXDestorySession = @"session.destroy";
+IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawer.toggle.left";
+IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawer.toggle.right";
 
 // Device Readonly Attributes
 IX_STATIC_CONST_STRING kIXDeviceModel = @"model";
@@ -109,8 +117,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                             leftDrawerViewController:nil
                                                            rightDrawerViewController:nil];
         
-        [_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
-        [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeBezelPanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        [_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+        [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
 
         _reachabilty = [Reachability reachabilityForInternetConnection];
     }
@@ -280,13 +288,17 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         options.crashReportingEnabled = YES;
         options.interceptNetworkCalls = YES;
         
-        [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName applicationId:apigeeApplicationID baseURL:apigeeBaseURL options:options]];
+        [self setApigeeClient:[[ApigeeClient alloc] initWithOrganizationId:apigeeOrgName
+                                                             applicationId:apigeeApplicationID
+                                                                   baseURL:apigeeBaseURL
+                                                                   options:options]];
         [[[self apigeeClient] dataClient] setLogging:YES];
     }
     
     [self setAppDefaultViewPath:[[self appProperties] getStringPropertyValue:kIXDefaultView defaultValue:nil]];
-    [self setAppLeftDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXLeftDrawerView defaultValue:nil]];
-    [self setAppRightDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXRightDrawerView defaultValue:nil]];
+    [self setAppLeftDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXDrawerViewLeft defaultValue:nil]];
+    [self setAppRightDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXDrawerViewRight defaultValue:nil]];
+    [[self drawerController] setAnimationVelocity:[[self appProperties] getFloatPropertyValue:kIXDrawerToggleVelocity defaultValue:840.0f]];
     
     if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
     {
@@ -304,60 +316,58 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 
 -(void)loadApplicationDefaultView
 {
-    [IXViewController viewControllerWithPathToJSON:[self appDefaultViewPath]
-                                         loadAsync:NO
-                                   completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
-                                   
-                                       if( didSucceed && viewController && error == nil )
-                                       {
-                                           IXSandbox* appSandbox = [[IXAppManager sharedAppManager] applicationSandbox];
-                                           [appSandbox setViewController:viewController];
-                                           [appSandbox setContainerControl:[viewController containerControl]];
+    [IXViewController createViewControllerWithPathToJSON:[self appDefaultViewPath]
+                                               loadAsync:NO
+                                         completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+                                             
+                                             if( didSucceed && viewController && error == nil )
+                                             {
+                                                 IXSandbox* appSandbox = [[IXAppManager sharedAppManager] applicationSandbox];
+                                                 [appSandbox setViewController:viewController];
+                                                 [appSandbox setContainerControl:[viewController containerControl]];
 
-                                           [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
-                                       }
-                                       else
-                                       {
-                                           [self showJSONAlertWithName:kIXDefaultView error:error];
-                                       }
-    }];
+                                                 [[self rootViewController] setViewControllers:[NSArray arrayWithObject:viewController]];
+                                             }
+                                             else
+                                             {
+                                                 [self showJSONAlertWithName:kIXDefaultView error:error];
+                                             }
+                                         }];
     
     if( [[self appLeftDrawerViewPath] length] > 0 ) {
-        
-        [IXViewController viewControllerWithPathToJSON:[self appLeftDrawerViewPath]
-                                             loadAsync:NO
-                                       completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+        [IXViewController createViewControllerWithPathToJSON:[self appLeftDrawerViewPath]
+                                                   loadAsync:NO
+                                             completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
                                            
-                                           if( didSucceed && viewController && error == nil )
-                                           {
-                                               [[self drawerController] setLeftDrawerViewController:viewController];
-                                               [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
-                                               [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
-                                           }
-                                           else
-                                           {
-                                               [self showJSONAlertWithName:kIXLeftDrawerView error:error];
-                                           }
-                                       }];
+                                                 if( didSucceed && viewController && error == nil )
+                                                 {
+                                                     [[self drawerController] setLeftDrawerViewController:viewController];
+                                                     [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
+                                                     [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
+                                                 }
+                                                 else
+                                                 {
+                                                     [self showJSONAlertWithName:kIXDrawerViewLeft error:error];
+                                                 }
+                                             }];
     }
     
     if( [[self appRightDrawerViewPath] length] > 0 ) {
-        
-        [IXViewController viewControllerWithPathToJSON:[self appLeftDrawerViewPath]
-                                             loadAsync:NO
-                                       completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+        [IXViewController createViewControllerWithPathToJSON:[self appRightDrawerViewPath]
+                                                   loadAsync:NO
+                                             completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
                                            
-                                           if( didSucceed && viewController && error == nil )
-                                           {
-                                               [[self drawerController] setRightDrawerViewController:viewController];
-                                               [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
-                                               [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];
-                                           }
-                                           else
-                                           {
-                                               [self showJSONAlertWithName:kIXRightDrawerView error:error];
-                                           }
-                                       }];
+                                                 if( didSucceed && viewController && error == nil )
+                                                 {
+                                                     [[self drawerController] setRightDrawerViewController:viewController];
+                                                     [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
+                                                     [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];
+                                                 }
+                                                 else
+                                                 {
+                                                     [self showJSONAlertWithName:kIXDrawerViewRight error:error];
+                                                 }
+                                             }];
     }
 }
 
@@ -381,6 +391,39 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                delegate:nil
                       cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
+}
+
+-(void)applyFunction:(NSString*)functionName parameters:(IXPropertyContainer*)parameters
+{
+    if ([functionName isEqualToString:kIXReset])
+    {
+        // Clear caches.
+        [[[SDWebImageManager sharedManager] imageCache] clearMemory];
+        [[[SDWebImageManager sharedManager] imageCache] clearDisk];
+        [IXDataGrabber clearCache];
+        [IXControlCacheContainer clearCache];
+        
+        [[IXAppManager sharedAppManager] startApplication];
+    }
+    else if ([functionName isEqualToString:kIXDestorySession])
+    {
+        [[self sessionProperties] removeAllProperties];
+        [self storeSessionProperties];
+    }
+    else if([functionName isEqualToString:kIXToggleDrawerLeft] )
+    {
+        if( [[self drawerController] leftDrawerViewController] )
+        {
+            [[self drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+        }
+    }
+    else if([functionName isEqualToString:kIXToggleDrawerRight] )
+    {
+        if( [[self drawerController] rightDrawerViewController] )
+        {
+            [[self drawerController] toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
+        }
+    }
 }
 
 -(void)storeSessionProperties

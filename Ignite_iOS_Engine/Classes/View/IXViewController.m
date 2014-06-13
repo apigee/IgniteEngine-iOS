@@ -44,7 +44,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
     return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil pathToJSON:nil];
 }
 
-+(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXViewControllerCreationCompletionBlock)completionBlock
++(void)createViewControllerWithPathToJSON:(NSString*)pathToJSON loadAsync:(BOOL)loadAsync completionBlock:(IXViewControllerCreationCompletionBlock)completionBlock
 {
     IXViewController* viewController = [[[self class] alloc] initWithNibName:nil bundle:nil pathToJSON:pathToJSON];
     [IXControlCacheContainer populateControl:[viewController containerControl]
@@ -52,9 +52,17 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
                                    loadAsync:loadAsync
                              completionBlock:^(BOOL didSucceed,IXBaseControl* populatedControl,NSError* error) {
                                  if( completionBlock )
-                                     completionBlock(didSucceed,viewController,error);
+                                 {
+                                     if( didSucceed )
+                                     {
+                                         completionBlock(didSucceed,viewController,error);
+                                     }
+                                     else
+                                     {
+                                         completionBlock(didSucceed,nil,error);
+                                     }
+                                 }
                              }];
-    return viewController;
 }
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil pathToJSON:(NSString*)pathToJSON
@@ -193,7 +201,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
     return viewPropertyValue;
 }
 
--(void)applySettings
+-(void)applyViewControllerSpecificSettings
 {
     IXPropertyContainer* propertyContainer = [[self containerControl] propertyContainer];
     NSString* statusBarStyle = [propertyContainer getStringPropertyValue:@"status_bar_style" defaultValue:@"dark"];
@@ -205,19 +213,11 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
     
     UIColor* backgroundColor = [propertyContainer getColorPropertyValue:@"background.color" defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
+}
 
-    /*
-     //TODO - obviously this failed miserably! Go Brandon.
-    NSString* backgroundImage = [[self propertyContainer] getStringPropertyValue:@"images.background" defaultValue:nil];
-    if (backgroundImage)
-    {
-        [[self propertyContainer] getImageProperty:backgroundImage
-                                      successBlock:^(UIImage *image) {
-                                          [[self view] setBackgroundImage:
-                                      } failBlock:^(NSError *error) {
-                                      }];
-    }
-    */
+-(void)applySettings
+{
+    [self applyViewControllerSpecificSettings];
     [[self containerControl] applySettings];
 }
 

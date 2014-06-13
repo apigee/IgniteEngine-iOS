@@ -25,12 +25,6 @@
 static NSString* const kIXFunctionName = @"function_name";
 static NSString* const kIXDuration = @"duration";
 
-// $app level functions
-static NSString* const kIXReset = @"reset";
-static NSString* const kIXDestorySession = @"session.destroy";
-static NSString* const kIXToggleDrawerLeft = @"toggleDrawer.left";
-static NSString* const kIXToggleDrawerRight = @"toggleDrawer.right";
-
 @implementation IXFunctionAction
 
 -(void)execute
@@ -41,38 +35,9 @@ static NSString* const kIXToggleDrawerRight = @"toggleDrawer.right";
     
     if( [objectIDs count] && [functionName length] > 0 )
     {
-        // todo: We need to separate app/session/etc. level functionality out into a separate class or sub-class. Also should migrate the shake-to-reset function to run this method directly, and assign a property to make it optional.
         if ([[objectIDs firstObject] isEqualToString:kIX_APP])
         {
-            if ([functionName isEqualToString:kIXReset])
-            {
-                // Clear caches.
-                [[[SDWebImageManager sharedManager] imageCache] clearMemory];
-                [[[SDWebImageManager sharedManager] imageCache] clearDisk];
-                [IXDataGrabber clearCache];
-                [IXControlCacheContainer clearCache];
-                
-                [[IXAppManager sharedAppManager] startApplication];
-            }
-            else if ([functionName isEqualToString:kIXDestorySession])
-            {
-                [[[IXAppManager sharedAppManager] sessionProperties] removeAllProperties];
-                [[IXAppManager sharedAppManager] storeSessionProperties];
-            }
-            else if([functionName isEqualToString:kIXToggleDrawerLeft] )
-            {
-                if( [[[IXAppManager sharedAppManager] drawerController] leftDrawerViewController] )
-                {
-                    [[[IXAppManager sharedAppManager] drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-                }
-            }
-            else if([functionName isEqualToString:kIXToggleDrawerRight] )
-            {
-                if( [[[IXAppManager sharedAppManager] drawerController] rightDrawerViewController] )
-                {
-                    [[[IXAppManager sharedAppManager] drawerController] toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
-                }
-            }
+            [[IXAppManager sharedAppManager] applyFunction:functionName parameters:[self parameterProperties]];
         }
         else
         {

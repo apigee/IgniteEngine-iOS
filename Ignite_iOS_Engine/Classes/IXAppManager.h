@@ -94,6 +94,14 @@ typedef enum {
 -(NSString*)evaluateJavascript:(NSString*)javascript;
 
 /**
+ *  Applies the application level function.
+ *
+ *  @param functionName The name of the function to apply.
+ *  @param parameters   The parameters that the function will use. (can be nil if unneeded)
+ */
+-(void)applyFunction:(NSString*)functionName parameters:(IXPropertyContainer*)parameters;
+
+/**
  *  Convenience method used to get the current interface orientation of the keyWindow's rootViewController.
  *
  *  @return The current interface orientation.

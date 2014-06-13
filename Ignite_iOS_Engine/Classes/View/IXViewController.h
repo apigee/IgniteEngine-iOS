@@ -22,9 +22,22 @@ typedef void(^IXViewControllerCreationCompletionBlock)(BOOL didSucceed, IXViewCo
 @property (nonatomic,strong,readonly) IXSandbox* sandbox;
 @property (nonatomic,strong,readonly) IXLayout* containerControl;
 
-+(instancetype)viewControllerWithPathToJSON:(NSString*)pathToJSON
-                                  loadAsync:(BOOL)loadAsync
-                            completionBlock:(IXViewControllerCreationCompletionBlock)completionBlock;
+/**
+ *  Creates and loads a view controller configuring it and its containerControl 
+ *  based on the JSON configuration at the path specified.
+ *
+ *  @param pathToJSON      The path to the JSON configuration used to configure the view controller
+ *  @param loadAsync       If YES all of the view controller loading will be done in the background.
+ *  @param completionBlock The block that will be executed on completion of the view contoller being created or failing.
+ */
++(void)createViewControllerWithPathToJSON:(NSString*)pathToJSON
+                                loadAsync:(BOOL)loadAsync
+                          completionBlock:(IXViewControllerCreationCompletionBlock)completionBlock;
+/**
+ *  Applies only the attributes that affect the view controller.  
+ *  Does not call applySettings on its containerControl.
+ */
+-(void)applyViewControllerSpecificSettings;
 
 -(void)fireViewEventNamed:(NSString*)eventName;
 -(NSString*)getViewPropertyNamed:(NSString*)propertyName;

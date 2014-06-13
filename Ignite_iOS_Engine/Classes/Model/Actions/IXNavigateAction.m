@@ -293,20 +293,20 @@ typedef void(^IXNavAnimationCompletionBlock)();
         NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
         if( navigateTo )
         {
-            [IXViewController viewControllerWithPathToJSON:navigateTo
-                                                 loadAsync:YES
-                                           completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
+            [IXViewController createViewControllerWithPathToJSON:navigateTo
+                                                       loadAsync:YES
+                                                 completionBlock:^(BOOL didSucceed, IXViewController *viewController, NSError* error) {
                                                
-                                               if( didSucceed && viewController != nil )
-                                               {
-                                                   [self finishPushNavigationTo:viewController];
-                                               }
-                                               else
-                                               {
-                                                   IX_LOG_ERROR(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
-                                                   [self navigationActionDidFinish:NO];
-                                               }
-                                           }];
+                                                     if( didSucceed && viewController != nil )
+                                                     {
+                                                         [self finishPushNavigationTo:viewController];
+                                                     }
+                                                     else
+                                                     {
+                                                         IX_LOG_ERROR(@"ERROR: from %@ in %@ : Error performing push navigation. Description : %@",THIS_FILE,THIS_METHOD,[error description]);
+                                                         [self navigationActionDidFinish:NO];
+                                                     }
+                                                 }];
         }
         else
         {
