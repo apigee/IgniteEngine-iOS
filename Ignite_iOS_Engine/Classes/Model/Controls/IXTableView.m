@@ -15,31 +15,31 @@
 #import "UIScrollView+APParallaxHeader.h"
 
 // IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
-static NSString* const kIXRowSelectEnabled = @"row_select_enabled";
-static NSString* const kIXKeepRowHighlightedOnSelect = @"keep_row_highlighted_on_select";
+IX_STATIC_CONST_STRING kIXRowSelectEnabled = @"row_select_enabled";
+IX_STATIC_CONST_STRING kIXKeepRowHighlightedOnSelect = @"keep_row_highlighted_on_select";
 
-static NSString* const kIXImageParallax = @"image.parallax";
-static NSString* const kIXImageParallaxHeight = @"image.parallax.height";
+IX_STATIC_CONST_STRING kIXImageParallax = @"image.parallax";
+IX_STATIC_CONST_STRING kIXImageParallaxHeight = @"image.parallax.height";
 
-static NSString* const kIXLayoutFlow = @"layout_flow";
-static NSString* const kIXLayoutFlowVertical = @"vertical";
-static NSString* const kIXLayoutFlowHorizontal = @"horizontal";
+IX_STATIC_CONST_STRING kIXLayoutFlow = @"layout_flow";
+IX_STATIC_CONST_STRING kIXLayoutFlowVertical = @"vertical";
+IX_STATIC_CONST_STRING kIXLayoutFlowHorizontal = @"horizontal";
 
-static NSString* const kIXSeperatorColor = @"separator.color";
-static NSString* const kIXSeperatorStyle = @"separator.style";
-static NSString* const kIXSeperatorStyleNone = @"none";
-static NSString* const kIXSeperatorStyleDefault = @"default";
+IX_STATIC_CONST_STRING kIXSeperatorColor = @"separator.color";
+IX_STATIC_CONST_STRING kIXSeperatorStyle = @"separator.style";
+IX_STATIC_CONST_STRING kIXSeperatorStyleNone = @"none";
+IX_STATIC_CONST_STRING kIXSeperatorStyleDefault = @"default";
 
 // IXTableView Events
-static NSString* const kIXStartedScrolling = @"started_scrolling";
-static NSString* const kIXEndedScrolling = @"ended_scrolling";
+IX_STATIC_CONST_STRING kIXStartedScrolling = @"started_scrolling";
+IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 
 // These Events fired on the actual cells. (aka dataRow will work)
-static NSString* const kIXWillDisplayCell = @"will_display_cell";
-static NSString* const kIXDidHideCell = @"did_hide_cell";
+IX_STATIC_CONST_STRING kIXWillDisplayCell = @"will_display_cell";
+IX_STATIC_CONST_STRING kIXDidHideCell = @"did_hide_cell";
 
 // Non property constants
-static NSString* const kIXCellIdentifier = @"IXUITableViewCell";
+IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
 @interface IXTableView () <UITableViewDataSource,UITableViewDelegate>
 
@@ -85,6 +85,13 @@ static NSString* const kIXCellIdentifier = @"IXUITableViewCell";
 -(void)applySettings
 {
     [super applySettings];
+    
+    if( [self refreshControl] != nil && [[self refreshControl] superview] != [self tableView] )
+    {
+        [[self tableView] addSubview:[self refreshControl]];
+    }
+    
+    [[self tableView] sendSubviewToBack:[self refreshControl]];
     
     __weak typeof(self) weakSelf = self;
     [[self propertyContainer] getImageProperty:kIXImageParallax

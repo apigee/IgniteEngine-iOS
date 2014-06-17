@@ -64,7 +64,11 @@ static NSString* const kIXAssetsLibraryPrefix = @"assets-library://";
     NSString* normalizedPath = nil;
     if( pathToNormalize.length > 0 )
     {
-        if( [pathToNormalize hasPrefix:sIXBundleRootPath] )
+        if( ![IXPathHandler pathIsLocal:pathToNormalize] )
+        {
+            normalizedPath = pathToNormalize;
+        }
+        else if( [pathToNormalize hasPrefix:sIXBundleRootPath] )
         {
             normalizedPath = pathToNormalize;
         }

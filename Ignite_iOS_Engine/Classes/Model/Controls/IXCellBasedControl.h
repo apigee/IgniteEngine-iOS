@@ -10,7 +10,7 @@
 
 #import "IXCellBackgroundSwipeController.h"
 
-@class IXBaseDataProvider;
+@class IXDataRowDataProvider;
 @class IXLayout;
 @class IXSandbox;
 
@@ -30,7 +30,7 @@
 
 @interface IXCellBasedControl : IXBaseControl <IXCellBackgroundSwipeControllerDelegate>
 
-@property (nonatomic,weak,readonly) IXBaseDataProvider* dataProvider;
+@property (nonatomic,weak,readonly) IXDataRowDataProvider* dataProvider;
 @property (nonatomic,assign,readonly) BOOL animateReload;
 @property (nonatomic,assign,readonly) CGFloat animateReloadDuration;
 @property (nonatomic,assign,readonly) CGFloat backgroundViewSwipeWidth;
@@ -38,12 +38,16 @@
 @property (nonatomic,assign,readonly) BOOL showsScrollIndicators;
 @property (nonatomic,assign,readonly) UIScrollViewIndicatorStyle scrollIndicatorStyle;
 
+@property (nonatomic,assign,readonly) BOOL pullToRefreshEnabled;
+@property (nonatomic,strong,readonly) UIRefreshControl* refreshControl;
+
 -(CGSize)itemSize;
 -(NSInteger)numberOfSections;
 -(NSUInteger)rowCountForSection:(NSInteger)section;
 
 -(void)reload;
 -(void)dataProviderDidUpdate:(NSNotification*)notification;
+-(void)refreshControlActivated;
 
 -(CGSize)sizeForCellAtIndexPath:(NSIndexPath*)indexPath;
 -(void)configureCell:(id<IXCellContainerDelegate>)cell withIndexPath:(NSIndexPath*)indexPath;

@@ -63,25 +63,25 @@ IX_STATIC_CONST_STRING kIXUnzipFailed = @"unzip.failed";
     }
     else
     {
-        [self setRawResponse:nil];
-        [self setLastResponseStatusCode:0];
-        [self setLastResponseErrorMessage:nil];
+        [self setResponseRawString:nil];
+        [self setResponseStatusCode:0];
+        [self setResponseErrorMessage:nil];
         
-        if ( [self dataLocation] != nil )
+        if ( [self dataBaseURL] != nil )
         {
-            if( ![self isLocalPath] )
+            if( ![self isPathLocal] )
             {
                 __weak typeof(self) weakSelf = self;
-                AFHTTPRequestOperation *fileRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:[self urlRequest]];
+                AFHTTPRequestOperation *fileRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:[self createURLRequest]];
                 if( [[self savedFileLocation] length] > 0 )
                 {
-                    fileRequestOperation.outputStream = [NSOutputStream outputStreamToFileAtPath:[self savedFileLocation] append:NO];
+                    NSOutputStream* ops =[NSOutputStream outputStreamToFileAtPath:[self savedFileLocation] append:NO];;
+                    fileRequestOperation.outputStream = ops;
                 }
                 [fileRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                     
-                    [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
-                    [weakSelf setRawResponse:[operation responseString]];
-                    
+                    [weakSelf setResponseStatusCode:[[operation response] statusCode]];
+
                     if( [weakSelf isZipFile] )
                     {
                         [[weakSelf actionContainer] executeActionsForEventNamed:kIXUnzipStarted];
@@ -108,18 +108,18 @@ IX_STATIC_CONST_STRING kIXUnzipFailed = @"unzip.failed";
 
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     
-                    [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
-                    [weakSelf setLastResponseErrorMessage:[error description]];
-                    [weakSelf setRawResponse:[operation responseString]];
+                    [weakSelf setResponseStatusCode:[[operation response] statusCode]];
+                    [weakSelf setResponseErrorMessage:[error description]];
+                    [weakSelf setResponseRawString:[operation responseString]];
                     [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                 }];
                 
-                [self authenticateAndEnqueRequestOperation:fileRequestOperation];
+                [[self httpClient] enqueueHTTPRequestOperation:fileRequestOperation];
             }
         }
         else
         {
-            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
+            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataBaseURL);
         }
     }
 }

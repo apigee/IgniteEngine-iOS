@@ -10,7 +10,7 @@
 
 #import "IXProperty.h"
 #import "IXPropertyContainer.h"
-#import "IXBaseDataProvider.h"
+#import "IXDataRowDataProvider.h"
 
 static NSString* const kIXIndex = @"index";
 
@@ -22,7 +22,7 @@ static NSString* const kIXIndex = @"index";
     
     IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
     
-    IXBaseDataProvider* baseDP = [sandbox dataProviderForRowData];
+    IXDataRowDataProvider* baseDP = [sandbox dataProviderForRowData];
     NSIndexPath* rowIndexPath = [sandbox indexPathForRowData];
     
     if( baseDP && rowIndexPath )

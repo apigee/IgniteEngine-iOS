@@ -29,7 +29,7 @@
 
 #import "MKMapView+IXAdditions.h"
 
-#import "IXBaseDataProvider.h"
+#import "IXDataRowDataProvider.h"
 
 #import "SVPulsingAnnotationView.h"
 
@@ -127,7 +127,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 
 @interface IXMap () <MKMapViewDelegate>
 
-@property (nonatomic,weak) IXBaseDataProvider* dataProvider;
+@property (nonatomic,weak) IXDataRowDataProvider* dataProvider;
 @property (nonatomic,assign) BOOL usesDataProviderForAnnotationData;
 
 @property (nonatomic,strong) MKMapView* mapView;
@@ -193,7 +193,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     
     if( [self usesDataProviderForAnnotationData] )
     {
-        [self setDataProvider:[[self sandbox] getDataProviderWithID:dataProviderID]];
+        [self setDataProvider:[[self sandbox] getDataRowDataProviderWithID:dataProviderID]];
         
         if( [self dataProvider] )
         {
@@ -221,7 +221,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     {
         // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we set up the annotations.
         NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
-        IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
+        IXDataRowDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
         
         [[self sandbox] setDataProviderForRowData:[self dataProvider]];
         for( int i = 0; i < [[self dataProvider] rowCount]; i++ )
@@ -279,7 +279,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     {
         // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we set up the annotations views.
         NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
-        IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
+        IXDataRowDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
 
         IXMapAnnotation* mapAnnotation = (IXMapAnnotation*)annotation;
         NSIndexPath* indexPathForAnnotation = [mapAnnotation dataRowIndexPath];
@@ -361,7 +361,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
         {
             // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we fire the actions on the annotations.
             NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
-            IXBaseDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
+            IXDataRowDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
             
             IXMapAnnotation* mapAnnotation = (IXMapAnnotation*)[view annotation];
             NSIndexPath* indexPathForAnnotation = [mapAnnotation dataRowIndexPath];

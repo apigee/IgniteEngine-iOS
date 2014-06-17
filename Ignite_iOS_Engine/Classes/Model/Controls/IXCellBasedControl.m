@@ -8,7 +8,7 @@
 
 #import "IXCellBasedControl.h"
 
-#import "IXBaseDataProvider.h"
+#import "IXDataRowDataProvider.h"
 #import "IXCollection.h"
 #import "IXCustom.h"
 #import "IXLayoutEngine.h"
@@ -22,22 +22,34 @@
 #import "NSString+IXAdditions.h"
 
 // IXCellBasedControl Attributes
-static NSString* const kIXAnimateReload = @"animate_reload";
-static NSString* const kIXAnimateReloadDuration = @"animate_reload.duration";
-static NSString* const kIXBackgroundColor = @"background.color";
-static NSString* const kIXBackgroundSwipeWidth = @"background_swipe_width";
-static NSString* const kIXBackgroundSlidesInFromSide = @"background_slides_in_from_side";
-static NSString* const kIXBackgroundSwipeAdjustsBackgroundAlpha = @"background_swipe_adjusts_background_alpha";
-static NSString* const kIXBackgroundControls = @"background_controls";
-static NSString* const kIXDataproviderID = @"dataprovider_id";
-static NSString* const kIXItemWidth = @"item_width";
-static NSString* const kIXItemHeight = @"item_height";
-static NSString* const kIXScrollable = @"scrollable";
-static NSString* const kIXScrollIndicatorStyle = @"scroll_indicator_style";
-static NSString* const kIXScrollIndicatorStyleBlack = @"black";
-static NSString* const kIXScrollIndicatorStyleWhite = @"white";
-static NSString* const kIXScrollIndicatorStyleDefault = @"default";
-static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
+IX_STATIC_CONST_STRING kIXAnimateReload = @"animate_reload";
+IX_STATIC_CONST_STRING kIXAnimateReloadDuration = @"animate_reload.duration";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"background.color";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
+IX_STATIC_CONST_STRING kIXBackgroundSlidesInFromSide = @"background_slides_in_from_side";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeAdjustsBackgroundAlpha = @"background_swipe_adjusts_background_alpha";
+IX_STATIC_CONST_STRING kIXBackgroundControls = @"background_controls";
+IX_STATIC_CONST_STRING kIXDataproviderID = @"dataprovider_id";
+IX_STATIC_CONST_STRING kIXItemWidth = @"item_width";
+IX_STATIC_CONST_STRING kIXItemHeight = @"item_height";
+IX_STATIC_CONST_STRING kIXScrollable = @"scrollable";
+IX_STATIC_CONST_STRING kIXPullToRefreshEnabled = @"pull_to_refresh.enabled";
+IX_STATIC_CONST_STRING kIXPullToRefreshText = @"pull_to_refresh.text";
+IX_STATIC_CONST_STRING kIXPullToRefreshTextColor = @"pull_to_refresh.text.color";
+IX_STATIC_CONST_STRING kIXPullToRefreshTextFont = @"pull_to_refresh.text.font";
+IX_STATIC_CONST_STRING kIXPullToRefreshTintColor = @"pull_to_refresh.tint.color";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scroll_indicator_style";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default";
+IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
+
+// IXCellBasedControl Functions
+IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pull_to_refresh.begin";
+IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pull_to_refresh.end";
+
+// IXCellBasedControl Events
+IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 
 @interface IXSandbox ()
 
@@ -47,7 +59,7 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
 
 @interface IXCellBasedControl ()
 
-@property (nonatomic, weak) IXBaseDataProvider* dataProvider;
+@property (nonatomic, weak) IXDataRowDataProvider* dataProvider;
 @property (nonatomic, assign) BOOL animateReload;
 @property (nonatomic, assign) CGFloat animateReloadDuration;
 @property (nonatomic, assign) CGFloat backgroundViewSwipeWidth;
@@ -57,6 +69,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
 @property (nonatomic, assign) BOOL showsScrollIndicators;
 @property (nonatomic, assign) UIScrollViewIndicatorStyle scrollIndicatorStyle;
 @property (nonatomic, strong) id<IXCellContainerDelegate> cellToCalculateSize;
+@property (nonatomic, assign) BOOL pullToRefreshEnabled;
+@property (nonatomic, strong) UIRefreshControl* refreshControl;
 
 @end
 
@@ -79,7 +93,7 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
     [super applySettings];
     
     NSString* dataProviderID = [[self propertyContainer] getStringPropertyValue:kIXDataproviderID defaultValue:nil];
-    IXBaseDataProvider* dataProvider = [[self sandbox] getDataProviderWithID:dataProviderID];
+    IXDataRowDataProvider* dataProvider = [[self sandbox] getDataRowDataProviderWithID:dataProviderID];
     
     if( [self dataProvider] != dataProvider )
     {
@@ -89,9 +103,8 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
                                                             name:IXBaseDataProviderDidUpdateNotification
                                                           object:[self dataProvider]];
         }
-
-        [self setDataProvider:dataProvider];
         
+        [self setDataProvider:dataProvider];
         if( [self dataProvider] != nil )
         {
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -108,6 +121,44 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
     [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimateReloadDuration defaultValue:0.2f]];
     [self setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXScrollable defaultValue:YES]];
     [self setShowsScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES]];
+    [self setPullToRefreshEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPullToRefreshEnabled defaultValue:YES]];
+    
+    if( [self pullToRefreshEnabled] )
+    {
+        if( [self refreshControl] == nil )
+        {
+            [self setRefreshControl:[[UIRefreshControl alloc] init]];
+            [[self refreshControl] addTarget:self action:@selector(refreshControlActivated) forControlEvents:UIControlEventValueChanged];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[self refreshControl] beginRefreshing];
+                [[self refreshControl] endRefreshing];
+            });
+        }
+
+        [[self refreshControl] setTintColor:[[self propertyContainer] getColorPropertyValue:kIXPullToRefreshTintColor defaultValue:nil]];
+        
+        NSString* refreshText = [[self propertyContainer] getStringPropertyValue:kIXPullToRefreshText defaultValue:nil];
+        if( [refreshText length] > 0 )
+        {
+            UIFont* defaultFont = [UIFont fontWithName:@"HelveticaNeue" size:20.0f];
+            UIColor* refreshTextColor = [[self propertyContainer] getColorPropertyValue:kIXPullToRefreshTextColor defaultValue:[UIColor darkGrayColor]];
+            UIFont* refreshTextFont = [[self propertyContainer] getFontPropertyValue:kIXPullToRefreshTextFont defaultValue:defaultFont];
+            
+            NSAttributedString* attributedTitle = [[NSAttributedString alloc] initWithString:refreshText
+                                                                                  attributes:@{NSForegroundColorAttributeName: refreshTextColor,
+                                                                                               NSFontAttributeName:refreshTextFont}];
+            [[self refreshControl] setAttributedTitle:attributedTitle];
+        }
+        else
+        {
+            [[self refreshControl] setAttributedTitle:nil];
+        }
+    }
+    else
+    {
+        [[self refreshControl] removeFromSuperview];
+        [self setRefreshControl:nil];
+    }
     
     NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIXScrollIndicatorStyleDefault];
     if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleBlack] ) {
@@ -116,6 +167,22 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
         [self setScrollIndicatorStyle:UIScrollViewIndicatorStyleWhite];
     } else {
         [self setScrollIndicatorStyle:UIScrollViewIndicatorStyleDefault];
+    }
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXPullToRefreshEnd] )
+    {
+        [[self refreshControl] endRefreshing];
+    }
+    else if( [functionName isEqualToString:kIXPullToRefreshBegin] )
+    {
+        [[self refreshControl] beginRefreshing];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
     }
 }
 
@@ -146,6 +213,11 @@ static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
 -(void)dataProviderDidUpdate:(NSNotification*)notification
 {
     [self reload];
+}
+
+-(void)refreshControlActivated
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXPullToRefreshActivated];
 }
 
 - (CGSize)sizeForCellAtIndexPath:(NSIndexPath*)indexPath

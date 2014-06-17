@@ -14,41 +14,31 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 @interface IXBaseDataProvider : IXBaseObject
 
+@property (nonatomic,strong) AFHTTPClient* httpClient;
 @property (nonatomic,strong) IXPropertyContainer* requestParameterProperties;
 @property (nonatomic,strong) IXPropertyContainer* requestHeaderProperties;
 @property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
 
-@property (nonatomic,assign) BOOL isLocalPath;
-@property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
-@property (nonatomic,strong) AFHTTPClient* httpClient;
-@property (nonatomic,copy) NSString* acceptedContentType;
-@property (nonatomic,copy) NSString* httpMethod;
-@property (nonatomic,copy) NSString* authType;
-@property (nonatomic,copy) NSString* dataLocation;
-@property (nonatomic,copy) NSString* dataPath;
-@property (nonatomic,copy) NSString* dataRowBasePath;
-@property (nonatomic,copy) NSString* predicateFormat;
-@property (nonatomic,copy) NSString* predicateArguments;
-@property (nonatomic,copy) NSString* sortDescriptorKey;
-@property (nonatomic,copy) NSString* sortOrder;
+@property (nonatomic,assign,readonly,getter = shouldAutoLoad) BOOL autoLoad;
+@property (nonatomic,assign,readonly,getter = isPathLocal)    BOOL pathIsLocal;
 
-@property (nonatomic,assign) NSInteger lastResponseStatusCode;
-@property (nonatomic,copy) NSString* rawResponse;
-@property (nonatomic,copy) NSString* lastResponseErrorMessage;
+@property (nonatomic,copy,readonly) NSString* cacheID;
+@property (nonatomic,copy,readonly) NSString* acceptedContentType;
+@property (nonatomic,copy,readonly) NSString* httpMethod;
+@property (nonatomic,copy,readonly) NSString* fullDataLocation;
+@property (nonatomic,copy,readonly) NSString* dataBaseURL;
+@property (nonatomic,copy,readonly) NSString* dataPath;
 
-@property (readonly) NSURLRequest* urlRequest;
-@property (readonly) NSSortDescriptor* sortDescriptor;
-@property (readonly) NSPredicate* predicate;
-@property (readonly) NSUInteger rowCount;
+@property (nonatomic,assign) NSInteger responseStatusCode;
+@property (nonatomic,copy)   NSString* responseRawString;
+@property (nonatomic,copy)   NSString* responseErrorMessage;
+
+-(void)createHTTPClient;
+-(NSURLRequest*)createURLRequest;
 
 -(void)loadData:(BOOL)forceGet;
--(void)authenticateAndEnqueRequestOperation:(AFHTTPRequestOperation*)requestOperation;
 -(void)fireLoadFinishedEventsFromCachedResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
-
--(NSString*)rowDataRawJSONResponse;
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;
--(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath;
 
 +(void)clearCache;
 

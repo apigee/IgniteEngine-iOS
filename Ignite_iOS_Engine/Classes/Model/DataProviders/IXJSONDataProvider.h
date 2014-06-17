@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
-#import "IXBaseDataProvider.h"
+#import "IXDataRowDataProvider.h"
 
-@interface IXJSONDataProvider : IXBaseDataProvider
+@interface IXJSONDataProvider : IXDataRowDataProvider
 
 @end

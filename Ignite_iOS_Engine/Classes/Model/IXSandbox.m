@@ -12,6 +12,7 @@
 #import "IXBaseObject.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
+#import "IXDataRowDataProvider.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"
 #import "IXCustom.h"
@@ -153,6 +154,17 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
     if( [dataProviderID length] > 0 && returnDataProvider == nil && (self != [[IXAppManager sharedAppManager] applicationSandbox]) )
     {
         returnDataProvider = [[[IXAppManager sharedAppManager] applicationSandbox] getDataProviderWithID:dataProviderID];
+    }
+    return returnDataProvider;
+}
+
+-(IXDataRowDataProvider*)getDataRowDataProviderWithID:(NSString*)dataProviderID
+{
+    IXDataRowDataProvider* returnDataProvider = nil;
+    IXBaseDataProvider* dataProviderWithID = [self getDataProviderWithID:dataProviderID];
+    if( [dataProviderWithID isKindOfClass:[IXDataRowDataProvider class]] )
+    {
+        returnDataProvider = (IXDataRowDataProvider*)dataProviderWithID;
     }
     return returnDataProvider;
 }

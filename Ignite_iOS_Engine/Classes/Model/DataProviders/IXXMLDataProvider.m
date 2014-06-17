@@ -15,8 +15,6 @@
 
 @interface IXXMLDataProvider ()
 
-@property (nonatomic,assign) BOOL isLocalPath;
-
 @property (nonatomic,assign) NSUInteger dataRowCount;
 @property (nonatomic,strong) RXMLElement* lastXMLResponse;
 
@@ -28,7 +26,7 @@
 {
     [super applySettings];
     
-    if( [self dataLocation] == nil )
+    if( [self dataBaseURL] == nil )
         return;
     
     if( [self acceptedContentType] )
@@ -39,7 +37,7 @@
 
 -(void)fireLoadFinishedEventsFromCachedResponse
 {
-    RXMLElement* xmlElement = [RXMLElement elementFromXMLString:[self rawResponse] encoding:NSUTF8StringEncoding];
+    RXMLElement* xmlElement = [RXMLElement elementFromXMLString:[self responseRawString] encoding:NSUTF8StringEncoding];
     if( [xmlElement isValid] )
     {
         [self setLastXMLResponse:xmlElement];
@@ -57,37 +55,37 @@
     }
     else
     {
-        [self setRawResponse:nil];
+        [self setResponseRawString:nil];
         [self setLastXMLResponse:nil];
-        [self setLastResponseStatusCode:0];
-        [self setLastResponseErrorMessage:nil];
+        [self setResponseStatusCode:0];
+        [self setResponseErrorMessage:nil];
         
-        if ( [self dataLocation] != nil )
+        if ( [self dataBaseURL] != nil )
         {
-            if( ![self isLocalPath] )
+            if( ![self isPathLocal] )
             {
                 __weak typeof(self) weakSelf = self;
-                IXAFXMLRequestOperation *xmlOperation = [[IXAFXMLRequestOperation alloc] initWithRequest:[self urlRequest]];
+                IXAFXMLRequestOperation *xmlOperation = [[IXAFXMLRequestOperation alloc] initWithRequest:[self createURLRequest]];
                 [xmlOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, RXMLElement* responseObject) {
                     
-                    [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
+                    [weakSelf setResponseStatusCode:[[operation response] statusCode]];
                     
                     if( [responseObject isValid] )
                     {
-                        [weakSelf setRawResponse:[operation responseString]];
+                        [weakSelf setResponseRawString:[operation responseString]];
                         [weakSelf setLastXMLResponse:responseObject];
                         [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
                     }
                     else
                     {
-                        [weakSelf setLastResponseErrorMessage:[NSError errorWithDomain:@"IXXMLDataProvider : Invalid XML" code:0 userInfo:nil]];
+                        [weakSelf setResponseErrorMessage:@"IXXMLDataProvider : Invalid XML"];
                         [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                     }
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     
-                    [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
-                    [weakSelf setLastResponseErrorMessage:[error description]];
-                    [weakSelf setRawResponse:[operation responseString]];
+                    [weakSelf setResponseStatusCode:[[operation response] statusCode]];
+                    [weakSelf setResponseErrorMessage:[error description]];
+                    [weakSelf setResponseRawString:[operation responseString]];
 
                     RXMLElement* responseXMLElement = [(IXAFXMLRequestOperation*)operation rXMLElement];
                     if( [responseXMLElement isValid] )
@@ -98,25 +96,12 @@
                     [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                 }];
                 
-                [self authenticateAndEnqueRequestOperation:xmlOperation];
+                [[self httpClient] enqueueHTTPRequestOperation:xmlOperation];
             }
             else
             {
-                NSString* dataPath = [self dataLocation];
-                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self dataPath] hasPrefix:@"/"] )
-                {
-                    if( [self dataPath].length )
-                    {
-                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self dataPath]];
-                    }
-                }
-                else
-                {
-                    dataPath = [[self dataLocation] stringByAppendingString:[self dataPath]];
-                }
-                
                 __weak typeof(self) weakSelf = self;
-                [[IXDataGrabber sharedDataGrabber] grabXMLFromPath:dataPath
+                [[IXDataGrabber sharedDataGrabber] grabXMLFromPath:[self fullDataLocation]
                                                             asynch:YES
                                                        shouldCache:NO
                                                    completionBlock:^(RXMLElement* rXMLElement, NSString* stringValue, NSError *error) {
@@ -125,13 +110,13 @@
 
                                                             if( [rXMLElement isValid] )
                                                             {
-                                                                [weakSelf setRawResponse:stringValue];
+                                                                [weakSelf setResponseRawString:stringValue];
                                                                 [weakSelf setLastXMLResponse:rXMLElement];
                                                                 [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
                                                             }
                                                             else
                                                             {
-                                                                [weakSelf setLastResponseErrorMessage:[error description]];
+                                                                [weakSelf setResponseErrorMessage:[error description]];
                                                                 [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                                                             }
                                                         });
@@ -140,7 +125,7 @@
         }
         else
         {
-            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
+            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataBaseURL);
         }
     }
 }
@@ -181,7 +166,7 @@
         }
         
         NSInteger xPathRow = rowIndexPath.row + 1; // +1 because xpath is not 0 based.
-        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",[self dataRowBasePath],xPathRow,rowXPath];
+        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",[self dataRowBasePath],(long)xPathRow,rowXPath];
         
         RXMLElement* elementForKeyPath = [[[self lastXMLResponse] childrenWithRootXPath:rootXPath] firstObject];
         returnValue = [elementForKeyPath text];

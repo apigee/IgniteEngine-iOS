@@ -28,7 +28,7 @@
 @class IXViewController;
 @class IXBaseControl;
 @class IXBaseDataProvider;
-@class IXCoreDataDataProvider;
+@class IXDataRowDataProvider;
 
 @interface IXSandbox : NSObject <NSCoding>
 
@@ -36,7 +36,7 @@
 @property (nonatomic,weak) IXBaseControl* containerControl;
 @property (nonatomic,weak) IXCustom* customControlContainer;
 
-@property (nonatomic,weak) IXBaseDataProvider* dataProviderForRowData;
+@property (nonatomic,weak) IXDataRowDataProvider* dataProviderForRowData;
 @property (nonatomic,strong) NSIndexPath* indexPathForRowData;
 
 @property (nonatomic,copy) NSString* basePath;
@@ -52,6 +52,7 @@
 -(NSArray*)getAllControlsAndDataProvidersWithID:(NSString*)objectID withSelfObject:(IXBaseObject*)selfObject;
 -(NSArray*)getAllControlsAndDataProvidersWithIDs:(NSArray*)objectIDs withSelfObject:(IXBaseObject*)selfObject;
 -(IXBaseDataProvider*)getDataProviderWithID:(NSString*)dataProviderID;
+-(IXDataRowDataProvider*)getDataRowDataProviderWithID:(NSString*)dataProviderID;
 
 -(void)loadAllDataProviders;
 

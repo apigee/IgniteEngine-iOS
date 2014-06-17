@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
-#import "IXBaseDataProvider.h"
+#import "IXDataRowDataProvider.h"
 #import <RestKit/CoreData.h>
 
 @class IXEntityContainer;
 @class IXTableView;
 
-@interface IXCoreDataDataProvider : IXBaseDataProvider
+@interface IXCoreDataDataProvider : IXDataRowDataProvider
 
 @property (nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) IXEntityContainer* entityContainer;

@@ -61,6 +61,8 @@
 		13ECEA5F183EBF39004BC638 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 13ECEA5E183EBF38004BC638 /* assets */; };
 		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
 		6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */; };
+		63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63240E7C194A27F200412927 /* IXDataRowDataProvider.m */; };
+		63240E80194A318300412927 /* IXOAuth2DataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63240E7F194A318300412927 /* IXOAuth2DataProvider.m */; };
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
@@ -239,6 +241,10 @@
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
 		6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBackgroundSwipeController.h; sourceTree = "<group>"; };
 		6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCellBackgroundSwipeController.m; sourceTree = "<group>"; };
+		63240E7B194A27F200412927 /* IXDataRowDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDataRowDataProvider.h; sourceTree = "<group>"; };
+		63240E7C194A27F200412927 /* IXDataRowDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDataRowDataProvider.m; sourceTree = "<group>"; };
+		63240E7E194A318300412927 /* IXOAuth2DataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXOAuth2DataProvider.h; sourceTree = "<group>"; };
+		63240E7F194A318300412927 /* IXOAuth2DataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXOAuth2DataProvider.m; sourceTree = "<group>"; };
 		6324BF4C1835931C00748F27 /* Ignite_iOS_Engine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ignite_iOS_Engine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6324BF4F1835931C00748F27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -563,14 +569,18 @@
 			children = (
 				13033F69183ED8F200C29157 /* IXBaseDataProvider.h */,
 				13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */,
+				635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */,
+				635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */,
+				63240E7B194A27F200412927 /* IXDataRowDataProvider.h */,
+				63240E7C194A27F200412927 /* IXDataRowDataProvider.m */,
 				13033F6B183ED8F200C29157 /* IXEntityContainer.h */,
 				13033F6C183ED8F200C29157 /* IXEntityContainer.m */,
 				63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */,
 				63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */,
 				635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */,
 				635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */,
-				635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */,
-				635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */,
+				63240E7E194A318300412927 /* IXOAuth2DataProvider.h */,
+				63240E7F194A318300412927 /* IXOAuth2DataProvider.m */,
 				63AEA72F193EA6D50088F480 /* IXXMLDataProvider.h */,
 				63AEA730193EA6D50088F480 /* IXXMLDataProvider.m */,
 			);
@@ -1021,6 +1031,7 @@
 				13033F93183ED8F200C29157 /* IXBaseAction.m in Sources */,
 				13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */,
 				13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */,
+				63240E80194A318300412927 /* IXOAuth2DataProvider.m in Sources */,
 				635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */,
 				CA00FA3B18C666EB0090263D /* UIImage+ResizeMagick.m in Sources */,
 				13033FA5183ED8F200C29157 /* IXSocial.m in Sources */,
@@ -1078,6 +1089,7 @@
 				6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */,
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
+				63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */,
 				63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,
 				13033FA7183ED8F200C29157 /* IXText.m in Sources */,

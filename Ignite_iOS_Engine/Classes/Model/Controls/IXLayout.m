@@ -14,24 +14,25 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 
-static NSString* const kIXLayoutFlow = @"layout_flow";
-static NSString* const kIXVertical = @"vertical";
-static NSString* const kIXHorizontal = @"horizontal";
-static NSString* const kIXVerticalScrollEnabled = @"vertical_scroll_enabled";
-static NSString* const kIXHorizontalScrollEnabled = @"horizontal_scroll_enabled";
-static NSString* const kIXEnableScrollsToTop = @"enable_scrolls_to_top";
-static NSString* const kIXScrollIndicatorStyle = @"scroll_indicator_style";
-static NSString* const kIXBlack = @"black";
-static NSString* const kIXWhite = @"white";
-static NSString* const kIXShowsScrollIndicators = @"shows_scroll_indicators";
-static NSString* const kIXShowsHorizontalScrollIndicator = @"shows_horizontal_scroll_indicator";
-static NSString* const kIXShowsVerticalScrollIndicator = @"shows_vertical_scroll_indicator";
-static NSString* const kIXMaxZoomScale = @"max_zoom_scale";
-static NSString* const kIXMinZoomScale = @"min_zoom_scale";
-static NSString* const kIXEnableZoom = @"enable_zoom";
-static NSString* const kIXZoomScale = @"zoom_scale";
-static NSString* const kIXColorGradientTop = @"color.gradient_top";
-static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
+// IXLayout Attributes
+IX_STATIC_CONST_STRING kIXLayoutFlow = @"layout_flow";
+IX_STATIC_CONST_STRING kIXVertical = @"vertical";
+IX_STATIC_CONST_STRING kIXHorizontal = @"horizontal";
+IX_STATIC_CONST_STRING kIXVerticalScrollEnabled = @"vertical_scroll_enabled";
+IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"horizontal_scroll_enabled";
+IX_STATIC_CONST_STRING kIXEnableScrollsToTop = @"enable_scrolls_to_top";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scroll_indicator_style";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white";
+IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
+IX_STATIC_CONST_STRING kIXShowsHorizontalScrollIndicator = @"shows_horizontal_scroll_indicator";
+IX_STATIC_CONST_STRING kIXShowsVerticalScrollIndicator = @"shows_vertical_scroll_indicator";
+IX_STATIC_CONST_STRING kIXMaxZoomScale = @"max_zoom_scale";
+IX_STATIC_CONST_STRING kIXMinZoomScale = @"min_zoom_scale";
+IX_STATIC_CONST_STRING kIXEnableZoom = @"enable_zoom";
+IX_STATIC_CONST_STRING kIXZoomScale = @"zoom_scale";
+IX_STATIC_CONST_STRING kIXColorGradientTop = @"color.gradient_top";
+IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 
 @interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -96,9 +97,9 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
     [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:kIXEnableScrollsToTop defaultValue:NO]];
 
     NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIX_DEFAULT];
-    if( [scrollIndicatorStyle isEqualToString:kIXBlack] ) {
+    if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleBlack] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
-    } else if( [scrollIndicatorStyle isEqualToString:kIXWhite] ) {
+    } else if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleWhite] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
     } else {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleDefault];
@@ -111,7 +112,7 @@ static NSString* const kIXColorGradientBottom = @"color.gradient_bottom";
     [self setZoomEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnableZoom defaultValue:NO]];
     if( [self isZoomEnabled] )
     {
-        [[self scrollView] setZoomScale:[[self propertyContainer] getFloatPropertyValue:@"zoom_scale" defaultValue:1.0f]];
+        [[self scrollView] setZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXZoomScale defaultValue:1.0f]];
         [[self scrollView] setMaximumZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXMaxZoomScale defaultValue:2.0f]];
         [[self scrollView] setMinimumZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXMinZoomScale defaultValue:0.5f]];
         if( [self doubleTapZoomRecognizer] == nil )

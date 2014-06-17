@@ -12,10 +12,10 @@
 #import "IXCellBackgroundSwipeController.h"
 
 // IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
-static NSString* const kIXStartedScrolling = @"started_scrolling";
-static NSString* const kIXEndedScrolling = @"ended_scrolling";
+IX_STATIC_CONST_STRING kIXStartedScrolling = @"started_scrolling";
+IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 
-static NSString* const kIXCellIdentifier = @"IXUICollectionViewCell";
+IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
 
 @interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
 
@@ -58,6 +58,13 @@ static NSString* const kIXCellIdentifier = @"IXUICollectionViewCell";
 - (void)applySettings
 {
     [super applySettings];
+    
+    if( [self refreshControl] != nil && [[self refreshControl] superview] != [self collectionView] )
+    {
+        [[self collectionView] addSubview:[self refreshControl]];
+    }
+    
+    [[self collectionView] sendSubviewToBack:[self refreshControl]];
     
     [[self collectionView] setBackgroundColor:[[self contentView] backgroundColor]];
     [[self collectionView] setScrollEnabled:[self scrollEnabled]];

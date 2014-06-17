@@ -45,7 +45,7 @@
 
 -(void)applySettings
 {
-    NSString* previousDataLocation = [self dataLocation];
+    NSString* previousDataLocation = [self dataBaseURL];
     NSString* objectsPath = [self dataPath];
     NSString* predicateFormat = [self predicateFormat];
     NSString* predicateArguments = [self predicateArguments];
@@ -59,7 +59,7 @@
     NSString* pathPattern = [[self propertyContainer] getStringPropertyValue:@"path_pattern" defaultValue:nil];
     
     _needsToPerformGet = NO;
-    if( ![[self dataLocation] isEqualToString:previousDataLocation] )
+    if( ![[self dataBaseURL] isEqualToString:previousDataLocation] )
     {
         _needsToPerformGet = YES;
     }

@@ -37,7 +37,7 @@
 
 -(void)fireLoadFinishedEventsFromCachedResponse
 {
-    NSString* rawResponseString = [self rawResponse];
+    NSString* rawResponseString = [self responseRawString];
     NSData* rawResponseData = [rawResponseString dataUsingEncoding:NSUTF8StringEncoding];
     NSError* __autoreleasing error = nil;
     id jsonObject = [NSJSONSerialization JSONObjectWithData:rawResponseData options:0 error:&error];
@@ -58,37 +58,37 @@
     }
     else
     {
-        [self setRawResponse:nil];
         [self setLastJSONResponse:nil];
-        [self setLastResponseStatusCode:0];
-        [self setLastResponseErrorMessage:nil];
+        [self setResponseRawString:nil];
+        [self setResponseStatusCode:0];
+        [self setResponseErrorMessage:nil];
         
-        if ( [self dataLocation] != nil )
+        if ( [self dataBaseURL] != nil )
         {
-            if( ![self isLocalPath] )
+            if( ![self isPathLocal] )
             {
                 __weak typeof(self) weakSelf = self;
-                IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self urlRequest]];
+                IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self createURLRequest]];
                 [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                     
-                    [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
+                    [weakSelf setResponseStatusCode:[[operation response] statusCode]];
                     
                     if( [NSJSONSerialization isValidJSONObject:responseObject] )
                     {
-                        [weakSelf setRawResponse:[operation responseString]];
+                        [weakSelf setResponseRawString:[operation responseString]];
                         [weakSelf setLastJSONResponse:responseObject];
                         [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
                     }
                     else
                     {
-                        [weakSelf setLastResponseErrorMessage:[[operation error] description]];
+                        [weakSelf setResponseErrorMessage:[[operation error] description]];
                         [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                     }
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     
-                    [weakSelf setLastResponseStatusCode:[[operation response] statusCode]];
-                    [weakSelf setLastResponseErrorMessage:[error description]];
-                    [weakSelf setRawResponse:[operation responseString]];
+                    [weakSelf setResponseStatusCode:[[operation response] statusCode]];
+                    [weakSelf setResponseErrorMessage:[error description]];
+                    [weakSelf setResponseRawString:[operation responseString]];
 
                     id responseJSONObject = [(IXAFJSONRequestOperation*)operation responseJSON];
                     if( [NSJSONSerialization isValidJSONObject:responseJSONObject] )
@@ -99,25 +99,12 @@
                     [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                 }];
                 
-                [self authenticateAndEnqueRequestOperation:jsonRequestOperation];
+                [[self httpClient] enqueueHTTPRequestOperation:jsonRequestOperation];
             }
             else
             {
-                NSString* dataPath = [self dataLocation];
-                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self dataPath] hasPrefix:@"/"] )
-                {
-                    if( [self dataPath].length )
-                    {
-                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self dataPath]];
-                    }
-                }
-                else
-                {
-                    dataPath = [[self dataLocation] stringByAppendingString:[self dataPath]];
-                }
-                
                 __weak typeof(self) weakSelf = self;
-                [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:dataPath
+                [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:[self fullDataLocation]
                                                              asynch:YES
                                                         shouldCache:NO
                                                     completionBlock:^(id jsonObject, NSString* stringValue, NSError *error) {
@@ -126,7 +113,7 @@
                                                             
                                                             if( [NSJSONSerialization isValidJSONObject:jsonObject] )
                                                             {
-                                                                [weakSelf setRawResponse:stringValue];
+                                                                [weakSelf setResponseRawString:stringValue];
                                                                 [weakSelf setLastJSONResponse:jsonObject];
                                                                 IX_dispatch_main_sync_safe(^{
                                                                     [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
@@ -134,7 +121,7 @@
                                                             }
                                                             else
                                                             {
-                                                                [weakSelf setLastResponseErrorMessage:[error description]];
+                                                                [weakSelf setResponseErrorMessage:[error description]];
                                                                 IX_dispatch_main_sync_safe(^{
                                                                     [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                                                                 });
@@ -145,7 +132,7 @@
         }
         else
         {
-            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
+            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataBaseURL);
         }
     }
 }
@@ -221,7 +208,7 @@
     return returnValue;
 }
 
--(NSString*)rowDataRawJSONResponse
+-(NSString*)rowDataRawStringResponse
 {
     NSString* returnValue = nil;
     if( [[self rowDataResults] count] > 0 )
@@ -261,39 +248,26 @@
     NSObject* jsonObject = [self objectForPath:jsonXPath container:container];
     if( jsonObject )
     {
-        if( [jsonObject isKindOfClass:[NSString class]] )
-        {
+        if( [jsonObject isKindOfClass:[NSString class]] ) {
             returnValue = (NSString*)jsonObject;
-        }
-        else if( [jsonObject isKindOfClass:[NSNumber class]] )
-        {
+        } else if( [jsonObject isKindOfClass:[NSNumber class]] ) {
             returnValue = [((NSNumber*)jsonObject) stringValue];
-        }
-        else if( [jsonObject isKindOfClass:[NSNull class]] )
-        {
+        } else if( [jsonObject isKindOfClass:[NSNull class]] ) {
             returnValue = nil;
-        }
-        else
-        {
+        } else if( [NSJSONSerialization isValidJSONObject:jsonObject] ) {
+            
             NSError* __autoreleasing jsonConvertError = nil;
-            if( [NSJSONSerialization isValidJSONObject:jsonObject] )
-            {
-                NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                                   options:NSJSONWritingPrettyPrinted
-                                                                     error:&jsonConvertError];
-                if( jsonConvertError == nil && jsonData )
-                {
-                    returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                }
-                else
-                {
-                    IX_LOG_WARN(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
-                }
+            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+                                                               options:NSJSONWritingPrettyPrinted
+                                                                 error:&jsonConvertError];
+            
+            if( jsonConvertError == nil && jsonData ) {
+                returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            } else {
+                IX_LOG_WARN(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
             }
-            else
-            {
-                IX_LOG_WARN(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
-            }
+        } else {
+            IX_LOG_WARN(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
         }
     }
     return returnValue;
