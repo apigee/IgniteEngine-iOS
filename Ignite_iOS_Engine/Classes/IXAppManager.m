@@ -41,7 +41,9 @@ IX_STATIC_CONST_STRING kIXAppMode = @"mode";
 IX_STATIC_CONST_STRING kIXLogLevel = @"log_level";
 IX_STATIC_CONST_STRING kIXDefaultView = @"default_view";
 IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawer.view.left";
+IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawer.view.left.max.width";
 IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawer.view.right";
+IX_STATIC_CONST_STRING kIXDrawerViewRightMaxWidth = @"drawer.view.right.max.width";
 IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.toggle.velocity";
 IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"enable_layout_debugging";
 IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"enable_request_logging";
@@ -341,6 +343,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                            
                                                  if( didSucceed && viewController && error == nil )
                                                  {
+                                                     [[self drawerController] setMaximumLeftDrawerWidth:[[self appProperties] getFloatPropertyValue:kIXDrawerViewLeftMaxWidth defaultValue:280.0f]];
                                                      [[self drawerController] setLeftDrawerViewController:viewController];
                                                      [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                      [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
@@ -359,6 +362,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                            
                                                  if( didSucceed && viewController && error == nil )
                                                  {
+                                                     [[self drawerController] setMaximumRightDrawerWidth:[[self appProperties] getFloatPropertyValue:kIXDrawerViewRightMaxWidth defaultValue:280.0f]];
                                                      [[self drawerController] setRightDrawerViewController:viewController];
                                                      [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                      [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];
