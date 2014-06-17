@@ -66,6 +66,8 @@ IX_STATIC_CONST_STRING kIXAuthFail = @"auth_fail";
 
 // Non Property constants.
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
+IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
+IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 static NSCache* sIXDataProviderCache = nil;
 
 // NSCoding Key Constants
@@ -284,22 +286,32 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 
 -(void)fireLoadFinishedEventsFromCachedResponse
 {
-    [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
+    [self fireLoadFinishedEvents:YES shouldCacheResponse:NO isFromCache:YES];
 }
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
 {
+    [self fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse isFromCache:NO];
+}
+
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache
+{
+    NSString* locationSpecificEventSuffix = (isFromCache) ? kIXLocationSuffixCache : kIXLocationSuffixRemote;
+    
     if( loadDidSucceed )
     {
         [[self actionContainer] executeActionsForEventNamed:kIX_SUCCESS];
+        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_SUCCESS,locationSpecificEventSuffix]];
     }
     else
     {
         [[self actionContainer] executeActionsForEventNamed:kIX_FAILED];
+        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_FAILED,locationSpecificEventSuffix]];
     }
     
     [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
-    
+    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_FINISHED,locationSpecificEventSuffix]];
+
     dispatch_async(dispatch_get_main_queue(),^{
         [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification
                                                             object:self];

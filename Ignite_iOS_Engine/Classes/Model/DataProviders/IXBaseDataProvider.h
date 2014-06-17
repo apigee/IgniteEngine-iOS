@@ -39,6 +39,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 -(void)loadData:(BOOL)forceGet;
 -(void)fireLoadFinishedEventsFromCachedResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache;
 
 +(void)clearCache;
 
