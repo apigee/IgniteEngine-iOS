@@ -107,6 +107,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     
     [[self tableView] setBackgroundColor:[[self contentView] backgroundColor]];
     [[self tableView] setScrollEnabled:[self scrollEnabled]];
+    [[self tableView] setPagingEnabled:[self pagingEnabled]];
     [[self tableView] setShowsHorizontalScrollIndicator:[self showsScrollIndicators]];
     [[self tableView] setShowsVerticalScrollIndicator:[self showsScrollIndicators]];
     [[self tableView] setIndicatorStyle:[self scrollIndicatorStyle]];

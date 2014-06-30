@@ -32,6 +32,7 @@ IX_STATIC_CONST_STRING kIXBackgroundControls = @"background_controls";
 IX_STATIC_CONST_STRING kIXDataproviderID = @"dataprovider_id";
 IX_STATIC_CONST_STRING kIXItemWidth = @"item_width";
 IX_STATIC_CONST_STRING kIXItemHeight = @"item_height";
+IX_STATIC_CONST_STRING kIXPagingEnabled = @"paging.enabled";
 IX_STATIC_CONST_STRING kIXScrollable = @"scrollable";
 IX_STATIC_CONST_STRING kIXPullToRefreshEnabled = @"pull_to_refresh.enabled";
 IX_STATIC_CONST_STRING kIXPullToRefreshText = @"pull_to_refresh.text";
@@ -66,6 +67,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 @property (nonatomic, assign) CGFloat backgroundSwipeAdjustsBackgroundAlpha;
 @property (nonatomic, assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic, assign) BOOL scrollEnabled;
+@property (nonatomic, assign) BOOL pagingEnabled;
 @property (nonatomic, assign) BOOL showsScrollIndicators;
 @property (nonatomic, assign) UIScrollViewIndicatorStyle scrollIndicatorStyle;
 @property (nonatomic, strong) id<IXCellContainerDelegate> cellToCalculateSize;
@@ -121,6 +123,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimateReloadDuration defaultValue:0.2f]];
     [self setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXScrollable defaultValue:YES]];
     [self setShowsScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES]];
+    [self setPagingEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPagingEnabled defaultValue:NO]];
     [self setPullToRefreshEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPullToRefreshEnabled defaultValue:NO]];
     
     if( [self pullToRefreshEnabled] )
@@ -248,7 +251,16 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     
     IXPropertyContainer* layoutPropertyContainer = [cell layoutPropertyContainerForCell];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
-    
+
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXItemHeight] )
+    {
+        NSString* itemHeight = [[self propertyContainer] getStringPropertyValue:kIXItemHeight defaultValue:nil];
+        if( [itemHeight length] > 0 )
+        {
+            [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"height" rawValue:itemHeight]];
+        }
+    }
+
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXBackgroundColor] )
     {
         NSString* backgroundColor = [[self propertyContainer] getStringPropertyValue:kIXBackgroundColor defaultValue:kIX_EMPTY_STRING];

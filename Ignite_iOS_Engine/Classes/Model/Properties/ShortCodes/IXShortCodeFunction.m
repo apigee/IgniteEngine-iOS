@@ -8,6 +8,9 @@
 
 #import "IXShortCodeFunction.h"
 
+@import CoreLocation;
+@import MapKit;
+
 #import "IXAppManager.h"
 #import "IXConstants.h"
 #import "IXProperty.h"
@@ -19,27 +22,28 @@
 // NOTE: Please add function name here in alphabetical order as well as adding the function block below in the same order.
 // Also to enable use of the function, ensure you have also set the function in the shortCodeFunctionWithName in the load method.
 
-//                      FUNCTION NAME                                   USAGE                           RETURN VALUE/NOTES
+//                      FUNCTION NAME                                   USAGE                                   RETURN VALUE/NOTES
 //                                                               (? means any attribute)
 
-IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                 -> String value capitalized
-IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency]]                   -> String value in currency form
-IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]          -> Removes all session attributes from memory. Returns nil.
-IX_STATIC_CONST_STRING kIXFromBase64 = @"from_base64";          // [[?:from_base64]]                -> Base64 value to string
-IX_STATIC_CONST_STRING kIXIsEmpty = @"is_empty";                // [[?:is_empty]]                   -> True if the string is empty (aka "")
-IX_STATIC_CONST_STRING kIXIsNil = @"is_nil";                    // [[?:is_nil]]                     -> True if the string is nil
-IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"is_nil_or_empty";    // [[?:is_nil_or_empty]]            -> True if the string is empty or nil
-IX_STATIC_CONST_STRING kIXIsNotEmpty = @"is_not_empty";         // [[?:is_not_empty]]               -> True if the string is not empty
-IX_STATIC_CONST_STRING kIXIsNotNil = @"is_not_nil";             // [[?:is_not_nil]]                 -> True if the string is not nil
-IX_STATIC_CONST_STRING kIXLength = @"length";                   // [[?:length]]                     -> Length of the attributes string
-IX_STATIC_CONST_STRING kIXMoment = @"moment";                   // [[?:moment(toDateFormat)]]       -> String as date with the given format (can have 2 params)
-IX_STATIC_CONST_STRING kIXMonogram = @"monogram";               // [[?:monogram]]                   -> String monogram value
-IX_STATIC_CONST_STRING kIXNow = @"now";                         // [[app:now]]                      -> Current date as string (can specify dateFormat)
-IX_STATIC_CONST_STRING kIXRandomNumber = @"random_number";      // [[app:random_number(upBounds)]]  -> Random number generator (can specify lower bounds)
-IX_STATIC_CONST_STRING kIXToBase64 = @"to_base64";              // [[?:to_base64]]                  -> String to Base64 value
-IX_STATIC_CONST_STRING kIXToUppercase = @"to_uppercase";        // [[?:to_uppercase]]               -> String value in uppercase
-IX_STATIC_CONST_STRING kIXToLowercase = @"to_lowercase";        // [[?:to_lowercase]]               -> String value in lowercase
-IX_STATIC_CONST_STRING kIXTruncate = @"truncate";               // [[?:truncate(toIndex)]]          -> Trucates the string to specified index
+IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                         -> String value capitalized
+IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency]]                           -> String value in currency form
+IX_STATIC_CONST_STRING kIXDistance = @"distance";               // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
+IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]                  -> Removes all session attributes from memory. Returns nil.
+IX_STATIC_CONST_STRING kIXFromBase64 = @"from_base64";          // [[?:from_base64]]                        -> Base64 value to string
+IX_STATIC_CONST_STRING kIXIsEmpty = @"is_empty";                // [[?:is_empty]]                           -> True if the string is empty (aka "")
+IX_STATIC_CONST_STRING kIXIsNil = @"is_nil";                    // [[?:is_nil]]                             -> True if the string is nil
+IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"is_nil_or_empty";    // [[?:is_nil_or_empty]]                    -> True if the string is empty or nil
+IX_STATIC_CONST_STRING kIXIsNotEmpty = @"is_not_empty";         // [[?:is_not_empty]]                       -> True if the string is not empty
+IX_STATIC_CONST_STRING kIXIsNotNil = @"is_not_nil";             // [[?:is_not_nil]]                         -> True if the string is not nil
+IX_STATIC_CONST_STRING kIXLength = @"length";                   // [[?:length]]                             -> Length of the attributes string
+IX_STATIC_CONST_STRING kIXMoment = @"moment";                   // [[?:moment(toDateFormat)]]               -> String as date with the given format (can have 2 params)
+IX_STATIC_CONST_STRING kIXMonogram = @"monogram";               // [[?:monogram]]                           -> String monogram value
+IX_STATIC_CONST_STRING kIXNow = @"now";                         // [[app:now]]                              -> Current date as string (can specify dateFormat)
+IX_STATIC_CONST_STRING kIXRandomNumber = @"random_number";      // [[app:random_number(upBounds)]]          -> Random number generator (can specify lower bounds)
+IX_STATIC_CONST_STRING kIXToBase64 = @"to_base64";              // [[?:to_base64]]                          -> String to Base64 value
+IX_STATIC_CONST_STRING kIXToUppercase = @"to_uppercase";        // [[?:to_uppercase]]                       -> String value in uppercase
+IX_STATIC_CONST_STRING kIXToLowercase = @"to_lowercase";        // [[?:to_lowercase]]                       -> String value in lowercase
+IX_STATIC_CONST_STRING kIXTruncate = @"truncate";               // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
 
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
@@ -60,6 +64,29 @@ static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* 
     }
     
     return [formatter stringFromNumber:amount];
+};
+
+static IXBaseShortCodeFunction const kIXDistanceFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
+    NSString* returnString = nil;
+    if( [parameters count] > 1 )
+    {
+        NSString* latLong1 = [[parameters firstObject] getPropertyValue];
+        NSString* latLong2 = [[parameters lastObject] getPropertyValue];
+
+        NSArray* latLong1Seperated = [latLong1 componentsSeparatedByString:@":"];
+        NSArray* latLong2Seperated = [latLong2 componentsSeparatedByString:@":"];
+
+        CLLocation *point1 = [[CLLocation alloc] initWithLatitude:[[latLong1Seperated firstObject] floatValue]
+                                                        longitude:[[latLong1Seperated lastObject] floatValue]];
+
+        CLLocation *point2 = [[CLLocation alloc] initWithLatitude:[[latLong2Seperated firstObject] floatValue]
+                                                        longitude:[[latLong2Seperated lastObject] floatValue]];
+
+        MKDistanceFormatter *formatter = [[MKDistanceFormatter alloc] init];
+        formatter.units = MKDistanceFormatterUnitsDefault;
+        returnString = [formatter stringFromDistance:[point1 distanceFromLocation:point2]];
+    }
+    return returnString;
 };
 
 static IXBaseShortCodeFunction const kIXDestroySessionFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
@@ -159,6 +186,7 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
         sIXFunctionDictionary = @{  kIXCapitalize:        [kIXCapitalizeFunction copy],
                                     kIXCurrency:          [kIXCurrencyFunction copy],
                                     kIXDestroySession:    [kIXDestroySessionFunction copy],
+                                    kIXDistance:          [kIXDistanceFunction copy],
                                     kIXFromBase64:        [kIXFromBase64Function copy],
                                     kIXIsEmpty:           [kIXIsEmptyFunction copy],
                                     kIXIsNil:             [kIXIsNilFunction copy],

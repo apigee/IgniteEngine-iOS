@@ -11,7 +11,15 @@
 #import "IXUICollectionViewCell.h"
 #import "IXCellBackgroundSwipeController.h"
 
-// IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
+// IXCollection Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
+IX_STATIC_CONST_STRING kIXMinimumLineSpacing = @"minimum_line_spacing";
+IX_STATIC_CONST_STRING kIXMinimumInteritemSpacing = @"minimum_interitem_spacing";
+
+IX_STATIC_CONST_STRING kIXLayoutFlow = @"layout_flow";
+IX_STATIC_CONST_STRING kIXLayoutFlowVertical = @"vertical";
+IX_STATIC_CONST_STRING kIXLayoutFlowHorizontal = @"horizontal";
+
+// IXCollection Events
 IX_STATIC_CONST_STRING kIXStartedScrolling = @"started_scrolling";
 IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 
@@ -36,8 +44,6 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
     [super buildView];
     
     _collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
-    [_collectionViewLayout setMinimumLineSpacing:1.0f];
-    [_collectionViewLayout setMinimumInteritemSpacing:1.0f];
     [_collectionViewLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_collectionViewLayout];
@@ -65,13 +71,27 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
     }
     
     [[self collectionView] sendSubviewToBack:[self refreshControl]];
-    
+
     [[self collectionView] setBackgroundColor:[[self contentView] backgroundColor]];
     [[self collectionView] setScrollEnabled:[self scrollEnabled]];
     [[self collectionView] setShowsHorizontalScrollIndicator:[self showsScrollIndicators]];
     [[self collectionView] setShowsVerticalScrollIndicator:[self showsScrollIndicators]];
     [[self collectionView] setIndicatorStyle:[self scrollIndicatorStyle]];
-    
+    [[self collectionView] setPagingEnabled:[self pagingEnabled]];
+
+    [[self collectionViewLayout] setMinimumLineSpacing:[[self propertyContainer] getFloatPropertyValue:kIXMinimumLineSpacing defaultValue:0.0f]];
+    [[self collectionViewLayout] setMinimumInteritemSpacing:[[self propertyContainer] getFloatPropertyValue:kIXMinimumInteritemSpacing defaultValue:0.0f]];
+
+    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
+    if( [layoutFlow isEqualToString:kIXLayoutFlowHorizontal] )
+    {
+        [[self collectionViewLayout] setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    }
+    else
+    {
+        [[self collectionViewLayout] setScrollDirection:UICollectionViewScrollDirectionVertical];
+    }
+
     dispatch_async(dispatch_get_main_queue(),^{
         [self reload];
     });

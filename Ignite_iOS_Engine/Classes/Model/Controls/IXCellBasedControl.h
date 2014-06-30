@@ -35,6 +35,7 @@
 @property (nonatomic,assign,readonly) CGFloat animateReloadDuration;
 @property (nonatomic,assign,readonly) CGFloat backgroundViewSwipeWidth;
 @property (nonatomic,assign,readonly) BOOL scrollEnabled;
+@property (nonatomic,assign,readonly) BOOL pagingEnabled;
 @property (nonatomic,assign,readonly) BOOL showsScrollIndicators;
 @property (nonatomic,assign,readonly) UIScrollViewIndicatorStyle scrollIndicatorStyle;
 
