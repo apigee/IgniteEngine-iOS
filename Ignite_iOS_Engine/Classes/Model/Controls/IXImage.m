@@ -17,38 +17,42 @@
 
 #import "UIImage+ResizeMagick.h"
 #import "UIImage+IXAdditions.h"
+#import "UIImage+ImageEffects.h"
 
 #import "IXLogger.h"
 
 
 // IXImage Properties
-static NSString* const kIXImagesDefault = @"images.default";
-static NSString* const kIXImagesDefaultTintColor = @"images.default.tintColor";
-static NSString* const kIXImagesHeightMax = @"images.height.max";
-static NSString* const kIXImagesWidthMax = @"images.width.max";
-static NSString* const kIXGIFDuration = @"gif_duration";
-static NSString* const kIXFlipHorizontal = @"flip_horizontal";
-static NSString* const kIXFlipVertical = @"flip_vertical";
-static NSString* const kIXRotate = @"rotate";
-static NSString* const kIXImageBinary = @"image.binary";
+IX_STATIC_CONST_STRING kIXImagesDefault = @"images.default";
+IX_STATIC_CONST_STRING kIXImagesDefaultTintColor = @"images.default.tintColor";
+IX_STATIC_CONST_STRING kIXImagesDefaultBlurRadius = @"images.default.blur.radius";
+IX_STATIC_CONST_STRING kIXImagesDefaultBlurTintColor = @"images.default.blur.tintColor";
+IX_STATIC_CONST_STRING kIXImagesDefaultBlurSaturation = @"images.default.blur.saturation";
+IX_STATIC_CONST_STRING kIXImagesHeightMax = @"images.height.max";
+IX_STATIC_CONST_STRING kIXImagesWidthMax = @"images.width.max";
+IX_STATIC_CONST_STRING kIXGIFDuration = @"gif_duration";
+IX_STATIC_CONST_STRING kIXFlipHorizontal = @"flip_horizontal";
+IX_STATIC_CONST_STRING kIXFlipVertical = @"flip_vertical";
+IX_STATIC_CONST_STRING kIXRotate = @"rotate";
+IX_STATIC_CONST_STRING kIXImageBinary = @"image.binary";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
-static NSString* const kIXImagesDefaultResize = @"images.default.resize";
+IX_STATIC_CONST_STRING kIXImagesDefaultResize = @"images.default.resize";
 
 // IXImage Read-Only Properties
-static NSString* const kIXIsAnimating = @"is_animating";
-static NSString* const kIXImageHeight = @"image.height";
-static NSString* const kIXImageWidth = @"image.width";
+IX_STATIC_CONST_STRING kIXIsAnimating = @"is_animating";
+IX_STATIC_CONST_STRING kIXImageHeight = @"image.height";
+IX_STATIC_CONST_STRING kIXImageWidth = @"image.width";
 
 // IXImage Events
-static NSString* const kIXImagesDefaultLoaded = @"images_default_loaded";
-static NSString* const kIXImagesDefaultFailed = @"images_default_failed";
+IX_STATIC_CONST_STRING kIXImagesDefaultLoaded = @"images_default_loaded";
+IX_STATIC_CONST_STRING kIXImagesDefaultFailed = @"images_default_failed";
 
 // IXImage Functions
-static NSString* const kIXStartAnimation = @"start_animation";
-static NSString* const kIXRestartAnimation = @"restart_animation";
-static NSString* const kIXStopAnimation = @"stop_animation";
-static NSString* const kIXLoadLastPhoto = @"load_last_photo";
+IX_STATIC_CONST_STRING kIXStartAnimation = @"start_animation";
+IX_STATIC_CONST_STRING kIXRestartAnimation = @"restart_animation";
+IX_STATIC_CONST_STRING kIXStopAnimation = @"stop_animation";
+IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 @interface IXImage ()
 
@@ -141,7 +145,17 @@ static NSString* const kIXLoadLastPhoto = @"load_last_photo";
                                           
                                           if (defaultTintColor)
                                               image = [image tintedImageUsingColor:defaultTintColor];
-                                          
+
+                                          BOOL needsToApplyBlur = [[self propertyContainer] propertyExistsForPropertyNamed:kIXImagesDefaultBlurRadius];
+                                          if( needsToApplyBlur )
+                                          {
+                                              CGFloat blurRadius = [[self propertyContainer] getFloatPropertyValue:kIXImagesDefaultBlurRadius defaultValue:20.0f];
+                                              UIColor* tintColor = [[self propertyContainer] getColorPropertyValue:kIXImagesDefaultBlurTintColor defaultValue:nil];
+                                              CGFloat saturation = [[self propertyContainer] getFloatPropertyValue:kIXImagesDefaultBlurSaturation defaultValue:1.8f];
+
+                                              image = [image applyBlurWithRadius:blurRadius tintColor:tintColor saturationDeltaFactor:saturation maskImage:nil];
+                                          }
+
                                           weakSelf.defaultImage = image;
                                           
                                           BOOL needsToRefreshLayout = NO;

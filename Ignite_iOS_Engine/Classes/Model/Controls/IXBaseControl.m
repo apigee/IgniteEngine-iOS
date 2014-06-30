@@ -81,6 +81,8 @@ static NSString* const kIXPinchElastic = @"pinch.elastic";
 static NSString* const kIXPinchHorizontal = @"horizontal";
 static NSString* const kIXPinchVertical = @"vertical";
 static NSString* const kIXPinchBoth = @"both";
+static NSString* const kIXSnapshotSaved = @"snapshot.saved";
+static NSString* const kIXSnapshotFailed = @"snapshot.failed";
 
 // Read-only properties
 static NSString* const kIXLocation = @"location";
@@ -96,6 +98,10 @@ static NSString* const kIXReverse = @"reverse";
 // Animation Functions
 static NSString* const kIXStartAnimation = @"start_animation";
 static NSString* const kIXStopAnimation = @"stop_animation";
+static NSString* const kIXSnapshot = @"snapshot";
+
+// kIXSnapshot Parameters
+static NSString* const kIXSaveToLocation = @"saveToLocation";
 
 // Functions & Helpers
 static NSString* const kIXToggle = @"dev_toggle";
@@ -654,6 +660,40 @@ static NSString* const kIXToggle = @"dev_toggle";
                 originalAlpha = 1;
             self.contentView.alpha = originalAlpha;
             self.contentView.enabled = YES;
+        }
+    }
+    else if ([functionName isEqualToString:kIXSnapshot] )
+    {
+        if( [self contentView] )
+        {
+            UIGraphicsBeginImageContextWithOptions([self contentView].bounds.size, YES, 0);
+            [[self contentView] drawViewHierarchyInRect:[self contentView].bounds afterScreenUpdates:YES];
+            UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+
+            NSString* saveToLocation = [parameterContainer getPathPropertyValue:kIXSaveToLocation basePath:nil defaultValue:nil];
+            NSData* imageData = UIImagePNGRepresentation(image);
+            if( [imageData length] > 0 && [saveToLocation length] > 0 )
+            {
+                NSError* __autoreleasing error;
+                [imageData writeToFile:saveToLocation options:NSDataWritingAtomic error:&error];
+                if( error == nil )
+                {
+                    [[self actionContainer] executeActionsForEventNamed:kIXSnapshotSaved];
+                }
+                else
+                {
+                    [[self actionContainer] executeActionsForEventNamed:kIXSnapshotFailed];
+                }
+            }
+            else
+            {
+                [[self actionContainer] executeActionsForEventNamed:kIXSnapshotFailed];
+            }
+        }
+        else
+        {
+            [[self actionContainer] executeActionsForEventNamed:kIXSnapshotFailed];
         }
     }
     else if ([functionName isEqualToString:kIXStopAnimation])
