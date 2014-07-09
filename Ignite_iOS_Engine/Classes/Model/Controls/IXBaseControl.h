@@ -44,4 +44,6 @@
 -(void)processCancelTouch:(BOOL)fireTouchActions;
 -(void)processEndTouch:(BOOL)fireTouchActions;
 
+-(IXBaseControl*)getTouchedControl:(UITouch*)touch;
+
 @end

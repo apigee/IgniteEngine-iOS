@@ -90,6 +90,46 @@
     [[self cellBackgroundSwipeController] setBackgroundLayoutControl:_backgroundLayoutControl];
 }
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    if( [self backgroundSlidesInFromSide] )
+    {
+        IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
+        [touchedControl controlViewTouchesBegan:touches withEvent:event];
+    }
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    if( [self backgroundSlidesInFromSide] )
+    {
+        IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
+        [touchedControl controlViewTouchesCancelled:touches withEvent:event];
+    }
+}
+
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    if( [self backgroundSlidesInFromSide] )
+    {
+        IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
+        [touchedControl controlViewTouchesMoved:touches withEvent:event];
+    }
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    if( [self backgroundSlidesInFromSide] )
+    {
+        IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
+        [touchedControl controlViewTouchesEnded:touches withEvent:event];
+    }
+}
+
 -(void)enableBackgroundSwipe:(BOOL)enableBackgroundSwipe swipeWidth:(CGFloat)swipeWidth
 {
     if( enableBackgroundSwipe )

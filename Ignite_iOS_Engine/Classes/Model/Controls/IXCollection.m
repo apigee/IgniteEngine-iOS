@@ -23,6 +23,9 @@ IX_STATIC_CONST_STRING kIXLayoutFlowHorizontal = @"horizontal";
 IX_STATIC_CONST_STRING kIXStartedScrolling = @"started_scrolling";
 IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 
+// IXCollection Functions
+IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
+
 IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
 
 @interface IXCollection () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
@@ -95,6 +98,21 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
     dispatch_async(dispatch_get_main_queue(),^{
         [self reload];
     });
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXResetAllBackgroundControls] )
+    {
+        for( IXUICollectionViewCell* cell in [[self collectionView] visibleCells] )
+        {
+            [[cell cellBackgroundSwipeController] resetCellPosition];
+        }
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
 }
 
 -(void)reload

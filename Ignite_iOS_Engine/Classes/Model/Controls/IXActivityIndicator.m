@@ -6,19 +6,16 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- 
- CONTROL
- 
- - TYPE : "Spinner"
- 
- - PROPERTIES
- 
- * name="style"                     default="white"               type="String"
-  
- */
-
 #import "IXActivityIndicator.h"
+
+// IXActivityIndicator Attributes
+IX_STATIC_CONST_STRING kIXActivityIndicatorStyle = @"style";
+IX_STATIC_CONST_STRING kIXActivityIndicatorColor = @"color"; // Note: Setting this overrides the color set by kIXActivityIndicatorStyle
+
+// kIXActivityIndicatorStyle Accepted Values
+IX_STATIC_CONST_STRING kIXActivityIndicatorStyleWhite = @"white";
+IX_STATIC_CONST_STRING kIXActivityIndicatorStyleLarge = @"large";
+IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
 
 @interface IXActivityIndicator ()
 
@@ -31,42 +28,49 @@
 -(void)buildView
 {
     [super buildView];
-}
-
--(void)configureActivityIndicatorWithStyle:(UIActivityIndicatorViewStyle)style
-{
-    UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
-    [activityIndicatorView setHidesWhenStopped:NO];
-    [activityIndicatorView setCenter:CGPointMake([self activityIndicator].frame.size.height/2, [self activityIndicator].frame.size.width/2)];
-    [activityIndicatorView startAnimating];
     
-    [[self activityIndicator] stopAnimating];
-    [[self activityIndicator] removeFromSuperview];
+    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [_activityIndicator setHidesWhenStopped:NO];
+    [_activityIndicator startAnimating];
     
-    [self setActivityIndicator:activityIndicatorView];
-    [[self contentView] addSubview:[self activityIndicator]];
+    [[self contentView] addSubview:_activityIndicator];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return CGSizeMake([self activityIndicator].frame.size.width, [self activityIndicator].frame.size.height);
+    return [[self activityIndicator] frame].size;
+}
+
+-(void)layoutControlContentsInRect:(CGRect)rect
+{
+    [[self activityIndicator] setFrame:rect];
+    [self centerActivityIndicator];
 }
 
 -(void)applySettings
 {
     [super applySettings];
     
+    UIColor* activityIndicatorColor = [UIColor whiteColor];
     UIActivityIndicatorViewStyle activityIndicatorStyle = UIActivityIndicatorViewStyleWhite;
-    NSString* spinnerStyleString = [[self propertyContainer] getStringPropertyValue:@"style" defaultValue:@"white"];
-    if( [spinnerStyleString isEqualToString:@"gray"] )
-    {
+    NSString* spinnerStyleString = [[self propertyContainer] getStringPropertyValue:kIXActivityIndicatorStyle defaultValue:kIXActivityIndicatorStyleLarge];
+    if( [spinnerStyleString isEqualToString:kIXActivityIndicatorStyleGray] ) {
+        activityIndicatorColor = [UIColor grayColor];
         activityIndicatorStyle = UIActivityIndicatorViewStyleGray;
-    }
-    else if( [spinnerStyleString isEqualToString:@"large"] )
-    {
+    } else if( [spinnerStyleString isEqualToString:kIXActivityIndicatorStyleLarge] ) {
         activityIndicatorStyle = UIActivityIndicatorViewStyleWhiteLarge;
     }
-    [self configureActivityIndicatorWithStyle:activityIndicatorStyle];
+    
+    [[self activityIndicator] setActivityIndicatorViewStyle:activityIndicatorStyle];
+    [[self activityIndicator] setColor:[[self propertyContainer] getColorPropertyValue:kIXActivityIndicatorColor defaultValue:activityIndicatorColor]];
+    [self centerActivityIndicator];
+}
+
+-(void)centerActivityIndicator
+{
+    CGRect contentViewFrame = [[self contentView] frame];
+    CGPoint center = CGPointMake(CGRectGetWidth(contentViewFrame)/2,CGRectGetHeight(contentViewFrame)/2);
+    [[self activityIndicator] setCenter:center];
 }
 
 @end

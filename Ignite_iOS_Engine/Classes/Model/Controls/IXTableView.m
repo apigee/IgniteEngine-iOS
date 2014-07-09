@@ -38,6 +38,9 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 IX_STATIC_CONST_STRING kIXWillDisplayCell = @"will_display_cell";
 IX_STATIC_CONST_STRING kIXDidHideCell = @"did_hide_cell";
 
+// IXTableView Functions
+IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
+
 // Non property constants
 IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
@@ -131,6 +134,21 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     dispatch_async(dispatch_get_main_queue(),^{
         [self reload];
     });
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXResetAllBackgroundControls] )
+    {
+        for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
+        {
+            [[cell cellBackgroundSwipeController] resetCellPosition];
+        }
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
 }
 
 -(void)reload

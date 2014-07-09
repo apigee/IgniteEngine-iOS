@@ -28,6 +28,7 @@ IX_STATIC_CONST_STRING kIXImagesDefaultTintColor = @"images.default.tintColor";
 IX_STATIC_CONST_STRING kIXImagesDefaultBlurRadius = @"images.default.blur.radius";
 IX_STATIC_CONST_STRING kIXImagesDefaultBlurTintColor = @"images.default.blur.tintColor";
 IX_STATIC_CONST_STRING kIXImagesDefaultBlurSaturation = @"images.default.blur.saturation";
+IX_STATIC_CONST_STRING kIXImagesDefaultForceRefresh = @"images.default.force_refresh";
 IX_STATIC_CONST_STRING kIXImagesHeightMax = @"images.height.max";
 IX_STATIC_CONST_STRING kIXImagesWidthMax = @"images.width.max";
 IX_STATIC_CONST_STRING kIXGIFDuration = @"gif_duration";
@@ -135,7 +136,8 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
         
         NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
         UIColor *defaultTintColor = [self.propertyContainer getColorPropertyValue:kIXImagesDefaultTintColor defaultValue:nil];
-        
+        BOOL forceRefresh = [self.propertyContainer getBoolPropertyValue:kIXImagesDefaultForceRefresh defaultValue:NO];
+
         [[self propertyContainer] getImageProperty:kIXImagesDefault
                                       successBlock:^(UIImage *image) {
                                           
@@ -178,7 +180,7 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
                                           
                                       } failBlock:^(NSError *error) {
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
-                                      }];
+                                      } shouldRefreshCachedImage:forceRefresh];
 
         BOOL flipHorizontal = [[self propertyContainer] getBoolPropertyValue:kIXFlipHorizontal defaultValue:NO];
         BOOL flipVertical = [[self propertyContainer] getBoolPropertyValue:kIXFlipVertical defaultValue:NO];
