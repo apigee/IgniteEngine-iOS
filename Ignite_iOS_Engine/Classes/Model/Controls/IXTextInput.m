@@ -60,6 +60,7 @@ static NSString* const kIXHidesImagesWhenEmpty = @"image.hides_when_empty"; // O
 
 static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
 static NSString* const kIXKeyboardType = @"keyboard.type";
+static NSString* const kIXKeyboardPadding = @"keyboard.padding";
 static NSString* const kIXKeyboardReturnKey = @"keyboard.return_key";
 
 static NSString* const kIXInputRegexAllowed = @"input.regex.allowed";
@@ -116,6 +117,7 @@ static NSString* const kIXNewLineString = @"\n";
 
 @property (nonatomic,weak) IXLayout* layoutToScroll;
 @property (nonatomic,assign) BOOL adjustsScrollWithScreen;
+@property (nonatomic,assign) CGFloat keyboardPadding;
 @property (nonatomic,assign) CGSize layoutContentSizeAtStartOfEditing;
 
 @property (nonatomic,assign) NSInteger inputMaxAllowedCharacters;
@@ -377,6 +379,7 @@ static NSString* const kIXNewLineString = @"\n";
         layoutToScroll = [[[self sandbox] viewController] containerControl];
     }
     
+    [self setKeyboardPadding:[[self propertyContainer] getFloatPropertyValue:kIXKeyboardPadding defaultValue:0.0f]];
     [self setLayoutToScroll:layoutToScroll];
 }
 
@@ -582,7 +585,7 @@ static NSString* const kIXNewLineString = @"\n";
         CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
         
         CGPoint point = [scrollView contentOffset];
-        point.y += [textInputView bounds].size.height - keyboardHeight;
+        point.y += [textInputView bounds].size.height - keyboardHeight - [self keyboardPadding];
         
         if( point.y < 0.0f )
             point.y = 0.0f;
@@ -624,7 +627,7 @@ static NSString* const kIXNewLineString = @"\n";
         
         CGPoint point = convertedTextInputBounds.origin;
         point.x = 0.0f;
-        point.y -= scrollViewHeight - keyboardHeight - textInputBounds.size.height;
+        point.y -= scrollViewHeight - keyboardHeight - textInputBounds.size.height - [self keyboardPadding];
         
         //    if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
         //    {
