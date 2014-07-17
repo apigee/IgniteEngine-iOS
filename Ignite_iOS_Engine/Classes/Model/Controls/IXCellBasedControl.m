@@ -63,7 +63,6 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 @property (nonatomic, weak) IXDataRowDataProvider* dataProvider;
 @property (nonatomic, assign) BOOL animateReload;
 @property (nonatomic, assign) CGFloat animateReloadDuration;
-@property (nonatomic, assign) CGFloat backgroundViewSwipeWidth;
 @property (nonatomic, assign) CGFloat backgroundSwipeAdjustsBackgroundAlpha;
 @property (nonatomic, assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic, assign) BOOL scrollEnabled;

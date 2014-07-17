@@ -17,6 +17,7 @@
 // IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
 IX_STATIC_CONST_STRING kIXRowSelectEnabled = @"row_select_enabled";
 IX_STATIC_CONST_STRING kIXKeepRowHighlightedOnSelect = @"keep_row_highlighted_on_select";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
 
 IX_STATIC_CONST_STRING kIXImageParallax = @"image.parallax";
 IX_STATIC_CONST_STRING kIXImageParallaxHeight = @"image.parallax.height";
@@ -40,6 +41,7 @@ IX_STATIC_CONST_STRING kIXDidHideCell = @"did_hide_cell";
 
 // IXTableView Functions
 IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
+IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"set_background_swipe_width";
 
 // Non property constants
 IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
@@ -143,6 +145,14 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
         for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
         {
             [[cell cellBackgroundSwipeController] resetCellPosition];
+        }
+    }
+    else if( [functionName isEqualToString:kIXSetBackgroundSwipeWidth] )
+    {
+        [self setBackgroundViewSwipeWidth:[parameterContainer getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:0.0f]];
+        for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
+        {
+            [[cell cellBackgroundSwipeController] setSwipeWidth:[self backgroundViewSwipeWidth]];
         }
     }
     else

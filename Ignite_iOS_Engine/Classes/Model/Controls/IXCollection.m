@@ -14,6 +14,7 @@
 // IXCollection Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
 IX_STATIC_CONST_STRING kIXMinimumLineSpacing = @"minimum_line_spacing";
 IX_STATIC_CONST_STRING kIXMinimumInteritemSpacing = @"minimum_interitem_spacing";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
 
 IX_STATIC_CONST_STRING kIXLayoutFlow = @"layout_flow";
 IX_STATIC_CONST_STRING kIXLayoutFlowVertical = @"vertical";
@@ -25,6 +26,7 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 
 // IXCollection Functions
 IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
+IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"set_background_swipe_width";
 
 IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
 
@@ -107,6 +109,14 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
         for( IXUICollectionViewCell* cell in [[self collectionView] visibleCells] )
         {
             [[cell cellBackgroundSwipeController] resetCellPosition];
+        }
+    }
+    else if( [functionName isEqualToString:kIXSetBackgroundSwipeWidth] )
+    {
+        [self setBackgroundViewSwipeWidth:[parameterContainer getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:0.0f]];
+        for( IXUICollectionViewCell* cell in [[self collectionView] visibleCells] )
+        {
+            [[cell cellBackgroundSwipeController] setSwipeWidth:[self backgroundViewSwipeWidth]];
         }
     }
     else

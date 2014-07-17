@@ -62,6 +62,30 @@
     }
 }
 
+-(void)setSwipeWidth:(CGFloat)swipeWidth
+{
+    _swipeWidth = swipeWidth;
+
+    UIView* layoutControlsView = [[self layoutControl] contentView];
+    if( [self backgroundLayoutControl] && [layoutControlsView center].x != [self cellsStartingCenterXPosition] ) {
+
+        CGFloat halfOfCellsWidth = ([[self cellView] frame].size.width/2);
+        CGFloat finalX = halfOfCellsWidth - [self swipeWidth];
+
+        [self adjustBackgroundViewsAlpha];
+
+        CGFloat animationDuration = (ABS(halfOfCellsWidth)*0.0002f)+0.2f;
+
+        [[self tapGestureRecognizer] setEnabled:( finalX != [self cellsStartingCenterXPosition] )];
+
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             [layoutControlsView setCenter:CGPointMake(finalX, [layoutControlsView center].y)];
+                             [self adjustBackgroundViewsAlpha];
+                         }];
+    }
+}
+
 -(void)setAdjustsBackgroundAlphaWithSwipe:(BOOL)adjustsBackgroundAlphaWithSwipe
 {
     _adjustsBackgroundAlphaWithSwipe = adjustsBackgroundAlphaWithSwipe;
