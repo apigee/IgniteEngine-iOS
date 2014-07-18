@@ -87,6 +87,8 @@
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
 		635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */; };
+		635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0DFF1979B695002C0DBA /* IXAddressBook.m */; };
+		635F0E031979CA54002C0DBA /* IXCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0E021979CA54002C0DBA /* IXCalendar.m */; };
 		6366D6D418A0A9D5000AEEA5 /* IXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D318A0A9D5000AEEA5 /* IXButton.m */; };
 		6366D6D718A18741000AEEA5 /* IXCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D618A18741000AEEA5 /* IXCustom.m */; };
 		6366D6DA18A1B9C7000AEEA5 /* IXWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D918A1B9C7000AEEA5 /* IXWindow.m */; };
@@ -288,6 +290,10 @@
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
 		635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCoreDataDataProvider.m; sourceTree = "<group>"; };
 		635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApigeeiOSSDK.framework; path = "Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib/ApigeeiOSSDK.framework"; sourceTree = "<group>"; };
+		635F0DFE1979B695002C0DBA /* IXAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAddressBook.h; sourceTree = "<group>"; };
+		635F0DFF1979B695002C0DBA /* IXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAddressBook.m; sourceTree = "<group>"; };
+		635F0E011979CA54002C0DBA /* IXCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCalendar.h; sourceTree = "<group>"; };
+		635F0E021979CA54002C0DBA /* IXCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCalendar.m; sourceTree = "<group>"; };
 		6366D6D218A0A9D5000AEEA5 /* IXButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXButton.h; sourceTree = "<group>"; };
 		6366D6D318A0A9D5000AEEA5 /* IXButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXButton.m; sourceTree = "<group>"; };
 		6366D6D518A18741000AEEA5 /* IXCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustom.h; sourceTree = "<group>"; };
@@ -509,12 +515,16 @@
 			children = (
 				13033F42183ED8F200C29157 /* IXActivityIndicator.h */,
 				13033F43183ED8F200C29157 /* IXActivityIndicator.m */,
+				635F0DFE1979B695002C0DBA /* IXAddressBook.h */,
+				635F0DFF1979B695002C0DBA /* IXAddressBook.m */,
 				13033F44183ED8F200C29157 /* IXBaseControl.h */,
 				13033F45183ED8F200C29157 /* IXBaseControl.m */,
 				13033F46183ED8F200C29157 /* IXBrowser.h */,
 				13033F47183ED8F200C29157 /* IXBrowser.m */,
 				6366D6D218A0A9D5000AEEA5 /* IXButton.h */,
 				6366D6D318A0A9D5000AEEA5 /* IXButton.m */,
+				635F0E011979CA54002C0DBA /* IXCalendar.h */,
+				635F0E021979CA54002C0DBA /* IXCalendar.m */,
 				CA51499818E0CAC000FA58DF /* IXCamera.h */,
 				CA51499918E0CAC000FA58DF /* IXCamera.m */,
 				6394F453193FD59A009EE1C4 /* IXCellBasedControl.h */,
@@ -1018,6 +1028,7 @@
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
+				635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */,
 				6333614818971802004F3433 /* IXCreateAction.m in Sources */,
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,
 				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
@@ -1034,6 +1045,7 @@
 				63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */,
 				63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */,
 				13033F93183ED8F200C29157 /* IXBaseAction.m in Sources */,
+				635F0E031979CA54002C0DBA /* IXCalendar.m in Sources */,
 				13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */,
 				13033FAD183ED8F200C29157 /* IXBaseDataProvider.m in Sources */,
 				63240E80194A318300412927 /* IXOAuth2DataProvider.m in Sources */,
