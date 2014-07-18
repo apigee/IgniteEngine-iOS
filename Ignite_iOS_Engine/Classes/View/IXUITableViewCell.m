@@ -112,7 +112,7 @@
     if( [self backgroundSlidesInFromSide] )
     {
         IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
-        [touchedControl controlViewTouchesBegan:touches withEvent:event];
+        [[touchedControl contentView] touchesBegan:touches withEvent:event];
     }
 }
 
@@ -122,7 +122,7 @@
     if( [self backgroundSlidesInFromSide] )
     {
         IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
-        [touchedControl controlViewTouchesCancelled:touches withEvent:event];
+        [[touchedControl contentView] touchesCancelled:touches withEvent:event];
     }
 }
 
@@ -132,7 +132,7 @@
     if( [self backgroundSlidesInFromSide] )
     {
         IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
-        [touchedControl controlViewTouchesMoved:touches withEvent:event];
+        [[touchedControl contentView] touchesMoved:touches withEvent:event];
     }
 }
 
@@ -142,7 +142,7 @@
     if( [self backgroundSlidesInFromSide] )
     {
         IXBaseControl* touchedControl = [[self backgroundLayoutControl] getTouchedControl:[[event allTouches] anyObject]];
-        [touchedControl controlViewTouchesEnded:touches withEvent:event];
+        [[touchedControl contentView] touchesEnded:touches withEvent:event];
     }
 }
 
