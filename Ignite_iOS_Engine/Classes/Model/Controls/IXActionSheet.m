@@ -15,6 +15,7 @@
 IX_STATIC_CONST_STRING kIXSheetStyle = @"sheet.style";
 IX_STATIC_CONST_STRING kIXSheetTitle = @"sheet.title";
 IX_STATIC_CONST_STRING kIXSheetButtonTitleCancel = @"sheet.button.title.cancel";
+IX_STATIC_CONST_STRING kIXSheetButtonTitleDestructive = @"sheet.button.title.destructive";
 IX_STATIC_CONST_STRING kIXSheetButtonTitleOthers = @"sheet.button.title.others";
 
 // kIXSheetStyle Accepted Values
@@ -37,6 +38,7 @@ IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@_pressed";
 @property (nonatomic,strong) NSString* sheetTitle;
 @property (nonatomic,assign) UIActionSheetStyle actionSheetStyle;
 @property (nonatomic,strong) NSString* cancelButtonTitle;
+@property (nonatomic,strong) NSString* destructiveButtonTitle;
 @property (nonatomic,strong) NSArray* otherTitles;
 
 @end
@@ -70,6 +72,7 @@ IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@_pressed";
 
     [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:nil]];
     [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:@"Cancel"]];
+    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:nil]];
     [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:nil]];
 }
 
@@ -86,8 +89,9 @@ IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@_pressed";
         UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:[self sheetTitle]
                                                                  delegate:self
                                                         cancelButtonTitle:nil
-                                                   destructiveButtonTitle:nil
+                                                   destructiveButtonTitle:[self destructiveButtonTitle]
                                                         otherButtonTitles:nil];
+
         for( NSString* otherTitle in [self otherTitles] )
         {
             [actionSheet addButtonWithTitle:otherTitle];
