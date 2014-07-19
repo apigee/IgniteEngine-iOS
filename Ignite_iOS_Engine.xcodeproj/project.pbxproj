@@ -89,6 +89,7 @@
 		635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */; };
 		635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0DFF1979B695002C0DBA /* IXAddressBook.m */; };
 		635F0E031979CA54002C0DBA /* IXCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0E021979CA54002C0DBA /* IXCalendar.m */; };
+		635F0E061979ED62002C0DBA /* IXActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0E051979ED62002C0DBA /* IXActionSheet.m */; };
 		6366D6D418A0A9D5000AEEA5 /* IXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D318A0A9D5000AEEA5 /* IXButton.m */; };
 		6366D6D718A18741000AEEA5 /* IXCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D618A18741000AEEA5 /* IXCustom.m */; };
 		6366D6DA18A1B9C7000AEEA5 /* IXWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6D918A1B9C7000AEEA5 /* IXWindow.m */; };
@@ -294,6 +295,8 @@
 		635F0DFF1979B695002C0DBA /* IXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAddressBook.m; sourceTree = "<group>"; };
 		635F0E011979CA54002C0DBA /* IXCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCalendar.h; sourceTree = "<group>"; };
 		635F0E021979CA54002C0DBA /* IXCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCalendar.m; sourceTree = "<group>"; };
+		635F0E041979ED62002C0DBA /* IXActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXActionSheet.h; sourceTree = "<group>"; };
+		635F0E051979ED62002C0DBA /* IXActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXActionSheet.m; sourceTree = "<group>"; };
 		6366D6D218A0A9D5000AEEA5 /* IXButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXButton.h; sourceTree = "<group>"; };
 		6366D6D318A0A9D5000AEEA5 /* IXButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXButton.m; sourceTree = "<group>"; };
 		6366D6D518A18741000AEEA5 /* IXCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustom.h; sourceTree = "<group>"; };
@@ -573,6 +576,8 @@
 				638226BD18ADF48D00E856ED /* IXTimer.m */,
 				13033F62183ED8F200C29157 /* IXToggle.h */,
 				13033F63183ED8F200C29157 /* IXToggle.m */,
+				635F0E041979ED62002C0DBA /* IXActionSheet.h */,
+				635F0E051979ED62002C0DBA /* IXActionSheet.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1107,6 +1112,7 @@
 				6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */,
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
+				635F0E061979ED62002C0DBA /* IXActionSheet.m in Sources */,
 				63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */,
 				63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,
