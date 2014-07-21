@@ -20,8 +20,8 @@
 @property (assign, nonatomic) NSUInteger skippedCount;
 @property (assign, nonatomic) NSUInteger finishedCount;
 @property (assign, nonatomic) NSTimeInterval startedTime;
-@property (copy, nonatomic) void (^completionBlock)(NSUInteger, NSUInteger);
-@property (copy, nonatomic) void (^progressBlock)(NSUInteger, NSUInteger);
+@property (copy, nonatomic) SDWebImagePrefetcherCompletionBlock completionBlock;
+@property (copy, nonatomic) SDWebImagePrefetcherProgressBlock progressBlock;
 
 @end
 
@@ -56,7 +56,7 @@
 - (void)startPrefetchingAtIndex:(NSUInteger)index {
     if (index >= self.prefetchURLs.count) return;
     self.requestedCount++;
-    [self.manager downloadWithURL:self.prefetchURLs[index] options:self.options progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+    [self.manager downloadImageWithURL:self.prefetchURLs[index] options:self.options progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
         if (!finished) return;
         self.finishedCount++;
 
@@ -88,7 +88,7 @@
                 [self startPrefetchingAtIndex:self.requestedCount];
             });
         }
-        else if (self.finishedCount + self.skippedCount == self.requestedCount) {
+        else if (self.finishedCount == self.requestedCount) {
             [self reportStatus];
             if (self.completionBlock) {
                 self.completionBlock(self.finishedCount, self.skippedCount);
@@ -113,7 +113,7 @@
     [self prefetchURLs:urls progress:nil completed:nil];
 }
 
-- (void)prefetchURLs:(NSArray *)urls progress:(void (^)(NSUInteger, NSUInteger))progressBlock completed:(void (^)(NSUInteger, NSUInteger))completionBlock {
+- (void)prefetchURLs:(NSArray *)urls progress:(SDWebImagePrefetcherProgressBlock)progressBlock completed:(SDWebImagePrefetcherCompletionBlock)completionBlock {
     [self cancelPrefetching]; // Prevent duplicate prefetch request
     self.startedTime = CFAbsoluteTimeGetCurrent();
     self.prefetchURLs = urls;

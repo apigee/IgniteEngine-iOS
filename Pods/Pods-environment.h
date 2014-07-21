@@ -34,7 +34,7 @@
 #define COCOAPODS_POD_AVAILABLE_APParallaxHeader
 #define COCOAPODS_VERSION_MAJOR_APParallaxHeader 0
 #define COCOAPODS_VERSION_MINOR_APParallaxHeader 1
-#define COCOAPODS_VERSION_PATCH_APParallaxHeader 3
+#define COCOAPODS_VERSION_PATCH_APParallaxHeader 5
 
 // ApigeeiOSSDK
 #define COCOAPODS_POD_AVAILABLE_ApigeeiOSSDK
@@ -96,12 +96,6 @@
 #define COCOAPODS_VERSION_MINOR_MMDrawerController_Subclass 5
 #define COCOAPODS_VERSION_PATCH_MMDrawerController_Subclass 6
 
-// PPSSignatureView
-#define COCOAPODS_POD_AVAILABLE_PPSSignatureView
-#define COCOAPODS_VERSION_MAJOR_PPSSignatureView 0
-#define COCOAPODS_VERSION_MINOR_PPSSignatureView 1
-#define COCOAPODS_VERSION_PATCH_PPSSignatureView 0
-
 // RaptureXML
 #define COCOAPODS_POD_AVAILABLE_RaptureXML
 #define COCOAPODS_VERSION_MAJOR_RaptureXML 1
@@ -153,13 +147,13 @@
 // SDWebImage
 #define COCOAPODS_POD_AVAILABLE_SDWebImage
 #define COCOAPODS_VERSION_MAJOR_SDWebImage 3
-#define COCOAPODS_VERSION_MINOR_SDWebImage 6
+#define COCOAPODS_VERSION_MINOR_SDWebImage 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage 0
 
 // SDWebImage/Core
 #define COCOAPODS_POD_AVAILABLE_SDWebImage_Core
 #define COCOAPODS_VERSION_MAJOR_SDWebImage_Core 3
-#define COCOAPODS_VERSION_MINOR_SDWebImage_Core 6
+#define COCOAPODS_VERSION_MINOR_SDWebImage_Core 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Core 0
 
 // SOCKit

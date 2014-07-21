@@ -38,6 +38,7 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
 // These Events fired on the actual cells. (aka dataRow will work)
 IX_STATIC_CONST_STRING kIXWillDisplayCell = @"will_display_cell";
 IX_STATIC_CONST_STRING kIXDidHideCell = @"did_hide_cell";
+IX_STATIC_CONST_STRING kIXDidSelectCell = @"did_select_cell";
 
 // IXTableView Functions
 IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
@@ -256,6 +257,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+    [[self actionContainer] executeActionsForEventNamed:kIXDidSelectCell];
 }
 
 #pragma mark UIScrollViewDelegate methods

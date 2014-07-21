@@ -30,6 +30,7 @@ static NSString* const kIXBorderRadius = @"border.radius";
 static NSString* const kIXBackgroundColor = @"background.color";
 static NSString* const kIXBackgroundImage = @"background.image";
 static NSString* const kIXBackgroundImageScale = @"background.image.scale";
+static NSString* const kIXCIContextResolution = @"cicontext.resolution";
 static NSString* const kIXEnabled = @"enabled";
 static NSString* const kIXEnableTap = @"enable_tap";
 static NSString* const kIXEnableSwipe = @"enable_swipe";
@@ -666,7 +667,8 @@ static NSString* const kIXToggle = @"dev_toggle";
     {
         if( [self contentView] )
         {
-            UIGraphicsBeginImageContextWithOptions([self contentView].bounds.size, YES, 0);
+            CGFloat ciResolution = [[self propertyContainer] getFloatPropertyValue:kIXCIContextResolution defaultValue:0];
+            UIGraphicsBeginImageContextWithOptions([self contentView].bounds.size, YES, ciResolution);
             [[self contentView] drawViewHierarchyInRect:[self contentView].bounds afterScreenUpdates:YES];
             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
