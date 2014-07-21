@@ -13,8 +13,9 @@
 
 #import "ApigeeDataClient.h"
 
-static NSString* const kIXPushToken = @"push_token";
-static NSString* const kIXApigeeDeviceUUID = @"apigee.device.uuid";
+IX_STATIC_CONST_STRING kIXPushToken = @"push_token";
+IX_STATIC_CONST_STRING kIXApigeeDeviceUUID = @"apigee.device.uuid";
+IX_STATIC_CONST_STRING kIXBundleVersion = @"bundle.version";
 
 @implementation IXAppShortCode
 
@@ -28,9 +29,13 @@ static NSString* const kIXApigeeDeviceUUID = @"apigee.device.uuid";
         {
             returnValue = [[IXAppManager sharedAppManager] pushToken];
         }
-        if( [methodName isEqualToString:kIXApigeeDeviceUUID] )
+        else if( [methodName isEqualToString:kIXApigeeDeviceUUID] )
         {
             returnValue = [ApigeeDataClient getUniqueDeviceID];
+        }
+        else if( [methodName isEqualToString:kIXBundleVersion])
+        {
+            returnValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
         }
         else
         {

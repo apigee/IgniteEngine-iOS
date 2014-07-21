@@ -34,7 +34,7 @@
 
 @property (nonatomic,weak) IXViewController* viewController;
 @property (nonatomic,weak) IXBaseControl* containerControl;
-@property (nonatomic,weak) IXCustom* customControlContainer;
+@property (nonatomic,weak) IXBaseControl* customControlContainer;
 
 @property (nonatomic,weak) IXDataRowDataProvider* dataProviderForRowData;
 @property (nonatomic,strong) NSIndexPath* indexPathForRowData;

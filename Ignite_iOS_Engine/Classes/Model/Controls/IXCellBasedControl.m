@@ -293,6 +293,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     [layoutControl setActionContainer:[[self actionContainer] copy]];
     
     [layoutControl setSandbox:rowSandbox];
+    [rowSandbox setCustomControlContainer:layoutControl];
+
     [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self subControlsDictionary][kIXBackgroundControls] copyItems:YES]];
     
     return layoutControl;
