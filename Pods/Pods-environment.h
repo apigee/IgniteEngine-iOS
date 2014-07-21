@@ -34,7 +34,7 @@
 #define COCOAPODS_POD_AVAILABLE_APParallaxHeader
 #define COCOAPODS_VERSION_MAJOR_APParallaxHeader 0
 #define COCOAPODS_VERSION_MINOR_APParallaxHeader 1
-#define COCOAPODS_VERSION_PATCH_APParallaxHeader 5
+#define COCOAPODS_VERSION_PATCH_APParallaxHeader 6
 
 // ApigeeiOSSDK
 #define COCOAPODS_POD_AVAILABLE_ApigeeiOSSDK
@@ -201,6 +201,6 @@
 // ZipArchive
 #define COCOAPODS_POD_AVAILABLE_ZipArchive
 #define COCOAPODS_VERSION_MAJOR_ZipArchive 1
-#define COCOAPODS_VERSION_MINOR_ZipArchive 2
+#define COCOAPODS_VERSION_MINOR_ZipArchive 3
 #define COCOAPODS_VERSION_PATCH_ZipArchive 0
 

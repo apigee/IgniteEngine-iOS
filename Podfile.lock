@@ -6,7 +6,7 @@ PODS:
     - AFNetworking (~> 1.3)
   - ALMoviePlayerController (0.3.0)
   - ApigeeiOSSDK (2.0.10)
-  - APParallaxHeader (HEAD based on 0.1.5)
+  - APParallaxHeader (HEAD based on 0.1.6)
   - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
   - CocoaLumberjack/Core (1.8.1)
@@ -52,7 +52,7 @@ PODS:
   - TTTAttributedLabel (1.8.0)
   - YLMoment (0.2.0)
   - ZBarSDK (1.3.1)
-  - ZipArchive (1.2.0)
+  - ZipArchive (1.3.0)
 
 DEPENDENCIES:
   - AFHTTPRequestOperationLogger (~> 1.0)
@@ -85,7 +85,7 @@ SPEC CHECKSUMS:
   AFOAuth2Client: 4f05d29e0a26c7ddf529dd7c4480af6ee1e982c6
   ALMoviePlayerController: bee05da71110002321ba4f87dc021e97348d7a6a
   ApigeeiOSSDK: 51c7998ad9f7577e0ecb33a8fdb95ecb2992142b
-  APParallaxHeader: 5b01d122265f3195c8839a648dc4220837f65d64
+  APParallaxHeader: 6e7cc27c052be34e1a5655dc2fab6c40eecbbe55
   CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
   ColorUtils: 2455988658eafc34f302a7d91113d7a9415d072c
   MMDrawerController: 4bae84535ca7a5f4cb55a66a001e6035c3571677
@@ -100,6 +100,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: cc759a194a485c1fdf2446bf2ee7a55bada1f08d
   YLMoment: 5b7c49abe2f05fefe748022d0e858c0aef753ac9
   ZBarSDK: 3ed560856963f765b66d834f464590bd6ba13b44
-  ZipArchive: 1753357f3081f87ab5776d4c4ff25f7ddefd2fd1
+  ZipArchive: acd54f7131c2d2f45dc3f41c4f854501f222269f
 
 COCOAPODS: 0.33.1
