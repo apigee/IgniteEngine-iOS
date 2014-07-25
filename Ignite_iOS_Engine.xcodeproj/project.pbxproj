@@ -79,11 +79,10 @@
 		633361451894593D004F3433 /* IXEventAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 633361441894593D004F3433 /* IXEventAction.m */; };
 		6333614818971802004F3433 /* IXCreateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614718971802004F3433 /* IXCreateAction.m */; };
 		6333614D18973DA6004F3433 /* IXDeleteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333614C18973DA6004F3433 /* IXDeleteAction.m */; };
-		6333615118975672004F3433 /* ARSMaquettePro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */; };
-		6333615218975672004F3433 /* ARSMaquettePro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */; };
 		634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 634816E618EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m */; };
 		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
+		634EE0981982D16F00C08FCD /* IXSpeech.m in Sources */ = {isa = PBXBuildFile; fileRef = 634EE0971982D16F00C08FCD /* IXSpeech.m */; };
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
 		635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */; };
@@ -101,8 +100,6 @@
 		6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */; };
 		63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXKnob.m */; };
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
-		63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3118ABDD2000130BEA /* Nestsans.ttf */; };
-		63A10B3418ABDD2000130BEA /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63A10B3218ABDD2000130BEA /* NestsansBold.ttf */; };
 		63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */; };
 		63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */; };
 		63AEA72B193EA3DC0088F480 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AEA72A193EA3DC0088F480 /* libxml2.dylib */; };
@@ -138,8 +135,6 @@
 		CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5120C418DFCB6900C7D282 /* IXLogAction.m */; };
 		CA51499A18E0CAC000FA58DF /* IXCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51499918E0CAC000FA58DF /* IXCamera.m */; };
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
-		CA887C7E18B3D9470050B75B /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */; };
-		CA887C7F18B3D9470050B75B /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */; };
 		CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEB7E0718D26437005E1A2F /* IXAttributedText.m */; };
 		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -278,14 +273,14 @@
 		6333614718971802004F3433 /* IXCreateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCreateAction.m; sourceTree = "<group>"; };
 		6333614B18973DA6004F3433 /* IXDeleteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeleteAction.h; sourceTree = "<group>"; };
 		6333614C18973DA6004F3433 /* IXDeleteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeleteAction.m; sourceTree = "<group>"; };
-		6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Light.otf"; sourceTree = "<group>"; };
-		6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Medium.otf"; sourceTree = "<group>"; };
 		634816E518EDB5F400EC6FEE /* IXOAuthWebAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXOAuthWebAuthViewController.h; sourceTree = "<group>"; };
 		634816E618EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXOAuthWebAuthViewController.m; sourceTree = "<group>"; };
 		634895041863637A008C3760 /* UILabel+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+IXAdditions.h"; sourceTree = "<group>"; };
 		634895051863637A008C3760 /* UILabel+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+IXAdditions.m"; sourceTree = "<group>"; };
 		6348950718637B4F008C3760 /* IXUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUITableViewCell.h; sourceTree = "<group>"; };
 		6348950818637B4F008C3760 /* IXUITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUITableViewCell.m; sourceTree = "<group>"; };
+		634EE0961982D16F00C08FCD /* IXSpeech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSpeech.h; sourceTree = "<group>"; };
+		634EE0971982D16F00C08FCD /* IXSpeech.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSpeech.m; sourceTree = "<group>"; };
 		635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONDataProvider.h; sourceTree = "<group>"; };
 		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
@@ -319,8 +314,6 @@
 		63A10B2118AAD7E200130BEA /* IXKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXKnob.m; sourceTree = "<group>"; };
 		63A10B2E18AAF9D900130BEA /* IXSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSound.h; sourceTree = "<group>"; };
 		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
-		63A10B3118ABDD2000130BEA /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nestsans.ttf; sourceTree = "<group>"; };
-		63A10B3218ABDD2000130BEA /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
 		63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFileDataProvider.h; sourceTree = "<group>"; };
 		63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFileDataProvider.m; sourceTree = "<group>"; };
@@ -372,8 +365,6 @@
 		63F8A401187368BC00250994 /* IXCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCollection.m; sourceTree = "<group>"; };
 		CA00FA3918C666EB0090263D /* UIImage+ResizeMagick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ResizeMagick.h"; path = "../Utilities/UIImage+ResizeMagick.h"; sourceTree = "<group>"; };
 		CA00FA3A18C666EB0090263D /* UIImage+ResizeMagick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ResizeMagick.m"; path = "../Utilities/UIImage+ResizeMagick.m"; sourceTree = "<group>"; };
-		CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
-		CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.otf"; sourceTree = "<group>"; };
 		CA1279E618D52B35007EEC5A /* UIButton+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+IXAdditions.h"; sourceTree = "<group>"; };
 		CA1279E718D52B35007EEC5A /* UIButton+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+IXAdditions.m"; sourceTree = "<group>"; };
 		CA1279E918D69618007EEC5A /* IXCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCircle.h; sourceTree = "<group>"; };
@@ -564,6 +555,8 @@
 				63A10B2F18AAF9D900130BEA /* IXSound.m */,
 				63CC9AB718BD12C200ECCECB /* IXSoundRecorder.h */,
 				63CC9AB818BD12C200ECCECB /* IXSoundRecorder.m */,
+				634EE0961982D16F00C08FCD /* IXSpeech.h */,
+				634EE0971982D16F00C08FCD /* IXSpeech.m */,
 				13033F5A183ED8F200C29157 /* IXTableView.h */,
 				13033F5B183ED8F200C29157 /* IXTableView.m */,
 				13033F5C183ED8F200C29157 /* IXText.h */,
@@ -787,12 +780,6 @@
 		6333614E18975672004F3433 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				63A10B3118ABDD2000130BEA /* Nestsans.ttf */,
-				63A10B3218ABDD2000130BEA /* NestsansBold.ttf */,
-				CA0DBAE918A316E8005BC783 /* SourceSansPro-Light.otf */,
-				CA0DBAEA18A316E8005BC783 /* SourceSansPro-Semibold.otf */,
-				6333614F18975672004F3433 /* ARSMaquettePro-Light.otf */,
-				6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */,
 			);
 			name = Fonts;
 			path = ../assets/_project/fonts;
@@ -942,14 +929,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA887C7E18B3D9470050B75B /* SourceSansPro-Light.otf in Resources */,
-				CA887C7F18B3D9470050B75B /* SourceSansPro-Semibold.otf in Resources */,
-				6333615118975672004F3433 /* ARSMaquettePro-Light.otf in Resources */,
 				13BF0468183EBE7E00894760 /* Images.xcassets in Resources */,
-				63A10B3418ABDD2000130BEA /* NestsansBold.ttf in Resources */,
 				13ECEA5F183EBF39004BC638 /* assets in Resources */,
-				6333615218975672004F3433 /* ARSMaquettePro-Medium.otf in Resources */,
-				63A10B3318ABDD2000130BEA /* Nestsans.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1033,6 +1014,7 @@
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */,
+				634EE0981982D16F00C08FCD /* IXSpeech.m in Sources */,
 				13033F94183ED8F200C29157 /* IXFunctionAction.m in Sources */,
 				635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */,
 				6333614818971802004F3433 /* IXCreateAction.m in Sources */,
