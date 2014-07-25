@@ -235,9 +235,9 @@
 		131591E018396A960046B16D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		131591EA18396B3E0046B16D /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		136928F01836108300E28BBC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
+		13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "../assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
 		13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Ignite_iOS_Engine-Prefix.pch"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		13BF0465183EBE7E00894760 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Ignite_iOS_Engine/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		13BF0465183EBE7E00894760 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../assets/_project/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		13BF0466183EBE7E00894760 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ignite_iOS_Engine/main.m; sourceTree = SOURCE_ROOT; };
 		13ECEA5E183EBF38004BC638 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = SOURCE_ROOT; };
 		2A47E3A147B84D9DB0C78D60 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -677,6 +677,7 @@
 			children = (
 			);
 			name = images;
+			path = ../assets/images;
 			sourceTree = "<group>";
 		};
 		6324BF431835931C00748F27 = {
@@ -794,7 +795,7 @@
 				6333615018975672004F3433 /* ARSMaquettePro-Medium.otf */,
 			);
 			name = Fonts;
-			path = Ignite_iOS_Engine/Fonts;
+			path = ../assets/_project/fonts;
 			sourceTree = SOURCE_ROOT;
 		};
 		63A10B2318AAE15D00130BEA /* ThirdParty */ = {
@@ -1227,7 +1228,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
 					"$(SDK_DIR)\"/usr/include/libxml2",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Ignite_iOS_Engine/Ignite_iOS_Engine-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/../assets/_project/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
@@ -1235,7 +1236,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "ABB9B8ED-9D25-4A60-B7F0-3D2169F9D7BD";
+				PROVISIONING_PROFILE = "2A7DEE59-BD9A-4F61-8E38-F4CABCFE8D46";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1258,7 +1259,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
 					"$(SDK_DIR)\"/usr/include/libxml2",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Ignite_iOS_Engine/Ignite_iOS_Engine-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/../assets/_project/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
@@ -1266,7 +1267,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "ABB9B8ED-9D25-4A60-B7F0-3D2169F9D7BD";
+				PROVISIONING_PROFILE = "2A7DEE59-BD9A-4F61-8E38-F4CABCFE8D46";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
