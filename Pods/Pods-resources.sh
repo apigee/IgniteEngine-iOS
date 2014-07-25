@@ -57,6 +57,7 @@ install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePa
 install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause@2x.png"
 install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay.png"
 install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay@2x.png"
+install_resource "FontAwesome+iOS/Resources/FontAwesome.ttf"
 install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack.png"
 install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack@2x.png"
 install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext.png"

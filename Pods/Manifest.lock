@@ -13,6 +13,7 @@ PODS:
   - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
   - ColorUtils (1.1.2)
+  - FontAwesome+iOS (0.1.1)
   - MMDrawerController (0.5.6):
     - MMDrawerController/Core
     - MMDrawerController/MMDrawerBarButtonItem
@@ -62,6 +63,7 @@ DEPENDENCIES:
   - APParallaxHeader (HEAD)
   - CocoaLumberjack (~> 1.8.1)
   - ColorUtils (~> 1.1.1)
+  - FontAwesome+iOS (~> 0.1)
   - MMDrawerController (~> 0.5.6)
   - RaptureXML (~> 1.0)
   - Reachability (~> 3.1)
@@ -88,6 +90,7 @@ SPEC CHECKSUMS:
   APParallaxHeader: 6e7cc27c052be34e1a5655dc2fab6c40eecbbe55
   CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
   ColorUtils: 2455988658eafc34f302a7d91113d7a9415d072c
+  FontAwesome+iOS: 3c574273fb301c2e0a88f983551562bf8768b623
   MMDrawerController: 4bae84535ca7a5f4cb55a66a001e6035c3571677
   RaptureXML: b9b0aca9c68c684c189af73dd5e8f8fdeec74600
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7

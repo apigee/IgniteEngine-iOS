@@ -21,3 +21,4 @@ pod 'APParallaxHeader', :head
 pod 'RaptureXML', '~> 1.0'
 pod 'MMDrawerController', '~> 0.5.6'
 pod 'ZipArchive', '~> 1.2'
+pod 'FontAwesome+iOS', '~> 0.1'

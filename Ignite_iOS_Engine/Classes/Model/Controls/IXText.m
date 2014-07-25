@@ -9,6 +9,7 @@
 #import "IXText.h"
 
 #import "UILabel+IXAdditions.h"
+#import "NSString+FontAwesome.h"
 
 // IXText Properties
 static NSString* const kIXText = @"text";
@@ -57,9 +58,18 @@ static NSString* const kIXSizeToFit = @"size_to_fit";
     [super applySettings];
     
     [[self label] setUserInteractionEnabled:[[self contentView] isEnabled]];
-    [[self label] setText:[[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil]];
     [[self label] setTextColor:[[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]]];
     [[self label] setFont:[[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
+
+    NSString* text = [[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil];
+    if( [[[[self label] font] familyName] isEqualToString:kFontAwesomeFamilyName] )
+    {
+        [[self label] setText:[NSString fontAwesomeIconStringForIconIdentifier:text]];
+    }
+    else
+    {
+        [[self label] setText:text];
+    }
     [[self label] setTextAlignment:[UILabel ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]]];
     [[self label] setNumberOfLines:0];
     [[self label] setLineBreakMode:NSLineBreakByWordWrapping];
