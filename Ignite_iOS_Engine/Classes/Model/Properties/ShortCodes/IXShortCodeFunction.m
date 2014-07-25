@@ -16,6 +16,7 @@
 #import "IXProperty.h"
 #import "IXPropertyContainer.h"
 #import "YLMoment.h"
+#import "RMPhoneFormat.h"
 
 #import "NSString+IXAdditions.h"
 
@@ -35,10 +36,12 @@ IX_STATIC_CONST_STRING kIXIsNil = @"is_nil";                    // [[?:is_nil]] 
 IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"is_nil_or_empty";    // [[?:is_nil_or_empty]]                    -> True if the string is empty or nil
 IX_STATIC_CONST_STRING kIXIsNotEmpty = @"is_not_empty";         // [[?:is_not_empty]]                       -> True if the string is not empty
 IX_STATIC_CONST_STRING kIXIsNotNil = @"is_not_nil";             // [[?:is_not_nil]]                         -> True if the string is not nil
+IX_STATIC_CONST_STRING kIXIsValidPhoneNumber = @"is_valid_phone_number";  // [[?:is_valid_phone_number]]    ->
 IX_STATIC_CONST_STRING kIXLength = @"length";                   // [[?:length]]                             -> Length of the attributes string
 IX_STATIC_CONST_STRING kIXMoment = @"moment";                   // [[?:moment(toDateFormat)]]               -> String as date with the given format (can have 2 params)
 IX_STATIC_CONST_STRING kIXMonogram = @"monogram";               // [[?:monogram]]                           -> String monogram value
 IX_STATIC_CONST_STRING kIXNow = @"now";                         // [[app:now]]                              -> Current date as string (can specify dateFormat)
+IX_STATIC_CONST_STRING kIXPhoneFormat = @"phoneFormat";         // [[?:phoneFormat]]                        ->
 IX_STATIC_CONST_STRING kIXRandomNumber = @"random_number";      // [[app:random_number(upBounds)]]          -> Random number generator (can specify lower bounds)
 IX_STATIC_CONST_STRING kIXToBase64 = @"to_base64";              // [[?:to_base64]]                          -> String to Base64 value
 IX_STATIC_CONST_STRING kIXToUppercase = @"to_uppercase";        // [[?:to_uppercase]]                       -> String value in uppercase
@@ -119,6 +122,10 @@ static IXBaseShortCodeFunction const kIXIsNotNilFunction = ^NSString*(NSString* 
     return [NSString ix_stringFromBOOL:(stringToModify != nil)];
 };
 
+static IXBaseShortCodeFunction const kIXIsValidPhoneNumberFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return [NSString ix_stringFromBOOL:[[RMPhoneFormat instance] isPhoneNumberValid:stringToModify]];
+};
+
 static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
     return [NSString stringWithFormat:@"%lu", (unsigned long)[stringToEvaluate length]];
 };
@@ -145,6 +152,10 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
     } else {
         return [moment format];
     }
+};
+
+static IXBaseShortCodeFunction const kIXPhoneFormatFunction = ^NSString*(NSString* stringToFormat,NSArray* parameters){
+    return [[RMPhoneFormat instance] format:stringToFormat];
 };
 
 static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
@@ -193,10 +204,12 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXIsNilOrEmpty:      [kIXIsNilOrEmptyFunction copy],
                                     kIXIsNotEmpty:        [kIXIsNotEmptyFunction copy],
                                     kIXIsNotNil:          [kIXIsNotNilFunction copy],
+                                    kIXIsValidPhoneNumber:[kIXIsValidPhoneNumberFunction copy],
                                     kIXLength:            [kIXLengthFunction copy],
                                     kIXMoment:            [kIXMomentFunction copy],
                                     kIXMonogram:          [kIXMonogramFunction copy],
                                     kIXNow:               [kIXNowFunction copy],
+                                    kIXPhoneFormat:       [kIXPhoneFormatFunction copy],
                                     kIXRandomNumber:      [kIXRandomNumberFunction copy],
                                     kIXToBase64:          [kIXToBase64Function copy],
                                     kIXToLowercase:       [kIXToLowerCaseFunction copy],

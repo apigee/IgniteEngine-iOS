@@ -83,6 +83,8 @@
 		634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 634895051863637A008C3760 /* UILabel+IXAdditions.m */; };
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		634EE0981982D16F00C08FCD /* IXSpeech.m in Sources */ = {isa = PBXBuildFile; fileRef = 634EE0971982D16F00C08FCD /* IXSpeech.m */; };
+		634EE09E1982D95600C08FCD /* RMPhoneFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 634EE09D1982D95600C08FCD /* RMPhoneFormat.m */; };
+		634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */ = {isa = PBXBuildFile; fileRef = 634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */; };
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
 		635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */; };
@@ -281,6 +283,9 @@
 		6348950818637B4F008C3760 /* IXUITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUITableViewCell.m; sourceTree = "<group>"; };
 		634EE0961982D16F00C08FCD /* IXSpeech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSpeech.h; sourceTree = "<group>"; };
 		634EE0971982D16F00C08FCD /* IXSpeech.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSpeech.m; sourceTree = "<group>"; };
+		634EE09C1982D95600C08FCD /* RMPhoneFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPhoneFormat.h; sourceTree = "<group>"; };
+		634EE09D1982D95600C08FCD /* RMPhoneFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMPhoneFormat.m; sourceTree = "<group>"; };
+		634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneFormats.dat; sourceTree = SOURCE_ROOT; };
 		635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONDataProvider.h; sourceTree = "<group>"; };
 		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
@@ -735,6 +740,7 @@
 		6324BF561835931C00748F27 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */,
 				13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */,
 				13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */,
 				13BF0465183EBE7E00894760 /* Images.xcassets */,
@@ -785,10 +791,20 @@
 			path = ../assets/_project/fonts;
 			sourceTree = SOURCE_ROOT;
 		};
+		634EE09B1982D95600C08FCD /* RMPhoneFormat */ = {
+			isa = PBXGroup;
+			children = (
+				634EE09C1982D95600C08FCD /* RMPhoneFormat.h */,
+				634EE09D1982D95600C08FCD /* RMPhoneFormat.m */,
+			);
+			path = RMPhoneFormat;
+			sourceTree = "<group>";
+		};
 		63A10B2318AAE15D00130BEA /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
 				63F87BF018AC47AA00282DB8 /* MHRotaryKnob */,
+				634EE09B1982D95600C08FCD /* RMPhoneFormat */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -929,6 +945,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */,
 				13BF0468183EBE7E00894760 /* Images.xcassets in Resources */,
 				13ECEA5F183EBF39004BC638 /* assets in Resources */,
 			);
@@ -1024,6 +1041,7 @@
 				63F87BF318AC47AA00282DB8 /* MHRotaryKnob.m in Sources */,
 				63F87BEC18AC25BA00282DB8 /* UIImageView+IXAdditions.m in Sources */,
 				CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */,
+				634EE09E1982D95600C08FCD /* RMPhoneFormat.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
 				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
