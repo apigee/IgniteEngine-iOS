@@ -41,7 +41,7 @@ IX_STATIC_CONST_STRING kIXShowsBuildings = @"shows_buildings";
 IX_STATIC_CONST_STRING kIXMapType = @"map_type";
 IX_STATIC_CONST_STRING kIXZoomLevel = @"zoom_level";
 IX_STATIC_CONST_STRING kIXCenterLatitude = @"center.latitude";
-IX_STATIC_CONST_STRING kIXCenterLongitude = @"center.latitude";
+IX_STATIC_CONST_STRING kIXCenterLongitude = @"center.longitude";
 
 IX_STATIC_CONST_STRING kIXAnnotationImage = @"annotation.image";
 IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetX = @"annotation.image.center.offset.x";
