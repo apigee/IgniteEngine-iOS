@@ -526,10 +526,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
                 [[[SDWebImageManager sharedManager] imageCache] removeImageForKey:[imageURL absoluteString] fromDisk:YES];
             }
             
-            [[SDWebImageManager sharedManager] downloadWithURL:imageURL
+            [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
                                                        options:SDWebImageCacheMemoryOnly
                                                       progress:nil
-                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished){
+                                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {                                                     
                                                          if (image) {
                                                              if( successBlock )
                                                                  successBlock([UIImage imageWithCGImage:[image CGImage]]);

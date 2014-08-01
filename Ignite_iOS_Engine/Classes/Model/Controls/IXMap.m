@@ -34,43 +34,47 @@
 #import "SVPulsingAnnotationView.h"
 
 // IXMap Attributes
-static NSString* const kIXDataProviderID = @"dataprovider_id";
-static NSString* const kIXShowsUserLocation = @"shows_user_location";
-static NSString* const kIXShowsPointsOfInterest = @"shows_points_of_interest";
-static NSString* const kIXShowsBuildings = @"shows_buildings";
-static NSString* const kIXMapType = @"map_type";
-static NSString* const kIXZoomLevel = @"zoom_level";
+IX_STATIC_CONST_STRING kIXDataProviderID = @"dataprovider_id";
+IX_STATIC_CONST_STRING kIXShowsUserLocation = @"shows_user_location";
+IX_STATIC_CONST_STRING kIXShowsPointsOfInterest = @"shows_points_of_interest";
+IX_STATIC_CONST_STRING kIXShowsBuildings = @"shows_buildings";
+IX_STATIC_CONST_STRING kIXMapType = @"map_type";
+IX_STATIC_CONST_STRING kIXZoomLevel = @"zoom_level";
+IX_STATIC_CONST_STRING kIXCenterLatitude = @"center.latitude";
+IX_STATIC_CONST_STRING kIXCenterLongitude = @"center.latitude";
 
-static NSString* const kIXAnnotationImage = @"annotation.image";
-static NSString* const kIXAnnotationTitle = @"annotation.title";
-static NSString* const kIXAnnotationSubTitle = @"annotation.subtitle";
-static NSString* const kIXAnnotationLatitude = @"annotation.latitude";
-static NSString* const kIXAnnotationLongitude = @"annotation.longitude";
+IX_STATIC_CONST_STRING kIXAnnotationImage = @"annotation.image";
+IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetX = @"annotation.image.center.offset.x";
+IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetY = @"annotation.image.center.offset.y";
+IX_STATIC_CONST_STRING kIXAnnotationTitle = @"annotation.title";
+IX_STATIC_CONST_STRING kIXAnnotationSubTitle = @"annotation.subtitle";
+IX_STATIC_CONST_STRING kIXAnnotationLatitude = @"annotation.latitude";
+IX_STATIC_CONST_STRING kIXAnnotationLongitude = @"annotation.longitude";
 
-static NSString* const kIXAnnoationPinColor = @"annotation.pin.color";
-static NSString* const kIXAnnoationPinAnimatesDrop = @"annotation.pin.animates_drop";
+IX_STATIC_CONST_STRING kIXAnnoationPinColor = @"annotation.pin.color";
+IX_STATIC_CONST_STRING kIXAnnoationPinAnimatesDrop = @"annotation.pin.animates_drop";
 
 // kIXMapType Accepted Values
-static NSString* const kIXMapTypeStandard = @"standard";
-static NSString* const kIXMapTypeSatellite = @"satellite";
-static NSString* const kIXMapTypeHybrid = @"hybrid";
+IX_STATIC_CONST_STRING kIXMapTypeStandard = @"standard";
+IX_STATIC_CONST_STRING kIXMapTypeSatellite = @"satellite";
+IX_STATIC_CONST_STRING kIXMapTypeHybrid = @"hybrid";
 
 // kIXAnnoationPinColor Accepted Values
-static NSString* const kIXAnnoationPinColorRed = @"red";
-static NSString* const kIXAnnoationPinColorGreen = @"green";
-static NSString* const kIXAnnoationPinColorPurple = @"purple";
+IX_STATIC_CONST_STRING kIXAnnoationPinColorRed = @"red";
+IX_STATIC_CONST_STRING kIXAnnoationPinColorGreen = @"green";
+IX_STATIC_CONST_STRING kIXAnnoationPinColorPurple = @"purple";
 
 // IXMap Functions
-static NSString* const kIXReloadAnnotations = @"reload_annotations";
-static NSString* const kIXShowAllAnnotations = @"show_all_annotations";
+IX_STATIC_CONST_STRING kIXReloadAnnotations = @"reload_annotations";
+IX_STATIC_CONST_STRING kIXShowAllAnnotations = @"show_all_annotations";
 
 // IXMap Events
-static NSString* const kIXTouch = @"touch";
-static NSString* const kIXTouchUp = @"touch_up";
+IX_STATIC_CONST_STRING kIXTouch = @"touch";
+IX_STATIC_CONST_STRING kIXTouchUp = @"touch_up";
 
 // Reuseable Annotation Ident
-static NSString* const kIXMapPinAnnotationIdentifier = @"kIXMapPinAnnotationIdentifier";
-static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotationIdentifier";
+IX_STATIC_CONST_STRING kIXMapPinAnnotationIdentifier = @"kIXMapPinAnnotationIdentifier";
+IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotationIdentifier";
 
 @interface IXMapAnnotation : NSObject <MKAnnotation>
 
@@ -132,6 +136,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 
 @property (nonatomic,strong) MKMapView* mapView;
 @property (nonatomic,strong) NSMutableArray* annotations;
+@property (nonatomic,assign) CGPoint imageCenterOffset;
 
 @end
 
@@ -170,7 +175,11 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 -(void)applySettings
 {
     [super applySettings];
-    
+
+    float centerOffsetX = [[self propertyContainer] getFloatPropertyValue:kIXAnnotationImageCenterOffsetX defaultValue:0.0f];
+    float centerOffsetY = [[self propertyContainer] getFloatPropertyValue:kIXAnnotationImageCenterOffsetY defaultValue:0.0f];
+    [self setImageCenterOffset:CGPointMake(centerOffsetX, centerOffsetY)];
+
     [[self mapView] setShowsUserLocation:[[self propertyContainer] getBoolPropertyValue:kIXShowsUserLocation defaultValue:NO]];
     [[self mapView] setShowsPointsOfInterest:[[self propertyContainer] getBoolPropertyValue:kIXShowsPointsOfInterest defaultValue:YES]];
     [[self mapView] setShowsBuildings:[[self propertyContainer] getBoolPropertyValue:kIXShowsBuildings defaultValue:YES]];
@@ -241,7 +250,7 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
         [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
         [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
     }
-    else
+    else if( [self dataProvider] == nil )
     {
         IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self propertyContainer]
                                                                              rowIndexPath:nil];
@@ -250,26 +259,31 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             [[self annotations] addObject:annotation];
         }
     }
-    
-    [self zoomToFitAnnotationsAndZoomLevel];
+
+    if( [[self annotations] count] > 0 )
+    {
+        [self zoomToFitAnnotationsAndZoomLevel];
+    }
 }
 
 -(void)zoomToFitAnnotationsAndZoomLevel
 {
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXZoomLevel] )
-    {
-        int mapsZoomLevel = (int)[[self mapView] ix_zoomLevel];
-        int zoomLevel = [[self propertyContainer] getIntPropertyValue:kIXZoomLevel defaultValue:mapsZoomLevel];
-        
-        [[self mapView] showAnnotations:[self annotations] animated:NO];
-        [[self mapView] ix_setCenterCoordinate:[[self mapView] centerCoordinate]
-                                     zoomLevel:zoomLevel
-                                      animated:YES];
-    }
-    else
-    {
-        [[self mapView] showAnnotations:[self annotations] animated:YES];
-    }
+    [[self mapView] showAnnotations:[self annotations] animated:NO];
+
+    int zoomLevel = [[self propertyContainer] getIntPropertyValue:kIXZoomLevel
+                                                     defaultValue:(int)[[self mapView] ix_zoomLevel]];
+
+    CLLocationCoordinate2D centerCoord = [[self mapView] centerCoordinate];
+
+    CGFloat centerCoordinateLat = [[self propertyContainer] getFloatPropertyValue:kIXCenterLatitude
+                                                                     defaultValue:centerCoord.latitude];
+
+    CGFloat centerCoordinateLong = [[self propertyContainer] getFloatPropertyValue:kIXCenterLongitude
+                                                                      defaultValue:centerCoord.longitude];
+
+    [[self mapView] ix_setCenterCoordinate:CLLocationCoordinate2DMake(centerCoordinateLat, centerCoordinateLong)
+                                 zoomLevel:zoomLevel
+                                  animated:YES];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -350,6 +364,11 @@ static NSString* const kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
         }
     }
+
+    if( !CGPointEqualToPoint([self imageCenterOffset], CGPointZero) ) {
+        [annotationView setCenterOffset:[self imageCenterOffset]];
+    }
+
     return annotationView;
 }
 
