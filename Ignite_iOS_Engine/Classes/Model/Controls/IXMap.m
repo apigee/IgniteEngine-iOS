@@ -50,7 +50,7 @@ IX_STATIC_CONST_STRING kIXAnnotationTitle = @"annotation.title";
 IX_STATIC_CONST_STRING kIXAnnotationSubTitle = @"annotation.subtitle";
 IX_STATIC_CONST_STRING kIXAnnotationLatitude = @"annotation.latitude";
 IX_STATIC_CONST_STRING kIXAnnotationLongitude = @"annotation.longitude";
-
+IX_STATIC_CONST_STRING kIXAnnoationAccessoryLeftImage = @"annotation.accessory.left.image";
 IX_STATIC_CONST_STRING kIXAnnoationPinColor = @"annotation.pin.color";
 IX_STATIC_CONST_STRING kIXAnnoationPinAnimatesDrop = @"annotation.pin.animates_drop";
 
@@ -356,7 +356,24 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
         {
             [annotationView setRightCalloutAccessoryView:nil];
         }
-        
+
+        NSString* leftAccessoryImage = [[self propertyContainer] getStringPropertyValue:kIXAnnoationAccessoryLeftImage defaultValue:nil];
+        if( [leftAccessoryImage length] > 0 )
+        {
+            UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 31, 31)];
+            [annotationView setLeftCalloutAccessoryView:imageView];
+            [[self propertyContainer] getImageProperty:kIXAnnoationAccessoryLeftImage
+                                          successBlock:^(UIImage *image) {
+                                              [imageView setImage:image];
+                                          } failBlock:^(NSError *error) {
+                                              [imageView setImage:nil];
+                                          }];
+        }
+        else
+        {
+            [annotationView setLeftCalloutAccessoryView:nil];
+        }
+
         if( [self usesDataProviderForAnnotationData] )
         {
             // Reset the Map controls sandbox values.
