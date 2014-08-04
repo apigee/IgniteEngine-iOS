@@ -155,7 +155,11 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
 };
 
 static IXBaseShortCodeFunction const kIXPhoneFormatFunction = ^NSString*(NSString* stringToFormat,NSArray* parameters){
-    return [[RMPhoneFormat instance] format:stringToFormat];
+    if( [stringToFormat length] > 0 ) {
+        return [[RMPhoneFormat instance] format:stringToFormat];
+    } else {
+        return nil;
+    }
 };
 
 static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
