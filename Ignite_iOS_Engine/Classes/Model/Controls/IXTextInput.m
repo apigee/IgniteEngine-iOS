@@ -176,7 +176,7 @@ static NSString* const kIXNewLineString = @"\n";
     if( [self isFirstLoad] )
     {
         [self setFirstLoad:NO];
-     
+        
         [self setBackgroundImage:[[UIImageView alloc] initWithFrame:CGRectZero]];
         [[self contentView] addSubview:[self backgroundImage]];
         
@@ -192,7 +192,7 @@ static NSString* const kIXNewLineString = @"\n";
                 [[self textView] setText:initialText];
             }
             [self setDefaultTextInputTintColor:[[self textView] tintColor]];
-
+            
             [[self textView] setDelegate:self];
             [[self textView] setBackgroundColor:[UIColor whiteColor]];
             
@@ -206,7 +206,7 @@ static NSString* const kIXNewLineString = @"\n";
                 [[self textField] setText:initialText];
             }
             [self setDefaultTextInputTintColor:[[self textField] tintColor]];
-
+            
             [[self textField] setDelegate:self];
             [[self textField] setBackgroundColor:[UIColor whiteColor]];
             
@@ -259,7 +259,7 @@ static NSString* const kIXNewLineString = @"\n";
     UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor whiteColor]];
     NSTextAlignment textAlignment = [UITextField ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]];
     UITextAutocorrectionType autoCorrectionType = [UITextField ix_booleanToTextAutocorrectionType:[[self propertyContainer] getBoolPropertyValue:kIXAutoCorrect defaultValue:YES]];
-
+    
     UIKeyboardAppearance keyboardAppearance = [UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]];
     UIKeyboardType keyboardType = [UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]];
     UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
@@ -356,9 +356,9 @@ static NSString* const kIXNewLineString = @"\n";
     [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
     [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
     [self setFilterDatasource:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXFilterDatasource defaultValue:nil]];
-
+    
     [self setInputFormatCurrency:[[self propertyContainer] getBoolPropertyValue:kIXInputFormatCurrency defaultValue:NO]];
-
+    
     [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
     if( [[self inputAllowedRegexString] length] > 1 )
     {
@@ -482,7 +482,7 @@ static NSString* const kIXNewLineString = @"\n";
                     [[[self textField] leftView] setHidden:YES];
                 }
             }
-
+            
         }
     }
     else
@@ -593,7 +593,7 @@ static NSString* const kIXNewLineString = @"\n";
         point.y += [textInputView bounds].size.height - keyboardHeight - [self keyboardPadding];
         
         if( point.y < 0.0f )
-            point.y = 0.0f;
+        point.y = 0.0f;
         
         [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
                               delay:0.0f
@@ -610,7 +610,7 @@ static NSString* const kIXNewLineString = @"\n";
 -(void)adjustScrollViewForKeyboard:(float)animationDuration
 {
     if( ( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] ) || ![self adjustsScrollWithScreen] )
-        return;
+    return;
     
     CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
     if( keyboardHeight > 0 )
@@ -647,7 +647,7 @@ static NSString* const kIXNewLineString = @"\n";
                              [scrollView setContentOffset:point animated:NO];
                          } completion:nil];
         //    }
-
+        
     }
 }
 
@@ -742,7 +742,7 @@ static NSString* const kIXNewLineString = @"\n";
 - (BOOL)handleReturnKeyPressed:(UIResponder*)textInput
 {
     [[self actionContainer] executeActionsForEventNamed:kIXReturnKeyPressed];
-
+    
     BOOL shouldDismiss = [self shouldDismissOnReturn];
     if( shouldDismiss )
     {
@@ -754,15 +754,15 @@ static NSString* const kIXNewLineString = @"\n";
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-
+    
     if( [self inputFormatCurrency] )
     {
         NSMutableCharacterSet *numberSet = [[NSCharacterSet decimalDigitCharacterSet] mutableCopy];
         [numberSet formUnionWithCharacterSet:[NSCharacterSet whitespaceCharacterSet]];
         NSCharacterSet *nonNumberSet = [numberSet invertedSet];
-
+        
         BOOL result = NO;
-
+        
         if([string length] == 0){
             result = YES;
         }
@@ -771,29 +771,29 @@ static NSString* const kIXNewLineString = @"\n";
                 result = YES;
             }
         }
-
+        
         if(result){
             NSMutableString* mstring = [[textField text] mutableCopy];
-
+            
             if([string length] > 0){
                 [mstring insertString:string atIndex:range.location];
             }
             else {
                 [mstring deleteCharactersInRange:range];
             }
-
+            
             NSLocale* locale = [NSLocale currentLocale];
             NSString *localCurrencySymbol = [locale objectForKey:NSLocaleCurrencySymbol];
             NSString *localGroupingSeparator = [locale objectForKey:NSLocaleGroupingSeparator];
-
+            
             NSString* clean_string = [[mstring stringByReplacingOccurrencesOfString:localGroupingSeparator
                                                                          withString:@""]
                                       stringByReplacingOccurrencesOfString:localCurrencySymbol
                                       withString:@""];
-
+            
             if([[Formatters currencyFormatter] maximumFractionDigits] > 0){
                 NSMutableString *mutableCleanString = [clean_string mutableCopy];
-
+                
                 if([string length] > 0){
                     NSRange theRange = [mutableCleanString rangeOfString:@"."];
                     if( theRange.location != NSNotFound )
@@ -814,11 +814,12 @@ static NSString* const kIXNewLineString = @"\n";
                     clean_string = mutableCleanString;
                 }
             }
-
+            
             NSNumber* number = [[Formatters basicFormatter] numberFromString: clean_string];
             NSMutableString *numberString = [[[Formatters currencyFormatter] stringFromNumber:number] mutableCopy];
             [numberString deleteCharactersInRange:NSMakeRange(0, 1)];
             [textField setText:numberString];
+            [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
         }
         return NO;
     }
@@ -829,7 +830,7 @@ static NSString* const kIXNewLineString = @"\n";
 - (void)textDidChange:(NSNotification*)aNotification
 {
     if( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] )
-        return;
+    return;
     
     NSString *inputText = nil;
     if( [self isUsingUITextView] )
@@ -880,7 +881,7 @@ static NSString* const kIXNewLineString = @"\n";
         else if ([inputTransform isEqualToString:kIXInputTransformUppercaseFirst])
         {
             if (inputText.length > 0)
-                inputText = [NSString stringWithFormat:@"%@%@",[[inputText substringToIndex:1] uppercaseString],[inputText substringFromIndex:1]];
+            inputText = [NSString stringWithFormat:@"%@%@",[[inputText substringToIndex:1] uppercaseString],[inputText substringFromIndex:1]];
         }
     }
     

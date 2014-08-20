@@ -109,7 +109,8 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
                                       [[weakSelf tableView] addParallaxWithImage:image andHeight:parallaxHeight];
                                       [[[weakSelf tableView] parallaxView] layoutIfNeeded];
                                       
-                                  } failBlock:nil];
+                                  } failBlock:^(NSError *error) {
+                                  } shouldRefreshCachedImage:true];
     
     [[self tableView] setBackgroundColor:[[self contentView] backgroundColor]];
     [[self tableView] setScrollEnabled:[self scrollEnabled]];
