@@ -84,6 +84,8 @@
             animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:![[self toggleSwitch] isOn] animated:animated];
+        [[self actionContainer] executeActionsForEventNamed:@"toggle"];
+
     }
     else if( [functionName isEqualToString:@"toggle_on"] )
     {
@@ -92,6 +94,8 @@
             animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:YES animated:animated];
+        [[self actionContainer] executeActionsForEventNamed:@"toggle_on"];
+
     }
     else if( [functionName isEqualToString:@"toggle_off"] )
     {
@@ -100,6 +104,8 @@
             animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:NO animated:animated];
+        [[self actionContainer] executeActionsForEventNamed:@"toggle_off"];
+        
     }
     else
     {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0E2743D3DDB041F192F90869"
+               BlueprintIdentifier = "24DFCC1DE44E489FA24D6C06"
                BuildableName = "libPods-SVPulsingAnnotationView.a"
                BlueprintName = "Pods-SVPulsingAnnotationView"
                ReferencedContainer = "container:Pods.xcodeproj">

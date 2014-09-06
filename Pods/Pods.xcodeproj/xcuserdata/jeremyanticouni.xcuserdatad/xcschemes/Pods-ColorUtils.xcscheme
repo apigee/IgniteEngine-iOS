@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "08E81C2D44D64DBC9D8610D1"
+               BlueprintIdentifier = "6761718C2F3A408EAF38FF9C"
                BuildableName = "libPods-ColorUtils.a"
                BlueprintName = "Pods-ColorUtils"
                ReferencedContainer = "container:Pods.xcodeproj">

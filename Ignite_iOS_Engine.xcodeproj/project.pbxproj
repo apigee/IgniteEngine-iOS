@@ -55,6 +55,13 @@
 		131591E118396A960046B16D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 131591DF18396A960046B16D /* CoreMedia.framework */; };
 		131591E218396A960046B16D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 131591E018396A960046B16D /* CoreVideo.framework */; };
 		131591EB18396B3E0046B16D /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 131591EA18396B3E0046B16D /* libiconv.dylib */; };
+		1319157419BAA4DA00182CC7 /* ARSMaquettePro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319156D19BAA4DA00182CC7 /* ARSMaquettePro-Light.otf */; };
+		1319157519BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319156E19BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf */; };
+		1319157619BAA4DA00182CC7 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1319156F19BAA4DA00182CC7 /* FontAwesome.ttf */; };
+		1319157719BAA4DA00182CC7 /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157019BAA4DA00182CC7 /* Nestsans.ttf */; };
+		1319157819BAA4DA00182CC7 /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157119BAA4DA00182CC7 /* NestsansBold.ttf */; };
+		1319157919BAA4DA00182CC7 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */; };
+		1319157A19BAA4DA00182CC7 /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */; };
 		136928F11836108300E28BBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136928F01836108300E28BBC /* QuartzCore.framework */; };
 		13BF0468183EBE7E00894760 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13BF0465183EBE7E00894760 /* Images.xcassets */; };
 		13BF0469183EBE7E00894760 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BF0466183EBE7E00894760 /* main.m */; };
@@ -232,6 +239,13 @@
 		131591DF18396A960046B16D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		131591E018396A960046B16D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		131591EA18396B3E0046B16D /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		1319156D19BAA4DA00182CC7 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Light.otf"; sourceTree = "<group>"; };
+		1319156E19BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Medium.otf"; sourceTree = "<group>"; };
+		1319156F19BAA4DA00182CC7 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
+		1319157019BAA4DA00182CC7 /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nestsans.ttf; sourceTree = "<group>"; };
+		1319157119BAA4DA00182CC7 /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
+		1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
+		1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.otf"; sourceTree = "<group>"; };
 		136928F01836108300E28BBC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "../assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
 		13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Ignite_iOS_Engine-Prefix.pch"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -791,6 +805,13 @@
 		6333614E18975672004F3433 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				1319156D19BAA4DA00182CC7 /* ARSMaquettePro-Light.otf */,
+				1319156E19BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf */,
+				1319156F19BAA4DA00182CC7 /* FontAwesome.ttf */,
+				1319157019BAA4DA00182CC7 /* Nestsans.ttf */,
+				1319157119BAA4DA00182CC7 /* NestsansBold.ttf */,
+				1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */,
+				1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */,
 			);
 			name = Fonts;
 			path = ../assets/_project/fonts;
@@ -950,9 +971,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1319157919BAA4DA00182CC7 /* SourceSansPro-Light.otf in Resources */,
 				634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */,
+				1319157719BAA4DA00182CC7 /* Nestsans.ttf in Resources */,
+				1319157419BAA4DA00182CC7 /* ARSMaquettePro-Light.otf in Resources */,
+				1319157A19BAA4DA00182CC7 /* SourceSansPro-Semibold.otf in Resources */,
 				13BF0468183EBE7E00894760 /* Images.xcassets in Resources */,
+				1319157819BAA4DA00182CC7 /* NestsansBold.ttf in Resources */,
+				1319157519BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf in Resources */,
 				13ECEA5F183EBF39004BC638 /* assets in Resources */,
+				1319157619BAA4DA00182CC7 /* FontAwesome.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1222,6 +1250,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jeremy Anticouni (DTK434NTWA)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib",
@@ -1242,7 +1271,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
-				PROVISIONING_PROFILE = "2A7DEE59-BD9A-4F61-8E38-F4CABCFE8D46";
+				PROVISIONING_PROFILE = "e2780067-fd6e-4a1a-ac37-08140579207a";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1253,6 +1282,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: APIGEE CORPORATION";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib",

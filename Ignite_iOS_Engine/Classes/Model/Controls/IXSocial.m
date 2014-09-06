@@ -62,15 +62,20 @@
 static NSString* const kIX_SharePlatform = @"share.platform"; // kIX_SharePlatform Types Accepted
 static NSString* const kIX_ShareText = @"share.text";
 static NSString* const kIX_ShareImage = @"share.image";
+static NSString* const kIX_ShareUrl = @"share.url";
 
 // kIX_SharePlatform Types
 static NSString* const kIX_SharePlatform_Facebook = @"facebook";
 static NSString* const kIX_SharePlatform_Twitter = @"twitter";
+static NSString* const kIX_SharePlatform_Flickr = @"flickr";
+static NSString* const kIX_SharePlatform_Vimeo = @"vimeo";
 static NSString* const kIX_SharePlatform_SinaWeibo = @"sina_weibo";
 
 // Social Read-Only Properties
 static NSString* const kIX_Facebook_Available = @"facebook_available";
 static NSString* const kIX_Twitter_Available = @"twitter_available";
+static NSString* const kIX_Flickr_Available = @"flickr_available";
+static NSString* const kIX_Vimeo_Available = @"vimeo_available";
 static NSString* const kIX_Sina_Weibo_Available = @"sina_weibo_available";
 
 // Social Events
@@ -89,6 +94,7 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller
 @property (nonatomic,strong) NSString* shareServiceType;
 @property (nonatomic,strong) NSString* shareInitialText;
 @property (nonatomic,strong) UIImage* shareImage;
+@property (nonatomic,strong) NSURL* shareUrl;
 
 @end
 
@@ -130,6 +136,8 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller
     
     [self setShareServiceType:[IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:kIX_SharePlatform defaultValue:nil]]];
     [self setShareInitialText:[[self propertyContainer] getStringPropertyValue:kIX_ShareText defaultValue:nil]];
+
+    [self setShareUrl:[NSURL URLWithString:[[self propertyContainer] getStringPropertyValue:kIX_ShareUrl defaultValue:nil]]];
 
     __weak IXSocial* weakSelf = self;
     [[self propertyContainer] getImageProperty:kIX_ShareImage
