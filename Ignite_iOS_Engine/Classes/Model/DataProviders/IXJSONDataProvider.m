@@ -196,7 +196,7 @@
                 else if( [NSJSONSerialization isValidJSONObject:jsonObject] )
                 {
                     NSError* __autoreleasing jsonConvertError = nil;
-                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:nil error:&jsonConvertError];
                     if( jsonConvertError == nil && jsonData )
                     {
                         returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -258,7 +258,7 @@
             
             NSError* __autoreleasing jsonConvertError = nil;
             NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                               options:NSJSONWritingPrettyPrinted
+                                                               options:nil
                                                                  error:&jsonConvertError];
             
             if( jsonConvertError == nil && jsonData ) {

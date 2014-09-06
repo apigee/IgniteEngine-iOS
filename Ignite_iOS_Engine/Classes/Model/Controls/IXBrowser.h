@@ -7,6 +7,8 @@
 //
 
 #import "IXBaseControl.h"
+#import "IXPathHandler.h"
+
 
 /** This object is used to display HTML & websites.
  
@@ -34,5 +36,7 @@
 
 
 @interface IXBrowser : IXBaseControl
+
+@property (nonatomic,strong) NSString* url;
 
 @end

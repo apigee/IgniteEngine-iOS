@@ -22,7 +22,7 @@ IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending";
 
 // IXDataRowDataProvider Read-Only Attributes
 IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
-IX_STATIC_CONST_STRING kIXCount = @"count";
+IX_STATIC_CONST_STRING kIXCount = @"count_rows";
 
 // Non Attribute constants.
 IX_STATIC_CONST_STRING kIXDataRow = @"dataRow.";
@@ -62,6 +62,10 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
     if( [propertyName isEqualToString:kIXCount] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self rowCount]];
+    }
+    else if( [propertyName isEqualToString:kIXTotal] )
+    {
+        returnValue = [self rowDataTotalForKeyPath:propertyName];
     }
     else if( [propertyName hasPrefix:kIXDataRow] )
     {
