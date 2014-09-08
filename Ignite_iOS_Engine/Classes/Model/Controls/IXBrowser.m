@@ -69,10 +69,23 @@
 
 IX_STATIC_CONST_STRING kIXUrl = @"url";
 
+-(void)dealloc
+{
+    [_webview setDelegate:nil];
+}
+
 -(void)buildView
 {
     [super buildView];
-    
+
+    _webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 100,100)];
+    [_webview setDelegate:self];
+    [[self contentView] addSubview:_webview];
+}
+
+-(void)layoutControlContentsInRect:(CGRect)rect
+{
+    [_webview setFrame:rect];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -87,18 +100,15 @@ IX_STATIC_CONST_STRING kIXUrl = @"url";
     
  
 //    NSString* displayMode = [[self propertyContainer] getStringPropertyValue:@"mode" defaultValue:@"default"];
-    
-    _webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, [[self propertyContainer] getFloatPropertyValue:@"width" defaultValue:320.0f], [[self propertyContainer] getFloatPropertyValue:@"height" defaultValue:180.0f])];
-   
-    [_webview setDelegate:self];
-    
+
     //NSString *url=[[self propertyContainer] getStringPropertyValue:@"url" defaultValue:nil];
     
     
     
     //NSURL *nsurl=[NSURL URLWithString:url];
     
-    NSURL* nsurl = [[self propertyContainer] getURLPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
+    NSString* urlString = [[self propertyContainer] getPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
+    NSURL* url = [NSURL URLWithString:urlString];
     
 //    NSString* jsonRootPath = nil;
 //    if( [IXPathHandler pathIsLocal:url] ) {
@@ -107,13 +117,8 @@ IX_STATIC_CONST_STRING kIXUrl = @"url";
 //        jsonRootPath = [[[NSURL URLWithString:url] URLByDeletingLastPathComponent] absoluteString];
 //    }
     
-    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
-    _webview.opaque = NO;
-    [_webview setBackgroundColor:[UIColor clearColor]];
+    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:url];
     [_webview loadRequest:nsrequest];
-    
-    [[self contentView] addSubview:_webview];
-    
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
