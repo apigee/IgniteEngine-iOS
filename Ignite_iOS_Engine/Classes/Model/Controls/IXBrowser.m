@@ -49,9 +49,7 @@
 
 #import "SVWebViewController.h"
 
-
 @interface  IXBrowser() <UIWebViewDelegate>
-
 
 @property (nonatomic,strong) SVWebViewController *webViewController;
 
@@ -68,6 +66,12 @@
 @implementation IXBrowser
 
 IX_STATIC_CONST_STRING kIXUrl = @"url";
+
+// IXBrowser Events
+IX_STATIC_CONST_STRING kIXStarted = @"started";
+IX_STATIC_CONST_STRING kIXFailed = @"failed";
+IX_STATIC_CONST_STRING kIXFinished = @"finished";
+
 
 -(void)dealloc
 {
@@ -106,7 +110,9 @@ IX_STATIC_CONST_STRING kIXUrl = @"url";
     
     
     //NSURL *nsurl=[NSURL URLWithString:url];
-    
+
+    [_webview setBackgroundColor:[[self contentView] backgroundColor]];
+
     NSString* urlString = [[self propertyContainer] getPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
     NSURL* url = [NSURL URLWithString:urlString];
     
@@ -129,15 +135,17 @@ IX_STATIC_CONST_STRING kIXUrl = @"url";
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [[self webViewController] webViewDidStartLoad:webView];
+    [[self actionContainer] executeActionsForEventNamed:kIXStarted];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [[self webViewController] webViewDidFinishLoad:webView];
+    [[self actionContainer] executeActionsForEventNamed:kIXFinished];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
     [[self webViewController] webView:webView didFailLoadWithError:error];
+    [[self actionContainer] executeActionsForEventNamed:kIXFinished];
 }
 
 
