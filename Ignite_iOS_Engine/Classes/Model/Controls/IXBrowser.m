@@ -111,6 +111,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
     
     //NSURL *nsurl=[NSURL URLWithString:url];
 
+    _webview.opaque = NO;
     [_webview setBackgroundColor:[[self contentView] backgroundColor]];
 
     NSString* urlString = [[self propertyContainer] getPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
