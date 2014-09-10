@@ -118,6 +118,7 @@
 		63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */; };
 		63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */; };
 		63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */; };
+		63B92C2719C0F4E5004C0A13 /* IXMMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */; };
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
@@ -350,6 +351,8 @@
 		63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCustomNavPushPopTransition.m; sourceTree = "<group>"; };
 		63B0E9AB19476D37002BF48E /* IXShortCodeFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXShortCodeFunction.h; sourceTree = "<group>"; };
 		63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXShortCodeFunction.m; sourceTree = "<group>"; };
+		63B92C2519C0F4E5004C0A13 /* IXMMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMMDrawerController.h; sourceTree = "<group>"; };
+		63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMMDrawerController.m; sourceTree = "<group>"; };
 		63C0A7AF18CFDAB700F72064 /* IXNetworkShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNetworkShortCode.h; sourceTree = "<group>"; };
 		63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNetworkShortCode.m; sourceTree = "<group>"; };
 		63C0A7B218CFDB9600F72064 /* IXDeviceShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceShortCode.h; sourceTree = "<group>"; };
@@ -890,6 +893,8 @@
 				63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */,
 				63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */,
 				63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */,
+				63B92C2519C0F4E5004C0A13 /* IXMMDrawerController.h */,
+				63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1146,6 +1151,7 @@
 				13033FB4183ED8F200C29157 /* IXBaseShortCode.m in Sources */,
 				6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */,
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
+				63B92C2719C0F4E5004C0A13 /* IXMMDrawerController.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
 				635F0E061979ED62002C0DBA /* IXActionSheet.m in Sources */,
 				63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */,

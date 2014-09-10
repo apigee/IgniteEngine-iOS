@@ -26,7 +26,7 @@
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"
 #import "ApigeeMonitoringOptions.h"
-#import "MMDrawerController.h"
+#import "IXMMDrawerController.h"
 #import "Reachability.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
@@ -115,7 +115,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         _deviceProperties = [[IXPropertyContainer alloc] init];
         
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
-        _drawerController = [[MMDrawerController alloc] initWithCenterViewController:_rootViewController
+        _drawerController = [[IXMMDrawerController alloc] initWithCenterViewController:_rootViewController
                                                             leftDrawerViewController:nil
                                                            rightDrawerViewController:nil];
         
