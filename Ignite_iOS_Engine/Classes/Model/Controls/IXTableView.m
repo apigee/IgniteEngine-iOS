@@ -215,6 +215,17 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    CGFloat height = [self tableView:tableView viewForHeaderInSection:section].frame.size.height;
+    return height;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[self headerViewForSection:section] contentView];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGSize itemSize = [self sizeForCellAtIndexPath:indexPath];

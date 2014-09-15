@@ -29,6 +29,10 @@ IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
 IX_STATIC_CONST_STRING kIXBackgroundSlidesInFromSide = @"background_slides_in_from_side";
 IX_STATIC_CONST_STRING kIXBackgroundSwipeAdjustsBackgroundAlpha = @"background_swipe_adjusts_background_alpha";
 IX_STATIC_CONST_STRING kIXBackgroundControls = @"background_controls";
+IX_STATIC_CONST_STRING kIXSectionHeaderXPath = @"section_header_xpath";
+IX_STATIC_CONST_STRING kIXSectionHeaderControls = @"section_header_controls";
+IX_STATIC_CONST_STRING kIXSectionHeaderHeight = @"section_header_height";
+IX_STATIC_CONST_STRING kIXSectionHeaderWidth = @"section_header_width";
 IX_STATIC_CONST_STRING kIXDataproviderID = @"dataprovider_id";
 IX_STATIC_CONST_STRING kIXItemWidth = @"item_width";
 IX_STATIC_CONST_STRING kIXItemHeight = @"item_height";
@@ -73,6 +77,10 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 @property (nonatomic, assign) BOOL pullToRefreshEnabled;
 @property (nonatomic, strong) UIRefreshControl* refreshControl;
 
+@property (nonatomic, strong) NSString* sectionHeaderXPath;
+@property (nonatomic, strong) NSDictionary* sectionRowCounts;
+@property (nonatomic, strong) NSMutableDictionary* sectionHeaderSandboxes;
+
 @end
 
 @implementation IXCellBasedControl
@@ -82,6 +90,13 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:IXBaseDataProviderDidUpdateNotification
                                                   object:[self dataProvider]];
+}
+
+-(void)buildView
+{
+    [super buildView];
+
+    [self setSectionHeaderSandboxes:[NSMutableDictionary dictionary]];
 }
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
@@ -170,6 +185,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     } else {
         [self setScrollIndicatorStyle:UIScrollViewIndicatorStyleDefault];
     }
+
+    [self setSectionHeaderXPath:[[self propertyContainer] getStringPropertyValue:kIXSectionHeaderXPath defaultValue:nil]];
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
@@ -198,18 +215,65 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 
 -(NSUInteger)rowCountForSection:(NSInteger)section
 {
-    NSUInteger rowsInSection = [[self dataProvider] rowCount];
+    NSUInteger rowsInSection = [[[self sectionRowCounts] objectForKey:[NSNumber numberWithInt:(int)section]] unsignedIntegerValue];
     return rowsInSection;
 }
 
 -(NSInteger)numberOfSections
 {
-    return 1;
+    return [[self sectionRowCounts] count];
 }
 
 -(void)reload
 {
-    // The base implementation of this does nothing.
+    NSMutableDictionary* sectionNumbersAndRowCount = [NSMutableDictionary dictionary];
+
+    int rowCount = (int)[[self dataProvider] rowCount];
+    if( [[self sectionHeaderXPath] length] <= 0 )
+    {
+        [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:rowCount]
+                                      forKey:[NSNumber numberWithInt:0]];
+    }
+    else
+    {
+        NSUInteger numberOfRowsInSection = 0;
+        NSString* lastSectionHeaderValue = nil;
+        int sectionNumber = -1;
+        for( int i = 0; i < rowCount; i++ )
+        {
+            NSString* rowHeaderValue = [[self dataProvider] rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
+                                                                        keyPath:[self sectionHeaderXPath]];
+            if( i == rowCount - 1 ) {
+                if( [rowHeaderValue isEqualToString:lastSectionHeaderValue] ) {
+                    numberOfRowsInSection++;
+                    [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:(int)numberOfRowsInSection]
+                                                  forKey:[NSNumber numberWithInt:sectionNumber]];
+                } else {
+
+                    if( sectionNumber != -1 ) {
+                        [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:(int)numberOfRowsInSection]
+                                                      forKey:[NSNumber numberWithInt:sectionNumber]];
+                    }
+                    sectionNumber++;
+                    [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:1]
+                                                  forKey:[NSNumber numberWithInt:sectionNumber]];
+
+                }
+            } else if( ![lastSectionHeaderValue isEqualToString:rowHeaderValue] ) {
+                if( sectionNumber != -1 ) {
+                    [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:(int)numberOfRowsInSection]
+                                                  forKey:[NSNumber numberWithInt:sectionNumber]];
+                }
+                sectionNumber++;
+                numberOfRowsInSection = 1;
+                lastSectionHeaderValue = rowHeaderValue;
+            } else {
+                numberOfRowsInSection++;
+            }
+        }
+    }
+
+    [self setSectionRowCounts:sectionNumbersAndRowCount];
 }
 
 -(void)dataProviderDidUpdate:(NSNotification*)notification
@@ -300,6 +364,76 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     return layoutControl;
 }
 
+-(IXLayout*)headerViewForSection:(NSInteger)section
+{
+    int row = (int)section;
+    if( [self sectionRowCounts] && [[self sectionRowCounts] objectForKey:[NSNumber numberWithInt:(int)section]] != nil)
+    {
+        if( section > 0 )
+        {
+            int previousSection = (int)section - 1;
+            while (previousSection >= 0) {
+                @try{
+                    int rowsInPreviousSection = [[[self sectionRowCounts] objectForKey:[NSNumber numberWithInt:previousSection]] intValue];
+                    row += rowsInPreviousSection - 1;
+                } @catch (NSException *exception) {
+                }
+                previousSection--;
+            }
+        }
+    }
+
+    IXLayout* layoutControl = nil;
+    if([[self sectionHeaderXPath] length] > 0 && [self subControlsDictionary][kIXSectionHeaderControls] != nil )
+    {
+        IXSandbox* tableViewSandbox = [self sandbox];
+        IXSandbox* sectionHeaderSandbox = [[IXSandbox alloc] initWithBasePath:[tableViewSandbox basePath]
+                                                                     rootPath:[tableViewSandbox rootPath]];
+        [sectionHeaderSandbox setViewController:[tableViewSandbox viewController]];
+        [sectionHeaderSandbox setContainerControl:[tableViewSandbox containerControl]];
+        [sectionHeaderSandbox setBasePath:[tableViewSandbox basePath]];
+        [sectionHeaderSandbox setRootPath:[tableViewSandbox rootPath]];
+        [sectionHeaderSandbox setDataProviders:[tableViewSandbox dataProviders]];
+        [sectionHeaderSandbox setDataProviderForRowData:[self dataProvider]];
+        [sectionHeaderSandbox setIndexPathForRowData:[NSIndexPath indexPathForRow:row inSection:0]];
+
+        [[self sectionHeaderSandboxes] setObject:sectionHeaderSandbox forKey:[NSNumber numberWithInt:row]];
+
+        layoutControl = [[IXLayout alloc] init];
+        [[layoutControl contentView] setClipsToBounds:NO];
+        [layoutControl setParentObject:self];
+        [layoutControl setNotifyParentOfLayoutUpdates:NO];
+
+        IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
+
+        [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
+                                                 [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
+                                                 [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
+                                                 [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
+                                                 [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
+                                                 [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
+
+        [layoutControl setPropertyContainer:layoutPropertyContainer];
+        [layoutControl setActionContainer:[[self actionContainer] copy]];
+        [layoutControl setSandbox:sectionHeaderSandbox];
+        [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self subControlsDictionary][kIXSectionHeaderControls] copyItems:YES]];
+
+        float height = [[self propertyContainer] getSizeValue:kIXSectionHeaderHeight
+                                                  maximumSize:self.contentView.frame.size.height
+                                                 defaultValue:[self itemSize].height];
+
+        float width = [[self propertyContainer] getSizeValue:kIXSectionHeaderWidth
+                                                 maximumSize:self.contentView.frame.size.width
+                                                defaultValue:[self itemSize].width];
+
+        [[layoutControl contentView] setFrame:CGRectMake(0.0f, 0.0f, width, height)];
+        [layoutControl applySettings];
+        [layoutControl layoutControl];
+    }
+
+    return layoutControl;
+}
+
 -(void)configureCell:(id<IXCellContainerDelegate>)cell withIndexPath:(NSIndexPath*)indexPath
 {
     [self configureCell:cell withIndexPath:indexPath isDummy:NO];
@@ -316,6 +450,28 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
     
     if( cellLayout )
     {
+        int indexPathSection = (int)indexPath.section;
+        int indexPathRow = (int)indexPath.row;
+        int row = indexPathSection;
+
+        if( [self sectionRowCounts] && [[self sectionRowCounts] objectForKey:[NSNumber numberWithInt:indexPathSection]] != nil)
+        {
+            row += indexPathRow;
+            if( indexPathSection > 0 )
+            {
+                int previousSection = indexPathSection - 1;
+                while (previousSection >= 0) {
+                    @try{
+                        int rowsInPreviousSection = [[[self sectionRowCounts] objectForKey:[NSNumber numberWithInt:previousSection]] intValue];
+                        row += rowsInPreviousSection - 1;
+                    } @catch (NSException *exception) {
+                    }
+                    previousSection--;
+                }
+                indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+            }
+        }
+
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
         [[cellLayout sandbox] setIndexPathForRowData:indexPath];
         

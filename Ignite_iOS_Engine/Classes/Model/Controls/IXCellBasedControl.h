@@ -52,5 +52,6 @@
 
 -(CGSize)sizeForCellAtIndexPath:(NSIndexPath*)indexPath;
 -(void)configureCell:(id<IXCellContainerDelegate>)cell withIndexPath:(NSIndexPath*)indexPath;
+-(IXLayout*)headerViewForSection:(NSInteger)section;
 
 @end
