@@ -45,6 +45,26 @@ static NSString* const kIXOSVersionMajor = @"os.version.major";
         {
             returnValue = [IXDeviceInfo screenHeight];
         }
+        else if( [methodName isEqualToString:kIXOSVersion] )
+        {
+            returnValue = [IXDeviceInfo osVersion];
+        }
+        else if( [methodName isEqualToString:kIXOSVersionInteger] )
+        {
+            returnValue = [IXDeviceInfo osVersionAsInteger];
+        }
+        else if( [methodName isEqualToString:kIXOSVersionMajor] )
+        {
+            returnValue = [IXDeviceInfo osMajorVersion];
+        }
+        else if( [methodName isEqualToString:kIXModel] )
+        {
+            returnValue = [IXDeviceInfo deviceModel];
+        }
+        else if( [methodName isEqualToString:kIXType] )
+        {
+            returnValue = [IXDeviceInfo deviceType];
+        }
         else if( [methodName length] > 0 )
         {
             returnValue = [[[IXAppManager sharedAppManager] deviceProperties] getStringPropertyValue:methodName defaultValue:nil];
