@@ -22,7 +22,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeAlert)];
+    // Push notification support for iOS 8
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationCategory* category = [self registerActions];
+        NSMutableSet* categories = [NSMutableSet set];
+        [categories addObject:category];
+        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:categories];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    } else {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    }
+#else
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+#endif
+    
     
     [self setIxWindow:[[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
     [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] drawerController]];
@@ -36,7 +51,7 @@
     {
         [[IXAppManager sharedAppManager] appDidRecieveRemoteNotification:remoteNotificationInfo];
     }
-        
+    
     return YES;
 }
 
@@ -50,6 +65,39 @@
     [[IXAppManager sharedAppManager] appDidRecieveRemoteNotification:userInfo];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
+    if([identifier isEqualToString: @"action_one"]) {
+        IX_LOG_INFO(@"Push Interaction: %@", identifier);
+    }
+    if([identifier isEqualToString: @"action_two"]) {
+        IX_LOG_INFO(@"Push Interaction: %@", identifier);
+    }
+    completionHandler();
+}
+#endif
+
+- (UIMutableUserNotificationCategory*)registerActions {
+    UIMutableUserNotificationAction* action = [[UIMutableUserNotificationAction alloc] init];
+    action.identifier = @"action_one";
+    action.title = @"one";
+    action.activationMode = UIUserNotificationActivationModeForeground;
+    action.destructive = true;
+    action.authenticationRequired = false;
+    
+    UIMutableUserNotificationAction* action2 = [[UIMutableUserNotificationAction alloc] init];
+    action2.identifier = @"action_two";
+    action2.title = @"two";
+    action2.activationMode = UIUserNotificationActivationModeBackground;
+    action2.destructive = false;
+    action2.authenticationRequired = false;
+    
+    UIMutableUserNotificationCategory* category = [[UIMutableUserNotificationCategory alloc] init];
+    category.identifier = @"category_name";
+    [category setActions:@[action2,action] forContext: UIUserNotificationActionContextDefault];
+    return category;
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     [[IXAppManager sharedAppManager] storeSessionProperties];
@@ -59,7 +107,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [[IXAppManager sharedAppManager] storeSessionProperties];
 }
