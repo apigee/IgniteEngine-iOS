@@ -63,6 +63,7 @@
 		1319157919BAA4DA00182CC7 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */; };
 		1319157A19BAA4DA00182CC7 /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */; };
 		136928F11836108300E28BBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136928F01836108300E28BBC /* QuartzCore.framework */; };
+		1387A0C719CBA80600A85B04 /* IXTouchID.m in Sources */ = {isa = PBXBuildFile; fileRef = 1387A0C619CBA80600A85B04 /* IXTouchID.m */; };
 		13BF0468183EBE7E00894760 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13BF0465183EBE7E00894760 /* Images.xcassets */; };
 		13BF0469183EBE7E00894760 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BF0466183EBE7E00894760 /* main.m */; };
 		13ECEA5F183EBF39004BC638 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 13ECEA5E183EBF38004BC638 /* assets */; };
@@ -248,6 +249,8 @@
 		1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
 		1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.otf"; sourceTree = "<group>"; };
 		136928F01836108300E28BBC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1387A0C519CBA80600A85B04 /* IXTouchID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTouchID.h; sourceTree = "<group>"; };
+		1387A0C619CBA80600A85B04 /* IXTouchID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTouchID.m; sourceTree = "<group>"; };
 		13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "../assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
 		13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Ignite_iOS_Engine-Prefix.pch"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		13BF0465183EBE7E00894760 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../assets/_project/Images.xcassets; sourceTree = SOURCE_ROOT; };
@@ -596,6 +599,8 @@
 				13033F63183ED8F200C29157 /* IXToggle.m */,
 				635F0E041979ED62002C0DBA /* IXActionSheet.h */,
 				635F0E051979ED62002C0DBA /* IXActionSheet.m */,
+				1387A0C519CBA80600A85B04 /* IXTouchID.h */,
+				1387A0C619CBA80600A85B04 /* IXTouchID.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1158,6 +1163,7 @@
 				63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */,
 				13033FB1183ED8F200C29157 /* IXPropertyContainer.m in Sources */,
 				13033FA7183ED8F200C29157 /* IXText.m in Sources */,
+				1387A0C719CBA80600A85B04 /* IXTouchID.m in Sources */,
 				CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */,
 				13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */,
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
