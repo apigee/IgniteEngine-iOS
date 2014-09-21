@@ -88,7 +88,7 @@ typedef enum {
 /**
  *  Sent when the application is about to move from active to inactive state.
  */
--(void)appWillResignActiveEvent;
+-(void)appWillResignActive;
 
 /**
  *  Sent when the application moved from foreground to background state.
