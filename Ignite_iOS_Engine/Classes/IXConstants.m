@@ -9,8 +9,11 @@
 #import "IXConstants.h"
 
 // APP LEVEL NOTIFICATIONS
-NSString* const kIXAppEnteredForegroundEvent = @"app_entered_foreground";
-NSString* const kIXAppEnteredBackgroundEvent = @"app_entered_background";
+NSString* const kIXAppWillResignActiveEvent = @"app_will_resign_active";
+NSString* const kIXAppDidEnterBackgroundEvent = @"app_did_enter_background";
+NSString* const kIXAppWillEnterForegroundEvent = @"app_will_enter_foreground";
+NSString* const kIXAppDidBecomeActiveEvent = @"app_did_become_active";
+NSString* const kIXAppWillTerminateEvent = @"app_will_terminate";
 NSString* const kIXPushRecievedEvent = @"push_recieved";
 
 // SPECIAL
@@ -83,4 +86,3 @@ NSString* const kIX_CANCEL = @"Cancel";
 NSString* const kIX_TOUCH = @"touch";
 NSString* const kIX_GIF_EXTENSION = @"gif";
 NSString* const kIX_DEFAULT = @"default";
-

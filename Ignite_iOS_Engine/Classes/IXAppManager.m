@@ -32,6 +32,7 @@
 #import "SDWebImageManager.h"
 
 // Top Level Containers
+IX_STATIC_CONST_STRING kIXAppActions = @"app.actions";
 IX_STATIC_CONST_STRING kIXAppAttributes = @"app.attributes";
 IX_STATIC_CONST_STRING kIXAppDataProviders = @"app.data_providers";
 IX_STATIC_CONST_STRING kIXSessionDefaults = @"session.defaults";
@@ -94,6 +95,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 @property (nonatomic,strong) IXPropertyContainer *deviceProperties;
 @property (nonatomic,strong) IXPropertyContainer *appProperties;
 @property (nonatomic,strong) IXPropertyContainer *sessionProperties;
+@property (nonatomic,strong) IXActionContainer* actionContainer;
 
 @property (nonatomic,strong) Reachability *reachabilty;
 @property (nonatomic,strong) ApigeeClient *apigeeClient;
@@ -213,6 +215,10 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                 NSArray* appDataProvidersJSONArray = [jsonObject valueForKeyPath:kIXAppDataProviders];
                                                 NSArray* appDataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:appDataProvidersJSONArray];
                                                 [[self applicationSandbox] addDataProviders:[IXBaseDataProviderConfig createDataProvidersFromConfigs:appDataProviderConfigs]];
+                                                
+                                                NSArray* appActionsJSONArray = [jsonObject valueForKeyPath:kIXAppActions];
+                                                _actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:appActionsJSONArray];
+
                                                 
                                                 NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:kIXAppAttributes];
                                                 [[self appProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
@@ -438,6 +444,36 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [[NSUserDefaults standardUserDefaults] setObject:data forKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
         [[NSUserDefaults standardUserDefaults] synchronize];        
     }
+}
+
+-(void)appWillResignActive
+{
+    IX_LOG_VERBOSE(@"App will resign active.");
+    [_actionContainer executeActionsForEventNamed:kIXAppWillResignActiveEvent];
+}
+
+-(void)appDidEnterBackground
+{
+    IX_LOG_VERBOSE(@"App did enter background.");
+    [_actionContainer executeActionsForEventNamed:kIXAppDidEnterBackgroundEvent];
+}
+
+-(void)appWillEnterForeground
+{
+    IX_LOG_VERBOSE(@"App will enter foreground.");
+    [_actionContainer executeActionsForEventNamed:kIXAppWillEnterForegroundEvent];
+}
+
+-(void)appDidBecomeActive
+{
+    IX_LOG_VERBOSE(@"App did become active.");
+    [_actionContainer executeActionsForEventNamed:kIXAppDidBecomeActiveEvent];
+}
+
+-(void)appWillTerminate
+{
+    IX_LOG_VERBOSE(@"App will terminate.");
+    [_actionContainer executeActionsForEventNamed:kIXAppWillTerminateEvent];
 }
 
 -(void)loadStoredSessionProperties

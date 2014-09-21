@@ -68,8 +68,11 @@
     }
 
 // APP LEVEL EVENTS
-extern NSString* const kIXAppEnteredForegroundEvent;
-extern NSString* const kIXAppEnteredBackgroundEvent;
+extern NSString* const kIXAppWillResignActiveEvent;
+extern NSString* const kIXAppDidEnterBackgroundEvent;
+extern NSString* const kIXAppWillEnterForegroundEvent;
+extern NSString* const kIXAppDidBecomeActiveEvent;
+extern NSString* const kIXAppWillTerminateEvent;
 extern NSString* const kIXPushRecievedEvent;
 
 // SPECIAL
@@ -142,4 +145,3 @@ extern NSString* const kIX_CANCEL;
 extern NSString* const kIX_TOUCH;
 extern NSString* const kIX_GIF_EXTENSION;
 extern NSString* const kIX_DEFAULT;
-

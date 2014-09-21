@@ -17,6 +17,7 @@ typedef enum {
 @class IXPropertyContainer;
 @class IXSandbox;
 @class IXViewController;
+@class IXActionContainer;
 
 @class ApigeeClient;
 @class MMDrawerController;
@@ -83,6 +84,31 @@ typedef enum {
  *  Stores the current sessionProperties object onto the disk for retrieval when the app starts again.
  */
 -(void)storeSessionProperties;
+
+/**
+ *  Sent when the application is about to move from active to inactive state.
+ */
+-(void)appWillResignActiveEvent;
+
+/**
+ *  Sent when the application moved from foreground to background state.
+ */
+-(void)appDidEnterBackground;
+
+/**
+ *  Sent when the application is about to move from background to foreground state.
+ */
+-(void)appWillEnterForeground;
+
+/**
+ *  Sent when the application became active. Fires on first load + when moving from background to foreground.
+ */
+-(void)appDidBecomeActive;
+
+/**
+ *  Called when the application is about to terminate.
+ */
+-(void)appWillTerminate;
 
 /**
  *  Evaluates the given javascript.
