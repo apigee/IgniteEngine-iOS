@@ -40,7 +40,7 @@ static NSString* const kIXAuthenticationUnavailable = @"unavailable";
 
 -(void)applySettings
 {
-    [super applySettings];
+    [super applySettings]; 
 
 }
 
