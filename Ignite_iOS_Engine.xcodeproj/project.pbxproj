@@ -135,6 +135,7 @@
 		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
 		63EAB3F618BEC588001AC248 /* IXBaseDataProviderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAB3F518BEC588001AC248 /* IXBaseDataProviderConfig.m */; };
 		63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFBD018D798830016CA69 /* IXControlCacheContainer.m */; };
+		63F0B1D019DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F0B1CF19DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.m */; };
 		63F87BEC18AC25BA00282DB8 /* UIImageView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F87BEB18AC25BA00282DB8 /* UIImageView+IXAdditions.m */; };
 		63F87BF318AC47AA00282DB8 /* MHRotaryKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F87BF218AC47AA00282DB8 /* MHRotaryKnob.m */; };
 		63F8A402187368BC00250994 /* IXCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F8A401187368BC00250994 /* IXCollection.m */; };
@@ -385,6 +386,8 @@
 		63EAB3F518BEC588001AC248 /* IXBaseDataProviderConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXBaseDataProviderConfig.m; sourceTree = "<group>"; };
 		63EAFBCF18D798830016CA69 /* IXControlCacheContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXControlCacheContainer.h; sourceTree = "<group>"; };
 		63EAFBD018D798830016CA69 /* IXControlCacheContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXControlCacheContainer.m; sourceTree = "<group>"; };
+		63F0B1CE19DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFHTTPRequestOperationLogger.h; sourceTree = "<group>"; };
+		63F0B1CF19DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFHTTPRequestOperationLogger.m; sourceTree = "<group>"; };
 		63F87BEA18AC25BA00282DB8 /* UIImageView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+IXAdditions.h"; sourceTree = "<group>"; };
 		63F87BEB18AC25BA00282DB8 /* UIImageView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+IXAdditions.m"; sourceTree = "<group>"; };
 		63F87BF118AC47AA00282DB8 /* MHRotaryKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHRotaryKnob.h; sourceTree = "<group>"; };
@@ -894,6 +897,8 @@
 		63D23AB11845B3A800C93BC7 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				63F0B1CE19DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.h */,
+				63F0B1CF19DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.m */,
 				63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */,
 				63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */,
 				63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */,
@@ -1117,6 +1122,7 @@
 				636949EA19A3E0E80009AF81 /* Formatter.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
 				CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */,
+				63F0B1D019DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.m in Sources */,
 				63A10B3018AAF9D900130BEA /* IXSound.m in Sources */,
 				634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */,
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,

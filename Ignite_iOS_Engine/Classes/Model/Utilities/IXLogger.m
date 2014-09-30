@@ -10,7 +10,7 @@
 
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
-#import "AFHTTPRequestOperationLogger.h"
+#import "IXAFHTTPRequestOperationLogger.h"
 
 #import "IXAppManager.h"
 
@@ -68,13 +68,13 @@ static NSString* const kIXLogLevelRelease = @"release";
     _requestLoggingEnabled = requestLoggingEnabled;
     if( requestLoggingEnabled )
     {
-        [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
-        [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+        [[IXAFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
+        [[IXAFHTTPRequestOperationLogger sharedLogger] startLogging];
     }
     else
     {
-        [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelOff];
-        [[AFHTTPRequestOperationLogger sharedLogger] stopLogging];
+        [[IXAFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelOff];
+        [[IXAFHTTPRequestOperationLogger sharedLogger] stopLogging];
     }
 }
 
