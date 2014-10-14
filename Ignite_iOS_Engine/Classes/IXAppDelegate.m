@@ -30,7 +30,6 @@
         [categories addObject:category];
         UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:categories];
         [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
     } else {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     }
@@ -60,12 +59,23 @@
     [[IXAppManager sharedAppManager] appDidRegisterRemoteNotificationDeviceToken:newDeviceToken];
 }
 
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [[IXAppManager sharedAppManager] appFailedToRegisterForRemoteNotifications];
+}
+
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [[IXAppManager sharedAppManager] appDidRecieveRemoteNotification:userInfo];
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+
+-(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    [application registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
     if([identifier isEqualToString: @"action_one"]) {
         IX_LOG_INFO(@"Push Interaction: %@", identifier);
@@ -75,6 +85,7 @@
     }
     completionHandler();
 }
+
 #endif
 
 - (UIMutableUserNotificationCategory*)registerActions {

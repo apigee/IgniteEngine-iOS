@@ -14,6 +14,8 @@ NSString* const kIXAppDidEnterBackgroundEvent = @"app_did_enter_background";
 NSString* const kIXAppWillEnterForegroundEvent = @"app_will_enter_foreground";
 NSString* const kIXAppDidBecomeActiveEvent = @"app_did_become_active";
 NSString* const kIXAppWillTerminateEvent = @"app_will_terminate";
+NSString* const kIXAppRegisterForRemoteNotificationsSuccess = @"app_register_for_notifications_success";
+NSString* const kIXAppRegisterForRemoteNotificationsFailed = @"app_register_for_notifications_failed";
 NSString* const kIXPushRecievedEvent = @"push_recieved";
 
 // SPECIAL

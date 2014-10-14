@@ -169,6 +169,13 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             IX_LOG_ERROR(@"Error Setting Push Token with ApigeeClient : %@", [response rawResponse]);
         }
     }
+
+    [_actionContainer executeActionsForEventNamed:kIXAppRegisterForRemoteNotificationsSuccess];
+}
+
+-(void)appFailedToRegisterForRemoteNotifications
+{
+    [_actionContainer executeActionsForEventNamed:kIXAppRegisterForRemoteNotificationsFailed];
 }
 
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo

@@ -73,6 +73,8 @@ extern NSString* const kIXAppDidEnterBackgroundEvent;
 extern NSString* const kIXAppWillEnterForegroundEvent;
 extern NSString* const kIXAppDidBecomeActiveEvent;
 extern NSString* const kIXAppWillTerminateEvent;
+extern NSString* const kIXAppRegisterForRemoteNotificationsSuccess;
+extern NSString* const kIXAppRegisterForRemoteNotificationsFailed;
 extern NSString* const kIXPushRecievedEvent;
 
 // SPECIAL

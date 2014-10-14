@@ -70,6 +70,8 @@ typedef enum {
  */
 -(void)appDidRegisterRemoteNotificationDeviceToken:(NSData *)deviceToken;
 
+-(void)appFailedToRegisterForRemoteNotifications;
+
 /**
  *  Tells the manager that a remote notification has been recieved.
  *  This method should be called from application:didReceiveRemoteNotification: in your application delegate.
