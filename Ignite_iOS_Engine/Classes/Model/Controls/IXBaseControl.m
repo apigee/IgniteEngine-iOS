@@ -89,6 +89,8 @@ static NSString* const kIXSnapshotFailed = @"snapshot.failed";
 static NSString* const kIXLocation = @"location";
 static NSString* const kIXLocationX = @"location.x";
 static NSString* const kIXLocationY = @"location.y";
+static NSString* const kIXActualHeight = @"actual.height";
+static NSString* const kIXActualWidth = @"actual.width";
 
 // Animations
 static NSString* const kIXSpin = @"spin";
@@ -641,6 +643,16 @@ static NSString* const kIXToggle = @"dev_toggle";
             returnValue = [NSString stringWithFormat:@"%f", location.y / 2];
         if ( [propertyName isEqualToString:kIXLocation] )
             returnValue = NSStringFromCGPoint(CGPointMake(location.x / 2, location.y / 2));
+    }
+    if ( [propertyName hasPrefix:kIXActualHeight] && [[self propertyContainer] hasLayoutProperties] )
+    {
+        CGFloat selfHeight=self.contentView.bounds.size.height;
+        returnValue = [NSString stringWithFormat: @"%.0f", selfHeight];
+    }
+    if ( [propertyName hasPrefix:kIXActualWidth] && [[self propertyContainer] hasLayoutProperties] )
+    {
+        CGFloat selfWidth=self.contentView.bounds.size.width;
+        returnValue = [NSString stringWithFormat: @"%.0f", selfWidth];
     }
     return returnValue;
 }
