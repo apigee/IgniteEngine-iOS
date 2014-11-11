@@ -14,6 +14,7 @@
 
 @property (nonatomic,strong) NSArray* tapGestureRecognizers;
 @property (nonatomic,strong) NSArray* swipeGestureRecognizers;
+@property (nonatomic,strong) UILongPressGestureRecognizer* longPressRecognizer;
 @property (nonatomic,strong) UIPinchGestureRecognizer* pinchGestureRecognizer;
 @property (nonatomic,strong) UIPanGestureRecognizer* panGestureRecognizer;
 
@@ -107,6 +108,16 @@
     }
 }
 
+-(void)beginListeningForLongPress
+{
+    if( ![self longPressRecognizer] )
+    {
+        UILongPressGestureRecognizer* longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
+        [self addGestureRecognizer:longPressRecognizer];
+        [self setLongPressRecognizer:longPressRecognizer];
+    }
+}
+
 -(void)stopListeningForTapGestures
 {
     for( UITapGestureRecognizer* tapRecognizer in [self tapGestureRecognizers] )
@@ -144,6 +155,16 @@
         [[self panGestureRecognizer] removeTarget:self action:@selector(panGestureRecognized:)];
         [self removeGestureRecognizer:[self panGestureRecognizer]];
         [self setPanGestureRecognizer:nil];
+    }
+}
+
+-(void)stopListeningForLongPress
+{
+    if( [self longPressRecognizer] )
+    {
+        [[self longPressRecognizer] removeTarget:self action:@selector(longPressGestureRecognized:)];
+        [self removeGestureRecognizer:[self longPressRecognizer]];
+        [self setLongPressRecognizer:nil];
     }
 }
 
@@ -216,6 +237,15 @@
     if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewPanGestureRecognized:)] )
     {
         [[self controlContentViewTouchDelegate] controlViewPanGestureRecognized:panRecognizer];
+    }
+}
+
+-(void)longPressGestureRecognized:(UILongPressGestureRecognizer*)longPressRecognizer
+{
+    IX_LOG_VERBOSE(@"LONG PRESS RECOGNIZED : %@", [[self controlContentViewTouchDelegate] description]);
+    if( [[self controlContentViewTouchDelegate] respondsToSelector:@selector(controlViewLongPressRecognized:)] )
+    {
+        [[self controlContentViewTouchDelegate] controlViewLongPressRecognized:longPressRecognizer];
     }
 }
 

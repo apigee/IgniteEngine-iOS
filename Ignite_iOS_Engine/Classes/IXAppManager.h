@@ -17,7 +17,6 @@ typedef enum {
 @class IXPropertyContainer;
 @class IXSandbox;
 @class IXViewController;
-@class IXActionContainer;
 
 @class ApigeeClient;
 @class MMDrawerController;

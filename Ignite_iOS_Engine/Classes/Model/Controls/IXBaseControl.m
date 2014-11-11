@@ -36,6 +36,7 @@ static NSString* const kIXEnableTap = @"enable_tap";
 static NSString* const kIXEnableSwipe = @"enable_swipe";
 static NSString* const kIXEnablePinch = @"enable_pinch";
 static NSString* const kIXEnablePan = @"enable_pan";
+static NSString* const kIXEnableLongPress = @"enable_long_press";
 static NSString* const kIXEnableShadow = @"enable_shadow";
 static NSString* const kIXShadowBlur = @"shadow_blur";
 static NSString* const kIXShadowAlpha = @"shadow_alpha";
@@ -67,6 +68,7 @@ static NSString* const kIXLeft = @"left";
 static NSString* const kIXPan = @"pan";
 static NSString* const kIXPanReset = @"pan.reset";
 static NSString* const kIXPanSnap = @"pan.snap_to_bounds";
+static NSString* const kIXLongPress = @"long_press";
 static BOOL kIXDidDetermineOriginalCenter = false;
 
 //
@@ -371,6 +373,15 @@ static NSString* const kIXToggle = @"dev_toggle";
     {
         [[self contentView] stopListeningForPanGestures];
     }
+
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableLongPress defaultValue:NO] )
+    {
+        [[self contentView] beginListeningForLongPress];
+    }
+    else
+    {
+        [[self contentView] stopListeningForLongPress];
+    }
 }
 
 -(void)controlViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -403,6 +414,11 @@ static NSString* const kIXToggle = @"dev_toggle";
 {
     NSString* tapCount = [NSString stringWithFormat:@"%lu",(unsigned long)[tapGestureRecognizer numberOfTapsRequired]];
     [[self actionContainer] executeActionsForEventNamed:kIXTap propertyWithName:kIXTapCount mustHaveValue:tapCount];
+}
+
+-(void)controlViewLongPressRecognized:(UILongPressGestureRecognizer*)panGestureRecognizer
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXLongPress];
 }
 
 -(void)controlViewSwipeGestureRecognized:(UISwipeGestureRecognizer *)swipeGestureRecognizer

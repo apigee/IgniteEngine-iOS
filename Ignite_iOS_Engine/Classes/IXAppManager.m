@@ -61,6 +61,8 @@ IX_STATIC_CONST_STRING kIXReset = @"reset";
 IX_STATIC_CONST_STRING kIXDestorySession = @"session.destroy";
 IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawer.toggle.left";
 IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawer.toggle.right";
+IX_STATIC_CONST_STRING kIXEnableDrawers = @"drawer.enable";
+IX_STATIC_CONST_STRING kIXDisableDrawers = @"drawer.disable";
 
 // Device Readonly Attributes
 IX_STATIC_CONST_STRING kIXDeviceModel = @"model";
@@ -441,6 +443,16 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             [[self drawerController] toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
         }
     }
+    else if([functionName isEqualToString:kIXEnableDrawers] )
+    {
+        [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+        [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+    }
+    else if([functionName isEqualToString:kIXDisableDrawers] )
+    {
+        [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+        [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+    }
 }
 
 -(void)storeSessionProperties
@@ -453,34 +465,44 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     }
 }
 
+-(void)fireAppEventNamed:(NSString*)appEventName
+{
+    if( [appEventName length] > 0 )
+    {
+        [[self actionContainer] setOwnerObject:[[self currentIXViewController] containerControl]];
+        [[self actionContainer] executeActionsForEventNamed:appEventName];
+        [[self actionContainer] setOwnerObject:nil];
+    }
+}
+
 -(void)appWillResignActive
 {
     IX_LOG_VERBOSE(@"App will resign active.");
-    [_actionContainer executeActionsForEventNamed:kIXAppWillResignActiveEvent];
+    [self fireAppEventNamed:kIXAppWillResignActiveEvent];
 }
 
 -(void)appDidEnterBackground
 {
     IX_LOG_VERBOSE(@"App did enter background.");
-    [_actionContainer executeActionsForEventNamed:kIXAppDidEnterBackgroundEvent];
+    [self fireAppEventNamed:kIXAppDidEnterBackgroundEvent];
 }
 
 -(void)appWillEnterForeground
 {
     IX_LOG_VERBOSE(@"App will enter foreground.");
-    [_actionContainer executeActionsForEventNamed:kIXAppWillEnterForegroundEvent];
+    [self fireAppEventNamed:kIXAppWillEnterForegroundEvent];
 }
 
 -(void)appDidBecomeActive
 {
     IX_LOG_VERBOSE(@"App did become active.");
-    [_actionContainer executeActionsForEventNamed:kIXAppDidBecomeActiveEvent];
+    [self fireAppEventNamed:kIXAppDidBecomeActiveEvent];
 }
 
 -(void)appWillTerminate
 {
     IX_LOG_VERBOSE(@"App will terminate.");
-    [_actionContainer executeActionsForEventNamed:kIXAppWillTerminateEvent];
+    [self fireAppEventNamed:kIXAppWillTerminateEvent];
 }
 
 -(void)loadStoredSessionProperties
