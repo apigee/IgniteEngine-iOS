@@ -59,10 +59,16 @@ IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee_push_notifier";
 // App Functions
 IX_STATIC_CONST_STRING kIXReset = @"reset";
 IX_STATIC_CONST_STRING kIXDestorySession = @"session.destroy";
+
 IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawer.toggle.left";
 IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawer.toggle.right";
-IX_STATIC_CONST_STRING kIXEnableDrawers = @"drawer.enable";
-IX_STATIC_CONST_STRING kIXDisableDrawers = @"drawer.disable";
+
+IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawer.enable"; // Function name must have one of the following suffixes.
+IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function name must have one of the following suffixes.
+
+IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
+IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
+IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".open_close";
 
 // Device Readonly Attributes
 IX_STATIC_CONST_STRING kIXDeviceModel = @"model";
@@ -443,15 +449,27 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             [[self drawerController] toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
         }
     }
-    else if([functionName isEqualToString:kIXEnableDrawers] )
+    else if( [functionName hasPrefix:kIXEnableDrawerPrefix] )
     {
-        [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
-        [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        if( [functionName hasSuffix:kIXEnableDisableDrawerOpenSuffix] ) {
+            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+        } else if( [functionName hasSuffix:kIXEnableDisableDrawerCloseSuffix] ) {
+            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        } else if( [functionName hasSuffix:kIXEnableDisableDrawerOpenAndCloseSuffix] ) {
+            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        }
     }
-    else if([functionName isEqualToString:kIXDisableDrawers] )
+    else if( [functionName hasPrefix:kIXDisableDrawerPrefix] )
     {
-        [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
-        [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        if( [functionName hasSuffix:kIXEnableDisableDrawerOpenSuffix] ) {
+            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+        } else if( [functionName hasSuffix:kIXEnableDisableDrawerCloseSuffix] ) {
+            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        } else if( [functionName hasSuffix:kIXEnableDisableDrawerOpenAndCloseSuffix] ) {
+            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        }
     }
 }
 
