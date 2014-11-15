@@ -113,6 +113,7 @@
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */; };
 		63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */; };
+		63A812631A16CFBE00311B10 /* IXPassKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A812621A16CFBE00311B10 /* IXPassKit.m */; };
 		63AEA72B193EA3DC0088F480 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AEA72A193EA3DC0088F480 /* libxml2.dylib */; };
 		63AEA72E193EA4080088F480 /* IXAFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */; };
 		63AEA731193EA6D50088F480 /* IXXMLDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA730193EA6D50088F480 /* IXXMLDataProvider.m */; };
@@ -344,6 +345,8 @@
 		63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFileDataProvider.h; sourceTree = "<group>"; };
 		63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFileDataProvider.m; sourceTree = "<group>"; };
+		63A812611A16CFBE00311B10 /* IXPassKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPassKit.h; sourceTree = "<group>"; };
+		63A812621A16CFBE00311B10 /* IXPassKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPassKit.m; sourceTree = "<group>"; };
 		63AEA72A193EA3DC0088F480 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFXMLRequestOperation.h; sourceTree = "<group>"; };
 		63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFXMLRequestOperation.m; sourceTree = "<group>"; };
@@ -574,6 +577,8 @@
 				13033F51183ED8F200C29157 /* IXMediaSource.m */,
 				13033F52183ED8F200C29157 /* IXMessage.h */,
 				13033F53183ED8F200C29157 /* IXMessage.m */,
+				63A812611A16CFBE00311B10 /* IXPassKit.h */,
+				63A812621A16CFBE00311B10 /* IXPassKit.m */,
 				13033F56183ED8F200C29157 /* IXScanner.h */,
 				13033F57183ED8F200C29157 /* IXScanner.m */,
 				63259DC018CA52EF00DDECB4 /* IXSignature.h */,
@@ -1141,6 +1146,7 @@
 				638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */,
 				63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */,
 				63259DC218CA52EF00DDECB4 /* IXSignature.m in Sources */,
+				63A812631A16CFBE00311B10 /* IXPassKit.m in Sources */,
 				CA1279EB18D69618007EEC5A /* IXCircle.m in Sources */,
 				633361451894593D004F3433 /* IXEventAction.m in Sources */,
 				13033FAA183ED8F200C29157 /* IXToggle.m in Sources */,
