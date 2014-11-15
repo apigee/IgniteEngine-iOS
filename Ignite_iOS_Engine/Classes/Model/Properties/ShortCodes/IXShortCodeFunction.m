@@ -163,11 +163,17 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
 };
 
 static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
-    return [NSString ix_toBase64String:stringToEncode];
+    if (stringToEncode)
+        return [NSString ix_toBase64String:stringToEncode];
+    else
+        return stringToEncode;
 };
 
-static IXBaseShortCodeFunction const kIXToMD5Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
-    return [NSString ix_toMD5String:stringToEncode];
+static IXBaseShortCodeFunction const kIXToMD5Function = ^NSString*(NSString* stringToHash,NSArray* parameters){
+    if (stringToHash)
+        return [NSString ix_toMD5String:stringToHash];
+    else
+        return stringToHash;
 };
 
 static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
