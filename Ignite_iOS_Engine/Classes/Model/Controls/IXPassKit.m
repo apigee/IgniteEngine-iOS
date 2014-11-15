@@ -75,7 +75,7 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
                 {
                     [[self actionContainer] executeActionsForEventNamed:kIXPassCreationFailed];
 
-                    IX_LOG_ERROR(@"ERROR: from %@ in %@ : SOUND CONTROL ID:%@ CREATION ERROR: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[[self passCreationError] description]);
+                    IX_LOG_ERROR(@"ERROR: from %@ in %@ : PASSKIT CONTROL ID:%@ CREATION ERROR: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[[self passCreationError] description]);
                 }
                 else
                 {
