@@ -17,6 +17,7 @@
 +(NSString*)ix_formatDateString:(NSString *)string fromDateFormat:(NSString*)fromDateFormat toDateFormat:(NSString*)toDateFormat;
 +(NSString*)ix_toBase64String:(NSString*)string;
 +(NSString*)ix_fromBase64String:(NSString*)string;
++(NSString*)ix_toMD5String:(NSString *)string;
 -(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;
 
 @end

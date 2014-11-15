@@ -11,7 +11,7 @@
 #import "IXConstants.h"
 #import "YLMoment.h"
 #import "YLMoment+IXAdditions.h"
-
+#import <CommonCrypto/CommonDigest.h>
 
 static NSString* const kIXFloatFormat = @"%f";
 
@@ -78,6 +78,20 @@ static NSString* const kIXFloatFormat = @"%f";
         //todo: need a fall back for < iOS7
         return string;
     }
+}
+
++(NSString*)ix_toMD5String:(NSString *)string
+{
+    const char *cStr = [string UTF8String];
+    unsigned char digest[16];
+    CC_MD5( cStr, (int)strlen(cStr), digest ); // This is the md5 call
+    
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+        [output appendFormat:@"%02x", digest[i]];
+    
+    return output;
 }
 
 +(NSString*)ix_formatDateString:(NSString *)string fromDateFormat:(NSString*)fromDateFormat toDateFormat:(NSString*)toDateFormat

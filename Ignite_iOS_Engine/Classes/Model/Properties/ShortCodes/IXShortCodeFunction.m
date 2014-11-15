@@ -25,7 +25,7 @@
 //                      FUNCTION NAME                                   USAGE                                   RETURN VALUE/NOTES
 //                                                               (? means any attribute)
 
-IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                         -> String value capitalized
+IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                         -> String value Capitalized
 IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency]]                           -> String value in currency form
 IX_STATIC_CONST_STRING kIXDistance = @"distance";               // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
 IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]                  -> Removes all session attributes from memory. Returns nil.
@@ -41,7 +41,8 @@ IX_STATIC_CONST_STRING kIXMonogram = @"monogram";               // [[?:monogram]
 IX_STATIC_CONST_STRING kIXNow = @"now";                         // [[app:now]]                              -> Current date as string (can specify dateFormat)
 IX_STATIC_CONST_STRING kIXRandomNumber = @"random_number";      // [[app:random_number(upBounds)]]          -> Random number generator (can specify lower bounds)
 IX_STATIC_CONST_STRING kIXToBase64 = @"to_base64";              // [[?:to_base64]]                          -> String to Base64 value
-IX_STATIC_CONST_STRING kIXToUppercase = @"to_uppercase";        // [[?:to_uppercase]]                       -> String value in uppercase
+IX_STATIC_CONST_STRING kIXToMD5 = @"to_md5";                    // [[?:to_md5]]                             -> String to MD5 hashed value
+IX_STATIC_CONST_STRING kIXToUppercase = @"to_uppercase";        // [[?:to_uppercase]]                       -> String value in UPPERCASE
 IX_STATIC_CONST_STRING kIXToLowercase = @"to_lowercase";        // [[?:to_lowercase]]                       -> String value in lowercase
 IX_STATIC_CONST_STRING kIXURLEncode = @"url_encode";            // [[?:url_encode]]                         -> URL encode string
 IX_STATIC_CONST_STRING kIXTruncate = @"truncate";               // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
@@ -163,6 +164,10 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
 
 static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
     return [NSString ix_toBase64String:stringToEncode];
+};
+
+static IXBaseShortCodeFunction const kIXToMD5Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
+    return [NSString ix_toMD5String:stringToEncode];
 };
 
 static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
