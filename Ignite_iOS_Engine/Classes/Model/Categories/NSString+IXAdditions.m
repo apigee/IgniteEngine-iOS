@@ -52,7 +52,7 @@ static NSString* const kIXFloatFormat = @"%f";
 
 +(NSString*)ix_toBase64String:(NSString *)string
 {
-    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
+    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)] && string)
     {
         NSData *utf8data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSString *base64String = [utf8data base64EncodedStringWithOptions:0];
@@ -67,7 +67,7 @@ static NSString* const kIXFloatFormat = @"%f";
 
 +(NSString*)ix_fromBase64String:(NSString *)string
 {
-    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)])
+    if ([NSData instancesRespondToSelector:@selector(base64EncodedStringWithOptions:)] && string)
     {
         NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:string options:0];
         NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
@@ -82,16 +82,20 @@ static NSString* const kIXFloatFormat = @"%f";
 
 +(NSString*)ix_toMD5String:(NSString *)string
 {
-    const char *cStr = [string UTF8String];
-    unsigned char digest[16];
-    CC_MD5( cStr, (int)strlen(cStr), digest ); // This is the md5 call
-    
-    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    
-    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
-        [output appendFormat:@"%02x", digest[i]];
-    
-    return output;
+    if (string) {
+        const char *cStr = [string UTF8String];
+        unsigned char digest[16];
+        CC_MD5( cStr, (int)strlen(cStr), digest ); // This is the md5 call
+        
+        NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+        
+        for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+            [output appendFormat:@"%02x", digest[i]];
+        
+        return output;
+    }
+    else
+        return string;
 }
 
 +(NSString*)ix_formatDateString:(NSString *)string fromDateFormat:(NSString*)fromDateFormat toDateFormat:(NSString*)toDateFormat
