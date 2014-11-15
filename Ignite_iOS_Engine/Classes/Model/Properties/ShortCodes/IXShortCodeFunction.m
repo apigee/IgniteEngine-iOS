@@ -210,6 +210,7 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXNow:               [kIXNowFunction copy],
                                     kIXRandomNumber:      [kIXRandomNumberFunction copy],
                                     kIXToBase64:          [kIXToBase64Function copy],
+                                    kIXToMD5:             [kIXToMD5Function copy],
                                     kIXToLowercase:       [kIXToLowerCaseFunction copy],
                                     kIXToUppercase:       [kIXToUppercaseFunction copy],
                                     kIXURLEncode:         [kIXURLEncodeFunction copy],
