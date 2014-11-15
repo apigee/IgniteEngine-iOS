@@ -23,7 +23,6 @@ IX_STATIC_CONST_STRING kIXPassKitAvailable = @"passkit.available";
 IX_STATIC_CONST_STRING kIXPassKitContainsPass = @"passkit.containsPass";
 IX_STATIC_CONST_STRING kIXPassError = @"pass.error";
 
-
 // PassKit Functions
 IX_STATIC_CONST_STRING kIXPassControllerPresent = @"pass.controller.present";
 IX_STATIC_CONST_STRING kIXPassControllerDismiss = @"pass.controller.dismiss";
@@ -81,8 +80,6 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
                 else
                 {
                     [[self actionContainer] executeActionsForEventNamed:kIXPassCreationSuccess];
-                    [self presentPassController:YES];
-
                 }
 
             });
