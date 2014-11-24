@@ -31,6 +31,8 @@
 
 +(instancetype)actionWithRemoteNotificationInfo:(NSDictionary *)remoteNotificationInfo;
 
++(instancetype)actionWithCustomURLQueryParams:(NSDictionary *)queryParams;
+
 +(NSArray*)actionsWithEventNames:(NSArray*)eventNames
                   jsonDictionary:(NSDictionary*)actionJSONDict;
 

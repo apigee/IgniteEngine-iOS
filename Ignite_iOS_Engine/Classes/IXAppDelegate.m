@@ -109,7 +109,10 @@
     return category;
 }
 
-
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [[IXAppManager sharedAppManager] appDidOpenWithCustomURL:url];
+    return YES;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

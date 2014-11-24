@@ -76,6 +76,7 @@ extern NSString* const kIXAppWillTerminateEvent;
 extern NSString* const kIXAppRegisterForRemoteNotificationsSuccess;
 extern NSString* const kIXAppRegisterForRemoteNotificationsFailed;
 extern NSString* const kIXPushRecievedEvent;
+extern NSString* const kIXCustomURLSchemeOpened;
 
 // SPECIAL
 extern NSString* const kIX_CONTROL_CLASS_NAME_FORMAT;

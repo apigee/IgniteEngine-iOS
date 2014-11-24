@@ -82,6 +82,17 @@ typedef enum {
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo;
 
 /**
+ *  Tells the manager that a the app opened with a custom URL scheme
+ *
+ *  Example of custom url scheme: NSString* customURLOpen = @"mycustomurlscheme://open.com?_type=alert&title=App%20Opened";
+ *
+ *  @param customURL The custom url used to open this app.
+ *
+ *  @return YES if the app was opened and an action was created and executed with its query parameters.
+ */
+-(BOOL)appDidOpenWithCustomURL:(NSURL *)customURL;
+
+/**
  *  Stores the current sessionProperties object onto the disk for retrieval when the app starts again.
  */
 -(void)storeSessionProperties;

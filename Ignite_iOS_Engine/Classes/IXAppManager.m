@@ -22,6 +22,7 @@
 #import "IXPropertyContainer.h"
 #import "IXSandbox.h"
 #import "IXViewController.h"
+#import "NSURL+IXAdditions.h"
 
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"
@@ -202,6 +203,26 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [action execute];
         [action setActionContainer:nil];
     }
+}
+
+-(BOOL)appDidOpenWithCustomURL:(NSURL *)customURL
+{
+    IX_LOG_DEBUG(@"App opened with Custom URL : %@",[customURL absoluteString]);
+
+    IXBaseAction* action = [IXBaseAction actionWithCustomURLQueryParams:[customURL ix_parseQueryStringToParamsDict]];
+    if( action )
+    {
+        IXViewController* currentVC = [self currentIXViewController];
+        if( [[currentVC containerControl] actionContainer] == nil )
+        {
+            [[currentVC containerControl] setActionContainer:[[IXActionContainer alloc] init]];
+        }
+        [action setActionContainer:[[currentVC containerControl] actionContainer]];
+        [action execute];
+        [action setActionContainer:nil];
+        return YES;
+    }
+    return NO;
 }
 
 -(void)startApplication

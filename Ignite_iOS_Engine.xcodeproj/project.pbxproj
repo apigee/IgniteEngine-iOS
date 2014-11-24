@@ -109,6 +109,7 @@
 		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
 		6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */; };
+		639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 639A53181A227ED800640C89 /* NSURL+IXAdditions.m */; };
 		63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXKnob.m */; };
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */; };
@@ -338,6 +339,8 @@
 		638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IXAdditions.m"; sourceTree = "<group>"; };
 		6394F453193FD59A009EE1C4 /* IXCellBasedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBasedControl.h; sourceTree = "<group>"; };
 		6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCellBasedControl.m; sourceTree = "<group>"; };
+		639A53171A227ED800640C89 /* NSURL+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+IXAdditions.h"; sourceTree = "<group>"; };
+		639A53181A227ED800640C89 /* NSURL+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+IXAdditions.m"; sourceTree = "<group>"; };
 		63A10B2018AAD7E200130BEA /* IXKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXKnob.h; sourceTree = "<group>"; };
 		63A10B2118AAD7E200130BEA /* IXKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXKnob.m; sourceTree = "<group>"; };
 		63A10B2E18AAF9D900130BEA /* IXSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSound.h; sourceTree = "<group>"; };
@@ -814,6 +817,8 @@
 				CA00FA3A18C666EB0090263D /* UIImage+ResizeMagick.m */,
 				CA50B3BA18EB9D39009282D0 /* YLMoment+IXAdditions.h */,
 				CA50B3BB18EB9D39009282D0 /* YLMoment+IXAdditions.m */,
+				639A53171A227ED800640C89 /* NSURL+IXAdditions.h */,
+				639A53181A227ED800640C89 /* NSURL+IXAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1159,6 +1164,7 @@
 				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
 				63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
+				639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */,
 				6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
 				63311BD7184581EE0048C668 /* IXDataGrabber.m in Sources */,

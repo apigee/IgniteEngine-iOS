@@ -44,6 +44,11 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
 
 @implementation IXPassKit
 
+-(void)dealloc
+{
+    [self dismissPassController:YES];
+}
+
 -(void)buildView
 {
     if( [PKPassLibrary isPassLibraryAvailable] ) {
@@ -106,6 +111,9 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
     {
         returnValue = [[self passCreationError] description];
     }
+    else {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
     return returnValue;
 }
 
@@ -118,6 +126,10 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
     else if( [functionName isEqualToString:kIXPassControllerDismiss] )
     {
         [self dismissPassController:YES];
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
     }
 }
 

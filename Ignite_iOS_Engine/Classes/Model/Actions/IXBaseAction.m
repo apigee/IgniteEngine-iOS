@@ -180,6 +180,44 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
     return action;
 }
 
++(instancetype)actionWithCustomURLQueryParams:(NSDictionary *)queryParams
+{
+    IXBaseAction* action = nil;
+
+    Class actionClass = nil;
+    NSString* actionType = [queryParams objectForKey:kIX_TYPE];
+    if( [actionType isKindOfClass:[NSString class]] )
+    {
+        NSString* actionClassString = [NSString stringWithFormat:kIX_ACTION_CLASS_NAME_FORMAT,[actionType capitalizedString]];
+        actionClass = NSClassFromString(actionClassString);
+    }
+
+    if( [actionClass isSubclassOfClass:[IXBaseAction class]] )
+    {
+        NSString* ifValue = [queryParams objectForKey:kIX_IF];
+        NSString* orientationValue = [queryParams objectForKey:kIX_ORIENTATION];
+
+        NSMutableDictionary* mutableQueryParams = [queryParams mutableCopy];
+        [mutableQueryParams removeObjectForKey:kIX_TYPE];
+        [mutableQueryParams removeObjectForKey:kIX_IF];
+        [mutableQueryParams removeObjectForKey:kIX_ORIENTATION];
+
+        IXPropertyContainer* paramsAsPropertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:mutableQueryParams];
+        action = [(IXBaseAction*)[actionClass alloc] initWithEventName:kIXCustomURLSchemeOpened
+                                                      actionProperties:paramsAsPropertyContainer
+                                                   parameterProperties:paramsAsPropertyContainer
+                                                    subActionContainer:nil];
+
+        if( [orientationValue length] > 0 ) {
+            [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:orientationValue]];
+        }
+        if( [ifValue length] > 0 ) {
+            [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:ifValue]];
+        }
+    }
+    return action;
+}
+
 +(instancetype)actionWithEventName:(NSString*)eventName jsonDictionary:(NSDictionary*)actionJSONDict;
 {
     IXBaseAction* action = nil;

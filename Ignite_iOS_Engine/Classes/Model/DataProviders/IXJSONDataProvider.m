@@ -196,7 +196,7 @@
                 else if( [NSJSONSerialization isValidJSONObject:jsonObject] )
                 {
                     NSError* __autoreleasing jsonConvertError = nil;
-                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:nil error:&jsonConvertError];
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
                     if( jsonConvertError == nil && jsonData )
                     {
                         returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -258,7 +258,7 @@
             
             NSError* __autoreleasing jsonConvertError = nil;
             NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                               options:nil
+                                                               options:NSJSONWritingPrettyPrinted
                                                                  error:&jsonConvertError];
             
             if( jsonConvertError == nil && jsonData ) {
@@ -303,22 +303,39 @@
     }
     
     if ([currentNode isKindOfClass:[NSArray class]]) {
-        // current key must be an number
         NSArray * currentArray = (NSArray *) currentNode;
         @try {
-            if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
+            if( [currentKey containsString:@"="] ) // current key is actually looking to filter array if theres an '=' character
             {
-                return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
+                NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
+                if( [currentKeySeperated count] > 1 ) {
+                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],[currentKeySeperated lastObject]];
+                    NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
+                    if( [filteredArray count] >= 1 ) {
+                        if( [filteredArray count] == 1 ) {
+                            nextNode = [filteredArray firstObject];
+                        } else {
+                            nextNode = filteredArray;
+                        }
+                    }
+                }
             }
-            else if ([currentArray count] > 0)
+            else // current key must be an number
             {
-                nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
-            }
-            else
-            {
-                @throw [NSException exceptionWithName:@"NSRangeException"
-                                               reason:@"Specified array index is out of bounds"
-                                             userInfo:nil];
+                if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
+                {
+                    return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
+                }
+                else if ([currentArray count] > 0)
+                {
+                    nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
+                }
+                else
+                {
+                    @throw [NSException exceptionWithName:@"NSRangeException"
+                                                   reason:@"Specified array index is out of bounds"
+                                                 userInfo:nil];
+                }
             }
         }
         @catch (NSException *exception) {
