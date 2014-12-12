@@ -15,6 +15,8 @@
 #import "IXAppManager.h"
 #import "IXDataGrabber.h"
 #import "IXLogger.h"
+#import "IXViewController.h"
+#import "IXSandbox.h"
 
 @interface IXJSONDataProvider ()
 
@@ -273,6 +275,48 @@
     return returnValue;
 }
 
+-(NSString*)getQueryValueOutOfValue:(NSString*)value
+{
+    NSString* returnValue = value;
+    NSArray* seperatedValue = [value componentsSeparatedByString:@"?"];
+    if( [seperatedValue count] > 0 )
+    {
+        NSString* objectID = [seperatedValue firstObject];
+        NSString* propertyName = [seperatedValue lastObject];
+        if( [objectID isEqualToString:kIX_SESSION] )
+        {
+            returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
+        }
+        else if( [objectID isEqualToString:kIX_APP] )
+        {
+            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
+        }
+        else if( [objectID isEqualToString:kIX_VIEW] )
+        {
+            returnValue = [[[self sandbox] viewController] getViewPropertyNamed:propertyName];
+            if( returnValue == nil )
+            {
+                returnValue = value;
+            }
+        }
+        else
+        {
+            NSArray* objectWithIDArray = [[self sandbox] getAllControlsAndDataProvidersWithID:objectID withSelfObject:self];
+            IXBaseObject* baseObject = [objectWithIDArray firstObject];
+
+            if( baseObject )
+            {
+                returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
+                if( returnValue == nil )
+                {
+                    returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:value];
+                }
+            }
+        }
+    }
+    return returnValue;
+}
+
 - (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode
 {
     if (currentNode == nil) {
@@ -310,12 +354,10 @@
                 NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
                 if( [currentKeySeperated count] > 1 ) {
                     NSString* currentKeyValue = [currentKeySeperated lastObject];
-                    if( [currentKeyValue hasPrefix:@"$"] )
+                    if( [currentKeyValue rangeOfString:@"?"].location != NSNotFound )
                     {
-                        NSString* currentKeyValueMinusPrefix = [currentKeyValue stringByReplacingOccurrencesOfString:@"$" withString:@""];
-                        currentKeyValue = [[self propertyContainer] getStringPropertyValue:currentKeyValueMinusPrefix defaultValue:currentKeyValue];
+                        currentKeyValue = [self getQueryValueOutOfValue:currentKeyValue];
                     }
-
                     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],currentKeyValue];
                     NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
                     if( [filteredArray count] >= 1 ) {
