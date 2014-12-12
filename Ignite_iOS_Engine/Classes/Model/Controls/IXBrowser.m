@@ -49,6 +49,16 @@
 
 #import "SVWebViewController.h"
 
+// IXBrowser Attributes
+IX_STATIC_CONST_STRING kIXUrl = @"url";
+IX_STATIC_CONST_STRING kIXHTMLString = @"html.string";
+IX_STATIC_CONST_STRING kIXHTMLBaseURL = @"html.base_url";
+
+// IXBrowser Events
+IX_STATIC_CONST_STRING kIXStarted = @"started";
+IX_STATIC_CONST_STRING kIXFailed = @"failed";
+IX_STATIC_CONST_STRING kIXFinished = @"finished";
+
 @interface  IXBrowser() <UIWebViewDelegate>
 
 @property (nonatomic,strong) SVWebViewController *webViewController;
@@ -65,14 +75,6 @@
 
 @implementation IXBrowser
 
-IX_STATIC_CONST_STRING kIXUrl = @"url";
-
-// IXBrowser Events
-IX_STATIC_CONST_STRING kIXStarted = @"started";
-IX_STATIC_CONST_STRING kIXFailed = @"failed";
-IX_STATIC_CONST_STRING kIXFinished = @"finished";
-
-
 -(void)dealloc
 {
     [_webview setDelegate:nil];
@@ -84,6 +86,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
     _webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 100,100)];
     [_webview setDelegate:self];
+
     [[self contentView] addSubview:_webview];
 }
 
@@ -100,32 +103,29 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 -(void)applySettings
 {
     [super applySettings];
-    
-    
- 
-//    NSString* displayMode = [[self propertyContainer] getStringPropertyValue:@"mode" defaultValue:@"default"];
 
-    //NSString *url=[[self propertyContainer] getStringPropertyValue:@"url" defaultValue:nil];
-    
-    
-    
-    //NSURL *nsurl=[NSURL URLWithString:url];
-
-    _webview.opaque = NO;
-    [_webview setBackgroundColor:[[self contentView] backgroundColor]];
+    [[self webview] setOpaque:NO];
+    [[self webview] setBackgroundColor:[[self contentView] backgroundColor]];
 
     NSString* urlString = [[self propertyContainer] getPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
-    NSURL* url = [NSURL URLWithString:urlString];
-    
-//    NSString* jsonRootPath = nil;
-//    if( [IXPathHandler pathIsLocal:url] ) {
-//        jsonRootPath = [url stringByDeletingLastPathComponent];
-//    } else {
-//        jsonRootPath = [[[NSURL URLWithString:url] URLByDeletingLastPathComponent] absoluteString];
-//    }
-    
-    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:url];
-    [_webview loadRequest:nsrequest];
+    NSString* htmlString = [[self propertyContainer] getStringPropertyValue:kIXHTMLString defaultValue:nil];
+
+    if( [urlString length] > 0 )
+    {
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+
+        [[self webview] loadRequest:request];
+    }
+    else if( [htmlString length] > 0 )
+    {
+        NSString* htmlBaseURLString = [[self propertyContainer] getStringPropertyValue:kIXHTMLBaseURL defaultValue:nil];
+        NSURL* baseURL = nil;
+        if( [htmlBaseURLString length] > 0 ) {
+            baseURL = [NSURL URLWithString:htmlBaseURLString];
+        }
+
+        [[self webview] loadHTMLString:htmlString baseURL:baseURL];
+    }
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
