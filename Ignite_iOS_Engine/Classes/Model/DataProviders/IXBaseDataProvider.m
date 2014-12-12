@@ -33,6 +33,7 @@ IX_STATIC_CONST_STRING kIXDataPath = @"data.path";
 IX_STATIC_CONST_STRING kIXAutoLoad = @"auto_load";
 IX_STATIC_CONST_STRING kIXCacheID = @"cache_id";
 IX_STATIC_CONST_STRING kIXHTTPMethod = @"http_method";
+IX_STATIC_CONST_STRING kIXHTTPBody = @"http_body";
 IX_STATIC_CONST_STRING kIXBasicUserName = @"basic.username";
 IX_STATIC_CONST_STRING kIXBasicPassword = @"basic.password";
 IX_STATIC_CONST_STRING kIXParameterEncoding = @"parameter_encoding";
@@ -87,6 +88,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 @property (nonatomic,copy) NSString* cacheID;
 @property (nonatomic,copy) NSString* acceptedContentType;
 @property (nonatomic,copy) NSString* httpMethod;
+@property (nonatomic,copy) NSString* httpBody;
 @property (nonatomic,copy) NSString* fullDataLocation;
 @property (nonatomic,copy) NSString* dataBaseURL;
 @property (nonatomic,copy) NSString* dataPath;
@@ -163,6 +165,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     [super applySettings];
     
     [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:kIXHTTPMethod defaultValue:@"GET"]];
+    [self setHttpBody:[[self propertyContainer] getStringPropertyValue:kIXHTTPBody defaultValue:nil]];
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:kIXAutoLoad defaultValue:NO]];
     [self setCacheID:[[self propertyContainer] getStringPropertyValue:kIXCacheID defaultValue:nil]];
     [self setAcceptedContentType:[[self propertyContainer] getStringPropertyValue:kIXAcceptedContentType defaultValue:nil]];
@@ -394,6 +397,11 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
                                                   path:[self dataPath]
                                             parameters:parameters];
     }
+
+    if( [[self httpBody] length] > 0 ) {
+        [request setHTTPBody:[[self httpBody] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+
     [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
     return request;
 }

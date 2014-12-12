@@ -25,6 +25,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,copy,readonly) NSString* cacheID;
 @property (nonatomic,copy,readonly) NSString* acceptedContentType;
 @property (nonatomic,copy,readonly) NSString* httpMethod;
+@property (nonatomic,copy,readonly) NSString* httpBody;
 @property (nonatomic,copy,readonly) NSString* fullDataLocation;
 @property (nonatomic,copy,readonly) NSString* dataBaseURL;
 @property (nonatomic,copy,readonly) NSString* dataPath;
