@@ -309,7 +309,14 @@
             {
                 NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
                 if( [currentKeySeperated count] > 1 ) {
-                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],[currentKeySeperated lastObject]];
+                    NSString* currentKeyValue = [currentKeySeperated lastObject];
+                    if( [currentKeyValue hasPrefix:@"$"] )
+                    {
+                        NSString* currentKeyValueMinusPrefix = [currentKeyValue stringByReplacingOccurrencesOfString:@"$" withString:@""];
+                        currentKeyValue = [[self propertyContainer] getStringPropertyValue:currentKeyValueMinusPrefix defaultValue:currentKeyValue];
+                    }
+
+                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],currentKeyValue];
                     NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
                     if( [filteredArray count] >= 1 ) {
                         if( [filteredArray count] == 1 ) {
