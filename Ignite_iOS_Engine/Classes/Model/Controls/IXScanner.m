@@ -38,11 +38,14 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 
+IX_STATIC_CONST_STRING kIXScannedData = @"data";
+
 static ZBarReaderViewController* sReaderViewController = nil;
 
 @interface  IXScanner() <ZBarReaderDelegate>
 
 @property (nonatomic,assign,getter = shouldAutoClose) BOOL autoClose;
+@property (nonatomic,copy) NSString* scannedData;
 
 @end
 
@@ -101,6 +104,15 @@ static ZBarReaderViewController* sReaderViewController = nil;
     }
 }
 
+-(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    if([propertyName isEqualToString:kIXScannedData]) {
+        return [[self scannedData] copy];
+    } else {
+        return [super getReadOnlyPropertyValue:propertyName];
+    }
+}
+
 -(void)closeReader:(BOOL)animated
 {
     if( [sReaderViewController readerDelegate] == self )
@@ -126,21 +138,13 @@ static ZBarReaderViewController* sReaderViewController = nil;
 {
     if(info != nil)
     {
-        ZBarSymbolSet* symbols = [info objectForKey:ZBarReaderControllerResults];
-        if(symbols != nil)
-        {
-//            for(ZBarSymbol *symbol in symbols)
-//            {
-//                /* 
-//                 
-//                 Set the code type and returned data here.
-//                 
-//                 */
-//                break;
-//            }
-            
-            [[self actionContainer] executeActionsForEventNamed:@"scanned"];
-        }
+        id<NSFastEnumeration> results = [info objectForKey:ZBarReaderControllerResults];
+        ZBarSymbol *symbol = nil;
+        for (symbol in results)
+            break;
+
+        [self setScannedData:[symbol data]];
+        [[self actionContainer] executeActionsForEventNamed:@"scanned"];
     }
     
     if([self shouldAutoClose])
