@@ -10,13 +10,20 @@
 #import "SVModalWebViewController.h"
 
 @class IXOAuthWebAuthViewController;
+@class AFOAuthCredential;
 
 @protocol IXOAuthWebAuthViewControllerDelegate <NSObject>
 
 @optional
 
 - (void)ixOAuthWebAuthViewController:(IXOAuthWebAuthViewController *)oAuthWebAuthViewController
-                 didRecieveOAuthCode:(NSString *)accessToken;
+                 didRecieveOAuthCode:(NSString *)accessCode;
+
+- (void)ixOAuthWebAuthViewController:(IXOAuthWebAuthViewController *)oAuthWebAuthViewController
+                didRecieveOAuthToken:(NSString *)accessToken
+                           tokenType:(NSString *)tokenType
+                             expires:(NSDate *)expires
+                        refreshToken:(NSString *)refresh_token;
 
 - (void)ixOAuthWebAuthViewController:(IXOAuthWebAuthViewController *)oAuthWebAuthViewController
                     didFailWithError:(NSError *)error;

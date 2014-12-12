@@ -25,6 +25,7 @@ IX_STATIC_CONST_STRING kIXOAuthAuthorizePath = @"oauth.authorize_path";
 IX_STATIC_CONST_STRING kIXOAuthAccessTokenPath = @"oauth.access_token_path";
 IX_STATIC_CONST_STRING kIXOAuthRedirectURI = @"oauth.redirect_uri";
 IX_STATIC_CONST_STRING kIXOAuthScope = @"oauth.scope";
+IX_STATIC_CONST_STRING kIXOAuthResponseType = @"oauth.response_type";
 
 // IXOAuth2DataProvider Read Only Attributes
 IX_STATIC_CONST_STRING kIXAccessToken = @"access_token";
@@ -59,6 +60,7 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
 @property (nonatomic,copy) NSString* oAuthAccessTokenPath;
 @property (nonatomic,copy) NSString* oAuthRedirectURI;
 @property (nonatomic,copy) NSString* oAuthScope;
+@property (nonatomic,copy) NSString* oAuthResponseType;
 
 @end
 
@@ -74,7 +76,8 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
     [self setOAuthAccessTokenPath:[[self propertyContainer] getStringPropertyValue:kIXOAuthAccessTokenPath defaultValue:nil]];
     [self setOAuthScope:[[self propertyContainer] getStringPropertyValue:kIXOAuthScope defaultValue:nil]];
     [self setOAuthRedirectURI:[[self propertyContainer] getStringPropertyValue:kIXOAuthRedirectURI defaultValue:kIX_Default_RedirectURI]];
-    
+    [self setOAuthResponseType:[[self propertyContainer] getStringPropertyValue:kIXOAuthResponseType defaultValue:@"code"]];
+
     [super applySettings];
 }
 
@@ -129,7 +132,7 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
 -(NSString*)buildAccessCodeURL
 {
     NSMutableString* accessCodeURLString = [NSMutableString stringWithString:[[self dataBaseURL] stringByAppendingString:[self oAuthAuthorizePath]]];
-    [accessCodeURLString appendString:@"?response_type=code"];
+    [accessCodeURLString appendFormat:@"?response_type=%@",[self oAuthResponseType]];
     if( [[self oAuthClientID] length] > 0 )
         [accessCodeURLString appendFormat:@"&%@=%@",@"client_id",[self oAuthClientID]];
     if( [[self oAuthScope] length] > 0 )
@@ -231,6 +234,35 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
     [[self actionContainer] executeActionsForEventNamed:kIXAuthFail];
     [self fireLoadFinishedEvents:NO shouldCacheResponse:NO];
     
+    if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
+    {
+        [self setOAuthWebAuthViewController:nil];
+        [oAuthWebAuthViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (void)ixOAuthWebAuthViewController:(IXOAuthWebAuthViewController *)oAuthWebAuthViewController
+                didRecieveOAuthToken:(NSString *)accessToken
+                           tokenType:(NSString *)tokenType
+                             expires:(NSDate *)expires
+                        refreshToken:(NSString *)refreshToken
+{
+    AFOAuthCredential* credential = [AFOAuthCredential credentialWithOAuthToken:accessToken tokenType:tokenType];
+    if( expires != nil ) {
+        [credential setRefreshToken:refreshToken expiration:expires];
+    }
+    [self setOAuthCredential:credential];
+
+    IX_LOG_VERBOSE(@"%@ : Did recieve access token for dataprovider with ID :%@ accessToken : %@",THIS_FILE,[self ID],[credential accessToken]);
+
+    if( [[self oAuthTokenStorageID] length] > 0 )
+    {
+        [AFOAuthCredential storeCredential:credential withIdentifier:[self oAuthTokenStorageID]];
+    }
+
+    [[self actionContainer] executeActionsForEventNamed:kIXAuthSuccess];
+    [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
+
     if( [UIViewController isOkToDismissViewController:oAuthWebAuthViewController] )
     {
         [self setOAuthWebAuthViewController:nil];

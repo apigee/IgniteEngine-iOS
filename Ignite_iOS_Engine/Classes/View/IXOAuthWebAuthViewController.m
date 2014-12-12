@@ -128,34 +128,60 @@
 {
     if ([[[request URL] absoluteString] hasPrefix:[[self redirectURI] absoluteString]] )
     {
-        NSString* oauthCode = nil;
         NSString* requestURLString = [[request URL] absoluteString];
+        NSArray* queryParamsStrings = nil;
+
         NSRange rangeOfQuestionMarkInURL = [requestURLString rangeOfString:@"?"];
         if( rangeOfQuestionMarkInURL.location != NSNotFound )
         {
             NSString* queryParamStringAllTogether = [requestURLString stringByReplacingCharactersInRange:NSMakeRange(0, rangeOfQuestionMarkInURL.location + 1) withString:@""];
-            NSArray *queryParamsStrings = [queryParamStringAllTogether componentsSeparatedByString:@"&"];
-            
-            if( [queryParamsStrings count] > 0 )
-            {
-                for( NSString* paramString in queryParamsStrings )
-                {
-                    NSArray* paramStringComponents = [paramString componentsSeparatedByString:@"="];
-                    if( [[paramStringComponents firstObject] isEqualToString:@"code"] )
-                    {
-                        oauthCode = [[paramStringComponents lastObject] copy];
-                        break;
-                    }
-                }
-            }
-            
+            queryParamsStrings = [queryParamStringAllTogether componentsSeparatedByString:@"&"];
         }
-        
+        else
+        {
+            NSRange rangeOfPoundSignInURL = [requestURLString rangeOfString:@"#"];
+            if( rangeOfPoundSignInURL.location != NSNotFound )
+            {
+                NSString* queryParamStringAllTogether = [requestURLString stringByReplacingCharactersInRange:NSMakeRange(0, rangeOfPoundSignInURL.location + 1) withString:@""];
+                queryParamsStrings = [queryParamStringAllTogether componentsSeparatedByString:@"&"];
+            }
+        }
+
+        NSMutableDictionary* paramDictionary = nil;
+        if( [queryParamsStrings count] > 0 )
+        {
+            paramDictionary = [NSMutableDictionary dictionary];
+            for( NSString* paramString in queryParamsStrings )
+            {
+                NSArray* paramStringComponents = [paramString componentsSeparatedByString:@"="];
+                [paramDictionary setObject:[paramStringComponents lastObject] forKey:[paramStringComponents firstObject]];
+            }
+        }
+
+        NSString* oauthCode = paramDictionary[@"code"];
+        NSString* oauthToken = paramDictionary[@"access_token"];
+
         if( [oauthCode length] > 0 )
         {
             if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didRecieveOAuthCode:)] )
             {
                 [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self didRecieveOAuthCode:oauthCode];
+            }
+        }
+        else if( [oauthToken length] > 0 )
+        {        
+            if( [[self ixOAuthDelegate] respondsToSelector:@selector(ixOAuthWebAuthViewController:didRecieveOAuthToken:tokenType:expires:refreshToken:)] )
+            {
+                NSDate* expirationDate = nil;
+                NSString* expiresInString = paramDictionary[@"expires_in"];
+                if( [expiresInString length] > 0 ) {
+                    expirationDate = [NSDate dateWithTimeIntervalSinceNow:[expiresInString doubleValue]];
+                }
+                [[self ixOAuthDelegate] ixOAuthWebAuthViewController:self
+                                                didRecieveOAuthToken:oauthToken
+                                                           tokenType:paramDictionary[@"token_type"]
+                                                             expires:expirationDate
+                                                        refreshToken:paramDictionary[@"refresh_token"]];
             }
         }
         else
