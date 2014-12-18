@@ -32,6 +32,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 @property (nonatomic,assign) NSInteger responseStatusCode;
 @property (nonatomic,copy)   NSString* responseRawString;
+@property (nonatomic,copy)   NSDictionary* responseHeaders;
 @property (nonatomic,copy)   NSString* responseErrorMessage;
 
 -(void)createHTTPClient;

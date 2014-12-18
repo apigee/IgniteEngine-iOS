@@ -52,6 +52,7 @@ IX_STATIC_CONST_STRING kIXParameterEncodingForm = @"form";
 
 // IXBaseDataProvider Read-Only Properties
 IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
+IX_STATIC_CONST_STRING kIXResponseHeaders = @"response_headers";
 IX_STATIC_CONST_STRING kIXStatusCode = @"status_code";
 IX_STATIC_CONST_STRING kIXErrorMessage = @"error_message";
 
@@ -230,6 +231,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     {
         returnValue = [[self responseRawString] copy];
     }
+//    else if( [propertyName isEqualToString:kIXResponseHeaders] )
+//    {
+//        returnValue = [self responseHeaders];
+//    }
     else if( [propertyName isEqualToString:kIXStatusCode] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self responseStatusCode]];
