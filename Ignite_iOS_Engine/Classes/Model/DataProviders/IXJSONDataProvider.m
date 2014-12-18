@@ -36,6 +36,7 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 @property (nonatomic,strong) NSArray* rowDataResults;
 @property (nonatomic,strong) id lastJSONResponse;
 @property (nonatomic,strong) id lastResponseHeaders;
+@property (nonatomic) CGFloat responseTime;
 
 @end
 
@@ -89,14 +90,20 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
         {
             if( ![self isPathLocal] )
             {
+        
+                __block CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+                
                 __weak typeof(self) weakSelf = self;
                 IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self createURLRequest]];
                 [jsonRequestOperation setJSONReadingOptions:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves];
-                [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {                    
-
+                [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    
+                    CFTimeInterval elapsedTime = (CFAbsoluteTimeGetCurrent() - startTime) * 1000;
+                    [weakSelf setResponseTime:elapsedTime];
+                    
                     [weakSelf setResponseStatusCode:[[operation response] statusCode]];
                     [weakSelf setLastResponseHeaders:[[operation response] allHeaderFields]];
-
+                    
                     if( [NSJSONSerialization isValidJSONObject:responseObject] )
                     {
                         [weakSelf setResponseRawString:[operation responseString]];
@@ -110,6 +117,10 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
                     }
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     
+                    
+                    CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+                    [weakSelf setResponseTime:elapsedTime];
+
                     [weakSelf setLastResponseHeaders:[[operation response] allHeaderFields]];
                     [weakSelf setResponseStatusCode:[[operation response] statusCode]];
                     [weakSelf setResponseErrorMessage:[error description]];
@@ -123,6 +134,7 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
                     [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                 }];
+                
                 
                 [[self httpClient] enqueueHTTPRequestOperation:jsonRequestOperation];
             }
@@ -307,6 +319,9 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
         if ([propertyName hasPrefix:@"responseHeaders"]) {
             NSString* headerKey = [propertyName stringByReplacingOccurrencesOfString:@"responseHeaders." withString:@""];
             returnValue = [[self lastResponseHeaders] valueForKey:headerKey];
+        }
+        else if ([propertyName hasPrefix:@"responseTime"]) {
+            returnValue = [NSString stringWithFormat: @"%0.f", [self responseTime]];
         }
         else if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
         {
