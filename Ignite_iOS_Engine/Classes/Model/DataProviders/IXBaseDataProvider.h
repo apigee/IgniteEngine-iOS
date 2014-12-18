@@ -42,6 +42,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache;
 
+-(void)cacheResponse;
 +(void)clearCache;
 
 @end

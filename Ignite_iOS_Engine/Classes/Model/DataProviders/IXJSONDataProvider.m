@@ -18,6 +18,18 @@
 #import "IXViewController.h"
 #import "IXSandbox.h"
 
+IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
+IX_STATIC_CONST_STRING kIXModifyType = @"modify.type";
+IX_STATIC_CONST_STRING kIXDelete = @"delete";
+IX_STATIC_CONST_STRING kIXAppend = @"append";
+
+IX_STATIC_CONST_STRING kIXTopLevelContainer = @"top_level_container";
+
+IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.g. "%K CONTAINS[c] %@"
+IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
+
+IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
+
 @interface IXJSONDataProvider ()
 
 @property (nonatomic,strong) NSArray* rowDataResults;
@@ -71,10 +83,11 @@
             {
                 __weak typeof(self) weakSelf = self;
                 IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self createURLRequest]];
-                [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    
+                [jsonRequestOperation setJSONReadingOptions:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves];
+                [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {                    
+
                     [weakSelf setResponseStatusCode:[[operation response] statusCode]];
-                    
+
                     if( [NSJSONSerialization isValidJSONObject:responseObject] )
                     {
                         [weakSelf setResponseRawString:[operation responseString]];
@@ -175,6 +188,90 @@
         }
     }
     [super fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse];
+}
+
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    BOOL needsToRecacheResponse = NO;
+    if( [functionName isEqualToString:kIXModifyResponse] )
+    {
+        NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
+        if( [modifyResponseType length] > 0 )
+        {
+            NSString* topLevelContainerPath = [parameterContainer getStringPropertyValue:kIXTopLevelContainer defaultValue:nil];
+            id topLevelContainer = [self objectForPath:topLevelContainerPath container:[self lastJSONResponse]];
+
+            if( [topLevelContainer isKindOfClass:[NSMutableArray class]] )
+            {
+                NSMutableArray* topLevelArray = (NSMutableArray*) topLevelContainer;
+
+                if( [modifyResponseType isEqualToString:kIXDelete] )
+                {
+                    NSString* predicateFormat = [parameterContainer getStringPropertyValue:kIXPredicateFormat defaultValue:nil];
+                    NSArray* predicateArgumentsArray = [parameterContainer getCommaSeperatedArrayListValue:kIXPredicateArguments defaultValue:nil];
+
+                    if( [predicateFormat length] > 0 && [predicateArgumentsArray count] > 0 )
+                    {
+                        NSPredicate* predicate = [NSPredicate predicateWithFormat:predicateFormat argumentArray:predicateArgumentsArray];
+                        if( predicate != nil )
+                        {
+                            NSArray* filteredArray = [topLevelContainer filteredArrayUsingPredicate:predicate];
+                            [topLevelArray removeObjectsInArray:filteredArray];
+                            needsToRecacheResponse = YES;
+                        }
+                    }
+                }
+                else if( [modifyResponseType isEqualToString:kIXAppend] )
+                {
+                    NSString* jsonToAppendString = [parameterContainer getStringPropertyValue:kIXJSONToAppend defaultValue:nil];
+
+                    id jsonToAppendObject = [NSJSONSerialization JSONObjectWithData:[jsonToAppendString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                            options:NSJSONReadingMutableContainers|NSJSONReadingAllowFragments
+                                                                              error:nil];
+
+                    if( jsonToAppendObject != nil )
+                    {
+                        [topLevelArray addObject:jsonToAppendObject];
+                        needsToRecacheResponse = YES;
+                    }
+                }
+
+                if( needsToRecacheResponse )
+                {
+                    NSError* error;
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self lastJSONResponse]
+                                                                       options:0
+                                                                         error:&error];
+                    if( [jsonData length] > 0 && error == nil )
+                    {
+                        [self setResponseRawString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
+                        [self cacheResponse];
+                    }
+                }
+            }
+
+        }
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
+
+-(void)cacheResponse
+{
+    if( [self lastJSONResponse] != nil )
+    {
+        NSError* error;
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self lastJSONResponse]
+                                                           options:0
+                                                             error:&error];
+        if( [jsonData length] > 0 && error == nil )
+        {
+            [self setResponseRawString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
+        }
+    }
+    [super cacheResponse];
 }
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName

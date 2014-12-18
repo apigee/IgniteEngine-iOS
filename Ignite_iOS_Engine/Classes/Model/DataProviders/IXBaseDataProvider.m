@@ -322,11 +322,16 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 
     if( loadDidSucceed && shouldCacheResponse )
     {
-        if ( [[self cacheID] length] > 0 && [[self responseRawString] length] > 0 )
-        {
-            [sIXDataProviderCache setObject:[self responseRawString]
-                                     forKey:[self cacheID]];
-        }
+        [self cacheResponse];
+    }
+}
+
+-(void)cacheResponse
+{
+    if ( [[self cacheID] length] > 0 && [[self responseRawString] length] > 0 )
+    {
+        [sIXDataProviderCache setObject:[self responseRawString]
+                                 forKey:[self cacheID]];
     }
 }
 

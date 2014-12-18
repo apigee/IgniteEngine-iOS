@@ -189,6 +189,7 @@
             {
                 __weak typeof(self) weakSelf = self;
                 IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[NSURLRequest requestWithURL:url]];
+                [jsonRequestOperation setJSONReadingOptions:NSJSONReadingMutableContainers];
                 [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                     
                     if( [NSJSONSerialization isValidJSONObject:responseObject] )
