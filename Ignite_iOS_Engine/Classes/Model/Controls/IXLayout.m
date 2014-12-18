@@ -22,6 +22,15 @@ IX_STATIC_CONST_STRING kIXVerticalScrollEnabled = @"vertical_scroll_enabled";
 IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"horizontal_scroll_enabled";
 IX_STATIC_CONST_STRING kIXEnableScrollsToTop = @"enable_scrolls_to_top";
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scroll_indicator_style";
+IX_STATIC_CONST_STRING kIXBlurBackground = @"background.blur";
+
+IX_STATIC_CONST_STRING kIXBlurBackgroundStyleExtraLight = @"extra_light";
+IX_STATIC_CONST_STRING kIXBlurBackgroundStyleLight = @"light";
+IX_STATIC_CONST_STRING kIXBlurBackgroundStyleDark = @"dark";
+IX_STATIC_CONST_STRING kIXBlurTintColor = @"background.blur.tintColor";
+IX_STATIC_CONST_STRING kIXBlurTintAlpha = @"background.blur.tint.alpha";
+
+
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black";
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white";
 IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
@@ -95,7 +104,7 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
     [self setVerticalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXVerticalScrollEnabled defaultValue:YES]];
     [self setHorizontalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXHorizontalScrollEnabled defaultValue:YES]];
     [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:kIXEnableScrollsToTop defaultValue:NO]];
-
+    
     NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIX_DEFAULT];
     if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleBlack] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
@@ -159,9 +168,47 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
+    
+    
     [super layoutControlContentsInRect:rect];
     
+    
     [IXLayoutEngine layoutControl:self inRect:rect];
+    
+    
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXBlurBackground] )
+        
+    {
+        //IX_LOG_VERBOSE(@"BLUR IT!");
+        
+        CGRect overlayFrame = _scrollViewContentView.bounds;
+        UIView *overlayView = [[UIView alloc] initWithFrame:overlayFrame];
+        overlayView.alpha = [[self propertyContainer] getFloatPropertyValue:kIXBlurTintAlpha defaultValue:0.0f];
+        overlayView.backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBlurTintColor defaultValue:[UIColor clearColor]];;
+        [_scrollViewContentView insertSubview:overlayView atIndex:0];
+        
+        NSString* blurStyle = [[self propertyContainer] getStringPropertyValue:kIXBlurBackground defaultValue:kIX_DEFAULT];
+        
+        UIBlurEffect *blurEffect;
+        
+        if( [blurStyle isEqualToString:kIXBlurBackgroundStyleExtraLight] ) {
+            blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        } else if( [blurStyle isEqualToString:kIXBlurBackgroundStyleLight] ) {
+            blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        } else {
+            blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        }
+        //Header blur
+        UIVisualEffectView *visualEffectView;
+        visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        visualEffectView.frame = _scrollViewContentView.bounds;
+        [_scrollViewContentView insertSubview:visualEffectView atIndex:0];
+        
+        
+        
+    }
+
+    
     
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
     {
