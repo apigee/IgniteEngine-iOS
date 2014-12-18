@@ -29,6 +29,7 @@ IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.
 IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
 
 IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
+IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
 @interface IXJSONDataProvider ()
 
@@ -223,11 +224,19 @@ IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
                 }
                 else if( [modifyResponseType isEqualToString:kIXAppend] )
                 {
-                    NSString* jsonToAppendString = [parameterContainer getStringPropertyValue:kIXJSONToAppend defaultValue:nil];
+                    id jsonToAppendObject = nil;
+                    if( [parameterContainer getBoolPropertyValue:kIXParseJSONAsObject defaultValue:NO] )
+                    {
+                        jsonToAppendObject = [[parameterContainer getAllPropertiesObjectValues] objectForKey:kIXJSONToAppend];
+                    }
+                    else
+                    {
+                        NSString* jsonToAppendString = [parameterContainer getStringPropertyValue:kIXJSONToAppend defaultValue:nil];
+                        jsonToAppendObject = [NSJSONSerialization JSONObjectWithData:[jsonToAppendString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                options:NSJSONReadingMutableContainers|NSJSONReadingAllowFragments
+                                                                                    error:nil];
+                    }
 
-                    id jsonToAppendObject = [NSJSONSerialization JSONObjectWithData:[jsonToAppendString dataUsingEncoding:NSUTF8StringEncoding]
-                                                                            options:NSJSONReadingMutableContainers|NSJSONReadingAllowFragments
-                                                                              error:nil];
 
                     if( jsonToAppendObject != nil )
                     {
