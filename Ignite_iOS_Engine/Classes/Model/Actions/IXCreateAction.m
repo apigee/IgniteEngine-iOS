@@ -14,6 +14,7 @@
 #import "IXPropertyContainer.h"
 #import "IXBaseControlConfig.h"
 #import "IXControlCacheContainer.h"
+#import "IXCustom.h"
 
 #import "IXBaseControl.h"
 
@@ -64,7 +65,16 @@ static NSString* const kIXCreated = @"created"; // Fires on the actual created c
                  if( createdControl && weakParentControl )
                  {
                      [weakParentControl addChildObject:createdControl];
-                    
+
+                     if( [createdControl isKindOfClass:[IXCustom class]] )
+                     {
+                         IXCustom* customControl = (IXCustom*)createdControl;
+                         if( !([[customControl pathToJSON] length] > 0) )
+                         {
+                             [customControl setPathToJSON:controlJSONLocation];
+                         }
+                     }
+
                      [createdControl applySettings];
                      [weakParentControl layoutControl];
                      
