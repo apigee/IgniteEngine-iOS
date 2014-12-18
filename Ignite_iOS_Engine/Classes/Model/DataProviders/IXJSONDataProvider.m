@@ -31,6 +31,9 @@ IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.
 IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
 IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
+IX_STATIC_CONST_STRING kIXResponseHeadersPrefix = @"responseHeaders.";
+IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
+
 @interface IXJSONDataProvider ()
 
 @property (nonatomic,strong) NSArray* rowDataResults;
@@ -316,11 +319,11 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
     NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
     if( returnValue == nil )
     {
-        if ([propertyName hasPrefix:@"responseHeaders"]) {
-            NSString* headerKey = [propertyName stringByReplacingOccurrencesOfString:@"responseHeaders." withString:@""];
+        if ([propertyName hasPrefix:kIXResponseHeadersPrefix]) {
+            NSString* headerKey = [propertyName stringByReplacingOccurrencesOfString:kIXResponseHeadersPrefix withString:@""];
             returnValue = [[self lastResponseHeaders] valueForKey:headerKey];
         }
-        else if ([propertyName hasPrefix:@"responseTime"]) {
+        else if ([propertyName hasPrefix:kIXResponseTime]) {
             returnValue = [NSString stringWithFormat: @"%0.f", [self responseTime]];
         }
         else if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
