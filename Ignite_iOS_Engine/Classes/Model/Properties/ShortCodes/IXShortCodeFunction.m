@@ -26,7 +26,7 @@
 //                                                               (? means any attribute)
 
 IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                         -> String value Capitalized
-IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency]]                           -> String value in currency form
+IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency(GBP)]]                      -> String value in currency form (Defaults to USD, can specify ISO 4217 Alpha Code)
 IX_STATIC_CONST_STRING kIXDistance = @"distance";               // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
 IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]                  -> Removes all session attributes from memory. Returns nil.
 IX_STATIC_CONST_STRING kIXFromBase64 = @"from_base64";          // [[?:from_base64]]                        -> Base64 value to string
@@ -53,19 +53,61 @@ static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString
 
 static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters)
 {
-    static NSNumberFormatter *formatter = nil;
+    static NSNumberFormatter *currencyFormatter = nil;
     static dispatch_once_t onceToken;
+    
     dispatch_once(&onceToken, ^{
-        formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        currencyFormatter = [[NSNumberFormatter alloc] init];
+        [currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     });
+    
     NSDecimalNumber* amount = [NSDecimalNumber zero];
+    
     if( [stringToModify length] > 0 )
     {
         amount = [[NSDecimalNumber alloc] initWithString:stringToModify];
+        // default to USD formatting
+        [currencyFormatter setCurrencyCode:@"USD"];
+        
+        if( [parameters firstObject] != nil )
+        {
+            NSString* currencyCode = [[parameters firstObject] getPropertyValue];
+            [currencyFormatter setCurrencyCode:currencyCode];
+            
+            // check to see if we should use alternate currency formatting
+            if (
+                [currencyCode  isEqual: @"ARS"] ||
+                [currencyCode  isEqual: @"BRL"] ||
+                [currencyCode  isEqual: @"COP"] ||
+                [currencyCode  isEqual: @"CLP"] ||
+                [currencyCode  isEqual: @"CRC"] ||
+                [currencyCode  isEqual: @"HRK"] ||
+                [currencyCode  isEqual: @"CYP"] ||
+                [currencyCode  isEqual: @"CZK"] ||
+                [currencyCode  isEqual: @"DKK"] ||
+                [currencyCode  isEqual: @"HUF"] ||
+                [currencyCode  isEqual: @"ISK"] ||
+                [currencyCode  isEqual: @"IDR"] ||
+                [currencyCode  isEqual: @"ANG"] ||
+                [currencyCode  isEqual: @"NOK"] ||
+                [currencyCode  isEqual: @"UYU"] ||
+                [currencyCode  isEqual: @"RON"] ||
+                [currencyCode  isEqual: @"ROL"] ||
+                [currencyCode  isEqual: @"RUB"] ||
+                [currencyCode  isEqual: @"SIT"] ||
+                [currencyCode  isEqual: @"SEK"] ||
+                [currencyCode  isEqual: @"VEF"] ||
+                [currencyCode  isEqual: @"VND"]
+                )
+            {
+                [currencyFormatter setCurrencyDecimalSeparator:@","];
+                [currencyFormatter setCurrencyGroupingSeparator:@"."];
+            }
+        }
     }
     
-    return [formatter stringFromNumber:amount];
+    return [currencyFormatter stringFromNumber:amount];
+    
 };
 
 static IXBaseShortCodeFunction const kIXDistanceFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
@@ -74,16 +116,16 @@ static IXBaseShortCodeFunction const kIXDistanceFunction = ^NSString*(NSString* 
     {
         NSString* latLong1 = [[parameters firstObject] getPropertyValue];
         NSString* latLong2 = [[parameters lastObject] getPropertyValue];
-
+        
         NSArray* latLong1Seperated = [latLong1 componentsSeparatedByString:@":"];
         NSArray* latLong2Seperated = [latLong2 componentsSeparatedByString:@":"];
-
+        
         CLLocation *point1 = [[CLLocation alloc] initWithLatitude:[[latLong1Seperated firstObject] floatValue]
                                                         longitude:[[latLong1Seperated lastObject] floatValue]];
-
+        
         CLLocation *point2 = [[CLLocation alloc] initWithLatitude:[[latLong2Seperated firstObject] floatValue]
                                                         longitude:[[latLong2Seperated lastObject] floatValue]];
-
+        
         MKDistanceFormatter *formatter = [[MKDistanceFormatter alloc] init];
         formatter.units = MKDistanceFormatterUnitsDefault;
         returnString = [formatter stringFromDistance:[point1 distanceFromLocation:point2]];
@@ -222,7 +264,7 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXURLEncode:         [kIXURLEncodeFunction copy],
                                     kIXTruncate:          [kIXTruncateFunction copy]};
     });
-
+    
     return [sIXFunctionDictionary[functionName] copy];
 }
 

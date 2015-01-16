@@ -31,10 +31,15 @@ IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.
 IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
 IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
+IX_STATIC_CONST_STRING kIXResponseHeadersPrefix = @"responseHeaders.";
+IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
+
 @interface IXJSONDataProvider ()
 
 @property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
 @property (nonatomic,strong) id lastJSONResponse;
+@property (nonatomic,strong) id lastResponseHeaders;
+@property (nonatomic) CGFloat responseTime;
 
 @end
 
@@ -70,6 +75,11 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
         [self setLastJSONResponse:jsonObject];
         [super fireLoadFinishedEventsFromCachedResponse];
     }
+    
+    if ([self responseHeaders])
+    {
+        [self setLastResponseHeaders:[self responseHeaders]];
+    }
 }
 
 -(void)loadData:(BOOL)forceGet
@@ -83,6 +93,7 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
     else
     {
         [self setLastJSONResponse:nil];
+        [self setLastResponseHeaders:nil];
         [self setResponseRawString:nil];
         [self setResponseStatusCode:0];
         [self setResponseErrorMessage:nil];
@@ -91,13 +102,20 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
         {
             if( ![self isPathLocal] )
             {
+        
+                __block CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+                
                 __weak typeof(self) weakSelf = self;
                 IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self createURLRequest]];
                 [jsonRequestOperation setJSONReadingOptions:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves];
-                [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {                    
-
+                [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    
+                    CFTimeInterval elapsedTime = (CFAbsoluteTimeGetCurrent() - startTime) * 1000;
+                    [weakSelf setResponseTime:elapsedTime];
+                    
                     [weakSelf setResponseStatusCode:[[operation response] statusCode]];
-
+                    [weakSelf setLastResponseHeaders:[[operation response] allHeaderFields]];
+                    
                     if( [NSJSONSerialization isValidJSONObject:responseObject] )
                     {
                         [weakSelf setResponseRawString:[operation responseString]];
@@ -111,6 +129,11 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
                     }
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     
+                    
+                    CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+                    [weakSelf setResponseTime:elapsedTime];
+
+                    [weakSelf setLastResponseHeaders:[[operation response] allHeaderFields]];
                     [weakSelf setResponseStatusCode:[[operation response] statusCode]];
                     [weakSelf setResponseErrorMessage:[error description]];
                     [weakSelf setResponseRawString:[operation responseString]];
@@ -123,6 +146,7 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
                     [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
                 }];
+                
                 
                 [[self httpClient] enqueueHTTPRequestOperation:jsonRequestOperation];
             }
@@ -306,6 +330,12 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
             [self setResponseRawString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
         }
     }
+    
+    if ( [self lastResponseHeaders] != nil )
+    {
+        [self setResponseHeaders:[self lastResponseHeaders]];
+    }
+    
     [super cacheResponse];
 }
 
@@ -314,7 +344,14 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
     NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
     if( returnValue == nil )
     {
-        if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
+        if ([propertyName hasPrefix:kIXResponseHeadersPrefix]) {
+            NSString* headerKey = [propertyName stringByReplacingOccurrencesOfString:kIXResponseHeadersPrefix withString:@""];
+            returnValue = [[self lastResponseHeaders] valueForKey:headerKey];
+        }
+        else if ([propertyName hasPrefix:kIXResponseTime]) {
+            returnValue = [NSString stringWithFormat: @"%0.f", [self responseTime]];
+        }
+        else if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
         {
             NSObject* jsonObject = [self objectForPath:propertyName container:[self lastJSONResponse]];
             if( jsonObject )
