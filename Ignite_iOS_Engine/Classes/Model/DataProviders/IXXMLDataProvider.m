@@ -15,7 +15,6 @@
 
 @interface IXXMLDataProvider ()
 
-@property (nonatomic,assign) NSUInteger dataRowCount;
 @property (nonatomic,strong) RXMLElement* lastXMLResponse;
 
 @end
@@ -130,16 +129,6 @@
     }
 }
 
--(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
-{
-    [self setDataRowCount:0];
-    if( loadDidSucceed )
-    {
-        [self setDataRowCount:[[[self lastXMLResponse] childrenWithRootXPath:[self dataRowBasePath]] count]];
-    }
-    [super fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse];
-}
-
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
@@ -154,10 +143,15 @@
     return returnValue;
 }
 
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString *)dataRowBasePath
 {
-    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
-    if( keyPath && rowIndexPath && [self dataRowCount] > rowIndexPath.row )
+    if( [dataRowBasePath length] <= 0 )
+    {
+        dataRowBasePath = [self dataRowBasePath];
+    }
+
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
+    if( keyPath && rowIndexPath && [[[self lastXMLResponse] childrenWithRootXPath:dataRowBasePath] count] > rowIndexPath.row )
     {
         NSString* rowXPath = keyPath;
         if( ![rowXPath hasPrefix:@"/"] )
@@ -166,7 +160,7 @@
         }
         
         NSInteger xPathRow = rowIndexPath.row + 1; // +1 because xpath is not 0 based.
-        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",[self dataRowBasePath],(long)xPathRow,rowXPath];
+        NSString* rootXPath = [NSString stringWithFormat:@"%@[%li]%@",dataRowBasePath,(long)xPathRow,rowXPath];
         
         RXMLElement* elementForKeyPath = [[[self lastXMLResponse] childrenWithRootXPath:rootXPath] firstObject];
         returnValue = [elementForKeyPath text];
@@ -174,9 +168,14 @@
     return returnValue;
 }
 
--(NSUInteger)rowCount
+-(NSUInteger)rowCount:(NSString *)dataRowBasePath
 {
-    return [self dataRowCount];
+    if( [dataRowBasePath length] <= 0 )
+    {
+        dataRowBasePath = [self dataRowBasePath];
+    }
+
+    return [[[self lastXMLResponse] childrenWithRootXPath:dataRowBasePath] count];
 }
 
 @end

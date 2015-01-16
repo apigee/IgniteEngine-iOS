@@ -37,6 +37,7 @@
 @property (nonatomic,weak) IXBaseControl* customControlContainer;
 
 @property (nonatomic,weak) IXDataRowDataProvider* dataProviderForRowData;
+@property (nonatomic,copy) NSString* dataRowBasePathForRowData;
 @property (nonatomic,strong) NSIndexPath* indexPathForRowData;
 
 @property (nonatomic,copy) NSString* basePath;

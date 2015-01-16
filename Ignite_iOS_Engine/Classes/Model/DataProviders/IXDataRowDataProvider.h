@@ -18,10 +18,10 @@
 
 @property (nonatomic,readonly) NSPredicate* predicate;
 @property (nonatomic,readonly) NSSortDescriptor* sortDescriptor;
-@property (nonatomic,readonly) NSUInteger rowCount;
 
+-(NSUInteger)rowCount:(NSString*)dataRowBasePath;
 -(NSString*)rowDataRawStringResponse;
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath;
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath;
 -(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath;
 
 @end

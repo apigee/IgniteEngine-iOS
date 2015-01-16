@@ -352,14 +352,14 @@
     [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
 }
 
--(NSUInteger)rowCount
+-(NSUInteger)rowCount:(NSString *)dataRowBasePath
 {
     return [[[self fetchedResultsController] fetchedObjects] count];
 }
 
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString *)dataRowPath
 {
-    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowPath];
     @try {
         NSManagedObject* object = [[self fetchedResultsController] objectAtIndexPath:rowIndexPath];
         returnValue = [object valueForKeyPath:keyPath];

@@ -33,12 +33,21 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
 @interface IXJSONDataProvider ()
 
-@property (nonatomic,strong) NSArray* rowDataResults;
+@property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
 @property (nonatomic,strong) id lastJSONResponse;
 
 @end
 
 @implementation IXJSONDataProvider
+
+-(instancetype)init
+{
+    self = [super init];
+    if ( self ) {
+        _rowDataResultsDict = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
 
 -(void)applySettings
 {
@@ -153,39 +162,56 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
     }
 }
 
+-(void)calculateAndStoreDataRowResultsForDataRowPath:(NSString*)dataRowPath
+{
+    NSObject* jsonObject = nil;
+    if( [dataRowPath length] <= 0 && [[self lastJSONResponse] isKindOfClass:[NSArray class]] )
+    {
+        jsonObject = [self lastJSONResponse];
+    }
+    else
+    {
+        jsonObject = [self objectForPath:dataRowPath container:[self lastJSONResponse]];
+    }
+
+    NSArray* rowDataResults = nil;
+    if( [jsonObject isKindOfClass:[NSArray class]] )
+    {
+        rowDataResults = (NSArray*)jsonObject;
+    }
+    if( rowDataResults )
+    {
+        NSPredicate* predicate = [self predicate];
+        if( predicate )
+        {
+            rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
+        }
+        NSSortDescriptor* sortDescriptor = [self sortDescriptor];
+        if( sortDescriptor )
+        {
+            rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
+        }
+    }
+
+    if( [dataRowPath length] && rowDataResults != nil )
+    {
+        [[self rowDataResultsDict] setObject:rowDataResults forKey:dataRowPath];
+    }
+}
+
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
 {
-    [self setRowDataResults:nil];
     if( loadDidSucceed )
     {
-        NSObject* jsonObject = nil;
-        if( [self dataRowBasePath].length <= 0 && [[self lastJSONResponse] isKindOfClass:[NSArray class]] )
-        {
-            jsonObject = [self lastJSONResponse];
-        }
-        else
-        {
-            jsonObject = [self objectForPath:[self dataRowBasePath] container:[self lastJSONResponse]];
-        }
+        NSString* dataRowBasePath = [self dataRowBasePath];
+        [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
 
-        NSArray* rowDataResults = nil;
-        if( [jsonObject isKindOfClass:[NSArray class]] )
+        for( NSString* dataRowKey in [[self rowDataResultsDict] allKeys] )
         {
-            rowDataResults = (NSArray*)jsonObject;
-        }
-        if( rowDataResults )
-        {
-            NSPredicate* predicate = [self predicate];
-            if( predicate )
+            if( ![dataRowKey isEqualToString:dataRowBasePath] )
             {
-                rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
+                [self calculateAndStoreDataRowResultsForDataRowPath:dataRowKey];
             }
-            NSSortDescriptor* sortDescriptor = [self sortDescriptor];
-            if( sortDescriptor )
-            {
-                rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
-            }
-            [self setRowDataResults:rowDataResults];
         }
     }
     [super fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse];
@@ -319,10 +345,11 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 -(NSString*)rowDataRawStringResponse
 {
     NSString* returnValue = nil;
-    if( [[self rowDataResults] count] > 0 )
+    NSArray* results = [self rowDataResultsDict][[self dataRowBasePath]];
+    if( [results count] > 0 )
     {
         NSError *error;
-        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self rowDataResults]
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:results
                                                            options:0
                                                              error:&error];
         if( [jsonData length] > 0 && error == nil )
@@ -334,20 +361,40 @@ IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
     return returnValue;
 }
 
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath
 {
-    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    if( [dataRowBasePath length] <= 0 )
+    {
+        dataRowBasePath = [self dataRowBasePath];
+    }
+
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
     if( keyPath && rowIndexPath )
     {
-        NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
-        returnValue = [self stringForPath:jsonKeyPath container:[self rowDataResults]];
+        NSArray* dataRowContainer = [self rowDataResultsDict][dataRowBasePath];
+
+        if( dataRowContainer != nil )
+        {
+            NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
+            returnValue = [self stringForPath:jsonKeyPath container:dataRowContainer];
+        }
     }
     return returnValue;
 }
 
--(NSUInteger)rowCount
+-(NSUInteger)rowCount:(NSString *)dataRowBasePath
 {
-    return [[self rowDataResults] count];
+    if( [dataRowBasePath length] <= 0 )
+    {
+        dataRowBasePath = [self dataRowBasePath];
+    }
+
+    if( [self rowDataResultsDict][dataRowBasePath] == nil )
+    {
+        [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
+    }
+
+    return [[self rowDataResultsDict][dataRowBasePath] count];
 }
 
 -(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject*)container

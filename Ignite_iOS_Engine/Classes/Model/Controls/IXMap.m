@@ -226,14 +226,14 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     [[self mapView] removeAnnotations:[self annotations]];
     [[self annotations] removeAllObjects];
     
-    if( [self usesDataProviderForAnnotationData] && [[self dataProvider] rowCount] > 0 )
+    if( [self usesDataProviderForAnnotationData] && [[self dataProvider] rowCount:nil] > 0 )
     {
         // Save off the Map controls original index path and dataprovider for the row data so we can reset it after we set up the annotations.
         NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
         IXDataRowDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
         
         [[self sandbox] setDataProviderForRowData:[self dataProvider]];
-        for( int i = 0; i < [[self dataProvider] rowCount]; i++ )
+        for( int i = 0; i < [[self dataProvider] rowCount:nil]; i++ )
         {
             NSIndexPath* rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
             [[self sandbox] setIndexPathForRowData:rowIndexPath];

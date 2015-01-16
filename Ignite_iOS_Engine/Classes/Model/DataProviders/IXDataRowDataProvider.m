@@ -61,7 +61,7 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXCount] )
     {
-        returnValue = [NSString stringWithFormat:@"%li",(long)[self rowCount]];
+        returnValue = [NSString stringWithFormat:@"%li",(long)[self rowCount:nil]];
     }
     else if( [propertyName isEqualToString:kIXTotal] )
     {
@@ -126,7 +126,7 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
     }
 }
 
--(NSUInteger)rowCount
+-(NSUInteger)rowCount:(NSString*)dataRowBasePath
 {
     return 0;
 }
@@ -136,18 +136,18 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
     return nil;
 }
 
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowPath
 {
     return nil;
 }
 
 -(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath
 {
-    NSInteger rowCount = [self rowCount];
+    NSInteger rowCount = [self rowCount:nil];
     NSDecimalNumber* rowTotal = [NSDecimalNumber zero];
     for( int i = 0; i < rowCount; i++ )
     {
-        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath];
+        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath dataRowBasePath:[self dataRowBasePath]];
         if( rowDataForIndex )
         {
             NSDecimalNumber* decimalNumber = [NSDecimalNumber decimalNumberWithString:rowDataForIndex];

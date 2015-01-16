@@ -48,6 +48,7 @@ IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black";
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white";
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default";
 IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
+IX_STATIC_CONST_STRING kIXDataRowBasePath = @"datarow.basepath";
 
 // IXCellBasedControl Functions
 IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pull_to_refresh.begin";
@@ -65,6 +66,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 @interface IXCellBasedControl ()
 
 @property (nonatomic, weak) IXDataRowDataProvider* dataProvider;
+@property (nonatomic, copy) NSString* dataRowBasePathForDataProvider;
 @property (nonatomic, assign) BOOL animateReload;
 @property (nonatomic, assign) CGFloat animateReloadDuration;
 @property (nonatomic, assign) CGFloat backgroundSwipeAdjustsBackgroundAlpha;
@@ -129,7 +131,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
                                                        object:[self dataProvider]];
         }
     }
-    
+
+    [self setDataRowBasePathForDataProvider:[[self propertyContainer] getStringPropertyValue:kIXDataRowBasePath defaultValue:nil]];
     [self setBackgroundViewSwipeWidth:[[self propertyContainer] getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:100.0f]];
     [self setBackgroundSwipeAdjustsBackgroundAlpha:[[self propertyContainer] getBoolPropertyValue:kIXBackgroundSwipeAdjustsBackgroundAlpha defaultValue:NO]];
     [self setBackgroundSlidesInFromSide:[[self propertyContainer] getBoolPropertyValue:kIXBackgroundSlidesInFromSide defaultValue:NO]];
@@ -228,7 +231,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 {
     NSMutableDictionary* sectionNumbersAndRowCount = [NSMutableDictionary dictionary];
 
-    int rowCount = (int)[[self dataProvider] rowCount];
+    int rowCount = (int)[[self dataProvider] rowCount:[self dataRowBasePathForDataProvider]];
     if( [[self sectionHeaderXPath] length] <= 0 )
     {
         [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:rowCount]
@@ -242,7 +245,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
         for( int i = 0; i < rowCount; i++ )
         {
             NSString* rowHeaderValue = [[self dataProvider] rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
-                                                                        keyPath:[self sectionHeaderXPath]];
+                                                                        keyPath:[self sectionHeaderXPath]
+                                                                dataRowBasePath:[self dataRowBasePathForDataProvider]];
             if( i == rowCount - 1 ) {
                 if( [rowHeaderValue isEqualToString:lastSectionHeaderValue] ) {
                     numberOfRowsInSection++;
@@ -395,6 +399,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
         [sectionHeaderSandbox setRootPath:[tableViewSandbox rootPath]];
         [sectionHeaderSandbox setDataProviders:[tableViewSandbox dataProviders]];
         [sectionHeaderSandbox setDataProviderForRowData:[self dataProvider]];
+        [sectionHeaderSandbox setDataRowBasePathForRowData:[self dataRowBasePathForDataProvider]];
         [sectionHeaderSandbox setIndexPathForRowData:[NSIndexPath indexPathForRow:row inSection:0]];
 
         [[self sectionHeaderSandboxes] setObject:sectionHeaderSandbox forKey:[NSNumber numberWithInt:row]];
@@ -473,12 +478,14 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
         }
 
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
+        [[cellLayout sandbox] setDataRowBasePathForRowData:[self dataRowBasePathForDataProvider]];
         [[cellLayout sandbox] setIndexPathForRowData:indexPath];
         
         NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
         for( IXCustom* customControl in childrenThatAreCustomControls )
         {
             [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
+            [[customControl sandbox] setDataRowBasePathForRowData:[self dataRowBasePathForDataProvider]];
             [[customControl sandbox] setIndexPathForRowData:indexPath];
         }
         [cellLayout applySettings];

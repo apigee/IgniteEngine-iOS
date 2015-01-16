@@ -23,8 +23,9 @@ static NSString* const kIXIndex = @"index";
     IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
     
     IXDataRowDataProvider* baseDP = [sandbox dataProviderForRowData];
+    NSString* dataRowBasePath = [sandbox dataRowBasePathForRowData];
     NSIndexPath* rowIndexPath = [sandbox indexPathForRowData];
-    
+
     if( baseDP && rowIndexPath )
     {
         NSString* keyPath = [self methodName];
@@ -40,7 +41,7 @@ static NSString* const kIXIndex = @"index";
         }
         else
         {
-            returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+            returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
         }
     }
     
