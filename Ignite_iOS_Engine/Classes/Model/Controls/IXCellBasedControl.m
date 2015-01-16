@@ -50,6 +50,9 @@ IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default";
 IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
 IX_STATIC_CONST_STRING kIXDataRowBasePath = @"datarow.basepath";
 
+// IXCellBasedControl Readonly Attributes
+IX_STATIC_CONST_STRING kIXRowCount = @"row.count";
+
 // IXCellBasedControl Functions
 IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pull_to_refresh.begin";
 IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pull_to_refresh.end";
@@ -225,6 +228,25 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
 -(NSInteger)numberOfSections
 {
     return [[self sectionRowCounts] count];
+}
+
+-(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    if( [propertyName isEqualToString:kIXRowCount] )
+    {
+        NSUInteger rowCount = 0;
+        for( NSNumber* sectionRowCount in [[self sectionRowCounts] allValues] )
+        {
+            rowCount += [sectionRowCount intValue];
+        }
+        returnValue = [NSString stringWithFormat:@"%lu",rowCount];
+    }
+    else
+    {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
 }
 
 -(void)reload
