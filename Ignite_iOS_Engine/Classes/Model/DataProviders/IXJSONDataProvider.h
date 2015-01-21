@@ -10,4 +10,8 @@
 
 @interface IXJSONDataProvider : IXDataRowDataProvider
 
+@property (nonatomic,strong) id lastJSONResponse;
+@property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
+- (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode;
+
 @end

@@ -36,8 +36,6 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
 
 @interface IXJSONDataProvider ()
 
-@property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
-@property (nonatomic,strong) id lastJSONResponse;
 @property (nonatomic,strong) id lastResponseHeaders;
 @property (nonatomic) CGFloat responseTime;
 

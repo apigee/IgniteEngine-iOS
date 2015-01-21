@@ -144,6 +144,7 @@
 		CA00FA3B18C666EB0090263D /* UIImage+ResizeMagick.m in Sources */ = {isa = PBXBuildFile; fileRef = CA00FA3A18C666EB0090263D /* UIImage+ResizeMagick.m */; };
 		CA1279E818D52B35007EEC5A /* UIButton+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1279E718D52B35007EEC5A /* UIButton+IXAdditions.m */; };
 		CA1279EB18D69618007EEC5A /* IXCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1279EA18D69618007EEC5A /* IXCircle.m */; };
+		CA13689F1A702C73009E7DA1 /* IXSwaggerDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CA13689E1A702C73009E7DA1 /* IXSwaggerDataProvider.m */; };
 		CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA28B85A18C9052E0067686C /* IXLoadAction.m */; };
 		CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5021E618E3DE4500FC1FF6 /* IXAnimateAction.m */; };
 		CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA50B3BB18EB9D39009282D0 /* YLMoment+IXAdditions.m */; };
@@ -406,6 +407,8 @@
 		CA1279E718D52B35007EEC5A /* UIButton+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+IXAdditions.m"; sourceTree = "<group>"; };
 		CA1279E918D69618007EEC5A /* IXCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCircle.h; sourceTree = "<group>"; };
 		CA1279EA18D69618007EEC5A /* IXCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCircle.m; sourceTree = "<group>"; };
+		CA13689D1A702C73009E7DA1 /* IXSwaggerDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSwaggerDataProvider.h; sourceTree = "<group>"; };
+		CA13689E1A702C73009E7DA1 /* IXSwaggerDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSwaggerDataProvider.m; sourceTree = "<group>"; };
 		CA28B85918C9052E0067686C /* IXLoadAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLoadAction.h; sourceTree = "<group>"; };
 		CA28B85A18C9052E0067686C /* IXLoadAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLoadAction.m; sourceTree = "<group>"; };
 		CA5021E518E3DE4500FC1FF6 /* IXAnimateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAnimateAction.h; sourceTree = "<group>"; };
@@ -631,6 +634,8 @@
 				63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */,
 				635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */,
 				635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */,
+				CA13689D1A702C73009E7DA1 /* IXSwaggerDataProvider.h */,
+				CA13689E1A702C73009E7DA1 /* IXSwaggerDataProvider.m */,
 				63240E7E194A318300412927 /* IXOAuth2DataProvider.h */,
 				63240E7F194A318300412927 /* IXOAuth2DataProvider.m */,
 				63AEA72F193EA6D50088F480 /* IXXMLDataProvider.h */,
@@ -1083,6 +1088,7 @@
 				63CC9A5A18B7F06200ECCECB /* IXBaseControlConfig.m in Sources */,
 				63CC9AB118BD0BB000ECCECB /* IXWeakTimerTarget.m in Sources */,
 				6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */,
+				CA13689F1A702C73009E7DA1 /* IXSwaggerDataProvider.m in Sources */,
 				63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */,
 				634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
