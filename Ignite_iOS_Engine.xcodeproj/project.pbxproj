@@ -55,18 +55,19 @@
 		131591E118396A960046B16D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 131591DF18396A960046B16D /* CoreMedia.framework */; };
 		131591E218396A960046B16D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 131591E018396A960046B16D /* CoreVideo.framework */; };
 		131591EB18396B3E0046B16D /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 131591EA18396B3E0046B16D /* libiconv.dylib */; };
-		1319157419BAA4DA00182CC7 /* ARSMaquettePro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319156D19BAA4DA00182CC7 /* ARSMaquettePro-Light.otf */; };
-		1319157519BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319156E19BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf */; };
-		1319157619BAA4DA00182CC7 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1319156F19BAA4DA00182CC7 /* FontAwesome.ttf */; };
-		1319157719BAA4DA00182CC7 /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157019BAA4DA00182CC7 /* Nestsans.ttf */; };
-		1319157819BAA4DA00182CC7 /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157119BAA4DA00182CC7 /* NestsansBold.ttf */; };
-		1319157919BAA4DA00182CC7 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */; };
-		1319157A19BAA4DA00182CC7 /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */; };
 		136928F11836108300E28BBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136928F01836108300E28BBC /* QuartzCore.framework */; };
 		1387A0C719CBA80600A85B04 /* IXTouchID.m in Sources */ = {isa = PBXBuildFile; fileRef = 1387A0C619CBA80600A85B04 /* IXTouchID.m */; };
-		13BF0468183EBE7E00894760 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13BF0465183EBE7E00894760 /* Images.xcassets */; };
 		13BF0469183EBE7E00894760 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BF0466183EBE7E00894760 /* main.m */; };
-		13ECEA5F183EBF39004BC638 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 13ECEA5E183EBF38004BC638 /* assets */; };
+		3F66D2C41A7A34A700E8D288 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2C31A7A34A700E8D288 /* assets */; };
+		3F66D2CC1A7A34C100E8D288 /* ARSMaquettePro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2C51A7A34C100E8D288 /* ARSMaquettePro-Light.otf */; };
+		3F66D2CD1A7A34C100E8D288 /* ARSMaquettePro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2C61A7A34C100E8D288 /* ARSMaquettePro-Medium.otf */; };
+		3F66D2CE1A7A34C100E8D288 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2C71A7A34C100E8D288 /* FontAwesome.ttf */; };
+		3F66D2CF1A7A34C100E8D288 /* Nestsans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2C81A7A34C100E8D288 /* Nestsans.ttf */; };
+		3F66D2D01A7A34C100E8D288 /* NestsansBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2C91A7A34C100E8D288 /* NestsansBold.ttf */; };
+		3F66D2D11A7A34C100E8D288 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2CA1A7A34C100E8D288 /* SourceSansPro-Light.otf */; };
+		3F66D2D21A7A34C100E8D288 /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */; };
+		3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2D31A7A34D100E8D288 /* Images.xcassets */; };
+		3F66D2D61A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */; };
 		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
 		6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */; };
 		63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63240E7C194A27F200412927 /* IXDataRowDataProvider.m */; };
@@ -245,22 +246,22 @@
 		131591DF18396A960046B16D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		131591E018396A960046B16D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		131591EA18396B3E0046B16D /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
-		1319156D19BAA4DA00182CC7 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Light.otf"; sourceTree = "<group>"; };
-		1319156E19BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ARSMaquettePro-Medium.otf"; sourceTree = "<group>"; };
-		1319156F19BAA4DA00182CC7 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
-		1319157019BAA4DA00182CC7 /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Nestsans.ttf; sourceTree = "<group>"; };
-		1319157119BAA4DA00182CC7 /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NestsansBold.ttf; sourceTree = "<group>"; };
-		1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.otf"; sourceTree = "<group>"; };
-		1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.otf"; sourceTree = "<group>"; };
 		136928F01836108300E28BBC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1387A0C519CBA80600A85B04 /* IXTouchID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTouchID.h; sourceTree = "<group>"; };
 		1387A0C619CBA80600A85B04 /* IXTouchID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTouchID.m; sourceTree = "<group>"; };
-		13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "../assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
 		13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Ignite_iOS_Engine-Prefix.pch"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		13BF0465183EBE7E00894760 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../assets/_project/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		13BF0466183EBE7E00894760 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ignite_iOS_Engine/main.m; sourceTree = SOURCE_ROOT; };
-		13ECEA5E183EBF38004BC638 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = SOURCE_ROOT; };
 		2A47E3A147B84D9DB0C78D60 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		3F66D2C31A7A34A700E8D288 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		3F66D2C51A7A34C100E8D288 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Light.otf"; path = "assets/_project/fonts/ARSMaquettePro-Light.otf"; sourceTree = SOURCE_ROOT; };
+		3F66D2C61A7A34C100E8D288 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Medium.otf"; path = "assets/_project/fonts/ARSMaquettePro-Medium.otf"; sourceTree = SOURCE_ROOT; };
+		3F66D2C71A7A34C100E8D288 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = assets/_project/fonts/FontAwesome.ttf; sourceTree = SOURCE_ROOT; };
+		3F66D2C81A7A34C100E8D288 /* Nestsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Nestsans.ttf; path = assets/_project/fonts/Nestsans.ttf; sourceTree = SOURCE_ROOT; };
+		3F66D2C91A7A34C100E8D288 /* NestsansBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NestsansBold.ttf; path = assets/_project/fonts/NestsansBold.ttf; sourceTree = SOURCE_ROOT; };
+		3F66D2CA1A7A34C100E8D288 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Light.otf"; path = "assets/_project/fonts/SourceSansPro-Light.otf"; sourceTree = SOURCE_ROOT; };
+		3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Semibold.otf"; path = "assets/_project/fonts/SourceSansPro-Semibold.otf"; sourceTree = SOURCE_ROOT; };
+		3F66D2D31A7A34D100E8D288 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = assets/_project/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
 		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
 		6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBackgroundSwipeController.h; sourceTree = "<group>"; };
@@ -771,7 +772,7 @@
 		6324BF551835931C00748F27 /* Ignite_iOS_Engine */ = {
 			isa = PBXGroup;
 			children = (
-				13ECEA5E183EBF38004BC638 /* assets */,
+				3F66D2C31A7A34A700E8D288 /* assets */,
 				13033F21183ED8F200C29157 /* Classes */,
 				6333614E18975672004F3433 /* Fonts */,
 				6324BF561835931C00748F27 /* Supporting Files */,
@@ -783,10 +784,10 @@
 		6324BF561835931C00748F27 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */,
 				634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */,
-				13BF0463183EBE7E00894760 /* Ignite_iOS_Engine-Info.plist */,
 				13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */,
-				13BF0465183EBE7E00894760 /* Images.xcassets */,
+				3F66D2D31A7A34D100E8D288 /* Images.xcassets */,
 				13BF0466183EBE7E00894760 /* main.m */,
 				13120CD6183EAF5D0075327D /* images */,
 			);
@@ -831,13 +832,13 @@
 		6333614E18975672004F3433 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				1319156D19BAA4DA00182CC7 /* ARSMaquettePro-Light.otf */,
-				1319156E19BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf */,
-				1319156F19BAA4DA00182CC7 /* FontAwesome.ttf */,
-				1319157019BAA4DA00182CC7 /* Nestsans.ttf */,
-				1319157119BAA4DA00182CC7 /* NestsansBold.ttf */,
-				1319157219BAA4DA00182CC7 /* SourceSansPro-Light.otf */,
-				1319157319BAA4DA00182CC7 /* SourceSansPro-Semibold.otf */,
+				3F66D2C51A7A34C100E8D288 /* ARSMaquettePro-Light.otf */,
+				3F66D2C61A7A34C100E8D288 /* ARSMaquettePro-Medium.otf */,
+				3F66D2C71A7A34C100E8D288 /* FontAwesome.ttf */,
+				3F66D2C81A7A34C100E8D288 /* Nestsans.ttf */,
+				3F66D2C91A7A34C100E8D288 /* NestsansBold.ttf */,
+				3F66D2CA1A7A34C100E8D288 /* SourceSansPro-Light.otf */,
+				3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */,
 			);
 			name = Fonts;
 			path = ../assets/_project/fonts;
@@ -1001,16 +1002,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1319157919BAA4DA00182CC7 /* SourceSansPro-Light.otf in Resources */,
+				3F66D2CC1A7A34C100E8D288 /* ARSMaquettePro-Light.otf in Resources */,
+				3F66D2CF1A7A34C100E8D288 /* Nestsans.ttf in Resources */,
+				3F66D2D01A7A34C100E8D288 /* NestsansBold.ttf in Resources */,
+				3F66D2CE1A7A34C100E8D288 /* FontAwesome.ttf in Resources */,
+				3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */,
 				634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */,
-				1319157719BAA4DA00182CC7 /* Nestsans.ttf in Resources */,
-				1319157419BAA4DA00182CC7 /* ARSMaquettePro-Light.otf in Resources */,
-				1319157A19BAA4DA00182CC7 /* SourceSansPro-Semibold.otf in Resources */,
-				13BF0468183EBE7E00894760 /* Images.xcassets in Resources */,
-				1319157819BAA4DA00182CC7 /* NestsansBold.ttf in Resources */,
-				1319157519BAA4DA00182CC7 /* ARSMaquettePro-Medium.otf in Resources */,
-				13ECEA5F183EBF39004BC638 /* assets in Resources */,
-				1319157619BAA4DA00182CC7 /* FontAwesome.ttf in Resources */,
+				3F66D2CD1A7A34C100E8D288 /* ARSMaquettePro-Medium.otf in Resources */,
+				3F66D2D21A7A34C100E8D288 /* SourceSansPro-Semibold.otf in Resources */,
+				3F66D2D11A7A34C100E8D288 /* SourceSansPro-Light.otf in Resources */,
+				3F66D2C41A7A34A700E8D288 /* assets in Resources */,
+				3F66D2D61A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1299,7 +1301,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
 					"$(SDK_DIR)\"/usr/include/libxml2",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/../assets/_project/Ignite_iOS_Engine-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/assets/_project/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
@@ -1331,7 +1333,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
 					"$(SDK_DIR)\"/usr/include/libxml2",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/../assets/_project/Ignite_iOS_Engine-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/assets/_project/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
