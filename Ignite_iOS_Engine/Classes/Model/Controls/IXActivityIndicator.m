@@ -22,10 +22,10 @@
  
  ####
  #### Attributes
- |  Name                            |   Type                    |   Description                                         |   Default
- |:---------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
- | *style*                          |   *(white, large, gray)*  |   The spinner style                                   |   large
- | *color*                          |   *(color)*               |   The spinner color                                   |   #ffffff
+ |  Name                            |   Type                        |   Description                                         |   Default
+ |:---------------------------------|:-----------------------------:|:------------------------------------------------------|:-------------:|
+ | *style*                          |   *white<br>large<br>gray*    |   The spinner style                                   |   large
+ | *color*                          |   *(color)*                   |   The spinner color                                   |   #ffffff
 
  ####
  #### Inherits

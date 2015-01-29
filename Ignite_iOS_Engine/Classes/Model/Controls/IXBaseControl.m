@@ -31,7 +31,7 @@
  | *border.radius*                  |   *(float)*   |   Description                                         |
  | *background.color*               |   *(color)*   |   Description                                         |
  | *background.image*               |   *(string)*  |   Description                                         |
- | *background.image.scale*         |   *(cover, stretch, tile, contain)*   |   Description                 |
+ | *background.image.scale*         |   *cover<br>stretch<br>tile<br>contain*   |   Description                 |
  | *cicontext.resolution*           |   *(float)*   |   Description                                         |
  | *enabled*                        |   *(bool)*    |   Description                                         |
  | *enable_tap*                     |   *(bool)*    |   Description                                         |
@@ -40,9 +40,9 @@
  | *enable_pan*                     |   *(bool)*    |   Description                                         |
  | *enable_long_press*              |   *(bool)*    |   Description                                         |
  | *enable_shadow*                  |   *(bool)*    |   Description                                         |
- | *layout_type*                    |   *(relative, absolute, float)*       |   Description                 |   relative
- | *horizontal_alignment*           |   *(left, center, right)*             |   Description                 |   relative
- | *vertical_alignment*             |   *(top, middle, bottom)*             |   Description                 |   relative
+ | *layout_type*                    |   *relative<br>absolute<br>float*       |   Description                 |   relative
+ | *horizontal_alignment*           |   *left<br>center<br>right*             |   Description                 |   relative
+ | *vertical_alignment*             |   *top<br>middle<br>bottom*             |   Description                 |   relative
  | *shadow_blur*                    |   *(float)*   |   Description                                         |
  | *shadow_alpha*                   |   *(float)*   |   Description                                         |
  | *shadow_color*                   |   *(color)*   |   Description                                         |

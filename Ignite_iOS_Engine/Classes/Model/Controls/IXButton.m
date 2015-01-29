@@ -24,7 +24,7 @@
  #### Attributes
  |  Name                            |   Type        |   Description                                         |   Default
  |:---------------------------------|:-------------:|:------------------------------------------------------|:-------------:|
- | *text*                           |   *(string)*  |   The text displayed1                                  |
+ | *text*                           |   *(string)*  |   The text displayed                                  |
  | *text.color*                     |   *(color)*   |   The text color                                      |   #ffffff
  | *font*                           |   *(string)*  |   The text font name and size (font:size) <br>*See http://iosfonts.com/ for available fonts.*           |   *HelveticaNeue:20*
  | *background.color*               |   *(color)*   |   The background color                                |
