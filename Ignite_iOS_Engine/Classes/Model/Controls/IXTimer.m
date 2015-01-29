@@ -6,6 +6,95 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Brandon Shelley
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Native iOS toggle control.
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description                                         |   Default
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
+ | *enabled*                            |  bool                     |                                                       |  true
+ | *repeats*                            |  bool                     |  Indicates whether or not the timer repeats           |  false
+ | *time_interval*                      |  integer                  |  Duration of time interval                            |  0 (disabled)
+
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ @"timer_fired";
+ | *timer_fired*                        |   Event that occurs each time the timer fires.
+
+ ####
+ #### Functions
+ 
+ *start*
+    
+    {
+        "_type": "Function",
+        "on": "did_appear",
+        "attributes": {
+            "function_name": "start"
+        }
+    }
+  
+ *stop*
+    
+    {
+        "_type": "Function",
+        "on": "did_appear",
+        "attributes": {
+            "function_name": "stop"
+        }
+    }
+ 
+ ####
+ #### Read-Only Properties
+
+ 
+ ####
+ #### Example JSON
+ 
+    {
+        "_id": "timerControl",
+        "_type": "Timer",
+        "actions": [
+            {
+                "_type": "Alert",
+                "attributes": {
+                    "title": "Timer Fired!"
+                },
+                "on": "timer_fired"
+            }
+        ],
+        "attributes": {
+            "enabled": true,
+            "repeats": true,
+            "time_interval": 5
+        }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXTimer.h"
 
 #import "IXWeakTimerTarget.h"

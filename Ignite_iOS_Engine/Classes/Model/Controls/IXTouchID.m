@@ -18,7 +18,7 @@
 /**
  
  ###
- ###    Native iOS TouchID accessor .
+ ###    Native iOS TouchID accessor.
  
  ####
  #### Attributes

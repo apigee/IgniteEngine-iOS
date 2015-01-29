@@ -6,19 +6,99 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Brandon Shelley
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
  
- CONTROL
+ ###
+ ###    Native iOS toggle control.
  
- - TYPE : "ToggleSwitch"
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description                                         |   Default
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
  
- - EVENTS
+ ####
+ #### Inherits
+ >  IXBaseControl
  
- * name="toggle"
- * name="toggle_on"
- * name="toggle_off"
-  
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+
+ ####
+ #### Functions
+
+ 
+ ####
+ #### Read-Only Properties
+
+    {
+        "_id": "aLabel",
+        "_type": "Text",
+        "attributes": {
+            "text": "The toggle is currently [[toggle1.is_on]]"
+        }
+    }
+ 
+ ####
+ #### Example JSON
+ 
+    {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+            {
+                "_type": "Function",
+                "attributes": {
+                    "_target": "myToggle",
+                    "function_name": "toggle"
+                },
+                "on": "touch_up"
+            }
+        ]
+    },
+    {
+        "_id": "button2",
+        "_type": "Button",
+        "actions": [
+            {
+                "_type": "Function",
+                "attributes": {
+                    "_target": "myToggle",
+                    "function_name": "toggle_off"
+                },
+                "on": "touch_up"
+            }
+        ]
+    },
+    {
+        "_id": "button3",
+        "_type": "Button",
+        "actions": [
+            {
+                "_type": "Function",
+                "attributes": {
+                    "_target": "myToggle",
+                    "function_name": "toggle_on"
+                },
+                "on": "touch_up"
+            }
+        ]
+    }
+ 
  */
+//
+//  [/Documentation]
+/*  -----------------------------  */
 
 #import "IXToggle.h"
 
