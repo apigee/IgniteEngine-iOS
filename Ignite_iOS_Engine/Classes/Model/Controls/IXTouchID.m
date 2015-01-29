@@ -6,6 +6,76 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Brandon Shelley
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Native iOS TouchID accessor .
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description                                         |   Default
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
+ | *title*                              |   *(string)*               |   TouchID title                                      |   *nil*
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ | *success*                            |   The user did authenticate successfully.
+ | *failed*                             |   The user did not authenticate successfully.
+ | *cancelled*                          |   The user cancelled the operation.
+ | *password*                           |   ???
+ | *unconfigured*                       |   TouchID is not configured on the device.
+ | *unavailable*                        |   TouchID is not available or not supported on the device.
+
+ ####
+ #### Functions
+ 
+ *authenticate*
+    
+    {
+        "_type": "Function",
+        "on": "success",
+        "attributes": {
+            "function_name": "authenticate"
+        }
+    }
+ 
+ ####
+ #### Example JSON
+ 
+    {
+        "_type": "TouchID",
+        "_id": "TouchID",
+        "actions": [
+            {
+                "_type": "Alert",
+                "on": "success",
+                "attributes": {
+                    "title": "success"
+                }
+            }
+        ]
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXTouchID.h"
 
 #import <LocalAuthentication/LocalAuthentication.h>

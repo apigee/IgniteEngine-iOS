@@ -36,9 +36,6 @@
         jsonObject = [super objectForPath:dataRowPath container:[super lastJSONResponse]];
     }
     
-    
-    
-    
     NSArray* rowDataResults = nil;
     if( [jsonObject isKindOfClass:[NSDictionary class]] )
     {
@@ -76,11 +73,22 @@
     if (jsonDict) {
         [[jsonDict allKeys] enumerateObjectsUsingBlock:^(NSString* key, NSUInteger idx, BOOL *stop) {
             NSDictionary* path = jsonDict[key];
-            [path setValue:key forKey:@"*key"];
+            
+            NSMutableArray* methods = [NSMutableArray new];
+            
+            [[path allKeys] enumerateObjectsUsingBlock:^(NSString* key, NSUInteger idx, BOOL *stop) {
+                NSDictionary* method = path[key];
+                [method setValue:key forKey:@"method"];
+                [methods addObject:method];
+            }];
+
+            [path setValue:key forKey:@"path"];
+            [path setValue:methods forKey:@"methods"];
             [rowDataResults addObject:path];
         }];
     }
-    return (NSArray*)rowDataResults;
+    NSLog(@"%@", rowDataResults[0][@"methods"]);
+    return rowDataResults;
 }
 
 @end
