@@ -1,0 +1,553 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "login",
+      "status_bar_style": "light",
+      "background.color": "#fff000"
+    },
+    "actions": [
+      {
+        "_type": "Modify",
+        "on": "did_appear",
+        "attributes": {
+          "_target": "imageBackground",
+          "duration": 30
+        },
+        "set": {
+          "height": "100%",
+          "width": "100%"
+        }
+      }
+    ],
+    "controls": [
+      {
+        "_id": "layoutMain",
+        "_type": "Layout",
+        "attributes": {
+          "width": "100%",
+          "height": "100%",
+          "padding": 0,
+          "layout_type": "absolute"
+        },
+        "controls": [
+          {
+            "_id": "imageBackground",
+            "_type": "Image",
+            "attributes": {
+              "width": "200%",
+              "height": "200%",
+              "layout_type": "absolute",
+              "margin.left": 0,
+              "images.default": "/images/bgs/partlycloudy.jpg"
+            }
+          },
+          {
+            "_id": "layoutHeader",
+            "_type": "Layout",
+            "attributes": {
+              "width": "100%",
+              "margin.top": 35,
+              "enable_shadow": true,
+              "shadow_blur": 3,
+              "shadow_alpha": 0.3,
+              "shadow_color": "#000000"
+            },
+            "controls": [
+              {
+                "_id": "textCityName",
+                "_type": "Text",
+                "actions": [
+                  {
+                    "_type": "Function",
+                    "on": "touch_up",
+                    "attributes": {
+                      "_target": "addressbookTest",
+                      "function_name": "add_contact"
+                    }
+                  },
+                  {
+                    "_type": "Modify",
+                    "on": "did_appear",
+                    "attributes": {
+                      "_target": "layoutMain",
+                      "duration": 0.5
+                    },
+                    "set": {
+                      "margin.top": 100
+                    }
+                  }
+                ],
+                "attributes": {
+                  "width": "100%",
+                  "font": "HelveticaNeue-Light:32",
+                  "text": "San Jose",
+                  "text.alignment": "center",
+                  "text.color": "#ffffff"
+                }
+              },
+              {
+                "_id": "textCityConditions",
+                "_type": "Text",
+                "attributes": {
+                  "width": "100%",
+                  "font": "HelveticaNeue-Light:13",
+                  "text": "Partly Cloudy",
+                  "text.alignment": "center",
+                  "text.color": "#ffffff"
+                }
+              },
+              {
+                "_id": "layoutTemp",
+                "_type": "Layout",
+                "attributes": {
+                  "layout_flow": "horizontal",
+                  "horizontal_alignment": "center"
+                },
+                "controls": [
+                  {
+                    "_id": "textCityTemp",
+                    "_type": "Text",
+                    "attributes": {
+                      "font": "HelveticaNeue-Thin:105",
+                      "text": "55",
+                      "text.color": "#ffffff"
+                    }
+                  },
+                  {
+                    "_id": "textCityDegreeSymbol",
+                    "_type": "Text",
+                    "attributes": {
+                      "visible": "false",
+                      "layout_type": "float",
+                      "margin.top": 15,
+                      "font": "HelveticaNeue-Thin:50",
+                      "text": "°",
+                      "text.color": "#ffffff"
+                    }
+                  }
+                ]
+              },
+              {
+                "_id": "layoutToday",
+                "_type": "Layout",
+                "attributes": {
+                  "width": "100%",
+                  "margin.top": 10,
+                  "layout_flow": "horizontal",
+                  "horizontal_alignment": "center"
+                },
+                "controls": [
+                  {
+                    "_id": "layoutToday",
+                    "_type": "Layout",
+                    "attributes": {
+                      "layout_flow": "horizontal",
+                      "margin.left": 15
+                    },
+                    "controls": [
+                      {
+                        "_id": "textDayName",
+                        "_type": "Text",
+                        "attributes": {
+                          "font": "HelveticaNeue:13",
+                          "text": "Wednesday",
+                          "text.color": "#ffffff"
+                        }
+                      },
+                      {
+                        "_id": "textToday",
+                        "_type": "Text",
+                        "attributes": {
+                          "font": "HelveticaNeue-Light:13",
+                          "text": " Today",
+                          "text.color": "#ffffff50"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "_id": "layoutTodaysHighLow",
+                    "_type": "Layout",
+                    "attributes": {
+                      "margin.right": 15,
+                      "layout_flow": "horizontal",
+                      "layout_type": "absolute",
+                      "horizontal_alignment": "right"
+                    },
+                    "controls": [
+                      {
+                        "_id": "textDayName",
+                        "_type": "Text",
+                        "attributes": {
+                          "font": "HelveticaNeue-Light:13",
+                          "text": "65",
+                          "text.color": "#ffffff",
+                          "margin.right": 15
+                        }
+                      },
+                      {
+                        "_id": "textToday",
+                        "_type": "Text",
+                        "attributes": {
+                          "font": "HelveticaNeue-Light:13",
+                          "text": "45",
+                          "text.color": "#ffffff50"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "_id": "layoutDivider",
+            "_type": "Layout",
+            "attributes": {
+              "width": "100%",
+              "height": 1,
+              "margin.top": 7,
+              "background.color": "#ffffff25"
+            }
+          },
+          {
+            "_id": "layoutConditionsHourly",
+            "_type": "Layout",
+            "attributes": {
+              "width": "100%",
+              "height": 75,
+              "padding.left": 9,
+              "padding.right": 7,
+              "shows_scroll_indicators": false,
+              "background.color": "#ffffff00",
+              "layout_flow": "horizontal"
+            },
+            "controls": [
+              {
+                "_id": "collectionConditionsHourly",
+                "_type": "Collection",
+                "attributes": {
+                  "1width": "100%",
+                  "width": "{{ 36 * 44 }}",
+                  "height": "100%",
+                  "dataprovider_id": "dataForecastHourly",
+                  "datarow.basepath": "hourly_forecast",
+                  "layout_flow": "horizontal",
+                  "enabled": true,
+                  "1margin.left": 15,
+                  "item_height": "100%",
+                  "shows_scroll_indicators": false,
+                  "item_width": 44,
+                  "background.color": "#ffffff00"
+                },
+                "controls": [
+                  {
+                    "_id": "layoutConditionsHourly",
+                    "_type": "Layout",
+                    "attributes": {
+                      "height": "100%",
+                      "1width": 35,
+                      "margin.top": 0,
+                      "background.color": "#ffffff00"
+                    },
+                    "controls": [
+                      {
+                        "_id": "textForecastHourlyHour",
+                        "_type": "Text",
+                        "attributes": {
+                          "enable_shadow": true,
+                          "shadow_blur": 3,
+                          "shadow_alpha": 0.3,
+                          "shadow_color": "#000000",
+                          "layout_type": "absolute",
+                          "vertical_alignment": "top",
+                          "margin.top": 8,
+                          "1width": "100%",
+                          "horizontal_alignment": "center",
+                          "font": "HelveticaNeue-Light:10",
+                          "text": "[[dataRow.FCTTIME.hour:moment(HH|ha)]]",
+                          "text.color": "#ffffff"
+                        }
+                      },
+                      {
+                        "_id": "imageForecastHourlyConditions",
+                        "_type": "Image",
+                        "attributes": {
+                          "layout_type": "absolute",
+                          "vertical_alignment": "middle",
+                          "1padding.top": -5,
+                          "images.default": [
+                            "if :: [[dataRow.FCTTIME.hour]] <= 5 :: /images/icons/[[dataRow.icon]]_night_40x30.png",
+                            "if :: [[dataRow.FCTTIME.hour]] >= 6 && [[dataRow.FCTTIME.hour]] <= 18:: /images/icons/[[dataRow.icon]]_day_40x30.png",
+                            "if :: [[dataRow.FCTTIME.hour]] >= 18 :: /images/icons/[[dataRow.icon]]_night_40x30.png"
+                          ],
+                          "horizontal_alignment": "center",
+                          "width": 20,
+                          "height": 15
+                        }
+                      },
+                      {
+                        "_id": "textForecastHourlyTemp",
+                        "_type": "Text",
+                        "attributes": {
+                          "enable_shadow": true,
+                          "shadow_blur": 3,
+                          "shadow_alpha": 0.3,
+                          "shadow_color": "#000000",
+                          "layout_type": "absolute",
+                          "vertical_alignment": "bottom",
+                          "margin.bottom": 8,
+                          "1width": "100%",
+                          "horizontal_alignment": "center",
+                          "text.alignment": "center",
+                          "font": "HelveticaNeue-Light:13",
+                          "text": "[[dataRow.temp.english]]",
+                          "text.color": "#ffffff"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "_id": "layoutDivider",
+            "_type": "Layout",
+            "attributes": {
+              "width": "100%",
+              "height": 1,
+              "margin.top": 0,
+              "padding.bottom": 0,
+              "background.color": "#ffffff25"
+            }
+          },
+          {
+            "_id": "layoutForecast10Day",
+            "_type": "Layout",
+            "attributes": {
+              "width": "100%",
+              "fill_remaining_height": true,
+              "padding.left": 15,
+              "padding.right": 15,
+              "background.color": "#ffffff00",
+              "layout_flow": "horizontal"
+            },
+            "controls": [
+              {
+                "_id": "collectionForecast10Day",
+                "_type": "Collection",
+                "attributes": {
+                  "width": "100%",
+                  "height": "{{ 10 * 22 }}",
+                  "margin.top": 10,
+                  "scrollable": false,
+                  "dataprovider_id": "dataForecast10Day",
+                  "datarow.basepath": "forecast.simpleforecast.forecastday",
+                  "layout_flow": "vertical",
+                  "shows_scroll_indicators": false,
+                  "enabled": true,
+                  "item_width": "100%",
+                  "item_height": 22,
+                  "background.color": "#ffffff00"
+                },
+                "controls": [
+                  {
+                    "_id": "layoutConditionsHourly",
+                    "_type": "Layout",
+                    "attributes": {
+                      "height": "100%",
+                      "width": "100%",
+                      "margin.top": 0,
+                      "background.color": "#00ff0000"
+                    },
+                    "controls": [
+                      {
+                        "_id": "textForecastHourlyHour",
+                        "_type": "Text",
+                        "attributes": {
+                          "enable_shadow": true,
+                          "shadow_blur": 3,
+                          "shadow_alpha": 0.3,
+                          "shadow_color": "#000000",
+                          "layout_type": "absolute",
+                          "vertical_alignment": "middle",
+                          "margin.top": 8,
+                          "1width": "100%",
+                          "horizontal_alignment": "left",
+                          "font": "HelveticaNeue-Light:13",
+                          "text": "[[dataRow.date.weekday]]",
+                          "text.color": "#ffffff"
+                        }
+                      },
+                      {
+                        "_id": "imageForecastHourlyConditions",
+                        "_type": "Image",
+                        "attributes": {
+                          "layout_type": "absolute",
+                          "horizontal_alignment": "center",
+                          "vertical_alignment": "middle",
+                          "1padding.top": -5,
+                          "images.default": "/images/icons/[[dataRow.icon]]_day_40x30.png",
+                          "width": 20,
+                          "height": 15
+                        }
+                      },
+                      {
+                        "_id": "layoutForecast10DayTemps",
+                        "_type": "Layout",
+                        "attributes": {
+                          "layout_type": "absolute",
+                          "horizontal_alignment": "right",
+                          "vertical_alignment": "middle",
+                          "layout_flow": "horizontal"
+                        },
+                        "controls": [
+                          {
+                            "_id": "textForecastHourlyTemp",
+                            "_type": "Text",
+                            "attributes": {
+                              "enable_shadow": true,
+                              "shadow_blur": 3,
+                              "shadow_alpha": 0.3,
+                              "shadow_color": "#000000",
+                              "margin.bottom": 8,
+                              "margin.right": 10,
+                              "1width": "100%",
+                              "text.alignment": "center",
+                              "font": "HelveticaNeue-Light:13",
+                              "text": "[[dataRow.high.fahrenheit]]",
+                              "text.color": "#ffffff"
+                            }
+                          },
+                          {
+                            "_id": "textForecastHourlyTemp",
+                            "_type": "Text",
+                            "attributes": {
+                              "enable_shadow": true,
+                              "shadow_blur": 3,
+                              "shadow_alpha": 0.3,
+                              "shadow_color": "#000000",
+                              "margin.left": 5,
+                              "1width": "100%",
+                              "text.alignment": "center",
+                              "font": "HelveticaNeue-Light:13",
+                              "text": "[[dataRow.low.fahrenheit]]",
+                              "text.color": "#ffffff50"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_type": "AddressBook",
+        "_id": "addressBookTest",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "add_contact_success"
+            },
+            "on": "add_contact_success"
+          },
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "add_contact_failed"
+            },
+            "on": "add_contact_failed"
+          }
+        ],
+        "attributes": {
+          "name.first": "Johnny",
+          "name.last": "Appleseed",
+          "company.name": "Farmers, Inc.",
+          "company.title": "CEO",
+          "phone.mobile": "+15551212",
+          "phone.main": "+15551313",
+          "email.home": "johnnyappleseed@gmail.com",
+          "email.work": "johnny@appleseed.com",
+          "username.twitter": "johnnyappleseed",
+          "username.linkedIn": "johnnyappleseed",
+          "username.facebook": "johnnyappleseed",
+          "url.home": "http://johnnyappleseed.com",
+          "url.homePage": "http://johnnyappleseed.com",
+          "url.work": "http://farmersinc.com",
+          "url.linkedIn": "",
+          "url.facebook": ""
+        }
+      }
+    ],
+    "data_providers": [
+      {
+        "_id": "dataForecastHourly",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "1message": "[[$self.raw_data_response]]",
+              "message": "[[collectionConditionsHourly.row.count]]",
+              "title": "[[$self._id]]",
+              "enabled": false
+            },
+            "on": "success,failed"
+          },
+          {
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "collectionConditionsHourly"
+            },
+            "on": "success,failed"
+          }
+        ],
+        "attributes": {
+          "auto_load": true,
+          "1data.baseurl": "https://insightsdemofreeorg-test.apigee.net/",
+          "1data.path": "recommendations-api/customers/[[session.userid]]/recommendations?ql=select%20*%20where%20scoreType%20=%20%27recommendationScore%27%20order%20by%20scoreValue%20desc&limit=10",
+          "data.baseurl": "/data",
+          "data.path": "/hourly.json",
+          "http_method": "GET"
+        }
+      },
+      {
+        "_id": "dataForecast10Day",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "1message": "[[$self.raw_data_response]]",
+              "message": "[[collectionConditionsHourly.row.count]]",
+              "title": "[[$self._id]]",
+              "enabled": false
+            },
+            "on": "success,failed"
+          },
+          {
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "collectionConditionsHourly"
+            },
+            "on": "success,failed"
+          }
+        ],
+        "attributes": {
+          "auto_load": true,
+          "1data.baseurl": "https://insightsdemofreeorg-test.apigee.net/",
+          "1data.path": "recommendations-api/customers/[[session.userid]]/recommendations?ql=select%20*%20where%20scoreType%20=%20%27recommendationScore%27%20order%20by%20scoreValue%20desc&limit=10",
+          "data.baseurl": "/data",
+          "data.path": "/10day.json",
+          "http_method": "GET"
+        }
+      }
+    ]
+  }
+}

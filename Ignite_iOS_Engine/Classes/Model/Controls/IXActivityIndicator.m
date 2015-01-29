@@ -1,10 +1,60 @@
 //
-//  IXImageControl.m
+//  IXActivityIndicator.m
 //  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/14/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
+
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    UI spinner.
+ 
+ ####
+ #### Attributes
+ |  Name                            |   Type                    |   Description                                         |   Default
+ |:---------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
+ | *style*                          |   *(white, large, gray)*  |   The spinner style                                   |   large
+ | *color*                          |   *(color)*               |   The spinner color                                   |   #ffffff
+
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ >  None
+ 
+ ####
+ #### Functions
+ >  None
+ 
+ #### Example JSON
+    {
+      "_id": "spinner",
+      "_type": "ActivityIndicator",
+      "attributes": {
+        "color": "ff00ff",
+        "layout_type":"float",
+        "horizontal_alignment":"center",
+        "vertical_alignment":"middle",
+        "style": "white"
+      }
+    }
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
 
 #import "IXActivityIndicator.h"
 

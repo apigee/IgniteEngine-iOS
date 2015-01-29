@@ -19,7 +19,6 @@
 #import "IXDeviceInfo.h"
 #import "UIImage+IXAdditions.h"
 #import "UIImage+ResizeMagick.h"
-
 #import "NSString+IXAdditions.h"
 
 // Temp properties

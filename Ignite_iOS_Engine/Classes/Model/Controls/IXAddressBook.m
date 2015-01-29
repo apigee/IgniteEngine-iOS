@@ -6,6 +6,117 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Adds a contact to the default iOS address book. No UI.
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------
+ | *name.first*                         |   *(string)*              |   First Name
+ | *name.last*                          |   *(string)*              |   Last Name
+ | *company.name*                       |   *(string)*              |   Company Name
+ | *company.title*                      |   *(string)*              |   Company Title
+ | *phone.mobile*                       |   *(string)*              |   Phone: Mobile
+ | *phone.main*                         |   *(string)*              |   Phone: Main
+ | *email.home*                         |   *(string)*              |   Email: Home
+ | *email.work*                         |   *(string)*              |   Email: Work
+ | *username.twitter*                   |   *(string)*              |   Username: Twitter
+ | *username.linkedIn*                  |   *(string)*              |   Username: LinkedIn
+ | *username.facebook*                  |   *(string)*              |   Username: Facebook
+ | *url.home*                           |   *(string)*              |   URL: Home
+ | *url.homePage*                       |   *(string)*              |   URL: Homepage
+ | *url.work*                           |   *(string)*              |   URL: Work
+ | *url.linkedIn*                       |   *(string)*              |   URL: LinkedIn
+ | *url.facebook*                       |   *(string)*              |   URL: Facebook
+ | *notes*                              |   *(string)*              |   Notes
+ | *access_granted*                     |   *(bool)*                |   Permission status *(Read-only)*
+ 
+
+ ####
+ #### Inherits
+ >  None
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ | *add_contact_success*                |   Contact added successfully.
+ | *add_contact_failed*                 |   Contact failed to add.
+ 
+ ####
+ #### Functions
+ 
+ *add_contact*
+    
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "addressbookTest",
+        "function_name": "add_contact"
+      }
+    }
+ 
+ ####
+ #### Example JSON
+ 
+    {
+      "_type": "AddressBook",
+      "_id": "addressBookTest",
+      "actions": [
+        {
+          "_type": "Alert",
+          "attributes": {
+            "title": "add_contact_success"
+          },
+          "on": "add_contact_success"
+        },
+        {
+          "_type": "Alert",
+          "attributes": {
+            "title": "add_contact_failed"
+          },
+          "on": "add_contact_failed"
+        }
+      ],
+      "attributes": {
+        "name.first": "Johnny",
+        "name.last": "Appleseed",
+        "company.name": "Farmers, Inc.",
+        "company.title": "CEO",
+        "phone.mobile": "+15551212",
+        "phone.main": "+15551313",
+        "email.home": "johnnyappleseed@gmail.com",
+        "email.work": "johnny@appleseed.com",
+        "username.twitter": "johnnyappleseed",
+        "username.linkedIn": "johnnyappleseed",
+        "username.facebook": "johnnyappleseed",
+        "url.home": "http://johnnyappleseed.com",
+        "url.homePage": "http://johnnyappleseed.com",
+        "url.work": "http://farmersinc.com",
+        "url.linkedIn": "",
+        "url.facebook": ""
+      }
+    }
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXAddressBook.h"
 
 #import "IXAppManager.h"

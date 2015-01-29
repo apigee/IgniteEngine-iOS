@@ -5,42 +5,74 @@
 //  Created by Jeremy Anticouni on 11/16/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
- //
+//
+
+
 /*
  
- CONTROL
- /--------------------/
- - TYPE : "IXBrowserControl"
- - DESCRIPTION: "IXBrowserControl Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
- /--------------------/
- - Example
- /--------------------/
-
- {
-    "type": "Media",
-    "properties": {
-        "id": "myMedia",
-        "source": "library"
-    }
- }
  
- /--------------------/
- - Changelog
- /--------------------/
+ // IXBrowser Events
+ IX_STATIC_CONST_STRING kIXStarted = @"started";
+ IX_STATIC_CONST_STRING kIXFailed = @"failed";
+ IX_STATIC_CONST_STRING kIXFinished = @"finished";
  
- /--------------------/
  */
 
-
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Web browser control.
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------|
+ | *url*                                |   *(string)*              |   The URL to load
+ | *html.string*                        |   *(string)*              |   Load string of HTML
+ | *html.base_url*                      |   *(string)*              |   Base URL when using HTML string
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ | *started*                            |   Page load initiated.
+ | *failed*                             |   Page failed to load.
+ | *finished*                           |   Page loaded successfully.
+ 
+ ####
+ #### Functions
+ >  None
+ 
+ ####
+ #### Example JSON
+ 
+    {
+      "_id": "browserTest",
+      "_type": "Browser",
+      "attributes": {
+        "height": "100%",
+        "width": "100%",
+        "url": "http://apigee.com"
+      }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
 
 #import "IXBrowser.h"
 #import "IXAppManager.h"
@@ -102,6 +134,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 -(void)applySettings
 {
+
     [super applySettings];
 
     [[self webview] setOpaque:NO];

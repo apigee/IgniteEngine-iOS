@@ -6,8 +6,117 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-#import "IXActionSheet.h"
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description                                         |   Default
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
+ | *sheet.style*                        |   *default<br>automatic<br>black.translucent<br>black.opaque*  |   The sheet style                                   |   large
+ | *sheet.title*                        |   *(string)*               |   The sheet title                                   |   #ffffff
+ | *sheet.button.title.cancel*          |   *(string)*               |   Cancel button text                                   |   #ffffff
+ | *sheet.button.title.destructive*     |   *(string)*               |   Destructive button text                                   |   #ffffff
+ | *sheet.button.title.others*          |   *(string)*               |   Other button(s) text                                   |   #ffffff
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ | *cancel_pressed*                     |   The 'cancel' button was pressed.
+ | *%@_pressed*                         |   The '%@' button was pressed.
+ 
+ ####
+ #### Functions
+ 
+ *show_sheet*
+    
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "actionSheetTest",
+        "function_name": "show_sheet"
+      }
+    }
+ 
+ *dismiss_sheet*
 
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "actionSheetTest",
+        "function_name": "dismiss_sheet"
+      }
+    }
+ 
+ ####
+ #### Example JSON
+ 
+    {
+      "_type": "ActionSheet",
+      "_id": "actionSheetTest",
+      "attributes": {
+        "sheet.style": "black.opaque",
+        "sheet.title": "sheetTitle",
+        "sheet.button.title.cancel": "cancelButtonTitle",
+        "sheet.button.title.destructive": "destructiveButtonTitle",
+        "sheet.button.title.others": "other,someOther2"
+      },
+      "actions": [
+        {
+          "on": "cancel_pressed",
+          "_type": "Alert",
+          "attributes": {
+            "title": "Cancel Pressed"
+          }
+        },
+        {
+          "on": "other_pressed",
+          "_type": "Alert",
+          "attributes": {
+            "title": "other pressed [[app.bundle.version]]"
+          }
+        },
+        {
+          "on": "someOther2_pressed",
+          "_type": "Alert",
+          "attributes": {
+            "title": "someOther2 pressed"
+          }
+        },
+        {
+          "on": "destructiveButtonTitle_pressed",
+          "_type": "Alert",
+          "attributes": {
+            "title": "destructiveButtonTitle pressed"
+          }
+        }
+      ]
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+#import "IXActionSheet.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 

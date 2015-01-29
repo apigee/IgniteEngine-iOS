@@ -6,6 +6,102 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description                                         |   Default
+ |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
+ | *event.allDay*                       |   *(bool)*                |   All day event?                                      |   false
+ | *event.title*                        |   *(string)*              |   Event Title                                         |
+ | *event.location*                     |   *(string)*              |   Location                                            |
+ | *event.url*                          |   *(string)*              |   URL                                                 |
+ | *event.notes*                        |   *(string)*              |   Notes                                               |
+ | *event.date.format*                  |   *(string)*              |   Date Format                                         |
+ | *event.date.start*                   |   *(date)*                |   Date Start                                          |
+ | *event.date.end*                     |   *(date)*                |   Date End                                            |
+ | *event.alarm.offset*                 |   *(float)*               |   Alarm Offset                                        |
+ | *event.recurrence.frequency*         |   none<br>daily<br>weekly<br>monthly<br>yearly    |   Recurrance Frequency        |
+ | *access_granted*                     |   *(bool)*                |   Permission status *(Read-only)*
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ | *add_event_success*                  |   The event was added successfully
+ | *add_event_failed*                   |   Event failed to add to calendar.
+ 
+ ####
+ #### Functions
+ 
+ *add_event*
+    
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "calendarTest",
+        "function_name": "add_event"
+      }
+    }
+ 
+ ####
+ #### Example JSON
+ 
+    {
+      "_type": "Calendar",
+      "_id": "calendarTest",
+      "actions": [
+        {
+          "_type": "Alert",
+          "attributes": {
+            "title": "add_event_success"
+          },
+          "on": "add_event_success"
+        },
+        {
+          "_type": "Alert",
+          "attributes": {
+            "title": "add_event_failed"
+          },
+          "on": "add_event_failed"
+        }
+      ],
+      "attributes": {
+        "event.title": "Event Title",
+        "event.allDay": false,
+        "event.location": "1234 Some Street, City, State Zip",
+        "event.notes": "Event Notes",
+        "event.url": "http://meetings-are-fun.com",
+        "event.date.format": "yyyy-MM-dd HH:mm:ss",
+        "event.date.start": "2015-12-31 23:00:00",
+        "event.date.end": "2016-01-01 00:00:00",
+        "event.alarm.offset": -1800,
+        "event.recurrence.frequency": "none"
+      }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXCalendar.h"
 
 #import "NSString+IXAdditions.h"

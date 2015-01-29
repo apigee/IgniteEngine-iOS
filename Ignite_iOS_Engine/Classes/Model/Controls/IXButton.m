@@ -6,6 +6,99 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    UI Control that allows you to have buttons with text and images.
+ 
+ ####
+ #### Attributes
+ |  Name                            |   Type        |   Description                                         |   Default
+ |:---------------------------------|:-------------:|:------------------------------------------------------|:-------------:|
+ | *text*                           |   *(string)*  |   The text displayed1                                  |
+ | *text.color*                     |   *(color)*   |   The text color                                      |   #ffffff
+ | *font*                           |   *(string)*  |   The text font name and size (font:size) <br>*See http://iosfonts.com/ for available fonts.*           |   *HelveticaNeue:20*
+ | *background.color*               |   *(color)*   |   The background color                                |
+ | *icon*                           |   *(string)*  |   The icon image path                                 |
+ | *icon.tintColor*                 |   *(color)*   |   The icon tint color                                 |
+ | *touch.text*                     |   *(string)*  |   The text displayed on touch events                  |
+ | *touch.font*                     |   *(string)*  |   The text font displayed on touch events             |
+ | *touch.text.color*               |   *(color)*   |   The text color on touch events                      |
+ | *touch.background.color*         |   *(color)*   |   The background color on touch events                |
+ | *touch.icon*                     |   *(string)*  |   The icon image path on touch events                 |
+ | *touch.icon.tintColor*           |   *(color)*   |   The icon tint color on touch events                 |
+ | *touch.alpha*                    |   *(float)*   |   The button alpha on touch events                    |
+ | *disabled.text*                  |   *(string)*  |   The text displayed when button is disabled          |
+ | *disabled.font*                  |   *(string)*  |   The font when button is disabled                    |
+ | *disabled.text.color*            |   *(color)*   |   The text color when button is disabled              |
+ | *disabled.background.color*      |   *(color)*   |   The background color when button is disabled        |
+ | *disabled.icon*                  |   *(string)*  |   The icon displayed when button is disabled          |
+ | *disabled.icon.tintColor*        |   *(color)*   |   The icon tint color when button is disabled         |
+ | *disabled.alpha*                 |   *(float)*   |   The button alpha when button is disabled            |
+ | *darkens_image_on_touch*         |   *(bool)*    |   Darkens image on touch events                       |    false
+ | *touch.duration*                 |   *(float)*   |   The touch duration to trigger a touch event         |    0.4
+ | *touch_up.duration*              |   *(float)*   |   The touch duration to trigger a touch_up event      |    0.4
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                       |   Description
+ |:-----------------------------|:--------------------------------------------------------------------|
+ | *touch*                      |   Fires when the control is touched
+ | *touch_up*                   |   Fires when the control touch is released
+ 
+ ####
+ #### Functions
+ >  None
+ 
+ #### Example JSON
+ 
+    {
+      "_id": "button",
+      "_type": "Button",
+      "actions": [
+        {
+          "_type": "Alert",
+          "on": "touch_up",
+          "attributes": {
+            "title": "touch_up",
+            "message": "You touched the button!"
+          }
+        }
+      ],
+      "attributes": {
+        "width": 280,
+        "height": 50,
+        "text.color": "6c6c6c",
+        "background.color": "cdcdcd",
+        "touch.text.color": "6c6c6c50",
+        "horizontal_alignment": "center",
+        "touch.background.color": "cdcdcd",
+        "margin.top": 10,
+        "border.radius": 5,
+        "border.width": 2,
+        "border.color": "6c6c6c",
+        "text": "Authenticate with TouchID"
+      }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXButton.h"
 
 #import "UIImage+IXAdditions.h"
@@ -47,9 +140,13 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 @interface IXButton ()
 
+
+
 @property (nonatomic,strong) UIButton* button;
 
 @end
+
+
 
 @implementation IXButton
 
@@ -60,8 +157,10 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     [_button removeTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
 }
 
+
 -(void)buildView
 {
+
     [super buildView];
     
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
