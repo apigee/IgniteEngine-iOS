@@ -17,29 +17,73 @@
 /*  -----------------------------  */
 /**
  
- ###
- ###    Native iOS toggle control.
+ ###    Native iOS UISwitch control implementation.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                         |   Default
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
+ ##  <a name="attributes">Attributes</a>
  
- ####
- #### Inherits
- >  IXBaseControl
+ | Name                           | Type        | Description                                | Default |
+ |--------------------------------|-------------|--------------------------------------------|---------|
  
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
 
- ####
- #### Functions
-
+ ##  <a name="readonly">Read Only Attributes</a>
  
- ####
- #### Read-Only Properties
+ | Name  | Type     | Description       |
+ |-------|----------|-------------------|
+ | is_on | *(bool)* | Is the toggle on? |
+   
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                  | Description                             |
+ |-----------------------|-----------------------------------------|
+
+
+ ##  <a name="functions">Functions</a>
+ 
+Switch the toggle to the opposite value: *toggle*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "aToggle",
+        "function_name": "toggle"
+      }
+    }
+
+Turn the toggle on: *toggle_on*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "aToggle",
+        "function_name": "toggle_on"
+      }
+    }
+ 
+Turn the toggle off: *toggle_off*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "aToggle",
+        "function_name": "toggle_off"
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
 
     {
         "_id": "aLabel",
@@ -47,11 +91,7 @@
         "attributes": {
             "text": "The toggle is currently [[toggle1.is_on]]"
         }
-    }
- 
- ####
- #### Example JSON
- 
+    },
     {
         "_id": "button",
         "_type": "Button",

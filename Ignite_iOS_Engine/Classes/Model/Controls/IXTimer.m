@@ -10,7 +10,7 @@
 /*  -----------------------------  */
 //  [Documentation]
 //
-//  Author:     Jeremy Anticouni
+//  Author:     Brandon Shelley
 //  Date:       1/29/2015
 //
 //  Copyright (c) 2015 Apigee. All rights reserved.
@@ -18,7 +18,7 @@
 /*  -----------------------------  */
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
+ ###    Native iOS NSTimer implementation.
   
  <a href="#attributes">Attributes</a>,
  <a href="#readonly">Read-Only</a>,
@@ -29,23 +29,27 @@
  
  ##  <a name="attributes">Attributes</a>
  
- | Name            | Type       | Description               | Default      |
- |-----------------|------------|---------------------------|--------------|
- | enabled         | *(bool)*   | Enable control            | true         |
- | repeats         | *(bool)*   | Repeat the timer?         | false        |
- | time_interval   | *(float)*  | Repeat frequency          | 0 (disabled) |
+ | Name          | Type      | Description       | Default |
+ |---------------|-----------|-------------------|---------|
+ | enabled       | *(bool)*  | Enable control    | true    |
+ | repeats       | *(bool)*  | Repeat the timer? | false   |
+ | time_interval | *(float)* | Repeat frequency  |         |
  
+
+ ##  <a name="readonly">Read Only Attributes</a>
  
+ | Name  | Type     | Description       |
+ |-------|----------|-------------------|
+   
  ##  <a name="inherits">Inherits</a>
  
 >  IXBaseControl
  
  ##  <a name="events">Events</a>
 
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *timer_fired*                        |   Event that occurs each time the timer fires.
- 
+ | Name        | Description                                 |
+ |-------------|---------------------------------------------|
+ | timer_fired | Event that occurs each time the timer fires |
 
  ##  <a name="functions">Functions</a>
  
@@ -70,10 +74,9 @@ Stop timer: *stop*
         "function_name": "stop"
       }
     }
-
-
  
  ##  <a name="example">Example JSON</a> 
+
  
     {
       "_id": "timerTest",
@@ -93,7 +96,6 @@ Stop timer: *stop*
         "time_interval": 5
       }
     }
-
  
  */
 //

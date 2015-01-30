@@ -8,6 +8,8 @@
 
 /*
  
+//////////////LEGACY
+ 
  CONTROL
  
  - TYPE : "TextInput"
@@ -25,6 +27,9 @@
  
  */
 
+
+/////////////////END_LEGACY
+
 /*  -----------------------------  */
 //  [Documentation]
 //
@@ -36,77 +41,140 @@
 /*  -----------------------------  */
 /**
  
- ###
- ###    Text input control. Utilizes a hybrid of iOS native controls to provide a unified input interface.
- 
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                         |   Default
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
- | *enabled*                            |  bool                     |                                                       |  true
- | *repeats*                            |  bool                     |  Indicates whether or not the timer repeats           |  false
- | *time_interval*                      |  integer                  |  Duration of time interval                            |  0 (disabled)
-
- 
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- @"timer_fired";
- | *timer_fired*                        |   Event that occurs each time the timer fires.
-
- ####
- #### Functions
- 
- *start*
-    
-    {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-            "function_name": "start"
-        }
-    }
+ ###    Text input control that utilizes a hybrid of iOS native and third party controls to provide a unified input interface.
   
- *stop*
-    
-    {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-            "function_name": "stop"
-        }
-    }
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
  
- ####
- #### Read-Only Properties
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                     | Type        | Description                                                                                    | Default |
+ |--------------------------|-------------|------------------------------------------------------------------------------------------------|---------|
+ | font                     | *(string)*  | Text font                                                                                      |         |
+ | cursor.color             | *(color)*   | Cursor color                                                                                   |         |
+ | autocorrect              | *(bool)*    | Enables or disables system autocorrect                                                         | true    |
+ | dismiss_on_return        | *(bool)*    | Enables automatic closing of keyboard when return key pressed                                  | false   |
+ | layout_to_scroll         | *(ref)*     | Array of reference pointers of view(s) that should scroll when keyboard appears                |         |
+ | keyboard_adjusts_screen  | *(bool)*    | Sets whether the keyboard appearing should automatically adjust the current view when          |         |
+ | is_multiline             | *(bool)*    | Sets the input to allow multiple lines of text                                                 |         |
+ | initial_text             | *(string)*  | Initial text present in input (not placeholder!)                                               |         |
+ | text.color               | *(color)*   | Text color                                                                                     |         |
+ | text.placeholder         | *(string)*  | Placeholder text (re-appears when input is empty)                                              |         |
+ | text.placeholder.color   | *(color)*   | Color of placeholder text                                                                      |         |
+ | text.alignment           | *(string)*  | Text alignment (left, center, right, justified)                                                |         |
+ | background.color         | *(color)*   | Background color text input view                                                               |         |
+ | clears_on_begin_editing  | *(bool)*    | Clears text when input becomes first responder (only works on non-multiline input)             | false   |
+ | image.left               | *(path)*    | Left image -- must use relative path including assets/ (only available on multiline input)     |         |
+ | image.right              | *(path)*    | Right image -- must use relative path including assets/ (only available on multiline input)    |         |
+ | image.background         | *(????)*    |                                                                                                |         |
+ | image.hides_when_empty   | *(bool)*    | Sets whether defined image should hide when text is empty (only works on multiline input)      |         |
+ | keyboard.appearance      | *(string)*  | Keyboard tint (light, dark, default)                                                           | default |
+ | keyboard.type            | *(string)*  | Keyboard type (email, number, phone, url, decimal, name_phone, numbers_punctuation, default)   | default |
+ | keyboard.padding         | *(integer)* | Keyboard padding                                                                               | 0       |
+ | keyboard.return_key      | *(string)*  | Keyboard return key type (go, next, search, done, join, send, route, emergency, google, yahoo) | default |
+ | input.format.currency    | *(bool)*    | Sets whether the input should be formatted as currency                                         | false   |
+ | input.format.credit_card | *(bool)*    | Sets whether the input should be formatted as a credit card                                    | false   |
+ | input.regex.allowed      | *(regex)*   | A regular expression of explicitly allowed characters                                          |         |
+ | input.regex.disallowed   | *(regex)*   | A regular expression of explicitly disallowed characters                                       |         |
+ | input.max                | *(integer)* | Maximum allowed number of characters                                                           |         |
+ | input.transform          | *(string)*  | Text transform (capitalize, lowercase, uppercase, ucfirst)                                     |         |
+ 
+ | ~filter_datasource~      |             | ( not implemented )                                                                            |         |
+ 
 
+ ##  <a name="readonly">Read Only Attributes</a>
  
- ####
- #### Example JSON
+ | Name | Type       | Description                                                                                |
+ |------|------------|--------------------------------------------------------------------------------------------|
+ | text | *(string)* | Current text value of the text input control (to set the text use the kIXSetText function) |
+
+ ##  <a name="inherits">Inherits</a>
  
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name        | Description                                                 |
+ |-------------|-------------------------------------------------------------|
+ | got_focus          | Fires when the input control becomes first responder |
+ | lost_focus         | Fires when the input control loses focus             |
+ | return_key_pressed | Fires when the user selects the return key           |
+ | text_changed       | Fires when text is changed                           |
+ | image.right.tapped | Fires when the right-hand image is tapped            |
+ | image.left.tapped  | Fires when the left-hand image is tapped             |
+
+ ##  <a name="functions">Functions</a>
+ 
+Sets the text: *set_text*
+
     {
-        "_id": "timerControl",
-        "_type": "Timer",
-        "actions": [
-            {
-                "_type": "Alert",
-                "attributes": {
-                    "title": "Timer Fired!"
-                },
-                "on": "timer_fired"
-            }
-        ],
-        "attributes": {
-            "enabled": true,
-            "repeats": true,
-            "time_interval": 5
-        }
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "textInputBox",
+        "text": "My new text that's going to appear in the box!",
+        "function_name": "set_text"
+      }
     }
+
+
+Hide the keyboard (lose focus): *keyboard_hide*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "textInputBox",
+        "function_name": "keyboard_hide"
+      }
+    }
+ 
+ Show the keyboard (gain focus): *keyboard_show*, *focus*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "textInputBox",
+        "function_name": "focus"
+      }
+    }
+
+ ##  <a name="example">Example JSON</a> 
+
+  {
+      "_id": "TextInput",
+      "_type": "TextInput",
+      "actions": [
+          {
+              "_type": "Modify",
+              "attributes": {
+                  "_target": "session"
+              },
+              "on": "text_changed,got_focus",
+              "set": {
+                  "aSessionProperty": "[[$self.text]]"
+              }
+          }
+      ],
+      "attributes": {
+          "border.color": "cdcdcd",
+          "border.radius": 5,
+          "border.width": 2,
+          "font": "HelveticaNeue-Light:22",
+          "height": 50,
+          "horizontal_alignment": "center",
+          "is_multiline": false,
+          "text.alignment": "center",
+          "text.color": "#6c6c6c",
+          "text.placeholder": "Placeholder Text",
+          "width": 280
+      }
+  }
  
  */
 //

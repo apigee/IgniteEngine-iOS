@@ -17,46 +17,66 @@
 /*  -----------------------------  */
 /**
  
- ###
- ###    Native iOS TouchID accessor.
+ ###    Enables user authentication via Apple TouchID.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                         |   Default
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
- | *title*                              |   *(string)*               |   TouchID title                                      |   *nil*
+ ##  <a name="attributes">Attributes</a>
  
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *success*                            |   The user did authenticate successfully.
- | *failed*                             |   The user did not authenticate successfully.
- | *cancelled*                          |   The user cancelled the operation.
- | *password*                           |   Dismiss TouchID to allow user to manually enter password.
- | *unconfigured*                       |   TouchID is not configured on the device.
- | *unavailable*                        |   TouchID is not available or not supported on the device.
+ | Name                           | Type        | Description                                | Default |
+ |--------------------------------|-------------|--------------------------------------------|---------|
+ | title                          | *(string)*  | TouchID title                              |         |
 
- ####
- #### Functions
+ ##  <a name="readonly">Read Only Attributes</a>
  
- *authenticate*
+ | Name         | Type     | Description            |
+ |--------------|----------|------------------------|
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name         | Description                                             |
+ |--------------|---------------------------------------------------------|
+ | success      | User authenticated successfully                         |
+ | failed       | User did not authenticate successfully                  |
+ | cancelled    | User cancelled the operation                            |
+ | password     | Dismisses TouchID, allowing user to enter password      |
+ | unconfigured | TouchID is not configured on the device                 |
+ | unavailable  | TouchID is not available or not supported on the device |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+ Prompt the user to authenticated via TouchID: *authenticate*
     
     {
         "_type": "Function",
-        "on": "success",
+        "on": "touch_up",
         "attributes": {
             "function_name": "authenticate"
         }
     }
  
- ####
- #### Example JSON
+ ##  <a name="example">Example JSON</a> 
  
+    {
+        ...
+        "actions": {
+            "_type": "Function",
+            "attributes": {
+                "function_name": "authenticate"
+            },
+            "on": "touch_up"
+        }
+    },
     {
         "_type": "TouchID",
         "_id": "TouchID",
