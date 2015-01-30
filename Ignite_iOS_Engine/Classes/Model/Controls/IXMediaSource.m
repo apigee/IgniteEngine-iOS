@@ -6,50 +6,87 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- /--------------------/
- - Example
- /--------------------/
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control to select image from device Library or Camera.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                              | Type                | Description                         | Default |
+ |-----------------------------------|---------------------|-------------------------------------|---------|
+ | source                            | *camera<br>library* | Style of controls to use            |         |
+ | camera                            | *front<br>rear*     | Color of the player UI              |         |
+ | show_camera_controls              | *(float)*           | Height of the player UI             |         |
+ 
 
- {
-     "_id": "mediasourceLibrary",
-     "_type": "MediaSource",
-     "attributes": {
-         "source": "library",
-     }
- }
+ ##  <a name="readonly">Read Only Attributes</a>
  
- And to fire:
+ | Name           | Type       | Description                        |
+ |----------------|------------|------------------------------------|
+ | selected_media | *(string)* | The value the knob has been set to |
+ |                |            |                                    |
  
- {
-     "_type": "Function",
-     "attributes": {
-         "function_name": "present_picker",
-         "_id": "mediasourceLibrary"
-     },
-     "on": "touch_up"
- }
+ ##  <a name="inherits">Inherits</a>
  
- And after loaded:
+>  IXBaseControl
  
- {
-     "_type": "Modify",
-     "attributes": {
-        "_target": "session"
-     },
-    "on": "did_load_media",
-    "set": {
-        "selected_media": "[[$self.selected_media]]"
-     }
- }
+ ##  <a name="events">Events</a>
+
+ | Name                  | Description                             |
+ |-----------------------|-----------------------------------------|
+ | did_load_media        | Fires when the media loads successfully |
+ | failed_load_media     | Fires when the media fails to load      |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Present media picker: *present_picker*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "mediaSourceTest",
+        "function_name": "present_picker"
+      }
+    }
+
+Present media picker: *dismiss_picker*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "mediaSourceTest",
+        "function_name": "dismiss_picker"
+      }
+    }
+
+ 
+ ##  <a name="example">Example JSON</a> 
  
  
- /--------------------/
- - Changelog
- /--------------------/
- 
- /--------------------/
  */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 
 #import "IXMediaSource.h"
 #import "IXAppManager.h"

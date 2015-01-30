@@ -6,6 +6,59 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    A round bit.
+ 
+ ####
+ #### Attributes
+ 
+ |  Name                            |   Type                        |   Description                                         |   Default
+ |:---------------------------------|:-----------------------------:|:------------------------------------------------------|:-------------:|
+ | *size*                           |   *(integer)*                 |   Circle size                                         |
+ | *color*                          |   *(color)*                   |   Circle color                                        |
+
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ >  None
+ 
+ ####
+ #### Functions
+ >  None
+ 
+ #### Example JSON
+ 
+    {
+      "_id": "circleTest",
+      "_type": "Circle",
+      "attributes": {
+        "size": 50,
+        "color": "#ff00ff",
+        "layout_type": "absolute",
+        "horizontal_alignment": "center",
+        "vertical_alignment": "middle"
+      }
+    }
+ 
+*/
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXCircle.h"
 
 static NSString* const kIXSize = @"size";

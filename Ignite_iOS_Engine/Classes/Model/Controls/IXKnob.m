@@ -6,6 +6,98 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                    | Type       | Description              | Default |
+ |-------------------------|------------|--------------------------|---------|
+ | initial_value           | *(float)*  | Initial value to display |         |
+ | minimum_value           | *(float)*  | Minimum value allowed    |         |
+ | maximum_value           | *(float)*  | Minimum value allowed    |         |
+ | images.foreground       | *(string)* | Image to overlay         |         |
+ | images.background       | *(string)* | Image to underlay        |         |
+ | images.pointer          | *(string)* | Image pointer            |         |
+ | maximum_angle           | *(float)*  | Maximum Angle            |         |
+ | knob_animation_duration | *(float)*  | Animation duration       |         |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name  | Type      | Description |
+ |-------|-----------|-------------|
+ | value | *(float)* |             |
+ 
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name          | Description                      |
+ |---------------|----------------------------------|
+ | value_changed | Fires when knob value is changed |
+ | touch         | Fires on touch                   |
+ | touch_up      | Fires on touch up inside         |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Change knob value: *update_knob_value*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "knobTest",
+        "function_name": "update_knob_value"
+      },
+      "set": {
+        "value": 50
+      }
+    }
+
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+    {
+      "_id": "imageTest",
+      "_type": "Image",
+      "attributes": {
+        "height": 100,
+        "width": 100,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "middle",
+        "images.default": "/images/btn_notifications_25x25.png",
+        "images.default.tintColor": "#a9d5c7"
+      }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXKnob.h"
 
 #import "MHRotaryKnob.h"

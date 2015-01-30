@@ -6,6 +6,83 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI controls to send emails or text messages.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name            | Type            | Description                                     | Default |
+ |-----------------|-----------------|-------------------------------------------------|---------|
+ | message.type    | *text<br>email* | The type of message to create                   |         |
+ | message.to      | *(string)*      | Send message to? (Email/Phone/iMessage address) |         |
+ | message.cc      | *(string)*      | Send a copy to?                                 |         |
+ | message.bcc     | *(string)*      | Blind copy to? (Email)                          |         |
+ | message.subject | *(string)*      | Message subject (Email)                         |         |
+ | message.body    | *(string)*      | Message body (Email/Text)                       |         |
+ 
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+| Name              | Description                          |
+|-------------------|--------------------------------------|
+| message_cancelled | Fires when the file is inaccessible  |
+| message_failed    | Fires when the message fails to send |
+| message_sent      | Fires on message send success        |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Present Text controller: *present_text_message_controller*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "messageTest",
+        "function_name": "present_text_message_controller"
+      }
+    }
+
+Present Email controller: *present_email_controller*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "messageTest",
+        "function_name": "present_email_controller"
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 /*
  
  CONTROL

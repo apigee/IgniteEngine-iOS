@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+
 /*  -----------------------------  */
 //  [Documentation]
 //
-//  Author:     Brandon Shelley
+//  Author:     Jeremy Anticouni
 //  Date:       1/29/2015
 //
 //  Copyright (c) 2015 Apigee. All rights reserved.
@@ -17,82 +18,90 @@
 /*  -----------------------------  */
 /**
  
- ###
- ###    Native iOS toggle control.
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                         |   Default
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
- | *enabled*                            |  bool                     |                                                       |  true
- | *repeats*                            |  bool                     |  Indicates whether or not the timer repeats           |  false
- | *time_interval*                      |  integer                  |  Duration of time interval                            |  0 (disabled)
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name            | Type       | Description               | Default      |
+ |-----------------|------------|---------------------------|--------------|
+ | enabled         | *(bool)*   | Enable control            | true         |
+ | repeats         | *(bool)*   | Repeat the timer?         | false        |
+ | time_interval   | *(float)*  | Repeat frequency          | 0 (disabled) |
+ 
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
 
- 
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
  |  Name                                |   Description                                         |
  |:-------------------------------------|:------------------------------------------------------|
- @"timer_fired";
  | *timer_fired*                        |   Event that occurs each time the timer fires.
+ 
 
- ####
- #### Functions
+ ##  <a name="functions">Functions</a>
  
- *start*
-    
+Start timer: *start*
+
     {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-            "function_name": "start"
-        }
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "timerTest",
+        "function_name": "start"
+      }
     }
-  
- *stop*
-    
+
+Stop timer: *stop*
+
     {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-            "function_name": "stop"
-        }
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "timerTest",
+        "function_name": "stop"
+      }
     }
- 
- ####
- #### Read-Only Properties
+
 
  
- ####
- #### Example JSON
+ ##  <a name="example">Example JSON</a> 
  
     {
-        "_id": "timerControl",
-        "_type": "Timer",
-        "actions": [
-            {
-                "_type": "Alert",
-                "attributes": {
-                    "title": "Timer Fired!"
-                },
-                "on": "timer_fired"
-            }
-        ],
-        "attributes": {
-            "enabled": true,
-            "repeats": true,
-            "time_interval": 5
+      "_id": "timerTest",
+      "_type": "Timer",
+      "actions": [
+        {
+          "_type": "Alert",
+          "attributes": {
+            "title": "Timer Fired!"
+          },
+          "on": "timer_fired"
         }
+      ],
+      "attributes": {
+        "enabled": true,
+        "repeats": true,
+        "time_interval": 5
+      }
     }
+
  
  */
 //
 //  [/Documentation]
 /*  -----------------------------  */
+
+
+
 
 
 #import "IXTimer.h"

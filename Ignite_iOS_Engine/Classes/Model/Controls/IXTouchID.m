@@ -37,7 +37,7 @@
  | *success*                            |   The user did authenticate successfully.
  | *failed*                             |   The user did not authenticate successfully.
  | *cancelled*                          |   The user cancelled the operation.
- | *password*                           |   ???
+ | *password*                           |   Dismiss TouchID to allow user to manually enter password.
  | *unconfigured*                       |   TouchID is not configured on the device.
  | *unavailable*                        |   TouchID is not available or not supported on the device.
 

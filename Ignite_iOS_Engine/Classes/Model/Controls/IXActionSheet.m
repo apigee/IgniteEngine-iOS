@@ -19,6 +19,8 @@
  
  ###
  ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ http://ignite.apigee.com/training/ix/docs/images/IXActionSheet.png
  
  ####
  #### Attributes

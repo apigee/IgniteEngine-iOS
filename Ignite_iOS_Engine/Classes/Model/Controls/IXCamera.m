@@ -6,8 +6,140 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+
+
 // todo: This will probably break if we try and add two Camera controls <running> at the same time.
 // Need to find a graceful way of deallocating previously started IXCameras.
+
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+ 
+ ####
+ #### Attributes
+ |  Name                                |   Type                    |   Description                                             |   Default
+ |:-------------------------------------|:-------------------------:|:----------------------------------------------------------|:-------------:|
+ | *width*                              |   *(integer)*             |   Width of Camera preview                                 |
+ | *height*                             |   *(integer)*             |   Height of Camera preview                                |
+ | *camera*                             |   *front<br>rear*         |   Which Camera to use                                     |
+ | *capture.resize*                     |   *(string)*              |   Resize captured image                                   |
+ | *capture.delay*                      |   *(float)*               |   Delay image capture                                     |
+ | *captured_image*                     |   *(string)*              |   Captured Image                                          |
+ | *auto_start*                         |   *(bool)*                |   Automatically present the Camera view controller        |
+ | *auto_save_to_camera_roll*           |   *(bool)*                |   Automatically save captured image to camera roll        |
+ 
+ ####
+ #### Inherits
+ >  IXBaseControl
+ 
+ ####
+ #### Events
+ |  Name                                |   Description                                         |
+ |:-------------------------------------|:------------------------------------------------------|
+ | *did_capture_image*                  |   Image captured successfully
+ | *did_finish_saving_capture*          |   Image saved successfully
+ 
+ ####
+ #### Functions
+ 
+ *start*
+ 
+ Presents the Camera view controller.
+    
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "cameraTest",
+        "function_name": "start"
+      }
+    }
+ 
+ *restart*
+ 
+ Restarts the Camera view controller.
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "cameraTest",
+        "function_name": "restart"
+      }
+    }
+ 
+ *stop*
+ 
+ Dismisses the camera view controller.
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "cameraTest",
+        "function_name": "stop"
+      }
+    }
+ 
+ *capture_image*
+ 
+ Captures image
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "cameraTest",
+        "function_name": "capture_image"
+      }
+    }
+ 
+ ####
+ #### Example JSON
+ 
+    {
+      "_id": "cameraTest",
+      "_type": "Camera",
+      "actions": [
+        {
+          "on": "did_capture_image",
+          "_type": "Alert",
+          "attributes": {
+            "title": "did_capture_image"
+          }
+        },
+        {
+          "on": "did_finish_saving_capture",
+          "_type": "Alert",
+          "attributes": {
+            "title": "did_finish_saving_capture"
+          }
+        }
+      ],
+      "attributes": {
+        "camera": "front",
+        "height": 280,
+        "width": 280,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "middle",
+        "auto_play": false
+      }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
 
 #import "IXCamera.h"
 

@@ -18,7 +18,7 @@
 //  [Documentation]
 //
 //  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
+//  Date:       1/29/2015
 //
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
@@ -142,11 +142,6 @@ Stop GIF animation: *stop_animation*
 //  [/Documentation]
 /*  -----------------------------  */
 
-/*
- 
-
- 
- */
 
 #import "IXImage.h"
 

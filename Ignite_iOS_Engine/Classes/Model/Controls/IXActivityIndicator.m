@@ -40,6 +40,7 @@
  >  None
  
  #### Example JSON
+ 
     {
       "_id": "spinner",
       "_type": "ActivityIndicator",
@@ -51,7 +52,8 @@
         "style": "white"
       }
     }
- */
+ 
+*/
 //
 //  [/Documentation]
 /*  -----------------------------  */

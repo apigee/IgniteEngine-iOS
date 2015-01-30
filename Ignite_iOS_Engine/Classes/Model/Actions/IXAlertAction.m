@@ -14,6 +14,102 @@ In a two-button alert that proposes a benign action that people are likely to wa
  
 */
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays an alert.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name            | Type       | Description               | Default |
+ |-----------------|------------|---------------------------|---------|
+ | title           | *(bool)*   | Title                     |         |
+ | message         | *(bool)*   | Message                   |         |
+ | button.titles   | *(comma)*  | Button titles             |         |
+
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name               | Description                            |
+ |--------------------|----------------------------------------|
+ | will_present_alert | Fires when the alert will be presented |
+ | did_present_alert  | Fires when the alert was presented     |
+ | button_pressed     | Fires button pressed                   |
+ | button_%lu_pressed | 0-based index of action to execute     |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+>   None
+
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+### Simple Alert
+    {
+      "_type": "Alert",
+      "on": "touch_up",
+      "attributes": {
+        "title": "Title",
+        "message": "This is a message.",
+        "button.titles": "Well,Okay"
+      }
+    }
+
+### Alert with actions on button press
+ 
+    {
+      "_type": "Alert",
+      "on": "touch_up",
+      "actions": [
+        {
+          "_type": "Alert",
+          "on": "button_0_pressed",
+          "attributes": {
+            "title": "button_0_pressed"
+          }
+        },
+        {
+          "_type": "Alert",
+          "on": "button_1_pressed",
+          "attributes": {
+            "title": "button_1_pressed"
+          }
+        }
+      ],
+      "attributes": {
+        "title": "Title",
+        "message": "This is a message.",
+        "button.titles": "Well,Okay"
+      }
+    }
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXAlertAction.h"
 
 #import "IXAppManager.h"

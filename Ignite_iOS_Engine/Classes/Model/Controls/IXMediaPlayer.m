@@ -6,49 +6,105 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/28/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
  
- CONTROL
- /--------------------/
- - TYPE : "IXMediaPlayerControl"
- - DESCRIPTION: "IXVideoControl Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
- /--------------------/
- - Example
- /--------------------/
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                              | Type                             | Description                         | Default |
+ |-----------------------------------|----------------------------------|-------------------------------------|---------|
+ | controls                          | *embedded<br>fullscreen<br>none* | Style of controls to use            |         |
+ | bar.color                         | *(color)*                        | Color of the player UI              |         |
+ | bar.height                        | *(float)*                        | Height of the player UI             |         |
+ | video                             | *(string)*                       | URL or /path/to/video.mov           |         |
+ | auto_play                         | *(bool)*                         | Automatically play?                 |         |
 
- {
- "type": "MediaPlayer",
- "attributes": {
- "id": "myLinkText",
- "layout_type": "relative",
- "height": "180",
- "width": "320",
- "controls":"default",
- "bar":
- {
- "height":"50",
- "color": "#00FF0050"
- },
- "auto_play":true,
- "video": "http://archive.org/download/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto-HawaiianHoliday1937-Video.mp4"
- }
- },
  
- /--------------------/
- - Changelog
- /--------------------/
+ ##  <a name="inherits">Inherits</a>
  
- /--------------------/
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name            | Description                         |
+ |-----------------|-------------------------------------|
+ | movie_timed_out | Fires when the file is inaccessible |
+ | movie_stopped   | Fires on touch                      |
+ | touch_up        | Fires on touch up inside            |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Play media file: *play*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "mediaPlayerTest",
+        "function_name": "play"
+      }
+    }
+
+Pause media file: *pause*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "mediaPlayerTest",
+        "function_name": "pause"
+      }
+    }
+ 
+Stop media file: *stop*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "mediaPlayerTest",
+        "function_name": "stop"
+      }
+    }
+
+ Seek to time: *goto*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "mediaPlayerTest",
+        "function_name": "goto",
+        "seconds": 42
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+     
  */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 
 #import "IXMediaPlayer.h"
 #import "IXAppManager.h"
