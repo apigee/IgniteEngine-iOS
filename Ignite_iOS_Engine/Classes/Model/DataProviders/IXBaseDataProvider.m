@@ -6,6 +6,109 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                       | Type                           | Description                                                        | Default |
+ |----------------------------|--------------------------------|--------------------------------------------------------------------|---------|
+ | data.baseurl               | *(string)*                     | http:// or /baseurl Base URL of the data location                  |         |
+ | data.path                  | *(string)*                     | /path/to/data.json                                                 |         |
+ | auto_load                  | *(bool)*                       | Automatically fetch data?                                          | true    |
+ | cache_id                   | *(string)*                     | If defined, data will be cached                                    |         |
+ | http_method                | *GET<br>POST<br>PUT<br>DELETE* | HTTP Method                                                        | GET     |
+ | http_body                  | *(string)*                     | Raw HTTP Body to send                                              |         |
+ | basic.username             | *(string)*                     | Username when using Basic Auth                                     |         |
+ | basic.password             | *(string)*                     | Password when using Basic Auth                                     |         |
+ | parameter_encoding         | *json<br>form<br>plist*        | Parameter encoding                                                 | json    |
+ | parse_parameters_as_object | *(bool)*                       | Parse Parameters as an Object                                      | true    |
+ | accepted_content_type      | *application/json, etc.*       | The type of response to accept                                     |         |
+ | datarow.basepath           | *(string)*                     | Which array in the data do you want to use for a table/collection? |         |
+ | predicate.format           | *(string)*                     | Filter data using predicate; e.g. "%K CONTAINS[c] %@"              |         |
+ | predicate.arguments        | *(string)*                     | Predicate arguments; e.g. "email,[[inputbox.text]]"                |         |
+ | sort.order                 | *ascending<br>descending*      | Sort order                                                         |         |
+ | sort.key                   | *(string)*                     | dataRow to sort on                                                 |         |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name              | Type       | Description                                         |
+ |-------------------|------------|-----------------------------------------------------|
+ | raw_data_response | *(string)* | Raw data returned by Data Provider                  |
+ | response_headers  | *(string)* | Response Headers                                    |
+ | status_code       | *(string)* | Status Code                                         |
+ | count_rows        | *(int)*    | Count of rows (requires datarow.basepath to be set) |
+ | total.{dataRow}   | *(float)*  | Does math on defined dataRow key values             |
+ | error_message     | *(string)* | Whoopsie.                                           |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name         | Description                        |
+ |--------------|------------------------------------|
+ | success      | Fires when API call is successful  |
+ | failed       | Fires when API call fails          |
+ | started      | Fires when API call is started     |
+ | auth_success | Fires when authentication succeeds |
+ | auth_fail    | Fires when authentication fails    |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Clear Cache: *clear_cache*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "dataProviderTest",
+        "function_name": "clear_cache"
+      }
+    }
+
+Delete Cookies for URL: *delete_cookies*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "dataProviderTest",
+        "function_name": "delete_cookies",
+        "cookie_url" : "http://apigee.com"
+      }
+    }
+ 
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXBaseDataProvider.h"
 
 #import "AFHTTPClient.h"
