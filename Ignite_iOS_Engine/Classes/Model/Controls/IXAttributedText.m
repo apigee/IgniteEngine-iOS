@@ -6,6 +6,91 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                  | Type                                              | Description                                | Default                |
+ |-----------------------|---------------------------------------------------|--------------------------------------------|------------------------|
+ | highlight_mentions    | *(bool)*                                          | Highlight @mentions?                       | true                   |
+ | highlight_hashtags    | *left<br>right<br>center<br>justified<br>natural* | Highlight #hashtags?                       | true                   |
+ | highlight_Hyperlinks  | *(color)*                                         | Highlight http://hyperlinks.com?           | true                   |
+ | parse_markdown        | *(string)*                                        | Parse Markdown?                            | false                  |
+ | text                  | *(string)*                                        | The string of text to do fancy things with | false                  |
+ | text.color            | *(color)*                                         | The color for normal text                  | #000000                |
+ | font                  | *(font)*                                          | The font to use for normal text            | systemFontOfSize:16.0f |
+ | background.color      | *(color)*                                         | Background of the text area                | clear                  |
+ | mention.scheme        | *(string)*                                        | Custom URL scheme to apply to @mentions    | mention://             |
+ | mention.color         | *(color)*                                         | The color for @mentions                    |                        |
+ | mention.font          | *(string)*                                        | The font to use for @mentions              |                        |
+ | hashtag.scheme        | *(string)*                                        | Custom URL scheme to apply to #hashtags    | hashtag://             |
+ | hashtag.color         | *(color)*                                         | The color for #hashtags                    |                        |
+ | hashtag.font          | *(string)*                                        | The font to use for #hashtags              |                        |
+ | hyperlink.color       | *(color)*                                         | The color for http://hyperlinks.com        |                        |
+ | hyperlink.font        | *(string)*                                        | The font to use for http://hyperlinks.com  |                        |
+ | code.font             | *(string)*                                        | The font to use for code                   |                        |
+ | code.color            | *(color)*                                         | The color for code                         |                        |
+ | code.background.color | *(color)*                                         | The color for background of code area      |                        |
+ | code.border.color     | *(color)*                                         | The color for code border                  | some funky RGB         |
+ | code.border.radius    | *(float)*                                         | The border radius of code area             | 3                      |
+ | kerning               | *(float)*                                         | The kerning to use                         | 0                      |
+ | text.align            | *left<br>right<br>center<br>justified<br>natural* | Alignment of text                          | left                   |
+ | line.spacing          | *(float)*                                         | Line spacing                               | -0.01                  |
+ | line.height.min       | *(float)*                                         | Minimum line height                        | -0.01                  |
+ | line.height.max       | *(float)*                                         | Maximum line height                        | -0.01                  |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name             | Type       | Description                                                                       |
+ |------------------|------------|-----------------------------------------------------------------------------------|
+ | selected_mention | *(string)* | Value of the selected @mention. Use with mention.scheme to navigate + pass value. |
+ | selected_hashtag | *(string)* | Value of the selected #hashtag. Use with hashtag.scheme to navigate + pass value. |
+ | selected_url     | *(string)* | Value of the selected URL.                                                        |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                  | Description                             |
+ |-----------------------|-----------------------------------------|
+ | images_default_loaded | Fires when the image loads successfully |
+ | images_default_failed | Fires when the image fails to load      |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+>   None
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXBaseControl.h"
 #import "IXLogger.h"
 #import "TTTAttributedLabel.h"

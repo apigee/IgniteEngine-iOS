@@ -6,6 +6,101 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+
+/*
+
+// Slider Read-Only Properties
+static NSString* const kIXValue = @"value";
+
+// Slider Events
+static NSString* const kIXValueChanged = @"value_changed";
+static NSString* const kIXTouch = @"touch";
+static NSString* const kIXTouchUp = @"touch_up";
+
+// Slider Functions
+static NSString* const kIXUpdateSliderValue = @"update_slider_value"; // Params : "animated"
+
+// NSCoding Key Constants
+static NSString* const kIXValueNSCodingKey = @"value";
+ 
+ */
+
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                     | Type       | Description                 | Default |
+ |--------------------------|------------|-----------------------------|---------|
+ | initial_value            | *(float)*  | Initial value of the slider |         |
+ | images.thumb             | *(string)* | /path/to/image.png          |         |
+ | images.minimum           | *(string)* | /path/to/image.png          |         |
+ | images.maximum           | *(string)* | /path/to/image.png          |         |
+ | minimum_value            | *(float)*  | Minimum value boundary      |         |
+ | maximum_value            | *(float)*  | Maximum value boundary      |         |
+ | images.maximum.capInsets | *(string)* | /path/to/image.png          |         |
+ | images.minimum.capInsets | *(string)* | /path/to/image.png          |         |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name            | Type       | Description                 |
+ |-----------------|------------|-----------------------------|
+ | value           | *(float)*  | Current value of the slider |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                 | Description                                         |
+ |----------------------|-----------------------------------------------------|
+ | value_changed        | Fires when the value of the slider changes          |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Change slider value: *update_slider_value*
+
+ Parameter:  value
+ 
+ Option: animated
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "sliderTest",
+        "function_name": "update_slider_value"
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+    
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXSlider.h"
 
 #import "NSString+IXAdditions.h"

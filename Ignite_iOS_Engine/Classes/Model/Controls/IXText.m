@@ -9,7 +9,7 @@
 /*  -----------------------------  */
 //  [Documentation]
 //
-//  Author:     Brandon Shelley
+//  Author:     Jeremy Anticouni
 //  Date:       1/29/2015
 //
 //  Copyright (c) 2015 Apigee. All rights reserved.
@@ -17,82 +17,51 @@
 /*  -----------------------------  */
 /**
  
- ###
- ###    Text input control. Utilizes a hybrid of iOS native controls to provide a unified input interface.
- 
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                         |   Default
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
- | *enabled*                            |  bool                     |                                                       |  true
- | *repeats*                            |  bool                     |  Indicates whether or not the timer repeats           |  false
- | *time_interval*                      |  integer                  |  Duration of time interval                            |  0 (disabled)
-
- 
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- @"timer_fired";
- | *timer_fired*                        |   Event that occurs each time the timer fires.
-
- ####
- #### Functions
- 
- *start*
-    
-    {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-            "function_name": "start"
-        }
-    }
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
   
- *stop*
-    
-    {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-            "function_name": "stop"
-        }
-    }
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
  
- ####
- #### Read-Only Properties
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name            | Type                                              | Description                                 | Default          |
+ |-----------------|---------------------------------------------------|---------------------------------------------|------------------|
+ | text            | *(string)*                                        | Text to display                             |                  |
+ | text.alignment  | *left<br>right<br>center<br>justified<br>natural* | Alignment of the text                       | left             |
+ | text.color      | *(color)*                                         | Color of the text                           | #000000          |
+ | font            | *(string)*                                        | The text font name and size (font:size)     | HelveticaNeue:20 |
+ | size_to_fit     | *(bool)*                                          | Shall the size the text to fit dynamically? | false            |
+ 
 
+ ##  <a name="readonly">Read Only Attributes</a>
  
- ####
- #### Example JSON
+>   None
  
-    {
-        "_id": "timerControl",
-        "_type": "Timer",
-        "actions": [
-            {
-                "_type": "Alert",
-                "attributes": {
-                    "title": "Timer Fired!"
-                },
-                "on": "timer_fired"
-            }
-        ],
-        "attributes": {
-            "enabled": true,
-            "repeats": true,
-            "time_interval": 5
-        }
-    }
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+>   None
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+>   None
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
  
  */
 //
 //  [/Documentation]
 /*  -----------------------------  */
+
 
 #import "IXText.h"
 

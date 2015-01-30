@@ -6,6 +6,90 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                     | Type                                                   | Description                     | Default |
+ |--------------------------|--------------------------------------------------------|---------------------------------|---------|
+ | share.platform           | *facebook<br>twitter<br>flickr<br>vimeo<br>sina_weibo* | Where shall we share to?        |         |
+ | share.text               | *(string)*                                             | What text do you want to share? |         |
+ | share.url                | *(string)*                                             | Shall we share a URL?           |         |
+ | share.image              | *(string)*                                             | Ducklips?                       |         |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name                 | Type     | Description                      |
+ |----------------------|----------|----------------------------------|
+ | facebook_available   | *(bool)* | Is Facebook sharing available?   |
+ | twitter_available    | *(bool)* | Is Twitter sharing available?    |
+ | flickr_available     | *(bool)* | Is flickr sharing available?     |
+ | vimeo_available      | *(bool)* | Is Vimeo sharing available?      |
+ | sina_weibo_available | *(bool)* | Is Sina Weibo sharing available? |
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                  | Description                                      |
+ |-----------------------|--------------------------------------------------|
+ | share_done            | Fires when shared successfully                   |
+ | share_cancelled       | Fires if the user dismisses the view controller  |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Present Sharing view controller: *present_share_controller*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "socialTest",
+        "function_name": "present_share_controller"
+      }
+    }
+ 
+Present Sharing view controller: *present_share_controller*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "socialTest",
+        "function_name": "present_share_controller"
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 /*
  
  CONTROL
@@ -14,10 +98,10 @@
  
  - PROPERTIES
  
- * name="share.platform"        default=""               type="facebook, twitter, weibo"
- * name="share.text"            default=""               type="String"
- * name="share.url"             default=""               type="String"
- * name="share.image"           default=""               type="String"
+ * name=""        default=""               type="facebook, twitter, weibo"
+ * name=""            default=""               type="String"
+ * name=""             default=""               type="String"
+ * name=""           default=""               type="String"
  
  - EVENTS
  

@@ -6,6 +6,130 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/30/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+
+/*
+ 
+ // IXSoundRecorder Properties
+ static NSString* const kIXRecordToLocation = @"record_to_location";
+ static NSString* const kIXDuration = @"duration";
+ 
+ // IXSoundRecorder Read-Only Properties
+ static NSString* const kIXRecordPermissionGranted = @"record_permission_granted";
+ static NSString* const kIXLastErrorMessage = @"last_error_message";
+ static NSString* const kIXCurrentTime = @"current_time";
+ static NSString* const kIXIsRecording = @"is_recording";
+ 
+ // IXSoundRecorder Functions
+ static NSString* const kIXStartRecording = @"start_recording";
+ static NSString* const kIXPauseRecording = @"pause_recording";
+ static NSString* const kIXResumeRecording = @"resume_recording";
+ static NSString* const kIXStopRecording = @"stop_recording";
+ */
+
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                     | Type       | Description                            | Default |
+ |--------------------------|------------|----------------------------------------|---------|
+ | record_to_location       | *(string)* | /path/to/save/recording.mp3            |         |
+ | duration                 | *(float)*  | (!) Not sure..                         | -1.0    |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name                      | Type       | Description                                    |
+ |---------------------------|------------|------------------------------------------------|
+ | record_permission_granted | *(bool)*   | Has the user granted access to the microphone? |
+ | is_recording              | *(bool)*   | Are we recording?                              |
+ | current_time              | *(float)*  | Current duration of recording                  |
+ | last_error_message        | *(string)* | Whoopsie?                                      |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name     | Description                          |
+ |----------|--------------------------------------|
+ | finished | Fires when the recording is finished |
+ | error    | Fires when an error occurs           |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Start recording: *start_recording*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundRecorderTest",
+        "function_name": "start_recording"
+      }
+    }
+
+Pause recording: *pause_recording*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundRecorderTest",
+        "function_name": "pause_recording"
+      }
+    }
+ 
+Resume recording: *resume_recording*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundRecorderTest",
+        "function_name": "resume_recording"
+      }
+    }
+ 
+Stop recording: *stop_recording*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundRecorderTest",
+        "function_name": "stop_recording"
+      }
+    }
+
+ ##  <a name="example">Example JSON</a> 
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXSoundRecorder.h"
 
 @import AVFoundation.AVAudioSession;

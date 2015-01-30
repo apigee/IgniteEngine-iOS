@@ -6,6 +6,85 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                           | Type        | Description                                | Default |
+ |--------------------------------|-------------|--------------------------------------------|---------|
+ | pass.location                  | *(string)*  | http:// or /path/to/pass.passkit           |         |
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name                 | Type       | Description                                                      |
+ |----------------------|------------|------------------------------------------------------------------|
+ | passkit.available    | *(bool)*   | Does this device support PassKit?                                |
+ | passkit.containsPass | *(bool)*   | Does the file you've pointed to actually contain a PassKit pass? |
+ | pass.error           | *(string)* | Whoopsie.                                                        |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                  | Description                                         |
+ |-----------------------|-----------------------------------------------------|
+ | pass.creation.success | Fires when the pass is displayed successfully       |
+ | pass.creation.failed  | Fires when an error occurs when displaying the pass |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Present the PassKit view controller: *pass.controller.present*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "passkitTest",
+        "function_name": "pass.controller.present"
+      }
+    }
+
+Dismiss the PassKit view controller: *pass.controller.dismiss*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "passkitTest",
+        "function_name": "pass.controller.dismiss"
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXPassKit.h"
 
 #import "NSString+IXAdditions.h"

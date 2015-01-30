@@ -6,6 +6,103 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/30/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                     | Type       | Description                            | Default |
+ |--------------------------|------------|----------------------------------------|---------|
+ | sound_location           | *(string)* | http:// or /path/to/sound.mp3          |         |
+ | volume                   | *(float)*  | LOUD?                                  |         |
+ | number_of_loops          | *(int)*    | How many times do you want to loop it? |         |
+ | auto_play                | *(bool)*   | Automatically play the sound?          |         |
+ | force_sound_reload       | *(bool)*   | Clear cache and load fresh             |         |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name                 | Type       | Description                      |
+ |----------------------|------------|----------------------------------|
+ | is_playing           | *(bool)*   | Are we playing anything?         |
+ | duration             | *(float)*  | Duration of the track            |
+ | current_time         | *(float)*  | Time of playhead                 |
+ | last_creation_error  | *(string)* | Whoopsie?                        |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                  | Description                              |
+ |-----------------------|------------------------------------------|
+ | finished              | Fires when the sound finishes playing    |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Play sound file: *play*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundTest",
+        "function_name": "play"
+      }
+    }
+
+Pause sound file: *pause*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundTest",
+        "function_name": "pause"
+      }
+    }
+ 
+Stop sound file: *stop*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "soundTest",
+        "function_name": "stop"
+      }
+    }
+
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXSound.h"
 
 @import AVFoundation.AVAudioPlayer;

@@ -6,31 +6,82 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
  
- CONTROL
- /--------------------/
- - TYPE : "___"
- - DESCRIPTION: "___ Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
- /--------------------/
- - Example
- /--------------------/
+ ###    Native iOS UI control that displays a menu from the bottom of the screen.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
  
- /--------------------/
- - Changelog
- /--------------------/
+ ##  <a name="attributes">Attributes</a>
  
- /--------------------/
+ | Name       | Type     | Description                                                | Default |
+ |------------|----------|------------------------------------------------------------|---------|
+ | auto_close | *(bool)* | Automatically close the Scanner view controller upon scan? | true    |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name                 | Type       | Description                                                      |
+ |----------------------|------------|------------------------------------------------------------------|
+ | data                 | *(string)* | Data contained in the scanned code                               |
+ 
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                 | Description                                         |
+ |----------------------|-----------------------------------------------------|
+ | scanned              | Fires when a code is scanned successfully           |
+ 
+
+ ##  <a name="functions">Functions</a>
+ 
+Present Scanner view controller: *present_reader*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "scannerTest",
+        "function_name": "start_animation"
+      }
+    }
+
+Dismiss Scanner view controller: *dismiss_reader*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "scannerTest",
+        "function_name": "dismiss_reader"
+      }
+    }
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+   
  */
+//
+//  [/Documentation]
+/*  -----------------------------  */
 
 #import "IXScanner.h"
 #import "ZBarSDK.h"

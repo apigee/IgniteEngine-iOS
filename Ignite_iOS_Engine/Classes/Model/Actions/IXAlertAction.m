@@ -25,7 +25,7 @@ In a two-button alert that proposes a benign action that people are likely to wa
 /*  -----------------------------  */
 /**
  
- ###    Native iOS UI control that displays an alert.
+ ###    Displays a native alert. Can be informational with a single button or actionable with two buttons. 
   
  <a href="#attributes">Attributes</a>,
  <a href="#readonly">Read-Only</a>,
@@ -36,11 +36,11 @@ In a two-button alert that proposes a benign action that people are likely to wa
  
  ##  <a name="attributes">Attributes</a>
  
- | Name            | Type       | Description               | Default |
- |-----------------|------------|---------------------------|---------|
- | title           | *(bool)*   | Title                     |         |
- | message         | *(bool)*   | Message                   |         |
- | button.titles   | *(comma)*  | Button titles             |         |
+ | Name          | Type       | Description                               | Default |
+ |---------------|------------|-------------------------------------------|---------|
+ | title         | *(string)* | Title                                     |         |
+ | message       | *(string)* | Message                                   |         |
+ | button.titles | *(comma)*  | Comma-separated list of button titles (2) |         |
 
  
  ##  <a name="inherits">Inherits</a>
