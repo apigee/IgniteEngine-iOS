@@ -25,7 +25,7 @@
  <a href="#events">Events</a>,
  <a href="#functions">Functions</a>,
  <a href="#example">Example JSON</a>
- 
+  
  ##  <a name="attributes">Attributes</a>
  
  | Name             | Type       | Description                               | Default |
@@ -50,7 +50,8 @@
  
  ##  <a name="example">Example JSON</a> 
  
-### Delete control:
+
+ ### Delete control:
 
     {
       "_type": "Delete",

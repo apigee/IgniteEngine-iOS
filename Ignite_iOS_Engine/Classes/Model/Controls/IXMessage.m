@@ -6,124 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
- ###    Native iOS UI controls to send emails or text messages.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Send an email or SMS/iMessage.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name            | Type            | Description                                     | Default |
- |-----------------|-----------------|-------------------------------------------------|---------|
- | message.type    | *text<br>email* | The type of message to create                   |         |
- | message.to      | *(string)*      | Send message to? (Email/Phone/iMessage address) |         |
- | message.cc      | *(string)*      | Send a copy to?                                 |         |
- | message.bcc     | *(string)*      | Blind copy to? (Email)                          |         |
- | message.subject | *(string)*      | Message subject (Email)                         |         |
- | message.body    | *(string)*      | Message body (Email/Text)                       |         |
- 
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+<a href="../../images/IXMessage.png" data-imagelightbox="b"><img src="../../images/IXMessage.png" alt="" width="160" height="284"></a>
 
-| Name              | Description                          |
-|-------------------|--------------------------------------|
-| message_cancelled | Fires when the file is inaccessible  |
-| message_failed    | Fires when the message fails to send |
-| message_sent      | Fires on message send success        |
+ ###    Here's how you use it:
  
-
- ##  <a name="functions">Functions</a>
- 
-Present Text controller: *present_text_message_controller*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "messageTest",
-        "function_name": "present_text_message_controller"
-      }
-    }
-
-Present Email controller: *present_email_controller*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "messageTest",
-        "function_name": "present_email_controller"
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
+*/
 
 /*
- 
- CONTROL
- 
- - TYPE : "Message"
- 
- - PROPERTIES
- 
- * name="message.type"          default=""               type="text, email"
- * name="message.to"            default=""               type="String"
- * name="message.cc"            default=""               type="String"
- * name="message.bcc"           default=""               type="String"
- * name="message.subject"       default=""               type="String"
- * name="message.body"          default=""               type="String"
- 
- - EVENTS
- 
- * name="message_cancelled"
- * name="message_failed"
- * name="message_sent"
- 
- 
- {
-    "type": "Message",
-    "properties": {
-        "id": "myEmail",
-        "width": "100%",
-        "height": "50",
-        "message": {
-            "type": "email",
-            "to": "jeremy@anticouni.net",
-            "subject": "this is a subject",
-            "body": "Uhh nice man I don't know how that works but awesome"
-        },
-        "color": {
-            "background": "#00FFFF"
-        }
-    }
-}
- 
- */
+ *      /Docs
+ *
+*/
 
 #import "IXMessage.h"
 #import "IXAppManager.h"
@@ -148,6 +57,99 @@ Present Email controller: *present_email_controller*
 @end
 
 @implementation IXMessage
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param message.type The type of message to create<br>*textemail*
+    @param message.to Send message to? (Email/Phone/iMessage address)<br>*(string)*
+    @param message.cc Send a copy to?<br>*(string)*
+    @param message.bcc Blind copy to? (Email)<br>*(string)*
+    @param message.subject Message subject (Email)<br>*(string)*
+    @param message.body Message body (Email/Text)<br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param message_cancelled Fires when the file is inaccessible
+    @param message_failed Fires when the message fails to send
+    @param message_sent Fires on message send success
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param present_text_message_controller 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param present_email_controller 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

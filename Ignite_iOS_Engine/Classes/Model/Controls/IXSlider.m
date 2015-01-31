@@ -6,100 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-
 /*
-
-// Slider Read-Only Properties
-static NSString* const kIXValue = @"value";
-
-// Slider Events
-static NSString* const kIXValueChanged = @"value_changed";
-static NSString* const kIXTouch = @"touch";
-static NSString* const kIXTouchUp = @"touch_up";
-
-// Slider Functions
-static NSString* const kIXUpdateSliderValue = @"update_slider_value"; // Params : "animated"
-
-// NSCoding Key Constants
-static NSString* const kIXValueNSCodingKey = @"value";
- 
- */
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    A slider that moves side-to-side.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                     | Type       | Description                 | Default |
- |--------------------------|------------|-----------------------------|---------|
- | initial_value            | *(float)*  | Initial value of the slider |         |
- | images.thumb             | *(string)* | /path/to/image.png          |         |
- | images.minimum           | *(string)* | /path/to/image.png          |         |
- | images.maximum           | *(string)* | /path/to/image.png          |         |
- | minimum_value            | *(float)*  | Minimum value boundary      |         |
- | maximum_value            | *(float)*  | Maximum value boundary      |         |
- | images.maximum.capInsets | *(string)* | /path/to/image.png          |         |
- | images.minimum.capInsets | *(string)* | /path/to/image.png          |         |
- 
+<a href="../../images/IXSlider.png" data-imagelightbox="b"><img src="../../images/IXSlider.png" alt="" width="160" height="284"></a>
 
- ##  <a name="readonly">Read Only Attributes</a>
+ ###    Here's how you use it:
  
- | Name            | Type       | Description                 |
- |-----------------|------------|-----------------------------|
- | value           | *(float)*  | Current value of the slider |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+*/
 
- | Name                 | Description                                         |
- |----------------------|-----------------------------------------------------|
- | value_changed        | Fires when the value of the slider changes          |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Change slider value: *update_slider_value*
-
- Parameter:  value
- 
- Option: animated
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "sliderTest",
-        "function_name": "update_slider_value"
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
- 
-    
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXSlider.h"
 
@@ -138,6 +71,96 @@ static NSString* const kIXValueNSCodingKey = @"value";
 @end
 
 @implementation IXSlider
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param initial_value Initial value of the slider<br>*(float)*
+    @param images.thumb /path/to/image.png<br>*(string)*
+    @param images.minimum /path/to/image.png<br>*(string)*
+    @param images.maximum /path/to/image.png<br>*(string)*
+    @param minimum_value Minimum value boundary<br>*(float)*
+    @param maximum_value Maximum value boundary<br>*(float)*
+    @param images.maximum.capInsets /path/to/image.png<br>*(string)*
+    @param images.minimum.capInsets /path/to/image.png<br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param value Current value of the slider<br>*(float)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param value_changed Fires when the value of the slider changes
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param update_slider_value 
+ 
+     <pre class="brush: js; toolbar: false;">
+ 
+    </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

@@ -6,139 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Brandon Shelley
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
- ###    Native iOS UISwitch control implementation.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Toggle switch to toggle on and to toggle off.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXToggle.png" data-imagelightbox="b"><img src="../../images/IXToggle.png" alt="" width="160" height="284"></a>
  
- | Name                           | Type        | Description                                | Default |
- |--------------------------------|-------------|--------------------------------------------|---------|
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name  | Type     | Description       |
- |-------|----------|-------------------|
- | is_on | *(bool)* | Is the toggle on? |
-   
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name                  | Description                             |
- |-----------------------|-----------------------------------------|
-
-
- ##  <a name="functions">Functions</a>
- 
-Switch the toggle to the opposite value: *toggle*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "aToggle",
-        "function_name": "toggle"
-      }
-    }
-
-Turn the toggle on: *toggle_on*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "aToggle",
-        "function_name": "toggle_on"
-      }
-    }
- 
-Turn the toggle off: *toggle_off*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "aToggle",
-        "function_name": "toggle_off"
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
-
-    {
-        "_id": "aLabel",
-        "_type": "Text",
-        "attributes": {
-            "text": "The toggle is currently [[toggle1.is_on]]"
-        }
-    },
-    {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-            {
-                "_type": "Function",
-                "attributes": {
-                    "_target": "myToggle",
-                    "function_name": "toggle"
-                },
-                "on": "touch_up"
-            }
-        ]
-    },
-    {
-        "_id": "button2",
-        "_type": "Button",
-        "actions": [
-            {
-                "_type": "Function",
-                "attributes": {
-                    "_target": "myToggle",
-                    "function_name": "toggle_off"
-                },
-                "on": "touch_up"
-            }
-        ]
-    },
-    {
-        "_id": "button3",
-        "_type": "Button",
-        "actions": [
-            {
-                "_type": "Function",
-                "attributes": {
-                    "_target": "myToggle",
-                    "function_name": "toggle_on"
-                },
-                "on": "touch_up"
-            }
-        ]
-    }
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+
+/*
+ *      /Docs
+ *
+ */
 
 #import "IXToggle.h"
 
@@ -152,6 +46,98 @@ Turn the toggle off: *toggle_off*
 @end
 
 @implementation IXToggle
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param initally_selected Should the toggle be selected by default? *(default: FALSE)*<br>*bool*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param is_on Is the toggle on?<br>*(bool)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param toggle 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param toggle_on 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+ 
+    @param toggle_off 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+ 
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

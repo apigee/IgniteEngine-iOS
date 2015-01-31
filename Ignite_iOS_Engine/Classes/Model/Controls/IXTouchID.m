@@ -6,95 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Brandon Shelley
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
- ###    Enables user authentication via Apple TouchID.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Fingerprint authentication. Hot.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                           | Type        | Description                                | Default |
- |--------------------------------|-------------|--------------------------------------------|---------|
- | title                          | *(string)*  | TouchID title                              |         |
+<a href="../../images/IXTouchID.png" data-imagelightbox="b"><img src="../../images/IXTouchID.png" alt="" width="160" height="284"></a>
 
- ##  <a name="readonly">Read Only Attributes</a>
+ ###    Here's how you use it:
  
- | Name         | Type     | Description            |
- |--------------|----------|------------------------|
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+*/
 
- | Name         | Description                                             |
- |--------------|---------------------------------------------------------|
- | success      | User authenticated successfully                         |
- | failed       | User did not authenticate successfully                  |
- | cancelled    | User cancelled the operation                            |
- | password     | Dismisses TouchID, allowing user to enter password      |
- | unconfigured | TouchID is not configured on the device                 |
- | unavailable  | TouchID is not available or not supported on the device |
- 
-
- ##  <a name="functions">Functions</a>
- 
- Prompt the user to authenticated via TouchID: *authenticate*
-    
-    {
-        "_type": "Function",
-        "on": "touch_up",
-        "attributes": {
-            "function_name": "authenticate"
-        }
-    }
- 
- ##  <a name="example">Example JSON</a> 
- 
-    {
-        ...
-        "actions": {
-            "_type": "Function",
-            "attributes": {
-                "function_name": "authenticate"
-            },
-            "on": "touch_up"
-        }
-    },
-    {
-        "_type": "TouchID",
-        "_id": "TouchID",
-        "actions": [
-            {
-                "_type": "Alert",
-                "on": "success",
-                "attributes": {
-                    "title": "success"
-                }
-            }
-        ]
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXTouchID.h"
 
@@ -121,6 +59,91 @@ static NSString* const kIXAuthenticationUnavailable = @"unavailable";
 @end
 
 @implementation IXTouchID
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param title TouchID title<br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param success User authenticated successfully
+    @param failed User did not authenticate successfully
+    @param cancelled User cancelled the operation
+    @param password Dismisses TouchID, allowing user to enter password
+    @param unconfigured TouchID is not configured on the device
+    @param unavailable TouchID is not available or not supported on the device
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param authenticate 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

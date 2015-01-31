@@ -4,142 +4,38 @@
 //
 //  Created by Brandon on 3/24/14.
 //  Copyright (c) 2014 Ignite. All rights reserved.
-//
-
-
+// 
 
 // todo: This will probably break if we try and add two Camera controls <running> at the same time.
 // Need to find a graceful way of deallocating previously started IXCameras.
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
  ###
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
+ ###    Calls upon the device camera to capture an image.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                             |   Default
- |:-------------------------------------|:-------------------------:|:----------------------------------------------------------|:-------------:|
- | *width*                              |   *(integer)*             |   Width of Camera preview                                 |
- | *height*                             |   *(integer)*             |   Height of Camera preview                                |
- | *camera*                             |   *front<br>rear*         |   Which Camera to use                                     |
- | *capture.resize*                     |   *(string)*              |   Resize captured image                                   |
- | *capture.delay*                      |   *(float)*               |   Delay image capture                                     |
- | *captured_image*                     |   *(string)*              |   Captured Image                                          |
- | *auto_start*                         |   *(bool)*                |   Automatically present the Camera view controller        |
- | *auto_save_to_camera_roll*           |   *(bool)*                |   Automatically save captured image to camera roll        |
- 
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *did_capture_image*                  |   Image captured successfully
- | *did_finish_saving_capture*          |   Image saved successfully
- 
- ####
- #### Functions
- 
- *start*
- 
- Presents the Camera view controller.
-    
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "cameraTest",
-        "function_name": "start"
-      }
-    }
- 
- *restart*
- 
- Restarts the Camera view controller.
+<a href="../../images/IXCamera.png" data-imagelightbox="b"><img src="../../images/IXCamera.png" alt="" width="160" height="284"></a>
 
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "cameraTest",
-        "function_name": "restart"
-      }
-    }
+ ###    Here's how you use it:
  
- *stop*
- 
- Dismisses the camera view controller.
+*/
 
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "cameraTest",
-        "function_name": "stop"
-      }
-    }
- 
- *capture_image*
- 
- Captures image
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "cameraTest",
-        "function_name": "capture_image"
-      }
-    }
- 
- ####
- #### Example JSON
- 
-    {
-      "_id": "cameraTest",
-      "_type": "Camera",
-      "actions": [
-        {
-          "on": "did_capture_image",
-          "_type": "Alert",
-          "attributes": {
-            "title": "did_capture_image"
-          }
-        },
-        {
-          "on": "did_finish_saving_capture",
-          "_type": "Alert",
-          "attributes": {
-            "title": "did_finish_saving_capture"
-          }
-        }
-      ],
-      "attributes": {
-        "camera": "front",
-        "height": 280,
-        "width": 280,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "middle",
-        "auto_play": false
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXCamera.h"
 
@@ -190,6 +86,113 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 @end
 
 @implementation IXCamera : IXBaseControl
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes 
+    @param width Width of Camera preview<br>*(integer)*
+    @param height Height of Camera preview<br>*(integer)*
+    @param camera Which Camera to use<br>*frontrear*
+    @param capture.resize Resize captured image<br>*(string)*
+    @param capture.delay Delay image capture<br>*(float)*
+    @param captured_image Captured Image<br>*(string)*
+    @param auto_start Automatically present the Camera view controller<br>*(bool)*
+    @param auto_save_to_camera_roll Automatically save captured image to camera roll<br>*(bool)* 
+ 
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param did_capture_image Image captured successfully
+    @param did_finish_saving_capture Image saved successfully 
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param start Present the Camera view controller
+ 
+     <pre class="brush: js; toolbar: false;">
+     
+     </pre>
+
+    @param restart 
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param stop
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param capture_image
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+ 
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

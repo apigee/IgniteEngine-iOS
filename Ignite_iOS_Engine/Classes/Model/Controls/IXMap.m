@@ -6,150 +6,32 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Displays a native iOS Map. Can display a single annotation, or, point to a Data Provider to display a whole heap of pins.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXMap.png" data-imagelightbox="b"><img src="../../images/IXMap.png" alt="" width="160" height="284"></a>
  
- | Name                           | Type        | Description                                | Default |
- |--------------------------------|-------------|--------------------------------------------|---------|
- | images.default                 | *(string)*  | /path/to/image.png                         |         |
- | images.default.tintColor       | *(color)*   | Color to overlay transparent png           |         |
- | images.default.blur.radius     | *(float)*   | Blur image                                 |         |
- | images.default.blur.tintColor  | *(color)*   | Blur tint                                  |         |
- | images.default.blur.saturation | *(float)*   | Blur saturation                            |         |
- | images.default.force_refresh   | *(bool)*    | Force image to reload when enters view     |         |
- | images.height.max              | *(int)*     | Maximum height of image                    |         |
- | images.width.max               | *(int)*     | Maximum width of image                     |         |
- | gif_duration                   | *(float)*   | Duration of GIF (pronounced JIF) animation |         |
- | flip_horizontal                | *(bool)*    | Flip image horizontally                    | false   |
- | flip_vertical                  | *(bool)*    | Flip image vertically                      | false   |
- | rotate                         | *(int)*     | Rotate image in degrees                    |         |
- | image.binary                   | *(string)*  | Binary data of image file                  |         |
- | images.default.resize          | *(special)* | Dynamically resize image using imageMagick |         |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name         | Type     | Description            |
- |--------------|----------|------------------------|
- | is_animating | *(bool)* | Is it animating?       |
- | image.height | *(int)*  | Actual height of image |
- | image.width  | *(int)*  | Actual width of image  |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name                  | Description                             |
- |-----------------------|-----------------------------------------|
- | images_default_loaded | Fires when the image loads successfully |
- | images_default_failed | Fires when the image fails to load      |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Start GIF animation: *start_animation*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "start_animation"
-      }
-    }
-
-Restart GIF animation: *restart_animation*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "restart_animation"
-      }
-    }
- 
-Stop GIF animation: *stop_animation*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "stop_animation"
-      }
-    }
-
- Not really sure: *load_last_photo*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "load_last_photo"
-      }
-    }
-
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-    {
-      "_id": "imageTest",
-      "_type": "Image",
-      "attributes": {
-        "height": 100,
-        "width": 100,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "middle",
-        "images.default": "/images/btn_notifications_25x25.png",
-        "images.default.tintColor": "#a9d5c7"
-      }
-    }
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
 
 /*
- 
- CONTROL
- 
- - TYPE : "Map"
- 
- 
- - PROPERTIES
- 
- * name="placemark.latitude"            default=37.331789               type="Float"
- * name="placemark.longitude"           default=37.331789               type="Float"
- * name="placemark.title"               default=""                      type="String"
- * name="placemark.subtitle"            default=""                      type="String"
-
- 
+ *      /Docs
+ *
  */
 
 #import "IXMap.h"
@@ -270,6 +152,111 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 @end
 
 @implementation IXMap
+
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param dataprovider_id Data Provider ID<br>*(string)*
+    @param shows_user_location Display user's location *(default: FALSE)*<br>*(bool)*
+    @param shows_points_of_interest Show points of interest *(default: TRUE)*<br>*(bool)*
+    @param shows_buildings Show buildings *(default: TRUE)*<br>*(bool)*
+    @param map_type Map type *(default: standard)*<br>*standard, satellite, hybrid*
+    @param zoom_level Default zoom level<br>*(int)*
+    @param center.latitude Center map on this latitude<br>*(float)*
+    @param center.longitude Center map on this longitude<br>*(float)*
+    @param annotation.image Custom pin image<br>*(string)*
+    @param annotation.image.center.offset.x Custom pin image offset X<br>*(float)*
+    @param annotation.image.center.offset.y Custom pin image offset Y<br>*(float)*
+    @param annotation.title Annotation title<br>*(string)*
+    @param annotation.subtitle Annotation subtitle<br>*(string)*
+    @param annotation.latitude Annotation latitude<br>*(float)*
+    @param annotation.longitude Annotation longitude<br>*(float)*
+    @param annotation.accessory.left.image Map type *(default: standard)*<br>*standard, satellite, hybrid*
+    @param annotation.pin.color Annotation pin color (when not using custom pin image) *(default: red)*<br>*red, green, purple*
+    @param annotation.pin.animates_drop Animate pins dropping from the sky *(default: TRUE)*<br>*(bool)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+
+
+
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param touch Fires when an annotation is touched
+    @param touch_up Fires on annotation touch up inside
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param reload_annotations 
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+    @param show_all_annotations 
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
+
 
 -(void)dealloc
 {

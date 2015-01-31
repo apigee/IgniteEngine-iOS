@@ -6,89 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    A text label that automagically detects things like @mentions, #hastags, and http://links
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXAttributedText.png" data-imagelightbox="b"><img src="../../images/IXAttributedText.png" alt="" width="160" height="284"></a>
  
- | Name                  | Type                                              | Description                                | Default                |
- |-----------------------|---------------------------------------------------|--------------------------------------------|------------------------|
- | highlight_mentions    | *(bool)*                                          | Highlight @mentions?                       | true                   |
- | highlight_hashtags    | *left<br>right<br>center<br>justified<br>natural* | Highlight #hashtags?                       | true                   |
- | highlight_Hyperlinks  | *(color)*                                         | Highlight http://hyperlinks.com?           | true                   |
- | parse_markdown        | *(string)*                                        | Parse Markdown?                            | false                  |
- | text                  | *(string)*                                        | The string of text to do fancy things with | false                  |
- | text.color            | *(color)*                                         | The color for normal text                  | #000000                |
- | font                  | *(font)*                                          | The font to use for normal text            | systemFontOfSize:16.0f |
- | background.color      | *(color)*                                         | Background of the text area                | clear                  |
- | mention.scheme        | *(string)*                                        | Custom URL scheme to apply to @mentions    | mention://             |
- | mention.color         | *(color)*                                         | The color for @mentions                    |                        |
- | mention.font          | *(string)*                                        | The font to use for @mentions              |                        |
- | hashtag.scheme        | *(string)*                                        | Custom URL scheme to apply to #hashtags    | hashtag://             |
- | hashtag.color         | *(color)*                                         | The color for #hashtags                    |                        |
- | hashtag.font          | *(string)*                                        | The font to use for #hashtags              |                        |
- | hyperlink.color       | *(color)*                                         | The color for http://hyperlinks.com        |                        |
- | hyperlink.font        | *(string)*                                        | The font to use for http://hyperlinks.com  |                        |
- | code.font             | *(string)*                                        | The font to use for code                   |                        |
- | code.color            | *(color)*                                         | The color for code                         |                        |
- | code.background.color | *(color)*                                         | The color for background of code area      |                        |
- | code.border.color     | *(color)*                                         | The color for code border                  | some funky RGB         |
- | code.border.radius    | *(float)*                                         | The border radius of code area             | 3                      |
- | kerning               | *(float)*                                         | The kerning to use                         | 0                      |
- | text.align            | *left<br>right<br>center<br>justified<br>natural* | Alignment of text                          | left                   |
- | line.spacing          | *(float)*                                         | Line spacing                               | -0.01                  |
- | line.height.min       | *(float)*                                         | Minimum line height                        | -0.01                  |
- | line.height.max       | *(float)*                                         | Maximum line height                        | -0.01                  |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name             | Type       | Description                                                                       |
- |------------------|------------|-----------------------------------------------------------------------------------|
- | selected_mention | *(string)* | Value of the selected @mention. Use with mention.scheme to navigate + pass value. |
- | selected_hashtag | *(string)* | Value of the selected #hashtag. Use with hashtag.scheme to navigate + pass value. |
- | selected_url     | *(string)* | Value of the selected URL.                                                        |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name                  | Description                             |
- |-----------------------|-----------------------------------------|
- | images_default_loaded | Fires when the image loads successfully |
- | images_default_failed | Fires when the image fails to load      |
- 
-
- ##  <a name="functions">Functions</a>
- 
->   None
- 
- ##  <a name="example">Example JSON</a> 
- 
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+
+/*
+ *      /Docs
+ *
+ */
 
 
 #import "IXBaseControl.h"
@@ -157,6 +101,113 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 @end
 
 @implementation IXAttributedText
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param highlight_mentions Highlight @mentions? *(default: TRUE)*<br>*(bool)*
+    @param highlight_hashtags Highlight #hashtags? *(default: TRUE)*<br>*leftrightcenterjustifiednatural*
+    @param highlight_Hyperlinks Highlight http://hyperlinks.com? *(default: TRUE)*<br>*(color)*
+    @param parse_markdown Parse Markdown? *(default: FALSE)*<br>*(string)*
+    @param text The string of text to do fancy things with *(default: FALSE)*<br>*(string)*
+    @param text.color The color for normal text *(default: #000000)*<br>*(color)*
+    @param font The font to use for normal text *(default: systemFontOfSize:16.0f)*<br>*(font)*
+    @param background.color Background of the text area *(default: clear)*<br>*(color)*
+    @param mention.scheme Custom URL scheme to apply to @mentions *(default: mention://)*<br>*(string)*
+    @param mention.color The color for @mentions<br>*(color)*
+    @param mention.font The font to use for @mentions<br>*(string)*
+    @param hashtag.scheme Custom URL scheme to apply to #hashtags *(default: hashtag://)*<br>*(string)*
+    @param hashtag.color The color for #hashtags<br>*(color)*
+    @param hashtag.font The font to use for #hashtags<br>*(string)*
+    @param hyperlink.color The color for http://hyperlinks.com<br>*(color)*
+    @param hyperlink.font The font to use for http://hyperlinks.com<br>*(string)*
+    @param code.font The font to use for code<br>*(string)*
+    @param code.color The color for code<br>*(color)*
+    @param code.background.color The color for background of code area<br>*(color)*
+    @param code.border.color The color for code border *(default: some funky RGB)*<br>*(color)*
+    @param code.border.radius The border radius of code area *(default: 3)*<br>*(float)*
+    @param kerning The kerning to use *(default: 0)*<br>*(float)*
+    @param text.align Alignment of text *(default: left)*<br>*leftrightcenterjustifiednatural*
+    @param line.spacing Line spacing *(default: -0.01)*<br>*(float)*
+    @param line.height.min Minimum line height *(default: -0.01)*<br>*(float)*
+    @param line.height.max Maximum line height *(default: -0.01)*<br>*(float)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param selected_mention Value of the selected @mention. Use with mention.scheme to navigate + pass value.<br>*(string)*
+ @param selected_hashtag Value of the selected #hashtag. Use with hashtag.scheme to navigate + pass value.<br>*(string)*
+ @param selected_url Value of the selected URL.<br>*(string)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param long_press Fires when an element receives a long press
+    @param touch_up Fires when an element is touched
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

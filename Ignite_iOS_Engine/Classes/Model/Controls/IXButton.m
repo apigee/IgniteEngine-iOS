@@ -6,98 +6,34 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
  ###
- ###    UI Control that allows you to have buttons with text and images.
+ ###    It's a button. Put text on it and trigger an action, maybe even add an image.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- |  Name                            |   Type        |   Description                                         |   Default
- |:---------------------------------|:-------------:|:------------------------------------------------------|:-------------:|
- | *text*                           |   *(string)*  |   The text displayed                                  |
- | *text.color*                     |   *(color)*   |   The text color                                      |   #ffffff
- | *font*                           |   *(string)*  |   The text font name and size (font:size) <br>*See http://iosfonts.com/ for available fonts.*           |   *HelveticaNeue:20*
- | *background.color*               |   *(color)*   |   The background color                                |
- | *icon*                           |   *(string)*  |   The icon image path                                 |
- | *icon.tintColor*                 |   *(color)*   |   The icon tint color                                 |
- | *touch.text*                     |   *(string)*  |   The text displayed on touch events                  |
- | *touch.font*                     |   *(string)*  |   The text font displayed on touch events             |
- | *touch.text.color*               |   *(color)*   |   The text color on touch events                      |
- | *touch.background.color*         |   *(color)*   |   The background color on touch events                |
- | *touch.icon*                     |   *(string)*  |   The icon image path on touch events                 |
- | *touch.icon.tintColor*           |   *(color)*   |   The icon tint color on touch events                 |
- | *touch.alpha*                    |   *(float)*   |   The button alpha on touch events                    |
- | *disabled.text*                  |   *(string)*  |   The text displayed when button is disabled          |
- | *disabled.font*                  |   *(string)*  |   The font when button is disabled                    |
- | *disabled.text.color*            |   *(color)*   |   The text color when button is disabled              |
- | *disabled.background.color*      |   *(color)*   |   The background color when button is disabled        |
- | *disabled.icon*                  |   *(string)*  |   The icon displayed when button is disabled          |
- | *disabled.icon.tintColor*        |   *(color)*   |   The icon tint color when button is disabled         |
- | *disabled.alpha*                 |   *(float)*   |   The button alpha when button is disabled            |
- | *darkens_image_on_touch*         |   *(bool)*    |   Darkens image on touch events                       |    false
- | *touch.duration*                 |   *(float)*   |   The touch duration to trigger a touch event         |    0.4
- | *touch_up.duration*              |   *(float)*   |   The touch duration to trigger a touch_up event      |    0.4
+ <a href="../../images/IXButton.png" data-imagelightbox="b"><img src="../../images/IXButton.png" alt="" width="160" height="284"></a>
  
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                       |   Description
- |:-----------------------------|:--------------------------------------------------------------------|
- | *touch*                      |   Fires when the control is touched
- | *touch_up*                   |   Fires when the control touch is released
- 
- ####
- #### Functions
- >  None
- 
- #### Example JSON
- 
-    {
-      "_id": "button",
-      "_type": "Button",
-      "actions": [
-        {
-          "_type": "Alert",
-          "on": "touch_up",
-          "attributes": {
-            "title": "touch_up",
-            "message": "You touched the button!"
-          }
-        }
-      ],
-      "attributes": {
-        "width": 280,
-        "height": 50,
-        "text.color": "6c6c6c",
-        "background.color": "cdcdcd",
-        "touch.text.color": "6c6c6c50",
-        "horizontal_alignment": "center",
-        "touch.background.color": "cdcdcd",
-        "margin.top": 10,
-        "border.radius": 5,
-        "border.width": 2,
-        "border.color": "6c6c6c",
-        "text": "Authenticate with TouchID"
-      }
-    }
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+
+/*
+ *      /Docs
+ *
+ */
+
 
 #import "IXButton.h"
 
@@ -149,6 +85,131 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 
 @implementation IXButton
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param text The text displayed<br>*(string)*
+    @param text.color The text color *(default: #ffffff)*<br>*(color)*
+"    @param font The text font name and size (font:size) 
+See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*(string)*"
+    @param background.color The background color<br>*(color)*
+    @param icon The icon image path<br>*(string)*
+    @param icon.tintColor The icon tint color<br>*(color)*
+    @param touch.text The text displayed on touch events<br>*(string)*
+    @param touch.font The text font displayed on touch events<br>*(string)*
+    @param touch.text.color The text color on touch events<br>*(color)*
+    @param touch.background.color The background color on touch events<br>*(color)*
+    @param touch.icon The icon image path on touch events<br>*(string)*
+    @param touch.icon.tintColor The icon tint color on touch events<br>*(color)*
+    @param touch.alpha The button alpha on touch events<br>*(float)*
+    @param disabled.text The text displayed when button is disabled<br>*(string)*
+    @param disabled.font The font when button is disabled<br>*(string)*
+    @param disabled.text.color The text color when button is disabled<br>*(color)*
+    @param disabled.background.color The background color when button is disabled<br>*(color)*
+    @param disabled.icon The icon displayed when button is disabled<br>*(string)*
+    @param disabled.icon.tintColor The icon tint color when button is disabled<br>*(color)*
+    @param disabled.alpha The button alpha when button is disabled<br>*(float)*
+    @param darkens_image_on_touch Darkens image on touch events *(default: FALSE)*<br>*(bool)*
+    @param touch.duration The touch duration to trigger a touch event *(default: 0.4)*<br>*(float)*
+    @param touch_up.duration The touch duration to trigger a touch_up event *(default: 0.4)*<br>*(float)*
+
+
+
+
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+
+
+
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param touch Fires when the control is touched
+    @param touch_up Fires when the control touch is released
+
+
+
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+
+
+
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

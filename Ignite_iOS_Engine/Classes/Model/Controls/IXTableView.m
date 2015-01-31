@@ -6,98 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/30/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/*// IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
- 
- // IXTableView Functions
- IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
- IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"";*/
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Old-school UITableView.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                           | Type                     | Description                                                   | Default |
- |--------------------------------|--------------------------|---------------------------------------------------------------|---------|
- | row_select_enabled             | *(string)*               | Highlight row on touch?                                       | false   |
- | keep_row_highlighted_on_select | *(float)*                | Keep the row highlighted on touch_up?                         | false   |
- | background_swipe_width         | *(int)*                  | How wide should the cell swipe to reveal background controls? |         |
- | image.parallax                 | *(bool)*                 | http:// or /path/to/image.png for parallaxiness               |         |
- | image.parallax.height          | *(bool)*                 | Height of image to display behind table for parallaxiness     |         |
- | layout_flow                    | *vertical<br>horizontal* | Layout flow of table                                          |         |
- | separator.style                | *default<br>none*        | Show a dividing line between cells?                           |         |
- | separator.color                | *(color)*                | Color of default separator line                               |         |
- 
+<a href="../../images/IXTableView.png" data-imagelightbox="b"><img src="../../images/IXTableView.png" alt="" width="160" height="284"></a>
 
- ##  <a name="readonly">Read Only Attributes</a>
+ ###    Here's how you use it:
  
->   None
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+*/
 
- | Name              | Description                                 |
- |-------------------|---------------------------------------------|
- | started_scrolling | Fires when scrolling starts                 |
- | ended_scrolling   | Fires when scrolling stops                  |
- | will_display_cell | Fires when the cell will come into the view |
- | did_hide_cell     | Fires when the cell leaves the view         |
- | did_select_cell   | Fires when the cell is selected             |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Reset all background controls: *reset_all_background_controls*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "tableviewTest",
-        "function_name": "reset_all_background_controls"
-      }
-    }
-
-Change the width of background swipe width: *set_background_swipe_width*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "tableviewTest",
-        "function_name": "set_background_swipe_width"
-      }
-    }
- 
-
- 
- ##  <a name="example">Example JSON</a> 
- 
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXTableView.h"
 
@@ -148,6 +83,106 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 @end
 
 @implementation IXTableView
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param row_select_enabled Highlight row on touch? *(default: FALSE)*<br>*(string)*
+    @param keep_row_highlighted_on_select Keep the row highlighted on touch_up? *(default: FALSE)*<br>*(float)*
+    @param background_swipe_width How wide should the cell swipe to reveal background controls?<br>*(int)*
+    @param image.parallax http:// or /path/to/image.png for parallaxiness<br>*(bool)*
+    @param image.parallax.height Height of image to display behind table for parallaxiness<br>*(bool)*
+    @param layout_flow Layout flow of table<br>*verticalhorizontal*
+    @param separator.style Show a dividing line between cells?<br>*defaultnone*
+    @param separator.color Color of default separator line<br>*(color)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param started_scrolling Fires when scrolling starts
+    @param ended_scrolling Fires when scrolling stops
+    @param will_display_cell Fires when the cell will come into the view
+    @param did_hide_cell Fires when the cell leaves the view
+    @param did_select_cell Fires when the cell is selected
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param reset_all_background_controls 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+
+
+    @param set_background_swipe_width 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

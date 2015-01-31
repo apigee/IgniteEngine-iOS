@@ -6,128 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/30/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-
 /*
- 
- // IXSoundRecorder Properties
- static NSString* const kIXRecordToLocation = @"record_to_location";
- static NSString* const kIXDuration = @"duration";
- 
- // IXSoundRecorder Read-Only Properties
- static NSString* const kIXRecordPermissionGranted = @"record_permission_granted";
- static NSString* const kIXLastErrorMessage = @"last_error_message";
- static NSString* const kIXCurrentTime = @"current_time";
- static NSString* const kIXIsRecording = @"is_recording";
- 
- // IXSoundRecorder Functions
- static NSString* const kIXStartRecording = @"start_recording";
- static NSString* const kIXPauseRecording = @"pause_recording";
- static NSString* const kIXResumeRecording = @"resume_recording";
- static NSString* const kIXStopRecording = @"stop_recording";
- */
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Record audio from the device microphone.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                     | Type       | Description                            | Default |
- |--------------------------|------------|----------------------------------------|---------|
- | record_to_location       | *(string)* | /path/to/save/recording.mp3            |         |
- | duration                 | *(float)*  | (!) Not sure..                         | -1.0    |
- 
+<a href="../../images/IXSoundRecorder.png" data-imagelightbox="b"><img src="../../images/IXSoundRecorder.png" alt="" width="160" height="284"></a>
 
- ##  <a name="readonly">Read Only Attributes</a>
+ ###    Here's how you use it:
  
- | Name                      | Type       | Description                                    |
- |---------------------------|------------|------------------------------------------------|
- | record_permission_granted | *(bool)*   | Has the user granted access to the microphone? |
- | is_recording              | *(bool)*   | Are we recording?                              |
- | current_time              | *(float)*  | Current duration of recording                  |
- | last_error_message        | *(string)* | Whoopsie?                                      |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+*/
 
- | Name     | Description                          |
- |----------|--------------------------------------|
- | finished | Fires when the recording is finished |
- | error    | Fires when an error occurs           |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Start recording: *start_recording*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundRecorderTest",
-        "function_name": "start_recording"
-      }
-    }
-
-Pause recording: *pause_recording*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundRecorderTest",
-        "function_name": "pause_recording"
-      }
-    }
- 
-Resume recording: *resume_recording*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundRecorderTest",
-        "function_name": "resume_recording"
-      }
-    }
- 
-Stop recording: *stop_recording*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundRecorderTest",
-        "function_name": "stop_recording"
-      }
-    }
-
- ##  <a name="example">Example JSON</a> 
- 
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 
 #import "IXSoundRecorder.h"
@@ -173,6 +78,113 @@ static NSString* const kIXStopRecording = @"stop_recording";
 @end
 
 @implementation IXSoundRecorder
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param record_to_location /path/to/save/recording.mp3<br>*(string)*
+    @param duration (!) Not sure.. *(default: -1)*<br>*(float)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param record_permission_granted Has the user granted access to the microphone?<br>*(bool)*
+ @param is_recording Are we recording?<br>*(bool)*
+ @param current_time Current duration of recording<br>*(float)*
+ @param last_error_message Whoopsie?<br>*(string)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param finished Fires when the recording is finished
+    @param error Fires when an error occurs
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param start_recording 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param pause_recording 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param resume_recording 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param stop_recording 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

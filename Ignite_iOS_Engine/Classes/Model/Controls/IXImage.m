@@ -6,142 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-//
-//  IXActionSheet.m
-//  Ignite_iOS_Engine
-//
-//  Created by Robert Walsh on 7/18/14.
-//  Copyright (c) 2014 Ignite. All rights reserved.
-//
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Renders an image. Supports animated GIFs.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                           | Type        | Description                                | Default |
- |--------------------------------|-------------|--------------------------------------------|---------|
- | images.default                 | *(string)*  | /path/to/image.png                         |         |
- | images.default.tintColor       | *(color)*   | Color to overlay transparent png           |         |
- | images.default.blur.radius     | *(float)*   | Blur image                                 |         |
- | images.default.blur.tintColor  | *(color)*   | Blur tint                                  |         |
- | images.default.blur.saturation | *(float)*   | Blur saturation                            |         |
- | images.default.force_refresh   | *(bool)*    | Force image to reload when enters view     |         |
- | images.height.max              | *(int)*     | Maximum height of image                    |         |
- | images.width.max               | *(int)*     | Maximum width of image                     |         |
- | gif_duration                   | *(float)*   | Duration of GIF (pronounced JIF) animation |         |
- | flip_horizontal                | *(bool)*    | Flip image horizontally                    | false   |
- | flip_vertical                  | *(bool)*    | Flip image vertically                      | false   |
- | rotate                         | *(int)*     | Rotate image in degrees                    |         |
- | image.binary                   | *(string)*  | Binary data of image file                  |         |
- | images.default.resize          | *(special)* | Dynamically resize image using imageMagick |         |
- 
+<a href="../../images/IXImage.png" data-imagelightbox="b"><img src="../../images/IXImage.png" alt="" width="160" height="284"></a>
 
- ##  <a name="readonly">Read Only Attributes</a>
+ ###    Here's how you use it:
  
- | Name         | Type     | Description            |
- |--------------|----------|------------------------|
- | is_animating | *(bool)* | Is it animating?       |
- | image.height | *(int)*  | Actual height of image |
- | image.width  | *(int)*  | Actual width of image  |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+*/
 
- | Name                  | Description                             |
- |-----------------------|-----------------------------------------|
- | images_default_loaded | Fires when the image loads successfully |
- | images_default_failed | Fires when the image fails to load      |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Start GIF animation: *start_animation*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "start_animation"
-      }
-    }
-
-Restart GIF animation: *restart_animation*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "restart_animation"
-      }
-    }
- 
-Stop GIF animation: *stop_animation*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "stop_animation"
-      }
-    }
-
- Not really sure: *load_last_photo*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "imageTest",
-        "function_name": "load_last_photo"
-      }
-    }
-
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-    {
-      "_id": "imageTest",
-      "_type": "Image",
-      "attributes": {
-        "height": 100,
-        "width": 100,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "middle",
-        "images.default": "/images/btn_notifications_25x25.png",
-        "images.default.tintColor": "#a9d5c7"
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXImage.h"
 
@@ -203,6 +94,126 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 @end
 
 @implementation IXImage
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+
+    @param images.default /path/to/image.png<br>*(string)*
+    @param images.default.tintColor Color to overlay transparent png<br>*(color)*
+    @param images.default.blur.radius Blur image<br>*(float)*
+    @param images.default.blur.tintColor Blur tint<br>*(color)*
+    @param images.default.blur.saturation Blur saturation<br>*(float)*
+    @param images.default.force_refresh Force image to reload when enters view<br>*(bool)*
+    @param images.height.max Maximum height of image<br>*(int)*
+    @param images.width.max Maximum width of image<br>*(int)*
+    @param gif_duration Duration of GIF (pronounced JIF) animation<br>*(float)*
+    @param flip_horizontal Flip image horizontally *(default: FALSE)*<br>*(bool)*
+    @param flip_vertical Flip image vertically *(default: FALSE)*<br>*(bool)*
+    @param rotate Rotate image in degrees<br>*(int)*
+    @param image.binary Binary data of image file<br>*(string)*
+    @param images.default.resize Dynamically resize image using imageMagick<br>*(special)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param is_animating Is it animating?<br>*(bool)*
+ @param image.height Actual height of image<br>*(int)*
+ @param image.width Actual width of image<br>*(int)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param images_default_loaded Fires when the image loads successfully
+    @param images_default_failed Fires when the image fails to load
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param start_animation Starts a GIF animation
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param restart_animation Restarts GIF animation
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param stop_animation Stops GIF animation
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param load_last_photo Loads the most recent photo from device Camera Roll
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

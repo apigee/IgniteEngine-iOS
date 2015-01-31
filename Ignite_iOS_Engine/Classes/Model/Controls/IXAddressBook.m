@@ -6,116 +6,34 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
  ###
- ###    Adds a contact to the default iOS address book. No UI.
+ ###    Allows the user to add a contact to their device Address Book.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------
- | *name.first*                         |   *(string)*              |   First Name
- | *name.last*                          |   *(string)*              |   Last Name
- | *company.name*                       |   *(string)*              |   Company Name
- | *company.title*                      |   *(string)*              |   Company Title
- | *phone.mobile*                       |   *(string)*              |   Phone: Mobile
- | *phone.main*                         |   *(string)*              |   Phone: Main
- | *email.home*                         |   *(string)*              |   Email: Home
- | *email.work*                         |   *(string)*              |   Email: Work
- | *username.twitter*                   |   *(string)*              |   Username: Twitter
- | *username.linkedIn*                  |   *(string)*              |   Username: LinkedIn
- | *username.facebook*                  |   *(string)*              |   Username: Facebook
- | *url.home*                           |   *(string)*              |   URL: Home
- | *url.homePage*                       |   *(string)*              |   URL: Homepage
- | *url.work*                           |   *(string)*              |   URL: Work
- | *url.linkedIn*                       |   *(string)*              |   URL: LinkedIn
- | *url.facebook*                       |   *(string)*              |   URL: Facebook
- | *notes*                              |   *(string)*              |   Notes
- | *access_granted*                     |   *(bool)*                |   Permission status *(Read-only)*
+ <a href="../../images/IXAddressBook.png" data-imagelightbox="b"><img src="../../images/IXAddressBook.png" alt="" width="160" height="284"></a>
  
-
- ####
- #### Inherits
- >  None
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *add_contact_success*                |   Contact added successfully.
- | *add_contact_failed*                 |   Contact failed to add.
- 
- ####
- #### Functions
- 
- *add_contact*
-    
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "addressbookTest",
-        "function_name": "add_contact"
-      }
-    }
- 
- ####
- #### Example JSON
- 
-    {
-      "_type": "AddressBook",
-      "_id": "addressBookTest",
-      "actions": [
-        {
-          "_type": "Alert",
-          "attributes": {
-            "title": "add_contact_success"
-          },
-          "on": "add_contact_success"
-        },
-        {
-          "_type": "Alert",
-          "attributes": {
-            "title": "add_contact_failed"
-          },
-          "on": "add_contact_failed"
-        }
-      ],
-      "attributes": {
-        "name.first": "Johnny",
-        "name.last": "Appleseed",
-        "company.name": "Farmers, Inc.",
-        "company.title": "CEO",
-        "phone.mobile": "+15551212",
-        "phone.main": "+15551313",
-        "email.home": "johnnyappleseed@gmail.com",
-        "email.work": "johnny@appleseed.com",
-        "username.twitter": "johnnyappleseed",
-        "username.linkedIn": "johnnyappleseed",
-        "username.facebook": "johnnyappleseed",
-        "url.home": "http://johnnyappleseed.com",
-        "url.homePage": "http://johnnyappleseed.com",
-        "url.work": "http://farmersinc.com",
-        "url.linkedIn": "",
-        "url.facebook": ""
-      }
-    }
- 
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+
+/*
+ *      /Docs
+ *
+ */
+
 
 #import "IXAddressBook.h"
 
@@ -179,6 +97,153 @@ IX_STATIC_CONST_STRING kIXAddContactFailed = @"add_contact_failed";
 @end
 
 @implementation IXAddressBook
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param name.first First Name<br>*(string)*
+    @param name.last Last Name<br>*(string)*
+    @param company.name Company Name<br>*(string)*
+    @param company.title Company Title<br>*(string)*
+    @param phone.mobile Phone: Mobile<br>*(string)*
+    @param phone.main Phone: Main<br>*(string)*
+    @param email.home Email: Home<br>*(string)*
+    @param email.work Email: Work<br>*(string)*
+    @param username.twitter Username: Twitter<br>*(string)*
+    @param username.linkedIn Username: LinkedIn<br>*(string)*
+    @param username.facebook Username: Facebook<br>*(string)*
+    @param url.home URL: Home<br>*(string)*
+    @param url.homePage URL: Homepage<br>*(string)*
+    @param url.work URL: Work<br>*(string)*
+    @param url.linkedIn URL: LinkedIn<br>*(string)*
+    @param url.facebook URL: Facebook<br>*(string)*
+    @param notes Notes<br>*(string)*
+
+
+
+
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param access_granted Permission status<br>*(bool)*
+
+
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param add_contact_success Contact added successfully.
+    @param add_contact_failed Contact failed to add.
+
+
+
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param add_contact Adds contact to device address book.
+ <pre class="brush: js; toolbar: false;">
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "addressbookTest",
+    "function_name": "add_contact"
+  }
+}
+ </pre>
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+<pre class="brush: js; toolbar: false;">
+{
+  "_type": "AddressBook",
+  "_id": "addressBookTest",
+  "actions": [
+    {
+      "_type": "Alert",
+      "attributes": {
+        "title": "add_contact_success"
+      },
+      "on": "add_contact_success"
+    },
+    {
+      "_type": "Alert",
+      "attributes": {
+        "title": "add_contact_failed"
+      },
+      "on": "add_contact_failed"
+    }
+  ],
+  "attributes": {
+    "name.first": "Johnny",
+    "name.last": "Appleseed",
+    "company.name": "Farmers, Inc.",
+    "company.title": "CEO",
+    "phone.mobile": "+15551212",
+    "phone.main": "+15551313",
+    "email.home": "johnnyappleseed@gmail.com",
+    "email.work": "johnny@appleseed.com",
+    "username.twitter": "johnnyappleseed",
+    "username.linkedIn": "johnnyappleseed",
+    "username.facebook": "johnnyappleseed",
+    "url.home": "http://johnnyappleseed.com",
+    "url.homePage": "http://johnnyappleseed.com",
+    "url.work": "http://farmersinc.com",
+    "url.linkedIn": "",
+    "url.facebook": ""
+  }
+}
+</pre>
+
+
+
+
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
 
 -(void)buildView
 {

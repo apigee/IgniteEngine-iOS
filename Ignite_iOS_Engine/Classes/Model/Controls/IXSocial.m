@@ -6,128 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Sharing is caring! Share to Twitter, Facebook, flickr, vimeo, Sina Weibo.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                     | Type                                                   | Description                     | Default |
- |--------------------------|--------------------------------------------------------|---------------------------------|---------|
- | share.platform           | *facebook<br>twitter<br>flickr<br>vimeo<br>sina_weibo* | Where shall we share to?        |         |
- | share.text               | *(string)*                                             | What text do you want to share? |         |
- | share.url                | *(string)*                                             | Shall we share a URL?           |         |
- | share.image              | *(string)*                                             | Ducklips?                       |         |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
-##  <a name="readonly">Read Only Attributes</a>
- 
- | Name                 | Type     | Description                      |
- |----------------------|----------|----------------------------------|
- | facebook_available   | *(bool)* | Is Facebook sharing available?   |
- | twitter_available    | *(bool)* | Is Twitter sharing available?    |
- | flickr_available     | *(bool)* | Is flickr sharing available?     |
- | vimeo_available      | *(bool)* | Is Vimeo sharing available?      |
- | sina_weibo_available | *(bool)* | Is Sina Weibo sharing available? |
- 
- ##  <a name="events">Events</a>
+<a href="../../images/IXSocial.png" data-imagelightbox="b"><img src="../../images/IXSocial.png" alt="" width="160" height="284"></a>
 
- | Name                  | Description                                      |
- |-----------------------|--------------------------------------------------|
- | share_done            | Fires when shared successfully                   |
- | share_cancelled       | Fires if the user dismisses the view controller  |
+ ###    Here's how you use it:
  
-
- ##  <a name="functions">Functions</a>
- 
-Present Sharing view controller: *present_share_controller*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "socialTest",
-        "function_name": "present_share_controller"
-      }
-    }
- 
-Present Sharing view controller: *present_share_controller*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "socialTest",
-        "function_name": "present_share_controller"
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
- 
- 
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+*/
 
 /*
- 
- CONTROL
- 
- - TYPE : "Message"
- 
- - PROPERTIES
- 
- * name=""        default=""               type="facebook, twitter, weibo"
- * name=""            default=""               type="String"
- * name=""             default=""               type="String"
- * name=""           default=""               type="String"
- 
- - EVENTS
- 
- * name="share_done"
- * name="share_cancelled"
- 
- {
- "type": "Social",
- "properties": {
- "visible": "NO",
- "id": "myEmail",
- "width": "100%",
- "height": "50",
- "share": {
- "platform": "facebook",
- "text": "initial text goes here",
- "url": "http://google.com",
- "image": "/assets/images/social.jpg"
- },
- "color": {
- "background": "#00FFFF"
- }
- }
- },
- 
- */
+ *      /Docs
+ *
+*/
 
 #import "IXSocial.h"
 
@@ -183,6 +88,103 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller
 @end
 
 @implementation IXSocial
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param share.platform Where shall we share to?<br>*facebooktwitterflickrvimeosina_weibo*
+    @param share.text What text do you want to share?<br>*(string)*
+    @param share.url Shall we share a URL?<br>*(string)*
+    @param share.image Ducklips?<br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param facebook_available Is Facebook sharing available?<br>*(bool)*
+ @param twitter_available Is Twitter sharing available?<br>*(bool)*
+ @param flickr_available Is flickr sharing available?<br>*(bool)*
+ @param vimeo_available Is Vimeo sharing available?<br>*(bool)*
+ @param sina_weibo_available Is Sina Weibo sharing available?<br>*(bool)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param share_done Fires when shared successfully
+    @param share_cancelled Fires if the user dismisses the view controller
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param present_share_controller
+  
+ <pre class="brush: js; toolbar: false;">
+
+ </pre>
+
+    @param dismiss_share_controller 
+ 
+ <pre class="brush: js; toolbar: false;">
+
+ </pre>
+ 
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

@@ -7,72 +7,34 @@
 //
 //
 
-
 /*
- 
- 
- // IXBrowser Events
- IX_STATIC_CONST_STRING kIXStarted = @"started";
- IX_STATIC_CONST_STRING kIXFailed = @"failed";
- IX_STATIC_CONST_STRING kIXFinished = @"finished";
- 
- */
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
  ###
- ###    Web browser control.
+ ###    A basic UIWebView that allows you to render a HTML string or a URL.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|
- | *url*                                |   *(string)*              |   The URL to load
- | *html.string*                        |   *(string)*              |   Load string of HTML
- | *html.base_url*                      |   *(string)*              |   Base URL when using HTML string
+<a href="../../images/IXBrowser.png" data-imagelightbox="b"><img src="../../images/IXBrowser.png" alt="" width="160" height="284"></a>
+
+ ###    Here's how you use it:
  
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *started*                            |   Page load initiated.
- | *failed*                             |   Page failed to load.
- | *finished*                           |   Page loaded successfully.
- 
- ####
- #### Functions
- >  None
- 
- ####
- #### Example JSON
- 
-    {
-      "_id": "browserTest",
-      "_type": "Browser",
-      "attributes": {
-        "height": "100%",
-        "width": "100%",
-        "url": "http://apigee.com"
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 
 #import "IXBrowser.h"
 #import "IXAppManager.h"
@@ -106,6 +68,82 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 @end
 
 @implementation IXBrowser
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param url The URL to load<br>*(string)*
+    @param html.string Load string of HTML<br>*(string)*
+    @param html.base_url Base URL when using HTML string<br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param started Page load initiated.
+    @param failed Page failed to load.
+    @param finished Page loaded successfully.
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_id": "browserTest",
+  "_type": "Browser",
+  "attributes": {
+    "height": "100%",
+    "width": "100%",
+    "url": "http://apigee.com"
+  }
+}
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
 
 -(void)dealloc
 {

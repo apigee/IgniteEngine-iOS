@@ -6,80 +6,33 @@
 //  Copyright (c) 2013. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
- ###    Layout container -- use me everywhere.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    The jack of all trades. Use me everywhere.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                              | Type                            | Description                         | Default |
- |-----------------------------------|---------------------------------|-------------------------------------|---------|
- | layout_flow                       | *horizontal<br>vertical*        | Orientation of relative layout flow |         |
- | vertical_scroll_enabled           | *(bool)*                        | Minimum value allowed               |         |
- | horizontal_scroll_enabled         | *(bool)*                        | Minimum value allowed               |         |
- | enable_scrolls_to_top             | *(bool)*                        | Image to overlay                    |         |
- | scroll_indicator_style            | *black<br>white*                | Image to underlay                   |         |
- | background.blur                   | *extra_light<br> light<br>dark* | Image pointer                       |         |
- | background.blur.tintColor         | *(float)*                       | Maximum angle                       |         |
- | background.blur.tint.alpha        | *(float)*                       | Animation duration                  |         |
- | shows_scroll_indicators           | *(bool)*                        | Display scroll indicators?          |         |
- | shows_horizontal_scroll_indicator | *(bool)*                        | Display horizontal scroll indicator |         |
- | shows_vertical_scroll_indicator   | *(bool)*                        | Display vertical scroll indicator   |         |
- | max_zoom_scale                    | *(bool)*                        | Maximum zoom scale                  |         |
- | min_zoom_scale                    | *(float)*                       | Minimum zoom scale                  |         |
- | enable_zoom                       | *(bool)*                        | Enable zoom                         |         |
- | zoom_scale                        | *(float)*                       | Zoom scale                          |         |
- | color.gradient_top                | *(color)*                       | Gradient color top                  |         |
- | color.gradient_bottom             | *(color)*                       |                                     |         |
- 
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
->   None
- 
+<a href="../../images/IXLayout.png" data-imagelightbox="b"><img src="../../images/IXLayout.png" alt="" width="160" height="284"></a>
 
- ##  <a name="functions">Functions</a>
->   None
+ ###    Here's how you use it:
+ 
+*/
 
- 
- ##  <a name="example">Example JSON</a> 
- 
-    {
-      "_id": "layoutTest",
-      "_type": "Layout",
-      "attributes": {
-        "layout_type": "absolute",
-        "height": 100,
-        "width": 100,
-        "background.color":"#696969",
-        "vertical_alignment":"middle",
-        "horizontal_alignment":"middle"
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXLayout.h"
 #import "IXClickableScrollView.h"
@@ -133,6 +86,92 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 @end
 
 @implementation IXLayout
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param layout_flow Orientation of relative layout flow<br>*horizontalvertical*
+    @param vertical_scroll_enabled Minimum value allowed<br>*(bool)*
+    @param horizontal_scroll_enabled Minimum value allowed<br>*(bool)*
+    @param enable_scrolls_to_top Image to overlay<br>*(bool)*
+    @param scroll_indicator_style Image to underlay<br>*blackwhite*
+    @param background.blur Image pointer<br>*extra_lightlightdark*
+    @param background.blur.tintColor Maximum angle<br>*(float)*
+    @param background.blur.tint.alpha Animation duration<br>*(float)*
+    @param shows_scroll_indicators Display scroll indicators?<br>*(bool)*
+    @param shows_horizontal_scroll_indicator Display horizontal scroll indicator<br>*(bool)*
+    @param shows_vertical_scroll_indicator Display vertical scroll indicator<br>*(bool)*
+    @param max_zoom_scale Maximum zoom scale<br>*(bool)*
+    @param min_zoom_scale Minimum zoom scale<br>*(float)*
+    @param enable_zoom Enable zoom<br>*(bool)*
+    @param zoom_scale Zoom scale<br>*(float)*
+    @param color.gradient_top Gradient color top<br>*(color)*
+    @param color.gradient_bottom <br>*(color)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

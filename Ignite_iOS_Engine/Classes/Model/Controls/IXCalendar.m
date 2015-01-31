@@ -6,101 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
  ###
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
+ ###    Create calendar items and add them to the device calendar.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- |  Name                                |   Type                    |   Description                                         |   Default
- |:-------------------------------------|:-------------------------:|:------------------------------------------------------|:-------------:|
- | *event.allDay*                       |   *(bool)*                |   All day event?                                      |   false
- | *event.title*                        |   *(string)*              |   Event Title                                         |
- | *event.location*                     |   *(string)*              |   Location                                            |
- | *event.url*                          |   *(string)*              |   URL                                                 |
- | *event.notes*                        |   *(string)*              |   Notes                                               |
- | *event.date.format*                  |   *(string)*              |   Date Format                                         |
- | *event.date.start*                   |   *(date)*                |   Date Start                                          |
- | *event.date.end*                     |   *(date)*                |   Date End                                            |
- | *event.alarm.offset*                 |   *(float)*               |   Alarm Offset                                        |
- | *event.recurrence.frequency*         |   none<br>daily<br>weekly<br>monthly<br>yearly    |   Recurrance Frequency        |
- | *access_granted*                     |   *(bool)*                |   Permission status *(Read-only)*
+<a href="../../images/IXCalendar.png" data-imagelightbox="b"><img src="../../images/IXCalendar.png" alt="" width="160" height="284"></a>
+
+ ###    Here's how you use it:
  
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *add_event_success*                  |   The event was added successfully
- | *add_event_failed*                   |   Event failed to add to calendar.
- 
- ####
- #### Functions
- 
- *add_event*
-    
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "calendarTest",
-        "function_name": "add_event"
-      }
-    }
- 
- ####
- #### Example JSON
- 
-    {
-      "_type": "Calendar",
-      "_id": "calendarTest",
-      "actions": [
-        {
-          "_type": "Alert",
-          "attributes": {
-            "title": "add_event_success"
-          },
-          "on": "add_event_success"
-        },
-        {
-          "_type": "Alert",
-          "attributes": {
-            "title": "add_event_failed"
-          },
-          "on": "add_event_failed"
-        }
-      ],
-      "attributes": {
-        "event.title": "Event Title",
-        "event.allDay": false,
-        "event.location": "1234 Some Street, City, State Zip",
-        "event.notes": "Event Notes",
-        "event.url": "http://meetings-are-fun.com",
-        "event.date.format": "yyyy-MM-dd HH:mm:ss",
-        "event.date.start": "2015-12-31 23:00:00",
-        "event.date.end": "2016-01-01 00:00:00",
-        "event.alarm.offset": -1800,
-        "event.recurrence.frequency": "none"
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+*/
+
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXCalendar.h"
 
@@ -158,6 +90,102 @@ IX_STATIC_CONST_STRING kIXAddEventFailed = @"add_event_failed";
 @end
 
 @implementation IXCalendar
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+
+    @param event.allDay All day event? *(default: FALSE)*<br>*(bool)*
+    @param event.title Event Title<br>*(string)*
+    @param event.location Location<br>*(string)*
+    @param event.url URL<br>*(string)*
+    @param event.notes Notes<br>*(string)*
+    @param event.date.format Date Format<br>*(string)*
+    @param event.date.start Date Start<br>*(date)*
+    @param event.date.end Date End<br>*(date)*
+    @param event.alarm.offset Alarm Offset<br>*(float)*
+"    @param event.recurrence.frequency Recurrance Frequency<br>*none
+daily
+weekly
+monthly
+yearly*"
+    @param access_granted Permission status (Read-only)<br>*(bool)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param add_event_success The event was added successfully
+    @param add_event_failed Event failed to add to calendar.
+
+ */
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param add_event Adds an event to the device calendar
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

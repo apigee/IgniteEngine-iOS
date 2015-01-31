@@ -6,6 +6,79 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/30/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    Shortcodes are awesome.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Shortcodes</a>
+ 
+ | Name            | Format                                  | Description                                                                      |
+ |-----------------|-----------------------------------------|----------------------------------------------------------------------------------|
+ | capitalize      | [[?:capitalize]]                        | String value Capitalized                                                         |
+ | currency        | [[?:currency(GBP)]]                     | String value in currency form (Defaults to USD, can specify ISO 4217 Alpha Code) |
+ | distance        | [[app:distance(lat1:long1,lat2:long2)]] | Distance from lat1,long1 to lat2,long2.                                          |
+ | session.destroy | [[app:session.destroy]]                 | Removes all session attributes from memory. Returns nil.                         |
+ | from_base64     | [[?:from_base64]]                       | Base64 value to string                                                           |
+ | is_empty        | [[?:is_empty]]                          | True if the string is empty (aka "")                                             |
+ | is_nil          | [[?:is_nil]]                            | True if the string is nil                                                        |
+ | is_nil_or_empty | [[?:is_nil_or_empty]]                   | True if the string is empty or nil                                               |
+ | is_not_empty    | [[?:is_not_empty]]                      | True if the string is not empty                                                  |
+ | is_not_nil      | [[?:is_not_nil]]                        | True if the string is not nil                                                    |
+ | length          | [[?:length]]                            | Length of the attributes string                                                  |
+ | moment          | [[?:moment(toDateFormat)]]              | String as date with the given format (can have 2 params)                         |
+ | monogram        | [[?:monogram]]                          | String monogram value                                                            |
+ | now             | [[app:now]]                             | Current date as string (can specify dateFormat)                                  |
+ | random_number   | [[app:random_number(upBounds)]]         | Random number generator (can specify lower bounds)                               |
+ | to_base64       | [[?:to_base64]]                         | String to Base64 value                                                           |
+ | to_md5          | [[?:to_md5]]                            | String to MD5 hashed value                                                       |
+ | to_uppercase    | [[?:to_uppercase]]                      | String value in UPPERCASE                                                        |
+ | to_lowercase    | [[?:to_lowercase]]                      | String value in lowercase                                                        |
+ | url_encode      | [[?:url_encode]]                        | URL encode string                                                                |
+ | truncate        | [[?:truncate(toIndex)]]                 | Trucates the string to specified index                                           |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+>   None
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  None
+ 
+ ##  <a name="events">Events</a>
+
+>   None
+ 
+ ##  <a name="functions">Functions</a>
+ 
+>   None
+
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
 #import "IXShortCodeFunction.h"
 
 @import CoreLocation;

@@ -6,84 +6,11 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+Allows the user to interact with Passbook Passes.
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                           | Type        | Description                                | Default |
- |--------------------------------|-------------|--------------------------------------------|---------|
- | pass.location                  | *(string)*  | http:// or /path/to/pass.passkit           |         |
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name                 | Type       | Description                                                      |
- |----------------------|------------|------------------------------------------------------------------|
- | passkit.available    | *(bool)*   | Does this device support PassKit?                                |
- | passkit.containsPass | *(bool)*   | Does the file you've pointed to actually contain a PassKit pass? |
- | pass.error           | *(string)* | Whoopsie.                                                        |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name                  | Description                                         |
- |-----------------------|-----------------------------------------------------|
- | pass.creation.success | Fires when the pass is displayed successfully       |
- | pass.creation.failed  | Fires when an error occurs when displaying the pass |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Present the PassKit view controller: *pass.controller.present*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.present"
-      }
-    }
-
-Dismiss the PassKit view controller: *pass.controller.dismiss*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.dismiss"
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
- 
-
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+*/
 
 #import "IXPassKit.h"
 
@@ -128,6 +55,103 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
     [self dismissPassController:YES];
 }
 
+/*  -----------------------------  */
+//  [Documentation]
+
+/** Configuration Atributes
+
+    @param pass.location http:// or /path/to/pass.passkit  <br>    *(string)*
+ 
+*/
+
+-(void)config
+{
+    // Documentation: Config
+}
+
+/** Events
+ 
+ IXPassKit has the following events:
+ 
+ @param pass.creation.success Fires when the pass is displayed successfully
+ @param pass.creation.failed Fires when an error occurs when displaying the pass
+ 
+*/
+
+-(void)events
+{
+    // Documentation: Events
+}
+
+/** Read-Only Attributes
+ 
+ @param passkit.available	 *(bool)*   |   Is Does this device support PassKit?
+ @param passkit.containsPass *(bool)*   |   Does the file you’ve pointed to actually contain a PassKit pass?
+ @param pass.error *(string)*   |   Whoopsie.
+ 
+*/
+
+/** Functions
+ 
+ @param pass.controller.present Present PassKit view controller
+ 
+ <pre class="brush: js; toolbar: false;">
+     {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "passkitTest",
+        "function_name": "pass.controller.present"
+      }
+    }
+ </pre>
+ 
+
+ 
+ @param pass.controller.dismiss Dismiss PassKit view controller
+ 
+ <pre class="brush: js; toolbar: false;">
+     {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "passkitTest",
+        "function_name": "pass.controller.dismiss"
+      }
+    }
+ </pre>
+
+ */
+
+-(void)functions
+{
+    // Documentation: Functions
+}
+
+-(void)readOnly
+{
+    // Documentation: Read-only Attributes
+}
+
+/** Sample Code
+ 
+ The following example will present a Passbook pass for the user to save/reject.
+
+<pre class="brush: js; toolbar: false;">
+ 
+</pre>
+ 
+*/
+
+-(void)sampleCode
+{
+    // Documentation: Sample Code
+}
+
+//  /[Documentation]
+/*  -----------------------------  */
+
+
 -(void)buildView
 {
     if( [PKPassLibrary isPassLibraryAvailable] ) {
@@ -135,37 +159,38 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
     }
 }
 
+
 -(void)applySettings
 {
     [super applySettings];
-
+    
     NSURL* passURL = [self.propertyContainer getURLPathPropertyValue:kIXPassLocation basePath:nil defaultValue:nil];
     if( [self passURL] == nil || ![[self passURL] isEqual:passURL] || [self pass] == nil ) {
-
+        
         [self setPassURL:passURL];
-
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
+            
             NSData* passData = [[NSData alloc] initWithContentsOfURL:[self passURL]];
             NSError* passCreationError;
             PKPass* createdPass = [[PKPass alloc] initWithData:passData error:&passCreationError];
-
+            
             [self setPass:createdPass];
             [self setPassCreationError:passCreationError];
-
+            
             IX_dispatch_main_sync_safe(^{
-
+                
                 if( [self pass] == nil )
                 {
                     [[self actionContainer] executeActionsForEventNamed:kIXPassCreationFailed];
-
+                    
                     IX_LOG_ERROR(@"ERROR: from %@ in %@ : PASSKIT CONTROL ID:%@ CREATION ERROR: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[[self passCreationError] description]);
                 }
                 else
                 {
                     [[self actionContainer] executeActionsForEventNamed:kIXPassCreationSuccess];
                 }
-
+                
             });
         });
     }

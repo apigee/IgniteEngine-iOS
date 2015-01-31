@@ -6,58 +6,34 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
  ###
  ###    A round bit.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- 
- |  Name                            |   Type                        |   Description                                         |   Default
- |:---------------------------------|:-----------------------------:|:------------------------------------------------------|:-------------:|
- | *size*                           |   *(integer)*                 |   Circle size                                         |
- | *color*                          |   *(color)*                   |   Circle color                                        |
+<a href="../../images/IXCircle.png" data-imagelightbox="b"><img src="../../images/IXCircle.png" alt="" width="160" height="284"></a>
 
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- >  None
- 
- ####
- #### Functions
- >  None
- 
- #### Example JSON
- 
-    {
-      "_id": "circleTest",
-      "_type": "Circle",
-      "attributes": {
-        "size": 50,
-        "color": "#ff00ff",
-        "layout_type": "absolute",
-        "horizontal_alignment": "center",
-        "vertical_alignment": "middle"
-      }
-    }
+ ###    Here's how you use it:
  
 */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+
+/*
+ *      /Docs
+ *
+*/
+
 
 #import "IXCircle.h"
 
@@ -66,6 +42,76 @@ static NSString* const kIXColor = @"color";
 
 @implementation IXCircle : IXBaseControl
 
+/*
+ * Docs
+ *
+ */
+
+/***************************************************************/
+
+/** Configuration Atributes
+ 
+    @param size Circle size<br>*(integer)*
+    @param color Circle color<br>*(color)*
+ 
+ */
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+ */
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+ 
+ Example:
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+ 
+ */
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+ * /Docs
+ *
+ */
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {

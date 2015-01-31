@@ -6,140 +6,34 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- ###
- ###    Base control; attributes apply to all controls
- 
- ####
- #### Attributes
- |  Name                            |   Type        |   Description                                         |   Default
- |:---------------------------------|:-------------:|:------------------------------------------------------|:-------------:|
- | *width*                          |   *(integer)* |   The width of the control                            |
- | *height*                         |   *(integer)* |   The height of the control                           |
- | *alpha*                          |   *(float)*   |   The alpha of the control                            |
- | *border.width*                   |   *(integer)* |   The border width                                    |
- | *border.color*                   |   *(color)*   |   Description                                         |
- | *border.radius*                  |   *(float)*   |   Description                                         |
- | *background.color*               |   *(color)*   |   Description                                         |
- | *background.image*               |   *(string)*  |   Description                                         |
- | *background.image.scale*         |   *cover<br>stretch<br>tile<br>contain*   |   Description                 |
- | *cicontext.resolution*           |   *(float)*   |   Description                                         |
- | *enabled*                        |   *(bool)*    |   Description                                         |
- | *enable_tap*                     |   *(bool)*    |   Description                                         |
- | *enable_swipe*                   |   *(bool)*    |   Description                                         |
- | *enable_pinch*                   |   *(bool)*    |   Description                                         |
- | *enable_pan*                     |   *(bool)*    |   Description                                         |
- | *enable_long_press*              |   *(bool)*    |   Description                                         |
- | *enable_shadow*                  |   *(bool)*    |   Description                                         |
- | *layout_type*                    |   *relative<br>absolute<br>float*       |   Description                 |   relative
- | *horizontal_alignment*           |   *left<br>center<br>right*             |   Description                 |   relative
- | *vertical_alignment*             |   *top<br>middle<br>bottom*             |   Description                 |   relative
- | *shadow_blur*                    |   *(float)*   |   Description                                         |
- | *shadow_alpha*                   |   *(float)*   |   Description                                         |
- | *shadow_color*                   |   *(color)*   |   Description                                         |
- | *shadow_offset_right*            |   *(float)*   |   Description                                         |
- | *shadow_offset_down*             |   *(float)*   |   Description                                         |
- | *visible*                        |   *(bool)*    |   Description                                         |
- 
- ####
- #### Events
- |  Name                        |   Description
- |:-----------------------------|:--------------------------------------------------------------------|
- | *touch*                      |   Fires when the control is touched
- | *touch_up*                   |   Fires when the control touch is released
- | *touch_cancelled*            |   Fires when the control touch is canceled
- | *tap*                        |   Fires when the control is tapped (tap_count, integer)
- | *swipe*                      |   Fires when the control is swiped (down, up, right, left)
- | *pan*                        |   Fires when ?
- | *long_press*                 |   Fires when the control receives a long press
- | **            |   Fires when
- 
- 
- 
- ####
- #### Functions
- >  None
- 
- ####
- #### Inherits
- >  None
- 
- #### Example JSON
- >  None
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
+/**
+ 
+ ###
+ ###    Base control. Lots of things inherit attributes from this baby.
+ ###
+ ###    Looks like:
+ 
+<a href="../../images/IXBaseControl.png" data-imagelightbox="b"><img src="../../images/IXBaseControl.png" alt="" width="160" height="284"></a>
+
+ ###    Here's how you use it:
+ 
+*/
 
 /*
- 
- 
- static NSString* const kIXTap = @"tap";
- static NSString* const kIXTapCount = @"tap_count";
- static NSString* const kIXSwipe = @"swipe";
- static NSString* const kIXSwipeDirection = @"swipe_direction";
- static NSString* const kIXDown = @"down";
- static NSString* const kIXUp = @"up";
- static NSString* const kIXRight = @"right";
- static NSString* const kIXLeft = @"left";
- static NSString* const kIXPan = @"pan";
- static NSString* const kIXPanReset = @"pan.reset";
- static NSString* const kIXPanSnap = @"pan.snap_to_bounds";
- static NSString* const kIXLongPress = @"long_press";
- static BOOL kIXDidDetermineOriginalCenter = false;
- 
- //
- // IXBaseControl pinch events & handlers
- //
- static NSString* const kIXPinchIn = @"pinch.in";
- static NSString* const kIXPinchOut = @"pinch.out";
- static NSString* const kIXPinchZoom = @"pinch.zoom"; //both (default), horizontal, or vertical
- static NSString* const kIXPinchReset = @"pinch.reset";
- static NSString* const kIXPinchMax = @"pinch.max";
- static NSString* const kIXPinchMin = @"pinch.min";
- static NSString* const kIXPinchElastic = @"pinch.elastic";
- static NSString* const kIXPinchHorizontal = @"horizontal";
- static NSString* const kIXPinchVertical = @"vertical";
- static NSString* const kIXPinchBoth = @"both";
- static NSString* const kIXSnapshotSaved = @"snapshot.saved";
- static NSString* const kIXSnapshotFailed = @"snapshot.failed";
- 
- // Read-only properties
- static NSString* const kIXLocation = @"location";
- static NSString* const kIXLocationX = @"location.x";
- static NSString* const kIXLocationY = @"location.y";
- static NSString* const kIXActualHeight = @"actual.height";
- static NSString* const kIXActualWidth = @"actual.width";
- 
- // Animations
- static NSString* const kIXSpin = @"spin";
- 
- static NSString* const kIXDirection = @"direction";
- static NSString* const kIXReverse = @"reverse";
- 
- // Animation Functions
- static NSString* const kIXStartAnimation = @"start_animation";
- static NSString* const kIXStopAnimation = @"stop_animation";
- static NSString* const kIXSnapshot = @"snapshot";
- 
- // kIXSnapshot Parameters
- static NSString* const kIXSaveToLocation = @"saveToLocation";
- 
- // Functions & Helpers
- static NSString* const kIXToggle = @"dev_toggle";
- 
- */
+ *      /Docs
+ *
+*/
+
 
 #import "IXBaseControl.h"
 
@@ -254,6 +148,123 @@ static NSString* const kIXToggle = @"dev_toggle";
 @end
 
 @implementation IXBaseControl
+
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+
+    @param width The width of the control<br>*(integer)*
+    @param height The height of the control<br>*(integer)*
+    @param alpha The alpha of the control<br>*(float)*
+    @param border.width The border width<br>*(integer)*
+    @param border.color Description<br>*(color)*
+    @param border.radius Description<br>*(float)*
+    @param background.color Description<br>*(color)*
+    @param background.image Description<br>*(string)*
+    @param background.image.scale Description<br>*coverstretchtilecontain*
+    @param cicontext.resolution Description<br>*(float)*
+    @param enabled Description<br>*(bool)*
+    @param enable_tap Description<br>*(bool)*
+    @param enable_swipe Description<br>*(bool)*
+    @param enable_pinch Description<br>*(bool)*
+    @param enable_pan Description<br>*(bool)*
+    @param enable_long_press Description<br>*(bool)*
+    @param enable_shadow Description<br>*(bool)*
+    @param layout_type Description *(default: relative)*<br>*relativeabsolutefloat*
+    @param horizontal_alignment Description *(default: relative)*<br>*leftcenterright*
+    @param vertical_alignment Description *(default: relative)*<br>*topmiddlebottom*
+    @param shadow_blur Description<br>*(float)*
+    @param shadow_alpha Description<br>*(float)*
+    @param shadow_color Description<br>*(color)*
+    @param shadow_offset_right Description<br>*(float)*
+    @param shadow_offset_down Description<br>*(float)*
+    @param visible Description<br>*(bool)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+
+
+
+
+
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param touch Fires when the control is touched
+    @param touch_up Fires when the control touch is released
+    @param touch_cancelled Fires when the control touch is canceled
+    @param tap Fires when the control is tapped (tap_count, integer)
+    @param swipe Fires when the control is swiped (down, up, right, left)
+    @param pan Fires when ?
+    @param long_press Fires when the control receives a long press
+    @param ** Fires when
+
+
+*/
+-(void)events
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+
+
+
+
+
+
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
 
 -(void)dealloc
 {

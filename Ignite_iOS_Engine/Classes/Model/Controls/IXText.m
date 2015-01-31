@@ -6,62 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Words, letters & fonts.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXText.png" data-imagelightbox="b"><img src="../../images/IXText.png" alt="" width="160" height="284"></a>
  
- | Name            | Type                                              | Description                                 | Default          |
- |-----------------|---------------------------------------------------|---------------------------------------------|------------------|
- | text            | *(string)*                                        | Text to display                             |                  |
- | text.alignment  | *left<br>right<br>center<br>justified<br>natural* | Alignment of the text                       | left             |
- | text.color      | *(color)*                                         | Color of the text                           | #000000          |
- | font            | *(string)*                                        | The text font name and size (font:size)     | HelveticaNeue:20 |
- | size_to_fit     | *(bool)*                                          | Shall the size the text to fit dynamically? | false            |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
->   None
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
->   None
- 
-
- ##  <a name="functions">Functions</a>
- 
->   None
- 
- ##  <a name="example">Example JSON</a> 
- 
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
 
+/*
+ *      /Docs
+ *
+ */
 
 #import "IXText.h"
 
@@ -83,6 +54,80 @@ static NSString* const kIXSizeToFit = @"size_to_fit";
 @end
 
 @implementation IXText
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param text Text to display<br>*(string)*
+    @param text.alignment Alignment of the text *(default: left)*<br>*leftrightcenterjustifiednatural*
+    @param text.color Color of the text *(default: #000000)*<br>*(color)*
+    @param font The text font name and size (font:size) *(default: HelveticaNeue:20)*<br>*(string)*
+    @param size_to_fit Shall the size the text to fit dynamically? *(default: FALSE)*<br>*(bool)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

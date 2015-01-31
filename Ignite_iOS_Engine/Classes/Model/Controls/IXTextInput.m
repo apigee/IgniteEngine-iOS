@@ -7,179 +7,32 @@
 //
 
 /*
- 
-//////////////LEGACY
- 
- CONTROL
- 
- - TYPE : "TextInput"
- 
- - PROPERTIES
- 
- * name="dismiss_on_return"         default="YES"               type="BOOL"
- * name="placeholder_text"          default=""                  type="String"
- * name="placeholder_text_color"    default="lightGrayColor"    type="Color"
- 
- - EVENTS
- 
- * name="got_focus"         when="Occurs when the user begins editing the text."
- * name="lost_focus"        when="Occurs when the return key is pressed and "dismiss_on_return" is set to YES"
- 
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
  */
 
-
-/////////////////END_LEGACY
-
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Brandon Shelley
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
- ###    Text input control that utilizes a hybrid of iOS native and third party controls to provide a unified input interface.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Capture input from the user
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXTextInput.png" data-imagelightbox="b"><img src="../../images/IXTextInput.png" alt="" width="160" height="284"></a>
  
- | Name                     | Type        | Description                                                                                    | Default |
- |--------------------------|-------------|------------------------------------------------------------------------------------------------|---------|
- | font                     | *(string)*  | Text font                                                                                      |         |
- | cursor.color             | *(color)*   | Cursor color                                                                                   |         |
- | autocorrect              | *(bool)*    | Enables or disables system autocorrect                                                         | true    |
- | dismiss_on_return        | *(bool)*    | Enables automatic closing of keyboard when return key pressed                                  | false   |
- | layout_to_scroll         | *(ref)*     | Array of reference pointers of view(s) that should scroll when keyboard appears                |         |
- | keyboard_adjusts_screen  | *(bool)*    | Sets whether the keyboard appearing should automatically adjust the current view when          |         |
- | is_multiline             | *(bool)*    | Sets the input to allow multiple lines of text                                                 |         |
- | initial_text             | *(string)*  | Initial text present in input (not placeholder!)                                               |         |
- | text.color               | *(color)*   | Text color                                                                                     |         |
- | text.placeholder         | *(string)*  | Placeholder text (re-appears when input is empty)                                              |         |
- | text.placeholder.color   | *(color)*   | Color of placeholder text                                                                      |         |
- | text.alignment           | *(string)*  | Text alignment (left, center, right, justified)                                                |         |
- | background.color         | *(color)*   | Background color text input view                                                               |         |
- | clears_on_begin_editing  | *(bool)*    | Clears text when input becomes first responder (only works on non-multiline input)             | false   |
- | image.left               | *(path)*    | Left image -- must use relative path including assets/ (only available on multiline input)     |         |
- | image.right              | *(path)*    | Right image -- must use relative path including assets/ (only available on multiline input)    |         |
- | image.background         | *(????)*    |                                                                                                |         |
- | image.hides_when_empty   | *(bool)*    | Sets whether defined image should hide when text is empty (only works on multiline input)      |         |
- | keyboard.appearance      | *(string)*  | Keyboard tint (light, dark, default)                                                           | default |
- | keyboard.type            | *(string)*  | Keyboard type (email, number, phone, url, decimal, name_phone, numbers_punctuation, default)   | default |
- | keyboard.padding         | *(integer)* | Keyboard padding                                                                               | 0       |
- | keyboard.return_key      | *(string)*  | Keyboard return key type (go, next, search, done, join, send, route, emergency, google, yahoo) | default |
- | input.format.currency    | *(bool)*    | Sets whether the input should be formatted as currency                                         | false   |
- | input.format.credit_card | *(bool)*    | Sets whether the input should be formatted as a credit card                                    | false   |
- | input.regex.allowed      | *(regex)*   | A regular expression of explicitly allowed characters                                          |         |
- | input.regex.disallowed   | *(regex)*   | A regular expression of explicitly disallowed characters                                       |         |
- | input.max                | *(integer)* | Maximum allowed number of characters                                                           |         |
- | input.transform          | *(string)*  | Text transform (capitalize, lowercase, uppercase, ucfirst)                                     |         |
- 
- | ~filter_datasource~      |             | ( not implemented )                                                                            |         |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name | Type       | Description                                                                                |
- |------|------------|--------------------------------------------------------------------------------------------|
- | text | *(string)* | Current text value of the text input control (to set the text use the kIXSetText function) |
-
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name        | Description                                                 |
- |-------------|-------------------------------------------------------------|
- | got_focus          | Fires when the input control becomes first responder |
- | lost_focus         | Fires when the input control loses focus             |
- | return_key_pressed | Fires when the user selects the return key           |
- | text_changed       | Fires when text is changed                           |
- | image.right.tapped | Fires when the right-hand image is tapped            |
- | image.left.tapped  | Fires when the left-hand image is tapped             |
-
- ##  <a name="functions">Functions</a>
- 
-Sets the text: *set_text*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "textInputBox",
-        "text": "My new text that's going to appear in the box!",
-        "function_name": "set_text"
-      }
-    }
-
-
-Hide the keyboard (lose focus): *keyboard_hide*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "textInputBox",
-        "function_name": "keyboard_hide"
-      }
-    }
- 
- Show the keyboard (gain focus): *keyboard_show*, *focus*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "textInputBox",
-        "function_name": "focus"
-      }
-    }
-
- ##  <a name="example">Example JSON</a> 
-
-  {
-      "_id": "TextInput",
-      "_type": "TextInput",
-      "actions": [
-          {
-              "_type": "Modify",
-              "attributes": {
-                  "_target": "session"
-              },
-              "on": "text_changed,got_focus",
-              "set": {
-                  "aSessionProperty": "[[$self.text]]"
-              }
-          }
-      ],
-      "attributes": {
-          "border.color": "cdcdcd",
-          "border.radius": 5,
-          "border.width": 2,
-          "font": "HelveticaNeue-Light:22",
-          "height": 50,
-          "horizontal_alignment": "center",
-          "is_multiline": false,
-          "text.alignment": "center",
-          "text.color": "#6c6c6c",
-          "text.placeholder": "Placeholder Text",
-          "width": 280
-      }
-  }
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+
+/*
+ *      /Docs
+ *
+ */
 
 #import "IXTextInput.h"
 
@@ -296,6 +149,133 @@ static NSString* const kIXNewLineString = @"\n";
 @end
 
 @implementation IXTextInput
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param font Text font<br>*(string)*
+    @param cursor.color Cursor color<br>*(color)*
+    @param autocorrect Enables or disables system autocorrect *(default: TRUE)*<br>*(bool)*
+    @param dismiss_on_return Enables automatic closing of keyboard when return key pressed *(default: FALSE)*<br>*(bool)*
+    @param layout_to_scroll Array of reference pointers of view(s) that should scroll when keyboard appears<br>*(ref)*
+    @param keyboard_adjusts_screen Sets whether the keyboard appearing should automatically adjust the current view when<br>*(bool)*
+    @param is_multiline Sets the input to allow multiple lines of text<br>*(bool)*
+    @param initial_text Initial text present in input (not placeholder!)<br>*(string)*
+    @param text.color Text color<br>*(color)*
+    @param text.placeholder Placeholder text (re-appears when input is empty)<br>*(string)*
+    @param text.placeholder.color Color of placeholder text<br>*(color)*
+    @param text.alignment Text alignment (left, center, right, justified)<br>*(string)*
+    @param background.color Background color text input view<br>*(color)*
+    @param clears_on_begin_editing Clears text when input becomes first responder (only works on non-multiline input) *(default: FALSE)*<br>*(bool)*
+    @param image.left Left image – must use relative path including assets/ (only available on multiline input)<br>*(path)*
+    @param image.right Right image – must use relative path including assets/ (only available on multiline input)<br>*(path)*
+    @param image.background <br>*(????)*
+    @param image.hides_when_empty Sets whether defined image should hide when text is empty (only works on multiline input)<br>*(bool)*
+    @param keyboard.appearance Keyboard tint (light, dark, default) *(default: default)*<br>*(string)*
+    @param keyboard.type Keyboard type (email, number, phone, url, decimal, name_phone, numbers_punctuation, default) *(default: default)*<br>*(string)*
+    @param keyboard.padding Keyboard padding *(default: 0)*<br>*(integer)*
+    @param keyboard.return_key Keyboard return key type (go, next, search, done, join, send, route, emergency, google, yahoo) *(default: default)*<br>*(string)*
+    @param input.format.currency Sets whether the input should be formatted as currency *(default: FALSE)*<br>*(bool)*
+    @param input.format.credit_card Sets whether the input should be formatted as a credit card *(default: FALSE)*<br>*(bool)*
+    @param input.regex.allowed A regular expression of explicitly allowed characters<br>*(regex)*
+    @param input.regex.disallowed A regular expression of explicitly disallowed characters<br>*(regex)*
+    @param input.max Maximum allowed number of characters<br>*(integer)*
+    @param input.transform Text transform (capitalize, lowercase, uppercase, ucfirst)<br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param text Current text value of the text input control (to set the text use the kIXSetText function)<br>*(string)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param got_focus Fires when the input control becomes first responder
+    @param lost_focus Fires when the input control loses focus
+    @param return_key_pressed Fires when the user selects the return key
+    @param text_changed Fires when text is changed
+    @param image.right.tapped Fires when the right-hand image is tapped
+    @param image.left.tapped Fires when the left-hand image is tapped
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param set_text 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param keyboard_hide 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param keyboard_show, focus 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

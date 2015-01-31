@@ -6,57 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
  ###
- ###    UI spinner.
+ ###    Simple native iOS spinners. They spin.
+ ###
+ ###    Looks like:
  
- ####
- #### Attributes
- |  Name                            |   Type                        |   Description                                         |   Default
- |:---------------------------------|:-----------------------------:|:------------------------------------------------------|:-------------:|
- | *style*                          |   *white<br>large<br>gray*    |   The spinner style                                   |   large
- | *color*                          |   *(color)*                   |   The spinner color                                   |   #ffffff
+ <a href="../../images/IXActivityIndicator.png" data-imagelightbox="b"><img src="../../images/IXActivityIndicator.png" alt="" width="160" height="284"></a>
+ 
+ ###    Here's how you use it:
+ 
+ */
 
- ####
- #### Inherits
- >  IXBaseControl
- 
- ####
- #### Events
- >  None
- 
- ####
- #### Functions
- >  None
- 
- #### Example JSON
- 
-    {
-      "_id": "spinner",
-      "_type": "ActivityIndicator",
-      "attributes": {
-        "color": "ff00ff",
-        "layout_type":"float",
-        "horizontal_alignment":"center",
-        "vertical_alignment":"middle",
-        "style": "white"
-      }
-    }
- 
+/*
+ *      /Docs
+ *
 */
-//
-//  [/Documentation]
-/*  -----------------------------  */
 
 #import "IXActivityIndicator.h"
 
@@ -76,6 +52,96 @@ IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
 @end
 
 @implementation IXActivityIndicator
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param style The spinner style *(default: large)*<br>*whitelargegray*
+    @param color The spinner color *(default: #ffffff)*<br>*(color)*
+
+
+
+
+
+
+
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+
+
+
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+
+
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {
@@ -99,10 +165,11 @@ IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
     [self centerActivityIndicator];
 }
 
+
 -(void)applySettings
 {
     [super applySettings];
-    
+  
     UIColor* activityIndicatorColor = [UIColor whiteColor];
     UIActivityIndicatorViewStyle activityIndicatorStyle = UIActivityIndicatorViewStyleWhite;
     NSString* spinnerStyleString = [[self propertyContainer] getStringPropertyValue:kIXActivityIndicatorStyle defaultValue:kIXActivityIndicatorStyleLarge];

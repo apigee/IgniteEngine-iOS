@@ -6,6 +6,174 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
+/**
+ 
+ ###    App level app attributes 'n stuff.
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name                        | Type                                   | Description                              | Default |
+ |-----------------------------|----------------------------------------|------------------------------------------|---------|
+ | mode                        | *release<br>debug*                     | /local/path/to/save/file.zip             | debug   |
+ | log_level                   | *release<br>debug<br>error<br>verbose* | /local/path/to/extract                   | debug   |
+ | default_view                | *(string)*                             | /path/to/default.json                    |         |
+ | drawer.view.left            | *(string)*                             | /path/to/leftDrawer.json                 |         |
+ | drawer.view.left.max.width  | *(int)*                                | Maximum width of left drawer             |         |
+ | drawer.view.right           | *(string)*                             | /path/to/rightDrawer.json                |         |
+ | drawer.view.right.max.width | *(int)*                                | Maximum width of right drawer            |         |
+ | drawer.toggle.velocity      | *(float)*                              | Velocity of drawer toggle                |         |
+ | enable_layout_debugging     | *(bool)*                               | Enable Layout debugging                  |         |
+ | enable_request_logging      | *(bool)*                               | Enable API request debugging             | false   |
+ | enable_remote_logging       | *(bool)*                               | Enable remote logging                    | false   |
+ | shows_navigation_bar        | *(bool)*                               | Use stock iOS navigation view controller | false   |
+ | preload_images              | *(array)*                              | Preload images into cache                |         |
+ | apigee_org_id               | *(string)*                             | Apigee Org Name                          |         |
+ | apigee_app_id               | *(string)*                             | Apigee App Name                          |         |
+ | apigee_base_url             | *(string)*                             | Apigee Base URL                          |         |
+ | apigee_push_notifier        | *(string)*                             | Apigee Notifier ID                       |         |
+ 
+
+ ##  <a name="readonly">Read Only Attributes</a>
+ 
+ | Name                      | Type       | Description             |
+ |---------------------------|------------|-------------------------|
+ | device.model              | *(string)* | Device model            |
+ | device.type               | *(string)* | Device type             |
+ | device.screen.width       | *(float)*  | Device screen width     |
+ | device.screen.width       | *(float)*  | Device screen height    |
+ | device.screen.scale       | *(float)*  | Device screen scale     |
+ | device.os.version         | *(string)* | Device OS version       |
+ | device.os.version.integer | *(int)*    | Device OS version minor |
+ | device.os.version.major   | *(int)*    | Device OS version major |
+ | push_token                | *(string)* | APNS token              |
+ | apigee.device.uuid        | *(string)* | Apigee Device UUID      |
+ | bundle.version            | *(string)* | App bundle version      |
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  None
+ 
+ ##  <a name="events">Events</a>
+
+ | Name                                   | Description                                                  |
+ |----------------------------------------|--------------------------------------------------------------|
+ | app_will_resign_active                 | Fires when app will resign active                            |
+ | app_did_enter_background               | Fires when app will enter background                         |
+ | app_will_enter_foreground              | Fires when app will enter foreground                         |
+ | app_did_become_active                  | Fires when app did become active                             |
+ | app_will_terminate                     | Fires when app will terminate                                |
+ | app_register_for_notifications_success | Fires when app successfully registers for push notifications |
+ | app_register_for_notifications_failed  | Fires when app fails to register for push notifications      |
+ | push_recieved                          | Fires when a push notification is received                   |
+ | custom_url_scheme_opened               | Fires when app opens via custom URL scheme                   |
+ 
+ ##  <a name="functions">Functions</a>
+ 
+Reset App: *reset*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "$app",
+        "function_name": "reset"
+      }
+    }
+
+Destroy all session variables: *session.destroy*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "$app",
+        "function_name": "session.destroy"
+      }
+    }
+ 
+Toggle left/right drawer: *drawer.toggle.left/right*
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "$app",
+        "function_name": "drawer.toggle.left"
+      }
+    }
+
+Enable drawers: *drawer.enable*
+ 
+*must have one of the following suffixes:*
+ 
+* .open
+* .close
+* .open_close
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "$app",
+        "function_name": "drawer.enable.open_close"
+      }
+    }
+
+Disable drawers: *drawer.disable*
+ 
+*must have one of the following suffixes:*
+ 
+* .open
+* .close
+* .open_close
+
+    {
+      "_type": "Function",
+      "on": "touch_up",
+      "attributes": {
+        "_target": "$app",
+        "function_name": "drawer.disable.open_close"
+      }
+    }
+
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+    {
+      "_id": "imageTest",
+      "_type": "Image",
+      "attributes": {
+        "height": 100,
+        "width": 100,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "middle",
+        "images.default": "/images/btn_notifications_25x25.png",
+        "images.default.tintColor": "#a9d5c7"
+      }
+    }
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
+
+
 #import "IXAppManager.h"
 
 #import "IXBaseAction.h"

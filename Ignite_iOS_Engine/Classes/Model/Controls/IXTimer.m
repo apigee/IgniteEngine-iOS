@@ -6,105 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Brandon Shelley
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
- ###    Native iOS NSTimer implementation.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Native iOS NSTimer implementation
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXTimer.png" data-imagelightbox="b"><img src="../../images/IXTimer.png" alt="" width="160" height="284"></a>
  
- | Name          | Type      | Description       | Default |
- |---------------|-----------|-------------------|---------|
- | enabled       | *(bool)*  | Enable control    | true    |
- | repeats       | *(bool)*  | Repeat the timer? | false   |
- | time_interval | *(float)* | Repeat frequency  |         |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name  | Type     | Description       |
- |-------|----------|-------------------|
-   
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name        | Description                                 |
- |-------------|---------------------------------------------|
- | timer_fired | Event that occurs each time the timer fires |
-
- ##  <a name="functions">Functions</a>
- 
-Start timer: *start*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "timerTest",
-        "function_name": "start"
-      }
-    }
-
-Stop timer: *stop*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "timerTest",
-        "function_name": "stop"
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
-
- 
-    {
-      "_id": "timerTest",
-      "_type": "Timer",
-      "actions": [
-        {
-          "_type": "Alert",
-          "attributes": {
-            "title": "Timer Fired!"
-          },
-          "on": "timer_fired"
-        }
-      ],
-      "attributes": {
-        "enabled": true,
-        "repeats": true,
-        "time_interval": 5
-      }
-    }
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
 
-
-
-
+/*
+ *      /Docs
+ *
+ */
 
 #import "IXTimer.h"
 
@@ -134,6 +62,93 @@ static NSString* const kIXStop = @"stop";
 @end
 
 @implementation IXTimer
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param enabled Enable control *(default: TRUE)*<br>*(bool)*
+    @param repeats Repeat the timer? *(default: FALSE)*<br>*(bool)*
+    @param time_interval Repeat frequency<br>*(float)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param timer_fired Event that occurs each time the timer fires
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param start 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param stop 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

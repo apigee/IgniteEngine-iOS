@@ -6,102 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/30/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Plays sound. That's about it.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
- 
- | Name                     | Type       | Description                            | Default |
- |--------------------------|------------|----------------------------------------|---------|
- | sound_location           | *(string)* | http:// or /path/to/sound.mp3          |         |
- | volume                   | *(float)*  | LOUD?                                  |         |
- | number_of_loops          | *(int)*    | How many times do you want to loop it? |         |
- | auto_play                | *(bool)*   | Automatically play the sound?          |         |
- | force_sound_reload       | *(bool)*   | Clear cache and load fresh             |         |
- 
+<a href="../../images/IXSound.png" data-imagelightbox="b"><img src="../../images/IXSound.png" alt="" width="160" height="284"></a>
 
- ##  <a name="readonly">Read Only Attributes</a>
+ ###    Here's how you use it:
  
- | Name                 | Type       | Description                      |
- |----------------------|------------|----------------------------------|
- | is_playing           | *(bool)*   | Are we playing anything?         |
- | duration             | *(float)*  | Duration of the track            |
- | current_time         | *(float)*  | Time of playhead                 |
- | last_creation_error  | *(string)* | Whoopsie?                        |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
+*/
 
- | Name                  | Description                              |
- |-----------------------|------------------------------------------|
- | finished              | Fires when the sound finishes playing    |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Play sound file: *play*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundTest",
-        "function_name": "play"
-      }
-    }
-
-Pause sound file: *pause*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundTest",
-        "function_name": "pause"
-      }
-    }
- 
-Stop sound file: *stop*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "soundTest",
-        "function_name": "stop"
-      }
-    }
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXSound.h"
 
@@ -148,6 +79,108 @@ static NSString* const kIXStop = @"stop";
 @end
 
 @implementation IXSound
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param sound_location http:// or /path/to/sound.mp3<br>*(string)*
+    @param volume LOUD?<br>*(float)*
+    @param number_of_loops How many times do you want to loop it?<br>*(int)*
+    @param auto_play Automatically play the sound?<br>*(bool)*
+    @param force_sound_reload Clear cache and load fresh<br>*(bool)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param is_playing Are we playing anything?<br>*(bool)*
+ @param duration Duration of the track<br>*(float)*
+ @param current_time Time of playhead<br>*(float)*
+ @param last_creation_error Whoopsie?<br>*(string)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param finished Fires when the sound finishes playing
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param start
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param pause 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param stop 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

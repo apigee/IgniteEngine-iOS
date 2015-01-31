@@ -6,170 +6,33 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
-
 /*
- 
- 
- 
- 
- */
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
  ###
- ###    Native collectionView view controller.
+ ###    Have some data? Toss it in a Collection View!
+ ###
+ ###    Looks like:
  
- <a href="#attributes">Attributes</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ####
- #### Attributes
- 
- <a name="attributes"></a>
- 
- |  Name                                |   Type                     |   Description                                         |   Default
- |:-------------------------------------|:--------------------------:|:------------------------------------------------------|:-------------:|
- | *minimum_line_spacing*               |   *(string)*               |   The sheet title                                   |   #ffffff
- | *minimum_interitem_spacing*          |   *(string)*               |   Cancel button text                                   |   #ffffff
- | *background_swipe_width*             |   *(string)*               |   Destructive button text                                   |   #ffffff
- | *layout_flow*                        |   *horizontal<br>vertical* |   Other button(s) text                                   |   #ffffff
- 
- ####
- #### Inherits
- 
- <a name="inherits"></a>
- 
- >  IXBaseControl, IXCellBasedControl
- 
- ####
- #### Events
- 
-  <a name="events"></a>
- 
- |  Name                                |   Description                                         |
- |:-------------------------------------|:------------------------------------------------------|
- | *started_scrolling*                  |   The 'cancel' button was pressed.
- | *ended_scrolling*                    |   The '%@' button was pressed.
- 
- ####
- #### Functions
+<a href="../../images/IXCollection.png" data-imagelightbox="b"><img src="../../images/IXCollection.png" alt="" width="160" height="284"></a>
 
- <a name="functions"></a>
+ ###    Here's how you use it:
+ 
+*/
 
- *reset_all_background_controls*
-    
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "actionSheetTest",
-        "function_name": "show_sheet"
-      }
-    }
- 
- *set_background_swipe_width*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "actionSheetTest",
-        "function_name": "dismiss_sheet"
-      }
-    }
-
-
- ####
- #### Example JSON
- 
- <a name="example"></a>
- 
-    {
-      "_type": "ActionSheet",
-      "_id": "actionSheetTest",
-      "attributes": {
-        "sheet.style": "black.opaque",
-        "sheet.title": "sheetTitle",
-        "sheet.button.title.cancel": "cancelButtonTitle",
-        "sheet.button.title.destructive": "destructiveButtonTitle",
-        "sheet.button.title.others": "other,someOther2"
-      },
-      "actions": [
-        {
-          "on": "cancel_pressed",
-          "_type": "Alert",
-          "attributes": {
-            "title": "Cancel Pressed"
-          }
-        },
-        {
-          "on": "other_pressed",
-          "_type": "Alert",
-          "attributes": {
-            "title": "other pressed [[app.bundle.version]]"
-          }
-        },
-        {
-          "on": "someOther2_pressed",
-          "_type": "Alert",
-          "attributes": {
-            "title": "someOther2 pressed"
-          }
-        },
-        {
-          "on": "destructiveButtonTitle_pressed",
-          "_type": "Alert",
-          "attributes": {
-            "title": "destructiveButtonTitle pressed"
-          }
-        }
-      ]
-    }
- 
- 
- | Name                                      | Type                         | Description                    | Default |
- |-------------------------------------------|------------------------------|--------------------------------|---------|
- | animate_reload                            | *(bool)*                     | Reload rows animation          | false   |
- | animate_reload.duration                   | *(float)*                    | Reload rows animation duration |         |
- | background.color                          | *(color)*                    |                                |         |
- | background_swipe_width                    | *(integer)*                  |                                |         |
- | background_slides_in_from_side            | *(bool)*                     |                                |         |
- | background_swipe_adjusts_background_alpha | *(float)*                    |                                |         |
- | background_controls                       | [array]                      |                                |         |
- | section_header_xpath                      | *(string)*                   |                                |         |
- | section_header_controls                   | [array]                      |                                |         |
- | section_header_height                     | *(integer)*                  |                                |         |
- | section_header_width                      | *(integer)*                  |                                |         |
- | dataprovider_id                           | *(string)*                   |                                |         |
- | item_width                                | *(color)*                    |                                |         |
- | item_height                               | *(integer)*                  |                                |         |
- | paging.enabled                            | *(bool)*                     |                                |         |
- | scrollable                                | *(bool)*                     |                                |         |
- | pull_to_refresh.enabled                   | *(bool)*                     |                                |         |
- | pull_to_refresh.text                      | *(string)*                   |                                |         |
- | pull_to_refresh.text.color                | *(color)*                    |                                |         |
- | pull_to_refresh.text.font                 | *()*                         |                                |         |
- | pull_to_refresh.tint.color                | *(color)*                    |                                |         |
- | scroll_indicator_style                    | *default*<br>black<br>white* |                                |         |
- | shows_scroll_indicators                   | *(bool)*                     |                                |         |
- | datarow.basepath                          | *(string)*                   |                                |         |
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXCollection.h"
 
@@ -203,6 +66,124 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
 @end
 
 @implementation IXCollection
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param minimum_line_spacing ?<br>*(string)*
+    @param minimum_interitem_spacing ?<br>*(string)*
+    @param background_swipe_width Background swipe width<br>*(string)*
+    @param layout_flow Layout Flow<br>*horizontal,vertical*
+    @param animate_reload Reload rows animation *(default: FALSE)*<br>*(bool)*
+    @param animate_reload.duration Reload rows animation duration<br>*(float)*
+    @param background.color <br>*(color)*
+    @param background_swipe_width <br>*(integer)*
+    @param background_slides_in_from_side <br>*(bool)*
+    @param background_swipe_adjusts_background_alpha <br>*(float)*
+    @param background_controls <br>*[array]*
+    @param section_header_xpath <br>*(string)*
+    @param section_header_controls <br>*[array]*
+    @param section_header_height <br>*(integer)*
+    @param section_header_width <br>*(integer)*
+    @param dataprovider_id <br>*(string)*
+    @param item_width <br>*(color)*
+    @param item_height <br>*(integer)*
+    @param paging.enabled <br>*(bool)*
+    @param scrollable <br>*(bool)*
+    @param pull_to_refresh.enabled <br>*(bool)*
+    @param pull_to_refresh.text <br>*(string)*
+    @param pull_to_refresh.text.color <br>*(color)*
+    @param pull_to_refresh.text.font <br>*()*
+    @param pull_to_refresh.tint.color <br>*(color)*
+"    @param scroll_indicator_style <br>*default
+black
+white**"
+    @param shows_scroll_indicators <br>*(bool)*
+    @param datarow.basepath <br>*(string)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param started_scrolling The ‘cancel’ button was pressed.
+    @param ended_scrolling The ‘%@’ button was pressed.
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param reset_all_background_controls Reset all background controls
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param set_background_swipe_width Change the swipe width of the background controls
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

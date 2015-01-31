@@ -5,88 +5,33 @@
 //  Created by Jeremy Anticouni on 11/16/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
 /**
  
- ###    Native iOS UI control to select image from device Library or Camera.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Allows user to select an image from Library or Camera Roll.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXMediaSource.png" data-imagelightbox="b"><img src="../../images/IXMediaSource.png" alt="" width="160" height="284"></a>
  
- | Name                              | Type                | Description                         | Default |
- |-----------------------------------|---------------------|-------------------------------------|---------|
- | source                            | *camera<br>library* | Style of controls to use            |         |
- | camera                            | *front<br>rear*     | Color of the player UI              |         |
- | show_camera_controls              | *(float)*           | Height of the player UI             |         |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name           | Type       | Description                        |
- |----------------|------------|------------------------------------|
- | selected_media | *(string)* | The value the knob has been set to |
- |                |            |                                    |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name                  | Description                             |
- |-----------------------|-----------------------------------------|
- | did_load_media        | Fires when the media loads successfully |
- | failed_load_media     | Fires when the media fails to load      |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Present media picker: *present_picker*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "mediaSourceTest",
-        "function_name": "present_picker"
-      }
-    }
-
-Present media picker: *dismiss_picker*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "mediaSourceTest",
-        "function_name": "dismiss_picker"
-      }
-    }
-
- 
- ##  <a name="example">Example JSON</a> 
- 
+ ###    Here's how you use it:
  
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
 
+/*
+ *      /Docs
+ *
+ */
 
 #import "IXMediaSource.h"
 #import "IXAppManager.h"
@@ -115,6 +60,99 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 @end
 
 @implementation IXMediaSource
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param urce Style of controls to use<br>*cameralibrary*
+    @param camera Color of the player UI<br>*frontrear*
+    @param show_camera_controls Height of the player UI<br>*(float)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+
+ @param selected_media The value the knob has been set to<br>*(string)*
+
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param did_load_media Fires when the media loads successfully
+    @param failed_load_media Fires when the media fails to load
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param present_picker 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param dismiss_picker 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

@@ -6,105 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
 /**
  
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
+ ###
+ ###    Plays media.. audio, video, you name it.
+ ###
+ ###    Looks like:
  
- ##  <a name="attributes">Attributes</a>
+ <a href="../../images/IXMediaPlayer.png" data-imagelightbox="b"><img src="../../images/IXMediaPlayer.png" alt="" width="160" height="284"></a>
  
- | Name                              | Type                             | Description                         | Default |
- |-----------------------------------|----------------------------------|-------------------------------------|---------|
- | controls                          | *embedded<br>fullscreen<br>none* | Style of controls to use            |         |
- | bar.color                         | *(color)*                        | Color of the player UI              |         |
- | bar.height                        | *(float)*                        | Height of the player UI             |         |
- | video                             | *(string)*                       | URL or /path/to/video.mov           |         |
- | auto_play                         | *(bool)*                         | Automatically play?                 |         |
-
+ ###    Here's how you use it:
  
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name            | Description                         |
- |-----------------|-------------------------------------|
- | movie_timed_out | Fires when the file is inaccessible |
- | movie_stopped   | Fires on touch                      |
- | touch_up        | Fires on touch up inside            |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Play media file: *play*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "mediaPlayerTest",
-        "function_name": "play"
-      }
-    }
-
-Pause media file: *pause*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "mediaPlayerTest",
-        "function_name": "pause"
-      }
-    }
- 
-Stop media file: *stop*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "mediaPlayerTest",
-        "function_name": "stop"
-      }
-    }
-
- Seek to time: *goto*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "mediaPlayerTest",
-        "function_name": "goto",
-        "seconds": 42
-      }
-    }
- 
- ##  <a name="example">Example JSON</a> 
- 
-     
  */
-//
-//  [/Documentation]
-/*  -----------------------------  */
 
+/*
+ *      /Docs
+ *
+ */
 
 #import "IXMediaPlayer.h"
 #import "IXAppManager.h"
@@ -124,6 +52,112 @@ Stop media file: *stop*
 @end
 
 @implementation IXMediaPlayer
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** Configuration Atributes
+
+    @param controls Style of controls to use<br>*embeddedfullscreennone*
+    @param bar.color Color of the player UI<br>*(color)*
+    @param bar.height Height of the player UI<br>*(float)*
+    @param video URL or /path/to/video.mov<br>*(string)*
+    @param auto_play Automatically play?<br>*(bool)*
+
+*/
+
+-(void)config
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only properties:
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following events:
+
+    @param movie_timed_out Fires when the file is inaccessible
+    @param movie_stopped Fires on touch
+    @param touch_up Fires on touch up inside
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following functions:
+
+    @param play Play media file
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param pause Pause media file
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param stop Stop media file
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param goto Go to time
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/**  Sample Code:
+
+ Example:
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)sampleCode
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {
