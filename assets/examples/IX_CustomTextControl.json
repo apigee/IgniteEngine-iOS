@@ -1,0 +1,27 @@
+{
+    "view": {
+        "attributes": {
+            "horizontal_alignment":"center",
+            "layout_type": "relative",
+            "margin.top": 5,
+            "navigate_to":"IX[[$self.example_name]]ControlExample.json",
+            "example_name":null
+        },
+        "controls": [
+         {
+            "_type": "Text",
+            "actions": [{
+                "on": "touch_up",
+                "_type": "Navigate",
+                "attributes": {
+                    "to": "[[$custom.navigate_to]]"
+                }
+            }],
+            "attributes": {
+                "text": "[[$custom.example_name]]",
+                "font": "Helvetica-Bold:20"
+            }
+         }
+        ]
+    }
+}

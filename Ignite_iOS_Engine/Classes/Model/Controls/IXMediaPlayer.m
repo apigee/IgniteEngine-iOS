@@ -7,31 +7,47 @@
 //
 
 /*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+ 
+ CONTROL
+ /--------------------/
+ - TYPE : "IXMediaPlayerControl"
+ - DESCRIPTION: "IXVideoControl Description."
+ /--------------------/
+ - PROPERTIES
+ /--------------------/
+ * name=""        default=""               type="___"
+ /--------------------/
+ - EVENTS
+ /--------------------/
+ * name="share_done"
+ * name="share_cancelled"
+ /--------------------/
+ - Example
+ /--------------------/
 
-/**
+ {
+ "type": "MediaPlayer",
+ "attributes": {
+ "id": "myLinkText",
+ "layout_type": "relative",
+ "height": "180",
+ "width": "320",
+ "controls":"default",
+ "bar":
+ {
+ "height":"50",
+ "color": "#00FF0050"
+ },
+ "auto_play":true,
+ "video": "http://archive.org/download/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto-HawaiianHoliday1937-Video.mp4"
+ }
+ },
  
- ###
- ###    Plays media.. audio, video, you name it.
- ###
- ###    Looks like:
+ /--------------------/
+ - Changelog
+ /--------------------/
  
- <a href="../../images/IXMediaPlayer.png" data-imagelightbox="b"><img src="../../images/IXMediaPlayer.png" alt="" width="160" height="284"></a>
- 
- ###    Here's how you use it:
- 
- */
-
-/*
- *      /Docs
- *
+ /--------------------/
  */
 
 #import "IXMediaPlayer.h"
@@ -52,112 +68,6 @@
 @end
 
 @implementation IXMediaPlayer
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param controls Style of controls to use<br>*embeddedfullscreennone*
-    @param bar.color Color of the player UI<br>*(color)*
-    @param bar.height Height of the player UI<br>*(float)*
-    @param video URL or /path/to/video.mov<br>*(string)*
-    @param auto_play Automatically play?<br>*(bool)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param movie_timed_out Fires when the file is inaccessible
-    @param movie_stopped Fires on touch
-    @param touch_up Fires on touch up inside
- 
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param play Play media file
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param pause Pause media file
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-    @param stop Stop media file
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-    @param goto Go to time
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

@@ -1,0 +1,143 @@
+{
+  "view": {
+    "actions": [],
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "TouchID Example"
+        }
+      },
+      {
+        "_type": "TouchID",
+        "_id": "TouchID",
+        "actions": [
+          {
+            "_type": "Alert",
+            "on": "1success",
+            "attributes": {
+              "title": "success"
+            }
+          },
+          {
+            "_type": "Modify",
+            "on": "success",
+            "attributes": {
+              "_target": "button"
+            },
+            "set": {
+              "text": "Authenticated Successfully!"
+            }
+          },
+          {
+            "_type": "Function",
+            "attributes": {
+              "_target": "app",
+              "function_name": "drawer.toggle.left"
+            },
+            "on": "success"
+          },
+          {
+            "_type": "Log",
+            "on": "success",
+            "attributes": {
+              "text": "success"
+            }
+          }
+        ],
+        "attributes": {
+          "title": "Please authenticate."
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touch_up",
+            "attributes": {
+              "_target": "TouchID",
+              "function_name": "authenticate"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "touch.background.color": "cdcdcd",
+          "margin.top": 10,
+          "border.radius": 5,
+          "border.width": 2,
+          "border.color": "6c6c6c",
+          "text": "Authenticate with TouchID"
+        }
+      },
+      {
+        "_id": "ButtonPush",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Load",
+            "attributes": {
+              "_target": "dataPush"
+            },
+            "on": "touch_up"
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "touch.background.color": "cdcdcd",
+          "margin.top": 10,
+          "border.radius": 5,
+          "border.width": 2,
+          "border.color": "6c6c6c",
+          "text": "Push it!"
+        }
+      }
+    ],
+    "data_providers": [
+      {
+        "_id": "dataPush",
+        "_type": "JSON",
+        "actions": [],
+        "attributes": {
+          "auto_load": false,
+          "data.baseurl": "https://api.usergrid.com",
+          "data.path": "/ignite-demo/kitchensink/devices;ql=/notifications?access_token=YWMtG3HWIkFJEeSaQ6keiThQjQAAAUi6jVVS4zyA7VHmla0A7SvbaAb5V9-hPOI",
+          "datarow.basepath": "entities",
+          "http_method": "POST"
+        },
+        "parameters": {
+          "payloads": {
+            "apple-dev": "test"
+          },
+          "deliver": null
+        }
+      }
+    ]
+  }
+}

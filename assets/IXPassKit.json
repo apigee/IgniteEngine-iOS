@@ -1,0 +1,77 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXPassKit"
+        }
+      },
+      {
+        "_id": "passKitTest",
+        "_type": "PassKit",
+        "actions": [
+          {
+            "on": "pass.creation.success",
+            "_type": "Alert",
+            "attributes": {
+              "title": "Pass created."
+            }
+          },
+          {
+            "on": "pass.creation.failed",
+            "_type": "Alert",
+            "attributes": {
+              "title": "Pass failed."
+            }
+          }
+        ],
+        "attributes": {
+          "pass.location": "/data/boardingpass.pkpass"
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touch_up",
+            "attributes": {
+              "_target": "passKitTest",
+              "function_name": "pass.controller.present"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "layout_type": "absolute",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle",
+          "touch.background.color": "cdcdcd",
+          "border.radius": 0,
+          "text": "Now boarding!"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

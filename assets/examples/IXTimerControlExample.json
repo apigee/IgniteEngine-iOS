@@ -1,0 +1,40 @@
+{
+    "view": {
+        "attributes": {
+            "height": "100%",
+            "width": "100%",
+            "padding.top": 100,
+            "background": {
+				"color": "#FFFFFF"
+			}
+        },
+        "controls": [
+         {
+            "_id": "startText",
+            "_type": "Text",
+            "attributes": {
+                "horizontal_alignment":"center",
+                "layout_type": "relative",
+                "text": "Wait For The Alert",
+                "font": "HelveticaNeue:50"
+            }
+         },
+         {
+            "_id": "timerControl",
+            "_type": "Timer",
+            "actions": [{
+                "on": "timer_fired",
+                "_type": "Alert",
+                "attributes": {
+                    "title": "Timer Fired!"
+                }
+            }],
+            "attributes": {
+                "enabled" : true,
+                "repeats": true,
+                "time_interval": 5
+            }
+         }
+        ]
+    }
+}

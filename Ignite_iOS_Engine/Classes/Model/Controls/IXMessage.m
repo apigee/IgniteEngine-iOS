@@ -7,32 +7,46 @@
 //
 
 /*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/**
  
- ###
- ###    Send an email or SMS/iMessage.
- ###
- ###    Looks like:
+ CONTROL
  
-<a href="../../images/IXMessage.png" data-imagelightbox="b"><img src="../../images/IXMessage.png" alt="" width="160" height="284"></a>
-
- ###    Here's how you use it:
+ - TYPE : "Message"
  
-*/
-
-/*
- *      /Docs
- *
-*/
+ - PROPERTIES
+ 
+ * name="message.type"          default=""               type="text, email"
+ * name="message.to"            default=""               type="String"
+ * name="message.cc"            default=""               type="String"
+ * name="message.bcc"           default=""               type="String"
+ * name="message.subject"       default=""               type="String"
+ * name="message.body"          default=""               type="String"
+ 
+ - EVENTS
+ 
+ * name="message_cancelled"
+ * name="message_failed"
+ * name="message_sent"
+ 
+ 
+ {
+    "type": "Message",
+    "properties": {
+        "id": "myEmail",
+        "width": "100%",
+        "height": "50",
+        "message": {
+            "type": "email",
+            "to": "jeremy@anticouni.net",
+            "subject": "this is a subject",
+            "body": "Uhh nice man I don't know how that works but awesome"
+        },
+        "color": {
+            "background": "#00FFFF"
+        }
+    }
+}
+ 
+ */
 
 #import "IXMessage.h"
 #import "IXAppManager.h"
@@ -57,99 +71,6 @@
 @end
 
 @implementation IXMessage
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param message.type The type of message to create<br>*textemail*
-    @param message.to Send message to? (Email/Phone/iMessage address)<br>*(string)*
-    @param message.cc Send a copy to?<br>*(string)*
-    @param message.bcc Blind copy to? (Email)<br>*(string)*
-    @param message.subject Message subject (Email)<br>*(string)*
-    @param message.body Message body (Email/Text)<br>*(string)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param message_cancelled Fires when the file is inaccessible
-    @param message_failed Fires when the message fails to send
-    @param message_sent Fires on message send success
- 
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param present_text_message_controller 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param present_email_controller 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

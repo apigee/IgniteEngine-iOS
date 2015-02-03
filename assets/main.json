@@ -8,6 +8,16 @@
     "actions": [
       {
         "_type": "Modify",
+        "on": "will_appear",
+        "attributes": {
+          "_target": "session"
+        },
+        "set": {
+          "search_query": "[[app.search_query]]"
+        }
+      },
+      {
+        "_type": "Modify",
         "on": "did_appear",
         "attributes": {
           "_target": "imageBackground",
@@ -17,9 +27,108 @@
           "height": "100%",
           "width": "100%"
         }
+      },
+      {
+        "_type": "Refresh",
+        "on": "did_appear",
+        "attributes": {
+          "_target": "dataForecastCurrently,dataForecastHourly,dataForecast10Day"
+        }
+      },
+      {
+        "_type": "Alert",
+        "on": "did_appear",
+        "enabled": false,
+        "attributes": {
+          "title": "[[session.search_query]]"
+        }
       }
     ],
     "controls": [
+      {
+        "_id": "layoutSearch",
+        "_type": "Layout",
+        "attributes": {
+          "width": "100%",
+          "height": "100%",
+          "background.color": "#696969",
+          "layout_type": "absolute"
+        },
+        "controls": [
+          {
+            "_id": "inputSearch",
+            "_type": "TextInput",
+            "actions": [
+              {
+                "_type": "Modify",
+                "on": "return_key_pressed",
+                "attributes": {
+                  "_target": "session"
+                },
+                "set": {
+                  "search_query": "[[$self.text]]"
+                }
+              },
+              {
+                "_type": "Modify",
+                "on": "return_key_pressed",
+                "attributes": {
+                  "_target": "layoutMain",
+                  "duration": 0.25
+                },
+                "set": {
+                  "margin.top": 0
+                }
+              },
+              {
+                "_type": "Modify",
+                "on": "return_key_pressed",
+                "attributes": {
+                  "_target": "dataForecastCurrently"
+                },
+                "set": {
+                  "data.path": "/api/161cf6c817d55c86/conditions/q/San%20Francisco,%20CA.json"
+                }
+              },
+              {
+                "_type": "Modify",
+                "on": "return_key_pressed",
+                "attributes": {
+                  "_target": "dataForecastHourly"
+                },
+                "set": {
+                  "data.path": "/api/161cf6c817d55c86/hourly/q/San%20Francisco,%20CA.json"
+                }
+              },
+              {
+                "_type": "Modify",
+                "on": "return_key_pressed",
+                "attributes": {
+                  "_target": "dataForecast10Day"
+                },
+                "set": {
+                  "data.path": "/api/161cf6c817d55c86/forecast10day/q/San%20Francisco,%20CA.json"
+                }
+              }
+
+            ],
+            "attributes": {
+              "font": "HelveticaNeue-Light:22",
+              "is_multiline": false,
+              "width": 280,
+              "height": 50,
+              "margin.top": 30,
+              "keyboard.appearance": "dark",
+              "dismiss_on_return": true,
+              "keyboard.return_key": "search",
+              "text.alignment": "center",
+              "horizontal_alignment": "center",
+              "text.color": "cdcdcd",
+              "text.placeholder": "San Francisco, CA"
+            }
+          }
+        ]
+      },
       {
         "_id": "layoutMain",
         "_type": "Layout",
@@ -58,29 +167,44 @@
                 "_type": "Text",
                 "actions": [
                   {
-                    "_type": "Function",
+                    "_type": "Modify",
                     "on": "touch_up",
                     "attributes": {
-                      "_target": "addressbookTest",
-                      "function_name": "add_contact"
-                    }
-                  },
-                  {
-                    "_type": "Modify",
-                    "on": "did_appear",
-                    "attributes": {
                       "_target": "layoutMain",
-                      "duration": 0.5
+                      "duration": 0.25
                     },
                     "set": {
                       "margin.top": 100
+                    }
+                  },
+                  {
+                    "_type": "Function",
+                    "on": "touch_up",
+                    "attributes": {
+                      "_target": "inputSearch",
+                      "function_name": "keyboard_show"
+                    }
+                  },
+                  {
+                    "_type": "Refresh",
+                    "on": "did_appear",
+                    "attributes": {
+                      "_target": "dataForecastCurrently,dataForecastHourly,dataForecast10Day"
+                    }
+                  },
+                  {
+                    "_type": "Alert",
+                    "on": "did_appear",
+                    "enabled": false,
+                    "attributes": {
+                      "title": "[[session.search_query]]"
                     }
                   }
                 ],
                 "attributes": {
                   "width": "100%",
                   "font": "HelveticaNeue-Light:32",
-                  "text": "San Jose",
+                  "text": "[[dataForecastCurrently.current_observation.display_location.city]]",
                   "text.alignment": "center",
                   "text.color": "#ffffff"
                 }
@@ -91,7 +215,7 @@
                 "attributes": {
                   "width": "100%",
                   "font": "HelveticaNeue-Light:13",
-                  "text": "Partly Cloudy",
+                  "text": "[[dataForecastCurrently.current_observation.weather]]",
                   "text.alignment": "center",
                   "text.color": "#ffffff"
                 }
@@ -107,6 +231,23 @@
                   {
                     "_id": "textCityTemp",
                     "_type": "Text",
+                    "actions": [
+                      {
+                        "_type": "Alert",
+                        "on": "touch_up",
+                        "enabled": true,
+                        "attributes": {
+                          "title": "[[session.search_query]]"
+                        }
+                      },
+                      {
+                        "_type": "Load",
+                        "on": "touch_up",
+                        "attributes": {
+                          "_target": "dataForecastCurrently,dataForecastHourly,dataForecast10Day"
+                        }
+                      }
+                    ],
                     "attributes": {
                       "font": "HelveticaNeue-Thin:105",
                       "text": "55",
@@ -150,7 +291,7 @@
                         "_type": "Text",
                         "attributes": {
                           "font": "HelveticaNeue:13",
-                          "text": "Wednesday",
+                          "text": "[[dataForecastHourly.hourly_forecast.0.FCTTIME.weekday_name]]",
                           "text.color": "#ffffff"
                         }
                       },
@@ -445,47 +586,40 @@
             ]
           }
         ]
-      },
+      }
+    ],
+    "data_providers": [
       {
-        "_type": "AddressBook",
-        "_id": "addressBookTest",
+        "_id": "dataForecastCurrently",
+        "_type": "JSON",
         "actions": [
           {
             "_type": "Alert",
             "attributes": {
-              "title": "add_contact_success"
+              "message": "[[$self.raw_data_response]]",
+              "1message": "[[dataForecastCurrently.count_rows]]",
+              "title": "[[$self._id]]",
+              "enabled": false
             },
-            "on": "add_contact_success"
+            "on": "success,failed"
           },
           {
-            "_type": "Alert",
+            "_type": "Refresh",
             "attributes": {
-              "title": "add_contact_failed"
+              "_target": "textCityName,textCityConditions"
             },
-            "on": "add_contact_failed"
+            "on": "success,failed"
           }
         ],
         "attributes": {
-          "name.first": "Johnny",
-          "name.last": "Appleseed",
-          "company.name": "Farmers, Inc.",
-          "company.title": "CEO",
-          "phone.mobile": "+15551212",
-          "phone.main": "+15551313",
-          "email.home": "johnnyappleseed@gmail.com",
-          "email.work": "johnny@appleseed.com",
-          "username.twitter": "johnnyappleseed",
-          "username.linkedIn": "johnnyappleseed",
-          "username.facebook": "johnnyappleseed",
-          "url.home": "http://johnnyappleseed.com",
-          "url.homePage": "http://johnnyappleseed.com",
-          "url.work": "http://farmersinc.com",
-          "url.linkedIn": "",
-          "url.facebook": ""
+          "auto_load": false,
+          "data.baseurl": "http://api.wunderground.com",
+          "data.path": "/api/161cf6c817d55c86/conditions/q/Santa%20Barbara,%20CA.json",
+          "1data.baseurl": "/data",
+          "1data.path": "/10day.json",
+          "http_method": "GET"
         }
-      }
-    ],
-    "data_providers": [
+      },
       {
         "_id": "dataForecastHourly",
         "_type": "JSON",
@@ -503,17 +637,17 @@
           {
             "_type": "Refresh",
             "attributes": {
-              "_target": "collectionConditionsHourly"
+              "_target": "collectionConditionsHourly,textDayName"
             },
             "on": "success,failed"
           }
         ],
         "attributes": {
-          "auto_load": true,
-          "1data.baseurl": "https://insightsdemofreeorg-test.apigee.net/",
-          "1data.path": "recommendations-api/customers/[[session.userid]]/recommendations?ql=select%20*%20where%20scoreType%20=%20%27recommendationScore%27%20order%20by%20scoreValue%20desc&limit=10",
-          "data.baseurl": "/data",
-          "data.path": "/hourly.json",
+          "auto_load": false,
+          "data.baseurl": "http://api.wunderground.com",
+          "data.path": "/api/161cf6c817d55c86/hourly/q/Santa%20Barbara,%20CA.json",
+          "1data.baseurl": "/data",
+          "1data.path": "/hourly.json",
           "http_method": "GET"
         }
       },
@@ -540,11 +674,11 @@
           }
         ],
         "attributes": {
-          "auto_load": true,
-          "1data.baseurl": "https://insightsdemofreeorg-test.apigee.net/",
-          "1data.path": "recommendations-api/customers/[[session.userid]]/recommendations?ql=select%20*%20where%20scoreType%20=%20%27recommendationScore%27%20order%20by%20scoreValue%20desc&limit=10",
-          "data.baseurl": "/data",
-          "data.path": "/10day.json",
+          "auto_load": false,
+          "data.baseurl": "http://api.wunderground.com",
+          "data.path": "/api/161cf6c817d55c86/forecast10day/q/Santa%20Barbara,%20CA.json",
+          "1data.baseurl": "/data",
+          "1data.path": "/10day.json",
           "http_method": "GET"
         }
       }

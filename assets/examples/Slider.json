@@ -1,0 +1,102 @@
+{
+  "view": {
+    "actions": [
+      {
+        "_type": "Function",
+        "on": "did_appear",
+        "attributes": {
+          "_target": "TextInput",
+          "function_name": "keyboard_show"
+        }
+      }
+    ],
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "Slider Example"
+        }
+      },
+      {
+        "_id": "customSlider",
+        "_type": "Slider",
+        "actions": [
+          {
+            "on": "value_changed",
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "labelText"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "height": 50,
+          "margin.top": 20,
+          "horizontal_alignment": "center",
+          "initial_value": 50,
+          "minimum_value": 0,
+          "maximum_value": 100
+        }
+      },
+      {
+        "_id": "labelText",
+        "_type": "Text",
+        "attributes": {
+          "text.color": "#6c6c6c",
+          "height": 30,
+          "width": "100%",
+          "text.alignment": "center",
+          "text": "Slider Value: [[customSlider.value]]"
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "on": "touch_up",
+            "_type": "Function",
+            "attributes": {
+              "_target": "customSlider",
+              "function_name": "update_slider_value"
+            },
+            "set": {
+              "value": 5,
+              "animated": true
+            }
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "touch.background.color": "cdcdcd",
+          "margin.top": 20,
+          "border.radius": 5,
+          "border.width": 2,
+          "border.color": "6c6c6c",
+          "text": "Update Slider: 5"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

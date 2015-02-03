@@ -1,0 +1,219 @@
+{
+  "view": {
+    "actions": [],
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "TextInput Example"
+        }
+      },
+      {
+        "_id": "TextInput",
+        "_type": "TextInput",
+        "actions": [
+          {
+            "_type": "Modify",
+            "on": "text_changed,got_focus",
+            "attributes": {
+              "_target": "session"
+            },
+            "set": {
+              "text_to_speak": "[[$self.text]]"
+            }
+          }
+        ],
+        "attributes": {
+          "font": "HelveticaNeue-Light:22",
+          "is_multiline": false,
+          "width": 280,
+          "height": 50,
+          "text.alignment": "center",
+          "horizontal_alignment": "center",
+          "text.color": "#6c6c6c",
+          "border.radius": 5,
+          "border.width": 2,
+          "border.color": "cdcdcd",
+          "text.placeholder": "Placeholder Text"
+        }
+      },
+      {
+        "_id": "layoutButtons",
+        "_type": "Layout",
+        "controls": [
+          {
+            "_id": "button",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touch_up",
+                "attributes": {
+                  "_target": "TextInput",
+                  "function_name": "keyboard_show"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 135,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "border.radius": 5,
+              "border.width": 2,
+              "border.color": "6c6c6c",
+              "text": "Got Focus"
+            }
+          },
+          {
+            "_id": "button",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touch_up",
+                "attributes": {
+                  "_target": "TextInput",
+                  "function_name": "keyboard_hide"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 135,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.left": 10,
+              "border.radius": 5,
+              "border.width": 2,
+              "border.color": "6c6c6c",
+              "text": "Lost Focus"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "layout_flow": "horizontal",
+          "height": 50,
+          "horizontal_alignment": "center",
+          "margin.top": 10
+        }
+      },
+      {
+        "_id": "MultilineTextInput",
+        "_type": "TextInput",
+        "actions": [
+          {
+            "_type": "Modify",
+            "on": "text_changed,got_focus",
+            "attributes": {
+              "_target": "session"
+            },
+            "set": {
+              "text_to_speak": "[[$self.text]]"
+            }
+          }
+        ],
+        "attributes": {
+          "font": "HelveticaNeue-Light:22",
+          "is_multiline": true,
+          "width": 280,
+          "height": 80,
+          "margin.top": 20,
+          "text.alignment": "center",
+          "horizontal_alignment": "center",
+          "text.color": "#6c6c6c",
+          "border.radius": 5,
+          "border.width": 2,
+          "border.color": "cdcdcd",
+          "text.placeholder": "Multiline Input"
+        }
+      },
+      {
+        "_id": "layoutButtons",
+        "_type": "Layout",
+        "controls": [
+          {
+            "_id": "button",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touch_up",
+                "attributes": {
+                  "_target": "MultilineTextInput",
+                  "function_name": "keyboard_show"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 135,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "border.radius": 5,
+              "border.width": 2,
+              "border.color": "6c6c6c",
+              "text": "Got Focus"
+            }
+          },
+          {
+            "_id": "button",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touch_up",
+                "attributes": {
+                  "_target": "MultilineTextInput",
+                  "function_name": "keyboard_hide"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 135,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.left": 10,
+              "border.radius": 5,
+              "border.width": 2,
+              "border.color": "6c6c6c",
+              "text": "Lost Focus"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "layout_flow": "horizontal",
+          "height": 50,
+          "horizontal_alignment": "center",
+          "margin.top": 10
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "view": {
+    "actions": [
+      {
+        "_type": "Function",
+        "on": "did_appear",
+        "attributes": {
+          "_target": "TextInput",
+          "function_name": "keyboard_show"
+        }
+      }
+    ],
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "ActionSheet Example"
+        }
+      },
+      {
+        "_type": "ActionSheet",
+        "_id": "actionSheetTest",
+        "attributes": {
+          "sheet.style": "black.opaque",
+          "sheet.title": "sheetTitle",
+          "sheet.button.title.cancel": "cancelButtonTitle",
+          "sheet.button.title.destructive": "destructiveButtonTitle",
+          "sheet.button.title.others": "other,someOther2"
+        },
+        "actions": [
+          {
+            "on": "cancel_pressed",
+            "_type": "Alert",
+            "attributes": {
+              "title": "Cancel Pressed"
+            }
+          },
+          {
+            "on": "other_pressed",
+            "_type": "Alert",
+            "attributes": {
+              "title": "other pressed [[app.bundle.version]]"
+            }
+          },
+          {
+            "on": "someOther2_pressed",
+            "_type": "Alert",
+            "attributes": {
+              "title": "someOther2 pressed"
+            }
+          },
+          {
+            "on": "destructiveButtonTitle_pressed",
+            "_type": "Alert",
+            "attributes": {
+              "title": "destructiveButtonTitle pressed"
+            }
+          }
+        ]
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touch_up",
+            "attributes": {
+              "_target": "actionSheetTest",
+              "function_name": "show_sheet"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 280,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "touch.background.color": "cdcdcd",
+          "margin.top": 20,
+          "border.radius": 5,
+          "border.width": 2,
+          "border.color": "6c6c6c",
+          "text": "Show ActionSheet"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

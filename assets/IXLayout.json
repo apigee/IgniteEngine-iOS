@@ -1,0 +1,112 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXLayout"
+        }
+      },
+      {
+        "_id": "layoutTest",
+        "_type": "Layout",
+        "attributes": {
+          "width": "100%",
+          "height": "100%",
+          "padding": 75,
+          "padding.left": 60,
+          "padding.right": 60,
+          "padding.top": 145,
+          "layout_type": "absolute",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle"
+        },
+        "controls": [
+          {
+            "_id": "layoutTest",
+            "_type": "Layout",
+            "attributes": {
+              "width": "100%",
+              "height": "100%",
+              "layout_flow": "horizontal",
+              "background.color": "#cdcdcd"
+            },
+            "controls": [
+              {
+                "_id": "layoutTest",
+                "_type": "Layout",
+                "attributes": {
+                  "width": 50,
+                  "height": "100%",
+                  "background.color": "#696969"
+                },
+                "controls": []
+              },
+              {
+                "_id": "layoutTest",
+                "_type": "Layout",
+                "attributes": {
+                  "width": 50,
+                  "height": "100%",
+                  "background.color": "#69696950"
+                },
+                "controls": []
+              },
+              {
+                "_id": "layoutTest",
+                "_type": "Layout",
+                "attributes": {
+                  "width": 50,
+                  "height": "100%",
+                  "background.color": "#69696925"
+                },
+                "controls": []
+              },
+              {
+                "_id": "layoutTest",
+                "_type": "Layout",
+                "attributes": {
+                  "width": 50,
+                  "height": "100%",
+                  "background.color": "#69696900"
+                },
+                "controls": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "margin.bottom": 15,
+          "text.color": "6c6c6c",
+          "text.alignment": "center",
+          "layout_type": "float",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "Nested layouts"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

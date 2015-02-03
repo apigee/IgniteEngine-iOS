@@ -1,0 +1,29 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [],
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "touch.background.color": "cdcdcd",
+          "border.radius": 5,
+          "text": "Touch Me"
+        }
+      }
+    ]
+  }
+}

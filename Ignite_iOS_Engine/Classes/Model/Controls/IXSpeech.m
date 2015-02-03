@@ -6,34 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/**
- 
- ###
- ###    Converts Text-to-Speech; *Note:* Device only, does not work in simulator.
- ###
- ###    Looks like:
- 
-<a href="../../images/IXSpeech.png" data-imagelightbox="b"><img src="../../images/IXSpeech.png" alt="" width="160" height="284"></a>
-
- ###    Here's how you use it:
- 
-*/
-
-/*
- *      /Docs
- *
-*/
-
 #import "IXSpeech.h"
 
 @import AVFoundation.AVSpeechSynthesis;
@@ -64,91 +36,6 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 @end
 
 @implementation IXSpeech
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param queue_utterance 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param pause 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param continue 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param stop 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {

@@ -1,0 +1,49 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXBrowser"
+        }
+      },
+      {
+        "_id": "browserTest",
+        "_type": "Browser",
+        "actions":[
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "finished."
+            },
+            "on": "finished"
+          }
+        ],
+        "attributes": {
+          "height": 300,
+          "layout_type":"absolute",
+          "width": "100%",
+          "background.color":"#cdcdcd",
+          "horizontal_alignment":"center",
+          "vertical_alignment":"middle",
+          "url": "http://apigee.com"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

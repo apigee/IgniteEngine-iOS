@@ -6,34 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
-
-/**
- 
- ###
- ###    Native iOS NSTimer implementation
- ###
- ###    Looks like:
- 
- <a href="../../images/IXTimer.png" data-imagelightbox="b"><img src="../../images/IXTimer.png" alt="" width="160" height="284"></a>
- 
- ###    Here's how you use it:
- 
- */
-
-/*
- *      /Docs
- *
- */
-
 #import "IXTimer.h"
 
 #import "IXWeakTimerTarget.h"
@@ -62,93 +34,6 @@ static NSString* const kIXStop = @"stop";
 @end
 
 @implementation IXTimer
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param enabled Enable control *(default: TRUE)*<br>*(bool)*
-    @param repeats Repeat the timer? *(default: FALSE)*<br>*(bool)*
-    @param time_interval Repeat frequency<br>*(float)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param timer_fired Event that occurs each time the timer fires
-
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param start 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-    @param stop 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

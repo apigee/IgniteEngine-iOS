@@ -7,26 +7,29 @@
 //
 
 /*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
-
-/**
  
- ###
- ###    A menu that is presented from the bottom of the screen and gives the user the ability to select from several buttons.
- ###
- ###    Looks like:
+ CONTROL
+ /--------------------/
+ - TYPE : "___"
+ - DESCRIPTION: "___ Description."
+ /--------------------/
+ - PROPERTIES
+ /--------------------/
+ * name=""        default=""               type="___"
+ /--------------------/
+ - EVENTS
+ /--------------------/
+ * name="share_done"
+ * name="share_cancelled"
+ /--------------------/
+ - Example
+ /--------------------/
  
- <a href="../../images/IXActionSheet.png" data-imagelightbox="b"><img src="../../images/IXActionSheet.png" alt="" width="160" height="284"></a>
+ /--------------------/
+ - Changelog
+ /--------------------/
  
- ###    Here's how you use it:
- 
+ /--------------------/
  */
 
 #import "IXScanner.h"
@@ -47,105 +50,6 @@ static ZBarReaderViewController* sReaderViewController = nil;
 @end
 
 @implementation IXScanner
-
-/***************************************************************/
-
-/** Configuration Atributes
- 
- @param auto_close Automatically close the Scanner view controller upon scan? *(default: TRUE)*<br>*(bool)*
- 
- */
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
- 
- @param data Data contained in the scanned code<br>*(string)*
- 
- */
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
- 
- @param scanned Fires when a code is scanned successfully
- 
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
- 
- @param present_reader Present Scanner view controller
- 
-  <pre class="brush: js; toolbar: false;">
- 
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "scannerTest",
-        "function_name": "start_animation"
-      }
-    }
- 
- </pre>
- 
- @param dismiss_reader Dismiss Scanner view controller
- 
-  <pre class="brush: js; toolbar: false;">
- 
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "scannerTest",
-        "function_name": "dismiss_reader"
-      }
-    }
- 
- </pre>
- 
- */
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-  <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-
-
 
 -(void)dealloc
 {

@@ -7,32 +7,43 @@
 //
 
 /*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/**
  
- ###
- ###    Sharing is caring! Share to Twitter, Facebook, flickr, vimeo, Sina Weibo.
- ###
- ###    Looks like:
+ CONTROL
  
-<a href="../../images/IXSocial.png" data-imagelightbox="b"><img src="../../images/IXSocial.png" alt="" width="160" height="284"></a>
-
- ###    Here's how you use it:
+ - TYPE : "Message"
  
-*/
-
-/*
- *      /Docs
- *
-*/
+ - PROPERTIES
+ 
+ * name="share.platform"        default=""               type="facebook, twitter, weibo"
+ * name="share.text"            default=""               type="String"
+ * name="share.url"             default=""               type="String"
+ * name="share.image"           default=""               type="String"
+ 
+ - EVENTS
+ 
+ * name="share_done"
+ * name="share_cancelled"
+ 
+ {
+ "type": "Social",
+ "properties": {
+ "visible": "NO",
+ "id": "myEmail",
+ "width": "100%",
+ "height": "50",
+ "share": {
+ "platform": "facebook",
+ "text": "initial text goes here",
+ "url": "http://google.com",
+ "image": "/assets/images/social.jpg"
+ },
+ "color": {
+ "background": "#00FFFF"
+ }
+ }
+ },
+ 
+ */
 
 #import "IXSocial.h"
 
@@ -88,103 +99,6 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss_share_controller
 @end
 
 @implementation IXSocial
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param share.platform Where shall we share to?<br>*facebooktwitterflickrvimeosina_weibo*
-    @param share.text What text do you want to share?<br>*(string)*
-    @param share.url Shall we share a URL?<br>*(string)*
-    @param share.image Ducklips?<br>*(string)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-
- @param facebook_available Is Facebook sharing available?<br>*(bool)*
- @param twitter_available Is Twitter sharing available?<br>*(bool)*
- @param flickr_available Is flickr sharing available?<br>*(bool)*
- @param vimeo_available Is Vimeo sharing available?<br>*(bool)*
- @param sina_weibo_available Is Sina Weibo sharing available?<br>*(bool)*
-
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param share_done Fires when shared successfully
-    @param share_cancelled Fires if the user dismisses the view controller
-
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param present_share_controller
-  
- <pre class="brush: js; toolbar: false;">
-
- </pre>
-
-    @param dismiss_share_controller 
- 
- <pre class="brush: js; toolbar: false;">
-
- </pre>
- 
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

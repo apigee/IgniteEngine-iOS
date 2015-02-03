@@ -1,0 +1,53 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXActivityIndicator"
+        }
+      },
+      {
+        "_id": "spinner",
+        "_type": "ActivityIndicator",
+        "attributes": {
+          "color": "#fa4c06",
+          "layout_type": "float",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle",
+          "style": "gray"
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "margin.bottom":15,
+          "text.color": "6c6c6c",
+          "layout_type": "float",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "font":"HelveticaNeue:15",
+          "text": "IXActivityIndicator: gray, colored to #fa4c06"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

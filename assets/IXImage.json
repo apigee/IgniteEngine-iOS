@@ -1,0 +1,66 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXImage"
+        }
+      },
+      {
+        "_id": "imageTest",
+        "_type": "Image",
+        "actions": [
+          {
+            "_type": "Alert",
+            "on": "touch_up",
+            "attributes": {
+              "title": "touch_up",
+              "message": "Sized to [[$self.actual.width]]pt x [[$self.actual.height]]pt."
+            }
+          }
+        ],
+        "attributes": {
+          "images.width.max": "100%",
+          "images.default": "/images/bgs/storage_wars.jpg",
+          "text.color": "6c6c6c",
+          "images.default.blur.radius": 20,
+          "layout_type": "absolute",
+          "vertical_alignment": "middle",
+          "horizontal_alignment": "center"
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "width": "100%",
+          "text.alignment": "center",
+          "height": 50,
+          "margin.bottom": 15,
+          "text.color": "6c6c6c",
+          "layout_type": "float",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "IXImage: blurred 20pt"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

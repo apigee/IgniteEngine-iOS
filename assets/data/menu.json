@@ -1,0 +1,136 @@
+{
+  "entities": [
+    {
+      "name": "IXActionSheet",
+      "view": "IXActionSheet.json"
+    },
+    {
+      "name": "IXActivityIndicator",
+      "view": ".json"
+    },
+    {
+      "name": "IXAddressBook",
+      "view": ".json"
+    },
+    {
+      "name": "IXAttributedText",
+      "view": ".json"
+    },
+    {
+      "name": "IXBaseControl",
+      "view": ".json"
+    },
+    {
+      "name": "IXBrowser",
+      "view": ".json"
+    },
+    {
+      "name": "IXButton",
+      "view": ".json"
+    },
+    {
+      "name": "IXCalendar",
+      "view": ".json"
+    },
+    {
+      "name": "IXCamera",
+      "view": ".json"
+    },
+    {
+      "name": "IXCellBasedControl",
+      "view": ".json"
+    },
+    {
+      "name": "IXCircle",
+      "view": ".json"
+    },
+    {
+      "name": "IXCollection",
+      "view": ".json"
+    },
+    {
+      "name": "IXImage",
+      "view": ".json"
+    },
+    {
+      "name": "IXKnob",
+      "view": ".json"
+    },
+    {
+      "name": "IXLayout",
+      "view": ".json"
+    },
+    {
+      "name": "IXMap",
+      "view": ".json"
+    },
+    {
+      "name": "IXMapAnnotation",
+      "view": ".json"
+    },
+    {
+      "name": "IXMediaPlayer",
+      "view": ".json"
+    },
+    {
+      "name": "IXMediaSource",
+      "view": ".json"
+    },
+    {
+      "name": "IXMessage",
+      "view": ".json"
+    },
+    {
+      "name": "IXScanner",
+      "view": ".json"
+    },
+    {
+      "name": "IXSignature",
+      "view": ".json"
+    },
+    {
+      "name": "IXSlider",
+      "view": ".json"
+    },
+    {
+      "name": "IXSocial",
+      "view": ".json"
+    },
+    {
+      "name": "IXSound",
+      "view": ".json"
+    },
+    {
+      "name": "IXSoundRecorder",
+      "view": ".json"
+    },
+    {
+      "name": "IXSpeech",
+      "view": ".json"
+    },
+    {
+      "name": "IXTableView",
+      "view": ".json"
+    },
+    {
+      "name": "IXText",
+      "view": ".json"
+    },
+    {
+      "name": "IXTextInput",
+      "view": ".json"
+    },
+    {
+      "name": "IXTimer",
+      "view": ".json"
+    },
+    {
+      "name": "IXToggle",
+      "view": ".json"
+    },
+    {
+      "name": "IXTouchID",
+      "view": ".json"
+    }
+  ]
+}

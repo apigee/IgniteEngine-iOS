@@ -1,0 +1,125 @@
+{
+    "view": {
+        "attributes": {
+            "padding.top": 100,
+            "custom_control_location":"IX_CustomTextControl.json",
+            "background": {
+				"color": "[[app.color.orangeother]]0"
+			}
+        },
+        "actions": [{
+            "on": "screen_pan_right",
+            "_type": "Alert",
+            "attributes": {
+                "title": "Screen Pan Right"
+            }
+        },{
+            "on": "screen_pan_left",
+            "_type": "Alert",
+            "attributes": {
+                "title": "Screen Pan Left"
+            }
+        }],
+        "controls": [
+         {
+             "_id": "buttonExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "load_async":false,
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "Button"
+             }
+         },
+         {
+             "_id": "imageGIFExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "ImageGIF"
+             }
+         },
+         {
+             "_id": "knobExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "Knob"
+             }
+         },
+         {
+             "_id": "mediaPlayerExampleTexT",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "MediaPlayer"
+             }
+         },
+         {
+             "_id": "mediaSourceExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "MediaSource"
+             }
+         },
+         {
+             "_id": "signatureExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "Signature"
+             }
+         },
+         {
+             "_id": "sliderExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "Slider"
+             }
+         },
+         {
+             "_id": "soundExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "Sound"
+             }
+         },
+         {
+             "_id": "soundRecorderExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "SoundRecorder"
+             }
+         },
+         {
+             "_id": "tableViewExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "TableView"
+             }
+         },
+         {
+             "_id": "timerExampleText",
+             "_type": "Custom",
+             "attributes": {
+                "control_location":"[[$view.custom_control_location]]",
+                "example_name": "Timer"
+             }
+         },
+         {
+             "_id": "devicePropertiesText",
+             "_type": "Custom",
+             "attributes": {
+                "margin.top":100,
+                "control_location":"[[$view.custom_control_location]]",
+                "navigate_to": "IXDeviceProperties.json",
+                "example_name": "Device Properties"
+             }
+         }        
+        ]
+    }
+}

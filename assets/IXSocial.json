@@ -1,0 +1,89 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXSocial"
+        }
+      },
+      {
+        "_id": "socialTest",
+        "_type": "Social",
+        "actions": [
+          {
+            "on": "share_done",
+            "_type": "Alert",
+            "attributes": {
+              "title": "share_done"
+            }
+          }
+        ],
+        "attributes": {
+          "share.platform": "twitter",
+          "share.text": "I can't wait for you all to see this pic!",
+          "share.url": "http://duck.lips",
+          "share.image": "http://images.sodahead.com/slideshows/000020095/1537637670_ducklips87y6-103619834647_xlarge.png"
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touch_up",
+            "attributes": {
+              "_target": "socialTest",
+              "function_name": "present_share_controller"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "layout_type": "absolute",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle",
+          "touch.background.color": "cdcdcd",
+          "border.radius": 0,
+          "text": "Share on Twitter"
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "margin.bottom": 15,
+          "text.color": "6c6c6c",
+          "layout_type": "float",
+          "text.alignment": "center",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "IXSocial: Twitter Available? \n[[socialTest.twitter_available]]"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "Browser Example"
+        }
+      },
+      {
+        "_type": "Layout",
+        "attributes": {
+          "height": "{{ [[device.screen.height]] - 70}}",
+          "width": "[[device.screen.width]]",
+          "layout_type": "float",
+          "margin.top": 70,
+          "background.color": "#cdcdcd"
+        },
+        "controls": [
+          {
+            "_id": "browserChart",
+            "_type": "Browser",
+            "attributes": {
+              "height": "{{ [[device.screen.height]] - 70}}",
+              "width": "[[device.screen.width]]",
+              "url": "http://apigee.com"
+            }
+          }
+        ]
+      }
+    ],
+    "data_providers": []
+  }
+}

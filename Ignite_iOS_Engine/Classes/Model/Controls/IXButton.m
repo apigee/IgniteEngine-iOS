@@ -6,35 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
-
-/**
- 
- ###
- ###    It's a button. Put text on it and trigger an action, maybe even add an image.
- ###
- ###    Looks like:
- 
- <a href="../../images/IXButton.png" data-imagelightbox="b"><img src="../../images/IXButton.png" alt="" width="160" height="284"></a>
- 
- ###    Here's how you use it:
- 
- */
-
-/*
- *      /Docs
- *
- */
-
-
 #import "IXButton.h"
 
 #import "UIImage+IXAdditions.h"
@@ -76,140 +47,11 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 @interface IXButton ()
 
-
-
 @property (nonatomic,strong) UIButton* button;
 
 @end
 
-
-
 @implementation IXButton
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param text The text displayed<br>*(string)*
-    @param text.color The text color *(default: #ffffff)*<br>*(color)*
-"    @param font The text font name and size (font:size) 
-See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*(string)*"
-    @param background.color The background color<br>*(color)*
-    @param icon The icon image path<br>*(string)*
-    @param icon.tintColor The icon tint color<br>*(color)*
-    @param touch.text The text displayed on touch events<br>*(string)*
-    @param touch.font The text font displayed on touch events<br>*(string)*
-    @param touch.text.color The text color on touch events<br>*(color)*
-    @param touch.background.color The background color on touch events<br>*(color)*
-    @param touch.icon The icon image path on touch events<br>*(string)*
-    @param touch.icon.tintColor The icon tint color on touch events<br>*(color)*
-    @param touch.alpha The button alpha on touch events<br>*(float)*
-    @param disabled.text The text displayed when button is disabled<br>*(string)*
-    @param disabled.font The font when button is disabled<br>*(string)*
-    @param disabled.text.color The text color when button is disabled<br>*(color)*
-    @param disabled.background.color The background color when button is disabled<br>*(color)*
-    @param disabled.icon The icon displayed when button is disabled<br>*(string)*
-    @param disabled.icon.tintColor The icon tint color when button is disabled<br>*(color)*
-    @param disabled.alpha The button alpha when button is disabled<br>*(float)*
-    @param darkens_image_on_touch Darkens image on touch events *(default: FALSE)*<br>*(bool)*
-    @param touch.duration The touch duration to trigger a touch event *(default: 0.4)*<br>*(float)*
-    @param touch_up.duration The touch duration to trigger a touch_up event *(default: 0.4)*<br>*(float)*
-
-
-
-
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-
-
-
-
-
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param touch Fires when the control is touched
-    @param touch_up Fires when the control touch is released
-
-
-
-
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-
-
-
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
@@ -218,10 +60,8 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
     [_button removeTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
 }
 
-
 -(void)buildView
 {
-
     [super buildView];
     
     _button = [UIButton buttonWithType:UIButtonTypeCustom];

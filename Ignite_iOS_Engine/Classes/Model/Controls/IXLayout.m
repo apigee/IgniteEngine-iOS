@@ -6,34 +6,6 @@
 //  Copyright (c) 2013. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/**
- 
- ###
- ###    The jack of all trades. Use me everywhere.
- ###
- ###    Looks like:
- 
-<a href="../../images/IXLayout.png" data-imagelightbox="b"><img src="../../images/IXLayout.png" alt="" width="160" height="284"></a>
-
- ###    Here's how you use it:
- 
-*/
-
-/*
- *      /Docs
- *
-*/
-
 #import "IXLayout.h"
 #import "IXClickableScrollView.h"
 #import "IXLayoutEngine.h"
@@ -86,92 +58,6 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 @end
 
 @implementation IXLayout
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param layout_flow Orientation of relative layout flow<br>*horizontalvertical*
-    @param vertical_scroll_enabled Minimum value allowed<br>*(bool)*
-    @param horizontal_scroll_enabled Minimum value allowed<br>*(bool)*
-    @param enable_scrolls_to_top Image to overlay<br>*(bool)*
-    @param scroll_indicator_style Image to underlay<br>*blackwhite*
-    @param background.blur Image pointer<br>*extra_lightlightdark*
-    @param background.blur.tintColor Maximum angle<br>*(float)*
-    @param background.blur.tint.alpha Animation duration<br>*(float)*
-    @param shows_scroll_indicators Display scroll indicators?<br>*(bool)*
-    @param shows_horizontal_scroll_indicator Display horizontal scroll indicator<br>*(bool)*
-    @param shows_vertical_scroll_indicator Display vertical scroll indicator<br>*(bool)*
-    @param max_zoom_scale Maximum zoom scale<br>*(bool)*
-    @param min_zoom_scale Minimum zoom scale<br>*(float)*
-    @param enable_zoom Enable zoom<br>*(bool)*
-    @param zoom_scale Zoom scale<br>*(float)*
-    @param color.gradient_top Gradient color top<br>*(color)*
-    @param color.gradient_bottom <br>*(color)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

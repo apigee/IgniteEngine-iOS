@@ -1,0 +1,72 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "IXCamera",
+      "status_bar_style": "light"
+    },
+    "actions": [
+      {
+        "_type": "Function",
+        "on": "did_appear",
+        "attributes": {
+          "_target": "cameraTest",
+          "function_name": "start"
+        }
+      }
+    ],
+    "controls": [
+      {
+  "_id": "cameraTest",
+  "_type": "Camera",
+  "actions": [
+    {
+      "on": "did_capture_image",
+      "_type": "Alert",
+      "attributes": {
+        "title": "did_capture_image"
+      }
+    },
+    {
+      "on": "did_finish_saving_capture",
+      "_type": "Alert",
+      "attributes": {
+        "title": "did_finish_saving_capture"
+      }
+    }
+  ],
+  "attributes": {
+    "camera": "rear",
+    "height": "100%",
+    "width": "100%"
+  }
+},
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touch_up",
+            "attributes": {
+              "_target": "cameraTest",
+              "function_name": "capture_image"
+            }
+          }
+        ],
+        "attributes": {
+          "width": 150,
+          "height": 50,
+          "text.color": "6c6c6c",
+          "layout_type": "absolute",
+          "background.color": "cdcdcd",
+          "touch.text.color": "6c6c6c50",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle",
+          "touch.background.color": "cdcdcd",
+          "border.radius": 0,
+          "text": "Capture image."
+        }
+      }
+    ]
+  }
+}

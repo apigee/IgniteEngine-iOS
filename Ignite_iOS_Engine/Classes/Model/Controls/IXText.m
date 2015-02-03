@@ -6,34 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
-
-/**
- 
- ###
- ###    Words, letters & fonts.
- ###
- ###    Looks like:
- 
- <a href="../../images/IXText.png" data-imagelightbox="b"><img src="../../images/IXText.png" alt="" width="160" height="284"></a>
- 
- ###    Here's how you use it:
- 
- */
-
-/*
- *      /Docs
- *
- */
-
 #import "IXText.h"
 
 #import "UILabel+IXAdditions.h"
@@ -54,80 +26,6 @@ static NSString* const kIXSizeToFit = @"size_to_fit";
 @end
 
 @implementation IXText
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param text Text to display<br>*(string)*
-    @param text.alignment Alignment of the text *(default: left)*<br>*leftrightcenterjustifiednatural*
-    @param text.color Color of the text *(default: #000000)*<br>*(color)*
-    @param font The text font name and size (font:size) *(default: HelveticaNeue:20)*<br>*(string)*
-    @param size_to_fit Shall the size the text to fit dynamically? *(default: FALSE)*<br>*(bool)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {

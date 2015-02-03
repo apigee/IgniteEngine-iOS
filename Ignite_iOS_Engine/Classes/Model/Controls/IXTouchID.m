@@ -6,34 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/**
- 
- ###
- ###    Fingerprint authentication. Hot.
- ###
- ###    Looks like:
- 
-<a href="../../images/IXTouchID.png" data-imagelightbox="b"><img src="../../images/IXTouchID.png" alt="" width="160" height="284"></a>
-
- ###    Here's how you use it:
- 
-*/
-
-/*
- *      /Docs
- *
-*/
-
 #import "IXTouchID.h"
 
 #import <LocalAuthentication/LocalAuthentication.h>
@@ -59,91 +31,6 @@ static NSString* const kIXAuthenticationUnavailable = @"unavailable";
 @end
 
 @implementation IXTouchID
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param title TouchID title<br>*(string)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param success User authenticated successfully
-    @param failed User did not authenticate successfully
-    @param cancelled User cancelled the operation
-    @param password Dismisses TouchID, allowing user to enter password
-    @param unconfigured TouchID is not configured on the device
-    @param unavailable TouchID is not available or not supported on the device
-
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param authenticate 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {

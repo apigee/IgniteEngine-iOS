@@ -2,17 +2,18 @@
   "app": {
     "actions": [],
     "attributes": {
+      "search_query": "Santa Barbara, CA",
       "apigee_push_notifier": "***APIGEE_PUSH_NOTIFIER***",
       "apigee_org_id": "***APIGEE_ORG_ID***",
       "apigee_app_id": "***APIGEE_APP_ID***",
-      "default_view": "main.json",
+      "default_view": "IXMediaSource.json",
       "enable_request_logging": true,
       "enable_layout_debugging": false,
       "log_level": "verbose",
       "mode": "verbose",
       "shows_navigation_bar": false,
       "status_bar_style": "light",
-      "_OPTIONAL:drawer.view.left": "menu.json",
+      "drawer.view.left": "menu.json",
       "_OPTIONAL:drawer.view.right": "examples/TableView.json",
       "_OPTIONAL:drawer.toggle.velocity": 1000,
       "_OPTIONAL:drawer.view.left.max.width": 275,
@@ -21,6 +22,37 @@
         "assets/images/pin_32x30@2x.png"
       ]
     },
-    "data_providers": []
+    "data_providers": [
+      {
+        "_id": "test_data",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Refresh",
+            "on": [
+              "success",
+              "fail"
+            ],
+            "attributes": {
+              "_target": "tableSettings"
+            }
+          },
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "Status Code: [[test_data.status_code]] Response: [[test_data.raw_data_response]]"
+            },
+            "enabled": false,
+            "on": "fail,success"
+          }
+        ],
+        "attributes": {
+          "auto_load": true,
+          "data.baseurl": "/data/states.json",
+          "http_method": "GET",
+          "objects_path": ""
+        }
+      }
+    ]
   }
 }

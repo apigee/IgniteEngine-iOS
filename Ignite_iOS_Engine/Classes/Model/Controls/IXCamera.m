@@ -4,38 +4,10 @@
 //
 //  Created by Brandon on 3/24/14.
 //  Copyright (c) 2014 Ignite. All rights reserved.
-// 
+//
 
 // todo: This will probably break if we try and add two Camera controls <running> at the same time.
 // Need to find a graceful way of deallocating previously started IXCameras.
-
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/**
- 
- ###
- ###    Calls upon the device camera to capture an image.
- ###
- ###    Looks like:
- 
-<a href="../../images/IXCamera.png" data-imagelightbox="b"><img src="../../images/IXCamera.png" alt="" width="160" height="284"></a>
-
- ###    Here's how you use it:
- 
-*/
-
-/*
- *      /Docs
- *
-*/
 
 #import "IXCamera.h"
 
@@ -47,6 +19,7 @@
 #import "IXDeviceInfo.h"
 #import "UIImage+IXAdditions.h"
 #import "UIImage+ResizeMagick.h"
+
 #import "NSString+IXAdditions.h"
 
 // Temp properties
@@ -86,113 +59,6 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 @end
 
 @implementation IXCamera : IXBaseControl
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes 
-    @param width Width of Camera preview<br>*(integer)*
-    @param height Height of Camera preview<br>*(integer)*
-    @param camera Which Camera to use<br>*frontrear*
-    @param capture.resize Resize captured image<br>*(string)*
-    @param capture.delay Delay image capture<br>*(float)*
-    @param captured_image Captured Image<br>*(string)*
-    @param auto_start Automatically present the Camera view controller<br>*(bool)*
-    @param auto_save_to_camera_roll Automatically save captured image to camera roll<br>*(bool)* 
- 
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param did_capture_image Image captured successfully
-    @param did_finish_saving_capture Image saved successfully 
- 
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param start Present the Camera view controller
- 
-     <pre class="brush: js; toolbar: false;">
-     
-     </pre>
-
-    @param restart 
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param stop
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param capture_image
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
- 
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

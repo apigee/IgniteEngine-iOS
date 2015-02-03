@@ -1,0 +1,67 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXAttributedText"
+        }
+      },
+      {
+        "_type": "AttributedText",
+        "_id": "attributedText",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "You long_press'd:",
+              "message":"[[$self.selected_mention]]"
+            },
+            "on": "touch_up"
+          }
+        ],
+        "attributes": {
+          "text": "Johnny, @paula, silly and @sally were #hoodwinked.",
+          "text.align":"center",
+          "width":"200",
+          "layout_type":"absolute",
+          "horizontal_alignment":"center",
+          "vertical_alignment":"middle"
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "actions": [
+          
+        ],
+        "attributes": {
+          "width": 200,
+          "height": 50,
+          "margin.bottom": 15,
+          "text.color": "6c6c6c",
+          "layout_type": "float",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "IXAttributedText: long_press on @paula"
+        }
+      }
+    ],
+    "data_providers": []
+  }
+}

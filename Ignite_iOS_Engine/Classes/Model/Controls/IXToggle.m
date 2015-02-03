@@ -7,31 +7,17 @@
 //
 
 /*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
-
-/**
  
- ###
- ###    Toggle switch to toggle on and to toggle off.
- ###
- ###    Looks like:
+ CONTROL
  
- <a href="../../images/IXToggle.png" data-imagelightbox="b"><img src="../../images/IXToggle.png" alt="" width="160" height="284"></a>
+ - TYPE : "ToggleSwitch"
  
- ###    Here's how you use it:
+ - EVENTS
  
- */
-
-/*
- *      /Docs
- *
+ * name="toggle"
+ * name="toggle_on"
+ * name="toggle_off"
+  
  */
 
 #import "IXToggle.h"
@@ -46,98 +32,6 @@
 @end
 
 @implementation IXToggle
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param initally_selected Should the toggle be selected by default? *(default: FALSE)*<br>*bool*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-
- @param is_on Is the toggle on?<br>*(bool)*
-
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param toggle 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param toggle_on 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
- 
-    @param toggle_off 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
- 
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {

@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-
 #import "IXBaseControl.h"
 
 @class IXClickableScrollView;

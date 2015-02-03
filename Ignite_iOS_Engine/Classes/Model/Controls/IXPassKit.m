@@ -6,12 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/**
- 
-Allows the user to interact with Passbook Passes.
- 
-*/
-
 #import "IXPassKit.h"
 
 #import "NSString+IXAdditions.h"
@@ -55,103 +49,6 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
     [self dismissPassController:YES];
 }
 
-/*  -----------------------------  */
-//  [Documentation]
-
-/** Configuration Atributes
-
-    @param pass.location http:// or /path/to/pass.passkit  <br>    *(string)*
- 
-*/
-
--(void)config
-{
-    // Documentation: Config
-}
-
-/** Events
- 
- IXPassKit has the following events:
- 
- @param pass.creation.success Fires when the pass is displayed successfully
- @param pass.creation.failed Fires when an error occurs when displaying the pass
- 
-*/
-
--(void)events
-{
-    // Documentation: Events
-}
-
-/** Read-Only Attributes
- 
- @param passkit.available	 *(bool)*   |   Is Does this device support PassKit?
- @param passkit.containsPass *(bool)*   |   Does the file you’ve pointed to actually contain a PassKit pass?
- @param pass.error *(string)*   |   Whoopsie.
- 
-*/
-
-/** Functions
- 
- @param pass.controller.present Present PassKit view controller
- 
- <pre class="brush: js; toolbar: false;">
-     {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.present"
-      }
-    }
- </pre>
- 
-
- 
- @param pass.controller.dismiss Dismiss PassKit view controller
- 
- <pre class="brush: js; toolbar: false;">
-     {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.dismiss"
-      }
-    }
- </pre>
-
- */
-
--(void)functions
-{
-    // Documentation: Functions
-}
-
--(void)readOnly
-{
-    // Documentation: Read-only Attributes
-}
-
-/** Sample Code
- 
- The following example will present a Passbook pass for the user to save/reject.
-
-<pre class="brush: js; toolbar: false;">
- 
-</pre>
- 
-*/
-
--(void)sampleCode
-{
-    // Documentation: Sample Code
-}
-
-//  /[Documentation]
-/*  -----------------------------  */
-
-
 -(void)buildView
 {
     if( [PKPassLibrary isPassLibraryAvailable] ) {
@@ -159,38 +56,37 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
     }
 }
 
-
 -(void)applySettings
 {
     [super applySettings];
-    
+
     NSURL* passURL = [self.propertyContainer getURLPathPropertyValue:kIXPassLocation basePath:nil defaultValue:nil];
     if( [self passURL] == nil || ![[self passURL] isEqual:passURL] || [self pass] == nil ) {
-        
+
         [self setPassURL:passURL];
-        
+
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
+
             NSData* passData = [[NSData alloc] initWithContentsOfURL:[self passURL]];
             NSError* passCreationError;
             PKPass* createdPass = [[PKPass alloc] initWithData:passData error:&passCreationError];
-            
+
             [self setPass:createdPass];
             [self setPassCreationError:passCreationError];
-            
+
             IX_dispatch_main_sync_safe(^{
-                
+
                 if( [self pass] == nil )
                 {
                     [[self actionContainer] executeActionsForEventNamed:kIXPassCreationFailed];
-                    
+
                     IX_LOG_ERROR(@"ERROR: from %@ in %@ : PASSKIT CONTROL ID:%@ CREATION ERROR: %@",THIS_FILE,THIS_METHOD,[[self ID] uppercaseString],[[self passCreationError] description]);
                 }
                 else
                 {
                     [[self actionContainer] executeActionsForEventNamed:kIXPassCreationSuccess];
                 }
-                
+
             });
         });
     }

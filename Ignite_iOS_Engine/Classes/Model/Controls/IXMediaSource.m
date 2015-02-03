@@ -5,32 +5,50 @@
 //  Created by Jeremy Anticouni on 11/16/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     42034
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
- */
-
-/**
- 
- ###
- ###    Allows user to select an image from Library or Camera Roll.
- ###
- ###    Looks like:
- 
- <a href="../../images/IXMediaSource.png" data-imagelightbox="b"><img src="../../images/IXMediaSource.png" alt="" width="160" height="284"></a>
- 
- ###    Here's how you use it:
- 
- */
 
 /*
- *      /Docs
- *
+ /--------------------/
+ - Example
+ /--------------------/
+
+ {
+     "_id": "mediasourceLibrary",
+     "_type": "MediaSource",
+     "attributes": {
+         "source": "library",
+     }
+ }
+ 
+ And to fire:
+ 
+ {
+     "_type": "Function",
+     "attributes": {
+         "function_name": "present_picker",
+         "_id": "mediasourceLibrary"
+     },
+     "on": "touch_up"
+ }
+ 
+ And after loaded:
+ 
+ {
+     "_type": "Modify",
+     "attributes": {
+        "_target": "session"
+     },
+    "on": "did_load_media",
+    "set": {
+        "selected_media": "[[$self.selected_media]]"
+     }
+ }
+ 
+ 
+ /--------------------/
+ - Changelog
+ /--------------------/
+ 
+ /--------------------/
  */
 
 #import "IXMediaSource.h"
@@ -60,99 +78,6 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 @end
 
 @implementation IXMediaSource
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** Configuration Atributes
-
-    @param urce Style of controls to use<br>*cameralibrary*
-    @param camera Color of the player UI<br>*frontrear*
-    @param show_camera_controls Height of the player UI<br>*(float)*
-
-*/
-
--(void)config
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only properties:
-
- @param selected_media The value the knob has been set to<br>*(string)*
-
-*/
-
--(void)readOnly
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following events:
-
-    @param did_load_media Fires when the media loads successfully
-    @param failed_load_media Fires when the media fails to load
-
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following functions:
-
-    @param present_picker 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param dismiss_picker 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/**  Sample Code:
-
- Example:
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-
-*/
-
--(void)sampleCode
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
