@@ -6,6 +6,34 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
+/**
+ 
+ A text label that automagically detects things like @mentions, #hastags, and http://links
+ 
+
+ <div id="container"><ul>
+ <li><a href="../images/IXAttributedText_0.png" data-imagelightbox="c"><img src="../images/IXAttributedText_0.png"></a></li>
+ <li><a href="../images/IXAttributedText_1.png" data-imagelightbox="c"><img src="../images/IXAttributedText_1.png"></a></li>
+ </ul>
+ </div>
+ */
+
+/*
+ *      /Docs
+ *
+ */
+
+
 #import "IXBaseControl.h"
 #import "IXLogger.h"
 #import "TTTAttributedLabel.h"
@@ -72,6 +100,170 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 @end
 
 @implementation IXAttributedText
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param highlight_mentions Highlight @mentions? *(default: TRUE)*<br>*(bool)*
+    @param highlight_hashtags Highlight #hashtags? *(default: TRUE)*<br>*leftrightcenterjustifiednatural*
+    @param highlight_Hyperlinks Highlight http://hyperlinks.com? *(default: TRUE)*<br>*(color)*
+    @param parse_markdown Parse Markdown? *(default: FALSE)*<br>*(string)*
+    @param text The string of text to do fancy things with *(default: FALSE)*<br>*(string)*
+    @param text.color The color for normal text *(default: #000000)*<br>*(color)*
+    @param font The font to use for normal text *(default: systemFontOfSize:16.0f)*<br>*(font)*
+    @param background.color Background of the text area *(default: clear)*<br>*(color)*
+    @param mention.scheme Custom URL scheme to apply to @mentions *(default: mention://)*<br>*(string)*
+    @param mention.color The color for @mentions<br>*(color)*
+    @param mention.font The font to use for @mentions<br>*(string)*
+    @param hashtag.scheme Custom URL scheme to apply to #hashtags *(default: hashtag://)*<br>*(string)*
+    @param hashtag.color The color for #hashtags<br>*(color)*
+    @param hashtag.font The font to use for #hashtags<br>*(string)*
+    @param hyperlink.color The color for http://hyperlinks.com<br>*(color)*
+    @param hyperlink.font The font to use for http://hyperlinks.com<br>*(string)*
+    @param code.font The font to use for code<br>*(string)*
+    @param code.color The color for code<br>*(color)*
+    @param code.background.color The color for background of code area<br>*(color)*
+    @param code.border.color The color for code border *(default: some funky RGB)*<br>*(color)*
+    @param code.border.radius The border radius of code area *(default: 3)*<br>*(float)*
+    @param kerning The kerning to use *(default: 0)*<br>*(float)*
+    @param text.align Alignment of text *(default: left)*<br>*leftrightcenterjustifiednatural*
+    @param line.spacing Line spacing *(default: -0.01)*<br>*(float)*
+    @param line.height.min Minimum line height *(default: -0.01)*<br>*(float)*
+    @param line.height.max Maximum line height *(default: -0.01)*<br>*(float)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param selected_mention Value of the selected @mention. Use with mention.scheme to navigate + pass value.<br>*(string)*
+ @param selected_hashtag Value of the selected #hashtag. Use with hashtag.scheme to navigate + pass value.<br>*(string)*
+ @param selected_url Value of the selected URL.<br>*(string)*
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param long_press Fires when an element receives a long press
+    @param touch_up Fires when an element is touched
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+<pre class="brush: js; toolbar: false;">
+{
+  "_type": "AttributedText",
+  "_id": "attributedText",
+  "actions": [
+    {
+      "_type": "Alert",
+      "attributes": {
+        "title": "You long_press'd:",
+        "message": "[[$self.selected_mention]]"
+      },
+      "on": "touch_up"
+    }
+  ],
+  "attributes": {
+    "text": "Johnny, @paula, silly and @sally were #hoodwinked.",
+    "text.align": "center",
+    "width": "200",
+    "layout_type": "absolute",
+    "horizontal_alignment": "center",
+    "vertical_alignment": "middle"
+  }
+}
+</pre>
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

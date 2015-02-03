@@ -79,6 +79,177 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 @implementation IXMediaSource
 
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param urce Style of controls to use<br>*cameralibrary*
+    @param camera Color of the player UI<br>*frontrear*
+    @param show_camera_controls Height of the player UI<br>*(float)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param selected_media The value the knob has been set to<br>*(string)*
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param did_load_media Fires when the media loads successfully
+    @param failed_load_media Fires when the media fails to load
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+   
+ @param present_picker Present the media picker view controller.
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "mediaSourceTest",
+    "function_name": "present_picker"
+  }
+}
+ 
+ </pre>
+ 
+ @param dismiss_picker Dismiss the media picker view controller.
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "mediaSourceTest",
+    "function_name": "dismiss_picker"
+  }
+}
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_id": "mediaSourceTest",
+  "_type": "MediaSource",
+  "actions": [
+    {
+      "on": "did_load_media",
+      "_type": "Alert",
+      "attributes": {
+        "title": "did_load_media: [[$self.selected_media]]"
+      }
+    }
+  ],
+  "attributes": {
+    "source": "library"
+  }
+}
+ 
+ </pre>
+
+
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
+
+
 -(void)dealloc
 {
     [_imagePickerController setDelegate:nil];

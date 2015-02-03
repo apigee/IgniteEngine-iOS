@@ -6,6 +6,36 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
+/**
+ 
+ It's a button. Put text on it and trigger an action, maybe even add an image.
+ 
+ 
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXButton_0.png" data-imagelightbox="c"><img src="../images/IXButton_0.png"></a></li>
+ <li><a href="../images/IXButton_1.png" data-imagelightbox="c"><img src="../images/IXButton_1.png"></a></li>
+ </ul>
+</div>
+ 
+ */
+
+/*
+ *      /Docs
+ *
+ */
+
+
 #import "IXButton.h"
 
 #import "UIImage+IXAdditions.h"
@@ -47,11 +77,179 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 @interface IXButton ()
 
+
+
 @property (nonatomic,strong) UIButton* button;
 
 @end
 
+
+
 @implementation IXButton
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param text The text displayed<br>*(string)*
+    @param text.color The text color *(default: #ffffff)*<br>*(color)*
+"    @param font The text font name and size (font:size) 
+See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*(string)*"
+    @param background.color The background color<br>*(color)*
+    @param icon The icon image path<br>*(string)*
+    @param icon.tintColor The icon tint color<br>*(color)*
+    @param touch.text The text displayed on touch events<br>*(string)*
+    @param touch.font The text font displayed on touch events<br>*(string)*
+    @param touch.text.color The text color on touch events<br>*(color)*
+    @param touch.background.color The background color on touch events<br>*(color)*
+    @param touch.icon The icon image path on touch events<br>*(string)*
+    @param touch.icon.tintColor The icon tint color on touch events<br>*(color)*
+    @param touch.alpha The button alpha on touch events<br>*(float)*
+    @param disabled.text The text displayed when button is disabled<br>*(string)*
+    @param disabled.font The font when button is disabled<br>*(string)*
+    @param disabled.text.color The text color when button is disabled<br>*(color)*
+    @param disabled.background.color The background color when button is disabled<br>*(color)*
+    @param disabled.icon The icon displayed when button is disabled<br>*(string)*
+    @param disabled.icon.tintColor The icon tint color when button is disabled<br>*(color)*
+    @param disabled.alpha The button alpha when button is disabled<br>*(float)*
+    @param darkens_image_on_touch Darkens image on touch events *(default: FALSE)*<br>*(bool)*
+    @param touch.duration The touch duration to trigger a touch event *(default: 0.4)*<br>*(float)*
+    @param touch_up.duration The touch duration to trigger a touch_up event *(default: 0.4)*<br>*(float)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param touch Fires when the control is touched
+    @param touch_up Fires when the control touch is released
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+<pre class="brush: js; toolbar: false;">
+ {
+    "_id": "button",
+    "_type": "Button",
+    "actions": [
+      {
+        "_type": "Alert",
+        "on": "touch_up",
+        "attributes": {
+          "title": "touch_up",
+          "message": "You touched the button!"
+        }
+      }
+    ],
+    "attributes": {
+      "width": 100,
+      "height": 50,
+      "text.color": "6c6c6c",
+      "layout_type": "absolute",
+      "background.color": "cdcdcd",
+      "touch.text.color": "6c6c6c50",
+      "horizontal_alignment": "center",
+      "vertical_alignment": "middle",
+      "touch.background.color": "cdcdcd",
+      "border.radius": 0,
+      "text": "Hi."
+    }
+  }
+</pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {
@@ -60,8 +258,10 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
     [_button removeTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
 }
 
+
 -(void)buildView
 {
+
     [super buildView];
     
     _button = [UIButton buttonWithType:UIButtonTypeCustom];

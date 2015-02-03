@@ -7,46 +7,33 @@
 //
 
 /*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
  
- CONTROL
+ Send an email or SMS/iMessage.
  
- - TYPE : "Message"
+
+ <div id="container">
+<li><a href="../images/IXMessage_0.png" data-imagelightbox="c"><img src="../images/IXMessage_0.png"></a></li>
+<li><a href="../images/IXMessage_1.png" data-imagelightbox="c"><img src="../images/IXMessage_1.png"></a></li>
+<li><a href="../images/IXMessage_2.png" data-imagelightbox="c"><img src="../images/IXMessage_2.png"></a></li>
+</ul>
+</div>
  
- - PROPERTIES
- 
- * name="message.type"          default=""               type="text, email"
- * name="message.to"            default=""               type="String"
- * name="message.cc"            default=""               type="String"
- * name="message.bcc"           default=""               type="String"
- * name="message.subject"       default=""               type="String"
- * name="message.body"          default=""               type="String"
- 
- - EVENTS
- 
- * name="message_cancelled"
- * name="message_failed"
- * name="message_sent"
- 
- 
- {
-    "type": "Message",
-    "properties": {
-        "id": "myEmail",
-        "width": "100%",
-        "height": "50",
-        "message": {
-            "type": "email",
-            "to": "jeremy@anticouni.net",
-            "subject": "this is a subject",
-            "body": "Uhh nice man I don't know how that works but awesome"
-        },
-        "color": {
-            "background": "#00FFFF"
-        }
-    }
-}
- 
- */
+*/
+
+/*
+ *      /Docs
+ *
+*/
 
 #import "IXMessage.h"
 #import "IXAppManager.h"
@@ -71,6 +58,184 @@
 @end
 
 @implementation IXMessage
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param message.type The type of message to create<br>*textemail*
+    @param message.to Send message to? (Email/Phone/iMessage address)<br>*(string)*
+    @param message.cc Send a copy to?<br>*(string)*
+    @param message.bcc Blind copy to? (Email)<br>*(string)*
+    @param message.subject Message subject (Email)<br>*(string)*
+    @param message.body Message body (Email/Text)<br>*(string)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param message_cancelled Fires when the file is inaccessible
+    @param message_failed Fires when the message fails to send
+    @param message_sent Fires on message send success
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param present_text_message_controller 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "messageTest",
+    "function_name": "present_text_message_controller"
+  }
+}
+ 
+ </pre>
+
+    @param present_email_controller 
+ 
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "messageTest",
+    "function_name": "present_email_controller"
+  }
+}
+ 
+
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_id": "messageTest",
+  "_type": "Message",
+  "actions": [
+    {
+      "on": "message_sent",
+      "_type": "Alert",
+      "attributes": {
+        "title": "Message sent!"
+      }
+    },
+    {
+      "on": "message_cancelled",
+      "_type": "Alert",
+      "attributes": {
+        "title": "Message cancelled!"
+      }
+    }
+  ],
+  "attributes": {
+    "message.type": "text",
+    "message.to": "555-867-5309"
+  }
+}
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {
@@ -99,7 +264,7 @@
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
-    if( [functionName isEqualToString:@"present_text_message_controller"] )
+    if( [functionName isEqualToString:@"present_email_controller"] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
@@ -107,7 +272,7 @@
         }
         [self presentEmailController:animated];
     }
-    else if( [functionName isEqualToString:@"present_email_controller"] )
+    else if( [functionName isEqualToString:@"present_text_message_controller"] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {

@@ -7,47 +7,30 @@
 //
 
 /*
- 
- CONTROL
- /--------------------/
- - TYPE : "IXMediaPlayerControl"
- - DESCRIPTION: "IXVideoControl Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
- /--------------------/
- - Example
- /--------------------/
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
 
- {
- "type": "MediaPlayer",
- "attributes": {
- "id": "myLinkText",
- "layout_type": "relative",
- "height": "180",
- "width": "320",
- "controls":"default",
- "bar":
- {
- "height":"50",
- "color": "#00FF0050"
- },
- "auto_play":true,
- "video": "http://archive.org/download/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto/WaltDisneyCartoons-MickeyMouseMinnieMouseDonaldDuckGoofyAndPluto-HawaiianHoliday1937-Video.mp4"
- }
- },
+/**
  
- /--------------------/
- - Changelog
- /--------------------/
+ Plays media.. audio, video, you name it.
  
- /--------------------/
+
+ <div id="container">
+ <a href="../images/IXMediaPlayer.png" data-imagelightbox="c"><img src="../images/IXMediaPlayer.png" alt=""></a>
+ 
+</div>
+ 
+ */
+
+/*
+ *      /Docs
+ *
  */
 
 #import "IXMediaPlayer.h"
@@ -68,6 +51,153 @@
 @end
 
 @implementation IXMediaPlayer
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param controls Style of controls to use<br>*embeddedfullscreennone*
+    @param bar.color Color of the player UI<br>*(color)*
+    @param bar.height Height of the player UI<br>*(float)*
+    @param video URL or /path/to/video.mov<br>*(string)*
+    @param auto_play Automatically play?<br>*(bool)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param movie_timed_out Fires when the file is inaccessible
+    @param movie_stopped Fires on touch
+    @param touch_up Fires on touch up inside
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param play Play media file
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+    @param pause Pause media file
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param stop Stop media file
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param goto Go to time
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

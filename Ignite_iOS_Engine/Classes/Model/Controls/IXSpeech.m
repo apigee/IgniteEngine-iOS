@@ -6,6 +6,33 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Converts Text-to-Speech; **Note:** *Device only, does not work in simulator.*
+ 
+
+ <div id="container">
+<a href="../images/IXSpeech.png" data-imagelightbox="c"><img src="../images/IXSpeech.png" alt=""></a>
+
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXSpeech.h"
 
 @import AVFoundation.AVSpeechSynthesis;
@@ -36,6 +63,131 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 @end
 
 @implementation IXSpeech
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param queue_utterance 
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+    @param pause 
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+    @param continue 
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+    @param stop 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+<pre class="brush: js; toolbar: false;">
+
+</pre>
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

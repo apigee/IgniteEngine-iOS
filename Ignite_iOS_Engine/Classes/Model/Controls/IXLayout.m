@@ -6,6 +6,35 @@
 //  Copyright (c) 2013. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ The jack of all trades. Use me everywhere.
+ 
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXLayout_0.png" data-imagelightbox="c"><img src="../images/IXLayout_0.png"></a></li>
+ <li><a href="../images/IXLayout_1.png" data-imagelightbox="c"><img src="../images/IXLayout_1.png"></a></li>
+ </ul>
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXLayout.h"
 #import "IXClickableScrollView.h"
 #import "IXLayoutEngine.h"
@@ -58,6 +87,143 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 @end
 
 @implementation IXLayout
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param layout_flow Orientation of relative layout flow<br>*horizontalvertical*
+    @param vertical_scroll_enabled Minimum value allowed<br>*(bool)*
+    @param horizontal_scroll_enabled Minimum value allowed<br>*(bool)*
+    @param enable_scrolls_to_top Image to overlay<br>*(bool)*
+    @param scroll_indicator_style Image to underlay<br>*blackwhite*
+    @param background.blur Image pointer<br>*extra_lightlightdark*
+    @param background.blur.tintColor Maximum angle<br>*(float)*
+    @param background.blur.tint.alpha Animation duration<br>*(float)*
+    @param shows_scroll_indicators Display scroll indicators?<br>*(bool)*
+    @param shows_horizontal_scroll_indicator Display horizontal scroll indicator<br>*(bool)*
+    @param shows_vertical_scroll_indicator Display vertical scroll indicator<br>*(bool)*
+    @param max_zoom_scale Maximum zoom scale<br>*(bool)*
+    @param min_zoom_scale Minimum zoom scale<br>*(float)*
+    @param enable_zoom Enable zoom<br>*(bool)*
+    @param zoom_scale Zoom scale<br>*(float)*
+    @param color.gradient_top Gradient color top<br>*(color)*
+    @param color.gradient_bottom <br>*(color)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_id": "layoutTest",
+  "_type": "Layout",
+  "attributes": {
+    "width": "100%",
+    "height": "100%",
+    "background.color": "#cdcdcd"
+  },
+  "controls": []
+}
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

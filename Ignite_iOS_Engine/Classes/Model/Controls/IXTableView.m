@@ -6,6 +6,33 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Old-school UITableView.
+ 
+
+ <div id="container">
+<a href="../images/IXTableView.png" data-imagelightbox="c"><img src="../images/IXTableView.png" alt=""></a>
+
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXTableView.h"
 
 #import "IXLayout.h"
@@ -55,6 +82,147 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 @end
 
 @implementation IXTableView
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param row_select_enabled Highlight row on touch? *(default: FALSE)*<br>*(string)*
+    @param keep_row_highlighted_on_select Keep the row highlighted on touch_up? *(default: FALSE)*<br>*(float)*
+    @param background_swipe_width How wide should the cell swipe to reveal background controls?<br>*(int)*
+    @param image.parallax http:// or /path/to/image.png for parallaxiness<br>*(bool)*
+    @param image.parallax.height Height of image to display behind table for parallaxiness<br>*(bool)*
+    @param layout_flow Layout flow of table<br>*verticalhorizontal*
+    @param separator.style Show a dividing line between cells?<br>*defaultnone*
+    @param separator.color Color of default separator line<br>*(color)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param started_scrolling Fires when scrolling starts
+    @param ended_scrolling Fires when scrolling stops
+    @param will_display_cell Fires when the cell will come into the view
+    @param did_hide_cell Fires when the cell leaves the view
+    @param did_select_cell Fires when the cell is selected
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param reset_all_background_controls 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+
+
+    @param set_background_swipe_width 
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

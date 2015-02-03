@@ -6,6 +6,33 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Have some data? Toss it in a Collection View!
+ 
+
+ <div id="container">
+<a href="../images/IXCollection.png" data-imagelightbox="c"><img src="../images/IXCollection.png" alt=""></a>
+
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXCollection.h"
 
 #import "IXUICollectionViewCell.h"
@@ -38,6 +65,165 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
 @end
 
 @implementation IXCollection
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param minimum_line_spacing ?<br>*(string)*
+    @param minimum_interitem_spacing ?<br>*(string)*
+    @param background_swipe_width Background swipe width<br>*(string)*
+    @param layout_flow Layout Flow<br>*horizontal,vertical*
+    @param animate_reload Reload rows animation *(default: FALSE)*<br>*(bool)*
+    @param animate_reload.duration Reload rows animation duration<br>*(float)*
+    @param background.color <br>*(color)*
+    @param background_swipe_width <br>*(integer)*
+    @param background_slides_in_from_side <br>*(bool)*
+    @param background_swipe_adjusts_background_alpha <br>*(float)*
+    @param background_controls <br>*[array]*
+    @param section_header_xpath <br>*(string)*
+    @param section_header_controls <br>*[array]*
+    @param section_header_height <br>*(integer)*
+    @param section_header_width <br>*(integer)*
+    @param dataprovider_id <br>*(string)*
+    @param item_width <br>*(color)*
+    @param item_height <br>*(integer)*
+    @param paging.enabled <br>*(bool)*
+    @param scrollable <br>*(bool)*
+    @param pull_to_refresh.enabled <br>*(bool)*
+    @param pull_to_refresh.text <br>*(string)*
+    @param pull_to_refresh.text.color <br>*(color)*
+    @param pull_to_refresh.text.font <br>*()*
+    @param pull_to_refresh.tint.color <br>*(color)*
+"    @param scroll_indicator_style <br>*default
+black
+white**"
+    @param shows_scroll_indicators <br>*(bool)*
+    @param datarow.basepath <br>*(string)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param started_scrolling The ‘cancel’ button was pressed.
+    @param ended_scrolling The ‘%@’ button was pressed.
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param reset_all_background_controls Reset all background controls
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+    @param set_background_swipe_width Change the swipe width of the background controls
+
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

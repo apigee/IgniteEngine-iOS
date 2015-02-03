@@ -6,6 +6,36 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ A slider that moves side-to-side.
+ 
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXSlider_0.png" data-imagelightbox="c"><img src="../images/IXSlider_0.png"></a></li>
+ <li><a href="../images/IXSlider_1.png" data-imagelightbox="c"><img src="../images/IXSlider_1.png"></a></li>
+ <li><a href="../images/IXSlider_2.png" data-imagelightbox="c"><img src="../images/IXSlider_2.png"></a></li>
+ </ul>
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXSlider.h"
 
 #import "NSString+IXAdditions.h"
@@ -43,6 +73,169 @@ static NSString* const kIXValueNSCodingKey = @"value";
 @end
 
 @implementation IXSlider
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param initial_value Initial value of the slider<br>*(float)*
+    @param images.thumb /path/to/image.png<br>*(string)*
+    @param images.minimum /path/to/image.png<br>*(string)*
+    @param images.maximum /path/to/image.png<br>*(string)*
+    @param minimum_value Minimum value boundary<br>*(float)*
+    @param maximum_value Maximum value boundary<br>*(float)*
+    @param images.maximum.capInsets /path/to/image.png<br>*(string)*
+    @param images.minimum.capInsets /path/to/image.png<br>*(string)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param value Current value of the slider<br>*(float)*
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param value_changed Fires when the value of the slider changes
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param update_slider_value 
+ 
+<pre class="brush: js; toolbar: false;">
+
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "sliderTest",
+    "function_name": "update_slider_value"
+  },
+  "set": {
+    "value": 0.75
+  }
+}
+ 
+</pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+ 
+<pre class="brush: js; toolbar: false;">
+ 
+{
+  "_id": "sliderTest",
+  "_type": "Slider",
+  "actions": [
+    {
+      "on": "value_changed",
+      "_type": "Refresh",
+      "attributes": {
+        "_target": "title"
+      }
+    }
+  ],
+  "attributes": {
+    "layout_type": "absolute",
+    "width": 280,
+    "horizontal_alignment": "center",
+    "vertical_alignment": "middle"
+  }
+}
+ 
+</pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

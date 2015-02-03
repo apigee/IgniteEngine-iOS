@@ -6,6 +6,36 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Fingerprint authentication. Hot.
+ 
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXTouchID_0.png" data-imagelightbox="c"><img src="../images/IXTouchID_0.png"></a></li>
+ <li><a href="../images/IXTouchID_1.png" data-imagelightbox="c"><img src="../images/IXTouchID_1.png"></a></li>
+ <li><a href="../images/IXTouchID_2.png" data-imagelightbox="c"><img src="../images/IXTouchID_2.png"></a></li>
+ </ul>
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXTouchID.h"
 
 #import <LocalAuthentication/LocalAuthentication.h>
@@ -31,6 +61,148 @@ static NSString* const kIXAuthenticationUnavailable = @"unavailable";
 @end
 
 @implementation IXTouchID
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param title TouchID title<br>*(string)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)readOnly
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>The following read-only attributes can be read:</p>
+ </div>
+ </div>
+
+    @param success User authenticated successfully
+    @param failed User did not authenticate successfully
+    @param cancelled User cancelled the operation
+    @param password Dismisses TouchID, allowing user to enter password
+    @param unconfigured TouchID is not configured on the device
+    @param unavailable TouchID is not available or not supported on the device
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param authenticate Present TouchID UI
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "speechTest",
+    "function_name": "queue_utterance"
+  },
+  "set": {
+    "utterance.sentences": "[[session.text_to_speak]]",
+    "utterance.rate": "[[customSlider.value]]"
+  }
+}
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Speech",
+  "_id": "speechTest"
+}
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)buildView
 {

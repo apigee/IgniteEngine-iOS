@@ -6,6 +6,34 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Base control. Lots of things inherit attributes from this baby.
+ 
+
+ <div id="container">
+<a href="../images/IXBaseControl.png" data-imagelightbox="c"><img src="../images/IXBaseControl.png" alt=""></a>
+
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
+
 #import "IXBaseControl.h"
 
 #import "IXAppManager.h"
@@ -119,6 +147,151 @@ static NSString* const kIXToggle = @"dev_toggle";
 @end
 
 @implementation IXBaseControl
+
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+
+    @param width The width of the control<br>*(integer)*
+    @param height The height of the control<br>*(integer)*
+    @param alpha The alpha of the control<br>*(float)*
+    @param border.width The border width<br>*(integer)*
+    @param border.color Description<br>*(color)*
+    @param border.radius Description<br>*(float)*
+    @param background.color Description<br>*(color)*
+    @param background.image Description<br>*(string)*
+    @param background.image.scale Description<br>*coverstretchtilecontain*
+    @param cicontext.resolution Description<br>*(float)*
+    @param enabled Description<br>*(bool)*
+    @param enable_tap Description<br>*(bool)*
+    @param enable_swipe Description<br>*(bool)*
+    @param enable_pinch Description<br>*(bool)*
+    @param enable_pan Description<br>*(bool)*
+    @param enable_long_press Description<br>*(bool)*
+    @param enable_shadow Description<br>*(bool)*
+    @param layout_type Description *(default: relative)*<br>*relativeabsolutefloat*
+    @param horizontal_alignment Description *(default: relative)*<br>*leftcenterright*
+    @param vertical_alignment Description *(default: relative)*<br>*topmiddlebottom*
+    @param shadow_blur Description<br>*(float)*
+    @param shadow_alpha Description<br>*(float)*
+    @param shadow_color Description<br>*(color)*
+    @param shadow_offset_right Description<br>*(float)*
+    @param shadow_offset_down Description<br>*(float)*
+    @param visible Description<br>*(bool)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has the following read-only attributes:
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param touch Fires when the control is touched
+    @param touch_up Fires when the control touch is released
+    @param touch_cancelled Fires when the control touch is canceled
+    @param tap Fires when the control is tapped (tap_count, integer)
+    @param swipe Fires when the control is swiped (down, up, right, left)
+    @param pan Fires when ?
+    @param long_press Fires when the control receives a long press
+    @param ** Fires when
+
+
+*/
+-(void)events
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+
+
+
+
+
+
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
 
 -(void)dealloc
 {

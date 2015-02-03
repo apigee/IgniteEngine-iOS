@@ -6,6 +6,36 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Plays sound. That's about it.
+ 
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXSound_0.png" data-imagelightbox="c"><img src="../images/IXSound_0.png"></a></li>
+ <li><a href="../images/IXSound_1.png" data-imagelightbox="c"><img src="../images/IXSound_1.png"></a></li>
+ <li><a href="../images/IXSound_2.png" data-imagelightbox="c"><img src="../images/IXSound_2.png"></a></li>
+ </ul>
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
 #import "IXSound.h"
 
 @import AVFoundation.AVAudioPlayer;
@@ -51,6 +81,196 @@ static NSString* const kIXStop = @"stop";
 @end
 
 @implementation IXSound
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param sound_location http:// or /path/to/sound.mp3<br>*(string)*
+    @param volume LOUD?<br>*(float)*
+    @param number_of_loops How many times do you want to loop it?<br>*(int)*
+    @param auto_play Automatically play the sound?<br>*(bool)*
+    @param force_sound_reload Clear cache and load fresh<br>*(bool)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param is_playing Are we playing anything?<br>*(bool)*
+ @param duration Duration of the track<br>*(float)*
+ @param current_time Time of playhead<br>*(float)*
+ @param last_creation_error Whoopsie?<br>*(string)*
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param finished Fires when the sound finishes playing
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+ @param play Plays sound file
+ 
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundTest",
+    "function_name": "play"
+  }
+}
+ 
+ </pre>
+ 
+ @param pause Pauses sound file
+ 
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundTest",
+    "function_name": "pause"
+  }
+}
+ 
+ </pre>
+ 
+ @param stop Stops playback
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundTest",
+    "function_name": "stop"
+  }
+} 
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+<pre class="brush: js; toolbar: false;">
+
+{
+  "_id": "soundTest",
+  "_type": "Sound",
+  "actions": [
+    {
+      "on": "finished",
+      "_type": "Alert",
+      "attributes": {
+        "title": "Finished",
+        "message": "Played sound: /resources/sounds/powerup.caf"
+      }
+    }
+  ],
+  "attributes": {
+    "sound_location": "/resources/sounds/powerup.caf",
+    "number_of_loops": 0,
+    "auto_play": false
+  }
+}
+ 
+</pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

@@ -7,29 +7,28 @@
 //
 
 /*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
+/**
  
- CONTROL
- /--------------------/
- - TYPE : "___"
- - DESCRIPTION: "___ Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
- /--------------------/
- - Example
- /--------------------/
+ A menu that is presented from the bottom of the screen and gives the user the ability to select from several buttons.
  
- /--------------------/
- - Changelog
- /--------------------/
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXScanner_0.png" data-imagelightbox="c"><img src="../images/IXScanner_0.png"></a></li>
+ <li><a href="../images/IXScanner_1.png" data-imagelightbox="c"><img src="../images/IXScanner_1.png"></a></li>
+ <li><a href="../images/IXScanner_2.png" data-imagelightbox="c"><img src="../images/IXScanner_2.png"></a></li>
+ </ul>
+</div>
  
- /--------------------/
  */
 
 #import "IXScanner.h"
@@ -50,6 +49,144 @@ static ZBarReaderViewController* sReaderViewController = nil;
 @end
 
 @implementation IXScanner
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+ 
+ @param auto_close Automatically close the Scanner view controller upon scan? *(default: TRUE)*<br>*(bool)*
+ 
+ */
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+ 
+ @param data Data contained in the scanned code<br>*(string)*
+ 
+ */
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+ 
+ @param scanned Fires when a code is scanned successfully
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+ 
+ @param present_reader Present Scanner view controller
+ 
+<pre class="brush: js; toolbar: false;">
+
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "scannerTest",
+    "function_name": "present_reader"
+  }
+}
+
+</pre>
+ 
+ @param dismiss_reader Dismiss Scanner view controller
+ 
+  <pre class="brush: js; toolbar: false;">
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "scannerTest",
+    "function_name": "dismiss_reader"
+  }
+}
+ </pre>
+ 
+ */
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+  <pre class="brush: js; toolbar: false;">
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+
+
 
 -(void)dealloc
 {

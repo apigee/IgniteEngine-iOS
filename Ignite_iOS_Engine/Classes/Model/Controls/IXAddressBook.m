@@ -6,6 +6,31 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:       01/28/2015
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+ */
+
+/**
+ 
+ Allows the user to add a contact to their device Address Book.
+ 
+
+ <div id="container">
+<ul>
+  <li><a href="../images/IXAddressBook_0.png" data-imagelightbox="c"><img src="../images/IXAddressBook_0.png"></a></li>
+  <li><a href="../images/IXAddressBook_1.png" data-imagelightbox="c"><img src="../images/IXAddressBook_1.png"></a></li>
+</ul>
+</div>
+ 
+*/
+
+
 #import "IXAddressBook.h"
 
 #import "IXAppManager.h"
@@ -68,6 +93,194 @@ IX_STATIC_CONST_STRING kIXAddContactFailed = @"add_contact_failed";
 @end
 
 @implementation IXAddressBook
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param name.first First Name<br>*(string)*
+    @param name.last Last Name<br>*(string)*
+    @param company.name Company Name<br>*(string)*
+    @param company.title Company Title<br>*(string)*
+    @param phone.mobile Phone: Mobile<br>*(string)*
+    @param phone.main Phone: Main<br>*(string)*
+    @param email.home Email: Home<br>*(string)*
+    @param email.work Email: Work<br>*(string)*
+    @param username.twitter Username: Twitter<br>*(string)*
+    @param username.linkedIn Username: LinkedIn<br>*(string)*
+    @param username.facebook Username: Facebook<br>*(string)*
+    @param url.home URL: Home<br>*(string)*
+    @param url.homePage URL: Homepage<br>*(string)*
+    @param url.work URL: Work<br>*(string)*
+    @param url.linkedIn URL: LinkedIn<br>*(string)*
+    @param url.facebook URL: Facebook<br>*(string)*
+    @param notes Notes<br>*(string)*
+
+
+
+
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param access_granted Permission status<br>*(bool)*
+
+
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param add_contact_success Contact added successfully.
+    @param add_contact_failed Contact failed to add.
+
+
+
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+    @param add_contact Adds contact to device address book.
+ <pre class="brush: js; toolbar: false;">
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "addressbookTest",
+    "function_name": "add_contact"
+  }
+}
+ </pre>
+
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+<pre class="brush: js; toolbar: false;">
+{
+  "_type": "AddressBook",
+  "_id": "addressBookTest",
+  "actions": [
+    {
+      "_type": "Alert",
+      "attributes": {
+        "title": "add_contact_success"
+      },
+      "on": "add_contact_success"
+    },
+    {
+      "_type": "Alert",
+      "attributes": {
+        "title": "add_contact_failed"
+      },
+      "on": "add_contact_failed"
+    }
+  ],
+  "attributes": {
+    "name.first": "Johnny",
+    "name.last": "Appleseed",
+    "company.name": "Farmers, Inc.",
+    "company.title": "CEO",
+    "phone.mobile": "+15551212",
+    "phone.main": "+15551313",
+    "email.home": "johnnyappleseed@gmail.com",
+    "email.work": "johnny@appleseed.com",
+    "username.twitter": "johnnyappleseed",
+    "username.linkedIn": "johnnyappleseed",
+    "username.facebook": "johnnyappleseed",
+    "url.home": "http://johnnyappleseed.com",
+    "url.homePage": "http://johnnyappleseed.com",
+    "url.work": "http://farmersinc.com",
+    "url.linkedIn": "",
+    "url.facebook": ""
+  }
+}
+</pre>
+
+
+
+
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
 
 -(void)buildView
 {

@@ -6,6 +6,37 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ Record audio from the device microphone.
+ 
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXSoundRecorder_0.png" data-imagelightbox="c"><img src="../images/IXSoundRecorder_0.png"></a></li>
+ <li><a href="../images/IXSoundRecorder_1.png" data-imagelightbox="c"><img src="../images/IXSoundRecorder_1.png"></a></li>
+ <li><a href="../images/IXSoundRecorder_2.png" data-imagelightbox="c"><img src="../images/IXSoundRecorder_2.png"></a></li>
+ </ul>
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
+
 #import "IXSoundRecorder.h"
 
 @import AVFoundation.AVAudioSession;
@@ -49,6 +80,208 @@ static NSString* const kIXStopRecording = @"stop_recording";
 @end
 
 @implementation IXSoundRecorder
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param record_to_location /path/to/save/recording.mp3<br>*(string)*
+    @param duration (!) Not sure.. *(default: -1)*<br>*(float)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param record_permission_granted Has the user granted access to the microphone?<br>*(bool)*
+ @param is_recording Are we recording?<br>*(bool)*
+ @param current_time Current duration of recording<br>*(float)*
+ @param last_error_message Whoopsie?<br>*(string)*
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param finished Fires when the recording is finished
+    @param error Fires when an error occurs
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+ @param start_recording
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundRecorderTest",
+    "function_name": "start_recording"
+  }
+}
+ 
+ </pre>
+ 
+ @param pause_recording
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundRecorderTest",
+    "function_name": "pause_recording"
+  }
+}
+ 
+ </pre>
+ 
+ @param resume_recording
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundRecorderTest",
+    "function_name": "resume_recording"
+  }
+}
+ 
+ </pre>
+ 
+ @param stop_recording
+ 
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_type": "Function",
+  "on": "touch_up",
+  "attributes": {
+    "_target": "soundRecorderTest",
+    "function_name": "stop_recording"
+  }
+} 
+ 
+ </pre>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+ 
+{
+  "_id": "soundRecorderTest",
+  "_type": "SoundRecorder",
+  "actions": [
+    {
+      "on": "finished",
+      "_type": "Alert",
+      "attributes": {
+        "title": "Finished",
+        "message": "Recorded sound: [[$self.record_to_location]]"
+      }
+    }
+  ],
+  "attributes": {
+    "record_to_location": "docs://recording.mp3"
+  }
+}
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

@@ -6,6 +6,37 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
+/*
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
+
+/**
+ 
+ A knob that allows the user to turn things up or down.
+ 
+
+ <div id="container">
+ <ul>
+ <li><a href="../images/IXKnob_0.png" data-imagelightbox="c"><img src="../images/IXKnob_0.png"></a></li>
+ <li><a href="../images/IXKnob_1.png" data-imagelightbox="c"><img src="../images/IXKnob_1.png"></a></li>
+ <li><a href="../images/IXKnob_2.png" data-imagelightbox="c"><img src="../images/IXKnob_2.png"></a></li>
+ </ul>
+</div>
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
+
+
 #import "IXKnob.h"
 
 #import "MHRotaryKnob.h"
@@ -43,6 +74,184 @@ static NSString* const kIXValueNSCodingKey = @"value";
 @end
 
 @implementation IXKnob
+
+/*
+* Docs
+*
+*/
+
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param initial_value Initial value to display<br>*(float)*
+    @param minimum_value Minimum value allowed<br>*(float)*
+    @param maximum_value Minimum value allowed<br>*(float)*
+    @param images.foreground Image to overlay<br>*(string)*
+    @param images.background Image to underlay<br>*(string)*
+    @param images.pointer Image pointer<br>*(string)*
+    @param maximum_angle Maximum Angle<br>*(float)*
+    @param knob_animation_duration Animation duration<br>*(float)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+ @param value The value the knob it set to<br>*(float)*
+
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param value_changed Fires when knob value is changed
+    @param touch Fires on touch
+    @param touch_up Fires on touch up inside
+ 
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+ @param update_knob_value Sets the knob to a new value
+
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "on": "touch_up",
+  "_type": "Function",
+  "attributes": {
+    "_target": "customKnob",
+    "function_name": "update_knob_value"
+  },
+  "set": {
+    "value": 0,
+    "animated": true
+  }
+}
+ 
+ </pre>
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_id": "customKnob",
+  "_type": "Knob",
+  "actions": [
+    {
+      "_type": "Refresh",
+      "attributes": {
+        "_target": "knobValue"
+      },
+      "enabled": true,
+      "on": "value_changed"
+    }
+  ],
+  "attributes": {
+    "color": {
+      "background": "#00000000"
+    },
+    "width": 250,
+    "height": 250,
+    "horizontal_alignment": "center",
+    "layout_type": "relative",
+    "initial_value": 0,
+    "minimum_value": 0,
+    "maximum_value": 100,
+    "knob_animation_duration": 0.5,
+    "images": {
+      "pointer": "images/marker.png",
+      "background": "images/bg.png"
+    }
+  }
+}
+ 
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
+/*
+* /Docs
+*
+*/
 
 -(void)dealloc
 {

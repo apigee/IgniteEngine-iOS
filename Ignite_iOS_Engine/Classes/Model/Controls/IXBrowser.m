@@ -5,41 +5,34 @@
 //  Created by Jeremy Anticouni on 11/16/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
- //
+//
+
 /*
- 
- CONTROL
- /--------------------/
- - TYPE : "IXBrowserControl"
- - DESCRIPTION: "IXBrowserControl Description."
- /--------------------/
- - PROPERTIES
- /--------------------/
- * name=""        default=""               type="___"
- /--------------------/
- - EVENTS
- /--------------------/
- * name="share_done"
- * name="share_cancelled"
- /--------------------/
- - Example
- /--------------------/
+ *      Docs
+ *
+ *      Author:     Jeremy Anticouni
+ *      Date:     42034
+ *
+ *
+ *      Copyright (c) 2015 Apigee. All rights reserved.
+*/
 
- {
-    "type": "Media",
-    "properties": {
-        "id": "myMedia",
-        "source": "library"
-    }
- }
+/**
  
- /--------------------/
- - Changelog
- /--------------------/
+  A basic UIWebView that allows you to render a HTML string or a URL.
  
- /--------------------/
- */
 
+ <div id="container">
+<a href="../images/IXBrowser.png" data-imagelightbox="c"><img src="../images/IXBrowser.png" alt=""></a>
+</div>
+ 
+ 
+*/
+
+/*
+ *      /Docs
+ *
+*/
 
 
 #import "IXBrowser.h"
@@ -75,6 +68,123 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 @implementation IXBrowser
 
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
+ <i class="ti-panel"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Attributes</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+
+    @param url The URL to load<br>*(string)*
+    @param html.string Load string of HTML<br>*(string)*
+    @param html.base_url Base URL when using HTML string<br>*(string)*
+
+*/
+
+-(void)attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
+ <i class="ti-loop"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Returns</h3>
+ <p>This has the following attributes:</p>
+ </div>
+ </div>
+*/
+
+-(void)returns
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
+ <i class="ti-pulse"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Events</h3>
+ <p>This control fires the following events:</p>
+ </div>
+ </div>
+
+
+    @param started Page load initiated.
+    @param failed Page failed to load.
+    @param finished Page loaded successfully.
+
+*/
+
+-(void)events
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
+ <i class="ti-direction"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Functions</h3>
+ <p>This control supports the following functions:</p>
+ </div>
+ </div>
+
+
+*/
+
+-(void)functions
+{
+}
+
+/***************************************************************/
+/***************************************************************/
+
+/** <div class="ui-bullet">
+ <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
+ <i class="ti-shortcode"></i>
+ </div>
+ <div class="ui-bullet-content">
+ <h3>Example</h3>
+ <p>Go on, try it out!</p>
+ </div>
+ </div>
+
+ <pre class="brush: js; toolbar: false;">
+
+{
+  "_id": "browserTest",
+  "_type": "Browser",
+  "attributes": {
+    "height": "100%",
+    "width": "100%",
+    "url": "http://apigee.com"
+  }
+}
+ </pre>
+
+*/
+
+-(void)example
+{
+}
+
+/***************************************************************/
+
 -(void)dealloc
 {
     [_webview setDelegate:nil];
@@ -102,6 +212,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 -(void)applySettings
 {
+
     [super applySettings];
 
     [[self webview] setOpaque:NO];
