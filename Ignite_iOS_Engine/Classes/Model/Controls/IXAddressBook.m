@@ -14,20 +14,9 @@
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+*/
 
-/**
- 
- Allows the user to add a contact to their device Address Book.
- 
-
- <div id="container">
-<ul>
-  <li><a href="../images/IXAddressBook_0.png" data-imagelightbox="c"><img src="../images/IXAddressBook_0.png"></a></li>
-  <li><a href="../images/IXAddressBook_1.png" data-imagelightbox="c"><img src="../images/IXAddressBook_1.png"></a></li>
-</ul>
-</div>
- 
+/** Allows the user to add a contact to their device Address Book.
 */
 
 
@@ -96,114 +85,70 @@ IX_STATIC_CONST_STRING kIXAddContactFailed = @"add_contact_failed";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
-
-    @param name.first First Name<br>*(string)*
-    @param name.last Last Name<br>*(string)*
-    @param company.name Company Name<br>*(string)*
-    @param company.title Company Title<br>*(string)*
-    @param phone.mobile Phone: Mobile<br>*(string)*
-    @param phone.main Phone: Main<br>*(string)*
-    @param email.home Email: Home<br>*(string)*
-    @param email.work Email: Work<br>*(string)*
-    @param username.twitter Username: Twitter<br>*(string)*
-    @param username.linkedIn Username: LinkedIn<br>*(string)*
-    @param username.facebook Username: Facebook<br>*(string)*
-    @param url.home URL: Home<br>*(string)*
-    @param url.homePage URL: Homepage<br>*(string)*
-    @param url.work URL: Work<br>*(string)*
-    @param url.linkedIn URL: LinkedIn<br>*(string)*
-    @param url.facebook URL: Facebook<br>*(string)*
-    @param notes Notes<br>*(string)*
-
-
-
-
+/** IXAddressBook has the following attributes:
+ 
+ @param isAllowed Access to the device granted<br><code>bool</code> *FALSE*
+ @param company Company Name<br><code>string</code>
+ @param email.home Email: Home<br><code>string</code>
+ @param email.work Email: Work<br><code>string</code>
+ @param name.first First Name<br><code>string</code>
+ @param name.last Last Name<br><code>string</code>
+ @param phone.main Phone: Main<br><code>string</code>
+ @param phone.mobile Phone: Mobile<br><code>string</code>
+ @param url.facebook URL: Facebook<br><code>string</code>
+ @param url.home URL: Home<br><code>string</code>
+ @param url.homePage URL: Homepage<br><code>string</code>
+ @param url.work URL: Work<br><code>string</code>
+ @param url.linkedIn URL:LinkedIn<br><code>string</code>
+ @param username.facebook Username: Facebook<br><code>string</code>
+ @param username.linkedin Username: LinkedIn<br><code>string</code>
+ @param username.twitter Username: Twitter<br><code>string</code>
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
-
- @param access_granted Permission status<br>*(bool)*
-
-
+/** IXAddressBook returns the following values:
+ 
+ @param isAllowed Access to the device granted<br><code>bool</code>
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
-
-
-    @param add_contact_success Contact added successfully.
-    @param add_contact_failed Contact failed to add.
-
-
-
+/** IXAddressBook fires the following events:
+ 
+ @param error Fires when adding contact failed
+ @param success Fires when contact added successfully
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
-
-    @param add_contact Adds contact to device address book.
- <pre class="brush: js; toolbar: false;">
+@param addContact Adds contact
+ 
 {
   "_type": "Function",
   "on": "touch_up",
   "attributes": {
     "_target": "addressbookTest",
-    "function_name": "add_contact"
+    "function_name": "addContact"
   }
 }
  </pre>
@@ -212,23 +157,15 @@ IX_STATIC_CONST_STRING kIXAddContactFailed = @"add_contact_failed";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
-
+/** Go on, try it out!
+ 
 <pre class="brush: js; toolbar: false;">
 {
   "_type": "AddressBook",
@@ -276,7 +213,7 @@ IX_STATIC_CONST_STRING kIXAddContactFailed = @"add_contact_failed";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

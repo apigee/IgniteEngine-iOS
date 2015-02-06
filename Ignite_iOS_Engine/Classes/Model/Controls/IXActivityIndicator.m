@@ -14,29 +14,19 @@
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+*/
 
-/**
- 
- Simple native iOS spinners. They spin.
- 
- <div id="container">   <ul>
-         <li><a href="../images/IXActivityIndicator_0.png" data-imagelightbox="c"><img src="../images/IXActivityIndicator_0.png"></a></li>
-         <li><a href="../images/IXActivityIndicator_1.png" data-imagelightbox="c"><img src="../images/IXActivityIndicator_1.png"></a></li>
-         <li><a href="../images/IXActivityIndicator_2.png" data-imagelightbox="c"><img src="../images/IXActivityIndicator_2.png"></a></li>
-     </ul>
- </div>
- 
+/** Simple native iOS spinners. They spin.
 */
 
 #import "IXActivityIndicator.h"
 
 // IXActivityIndicator Attributes
-IX_STATIC_CONST_STRING kIXActivityIndicatorStyle = @"style";
+IX_STATIC_CONST_STRING kIXActivityIndicatorStyle = @"size";
 IX_STATIC_CONST_STRING kIXActivityIndicatorColor = @"color"; // Note: Setting this overrides the color set by kIXActivityIndicatorStyle
 
 // kIXActivityIndicatorStyle Accepted Values
-IX_STATIC_CONST_STRING kIXActivityIndicatorStyleWhite = @"white";
+IX_STATIC_CONST_STRING kIXActivityIndicatorStyleWhite = @"small";
 IX_STATIC_CONST_STRING kIXActivityIndicatorStyleLarge = @"large";
 IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
 
@@ -55,91 +45,52 @@ IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param style The spinner style *(default: large)*<br>*whitelargegray*
     @param color The spinner color *(default: #ffffff)*<br>*(color)*
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
+*/
 
-
--(void)events
+-(void)Events
 {
 }
 
+
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 <pre class="brush: js; toolbar: false;">
 {
@@ -156,7 +107,7 @@ IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
 </pre>
 */
 
--(void)example
+-(void)Example
 {
 }
 

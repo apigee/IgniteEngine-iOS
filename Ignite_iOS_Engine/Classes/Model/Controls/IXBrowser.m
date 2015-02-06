@@ -11,29 +11,14 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
-  A basic UIWebView that allows you to render a HTML string or a URL.
- 
-
- <div id="container">
-<a href="../images/IXBrowser.png" data-imagelightbox="c"><img src="../images/IXBrowser.png" alt=""></a>
-</div>
- 
- 
+/** A basic UIWebView that allows you to render a HTML string or a URL.
 */
-
-/*
- *      /Docs
- *
-*/
-
 
 #import "IXBrowser.h"
 #import "IXAppManager.h"
@@ -70,15 +55,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param url The URL to load<br>*(string)*
     @param html.string Load string of HTML<br>*(string)*
@@ -86,40 +63,23 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
-
+/** This control fires the following events:
 
     @param started Page load initiated.
     @param failed Page failed to load.
@@ -127,42 +87,26 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
  <pre class="brush: js; toolbar: false;">
 
@@ -179,7 +123,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"finished";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

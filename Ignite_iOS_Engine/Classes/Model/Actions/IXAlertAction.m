@@ -12,26 +12,102 @@ In a two-button alert that proposes a potentially risky action, the button that 
 
 In a two-button alert that proposes a benign action that people are likely to want, the button that cancels the action should be on the left (and dark-colored).
  
+*/
+
+/*  -----------------------------  */
+//  [Documentation]
+//
+//  Author:     Jeremy Anticouni
+//  Date:       1/29/2015
+//
+//  Copyright (c) 2015 Apigee. All rights reserved.
+//
+/*  -----------------------------  */
 /**
  
- Allows user to select an image from Library or Camera Roll.
+ ###    Displays a native alert. Can be informational with a single button or actionable with two buttons. 
+  
+ <a href="#attributes">Attributes</a>,
+ <a href="#readonly">Read-Only</a>,
+ <a href="#inherits">Inherits</a>,
+ <a href="#events">Events</a>,
+ <a href="#functions">Functions</a>,
+ <a href="#example">Example JSON</a>
+ 
+ ##  <a name="attributes">Attributes</a>
+ 
+ | Name          | Type       | Description                               | Default |
+ |---------------|------------|-------------------------------------------|---------|
+ | title         | *(string)* | Title                                     |         |
+ | message       | *(string)* | Message                                   |         |
+ | button.titles | *(comma)*  | Comma-separated list of button titles (2) |         |
+
+ 
+ ##  <a name="inherits">Inherits</a>
+ 
+>  IXBaseControl
+ 
+ ##  <a name="events">Events</a>
+
+ | Name               | Description                            |
+ |--------------------|----------------------------------------|
+ | will_present_alert | Fires when the alert will be presented |
+ | did_present_alert  | Fires when the alert was presented     |
+ | button_pressed     | Fires button pressed                   |
+ | button_%lu_pressed | 0-based index of action to execute     |
  
 
- <div id="container">
- <ul>
-     <li><a href="../images/IXMediaSource_0.png" data-imagelightbox="c"><img src="../images/IXMediaSource_0.png"></a></li>
-     <li><a href="../images/IXMediaSource_1.png" data-imagelightbox="c"><img src="../images/IXMediaSource_1.png"></a></li>
-     <li><a href="../images/IXMediaSource_2.png" data-imagelightbox="c"><img src="../images/IXMediaSource_2.png"></a></li>
-     <li><a href="../images/IXMediaSource_3.png" data-imagelightbox="c"><img src="../images/IXMediaSource_3.png"></a></li>
- </ul>
- </div>
+ ##  <a name="functions">Functions</a>
  
-*/
+>   None
 
-/*
- *      /Docs
- *
-*/
+ 
+ ##  <a name="example">Example JSON</a> 
+ 
+### Simple Alert
+    {
+      "_type": "Alert",
+      "on": "touch_up",
+      "attributes": {
+        "title": "Title",
+        "message": "This is a message.",
+        "button.titles": "Well,Okay"
+      }
+    }
+
+### Alert with actions on button press
+ 
+    {
+      "_type": "Alert",
+      "on": "touch_up",
+      "actions": [
+        {
+          "_type": "Alert",
+          "on": "button_0_pressed",
+          "attributes": {
+            "title": "button_0_pressed"
+          }
+        },
+        {
+          "_type": "Alert",
+          "on": "button_1_pressed",
+          "attributes": {
+            "title": "button_1_pressed"
+          }
+        }
+      ],
+      "attributes": {
+        "title": "Title",
+        "message": "This is a message.",
+        "button.titles": "Well,Okay"
+      }
+    }
+ 
+ 
+ */
+//
+//  [/Documentation]
+/*  -----------------------------  */
 
 
 #import "IXAlertAction.h"
@@ -60,177 +136,6 @@ static NSString* const kIXButtonIndexPressed = @"button_%lu_pressed"; //0-based 
 @end
 
 @implementation IXAlertAction
-
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
-
-    @param urce Style of controls to use<br>*cameralibrary*
-    @param camera Color of the player UI<br>*frontrear*
-    @param show_camera_controls Height of the player UI<br>*(float)*
-
-*/
-
--(void)attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
-
- @param selected_media The value the knob has been set to<br>*(string)*
-
-*/
-
--(void)returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
-
-
-    @param did_load_media Fires when the media loads successfully
-    @param failed_load_media Fires when the media fails to load
-
-*/
-
--(void)events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
-
-   
- @param present_picker Present the media picker view controller.
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "mediaSourceTest",
-    "function_name": "present_picker"
-  }
-}
- 
- </pre>
- 
- @param dismiss_picker Dismiss the media picker view controller.
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "mediaSourceTest",
-    "function_name": "dismiss_picker"
-  }
-}
- 
- </pre>
-
-*/
-
--(void)functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
-
-
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "mediaSourceTest",
-  "_type": "MediaSource",
-  "actions": [
-    {
-      "on": "did_load_media",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_load_media: [[$self.selected_media]]"
-      }
-    }
-  ],
-  "attributes": {
-    "source": "library"
-  }
-}
- 
- </pre>
-
-
-
-*/
-
--(void)example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
