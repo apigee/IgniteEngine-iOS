@@ -199,6 +199,7 @@ Disable drawers: *drawer.disable*
 #import "Reachability.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
+#import "IXLocationManager.h"
 
 // Top Level Containers
 IX_STATIC_CONST_STRING kIXAppActions = @"app.actions";
@@ -218,12 +219,21 @@ IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.toggle.velocity";
 IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"enable_layout_debugging";
 IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"enable_request_logging";
 IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"enable_remote_logging";
+IX_STATIC_CONST_STRING kIXEnableLocationTracking = @"enable_location_tracking";
+IX_STATIC_CONST_STRING kIXLocationAccuracy = @"location.accuracy";
 IX_STATIC_CONST_STRING kIXShowsNavigationBar = @"shows_navigation_bar";
 IX_STATIC_CONST_STRING kIXPreloadImages = @"preload_images";
 IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee_org_id";
 IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee_app_id";
 IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee_base_url";
 IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee_push_notifier";
+
+IX_STATIC_CONST_STRING kIXLocationAccuracyBest = @"best";
+IX_STATIC_CONST_STRING kIXLocationAccuracyBestForNavigation = @"bestForNavigation";
+IX_STATIC_CONST_STRING kIXLocationAccuracyNearestTenMeters = @"nearestTenMeters";
+IX_STATIC_CONST_STRING kIXLocationAccuracyHundredMeters = @"hundredMeters";
+IX_STATIC_CONST_STRING kIXLocationAccuracyKilometer = @"kilometer";
+IX_STATIC_CONST_STRING kIXLocationAccuracyThreeKilometers = @"threeKilometers";
 
 // App Functions
 IX_STATIC_CONST_STRING kIXReset = @"reset";
@@ -238,6 +248,9 @@ IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function n
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".open_close";
+
+IX_STATIC_CONST_STRING kIXStartLocationTracking = @"start.location.tracking";
+IX_STATIC_CONST_STRING kIXStopLocationTracking = @"stop.location.tracking";
 
 // Device Readonly Attributes
 IX_STATIC_CONST_STRING kIXDeviceModel = @"model";
@@ -254,7 +267,7 @@ IX_STATIC_CONST_STRING kIXAssetsBasePath = @"assets/";
 IX_STATIC_CONST_STRING kIXDefaultIndexPath = @"assets/_index.json";
 IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x";
 
-@interface IXAppManager ()
+@interface IXAppManager () <IXLocationManagerDelegate>
 
 @property (nonatomic,assign) IXAppMode appMode;
 @property (nonatomic,assign) BOOL layoutDebuggingEnabled;
@@ -302,6 +315,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
 
         _reachabilty = [Reachability reachabilityForInternetConnection];
+
+        [[IXLocationManager sharedLocationManager] setDelegate:self];
     }
     return self;
 }
@@ -524,6 +539,27 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     {
         [self setAppRightDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appRightDrawerViewPath]]]];
     }
+
+    BOOL enableLocationTracking = [[self appProperties] getBoolPropertyValue:kIXEnableLocationTracking defaultValue:NO];
+    if( enableLocationTracking )
+    {
+        [[IXLocationManager sharedLocationManager] requestAccessToLocation];
+    }
+
+    NSString* locationAccuracy = [[self appProperties] getStringPropertyValue:kIXLocationAccuracy defaultValue:kIXLocationAccuracyBest];
+    if( [locationAccuracy isEqualToString:kIXLocationAccuracyBest] ) {
+        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
+    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyBestForNavigation] ) {
+        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBestForNavigation];
+    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyNearestTenMeters] ) {
+        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyHundredMeters] ) {
+        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyKilometer] ) {
+        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyKilometer];
+    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyThreeKilometers] ) {
+        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyThreeKilometers];
+    }
 }
 
 -(void)loadApplicationDefaultView
@@ -660,6 +696,14 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
         }
     }
+    else if( [functionName isEqualToString:kIXStartLocationTracking] )
+    {
+        [[IXLocationManager sharedLocationManager] beginLocationTracking];
+    }
+    else if( [functionName isEqualToString:kIXStopLocationTracking] )
+    {
+        [[IXLocationManager sharedLocationManager] stopTrackingLocation];
+    }
 }
 
 -(void)storeSessionProperties
@@ -729,6 +773,16 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
         }
     }
+}
+
+-(void)locationManagerAuthStatusChanged:(CLAuthorizationStatus)status
+{
+    [_actionContainer executeActionsForEventNamed:kIXLocationAuthChanged];
+}
+
+-(void)locationManagerDidUpdateLocation:(CLLocation *)location
+{
+    [_actionContainer executeActionsForEventNamed:kIXLocationLocationUpdated];
 }
 
 @end

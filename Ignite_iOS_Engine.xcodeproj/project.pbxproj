@@ -126,6 +126,7 @@
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
 		63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */; };
+		63C4ED5F1A8455EB005A13DE /* IXLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */; };
 		63C4F4DC1960F9CE00577B75 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C4F4DB1960F9CE00577B75 /* UIImage+ImageEffects.m */; };
 		63CC9A5A18B7F06200ECCECB /* IXBaseControlConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9A5918B7F06200ECCECB /* IXBaseControlConfig.m */; };
 		63CC9AB118BD0BB000ECCECB /* IXWeakTimerTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */; };
@@ -371,6 +372,8 @@
 		63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceShortCode.m; sourceTree = "<group>"; };
 		63C3FD21183FEEEB00D2BA1E /* IXGetShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGetShortCode.h; sourceTree = "<group>"; };
 		63C3FD22183FEEEB00D2BA1E /* IXGetShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGetShortCode.m; sourceTree = "<group>"; };
+		63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLocationManager.h; sourceTree = "<group>"; };
+		63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLocationManager.m; sourceTree = "<group>"; };
 		63C4F4DA1960F9CE00577B75 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		63C4F4DB1960F9CE00577B75 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		63CC9A5818B7F06200ECCECB /* IXBaseControlConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseControlConfig.h; sourceTree = "<group>"; };
@@ -695,6 +698,8 @@
 				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
 				13033F7E183ED8F200C29157 /* IXLayoutEngine.h */,
 				13033F7F183ED8F200C29157 /* IXLayoutEngine.m */,
+				63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */,
+				63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */,
 				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
 				63CC9ABE18BE8AB600ECCECB /* IXLogger.m */,
 				63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */,
@@ -1127,6 +1132,7 @@
 				6333614D18973DA6004F3433 /* IXDeleteAction.m in Sources */,
 				13033FA6183ED8F200C29157 /* IXTableView.m in Sources */,
 				13033F9B183ED8F200C29157 /* IXBaseControl.m in Sources */,
+				63C4ED5F1A8455EB005A13DE /* IXLocationManager.m in Sources */,
 				63C4F4DC1960F9CE00577B75 /* UIImage+ImageEffects.m in Sources */,
 				13033F9C183ED8F200C29157 /* IXBrowser.m in Sources */,
 				CA51499A18E0CAC000FA58DF /* IXCamera.m in Sources */,
