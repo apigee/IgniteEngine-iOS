@@ -10,29 +10,14 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Base control. Lots of things inherit attributes from this baby.
- 
-
- <div id="container">
-<a href="../images/IXBaseControl.png" data-imagelightbox="c"><img src="../images/IXBaseControl.png" alt=""></a>
-
-</div>
- 
+/** Base control. Lots of things inherit attributes from this baby.
 */
-
-/*
- *      /Docs
- *
-*/
-
 
 #import "IXBaseControl.h"
 
@@ -151,16 +136,7 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
-
+/** This control has the following attributes:
 
     @param width The width of the control<br>*(integer)*
     @param height The height of the control<br>*(integer)*
@@ -191,7 +167,7 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
@@ -200,22 +176,14 @@ static NSString* const kIXToggle = @"dev_toggle";
 /**  This control has the following read-only attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param touch Fires when the control is touched
@@ -229,21 +197,13 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 
 */
--(void)events
+-(void)Events
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
 
@@ -260,22 +220,14 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
 
@@ -287,7 +239,7 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

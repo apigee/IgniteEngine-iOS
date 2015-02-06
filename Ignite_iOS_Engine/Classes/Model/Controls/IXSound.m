@@ -10,30 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Plays sound. That's about it.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXSound_0.png" data-imagelightbox="c"><img src="../images/IXSound_0.png"></a></li>
- <li><a href="../images/IXSound_1.png" data-imagelightbox="c"><img src="../images/IXSound_1.png"></a></li>
- <li><a href="../images/IXSound_2.png" data-imagelightbox="c"><img src="../images/IXSound_2.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** Plays sound. That's about it.
 */
 
 #import "IXSound.h"
@@ -89,15 +72,7 @@ static NSString* const kIXStop = @"stop";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param sound_location http:// or /path/to/sound.mp3<br>*(string)*
     @param volume LOUD?<br>*(float)*
@@ -107,21 +82,13 @@ static NSString* const kIXStop = @"stop";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
  @param is_playing Are we playing anything?<br>*(bool)*
  @param duration Duration of the track<br>*(float)*
@@ -130,44 +97,28 @@ static NSString* const kIXStop = @"stop";
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param finished Fires when the sound finishes playing
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
  @param play Plays sound file
@@ -217,22 +168,14 @@ static NSString* const kIXStop = @"stop";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
 <pre class="brush: js; toolbar: false;">
@@ -261,7 +204,7 @@ static NSString* const kIXStop = @"stop";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

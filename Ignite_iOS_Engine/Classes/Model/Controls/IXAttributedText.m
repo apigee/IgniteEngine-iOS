@@ -10,29 +10,14 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+*/
 
-/**
- 
- A text label that automagically detects things like @mentions, #hastags, and http://links
- 
-
- <div id="container"><ul>
- <li><a href="../images/IXAttributedText_0.png" data-imagelightbox="c"><img src="../images/IXAttributedText_0.png"></a></li>
- <li><a href="../images/IXAttributedText_1.png" data-imagelightbox="c"><img src="../images/IXAttributedText_1.png"></a></li>
- </ul>
- </div>
- */
-
-/*
- *      /Docs
- *
- */
-
+/** A text label that automagically detects things like @mentions, #hastags, and http://links
+*/
 
 #import "IXBaseControl.h"
 #import "IXLogger.h"
@@ -108,15 +93,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param highlight_mentions Highlight @mentions? *(default: TRUE)*<br>*(bool)*
     @param highlight_hashtags Highlight #hashtags? *(default: TRUE)*<br>*leftrightcenterjustifiednatural*
@@ -147,21 +124,13 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
  @param selected_mention Value of the selected @mention. Use with mention.scheme to navigate + pass value.<br>*(string)*
  @param selected_hashtag Value of the selected #hashtag. Use with hashtag.scheme to navigate + pass value.<br>*(string)*
@@ -169,22 +138,14 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param long_press Fires when an element receives a long press
@@ -192,41 +153,25 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 <pre class="brush: js; toolbar: false;">
 {
@@ -254,7 +199,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 </pre>
 */
 
--(void)example
+-(void)Example
 {
 }
 

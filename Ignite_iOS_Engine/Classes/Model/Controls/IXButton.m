@@ -10,31 +10,14 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+*/
 
-/**
- 
- It's a button. Put text on it and trigger an action, maybe even add an image.
- 
- 
- <div id="container">
- <ul>
- <li><a href="../images/IXButton_0.png" data-imagelightbox="c"><img src="../images/IXButton_0.png"></a></li>
- <li><a href="../images/IXButton_1.png" data-imagelightbox="c"><img src="../images/IXButton_1.png"></a></li>
- </ul>
-</div>
- 
- */
-
-/*
- *      /Docs
- *
- */
-
+/** It's a button. Put text on it and trigger an action, maybe even add an image.
+*/
 
 #import "IXButton.h"
 
@@ -94,15 +77,7 @@ static NSString* const kIXTouchUpDuration = @"touch_up.duration";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param text The text displayed<br>*(string)*
     @param text.color The text color *(default: #ffffff)*<br>*(color)*
@@ -131,39 +106,23 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param touch Fires when the control is touched
@@ -171,41 +130,25 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
 <pre class="brush: js; toolbar: false;">
@@ -240,7 +183,7 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

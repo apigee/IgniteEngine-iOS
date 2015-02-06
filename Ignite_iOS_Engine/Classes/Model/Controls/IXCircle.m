@@ -10,29 +10,14 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Not much to say about this one. It's round. Use it as a button, loading indicator, or..?
- 
-
- <div id="container">
-<a href="../images/IXCircle.png" data-imagelightbox="c"><img src="../images/IXCircle.png" alt=""></a>
-
-</div>
- 
+/** Not much to say about this one. It's round. Use it as a button, loading indicator, or..?
 */
-
-/*
- *      /Docs
- *
-*/
-
 
 #import "IXCircle.h"
 
@@ -44,80 +29,48 @@ static NSString* const kIXColor = @"color";
 /*
  * Docs
  *
- */
+*/
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
  
     @param size Circle size<br>*(integer)*
     @param color Circle color<br>*(color)*
  
  */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
  */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
+*/
 
-
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
@@ -144,7 +97,7 @@ static NSString* const kIXColor = @"color";
  
  */
 
--(void)example
+-(void)Example
 {
 }
 

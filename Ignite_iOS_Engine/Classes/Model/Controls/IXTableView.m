@@ -10,27 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Old-school UITableView.
- 
-
- <div id="container">
-<a href="../images/IXTableView.png" data-imagelightbox="c"><img src="../images/IXTableView.png" alt=""></a>
-
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** Old-school UITableView.
 */
 
 #import "IXTableView.h"
@@ -90,15 +76,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param row_select_enabled Highlight row on touch? *(default: FALSE)*<br>*(string)*
     @param keep_row_highlighted_on_select Keep the row highlighted on touch_up? *(default: FALSE)*<br>*(float)*
@@ -111,39 +89,23 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param started_scrolling Fires when scrolling starts
@@ -154,22 +116,14 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
     @param reset_all_background_controls 
@@ -189,22 +143,14 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -213,7 +159,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

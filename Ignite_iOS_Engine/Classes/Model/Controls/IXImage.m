@@ -10,30 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Renders an image. Supports nifty blurs, real-time color overlay and even animated GIFs.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXImage_0.png" data-imagelightbox="c"><img src="../images/IXImage_0.png"></a></li>
- <li><a href="../images/IXImage_1.png" data-imagelightbox="c"><img src="../images/IXImage_1.png"></a></li>
- <li><a href="../images/IXImage_2.png" data-imagelightbox="c"><img src="../images/IXImage_2.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** Renders an image. Supports nifty blurs, real-time color overlay and even animated GIFs.
 */
 
 #import "IXImage.h"
@@ -104,15 +87,7 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
 
     @param images.default /path/to/image.png<br>*(string)*
@@ -132,21 +107,13 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
  @param is_animating Is it animating?<br>*(bool)*
  @param image.height Actual height of image<br>*(int)*
@@ -154,22 +121,14 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param images_default_loaded Fires when the image loads successfully
@@ -177,22 +136,14 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
     @param start_animation Starts a GIF animation
@@ -257,22 +208,14 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -306,7 +249,7 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

@@ -10,30 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Interact with Passbook Passes directly without calling out to Safari.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXPassKit_0.png" data-imagelightbox="c"><img src="../images/IXPassKit_0.png"></a></li>
- <li><a href="../images/IXPassKit_1.png" data-imagelightbox="c"><img src="../images/IXPassKit_1.png"></a></li>
- <li><a href="../images/IXPassKit_2.png" data-imagelightbox="c"><img src="../images/IXPassKit_2.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** Interact with Passbook Passes directly without calling out to Safari.
 */
 
 #import "IXPassKit.h"
@@ -82,15 +65,7 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
 /*  -----------------------------  */
 //  [Documentation]
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param pass.location http:// or /path/to/pass.passkit  <br>    *(string)*
  

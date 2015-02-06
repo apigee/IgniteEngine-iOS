@@ -75,7 +75,6 @@
 		6324BF501835931C00748F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF4F1835931C00748F27 /* Foundation.framework */; };
 		6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF511835931C00748F27 /* CoreGraphics.framework */; };
 		6324BF541835931C00748F27 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6324BF531835931C00748F27 /* UIKit.framework */; };
-		63259DC218CA52EF00DDECB4 /* IXSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 63259DC118CA52EF00DDECB4 /* IXSignature.m */; };
 		632807E3193E1D1100F5D2DE /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632807E2193E1D1100F5D2DE /* AssetsLibrary.framework */; };
 		632807E5193E25BF00F5D2DE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632807E4193E25BF00F5D2DE /* CoreTelephony.framework */; };
 		632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 632B7285184E9E760077D603 /* IXRefreshAction.m */; };
@@ -275,8 +274,6 @@
 		6324BF511835931C00748F27 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6324BF531835931C00748F27 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6324BF681835931D00748F27 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		63259DC018CA52EF00DDECB4 /* IXSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSignature.h; sourceTree = "<group>"; };
-		63259DC118CA52EF00DDECB4 /* IXSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSignature.m; sourceTree = "<group>"; };
 		632807E2193E1D1100F5D2DE /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		632807E4193E25BF00F5D2DE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		632B7284184E9E760077D603 /* IXRefreshAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXRefreshAction.h; sourceTree = "<group>"; };
@@ -592,8 +589,6 @@
 				63A812621A16CFBE00311B10 /* IXPassKit.m */,
 				13033F56183ED8F200C29157 /* IXScanner.h */,
 				13033F57183ED8F200C29157 /* IXScanner.m */,
-				63259DC018CA52EF00DDECB4 /* IXSignature.h */,
-				63259DC118CA52EF00DDECB4 /* IXSignature.m */,
 				6366D6DE18A95A7A000AEEA5 /* IXSlider.h */,
 				6366D6DF18A95A7A000AEEA5 /* IXSlider.m */,
 				13033F58183ED8F200C29157 /* IXSocial.h */,
@@ -1158,7 +1153,6 @@
 				13033F8F183ED8F200C29157 /* IXConstants.m in Sources */,
 				638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */,
 				63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */,
-				63259DC218CA52EF00DDECB4 /* IXSignature.m in Sources */,
 				63A812631A16CFBE00311B10 /* IXPassKit.m in Sources */,
 				CA1279EB18D69618007EEC5A /* IXCircle.m in Sources */,
 				633361451894593D004F3433 /* IXEventAction.m in Sources */,

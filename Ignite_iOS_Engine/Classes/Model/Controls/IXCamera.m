@@ -13,30 +13,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Calls upon the device camera to capture an image.
- 
-
- <div id="container"><ul>
- <li><a href="../images/IXCamera_0.png" data-imagelightbox="c"><img src="../images/IXCamera_0.png"></a></li>
- <li><a href="../images/IXCamera_1.png" data-imagelightbox="c"><img src="../images/IXCamera_1.png"></a></li>
- <li><a href="../images/IXCamera_2.png" data-imagelightbox="c"><img src="../images/IXCamera_2.png"></a></li>
- <li><a href="../images/IXCamera_3.png" data-imagelightbox="c"><img src="../images/IXCamera_3.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** Calls upon the device camera to capture an image.
 */
 
 #import "IXCamera.h"
@@ -96,15 +79,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div> 
+/** This control has the following attributes: 
     @param width Width of Camera preview<br>*(integer)*
     @param height Height of Camera preview<br>*(integer)*
     @param camera Which Camera to use<br>*frontrear*
@@ -116,39 +91,23 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
  
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param did_capture_image Image captured successfully
@@ -156,22 +115,14 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
  
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
  @param start Presents the Camera view controller
@@ -224,22 +175,14 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -275,7 +218,7 @@ static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

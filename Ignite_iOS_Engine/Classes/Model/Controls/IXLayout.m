@@ -10,29 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- The jack of all trades. Use me everywhere.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXLayout_0.png" data-imagelightbox="c"><img src="../images/IXLayout_0.png"></a></li>
- <li><a href="../images/IXLayout_1.png" data-imagelightbox="c"><img src="../images/IXLayout_1.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** The jack of all trades. Use me everywhere.
 */
 
 #import "IXLayout.h"
@@ -95,15 +79,7 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param layout_flow Orientation of relative layout flow<br>*horizontalvertical*
     @param vertical_scroll_enabled Minimum value allowed<br>*(bool)*
@@ -125,76 +101,45 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
+*/
 
-
--(void)events
+-(void)Events
 {
 }
 
+
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -214,7 +159,7 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 
