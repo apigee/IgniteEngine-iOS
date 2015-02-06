@@ -18,6 +18,8 @@ NSString* const kIXAppRegisterForRemoteNotificationsSuccess = @"app_register_for
 NSString* const kIXAppRegisterForRemoteNotificationsFailed = @"app_register_for_notifications_failed";
 NSString* const kIXPushRecievedEvent = @"push_recieved";
 NSString* const kIXCustomURLSchemeOpened = @"custom_url_scheme_opened";
+NSString* const kIXLocationAuthChanged = @"location_auth_changed";
+NSString* const kIXLocationLocationUpdated = @"location_updated";
 
 // SPECIAL
 NSString* const kIX_CONTROL_CLASS_NAME_FORMAT = @"IX%@";
