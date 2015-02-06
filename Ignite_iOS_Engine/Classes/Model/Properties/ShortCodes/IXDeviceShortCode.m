@@ -28,7 +28,6 @@ IX_STATIC_CONST_STRING kIXOSVersionInteger = @"os.version.integer";
 IX_STATIC_CONST_STRING kIXOSVersionMajor = @"os.version.major";
 
 IX_STATIC_CONST_STRING kIXLocation = @"location"; // Return format: lat:long
-IX_STATIC_CONST_STRING kIXLocationIsAuthorized = @"location.isAuthorized";
 IX_STATIC_CONST_STRING kIXLocationLat = @"location.lat";
 IX_STATIC_CONST_STRING kIXLocationLong = @"location.long";
 
@@ -74,11 +73,7 @@ IX_STATIC_CONST_STRING kIXLocationLong = @"location.long";
         }
         else if( [methodName hasPrefix:kIXLocation] )
         {
-            if( [methodName isEqualToString:kIXLocationIsAuthorized] )
-            {
-                returnValue = [NSString ix_stringFromBOOL:[[IXLocationManager sharedLocationManager] isAuthorized]];
-            }
-            else if( [methodName isEqualToString:kIXLocationLat] )
+            if( [methodName isEqualToString:kIXLocationLat] )
             {
                 returnValue = [NSString ix_stringFromFloat:[[[IXLocationManager sharedLocationManager] lastKnownLocation] coordinate].latitude];
             }
