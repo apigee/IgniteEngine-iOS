@@ -34,26 +34,34 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 
-// IXActionSheet Attributes
-IX_STATIC_CONST_STRING kIXSheetStyle = @"sheet.style";
-IX_STATIC_CONST_STRING kIXSheetTitle = @"sheet.title";
-IX_STATIC_CONST_STRING kIXSheetButtonTitleCancel = @"sheet.button.title.cancel";
-IX_STATIC_CONST_STRING kIXSheetButtonTitleDestructive = @"sheet.button.title.destructive";
-IX_STATIC_CONST_STRING kIXSheetButtonTitleOthers = @"sheet.button.title.others";
+// Attributes
+IX_STATIC_CONST_STRING kIXSheetStyle = @"style";
+IX_STATIC_CONST_STRING kIXSheetTitle = @"title";
+IX_STATIC_CONST_STRING kIXSheetButtonTitleCancel = @"buttons.cancel";
+IX_STATIC_CONST_STRING kIXSheetButtonTitleDestructive = @"buttons.destructive";
+IX_STATIC_CONST_STRING kIXSheetButtonTitleOthers = @"buttons.others";
 
-// kIXSheetStyle Accepted Values
+// Attribute Value Available Parameters
 IX_STATIC_CONST_STRING kIXSheetStyleDefault = @"default";
 IX_STATIC_CONST_STRING kIXSheetStyleAutomatic = @"automatic";
 IX_STATIC_CONST_STRING kIXSheetStyleBlackTranslucent = @"black.translucent";
 IX_STATIC_CONST_STRING kIXSheetStyleBlackOpaque = @"black.opaque";
 
-// IXActionSheet Functions
+// Attribute Value Defaults
+IX_STATIC_CONST_STRING kIXDefaultCancelButtonTitle = @"Cancel";
+IX_STATIC_CONST_OBJECT kIXDefaultSheetTitle = nil;
+IX_STATIC_CONST_OBJECT kIXDefaultDestructiveButtonTitle = nil;
+IX_STATIC_CONST_OBJECT kIXDefaultOtherButtonTitles = nil;
+
+// Returns
+
+// Events
+IX_STATIC_CONST_STRING kIXCancelPressed = @"cancelled";
+IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@";
+
+// Functions
 IX_STATIC_CONST_STRING kIXShowSheet = @"show_sheet";
 IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
-
-// IXActionSheet Events
-IX_STATIC_CONST_STRING kIXCancelPressed = @"cancel_pressed";
-IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@_pressed";
 
 @interface IXActionSheet () <UIActionSheetDelegate>
 
@@ -271,10 +279,10 @@ IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@_pressed";
         [self setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     }
 
-    [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:nil]];
-    [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:@"Cancel"]];
-    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:nil]];
-    [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:nil]];
+    [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:kIXDefaultSheetTitle]];
+    [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:kIXDefaultCancelButtonTitle]];
+    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:kIXDefaultDestructiveButtonTitle]];
+    [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:kIXDefaultOtherButtonTitles]];
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
