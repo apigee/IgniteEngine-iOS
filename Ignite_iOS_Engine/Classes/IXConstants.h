@@ -13,7 +13,7 @@
 #import "ApigeeLogger.h"
 
 #define IX_STATIC_CONST_STRING static NSString* const
-#define IX_STATIC_CONST_OBJECT static NSObject const
+#define IX_STATIC_CONST_OBJECT static NSObject* const
 #define IX_STATIC_CONST_INTEGER static NSInteger const
 #define IX_STATIC_CONST_FLOAT static CGFloat const
 

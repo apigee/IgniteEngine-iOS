@@ -6,50 +6,8 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- /--------------------/
- - Example
- /--------------------/
-
- {
-     "_id": "mediasourceLibrary",
-     "_type": "MediaSource",
-     "attributes": {
-         "source": "library",
-     }
- }
- 
- And to fire:
- 
- {
-     "_type": "Function",
-     "attributes": {
-         "function_name": "present_picker",
-         "_id": "mediasourceLibrary"
-     },
-     "on": "touch_up"
- }
- 
- And after loaded:
- 
- {
-     "_type": "Modify",
-     "attributes": {
-        "_target": "session"
-     },
-    "on": "did_load_media",
-    "set": {
-        "selected_media": "[[$self.selected_media]]"
-     }
- }
- 
- 
- /--------------------/
- - Changelog
- /--------------------/
- 
- /--------------------/
- */
+/** Allows you to select media from the device camera or library.
+*/
 
 #import "IXMediaSource.h"
 #import "IXAppManager.h"
@@ -86,15 +44,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param urce Style of controls to use<br>*cameralibrary*
     @param camera Color of the player UI<br>*frontrear*
@@ -102,42 +52,26 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
  @param selected_media The value the knob has been set to<br>*(string)*
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param did_load_media Fires when the media loads successfully
@@ -145,22 +79,14 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
    
  @param present_picker Present the media picker view controller.
@@ -195,22 +121,14 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -238,7 +156,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

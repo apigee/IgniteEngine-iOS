@@ -10,29 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- Create calendar items and add them to the device calendar.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXCalendar_0.png" data-imagelightbox="c"><img src="../images/IXCalendar_0.png"></a></li>
- <li><a href="../images/IXCalendar_1.png" data-imagelightbox="c"><img src="../images/IXCalendar_1.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** Create calendar items and add them to the device calendar.
 */
 
 #import "IXCalendar.h"
@@ -99,15 +83,7 @@ IX_STATIC_CONST_STRING kIXAddEventFailed = @"add_event_failed";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
 
     @param event.allDay All day event? *(default: FALSE)*<br>*(bool)*
@@ -128,39 +104,23 @@ yearly*"
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param add_event_success The event was added successfully
@@ -168,22 +128,14 @@ yearly*"
 
  */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
     @param add_event Adds an event to the device calendar
@@ -201,22 +153,14 @@ yearly*"
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -256,7 +200,7 @@ yearly*"
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

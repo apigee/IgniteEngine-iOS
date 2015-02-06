@@ -10,30 +10,13 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
 */
 
-/**
- 
- A knob that allows the user to turn things up or down.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXKnob_0.png" data-imagelightbox="c"><img src="../images/IXKnob_0.png"></a></li>
- <li><a href="../images/IXKnob_1.png" data-imagelightbox="c"><img src="../images/IXKnob_1.png"></a></li>
- <li><a href="../images/IXKnob_2.png" data-imagelightbox="c"><img src="../images/IXKnob_2.png"></a></li>
- </ul>
-</div>
- 
-*/
-
-/*
- *      /Docs
- *
+/** A knob that allows the user to turn things up or down.
 */
 
 
@@ -82,15 +65,7 @@ static NSString* const kIXValueNSCodingKey = @"value";
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param initial_value Initial value to display<br>*(float)*
     @param minimum_value Minimum value allowed<br>*(float)*
@@ -103,42 +78,26 @@ static NSString* const kIXValueNSCodingKey = @"value";
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
  @param value The value the knob it set to<br>*(float)*
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
 
 
     @param value_changed Fires when knob value is changed
@@ -147,22 +106,14 @@ static NSString* const kIXValueNSCodingKey = @"value";
  
 */
 
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
  @param update_knob_value Sets the knob to a new value
@@ -186,22 +137,14 @@ static NSString* const kIXValueNSCodingKey = @"value";
 
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -242,7 +185,7 @@ static NSString* const kIXValueNSCodingKey = @"value";
 
 */
 
--(void)example
+-(void)Example
 {
 }
 

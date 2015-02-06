@@ -14,19 +14,9 @@
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+*/
 
-/**
- 
- Native iOS UI control that displays a menu from the bottom of the screen.
- 
- <div id="container">   <ul>
-         <li><a href="../images/IXActionSheet_0.png" data-imagelightbox="c"><img src="../images/IXActionSheet_0.png"></a></li>
-         <li><a href="../images/IXActionSheet_1.png" data-imagelightbox="c"><img src="../images/IXActionSheet_1.png"></a></li>
-         <li><a href="../images/IXActionSheet_2.png" data-imagelightbox="c"><img src="../images/IXActionSheet_2.png"></a></li>
-     </ul>
- </div>
- 
+/** Native iOS UI control that displays a menu from the bottom of the screen.
 */
 
 
@@ -77,194 +67,160 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
 @implementation IXActionSheet
 
 /*
-* Docs
-*
+ * Docs
+ *
 */
+
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
  
-    @param sheet.style The sheet style<br>*defaultautomaticblack.translucentblack.opaque*
-    @param sheet.title The sheet title<br>*(string)*
-    @param sheet.button.title.cancel Cancel button text<br>*(string)*
-    @param sheet.button.title.destructive Destructive button text<br>*(string)*
-    @param sheet.button.title.others Other button(s) text<br>*(string)*
-    
-*/
-
--(void)attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  Returns the following readonly properties:
-
+ @param buttons.cancel Text displayed on cancel button<br><code>string</code> *Cancel*
+ @param buttons.destructive Text displayed on the destructive (red) button<br><code>string</code>
+ @param buttons.others Text displayed on other buttons (comma-separated)<br><code>string</code>
+ @param style The sheet style<ul><li>*default*</li><li>automatic</li><li>black.translucent</li><li>black.opaque</li></ul>
+ @param title The sheet title<br><code>string</code>
+ 
  */
 
--(void)returns
+-(void)Attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/**  This control has no read-only properties.
+ 
+ */
+
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
+ 
+ @param %@ButtonPressed A numbered (other) button was pressed
+ @param cancelled The cancel button was pressed
+ 
+ */
 
-
-    @param cancel_pressed The ‘cancel’ button was pressed.
-    @param %@_pressed The ‘%@’ button was pressed.
-
-*/
-
--(void)events
+-(void)Events
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
-
-
-    @param show_sheet 
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "actionSheetTest",
-    "function_name": "show_sheet"
-  }
-}
+/** This control supports the following functions:
+ 
+ 
+ @param dismiss Dismisses the action sheet
+ <pre class="brush: js; toolbar: false;">
+ {
+ "_type": "Function",
+ "on": "touch_up",
+ "attributes": {
+ "_target": "actionSheetTest",
+ "function_name": "dismiss"
+ }
+ }
  </pre>
+ 
+ @param show Presents the action sheet
+ <pre class="brush: js; toolbar: false;">
+ {
+ "_type": "Function",
+ "on": "touch_up",
+ "attributes": {
+ "_target": "actionSheetTest",
+ "function_name": "present"
+ }
+ }
+ </pre>
+ 
+ */
 
-
-    @param dismiss_sheet 
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "actionSheetTest",
-    "function_name": "dismiss_sheet"
-  }
-}
-</pre>
-
-
-*/
-
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+ {
+ "_type": "ActionSheet",
+ "_id": "actionSheetTest",
+ "attributes": {
+ "sheet.style": "black.opaque",
+ "sheet.title": "sheetTitle",
+ "sheet.button.title.cancel": "cancelButtonTitle",
+ "sheet.button.title.destructive": "destructiveButtonTitle",
+ "sheet.button.title.others": "other,someOther2"
+ },
+ "actions": [
+ {
+ "on": "cancel_pressed",
+ "_type": "Alert",
+ "attributes": {
+ "title": "Cancel Pressed"
+ }
+ },
+ {
+ "on": "other_pressed",
+ "_type": "Alert",
+ "attributes": {
+ "title": "other pressed [[app.bundle.version]]"
+ }
+ },
+ {
+ "on": "someOther2_pressed",
+ "_type": "Alert",
+ "attributes": {
+ "title": "someOther2 pressed"
+ }
+ },
+ {
+ "on": "destructiveButtonTitle_pressed",
+ "_type": "Alert",
+ "attributes": {
+ "title": "destructiveButtonTitle pressed"
+ }
+ }
+ ]
+ }
+ </pre>
+ */
 
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "ActionSheet",
-  "_id": "actionSheetTest",
-  "attributes": {
-    "sheet.style": "black.opaque",
-    "sheet.title": "sheetTitle",
-    "sheet.button.title.cancel": "cancelButtonTitle",
-    "sheet.button.title.destructive": "destructiveButtonTitle",
-    "sheet.button.title.others": "other,someOther2"
-  },
-  "actions": [
-    {
-      "on": "cancel_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Cancel Pressed"
-      }
-    },
-    {
-      "on": "other_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "other pressed [[app.bundle.version]]"
-      }
-    },
-    {
-      "on": "someOther2_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "someOther2 pressed"
-      }
-    },
-    {
-      "on": "destructiveButtonTitle_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "destructiveButtonTitle pressed"
-      }
-    }
-  ]
-}
-</pre>
-*/
-
--(void)example
+-(void)Example
 {
 }
 
 /***************************************************************/
 
 /*
-* /Docs
-*
-*/
+ * /Docs
+ *
+ */
 
 -(void)buildView
 {
-
+    
 }
 
 -(void)applySettings
 
 {
     [super applySettings];
-
+    
     [self setActionSheetStyle:UIActionSheetStyleAutomatic];
-
+    
     NSString* style = [[self propertyContainer] getStringPropertyValue:kIXSheetStyle defaultValue:nil];
     if( [style isEqualToString:kIXSheetStyleDefault] )
     {
@@ -278,11 +234,19 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
     {
         [self setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     }
+<<<<<<< HEAD
 
     [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:kIXDefaultSheetTitle]];
     [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:kIXDefaultCancelButtonTitle]];
     [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:kIXDefaultDestructiveButtonTitle]];
     [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:kIXDefaultOtherButtonTitles]];
+=======
+    
+    [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:nil]];
+    [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:@"Cancel"]];
+    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:nil]];
+    [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:nil]];
+>>>>>>> 2935d1d7e3fbf75f4a777dfedbcd9f46141873da
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
@@ -294,24 +258,24 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
             [[self actionSheet] dismissWithClickedButtonIndex:0 animated:NO];
             [self setActionSheet:nil];
         }
-
+        
         UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:[self sheetTitle]
                                                                  delegate:self
                                                         cancelButtonTitle:nil
                                                    destructiveButtonTitle:[self destructiveButtonTitle]
                                                         otherButtonTitles:nil];
-
+        
         for( NSString* otherTitle in [self otherTitles] )
         {
             [actionSheet addButtonWithTitle:otherTitle];
         }
-
+        
         if( [self cancelButtonTitle] != nil )
         {
             [actionSheet addButtonWithTitle:[self cancelButtonTitle]];
             [actionSheet setCancelButtonIndex:[actionSheet numberOfButtons] - 1];
         }
-
+        
         [self setActionSheet:actionSheet];
         [[self actionSheet] showInView:[[[IXAppManager sharedAppManager] rootViewController] view]];
     }

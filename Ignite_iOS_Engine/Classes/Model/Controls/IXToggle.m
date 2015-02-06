@@ -10,30 +10,14 @@
  *      Docs
  *
  *      Author:     Jeremy Anticouni
- *      Date:     42034
+ *      Date:     	1/28/2015
  *
  *
  *      Copyright (c) 2015 Apigee. All rights reserved.
- */
+*/
 
-/**
- 
- Toggle switch to toggle on and to toggle off.
- 
-
- <div id="container">
- <ul>
- <li><a href="../images/IXToggle_0.png" data-imagelightbox="c"><img src="../images/IXToggle_0.png"></a></li>
- <li><a href="../images/IXToggle_1.png" data-imagelightbox="c"><img src="../images/IXToggle_1.png"></a></li>
- </ul>
-</div>
- 
- */
-
-/*
- *      /Docs
- *
- */
+/** Toggle switch to toggle on and to toggle off.
+*/
 
 #import "IXToggle.h"
 
@@ -55,74 +39,43 @@
 
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-warning">
- <i class="ti-panel"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Attributes</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
     @param initally_selected Should the toggle be selected by default? *(default: FALSE)*<br>*bool*
 
 */
 
--(void)attributes
+-(void)Attributes
 {
 }
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-info">
- <i class="ti-loop"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Returns</h3>
- <p>This has the following attributes:</p>
- </div>
- </div>
+/** This control has the following attributes:
 
  @param is_on Is the toggle on?<br>*(bool)*
 
 */
 
--(void)returns
+-(void)Returns
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-success">
- <i class="ti-pulse"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Events</h3>
- <p>This control fires the following events:</p>
- </div>
- </div>
+/** This control fires the following events:
+*/
 
-
--(void)events
+-(void)Events
 {
 }
 
+
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-danger">
- <i class="ti-direction"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Functions</h3>
- <p>This control supports the following functions:</p>
- </div>
- </div>
+/** This control supports the following functions:
 
 
  @param toggle Toggle the toggle
@@ -171,22 +124,14 @@
  
 */
 
--(void)functions
+-(void)Functions
 {
 }
 
 /***************************************************************/
 /***************************************************************/
 
-/** <div class="ui-bullet">
- <div class="btn-icon btn-icon-round btn-icon-lg bg-primary">
- <i class="ti-shortcode"></i>
- </div>
- <div class="ui-bullet-content">
- <h3>Example</h3>
- <p>Go on, try it out!</p>
- </div>
- </div>
+/** Go on, try it out!
 
 
  <pre class="brush: js; toolbar: false;">
@@ -205,7 +150,7 @@
  
 */
 
--(void)example
+-(void)Example
 {
 }
 
