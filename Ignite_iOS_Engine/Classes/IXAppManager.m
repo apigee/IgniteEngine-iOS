@@ -176,6 +176,10 @@ Disable drawers: *drawer.disable*
 
 #import "IXAppManager.h"
 
+@import AVFoundation.AVAudioSession;
+@import AVFoundation.AVAudioRecorder;
+
+#import "IXAppDelegate.h"
 #import "IXBaseAction.h"
 #import "IXBaseDataProvider.h"
 #import "IXBaseDataProviderConfig.h"
@@ -219,7 +223,6 @@ IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.toggle.velocity";
 IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"enable_layout_debugging";
 IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"enable_request_logging";
 IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"enable_remote_logging";
-IX_STATIC_CONST_STRING kIXEnableLocationTracking = @"enable_location_tracking";
 IX_STATIC_CONST_STRING kIXLocationAccuracy = @"location.accuracy";
 IX_STATIC_CONST_STRING kIXShowsNavigationBar = @"shows_navigation_bar";
 IX_STATIC_CONST_STRING kIXPreloadImages = @"preload_images";
@@ -227,6 +230,10 @@ IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee_org_id";
 IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee_app_id";
 IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee_base_url";
 IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee_push_notifier";
+
+IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"requestAccess.push.auto"; // Should app automatically request access to push. If NO must use app function kIXRequestAccessPush to request push
+IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"requestAccess.microphone.auto"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
+IX_STATIC_CONST_STRING kIXRequestAccessLocationAuto = @"requestAccess.location.auto"; // Should app automatically request access to location. If NO must use app function kIXRequestAccessLocation to track location.  This will begin tracking automatically as well when set to YES.
 
 IX_STATIC_CONST_STRING kIXLocationAccuracyBest = @"best";
 IX_STATIC_CONST_STRING kIXLocationAccuracyBestForNavigation = @"bestForNavigation";
@@ -248,6 +255,10 @@ IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function n
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".open_close";
+
+IX_STATIC_CONST_STRING kIXRequestAccessPush = @"requestPush";
+IX_STATIC_CONST_STRING kIXRequestAccessMicrophone = @"requestMic";
+IX_STATIC_CONST_STRING kIXRequestAccessLocation = @"requestLocation";
 
 IX_STATIC_CONST_STRING kIXStartLocationTracking = @"start.location.tracking";
 IX_STATIC_CONST_STRING kIXStopLocationTracking = @"stop.location.tracking";
@@ -291,6 +302,10 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 @property (nonatomic,strong) ApigeeClient *apigeeClient;
 
 @property (nonatomic,strong) UIWebView *webViewForJS;
+
+@property (nonatomic,assign) BOOL accessToPushGranted;
+@property (nonatomic,assign) BOOL accessToMicrophoneGranted;
+@property (nonatomic,assign) BOOL accessToLocationGranted;
 
 @end
 
@@ -363,11 +378,13 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     }
 
     [_actionContainer executeActionsForEventNamed:kIXAppRegisterForRemoteNotificationsSuccess];
+    [self setAccessToPushGranted:YES];
 }
 
 -(void)appFailedToRegisterForRemoteNotifications
 {
     [_actionContainer executeActionsForEventNamed:kIXAppRegisterForRemoteNotificationsFailed];
+    [self setAccessToPushGranted:NO];
 }
 
 -(void)appDidRecieveRemoteNotification:(NSDictionary *)userInfo
@@ -540,25 +557,17 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [self setAppRightDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appRightDrawerViewPath]]]];
     }
 
-    BOOL enableLocationTracking = [[self appProperties] getBoolPropertyValue:kIXEnableLocationTracking defaultValue:NO];
-    if( enableLocationTracking )
-    {
-        [[IXLocationManager sharedLocationManager] requestAccessToLocation];
+    if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessPushAuto defaultValue:YES] ) {
+        [self applyFunction:kIXRequestAccessPush parameters:nil];
     }
 
-    NSString* locationAccuracy = [[self appProperties] getStringPropertyValue:kIXLocationAccuracy defaultValue:kIXLocationAccuracyBest];
-    if( [locationAccuracy isEqualToString:kIXLocationAccuracyBest] ) {
-        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
-    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyBestForNavigation] ) {
-        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBestForNavigation];
-    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyNearestTenMeters] ) {
-        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyHundredMeters] ) {
-        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
-    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyKilometer] ) {
-        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyKilometer];
-    } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyThreeKilometers] ) {
-        [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyThreeKilometers];
+    if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessMicrophoneAuto defaultValue:NO] ) {
+        [self applyFunction:kIXRequestAccessMicrophone parameters:nil];
+    }
+
+    if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessLocationAuto defaultValue:YES] ) {
+        [self applyFunction:kIXRequestAccessLocation parameters:nil];
+        [self applyFunction:kIXStartLocationTracking parameters:nil];
     }
 }
 
@@ -696,8 +705,43 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
         }
     }
+    else if( [functionName isEqualToString:kIXRequestAccessPush] )
+    {
+        [((IXAppDelegate*)[[UIApplication sharedApplication] delegate]) registerForPushNotifications];
+    }
+    else if( [functionName isEqualToString:kIXRequestAccessMicrophone] )
+    {
+        AVAudioSession* audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
+        [audioSession requestRecordPermission:^(BOOL granted) {
+            [self setAccessToMicrophoneGranted:granted];
+            [_actionContainer executeActionsForEventNamed:kIXMicrophoneAuthChanged];
+        }];
+    }
+    else if( [functionName isEqualToString:kIXRequestAccessLocation] )
+    {
+        [[IXLocationManager sharedLocationManager] requestAccessToLocation];
+    }
     else if( [functionName isEqualToString:kIXStartLocationTracking] )
     {
+        NSString* parameterLocationAccuracy = [parameters getStringPropertyValue:kIXLocationAccuracy defaultValue:kIXLocationAccuracyBest];
+        NSString* locationAccuracy = [[self appProperties] getStringPropertyValue:kIXLocationAccuracy defaultValue:parameterLocationAccuracy];
+        if( [locationAccuracy isEqualToString:kIXLocationAccuracyBest] || locationAccuracy == nil ) {
+            [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
+        } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyBestForNavigation] ) {
+            [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBestForNavigation];
+        } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyNearestTenMeters] ) {
+            [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+        } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyHundredMeters] ) {
+            [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+        } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyKilometer] ) {
+            [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyKilometer];
+        } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyThreeKilometers] ) {
+            [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyThreeKilometers];
+        }
+
         [[IXLocationManager sharedLocationManager] beginLocationTracking];
     }
     else if( [functionName isEqualToString:kIXStopLocationTracking] )
@@ -778,6 +822,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 -(void)locationManagerAuthStatusChanged:(CLAuthorizationStatus)status
 {
     [_actionContainer executeActionsForEventNamed:kIXLocationAuthChanged];
+    [self setAccessToLocationGranted:[[IXLocationManager sharedLocationManager] isAuthorized]];
 }
 
 -(void)locationManagerDidUpdateLocation:(CLLocation *)location

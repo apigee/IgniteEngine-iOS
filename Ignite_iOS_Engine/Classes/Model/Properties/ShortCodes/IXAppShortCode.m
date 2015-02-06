@@ -10,12 +10,16 @@
 
 #import "IXAppManager.h"
 #import "IXPropertyContainer.h"
+#import "NSString+IXAdditions.h"
 
 #import "ApigeeDataClient.h"
 
 IX_STATIC_CONST_STRING kIXPushToken = @"push_token";
 IX_STATIC_CONST_STRING kIXApigeeDeviceUUID = @"apigee.device.uuid";
 IX_STATIC_CONST_STRING kIXBundleVersion = @"bundle.version";
+IX_STATIC_CONST_STRING kIXIsAllowedPush = @"isAllowed.push";
+IX_STATIC_CONST_STRING kIXIsAllowedLocation = @"isAllowed.location";
+IX_STATIC_CONST_STRING kIXIsAllowedMicrophone = @"isAllowed.microphone";
 
 @implementation IXAppShortCode
 
@@ -36,6 +40,18 @@ IX_STATIC_CONST_STRING kIXBundleVersion = @"bundle.version";
         else if( [methodName isEqualToString:kIXBundleVersion])
         {
             returnValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+        }
+        else if( [methodName isEqualToString:kIXIsAllowedPush] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[[IXAppManager sharedAppManager] accessToPushGranted]];
+        }
+        else if( [methodName isEqualToString:kIXIsAllowedLocation] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[[IXAppManager sharedAppManager] accessToLocationGranted]];
+        }
+        else if( [methodName isEqualToString:kIXIsAllowedMicrophone] )
+        {
+            returnValue = [NSString ix_stringFromBOOL:[[IXAppManager sharedAppManager] accessToMicrophoneGranted]];
         }
         else
         {

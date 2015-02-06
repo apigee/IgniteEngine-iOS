@@ -74,10 +74,7 @@
 
 -(void)beginLocationTracking
 {
-    if( [self isAuthorized] )
-    {
-        [[self locationManager] startUpdatingLocation];
-    }
+    [[self locationManager] startUpdatingLocation];
 }
 
 -(void)stopTrackingLocation

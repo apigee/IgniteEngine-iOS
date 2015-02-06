@@ -79,6 +79,7 @@ extern NSString* const kIXPushRecievedEvent;
 extern NSString* const kIXCustomURLSchemeOpened;
 extern NSString* const kIXLocationAuthChanged;
 extern NSString* const kIXLocationLocationUpdated;
+extern NSString* const kIXMicrophoneAuthChanged;
 
 // SPECIAL
 extern NSString* const kIX_CONTROL_CLASS_NAME_FORMAT;

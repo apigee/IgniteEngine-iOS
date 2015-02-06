@@ -20,6 +20,7 @@ NSString* const kIXPushRecievedEvent = @"push_recieved";
 NSString* const kIXCustomURLSchemeOpened = @"custom_url_scheme_opened";
 NSString* const kIXLocationAuthChanged = @"location_auth_changed";
 NSString* const kIXLocationLocationUpdated = @"location_updated";
+NSString* const kIXMicrophoneAuthChanged = @"microphone_auth_changed";
 
 // SPECIAL
 NSString* const kIX_CONTROL_CLASS_NAME_FORMAT = @"IX%@";
