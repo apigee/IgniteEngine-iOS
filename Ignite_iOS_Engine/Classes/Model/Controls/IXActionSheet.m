@@ -6,20 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:       01/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Native iOS UI control that displays a menu from the bottom of the screen.
-*/
-
-
 #import "IXActionSheet.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
@@ -39,9 +25,9 @@ IX_STATIC_CONST_STRING kIXSheetStyleBlackOpaque = @"black.opaque";
 
 // Attribute Value Defaults
 IX_STATIC_CONST_STRING kIXDefaultCancelButtonTitle = @"Cancel";
-IX_STATIC_CONST_OBJECT kIXDefaultSheetTitle = nil;
-IX_STATIC_CONST_OBJECT kIXDefaultDestructiveButtonTitle = nil;
-IX_STATIC_CONST_OBJECT kIXDefaultOtherButtonTitles = nil;
+IX_STATIC_CONST_STRING kIXDefaultSheetTitle = nil;
+IX_STATIC_CONST_STRING kIXDefaultDestructiveButtonTitle = nil;
+IX_STATIC_CONST_ARRAY kIXDefaultOtherButtonTitles = nil;
 
 // Returns
 
@@ -50,8 +36,8 @@ IX_STATIC_CONST_STRING kIXCancelPressed = @"cancelled";
 IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@";
 
 // Functions
-IX_STATIC_CONST_STRING kIXShowSheet = @"show_sheet";
-IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
+IX_STATIC_CONST_STRING kIXShowSheet = @"present";
+IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss";
 
 @interface IXActionSheet () <UIActionSheetDelegate>
 
@@ -65,149 +51,6 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
 @end
 
 @implementation IXActionSheet
-
-/*
- * Docs
- *
-*/
-
-
-/***************************************************************/
-
-/** This control has the following attributes:
- 
- @param buttons.cancel Text displayed on cancel button<br><code>string</code> *Cancel*
- @param buttons.destructive Text displayed on the destructive (red) button<br><code>string</code>
- @param buttons.others Text displayed on other buttons (comma-separated)<br><code>string</code>
- @param style The sheet style<ul><li>*default*</li><li>automatic</li><li>black.translucent</li><li>black.opaque</li></ul>
- @param title The sheet title<br><code>string</code>
- 
- */
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has no read-only properties.
- 
- */
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
- 
- @param %@ButtonPressed A numbered (other) button was pressed
- @param cancelled The cancel button was pressed
- 
- */
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
- 
- 
- @param dismiss Dismisses the action sheet
- <pre class="brush: js; toolbar: false;">
- {
- "_type": "Function",
- "on": "touch_up",
- "attributes": {
- "_target": "actionSheetTest",
- "function_name": "dismiss"
- }
- }
- </pre>
- 
- @param show Presents the action sheet
- <pre class="brush: js; toolbar: false;">
- {
- "_type": "Function",
- "on": "touch_up",
- "attributes": {
- "_target": "actionSheetTest",
- "function_name": "present"
- }
- }
- </pre>
- 
- */
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
- 
- <pre class="brush: js; toolbar: false;">
- {
- "_type": "ActionSheet",
- "_id": "actionSheetTest",
- "attributes": {
- "sheet.style": "black.opaque",
- "sheet.title": "sheetTitle",
- "sheet.button.title.cancel": "cancelButtonTitle",
- "sheet.button.title.destructive": "destructiveButtonTitle",
- "sheet.button.title.others": "other,someOther2"
- },
- "actions": [
- {
- "on": "cancel_pressed",
- "_type": "Alert",
- "attributes": {
- "title": "Cancel Pressed"
- }
- },
- {
- "on": "other_pressed",
- "_type": "Alert",
- "attributes": {
- "title": "other pressed [[app.bundle.version]]"
- }
- },
- {
- "on": "someOther2_pressed",
- "_type": "Alert",
- "attributes": {
- "title": "someOther2 pressed"
- }
- },
- {
- "on": "destructiveButtonTitle_pressed",
- "_type": "Alert",
- "attributes": {
- "title": "destructiveButtonTitle pressed"
- }
- }
- ]
- }
- </pre>
- */
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
- * /Docs
- *
- */
 
 -(void)buildView
 {
@@ -234,19 +77,11 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss_sheet";
     {
         [self setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     }
-<<<<<<< HEAD
-
+    
     [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:kIXDefaultSheetTitle]];
     [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:kIXDefaultCancelButtonTitle]];
     [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:kIXDefaultDestructiveButtonTitle]];
     [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:kIXDefaultOtherButtonTitles]];
-=======
-    
-    [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:nil]];
-    [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:@"Cancel"]];
-    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:nil]];
-    [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:nil]];
->>>>>>> 2935d1d7e3fbf75f4a777dfedbcd9f46141873da
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
