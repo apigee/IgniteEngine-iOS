@@ -31,9 +31,9 @@ static NSString* const kIXTitle = @"title";
 
 // IXTouchID Events
 static NSString* const kIXAuthenticationSuccess = @"success";
-static NSString* const kIXAuthenticationFailed = @"failed";
+static NSString* const kIXAuthenticationFailed = @"error";
 static NSString* const kIXAuthenticationCancelled = @"cancelled";
-static NSString* const kIXAuthenticationPassword = @"password";
+static NSString* const kIXAuthenticationPassword = @"willUsePassword";
 static NSString* const kIXAuthenticationUnconfigured = @"unconfigured";
 static NSString* const kIXAuthenticationUnavailable = @"unavailable";
 
