@@ -33,10 +33,6 @@
     {
         returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }
-    else if( [[self objectID] isEqualToString:@"form"] )
-    {
-        returnValue = nil;
-    }
     else if( [[self objectID] isEqualToString:@"view"] )
     {
         IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
