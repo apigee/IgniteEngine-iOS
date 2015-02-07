@@ -27,15 +27,15 @@
 
 #import "SVWebViewController.h"
 
-// IXBrowser Attributes
+// Attributes
 IX_STATIC_CONST_STRING kIXUrl = @"url";
-IX_STATIC_CONST_STRING kIXHTMLString = @"html.string";
-IX_STATIC_CONST_STRING kIXHTMLBaseURL = @"html.base_url";
+IX_STATIC_CONST_STRING kIXHTMLString = @"html";
+IX_STATIC_CONST_STRING kIXHTMLBaseURL = @"html.baseUrl";
 
-// IXBrowser Events
+// Events
 IX_STATIC_CONST_STRING kIXStarted = @"started";
-IX_STATIC_CONST_STRING kIXFailed = @"failed";
-IX_STATIC_CONST_STRING kIXFinished = @"finished";
+IX_STATIC_CONST_STRING kIXFailed = @"error";
+IX_STATIC_CONST_STRING kIXFinished = @"done";
 
 @interface  IXBrowser() <UIWebViewDelegate>
 

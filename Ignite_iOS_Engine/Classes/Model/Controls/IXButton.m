@@ -24,39 +24,38 @@
 #import "UIImage+IXAdditions.h"
 #import "UIButton+IXAdditions.h"
 
+// Attributes
+IX_STATIC_CONST_STRING kIXTextDefault = @"text";
+IX_STATIC_CONST_STRING kIXTextDefaultFont = @"font";
+IX_STATIC_CONST_STRING kIXTextDefaultColor = @"color";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXIconDefault = @"icon";
+IX_STATIC_CONST_STRING kIXIconDefaultTintColor = @"icon.tint";
+IX_STATIC_CONST_STRING kIXAlpha = @"alpha";
+IX_STATIC_CONST_STRING kIXDarkensImageOnTouch = @"darkenOnTouch.enabled";
+IX_STATIC_CONST_STRING kIXTouchDuration = @"touch.duration";
+IX_STATIC_CONST_STRING kIXTouchUpDuration = @"touchUp.duration";
+
+# warning Deprecate these and merge into comma-separated values in default attribute
+IX_STATIC_CONST_STRING kIXTouchText = @"touch.text";
+IX_STATIC_CONST_STRING kIXTouchFont = @"touch.font";
+IX_STATIC_CONST_STRING kIXTouchTextColor = @"touch.text.color";
+IX_STATIC_CONST_STRING kIXTouchBackgroundColor = @"touch.background.color";
+IX_STATIC_CONST_STRING kIXTouchIcon = @"touch.icon";
+IX_STATIC_CONST_STRING kIXTouchIconTintColor = @"touch.icon.tintColor";
+IX_STATIC_CONST_STRING kIXTouchAlpha = @"touch.alpha";
+IX_STATIC_CONST_STRING kIXDisabledText = @"disabled.text";
+IX_STATIC_CONST_STRING kIXDisabledFont = @"disabled.font";
+IX_STATIC_CONST_STRING kIXDisabledTextColor = @"disabled.text.color";
+IX_STATIC_CONST_STRING kIXDisabledBackgroundColor = @"disabled.background.color";
+IX_STATIC_CONST_STRING kIXDisabledIcon = @"disabled.icon";
+IX_STATIC_CONST_STRING kIXDisabledIconTintColor = @"disabled.icon.tintColor";
+IX_STATIC_CONST_STRING kIXDisabledAlpha = @"disabled.alpha";
+
 // IXButton states
-static NSString* const kIXNormal = @"normal";
-static NSString* const kIXTouch = @"touch";
-static NSString* const kIXDisabled = @"disabled";
-
-// IXButton properties
-static NSString* const kIXTextDefault = @"text";
-static NSString* const kIXTextDefaultFont = @"font";
-static NSString* const kIXTextDefaultColor = @"text.color";
-static NSString* const kIXBackgroundColor = @"background.color";
-static NSString* const kIXIconDefault = @"icon";
-static NSString* const kIXIconDefaultTintColor = @"icon.tintColor";
-static NSString* const kIXAlpha = @"alpha";
-
-static NSString* const kIXTouchText = @"touch.text";
-static NSString* const kIXTouchFont = @"touch.font";
-static NSString* const kIXTouchTextColor = @"touch.text.color";
-static NSString* const kIXTouchBackgroundColor = @"touch.background.color";
-static NSString* const kIXTouchIcon = @"touch.icon";
-static NSString* const kIXTouchIconTintColor = @"touch.icon.tintColor";
-static NSString* const kIXTouchAlpha = @"touch.alpha";
-
-static NSString* const kIXDisabledText = @"disabled.text";
-static NSString* const kIXDisabledFont = @"disabled.font";
-static NSString* const kIXDisabledTextColor = @"disabled.text.color";
-static NSString* const kIXDisabledBackgroundColor = @"disabled.background.color";
-static NSString* const kIXDisabledIcon = @"disabled.icon";
-static NSString* const kIXDisabledIconTintColor = @"disabled.icon.tintColor";
-static NSString* const kIXDisabledAlpha = @"disabled.alpha";
-
-static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
-static NSString* const kIXTouchDuration = @"touch.duration";
-static NSString* const kIXTouchUpDuration = @"touch_up.duration";
+IX_STATIC_CONST_STRING kIXNormal = @"normal";
+IX_STATIC_CONST_STRING kIXTouch = @"touch";
+IX_STATIC_CONST_STRING kIXDisabled = @"disabled";
 
 @interface IXButton ()
 
