@@ -11,17 +11,19 @@
 
 // Attributes
 IX_STATIC_CONST_STRING kIXVisible = @"visible";
-IX_STATIC_CONST_STRING kIXFillRemainingWidth = @"fill_remaining_width";
-IX_STATIC_CONST_STRING kIXFillRemainingHeight = @"fill_remaining_height";
-IX_STATIC_CONST_STRING kIXIncludeInParentAutosize = @"include_in_parent_autosize";
-IX_STATIC_CONST_STRING kIXLayoutType = @"layout_type";
-IX_STATIC_CONST_STRING kIXVerticalAlignment = @"vertical_alignment";
-IX_STATIC_CONST_STRING kIXHorizontalAlignment = @"horizontal_alignment";
-IX_STATIC_CONST_STRING kIXWidth = @"width";
-IX_STATIC_CONST_STRING kIXHeight = @"height";
-IX_STATIC_CONST_STRING kIXTopPosition = @"top_position";
-IX_STATIC_CONST_STRING kIXLeftPosition = @"left_position";
-IX_STATIC_CONST_STRING kIXBottomPosition = @"bottom_position";
+IX_STATIC_CONST_STRING kIXFillRemainingWidth = @"autofill.w";
+IX_STATIC_CONST_STRING kIXFillRemainingHeight = @"autofill.h";
+IX_STATIC_CONST_STRING kIXIncludeInParentAutosize = @"autosize.includeInParent";
+IX_STATIC_CONST_STRING kIXLayoutType = @"layoutType";
+IX_STATIC_CONST_STRING kIXVerticalAlignment = @"align.v";
+IX_STATIC_CONST_STRING kIXVerticalAlignmentX = @"align.vertical";
+IX_STATIC_CONST_STRING kIXHorizontalAlignment = @"align.h";
+IX_STATIC_CONST_STRING kIXHorizontalAlignmentX = @"align.horizontal";
+IX_STATIC_CONST_STRING kIXWidth = @"size.w";
+IX_STATIC_CONST_STRING kIXHeight = @"size.h";
+IX_STATIC_CONST_STRING kIXTopPosition = @"position.t";
+IX_STATIC_CONST_STRING kIXLeftPosition = @"position.l";
+IX_STATIC_CONST_STRING kIXBottomPosition = @"position.b";
 IX_STATIC_CONST_STRING kIXPadding = @"padding"; // sets all 4 sides to this value.
 IX_STATIC_CONST_STRING kIXPaddingTop = @"padding.top";
 IX_STATIC_CONST_STRING kIXPaddingRight = @"padding.right";
@@ -34,17 +36,19 @@ IX_STATIC_CONST_STRING kIXMarginBottom = @"margin.bottom";
 IX_STATIC_CONST_STRING kIXMarginLeft = @"margin.left";
 
 // Attribute Accepted Values
-IX_STATIC_CONST_STRING kIXDefaultLayoutTypeRelative = @"relative";
-IX_STATIC_CONST_STRING kIXLayoutTypeRelative = @"relative";
-IX_STATIC_CONST_STRING kIXLayoutTypeAbsolute = @"absolute";
-IX_STATIC_CONST_STRING kIXLayoutTypeFloat = @"float";
-IX_STATIC_CONST_STRING kIXTop = @"top";
-IX_STATIC_CONST_STRING kIXVerticalCenter = @"middle";
-IX_STATIC_CONST_STRING kIXBottom = @"bottom";
-IX_STATIC_CONST_STRING kIXLeft = @"left";
-IX_STATIC_CONST_STRING kIXHorizontalCenter = @"center";
-IX_STATIC_CONST_STRING kIXRight = @"right";
+IX_STATIC_CONST_STRING kIXLayoutTypeRelative = @"relative"; // layoutType
+IX_STATIC_CONST_STRING kIXLayoutTypeAbsolute = @"absolute"; // layoutType
+IX_STATIC_CONST_STRING kIXLayoutTypeFloat = @"float"; // layoutType
+IX_STATIC_CONST_STRING kIXTop = @"top"; // align.v
+IX_STATIC_CONST_STRING kIXVerticalCenter = @"middle"; // align.v
+IX_STATIC_CONST_STRING kIXVerticalCenterAlt = @"center"; // align.v
+IX_STATIC_CONST_STRING kIXBottom = @"bottom"; // align.v
+IX_STATIC_CONST_STRING kIXLeft = @"left"; // align.h
+IX_STATIC_CONST_STRING kIXHorizontalCenter = @"center"; // align.h
+IX_STATIC_CONST_STRING kIXRight = @"right"; // align.h
 
+// Attribute Value Defaults
+IX_STATIC_CONST_STRING kIXDefaultLayoutTypeRelative = @"relative"; // Default layout type
 
 @interface IXControlLayoutInfo ()
 
@@ -132,17 +136,21 @@ IX_STATIC_CONST_STRING kIXPosition = @"position"; // used as prefix to determine
     
     _verticalAlignment = IXLayoutVerticalAlignmentTop;
     
-    NSString* verticalAlignmentString = [[self propertyContainer] getStringPropertyValue:kIXVerticalAlignment defaultValue:kIXTop];
+    NSString* verticalAlignmentString = ([[self propertyContainer] getStringPropertyValue:kIXVerticalAlignment defaultValue:nil]) ?: [[self propertyContainer] getStringPropertyValue:kIXVerticalAlignmentX defaultValue:kIXTop];
+    
     if( [verticalAlignmentString isEqualToString:kIXTop] )
         _verticalAlignment = IXLayoutVerticalAlignmentTop;
     else if( [verticalAlignmentString isEqualToString:kIXVerticalCenter] )
+        _verticalAlignment = IXLayoutVerticalAlignmentMiddle;
+    else if( [verticalAlignmentString isEqualToString:kIXVerticalCenterAlt] )
         _verticalAlignment = IXLayoutVerticalAlignmentMiddle;
     else if( [verticalAlignmentString isEqualToString:kIXBottom] )
         _verticalAlignment = IXLayoutVerticalAlignmentBottom;
     
     _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
-    NSString* horizontalAlignmentString = [[self propertyContainer] getStringPropertyValue:kIXHorizontalAlignment defaultValue:kIXLeft];
+    NSString* horizontalAlignmentString = ([[self propertyContainer] getStringPropertyValue:kIXHorizontalAlignment defaultValue:nil]) ?: [[self propertyContainer] getStringPropertyValue:kIXHorizontalAlignmentX defaultValue:kIXLeft];
+    
     if( [horizontalAlignmentString isEqualToString:kIXLeft] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentRight;
     else if( [horizontalAlignmentString isEqualToString:kIXHorizontalCenter] )
