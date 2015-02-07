@@ -6,19 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Base control. Lots of things inherit attributes from this baby.
-*/
-
 #import "IXBaseControl.h"
 
 #import "IXAppManager.h"
@@ -30,26 +17,21 @@
 
 #import "UIImage+ResizeMagick.h"
 
-#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
-
-//
-// IXBaseControl Properties :
-//      Note: See IXControlLayoutInfo.h for layout properties.
-//
+// Attributes
 static NSString* const kIXAlpha = @"alpha";
-static NSString* const kIXBorderWidth = @"border.width";
+static NSString* const kIXBorderWidth = @"border.size";
 static NSString* const kIXBorderColor = @"border.color";
 static NSString* const kIXBorderRadius = @"border.radius";
-static NSString* const kIXBackgroundColor = @"background.color";
-static NSString* const kIXBackgroundImage = @"background.image";
-static NSString* const kIXBackgroundImageScale = @"background.image.scale";
+static NSString* const kIXBackgroundColor = @"bg.color";
+static NSString* const kIXBackgroundImage = @"bg.image";
+static NSString* const kIXBackgroundImageScale = @"bg.scale";
 static NSString* const kIXCIContextResolution = @"cicontext.resolution";
 static NSString* const kIXEnabled = @"enabled";
 static NSString* const kIXEnableTap = @"enable_tap";
 static NSString* const kIXEnableSwipe = @"enable_swipe";
 static NSString* const kIXEnablePinch = @"enable_pinch";
-static NSString* const kIXEnablePan = @"enable_pan";
-static NSString* const kIXEnableLongPress = @"enable_long_press";
+static NSString* const kIXEnablePan = @"pan.enabled";
+static NSString* const kIXEnableLongPress = @"longPress.enabled";
 static NSString* const kIXEnableShadow = @"enable_shadow";
 static NSString* const kIXShadowBlur = @"shadow_blur";
 static NSString* const kIXShadowAlpha = @"shadow_alpha";
@@ -131,119 +113,9 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 @end
 
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 @implementation IXBaseControl
-
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param width The width of the control<br>*(integer)*
-    @param height The height of the control<br>*(integer)*
-    @param alpha The alpha of the control<br>*(float)*
-    @param border.width The border width<br>*(integer)*
-    @param border.color Description<br>*(color)*
-    @param border.radius Description<br>*(float)*
-    @param background.color Description<br>*(color)*
-    @param background.image Description<br>*(string)*
-    @param background.image.scale Description<br>*coverstretchtilecontain*
-    @param cicontext.resolution Description<br>*(float)*
-    @param enabled Description<br>*(bool)*
-    @param enable_tap Description<br>*(bool)*
-    @param enable_swipe Description<br>*(bool)*
-    @param enable_pinch Description<br>*(bool)*
-    @param enable_pan Description<br>*(bool)*
-    @param enable_long_press Description<br>*(bool)*
-    @param enable_shadow Description<br>*(bool)*
-    @param layout_type Description *(default: relative)*<br>*relativeabsolutefloat*
-    @param horizontal_alignment Description *(default: relative)*<br>*leftcenterright*
-    @param vertical_alignment Description *(default: relative)*<br>*topmiddlebottom*
-    @param shadow_blur Description<br>*(float)*
-    @param shadow_alpha Description<br>*(float)*
-    @param shadow_color Description<br>*(color)*
-    @param shadow_offset_right Description<br>*(float)*
-    @param shadow_offset_down Description<br>*(float)*
-    @param visible Description<br>*(bool)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/**  This control has the following read-only attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param touch Fires when the control is touched
-    @param touch_up Fires when the control touch is released
-    @param touch_cancelled Fires when the control touch is canceled
-    @param tap Fires when the control is tapped (tap_count, integer)
-    @param swipe Fires when the control is swiped (down, up, right, left)
-    @param pan Fires when ?
-    @param long_press Fires when the control receives a long press
-    @param ** Fires when
-
-
-*/
--(void)Events
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
-
-
-
-
-
-
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
 
 -(void)dealloc
 {

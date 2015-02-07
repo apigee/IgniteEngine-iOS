@@ -6,76 +6,64 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** A text label that automagically detects things like @mentions, #hastags, and http://links
-*/
-
 #import "IXBaseControl.h"
 #import "IXLogger.h"
 #import "TTTAttributedLabel.h"
 #import "ColorUtils.h"
 
-//Read-only properties
-static NSString* const kIXSelectedMention = @"selected_mention";
-static NSString* const kIXSelectedHashtag = @"selected_hashtag";
-static NSString* const kIXSelectedUrl = @"selected_url";
+// Attributes
+IX_STATIC_CONST_STRING kIXText = @"text";
+IX_STATIC_CONST_STRING kIXTextColor = @"color";
+IX_STATIC_CONST_STRING kIXFont = @"font";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXMentionScheme = @"mentions.scheme";
+IX_STATIC_CONST_STRING kIXMentionColor = @"mentions.color";
+IX_STATIC_CONST_STRING kIXMentionFont = @"mentions.font";
+IX_STATIC_CONST_STRING kIXHashtagScheme = @"hashtags.scheme";
+IX_STATIC_CONST_STRING kIXHashtagColor = @"hashtags.color";
+IX_STATIC_CONST_STRING kIXHashtagFont = @"hashtags.font";
+IX_STATIC_CONST_STRING kIXHyperlinkColor = @"links.color";
+IX_STATIC_CONST_STRING kIXHyperlinkFont = @"links.font";
+IX_STATIC_CONST_STRING kIXCodeFont = @"code.font";
+IX_STATIC_CONST_STRING kIXCodeColor = @"code.color";
+IX_STATIC_CONST_STRING kIXCodeBackgroundColor = @"code.bg.color";
+IX_STATIC_CONST_STRING kIXCodeBorderColor = @"code.border.color";
+IX_STATIC_CONST_STRING kIXCodeBorderRadius = @"code.border.radius";
+IX_STATIC_CONST_STRING kIXTextKerning = @"kerning";
+IX_STATIC_CONST_STRING kIXTextAlign = @"text.align";
+IX_STATIC_CONST_STRING kIXLineSpacing = @"lineSpacing";
+IX_STATIC_CONST_STRING kIXLineHeightMin = @"lineHeight.min";
+IX_STATIC_CONST_STRING kIXLineHeightMax = @"lineHeight.max";
+IX_STATIC_CONST_STRING kIXShouldHighlightMentions = @"mentions.enabled"; // default: true
+IX_STATIC_CONST_STRING kIXShouldHighlightHashtags = @"hashtags.enabled"; // default: true
+IX_STATIC_CONST_STRING kIXShouldHighlightHyperlinks = @"links.enabled"; // default: true
+IX_STATIC_CONST_STRING kIXShouldParseMarkdown = @"markdown.enabled"; // default: false
 
-static NSString* kIXCurrentTouchedMention;
-static NSString* kIXCurrentTouchedHashtag;
-static NSURL* kIXCurrentTouchedUrl;
+// Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXLeft = @"left";
+IX_STATIC_CONST_STRING kIXRight = @"right";
+IX_STATIC_CONST_STRING kIXCenter = @"center";
+IX_STATIC_CONST_STRING kIXJustified = @"justified";
+IX_STATIC_CONST_STRING kIXNatural = @"natural";
 
-static NSString* kIXDefinedMentionScheme;
-static NSString* kIXDefinedHashtagScheme;
+// Attribute Defaults
+IX_STATIC_CONST_STRING kIXDefaultTextAlign = @"left";
 
-static UIColor* kIXBaseTextColor;
+// Returns
+IX_STATIC_CONST_STRING kIXSelectedMention = @"selectedMention";
+IX_STATIC_CONST_STRING kIXSelectedHashtag = @"selectedHashtag";
+IX_STATIC_CONST_STRING kIXSelectedUrl = @"selectedLink";
 
-//BOOLs - enable or disable these
-static NSString* const kIXShouldHighlightMentions = @"highlight_mentions"; //default = true
-static NSString* const kIXShouldHighlightHashtags = @"highlight_hashtags"; //true
-static NSString* const kIXShouldHighlightHyperlinks = @"highlight_Hyperlinks"; //true
-static NSString* const kIXShouldParseMarkdown = @"parse_markdown"; //false
+// Events
+IX_STATIC_CONST_STRING kIXLongPressMention = @"longPressMention";
+IX_STATIC_CONST_STRING kIXLongPressHashtag = @"longPressHashtag";
+IX_STATIC_CONST_STRING kIXLongPressLink = @"longPressLink";
+IX_STATIC_CONST_STRING kIXTouchUpMention = @"touchUpMention";
+IX_STATIC_CONST_STRING kIXTouchUpHashtag = @"touchUpHashtag";
+IX_STATIC_CONST_STRING kIXTouchUpLink = @"touchUpLink";
 
-//Defined styling properties
-static NSString* const kIXText = @"text";
-static NSString* const kIXTextColor = @"text.color";
-static NSString* const kIXFont = @"font";
-
-static NSString* const kIXBackgroundColor = @"background.color";
-
-static NSString* const kIXMentionScheme = @"mention.scheme";
-static NSString* const kIXMentionColor = @"mention.color";
-static NSString* const kIXMentionFont = @"mention.font";
-
-static NSString* const kIXHashtagScheme = @"hashtag.scheme";
-static NSString* const kIXHashtagColor = @"hashtag.color";
-static NSString* const kIXHashtagFont = @"hashtag.font";
-
-static NSString* const kIXHyperlinkColor = @"hyperlink.color";
-static NSString* const kIXHyperlinkFont = @"hyperlink.font";
-
-//Markdown code properties
-static NSString* const kIXCodeFont = @"code.font";
-static NSString* const kIXCodeColor = @"code.color";
-static NSString* const kIXCodeBackgroundColor = @"code.background.color";
-static NSString* const kIXCodeBorderColor = @"code.border.color";
-static NSString* const kIXCodeBorderRadius = @"code.border.radius";
-
-//Paragraph properties
-static NSString* const kIXTextKerning = @"kerning";
-static NSString* const kIXTextAlign = @"text.align";
-static NSString* const kIXLineSpacing = @"line.spacing";
-static NSString* const kIXLineHeightMin = @"line.height.min";
-static NSString* const kIXLineHeightMax = @"line.height.max";
-
+// Functions
+// *none*
 
 @interface IXAttributedText : IXBaseControl <TTTAttributedLabelDelegate>
 
@@ -84,131 +72,19 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 
 @end
 
+NSString* kIXCurrentTouchedMention;
+NSString* kIXCurrentTouchedHashtag;
+NSURL* kIXCurrentTouchedUrl;
+
+NSString* kIXDefinedMentionScheme;
+NSString* kIXDefinedHashtagScheme;
+
+UIColor* kIXBaseTextColor;
+
+IX_STATIC_CONST_STRING kIXPrefixLongPress = @"longPress"; // prefixes the event
+IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
+
 @implementation IXAttributedText
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param highlight_mentions Highlight @mentions? *(default: TRUE)*<br>*(bool)*
-    @param highlight_hashtags Highlight #hashtags? *(default: TRUE)*<br>*leftrightcenterjustifiednatural*
-    @param highlight_Hyperlinks Highlight http://hyperlinks.com? *(default: TRUE)*<br>*(color)*
-    @param parse_markdown Parse Markdown? *(default: FALSE)*<br>*(string)*
-    @param text The string of text to do fancy things with *(default: FALSE)*<br>*(string)*
-    @param text.color The color for normal text *(default: #000000)*<br>*(color)*
-    @param font The font to use for normal text *(default: systemFontOfSize:16.0f)*<br>*(font)*
-    @param background.color Background of the text area *(default: clear)*<br>*(color)*
-    @param mention.scheme Custom URL scheme to apply to @mentions *(default: mention://)*<br>*(string)*
-    @param mention.color The color for @mentions<br>*(color)*
-    @param mention.font The font to use for @mentions<br>*(string)*
-    @param hashtag.scheme Custom URL scheme to apply to #hashtags *(default: hashtag://)*<br>*(string)*
-    @param hashtag.color The color for #hashtags<br>*(color)*
-    @param hashtag.font The font to use for #hashtags<br>*(string)*
-    @param hyperlink.color The color for http://hyperlinks.com<br>*(color)*
-    @param hyperlink.font The font to use for http://hyperlinks.com<br>*(string)*
-    @param code.font The font to use for code<br>*(string)*
-    @param code.color The color for code<br>*(color)*
-    @param code.background.color The color for background of code area<br>*(color)*
-    @param code.border.color The color for code border *(default: some funky RGB)*<br>*(color)*
-    @param code.border.radius The border radius of code area *(default: 3)*<br>*(float)*
-    @param kerning The kerning to use *(default: 0)*<br>*(float)*
-    @param text.align Alignment of text *(default: left)*<br>*leftrightcenterjustifiednatural*
-    @param line.spacing Line spacing *(default: -0.01)*<br>*(float)*
-    @param line.height.min Minimum line height *(default: -0.01)*<br>*(float)*
-    @param line.height.max Maximum line height *(default: -0.01)*<br>*(float)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param selected_mention Value of the selected @mention. Use with mention.scheme to navigate + pass value.<br>*(string)*
- @param selected_hashtag Value of the selected #hashtag. Use with hashtag.scheme to navigate + pass value.<br>*(string)*
- @param selected_url Value of the selected URL.<br>*(string)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param long_press Fires when an element receives a long press
-    @param touch_up Fires when an element is touched
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "AttributedText",
-  "_id": "attributedText",
-  "actions": [
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "You long_press'd:",
-        "message": "[[$self.selected_mention]]"
-      },
-      "on": "touch_up"
-    }
-  ],
-  "attributes": {
-    "text": "Johnny, @paula, silly and @sally were #hoodwinked.",
-    "text.align": "center",
-    "width": "200",
-    "layout_type": "absolute",
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
-}
-</pre>
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {
@@ -236,13 +112,13 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     // potential crash if view is deallocated WHILE the long press is activated
     if (self.label.selectionState == TTTAttributedLabelSelectionStateLongPress)
     {
-        [self performActionsForSelector:@"long_press" withUrl:url];
-        IX_LOG_DEBUG(@"Detected long_press for url: %@", url);
+        [self performActionsForSelector:kIXPrefixLongPress withUrl:url];
+        IX_LOG_DEBUG(@"Detected long press for url: %@", url);
     }
     else if (self.label.selectionState == TTTAttributedLabelSelectionStateTouchUp)
     {
-        [self performActionsForSelector:@"touch_up" withUrl:url];
-        IX_LOG_DEBUG(@"Detected touch_up for url: %@", url);
+        [self performActionsForSelector:kIXPrefixTouchUp withUrl:url];
+        IX_LOG_DEBUG(@"Detected touch up inside for url: %@", url);
     }
 }
 
@@ -257,19 +133,28 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     if ([[NSString stringWithFormat:@"%@", url] hasPrefix:kIXDefinedMentionScheme])
     {
         kIXCurrentTouchedMention = url.host;
-        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@_mention", selector]];
+        if ([selector isEqualToString:kIXPrefixLongPress])
+            [[self actionContainer] executeActionsForEventNamed:kIXLongPressMention];
+        else if ([selector isEqualToString:kIXPrefixTouchUp])
+            [[self actionContainer] executeActionsForEventNamed:kIXTouchUpMention];
     }
     //String is a hashtag #
     else if ([[NSString stringWithFormat:@"%@", url] hasPrefix:kIXDefinedHashtagScheme])
     {
         kIXCurrentTouchedHashtag = url.host;
-        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@_hashtag", selector]];
+        if ([selector isEqualToString:kIXPrefixLongPress])
+            [[self actionContainer] executeActionsForEventNamed:kIXLongPressHashtag];
+        else if ([selector isEqualToString:kIXPrefixTouchUp])
+            [[self actionContainer] executeActionsForEventNamed:kIXTouchUpHashtag];
     }
     //String is a url
     else if ([[NSString stringWithFormat:@"%@", url] hasPrefix:@"http"] || [[NSString stringWithFormat:@"%@", url] hasPrefix:@"ftp"])
     {
         kIXCurrentTouchedUrl = url;
-        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@_url", selector]];
+        if ([selector isEqualToString:kIXPrefixLongPress])
+            [[self actionContainer] executeActionsForEventNamed:kIXLongPressLink];
+        else if ([selector isEqualToString:kIXPrefixTouchUp])
+            [[self actionContainer] executeActionsForEventNamed:kIXTouchUpLink];
     }
     
 }
@@ -317,7 +202,7 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
     self.label.backgroundColor = [self.propertyContainer getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]];
     
     //Set alignment
-    NSString* textAlignmentString = [self.propertyContainer getStringPropertyValue:kIXTextAlign defaultValue:@"left"];
+    NSString* textAlignmentString = [self.propertyContainer getStringPropertyValue:kIXTextAlign defaultValue:kIXDefaultTextAlign];
     NSTextAlignment textAlignment = [self getTextAlignmentFromPropertyValue:textAlignmentString];
     
     //Double check that the label supports attributed text
@@ -607,23 +492,23 @@ static NSString* const kIXLineHeightMax = @"line.height.max";
 
 - (NSTextAlignment)getTextAlignmentFromPropertyValue:(NSString *)property
 {
-    if ([property isEqualToString:@"left"])
+    if ([property isEqualToString:kIXLeft])
     {
         return NSTextAlignmentLeft;
     }
-    else if ([property isEqualToString:@"right"])
+    else if ([property isEqualToString:kIXRight])
     {
         return NSTextAlignmentRight;
     }
-    else if ([property isEqualToString:@"center"])
+    else if ([property isEqualToString:kIXCenter])
     {
         return NSTextAlignmentCenter;
     }
-    else if ([property isEqualToString:@"justified"])
+    else if ([property isEqualToString:kIXJustified])
     {
         return NSTextAlignmentJustified;
     }
-    else if ([property isEqualToString:@"natural"])
+    else if ([property isEqualToString:kIXNatural])
     {
         return NSTextAlignmentNatural;
     }

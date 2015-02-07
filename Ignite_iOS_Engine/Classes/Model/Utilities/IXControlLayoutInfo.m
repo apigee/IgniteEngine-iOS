@@ -9,6 +9,43 @@
 #import "IXControlLayoutInfo.h"
 #import "IXPropertyContainer.h"
 
+// Attributes
+IX_STATIC_CONST_STRING kIXVisible = @"visible";
+IX_STATIC_CONST_STRING kIXFillRemainingWidth = @"fill_remaining_width";
+IX_STATIC_CONST_STRING kIXFillRemainingHeight = @"fill_remaining_height";
+IX_STATIC_CONST_STRING kIXIncludeInParentAutosize = @"include_in_parent_autosize";
+IX_STATIC_CONST_STRING kIXLayoutType = @"layout_type";
+IX_STATIC_CONST_STRING kIXVerticalAlignment = @"vertical_alignment";
+IX_STATIC_CONST_STRING kIXHorizontalAlignment = @"horizontal_alignment";
+IX_STATIC_CONST_STRING kIXWidth = @"width";
+IX_STATIC_CONST_STRING kIXHeight = @"height";
+IX_STATIC_CONST_STRING kIXTopPosition = @"top_position";
+IX_STATIC_CONST_STRING kIXLeftPosition = @"left_position";
+IX_STATIC_CONST_STRING kIXBottomPosition = @"bottom_position";
+IX_STATIC_CONST_STRING kIXPadding = @"padding"; // sets all 4 sides to this value.
+IX_STATIC_CONST_STRING kIXPaddingTop = @"padding.top";
+IX_STATIC_CONST_STRING kIXPaddingRight = @"padding.right";
+IX_STATIC_CONST_STRING kIXPaddingBottom = @"padding.bottom";
+IX_STATIC_CONST_STRING kIXPaddingLeft = @"padding.left";
+IX_STATIC_CONST_STRING kIXMargin = @"margin"; // sets all 4 sides to this value.
+IX_STATIC_CONST_STRING kIXMarginTop = @"margin.top";
+IX_STATIC_CONST_STRING kIXMarginRight = @"margin.right";
+IX_STATIC_CONST_STRING kIXMarginBottom = @"margin.bottom";
+IX_STATIC_CONST_STRING kIXMarginLeft = @"margin.left";
+
+// Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXDefaultLayoutTypeRelative = @"relative";
+IX_STATIC_CONST_STRING kIXLayoutTypeRelative = @"relative";
+IX_STATIC_CONST_STRING kIXLayoutTypeAbsolute = @"absolute";
+IX_STATIC_CONST_STRING kIXLayoutTypeFloat = @"float";
+IX_STATIC_CONST_STRING kIXTop = @"top";
+IX_STATIC_CONST_STRING kIXVerticalCenter = @"middle";
+IX_STATIC_CONST_STRING kIXBottom = @"bottom";
+IX_STATIC_CONST_STRING kIXLeft = @"left";
+IX_STATIC_CONST_STRING kIXHorizontalCenter = @"center";
+IX_STATIC_CONST_STRING kIXRight = @"right";
+
+
 @interface IXControlLayoutInfo ()
 
 @property (nonatomic,assign) BOOL isHidden;
@@ -34,6 +71,10 @@
 @property (nonatomic,assign) IXEdgeInsets paddingInsets;
 
 @end
+
+// Internal Properties
+IX_STATIC_CONST_STRING kIXAlign = @"align"; // used as prefix to determine if control is a layout control
+IX_STATIC_CONST_STRING kIXPosition = @"position"; // used as prefix to determine if control is a layout control
 
 @implementation IXControlLayoutInfo
 
@@ -80,56 +121,56 @@
 {
     _layoutRect = CGRectZero;
     
-    _isHidden = ![[self propertyContainer] getBoolPropertyValue:@"visible" defaultValue:YES];
-    _fillRemainingWidth = [[self propertyContainer] getBoolPropertyValue:@"fill_remaining_width" defaultValue:NO];
-    _fillRemainingHeight = [[self propertyContainer] getBoolPropertyValue:@"fill_remaining_height" defaultValue:NO];
-    _canPushParentsBounds = [[self propertyContainer] getBoolPropertyValue:@"include_in_parent_autosize" defaultValue:YES];
+    _isHidden = ![[self propertyContainer] getBoolPropertyValue:kIXVisible defaultValue:YES];
+    _fillRemainingWidth = [[self propertyContainer] getBoolPropertyValue:kIXFillRemainingWidth defaultValue:NO];
+    _fillRemainingHeight = [[self propertyContainer] getBoolPropertyValue:kIXFillRemainingHeight defaultValue:NO];
+    _canPushParentsBounds = [[self propertyContainer] getBoolPropertyValue:kIXIncludeInParentAutosize defaultValue:YES];
 
-    NSString* layoutType = [[self propertyContainer] getStringPropertyValue:@"layout_type" defaultValue:@"relative"];
-    _isFloatPositioned = [layoutType isEqualToString:@"float"];
-    _isAbsolutePositioned = (_isFloatPositioned || [layoutType isEqualToString:@"absolute"] );
+    NSString* layoutType = [[self propertyContainer] getStringPropertyValue:kIXLayoutType defaultValue:kIXDefaultLayoutTypeRelative];
+    _isFloatPositioned = [layoutType isEqualToString:kIXLayoutTypeFloat];
+    _isAbsolutePositioned = (_isFloatPositioned || [layoutType isEqualToString:kIXLayoutTypeAbsolute] );
     
     _verticalAlignment = IXLayoutVerticalAlignmentTop;
     
-    NSString* verticalAlignmentString = [[self propertyContainer] getStringPropertyValue:@"vertical_alignment" defaultValue:@"top"];
-    if( [verticalAlignmentString isEqualToString:@"top"] )
+    NSString* verticalAlignmentString = [[self propertyContainer] getStringPropertyValue:kIXVerticalAlignment defaultValue:kIXTop];
+    if( [verticalAlignmentString isEqualToString:kIXTop] )
         _verticalAlignment = IXLayoutVerticalAlignmentTop;
-    else if( [verticalAlignmentString isEqualToString:@"middle"] )
+    else if( [verticalAlignmentString isEqualToString:kIXVerticalCenter] )
         _verticalAlignment = IXLayoutVerticalAlignmentMiddle;
-    else if( [verticalAlignmentString isEqualToString:@"bottom"] )
+    else if( [verticalAlignmentString isEqualToString:kIXBottom] )
         _verticalAlignment = IXLayoutVerticalAlignmentBottom;
     
     _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
-    NSString* horizontalAlignmentString = [[self propertyContainer] getStringPropertyValue:@"horizontal_alignment" defaultValue:@"left"];
-    if( [horizontalAlignmentString isEqualToString:@"left"] )
+    NSString* horizontalAlignmentString = [[self propertyContainer] getStringPropertyValue:kIXHorizontalAlignment defaultValue:kIXLeft];
+    if( [horizontalAlignmentString isEqualToString:kIXLeft] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentRight;
-    else if( [horizontalAlignmentString isEqualToString:@"center"] )
+    else if( [horizontalAlignmentString isEqualToString:kIXHorizontalCenter] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentCenter;
-    else if( [horizontalAlignmentString isEqualToString:@"right"] )
+    else if( [horizontalAlignmentString isEqualToString:kIXRight] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
-    _width = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"width" defaultValue:nil], 0.0f);
-    _height = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"height" defaultValue:nil], 0.0f);
-    _topPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"top_position" defaultValue:nil], 0.0f);
-    _leftPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"left_position" defaultValue:nil], 0.0f);
-    _bottomPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"bottom_position" defaultValue:nil], 0.0f);
+    _width = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXWidth defaultValue:nil], 0.0f);
+    _height = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXHeight defaultValue:nil], 0.0f);
+    _topPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXTopPosition defaultValue:nil], 0.0f);
+    _leftPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXLeftPosition defaultValue:nil], 0.0f);
+    _bottomPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXBottomPosition defaultValue:nil], 0.0f);
     
-    _paddingInsets.defaultInset = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding" defaultValue:nil], 0.0f);
+    _paddingInsets.defaultInset = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXPadding defaultValue:nil], 0.0f);
     
     CGFloat defaultPaddingValue = _paddingInsets.defaultInset.value;
-    _paddingInsets.top = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.top" defaultValue:nil], defaultPaddingValue);
-    _paddingInsets.left = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.left" defaultValue:nil], defaultPaddingValue);
-    _paddingInsets.bottom = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.bottom" defaultValue:nil], defaultPaddingValue);
-    _paddingInsets.right = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"padding.right" defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.top = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXPaddingTop defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.left = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXPaddingLeft defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.bottom = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXPaddingBottom defaultValue:nil], defaultPaddingValue);
+    _paddingInsets.right = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXPaddingRight defaultValue:nil], defaultPaddingValue);
     
-    _marginInsets.defaultInset = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin" defaultValue:nil], 0.0f);
+    _marginInsets.defaultInset = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXMargin defaultValue:nil], 0.0f);
     
     CGFloat defaultMarginValue = _marginInsets.defaultInset.value;
-    _marginInsets.top = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.top" defaultValue:nil], defaultMarginValue);
-    _marginInsets.left = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.left" defaultValue:nil], defaultMarginValue);
-    _marginInsets.bottom = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.bottom" defaultValue:nil], defaultMarginValue);
-    _marginInsets.right = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:@"margin.right" defaultValue:nil], defaultMarginValue);
+    _marginInsets.top = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXMarginTop defaultValue:nil], defaultMarginValue);
+    _marginInsets.left = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXMarginLeft defaultValue:nil], defaultMarginValue);
+    _marginInsets.bottom = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXMarginBottom defaultValue:nil], defaultMarginValue);
+    _marginInsets.right = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXMarginRight defaultValue:nil], defaultMarginValue);
     
     _widthWasDefined = _width.propertyWasDefined;
     _heightWasDefined = _height.propertyWasDefined;
@@ -140,24 +181,18 @@
 
 +(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName
 {
-    BOOL triggersLayout = NO;
-    if( [propertyName isEqualToString:@"visible"] || [propertyName isEqualToString:@"layout_type"] )
-    {
-        triggersLayout = YES;
+    if([propertyName isEqualToString:kIXVisible] ||
+       [propertyName isEqualToString:kIXLayoutType] ||
+       [propertyName rangeOfString:kIXHeight].location != NSNotFound ||
+       [propertyName rangeOfString:kIXWidth].location != NSNotFound ||
+       [propertyName hasPrefix:kIXMargin] ||
+       [propertyName hasPrefix:kIXPadding] ||
+       [propertyName hasPrefix:kIXPosition] ||
+       [propertyName hasPrefix:kIXAlign]) {
+        return YES;
+    } else {
+        return NO;
     }
-    else if( [propertyName rangeOfString:@"height"].location != NSNotFound || [propertyName rangeOfString:@"width"].location != NSNotFound  )
-    {
-        triggersLayout = YES;
-    }
-    else if( [propertyName hasPrefix:@"margin"] || [propertyName hasPrefix:@"padding"] )
-    {
-        triggersLayout = YES;
-    }
-    else if( [propertyName hasSuffix:@"position"] || [propertyName hasSuffix:@"alignment"] )
-    {
-        triggersLayout = YES;
-    }
-    return triggersLayout;
 }
 
 IXEdgeInsets IXEdgeInsetsZero()

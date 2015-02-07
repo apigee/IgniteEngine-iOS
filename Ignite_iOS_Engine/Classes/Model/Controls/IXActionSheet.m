@@ -17,17 +17,14 @@ IX_STATIC_CONST_STRING kIXSheetButtonTitleCancel = @"buttons.cancel";
 IX_STATIC_CONST_STRING kIXSheetButtonTitleDestructive = @"buttons.destructive";
 IX_STATIC_CONST_STRING kIXSheetButtonTitleOthers = @"buttons.others";
 
-// Attribute Value Available Parameters
+// Attribute Accepted Values
 IX_STATIC_CONST_STRING kIXSheetStyleDefault = @"default";
 IX_STATIC_CONST_STRING kIXSheetStyleAutomatic = @"automatic";
 IX_STATIC_CONST_STRING kIXSheetStyleBlackTranslucent = @"black.translucent";
 IX_STATIC_CONST_STRING kIXSheetStyleBlackOpaque = @"black.opaque";
 
-// Attribute Value Defaults
+// Attribute Defaults
 IX_STATIC_CONST_STRING kIXDefaultCancelButtonTitle = @"Cancel";
-IX_STATIC_CONST_STRING kIXDefaultSheetTitle = nil;
-IX_STATIC_CONST_STRING kIXDefaultDestructiveButtonTitle = nil;
-IX_STATIC_CONST_ARRAY kIXDefaultOtherButtonTitles = nil;
 
 // Returns
 
@@ -78,10 +75,10 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss";
         [self setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     }
     
-    [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:kIXDefaultSheetTitle]];
+    [self setSheetTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetTitle defaultValue:nil]];
     [self setCancelButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleCancel defaultValue:kIXDefaultCancelButtonTitle]];
-    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:kIXDefaultDestructiveButtonTitle]];
-    [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:kIXDefaultOtherButtonTitles]];
+    [self setDestructiveButtonTitle:[[self propertyContainer] getStringPropertyValue:kIXSheetButtonTitleDestructive defaultValue:nil]];
+    [self setOtherTitles:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXSheetButtonTitleOthers defaultValue:nil]];
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
