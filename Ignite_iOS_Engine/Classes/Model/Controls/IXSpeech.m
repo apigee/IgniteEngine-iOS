@@ -24,7 +24,7 @@
 @import AVFoundation.AVSpeechSynthesis;
 
 // IXSpeech Functions
-IX_STATIC_CONST_STRING kIXQueueUtterance = @"queue_utterance";
+IX_STATIC_CONST_STRING kIXQueueUtterance = @"queue";
 IX_STATIC_CONST_STRING kIXPause = @"pause"; // Pauses so it can be continued.
 IX_STATIC_CONST_STRING kIXContinue = @"continue"; // Continues if paused.
 IX_STATIC_CONST_STRING kIXStop = @"stop"; // Stops and clears the utterance queue.

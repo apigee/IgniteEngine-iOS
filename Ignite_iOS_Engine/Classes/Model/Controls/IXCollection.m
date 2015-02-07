@@ -25,7 +25,7 @@
 #import "IXCellBackgroundSwipeController.h"
 
 // IXCollection Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
-IX_STATIC_CONST_STRING kIXMinimumLineSpacing = @"minimum_line_spacing";
+IX_STATIC_CONST_STRING kIXMinimumLineSpacing = @"lineSpacing.min";
 IX_STATIC_CONST_STRING kIXMinimumInteritemSpacing = @"minimum_interitem_spacing";
 IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
 

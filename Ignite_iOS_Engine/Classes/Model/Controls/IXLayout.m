@@ -6,19 +6,6 @@
 //  Copyright (c) 2013. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** The jack of all trades. Use me everywhere.
-*/
-
 #import "IXLayout.h"
 #import "IXClickableScrollView.h"
 #import "IXLayoutEngine.h"
@@ -28,33 +15,33 @@
 #import "IXViewController.h"
 
 // IXLayout Attributes
-IX_STATIC_CONST_STRING kIXLayoutFlow = @"layout_flow";
+IX_STATIC_CONST_STRING kIXLayoutFlow = @"layoutFlow";
 IX_STATIC_CONST_STRING kIXVertical = @"vertical";
 IX_STATIC_CONST_STRING kIXHorizontal = @"horizontal";
-IX_STATIC_CONST_STRING kIXVerticalScrollEnabled = @"vertical_scroll_enabled";
-IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"horizontal_scroll_enabled";
-IX_STATIC_CONST_STRING kIXEnableScrollsToTop = @"enable_scrolls_to_top";
-IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scroll_indicator_style";
-IX_STATIC_CONST_STRING kIXBlurBackground = @"background.blur";
+IX_STATIC_CONST_STRING kIXVerticalScrollEnabled = @"scrolling.v.enabled";
+IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
+IX_STATIC_CONST_STRING kIXEnableScrollsToTop = @"scrollTop.enabled";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scrollBars.style";
+IX_STATIC_CONST_STRING kIXBlurBackground = @"bg.blur";
 
-IX_STATIC_CONST_STRING kIXBlurBackgroundStyleExtraLight = @"extra_light";
+IX_STATIC_CONST_STRING kIXBlurBackgroundStyleExtraLight = @"xlight";
 IX_STATIC_CONST_STRING kIXBlurBackgroundStyleLight = @"light";
 IX_STATIC_CONST_STRING kIXBlurBackgroundStyleDark = @"dark";
-IX_STATIC_CONST_STRING kIXBlurTintColor = @"background.blur.tintColor";
-IX_STATIC_CONST_STRING kIXBlurTintAlpha = @"background.blur.tint.alpha";
+IX_STATIC_CONST_STRING kIXBlurTintColor = @"bg.blur.tint";
+IX_STATIC_CONST_STRING kIXBlurTintAlpha = @"bg.blur.alpha";
 
 
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black";
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white";
-IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
-IX_STATIC_CONST_STRING kIXShowsHorizontalScrollIndicator = @"shows_horizontal_scroll_indicator";
-IX_STATIC_CONST_STRING kIXShowsVerticalScrollIndicator = @"shows_vertical_scroll_indicator";
-IX_STATIC_CONST_STRING kIXMaxZoomScale = @"max_zoom_scale";
-IX_STATIC_CONST_STRING kIXMinZoomScale = @"min_zoom_scale";
-IX_STATIC_CONST_STRING kIXEnableZoom = @"enable_zoom";
-IX_STATIC_CONST_STRING kIXZoomScale = @"zoom_scale";
-IX_STATIC_CONST_STRING kIXColorGradientTop = @"color.gradient_top";
-IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
+IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"scrollBars.enabled";
+IX_STATIC_CONST_STRING kIXShowsHorizontalScrollIndicator = @"scrollBars.h.enabled";
+IX_STATIC_CONST_STRING kIXShowsVerticalScrollIndicator = @"scrollBars.v.enabled";
+IX_STATIC_CONST_STRING kIXMaxZoomScale = @"zoomScale.max";
+IX_STATIC_CONST_STRING kIXMinZoomScale = @"zoomScale.min";
+IX_STATIC_CONST_STRING kIXEnableZoom = @"zoom.enabled";
+IX_STATIC_CONST_STRING kIXZoomScale = @"zoomScale";
+IX_STATIC_CONST_STRING kIXColorGradientTop = @"gradient.top";
+IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
 
 @interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -71,104 +58,6 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"color.gradient_bottom";
 @end
 
 @implementation IXLayout
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param layout_flow Orientation of relative layout flow<br>*horizontalvertical*
-    @param vertical_scroll_enabled Minimum value allowed<br>*(bool)*
-    @param horizontal_scroll_enabled Minimum value allowed<br>*(bool)*
-    @param enable_scrolls_to_top Image to overlay<br>*(bool)*
-    @param scroll_indicator_style Image to underlay<br>*blackwhite*
-    @param background.blur Image pointer<br>*extra_lightlightdark*
-    @param background.blur.tintColor Maximum angle<br>*(float)*
-    @param background.blur.tint.alpha Animation duration<br>*(float)*
-    @param shows_scroll_indicators Display scroll indicators?<br>*(bool)*
-    @param shows_horizontal_scroll_indicator Display horizontal scroll indicator<br>*(bool)*
-    @param shows_vertical_scroll_indicator Display vertical scroll indicator<br>*(bool)*
-    @param max_zoom_scale Maximum zoom scale<br>*(bool)*
-    @param min_zoom_scale Minimum zoom scale<br>*(float)*
-    @param enable_zoom Enable zoom<br>*(bool)*
-    @param zoom_scale Zoom scale<br>*(float)*
-    @param color.gradient_top Gradient color top<br>*(color)*
-    @param color.gradient_bottom <br>*(color)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
-
--(void)Events
-{
-}
-
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_id": "layoutTest",
-  "_type": "Layout",
-  "attributes": {
-    "width": "100%",
-    "height": "100%",
-    "background.color": "#cdcdcd"
-  },
-  "controls": []
-}
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

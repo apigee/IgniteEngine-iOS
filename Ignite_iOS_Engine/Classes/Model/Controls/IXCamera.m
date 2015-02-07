@@ -35,28 +35,28 @@
 #import "NSString+IXAdditions.h"
 
 // Temp properties
-static NSString* const kIXWidth = @"width";
-static NSString* const kIXHeight = @"height";
+static NSString* const kIXWidth = @"size.w";
+static NSString* const kIXHeight = @"size.h";
 
 // Functions
 static NSString* const kIXStart = @"start";
 static NSString* const kIXRestart = @"restart";
 static NSString* const kIXStop = @"stop";
-static NSString* const kIXAutoStart = @"auto_start";
-static NSString* const kIXCaptureImage = @"capture_image";
+static NSString* const kIXAutoStart = @"autoStart.enabled";
+static NSString* const kIXCaptureImage = @"capture";
 
 // Properties
-static NSString* const kIXCamera = @"camera";
+static NSString* const kIXCamera = @"cameraSource";
 static NSString* const kIXFront = @"front";
 static NSString* const kIXRear = @"rear";
-static NSString* const kIXCaptureResize = @"capture.resize";
-static NSString* const kIXCaptureDelay = @"capture.delay";
-static NSString* const kIXCapturedImage = @"captured_image";
-static NSString* const kIXAutoSaveToCameraRoll = @"auto_save_to_camera_roll";
+static NSString* const kIXCaptureResize = @"resizeMask";
+static NSString* const kIXCaptureDelay = @"captureDelay";
+static NSString* const kIXCapturedImage = @"capturedImage";
+static NSString* const kIXAutoSaveToCameraRoll = @"autoSave.enabled";
 
 // Events
-static NSString* const kIXDidCaptureImage = @"did_capture_image";
-static NSString* const kIXDidFinishSavingCapture = @"did_finish_saving_capture";
+static NSString* const kIXDidCaptureImage = @"didCaptureImage";
+static NSString* const kIXDidFinishSavingCapture = @"didSaveImage";
 
 @interface IXCamera ()
 

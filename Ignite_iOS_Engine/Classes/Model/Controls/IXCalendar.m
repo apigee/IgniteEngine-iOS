@@ -6,19 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Create calendar items and add them to the device calendar.
-*/
-
 #import "IXCalendar.h"
 
 #import "NSString+IXAdditions.h"
@@ -26,16 +13,16 @@
 @import EventKit;
 
 // IXCalendar Attributes
-IX_STATIC_CONST_STRING kIXEventAllDay = @"event.allDay";
-IX_STATIC_CONST_STRING kIXEventTitle = @"event.title";
-IX_STATIC_CONST_STRING kIXEventLocation = @"event.location";
-IX_STATIC_CONST_STRING kIXEventURL = @"event.url";
-IX_STATIC_CONST_STRING kIXEventNotes = @"event.notes";
-IX_STATIC_CONST_STRING kIXEventDateFormat = @"event.date.format";
-IX_STATIC_CONST_STRING kIXEventDateStart = @"event.date.start";
-IX_STATIC_CONST_STRING kIXEventDateEnd = @"event.date.end";
-IX_STATIC_CONST_STRING kIXEventAlarmOffset = @"event.alarm.offset";
-IX_STATIC_CONST_STRING kIXEventRecurrenceFrequency = @"event.recurrence.frequency";
+IX_STATIC_CONST_STRING kIXEventAllDay = @"allDay.enabled";
+IX_STATIC_CONST_STRING kIXEventTitle = @"title";
+IX_STATIC_CONST_STRING kIXEventLocation = @"location";
+IX_STATIC_CONST_STRING kIXEventURL = @"url";
+IX_STATIC_CONST_STRING kIXEventNotes = @"notes";
+IX_STATIC_CONST_STRING kIXEventDateFormat = @"date.format";
+IX_STATIC_CONST_STRING kIXEventDateStart = @"date.start";
+IX_STATIC_CONST_STRING kIXEventDateEnd = @"date.end";
+IX_STATIC_CONST_STRING kIXEventAlarmOffset = @"alarmOffset";
+IX_STATIC_CONST_STRING kIXEventRecurrenceFrequency = @"repeatFrequency";
 
 // kIXEventRecurrenceFrequency Accepted Values
 IX_STATIC_CONST_STRING kIXEventRecurrenceFrequencyNone = @"none";
@@ -45,14 +32,14 @@ IX_STATIC_CONST_STRING kIXEventRecurrenceFrequencyMonthly = @"monthly";
 IX_STATIC_CONST_STRING kIXEventRecurrenceFrequencyYearly = @"yearly";
 
 // IXCalendar ReadOnly Attributes
-IX_STATIC_CONST_STRING kIXAccessGranted = @"access_granted";
+IX_STATIC_CONST_STRING kIXAccessGranted = @"isAllowed";
 
 // IXCalendar Functions
-IX_STATIC_CONST_STRING kIXAddEvent = @"add_event";
+IX_STATIC_CONST_STRING kIXAddEvent = @"addEvent";
 
 // IXCalendar Events
-IX_STATIC_CONST_STRING kIXAddEventSuccess = @"add_event_success";
-IX_STATIC_CONST_STRING kIXAddEventFailed = @"add_event_failed";
+IX_STATIC_CONST_STRING kIXAddEventSuccess = @"success";
+IX_STATIC_CONST_STRING kIXAddEventFailed = @"error";
 
 @interface IXCalendar ()
 
@@ -75,141 +62,6 @@ IX_STATIC_CONST_STRING kIXAddEventFailed = @"add_event_failed";
 @end
 
 @implementation IXCalendar
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-
-    @param event.allDay All day event? *(default: FALSE)*<br>*(bool)*
-    @param event.title Event Title<br>*(string)*
-    @param event.location Location<br>*(string)*
-    @param event.url URL<br>*(string)*
-    @param event.notes Notes<br>*(string)*
-    @param event.date.format Date Format<br>*(string)*
-    @param event.date.start Date Start<br>*(date)*
-    @param event.date.end Date End<br>*(date)*
-    @param event.alarm.offset Alarm Offset<br>*(float)*
-"    @param event.recurrence.frequency Recurrance Frequency<br>*none
-daily
-weekly
-monthly
-yearly*"
-    @param access_granted Permission status (Read-only)<br>*(bool)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param add_event_success The event was added successfully
-    @param add_event_failed Event failed to add to calendar.
-
- */
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param add_event Adds an event to the device calendar
-
- <pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "calendarTest",
-    "function_name": "add_event"
-  }
-} 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
-{
-  "_type": "Calendar",
-  "_id": "calendarTest",
-  "actions": [
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "add_event_success"
-      },
-      "on": "add_event_success"
-    },
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "add_event_failed"
-      },
-      "on": "add_event_failed"
-    }
-  ],
-  "attributes": {
-    "event.title": "Event Title",
-    "event.allDay": false,
-    "event.location": "1234 Some Street, City, State Zip",
-    "event.notes": "Event Notes",
-    "event.url": "http://meetings-are-fun.com",
-    "event.date.format": "yyyy-MM-dd HH:mm:ss",
-    "event.date.start": "2015-12-31 23:00:00",
-    "event.date.end": "2016-01-01 00:00:00",
-    "event.alarm.offset": -1800,
-    "event.recurrence.frequency": "none"
-  }
-}
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {

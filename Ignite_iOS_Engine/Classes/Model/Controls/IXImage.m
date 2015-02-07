@@ -36,37 +36,37 @@
 
 
 // IXImage Properties
-IX_STATIC_CONST_STRING kIXImagesDefault = @"images.default";
-IX_STATIC_CONST_STRING kIXImagesDefaultTintColor = @"images.default.tintColor";
-IX_STATIC_CONST_STRING kIXImagesDefaultBlurRadius = @"images.default.blur.radius";
-IX_STATIC_CONST_STRING kIXImagesDefaultBlurTintColor = @"images.default.blur.tintColor";
-IX_STATIC_CONST_STRING kIXImagesDefaultBlurSaturation = @"images.default.blur.saturation";
-IX_STATIC_CONST_STRING kIXImagesDefaultForceRefresh = @"images.default.force_refresh";
-IX_STATIC_CONST_STRING kIXImagesHeightMax = @"images.height.max";
-IX_STATIC_CONST_STRING kIXImagesWidthMax = @"images.width.max";
-IX_STATIC_CONST_STRING kIXGIFDuration = @"gif_duration";
-IX_STATIC_CONST_STRING kIXFlipHorizontal = @"flip_horizontal";
-IX_STATIC_CONST_STRING kIXFlipVertical = @"flip_vertical";
-IX_STATIC_CONST_STRING kIXRotate = @"rotate";
-IX_STATIC_CONST_STRING kIXImageBinary = @"image.binary";
+IX_STATIC_CONST_STRING kIXImagesDefault = @"image";
+IX_STATIC_CONST_STRING kIXImagesDefaultTintColor = @"tint";
+IX_STATIC_CONST_STRING kIXImagesDefaultBlurRadius = @"blur.radius";
+IX_STATIC_CONST_STRING kIXImagesDefaultBlurTintColor = @"blur.tint";
+IX_STATIC_CONST_STRING kIXImagesDefaultBlurSaturation = @"blur.saturation";
+IX_STATIC_CONST_STRING kIXImagesDefaultForceRefresh = @"forceRedraw.enabled";
+IX_STATIC_CONST_STRING kIXImagesHeightMax = @"max.h";
+IX_STATIC_CONST_STRING kIXImagesWidthMax = @"max.w";
+IX_STATIC_CONST_STRING kIXGIFDuration = @"animatedGif.duration";
+IX_STATIC_CONST_STRING kIXFlipHorizontal = @"transform.flip.h";
+IX_STATIC_CONST_STRING kIXFlipVertical = @"transform.flip.v";
+IX_STATIC_CONST_STRING kIXRotate = @"transform.rotate";
+IX_STATIC_CONST_STRING kIXImageBinary = @"binaryString";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these
-IX_STATIC_CONST_STRING kIXImagesDefaultResize = @"images.default.resize";
+IX_STATIC_CONST_STRING kIXImagesDefaultResize = @"resizeMask";
 
 // IXImage Read-Only Properties
-IX_STATIC_CONST_STRING kIXIsAnimating = @"is_animating";
-IX_STATIC_CONST_STRING kIXImageHeight = @"image.height";
-IX_STATIC_CONST_STRING kIXImageWidth = @"image.width";
+IX_STATIC_CONST_STRING kIXIsAnimating = @"isAnimating";
+IX_STATIC_CONST_STRING kIXImageHeight = @"source.size.h";
+IX_STATIC_CONST_STRING kIXImageWidth = @"source.size.w";
 
 // IXImage Events
-IX_STATIC_CONST_STRING kIXImagesDefaultLoaded = @"images_default_loaded";
-IX_STATIC_CONST_STRING kIXImagesDefaultFailed = @"images_default_failed";
+IX_STATIC_CONST_STRING kIXImagesDefaultLoaded = @"success";
+IX_STATIC_CONST_STRING kIXImagesDefaultFailed = @"error";
 
 // IXImage Functions
-IX_STATIC_CONST_STRING kIXStartAnimation = @"start_animation";
-IX_STATIC_CONST_STRING kIXRestartAnimation = @"restart_animation";
-IX_STATIC_CONST_STRING kIXStopAnimation = @"stop_animation";
-IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"load_last_photo";
+IX_STATIC_CONST_STRING kIXStartAnimation = @"start";
+IX_STATIC_CONST_STRING kIXRestartAnimation = @"restartAnimation";
+IX_STATIC_CONST_STRING kIXStopAnimation = @"stop";
+IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
 
 @interface IXImage ()
 

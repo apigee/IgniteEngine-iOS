@@ -1,5 +1,5 @@
 //
-//  IXKnob.h
+//  IXDial.h
 //  Ignite_iOS_Engine
 //
 //  Created by Robert Walsh on 2/11/14.
@@ -8,6 +8,6 @@
 
 #import "IXBaseControl.h"
 
-@interface IXKnob : IXBaseControl
+@interface IXDial : IXBaseControl
 
 @end
