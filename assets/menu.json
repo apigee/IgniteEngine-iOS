@@ -5,8 +5,7 @@
       "status_bar_style": "dark",
       "background.color": "#5a5a5a"
     },
-    "actions": [
-    ],
+    "actions": [],
     "controls": [
       {
         "_id": "layoutMenu",
@@ -33,6 +32,9 @@
                 "_id": "tableSettings",
                 "_type": "TableView",
                 "attributes": {
+                  "section_header_xpath": "type",
+                  "section_header_height": 20,
+                  "section_header_width": "100%",
                   "height": "100%",
                   "width": "100%",
                   "separator.style": "none",
@@ -40,9 +42,37 @@
                   "dataprovider_id": "dataMenu",
                   "enabled": true,
                   "item_height": 42,
-                  "margin.top": 5,
+                  "margin.top": 0,
                   "animate_reload": false
                 },
+                "section_header_controls": [
+                  {
+                    "_id": "layoutSectionHeader",
+                    "_type": "Layout",
+                    "actions": [
+                      {
+                        "_id": "textCategory",
+                        "_type": "Text",
+                        "actions": [],
+                        "attributes": {
+                          "alpha": 1,
+                          "font": "HelveticaNeue-Light:16",
+                          "text": "[[dataRow.type]]",
+                          "vertical_alignment": "middle",
+                          "layout_type": "absolute",
+                          "text.color": "#8f8f8f",
+                          "padding.left": 10,
+                          "width": "100%"
+                        }
+                      }
+                    ],
+                    "attributes": {
+                      "background.color": "#ffffff50",
+                      "width": "100%",
+                      "height": "100%"
+                    }
+                  }
+                ],
                 "controls": [
                   {
                     "_id": "buttonEmployeeList",
@@ -51,7 +81,7 @@
                       {
                         "_type": "Navigate",
                         "attributes": {
-                          "to": "[[dataRow.name]].json"
+                          "to": "[[dataRow.view]]"
                         },
                         "on": "touch_up"
                       },
@@ -79,11 +109,11 @@
                         "attributes": {
                           "alpha": 1,
                           "font": "FontAwesome:16",
-                          "text":"[[dataRow.icon]]",
+                          "text": "[[dataRow.icon]]",
                           "vertical_alignment": "middle",
                           "layout_type": "absolute",
                           "text.color": "#8f8f8f",
-                          "padding.left":20,
+                          "padding.left": 20,
                           "touch.text.color": "[[app.color.touch]]",
                           "width": 60
                         }
@@ -180,8 +210,8 @@
           "auto_load": true,
           "data.baseurl": "/data",
           "data.path": "menu.json",
-          "sort.order":"ascending",
-          "sort.key":"name",
+          "sort.order": "ascending",
+          "sort.key": "type",
           "datarow.basepath": "entities",
           "cache_id": "menu",
           "http_method": "GET"

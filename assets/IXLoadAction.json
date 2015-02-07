@@ -1,0 +1,170 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "background": {
+        "color": "#f8f8f8"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXLoadAction"
+        }
+      },
+      {
+        "_id": "tableSettings",
+        "_type": "TableView",
+        "attributes": {
+          "height": "100%",
+          "width": "100%",
+          "separator.style": "none",
+          "background.color": "#ff00ff00",
+          "dataprovider_id": "dataMenu",
+          "padding.bottom":65,
+          "enabled": true,
+          "item_height": 42,
+          "margin.top": 0,
+          "animate_reload": false
+        },
+        "controls": [
+          {
+            "_id": "buttonEmployeeList",
+            "_type": "Layout",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "attributes": {
+                  "to": "[[dataRow.name]].json"
+                },
+                "on": "touch_up"
+              },
+              {
+                "_type": "Event",
+                "attributes": {
+                  "delay": 0.5,
+                  "_target": "imageMenu",
+                  "event_name": "close"
+                },
+                "on": "touch_up"
+              }
+            ],
+            "attributes": {
+              "alpha": 1,
+              "font": "[[app.font]]:20",
+              "padding.left": 0,
+              "height": 42
+            },
+            "controls": [
+              {
+                "_id": "textCategory",
+                "_type": "Text",
+                "actions": [],
+                "attributes": {
+                  "alpha": 1,
+                  "font": "FontAwesome:16",
+                  "text": "[[dataRow.icon]]",
+                  "vertical_alignment": "middle",
+                  "layout_type": "absolute",
+                  "text.color": "#8f8f8f",
+                  "padding.left": 20,
+                  "touch.text.color": "[[app.color.touch]]",
+                  "width": 60
+                }
+              },
+              {
+                "_id": "textCategory",
+                "_type": "Text",
+                "actions": [],
+                "attributes": {
+                  "alpha": 1,
+                  "font": "HelveticaNeue-Light:18",
+                  "text": "[[dataRow.name]]",
+                  "vertical_alignment": "middle",
+                  "layout_type": "absolute",
+                  "padding.left": 60,
+                  "text.color": "#8f8f8f",
+                  "touch.text.color": "[[app.color.touch]]",
+                  "width": "100%"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "layoutButtons",
+        "_type": "Layout",
+        "attributes": {
+          "layout_type": "absolute",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "padding.bottom":15
+        },
+        "controls": [
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Load",
+                "on": "touch_up",
+                "enabled": true,
+                "attributes": {
+                  "_target": "dataMenu"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 280,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.top": 15,
+              "text": "load data: dataMenu"
+            }
+          }
+        ]
+      }
+    ],
+    "data_providers": [
+      {
+        "_id": "dataMenu",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "messade": "Category: [[session.category_id]]\n\nRow Count: [[$self.count]]",
+              "title": "admin_orders.json success",
+              "enabled": false
+            },
+            "on": "success"
+          }
+        ],
+        "attributes": {
+          "auto_load": false,
+          "data.baseurl": "/data",
+          "data.path": "menu.json",
+          "sort.order": "ascending",
+          "sort.key": "name",
+          "datarow.basepath": "entities",
+          "cache_id": "menu",
+          "http_method": "GET"
+        },
+        "parameters": {}
+      }
+    ]
+  }
+}

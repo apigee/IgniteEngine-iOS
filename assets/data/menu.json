@@ -2,135 +2,202 @@
   "entities": [
     {
       "name": "IXActionSheet",
-      "view": "IXActionSheet.json"
+      "name": "IXActionSheet",
+      "type": "control"
     },
     {
       "name": "IXActivityIndicator",
-      "view": ".json"
+      "name": "IXActivityIndicator",
+      "type": "control"
     },
     {
       "name": "IXAddressBook",
-      "view": ".json"
+      "name": "IXAddressBook",
+      "type": "control"
     },
     {
       "name": "IXAttributedText",
-      "view": ".json"
+      "name": "IXAttributedText",
+      "type": "control"
     },
     {
       "name": "IXBaseControl",
-      "view": ".json"
+      "name": "IXBaseControl",
+      "type": "control"
     },
     {
       "name": "IXBrowser",
-      "view": ".json"
+      "name": "IXBrowser",
+      "type": "control"
     },
     {
       "name": "IXButton",
-      "view": ".json"
+      "name": "IXButton",
+      "type": "control"
     },
     {
       "name": "IXCalendar",
-      "view": ".json"
+      "name": "IXCalendar",
+      "type": "control"
     },
     {
       "name": "IXCamera",
-      "view": ".json"
+      "name": "IXCamera",
+      "type": "control"
     },
     {
       "name": "IXCellBasedControl",
-      "view": ".json"
+      "name": "IXCellBasedControl",
+      "type": "control"
     },
     {
       "name": "IXCircle",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXCollection",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXImage",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXKnob",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXLayout",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXMap",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXMapAnnotation",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXMediaPlayer",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXMediaSource",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXMessage",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXScanner",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXSignature",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXSlider",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXSocial",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXSound",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXSoundRecorder",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXSpeech",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXTableView",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXText",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXTextInput",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXTimer",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXToggle",
-      "view": ".json"
+      "type": "control"
     },
     {
       "name": "IXTouchID",
-      "view": ".json"
+      "type": "control"
+    },
+    {
+      "name": "IXAlertAction",
+      "type": "action"
+    },
+    {
+      "name": "IXModifyAction",
+      "type": "action"
+    },
+    {
+      "name": "IXFunctionAction",
+      "type": "action"
+    },
+    {
+      "name": "IXLogAction",
+      "type": "action"
+    },
+    {
+      "name": "IXNavigateAction1",
+      "type": "action"
+    },
+    {
+      "name": "IXNavigateAction",
+      "type": "action"
+    },
+    {
+      "name": "IXRefreshAction",
+      "type": "action"
+    },
+    {
+      "name": "IXLoadAction",
+      "type": "action"
+    },
+    {
+      "name": "IXCreateAction",
+      "type": "action"
+    },
+    {
+      "name": "IXAnimateAction",
+      "type": "action"
+    },
+    {
+      "name": "IXEventAction",
+      "type": "action"
+    },
+    {
+      "name": "IXAnimateAction",
+      "type": "action"
+    },
+    {
+      "name": "viewPhotoSearch",
+      "path": "/tutorials/photoSearch/viewPhotoSearch.json",
+      "type": "tutorial"
+    },
+    {
+      "name": "weather",
+      "type": "tutorial"
     }
   ]
 }

@@ -18,7 +18,7 @@
 /**
  
  ###    Shortcodes are awesome.
-  
+ 
  <a href="#attributes">Attributes</a>,
  <a href="#readonly">Read-Only</a>,
  <a href="#inherits">Inherits</a>,
@@ -52,27 +52,8 @@
  | url_encode      | [[?:url_encode]]                        | URL encode string                                                                |
  | truncate        | [[?:truncate(toIndex)]]                 | Trucates the string to specified index                                           |
  
-
- ##  <a name="readonly">Read Only Attributes</a>
  
->   None
  
- ##  <a name="inherits">Inherits</a>
- 
->  None
- 
- ##  <a name="events">Events</a>
-
->   None
- 
- ##  <a name="functions">Functions</a>
- 
->   None
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-
  
  */
 //
@@ -98,27 +79,29 @@
 //                      FUNCTION NAME                                   USAGE                                   RETURN VALUE/NOTES
 //                                                               (? means any attribute)
 
-IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";           // [[?:capitalize]]                         -> String value Capitalized
-IX_STATIC_CONST_STRING kIXCurrency = @"currency";               // [[?:currency(GBP)]]                      -> String value in currency form (Defaults to USD, can specify ISO 4217 Alpha Code)
-IX_STATIC_CONST_STRING kIXDistance = @"distance";               // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
-IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";  // [[app:session.destroy]]                  -> Removes all session attributes from memory. Returns nil.
-IX_STATIC_CONST_STRING kIXFromBase64 = @"from_base64";          // [[?:from_base64]]                        -> Base64 value to string
-IX_STATIC_CONST_STRING kIXIsEmpty = @"is_empty";                // [[?:is_empty]]                           -> True if the string is empty (aka "")
-IX_STATIC_CONST_STRING kIXIsNil = @"is_nil";                    // [[?:is_nil]]                             -> True if the string is nil
-IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"is_nil_or_empty";    // [[?:is_nil_or_empty]]                    -> True if the string is empty or nil
-IX_STATIC_CONST_STRING kIXIsNotEmpty = @"is_not_empty";         // [[?:is_not_empty]]                       -> True if the string is not empty
-IX_STATIC_CONST_STRING kIXIsNotNil = @"is_not_nil";             // [[?:is_not_nil]]                         -> True if the string is not nil
-IX_STATIC_CONST_STRING kIXLength = @"length";                   // [[?:length]]                             -> Length of the attributes string
-IX_STATIC_CONST_STRING kIXMoment = @"moment";                   // [[?:moment(toDateFormat)]]               -> String as date with the given format (can have 2 params)
-IX_STATIC_CONST_STRING kIXMonogram = @"monogram";               // [[?:monogram]]                           -> String monogram value
-IX_STATIC_CONST_STRING kIXNow = @"now";                         // [[app:now]]                              -> Current date as string (can specify dateFormat)
-IX_STATIC_CONST_STRING kIXRandomNumber = @"random_number";      // [[app:random_number(upBounds)]]          -> Random number generator (can specify lower bounds)
-IX_STATIC_CONST_STRING kIXToBase64 = @"to_base64";              // [[?:to_base64]]                          -> String to Base64 value
-IX_STATIC_CONST_STRING kIXToMD5 = @"to_md5";                    // [[?:to_md5]]                             -> String to MD5 hashed value
-IX_STATIC_CONST_STRING kIXToUppercase = @"to_uppercase";        // [[?:to_uppercase]]                       -> String value in UPPERCASE
-IX_STATIC_CONST_STRING kIXToLowercase = @"to_lowercase";        // [[?:to_lowercase]]                       -> String value in lowercase
-IX_STATIC_CONST_STRING kIXURLEncode = @"url_encode";            // [[?:url_encode]]                         -> URL encode string
-IX_STATIC_CONST_STRING kIXTruncate = @"truncate";               // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
+IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";               // [[?:capitalize]]                         -> String value Capitalized
+IX_STATIC_CONST_STRING kIXCurrency = @"currency";                   // [[?:currency(GBP)]]                      -> String value in currency form (*USD*, or specify ISO 4217)
+IX_STATIC_CONST_STRING kIXDistance = @"distance";                   // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
+IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";      // [[app:session.destroy]]                  -> Removes all session attributes from memory. Returns nil.
+IX_STATIC_CONST_STRING kIXToBase64 = @"base64.encode";              // [[?:to_base64]]                          -> String to Base64 value
+IX_STATIC_CONST_STRING kIXFromBase64 = @"base64.decode";            // [[?:from_base64]]                        -> Base64 value to string
+IX_STATIC_CONST_STRING kIXIsEmpty = @"isEmpty";                     // [[?:is_empty]]                           -> True if the string is empty (aka "")
+IX_STATIC_CONST_STRING kIXIsNil = @"isNil";                         // [[?:is_nil]]                             -> True if the string is nil
+IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"isNilOrEmpty";           // [[?:is_nil_or_empty]]                    -> True if the string is empty or nil
+IX_STATIC_CONST_STRING kIXIsNotEmpty = @"isNotEmpty";               // [[?:is_not_empty]]                       -> True if the string is not empty
+IX_STATIC_CONST_STRING kIXIsNotNil = @"isNotNil";                   // [[?:is_not_nil]]                         -> True if the string is not nil
+IX_STATIC_CONST_STRING kIXLength = @"length";                       // [[?:length]]                             -> Length of the attributes string
+IX_STATIC_CONST_STRING kIXMoment = @"moment";                       // [[?:moment(toDateFormat)]]               -> String as date with the given format (can have 2 params)
+IX_STATIC_CONST_STRING kIXMonogram = @"monogram";                   // [[?:monogram]]                           -> String monogram value
+IX_STATIC_CONST_STRING kIXNow = @"now";                             // [[app:now]]                              -> Current date as string (can specify dateFormat)
+IX_STATIC_CONST_STRING kIXRandomNumber = @"randomNumber";           // [[app:random_number(upBounds)]]          -> Random number generator (can specify lower bounds)
+
+IX_STATIC_CONST_STRING kIXToMD5 = @"md5.encode";                    // [[?:to_md5]]                             -> String to MD5 hashed value
+IX_STATIC_CONST_STRING kIXToUppercase = @"uppercase";               // [[?:to_uppercase]]                       -> String value in UPPERCASE
+IX_STATIC_CONST_STRING kIXToLowercase = @"lowercase";               // [[?:to_lowercase]]                       -> String value in lowercase
+IX_STATIC_CONST_STRING kIXURLEncode = @"url.encode";                // [[?:url_encode]]                         -> URL encode string
+IX_STATIC_CONST_STRING kIXURLDecode = @"url.decode";                // [[?:url_decode]]                         -> URL decode string
+IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
 
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
@@ -304,6 +287,12 @@ static IXBaseShortCodeFunction const kIXURLEncodeFunction = ^NSString*(NSString*
     return [stringToModify stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 };
 
+static IXBaseShortCodeFunction const kIXURLDecodeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    //TODO: URL Decoded;
+    return [stringToModify stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+};
+
+
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] getPropertyValue] intValue]] : stringToModify;
 };
@@ -335,6 +324,7 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXToLowercase:       [kIXToLowerCaseFunction copy],
                                     kIXToUppercase:       [kIXToUppercaseFunction copy],
                                     kIXURLEncode:         [kIXURLEncodeFunction copy],
+                                    kIXURLDecode:         [kIXURLDecodeFunction copy],
                                     kIXTruncate:          [kIXTruncateFunction copy]};
     });
     

@@ -19,13 +19,13 @@
 IX_STATIC_CONST_STRING kIXModel = @"model";
 IX_STATIC_CONST_STRING kIXType = @"type";
 
-IX_STATIC_CONST_STRING kIXScreenWidth = @"screen.width";
-IX_STATIC_CONST_STRING kIXScreenHeight = @"screen.height";
+IX_STATIC_CONST_STRING kIXScreenWidth = @"screen.w";
+IX_STATIC_CONST_STRING kIXScreenHeight = @"screen.h";
 IX_STATIC_CONST_STRING kIXScreenScaleFactor = @"screen.scale";
 
-IX_STATIC_CONST_STRING kIXOSVersion = @"os.version";
-IX_STATIC_CONST_STRING kIXOSVersionInteger = @"os.version.integer";
-IX_STATIC_CONST_STRING kIXOSVersionMajor = @"os.version.major";
+IX_STATIC_CONST_STRING kIXOSVersion = @"osVersion";
+IX_STATIC_CONST_STRING kIXOSVersionInteger = @"osVersion.integer";
+IX_STATIC_CONST_STRING kIXOSVersionMajor = @"osVersion.major";
 
 IX_STATIC_CONST_STRING kIXLocation = @"location"; // Return format: lat:long
 IX_STATIC_CONST_STRING kIXLocationLat = @"location.lat";

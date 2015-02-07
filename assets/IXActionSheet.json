@@ -3,9 +3,7 @@
     "attributes": {
       "_id": "test",
       "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
+      "background.color":"#f8f8f8",
       "status_bar_style": "dark"
     },
     "controls": [
