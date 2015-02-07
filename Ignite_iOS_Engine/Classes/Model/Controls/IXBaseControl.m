@@ -17,94 +17,96 @@
 
 #import "UIImage+ResizeMagick.h"
 
+#warning Clean this up and organize it into Attributes/Returns/Events/Functions
+
 // Attributes
-static NSString* const kIXAlpha = @"alpha";
-static NSString* const kIXBorderWidth = @"border.size";
-static NSString* const kIXBorderColor = @"border.color";
-static NSString* const kIXBorderRadius = @"border.radius";
-static NSString* const kIXBackgroundColor = @"bg.color";
-static NSString* const kIXBackgroundImage = @"bg.image";
-static NSString* const kIXBackgroundImageScale = @"bg.scale";
-static NSString* const kIXCIContextResolution = @"cicontext.resolution";
-static NSString* const kIXEnabled = @"enabled";
-static NSString* const kIXEnableTap = @"enable_tap";
-static NSString* const kIXEnableSwipe = @"enable_swipe";
-static NSString* const kIXEnablePinch = @"enable_pinch";
-static NSString* const kIXEnablePan = @"pan.enabled";
-static NSString* const kIXEnableLongPress = @"longPress.enabled";
-static NSString* const kIXEnableShadow = @"enable_shadow";
-static NSString* const kIXShadowBlur = @"shadow_blur";
-static NSString* const kIXShadowAlpha = @"shadow_alpha";
-static NSString* const kIXShadowColor = @"shadow_color";
-static NSString* const kIXShadowOffsetRight = @"shadow_offset_right";
-static NSString* const kIXShadowOffsetDown = @"shadow_offset_down";
-static NSString* const kIXVisible = @"visible";
+IX_STATIC_CONST_STRING kIXAlpha = @"alpha";
+IX_STATIC_CONST_STRING kIXBorderWidth = @"border.size";
+IX_STATIC_CONST_STRING kIXBorderColor = @"border.color";
+IX_STATIC_CONST_STRING kIXBorderRadius = @"border.radius";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXBackgroundImage = @"bg.image";
+IX_STATIC_CONST_STRING kIXBackgroundImageScale = @"bg.scale";
+IX_STATIC_CONST_STRING kIXCIContextResolution = @"pixelRatio";
+IX_STATIC_CONST_STRING kIXEnabled = @"enabled";
+IX_STATIC_CONST_STRING kIXEnableTap = @"tap.enabled";
+IX_STATIC_CONST_STRING kIXEnableSwipe = @"swipe.enabled";
+IX_STATIC_CONST_STRING kIXEnablePinch = @"pinch.enabled";
+IX_STATIC_CONST_STRING kIXEnablePan = @"pan.enabled";
+IX_STATIC_CONST_STRING kIXEnableLongPress = @"longPress.enabled";
+IX_STATIC_CONST_STRING kIXEnableShadow = @"shadow.enabled";
+IX_STATIC_CONST_STRING kIXShadowBlur = @"shadow.blur";
+IX_STATIC_CONST_STRING kIXShadowAlpha = @"shadow.alpha";
+IX_STATIC_CONST_STRING kIXShadowColor = @"shadow.color";
+IX_STATIC_CONST_STRING kIXShadowOffsetRight = @"shadow.offset.r";
+IX_STATIC_CONST_STRING kIXShadowOffsetDown = @"shadow.offset.b";
+#warning Suspect the following "visible" is not required
+// IX_STATIC_CONST_STRING kIXVisible = @"visible"; // pretty sure this is used in IXControlLayoutInfo only
+IX_STATIC_CONST_STRING kIXPanReset = @"pan.resetOnRelease.enabled";
+IX_STATIC_CONST_STRING kIXPanSnap = @"pan.snapToBounds.enabled";
+IX_STATIC_CONST_STRING kIXTapCount = @"tap.count";
+IX_STATIC_CONST_STRING kIXPinchZoom = @"pinch.direction"; //both (default), horizontal, or vertical
+IX_STATIC_CONST_STRING kIXPinchReset = @"pinch.resetOnRelease.enabled";
+IX_STATIC_CONST_STRING kIXPinchMax = @"pinch.zoomScale.max";
+IX_STATIC_CONST_STRING kIXPinchMin = @"pinch.zoomScale.min";
+IX_STATIC_CONST_STRING kIXPinchElastic = @"pinch.zoomScale.elasticity";
 
-// kIXBackgroundImageScale Types
-static NSString* const kIXBackgroundImageScaleCover = @"cover";
-static NSString* const kIXBackgroundImageScaleStretch = @"stretch";
-static NSString* const kIXBackgroundImageScaleTile = @"tile";
-static NSString* const kIXBackgroundImageScaleContain = @"contain";
+// Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXBackgroundImageScaleCover = @"cover"; // bg.scale
+IX_STATIC_CONST_STRING kIXBackgroundImageScaleStretch = @"stretch"; // bg.scale
+IX_STATIC_CONST_STRING kIXBackgroundImageScaleTile = @"tile"; // bg.scale
+IX_STATIC_CONST_STRING kIXBackgroundImageScaleContain = @"contain"; // bg.scale
+IX_STATIC_CONST_STRING kIXDown = @"down"; // swipe.direction
+IX_STATIC_CONST_STRING kIXUp = @"up"; // swipe.direction
+IX_STATIC_CONST_STRING kIXRight = @"right"; // swipe.direction
+IX_STATIC_CONST_STRING kIXLeft = @"left"; // swipe.direction
+IX_STATIC_CONST_STRING kIXPinchBoth = @"both"; // pinch.direction
+IX_STATIC_CONST_STRING kIXPinchHorizontal = @"horizontal"; // pinch.direction
+IX_STATIC_CONST_STRING kIXPinchVertical = @"vertical"; // pinch.direction
+IX_STATIC_CONST_STRING kIXReverse = @"reverse"; // spin direction
 
-//
-// IXBaseControl gesture events
-//
-static NSString* const kIXTouch = @"touch";
-static NSString* const kIXTouchUp = @"touch_up";
-static NSString* const kIXTouchCancelled = @"touch_cancelled";
-static NSString* const kIXTap = @"tap";
-static NSString* const kIXTapCount = @"tap_count";
-static NSString* const kIXSwipe = @"swipe";
-static NSString* const kIXSwipeDirection = @"swipe_direction";
-static NSString* const kIXDown = @"down";
-static NSString* const kIXUp = @"up";
-static NSString* const kIXRight = @"right";
-static NSString* const kIXLeft = @"left";
-static NSString* const kIXPan = @"pan";
-static NSString* const kIXPanReset = @"pan.reset";
-static NSString* const kIXPanSnap = @"pan.snap_to_bounds";
-static NSString* const kIXLongPress = @"long_press";
-static BOOL kIXDidDetermineOriginalCenter = false;
+// Attribute Defaults
 
-//
-// IXBaseControl pinch events & handlers
-//
-static NSString* const kIXPinchIn = @"pinch.in";
-static NSString* const kIXPinchOut = @"pinch.out";
-static NSString* const kIXPinchZoom = @"pinch.zoom"; //both (default), horizontal, or vertical
-static NSString* const kIXPinchReset = @"pinch.reset";
-static NSString* const kIXPinchMax = @"pinch.max";
-static NSString* const kIXPinchMin = @"pinch.min";
-static NSString* const kIXPinchElastic = @"pinch.elastic";
-static NSString* const kIXPinchHorizontal = @"horizontal";
-static NSString* const kIXPinchVertical = @"vertical";
-static NSString* const kIXPinchBoth = @"both";
-static NSString* const kIXSnapshotSaved = @"snapshot.saved";
-static NSString* const kIXSnapshotFailed = @"snapshot.failed";
+// Returns
+IX_STATIC_CONST_STRING kIXPinchTransformScale = @"transform.scale"; // pinch transform scale
+IX_STATIC_CONST_STRING kIXLocation = @"position"; // what is returned here? comma separated?
+IX_STATIC_CONST_STRING kIXLocationX = @"position.x";
+IX_STATIC_CONST_STRING kIXLocationY = @"position.y";
+IX_STATIC_CONST_STRING kIXActualHeight = @"size.h.computed";
+IX_STATIC_CONST_STRING kIXActualWidth = @"size.w.computed";
 
-// Read-only properties
-static NSString* const kIXLocation = @"location";
-static NSString* const kIXLocationX = @"location.x";
-static NSString* const kIXLocationY = @"location.y";
-static NSString* const kIXActualHeight = @"actual.height";
-static NSString* const kIXActualWidth = @"actual.width";
+// Events
+IX_STATIC_CONST_STRING kIXTouch = @"touch";
+IX_STATIC_CONST_STRING kIXTouchUp = @"touchUp";
+IX_STATIC_CONST_STRING kIXTouchCancelled = @"touchCancelled";
+IX_STATIC_CONST_STRING kIXTap = @"tap";
+IX_STATIC_CONST_STRING kIXSwipe = @"swipe";
+IX_STATIC_CONST_STRING kIXSwipeDirection = @"swipe.direction";
+IX_STATIC_CONST_STRING kIXPan = @"pan";
+IX_STATIC_CONST_STRING kIXLongPress = @"longPress";
+IX_STATIC_CONST_STRING kIXPinchIn = @"pinch.in";
+IX_STATIC_CONST_STRING kIXPinchOut = @"pinch.out";
+IX_STATIC_CONST_STRING kIXSnapshotSaved = @"snapshot.success";
+IX_STATIC_CONST_STRING kIXSnapshotFailed = @"snapshot.error";
 
-// Animations
-static NSString* const kIXSpin = @"spin";
+// Functions
+IX_STATIC_CONST_STRING kIXSpin = @"spin";
+#warning Suspect the following "start_animation" is not required
+IX_STATIC_CONST_STRING kIXStartAnimation = @"start_animation"; // deprecate?
+IX_STATIC_CONST_STRING kIXStopAnimation = @"stopAnimating";
+IX_STATIC_CONST_STRING kIXSnapshot = @"takeSnapshot";
 
-static NSString* const kIXDirection = @"direction";
-static NSString* const kIXReverse = @"reverse";
+// Function Params
+IX_STATIC_CONST_STRING kIXDirection = @"direction"; // key value for "spin" animation param
+IX_STATIC_CONST_STRING kIXSaveToLocation = @"saveToLocation";
+
 
 // Animation Functions
-static NSString* const kIXStartAnimation = @"start_animation";
-static NSString* const kIXStopAnimation = @"stop_animation";
-static NSString* const kIXSnapshot = @"snapshot";
 
 // kIXSnapshot Parameters
-static NSString* const kIXSaveToLocation = @"saveToLocation";
 
 // Functions & Helpers
-static NSString* const kIXToggle = @"dev_toggle";
+IX_STATIC_CONST_STRING kIXToggle = @"dev_toggle";
 
 @interface IXBaseControl ()
 
@@ -116,6 +118,8 @@ static NSString* const kIXToggle = @"dev_toggle";
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
 @implementation IXBaseControl
+
+static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)dealloc
 {
@@ -233,10 +237,12 @@ static NSString* const kIXToggle = @"dev_toggle";
     NSString* backgroundImage = [[self propertyContainer] getStringPropertyValue:kIXBackgroundImage defaultValue:nil];
     if( backgroundImage )
     {
+
         NSString* backgroundImageScale = [[self propertyContainer] getStringPropertyValue:kIXBackgroundImageScale
                                                                              defaultValue:kIXBackgroundImageScaleCover];
         
         static NSDictionary *sIXBackgroundImageScaleFormatDictionary = nil;
+# warning Not sure a dispatch_once is going to work properly here? Means you can never change it
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             sIXBackgroundImageScaleFormatDictionary = @{kIXBackgroundImageScaleCover: @"%.0fx%.0f^",
@@ -335,48 +341,33 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 -(void)applyGestureRecognizerSettings
 {
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableTap defaultValue:NO] )
-    {
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableTap defaultValue:NO] ) {
         [[self contentView] beginListeningForTapGestures];
-    }
-    else
-    {
+    } else {
         [[self contentView] stopListeningForTapGestures];
     }
     
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableSwipe defaultValue:NO] )
-    {
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableSwipe defaultValue:NO] ) {
         [[self contentView] beginListeningForSwipeGestures];
-    }
-    else
-    {
+    } else {
         [[self contentView] stopListeningForSwipeGestures];
     }
     
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePinch defaultValue:NO] )
-    {
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePinch defaultValue:NO] ){
         [[self contentView] beginListeningForPinchGestures];
-    }
-    else
-    {
+    } else {
         [[self contentView] stopListeningForPinchGestures];
     }
     
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePan defaultValue:NO] )
-    {
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePan defaultValue:NO] ) {
         [[self contentView] beginListeningForPanGestures];
-    }
-    else
-    {
+    } else {
         [[self contentView] stopListeningForPanGestures];
     }
 
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableLongPress defaultValue:NO] )
-    {
+    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableLongPress defaultValue:NO] ) {
         [[self contentView] beginListeningForLongPress];
-    }
-    else
-    {
+    } else {
         [[self contentView] stopListeningForLongPress];
     }
 }
@@ -455,7 +446,7 @@ static NSString* const kIXToggle = @"dev_toggle";
     if( zoomDirection != nil )
     {
         
-        BOOL resetSize = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
+        BOOL shouldResetPinchZoomOnTouchUp = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
         const CGFloat kMinScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMin defaultValue:1.0];
         const CGFloat kMaxScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMax defaultValue:2.0];
         const CGFloat kElastic = [self.propertyContainer getFloatPropertyValue:kIXPinchElastic defaultValue:0.5];
@@ -471,7 +462,7 @@ static NSString* const kIXToggle = @"dev_toggle";
            pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
         {
             CGAffineTransform transform = CGAffineTransformIdentity;
-            CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:@"transform.scale"] floatValue];
+            CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:kIXPinchTransformScale] floatValue];
             CGFloat newScale = 1 - (previousScale - pinchGestureRecognizer.scale);
             newScale = MIN(newScale, (kMaxScale + kElastic) / currentScale);
             newScale = MAX(newScale, (kMinScale - kElastic) / currentScale);
@@ -495,10 +486,10 @@ static NSString* const kIXToggle = @"dev_toggle";
         if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded ||
            pinchGestureRecognizer.state == UIGestureRecognizerStateCancelled)
         {
-            if (resetSize)
+            if (shouldResetPinchZoomOnTouchUp)
             {
                 CGAffineTransform resetTransform;
-                CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:@"transform.scale"] floatValue];
+                CGFloat currentScale = [[pinchGestureRecognizer.view.layer valueForKeyPath:kIXPinchTransformScale] floatValue];
                 CGFloat resetWidth = currentScale;
                 CGFloat resetHeight = currentScale;
                 if (currentScale < kMinScale)
@@ -550,8 +541,8 @@ static NSString* const kIXToggle = @"dev_toggle";
 
 -(void)controlViewPanGestureRecognized:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-    BOOL resetPosition = [self.propertyContainer getBoolPropertyValue:kIXPanReset defaultValue:NO];
-    BOOL snapToBounds = [self.propertyContainer getBoolPropertyValue:kIXPanSnap defaultValue:YES];
+    BOOL shouldResetPanPosition = [self.propertyContainer getBoolPropertyValue:kIXPanReset defaultValue:NO];
+    BOOL panShouldSnapToBounds = [self.propertyContainer getBoolPropertyValue:kIXPanSnap defaultValue:YES];
     static CGPoint originalCenter;
     UIView *draggedView = panGestureRecognizer.view;
     CGPoint offset = [panGestureRecognizer translationInView:draggedView.superview];
@@ -568,14 +559,14 @@ static NSString* const kIXToggle = @"dev_toggle";
     if ((panGestureRecognizer.state == UIGestureRecognizerStateEnded ||
          panGestureRecognizer.state == UIGestureRecognizerStateCancelled))
     {
-        if (resetPosition)
+        if (shouldResetPanPosition)
         {
             [UIView animateWithDuration:0.2
                              animations:^{
                                  draggedView.center = originalCenter;
                              }];
         }
-        else if (snapToBounds)
+        else if (panShouldSnapToBounds)
         {
             [UIView animateWithDuration:0.2
                              animations:^{
