@@ -14,4 +14,6 @@
 
 @property (strong, nonatomic) IXWindow *ixWindow;
 
+- (void)registerForPushNotifications;
+
 @end

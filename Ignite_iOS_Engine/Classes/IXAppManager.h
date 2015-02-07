@@ -44,6 +44,10 @@ typedef enum {
 @property (nonatomic,strong,readonly) Reachability *reachabilty;
 @property (nonatomic,strong,readonly) ApigeeClient *apigeeClient;
 
+@property (nonatomic,assign,readonly) BOOL accessToPushGranted;
+@property (nonatomic,assign,readonly) BOOL accessToMicrophoneGranted;
+@property (nonatomic,assign,readonly) BOOL accessToLocationGranted;
+
 /**
  *  The singleton application manager which manages the entire IX application
  *

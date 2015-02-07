@@ -22,22 +22,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Push notification support for iOS 8
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationCategory* category = [self registerActions];
-        NSMutableSet* categories = [NSMutableSet set];
-        [categories addObject:category];
-        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:categories];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-    } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-    }
-#else
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-#endif
-    
-    
     [self setIxWindow:[[IXWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
     [[self ixWindow] setRootViewController:[[IXAppManager sharedAppManager] drawerController]];
     
@@ -52,6 +36,26 @@
     }
     
     return YES;
+}
+
+- (void)registerForPushNotifications
+{
+    UIApplication* application = [UIApplication sharedApplication];
+
+    // Push notification support for iOS 8
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationCategory* category = [self registerActions];
+        NSMutableSet* categories = [NSMutableSet set];
+        [categories addObject:category];
+        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:categories];
+        [application registerUserNotificationSettings:notificationSettings];
+    } else {
+        [application registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    }
+#else
+    [application registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+#endif
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken

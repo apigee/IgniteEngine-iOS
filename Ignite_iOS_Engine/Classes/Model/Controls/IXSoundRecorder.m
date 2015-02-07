@@ -53,7 +53,7 @@ static NSString* const kIXStopRecording = @"stop_recording";
 
 @interface IXSoundRecorder () <AVAudioRecorderDelegate>
 
-@property (nonatomic,assign) BOOL recordPermissionGranted;
+@property (nonatomic,assign,readonly) BOOL recordPermissionGranted;
 @property (nonatomic,strong) NSString* lastErrorMessage;
 
 @property (nonatomic,strong) AVAudioRecorder* audioRecorder;
@@ -235,14 +235,11 @@ static NSString* const kIXStopRecording = @"stop_recording";
 -(void)buildView
 {
     // IXSoundRecorder does not have a view.
-    
-    AVAudioSession* audioSession = [AVAudioSession sharedInstance];
-    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    [audioSession setActive:YES error:nil];
-    [audioSession requestRecordPermission:^(BOOL granted) {
-        [self setRecordPermissionGranted:granted];
-    }];
+}
+
+-(BOOL)recordPermissionGranted
+{
+    return [[IXAppManager sharedAppManager] accessToMicrophoneGranted];
 }
 
 -(void)applySettings
