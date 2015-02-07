@@ -1,0 +1,85 @@
+{
+  "view": {
+    "controls": [
+      {
+        "_id": "layoutSearch",
+        "_type": "Layout",
+        "attributes": {
+          "width": "100%",
+          "height": 38,
+          "layout_type": "absolute",
+          "vertical_alignment": "middle",
+          "horizontal_alignment": "center",
+          "layout_flow": "horizontal"
+        },
+        "controls": [
+          {
+            "_id": "inputSearch",
+            "_type": "TextInput",
+            "actions": [
+              {
+                "_type": "Modify",
+                "on": "text_changed",
+                "enabled": true,
+                "attributes": {
+                  "_target": "session"
+                },
+                "set": {
+                  "query": "[[$self.text]]"
+                }
+              },
+              {
+                "_type": "Refresh",
+                "on": "return_key_pressed,",
+                "enabled": true,
+                "attributes": {
+                  "_target": "dataInstagram"
+                }
+              }
+            ],
+            "attributes": {
+              "margin.left": 4,
+              "padding.left": 8,
+              "width": 257,
+              "height": "100%",
+              "background.color": "#ffffff",
+              "font": "HelveticaNeue-Light:18",
+              "keyboard.appearance": "dark",
+              "clears_on_begin_editing": true,
+              "text.placeholder": "Search Instagram for.."
+            }
+          },
+          {
+            "_id": "imageSearch",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Refresh",
+                "on": "touch_up",
+                "enabled": true,
+                "attributes": {
+                  "_target": "dataInstagram",
+                  "repeat_delay": 0.34
+                }
+              },
+              {
+                "_type": "Function",
+                "on": "touch_up",
+                "enabled": true,
+                "attributes": {
+                  "_target": "inputSearch",
+                  "function_name": "keyboard_hide"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 55,
+              "height": 38,
+              "images.default": "./images/btn_search_55x38.png"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

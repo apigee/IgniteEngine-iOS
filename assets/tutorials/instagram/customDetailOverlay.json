@@ -1,0 +1,60 @@
+{
+  "view": {
+    "attributes": {
+      "layout_type": "float",
+      "width": "100%",
+      "height": "100%",
+      "background.color": "#000000"
+    },
+    "actions": [
+      {
+        "_type": "Modify",
+        "on": "touch_up",
+        "attributes": {
+          "_target": "$custom",
+          "duration": 0.25
+        },
+        "set": {
+          "alpha": 0
+        }
+      },
+      {
+        "_type": "Modify",
+        "on": "touch_up",
+        "attributes": {
+          "_target": "photoDetailOverlay",
+          "delay": 0.25
+        },
+        "set": {
+          "visible": false
+        }
+      }
+    ],
+    "controls": [
+      {
+        "_id": "layoutPhotoDetail",
+        "_type": "Layout",
+        "actions": [],
+        "attributes": {
+          "width": 308,
+          "height": 308,
+          "layout_type": "absolute",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle"
+        },
+        "controls": [
+          {
+            "_id": "imageStandardResolution",
+            "_type": "Image",
+            "actions": [],
+            "attributes": {
+              "width": 308,
+              "height": 308,
+              "images.default": "[[session.photoUrl]]"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

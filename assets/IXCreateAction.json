@@ -1,0 +1,77 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#f8f8f8"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXCreateAction"
+        }
+      },
+      {
+        "_id": "layoutButtons",
+        "_type": "Layout",
+        "attributes": {
+          "layout_type": "absolute",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle"
+        },
+        "controls": [
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Create",
+                "on": "touch_up",
+                "attributes": {
+                  "control_location": "/custom/IXCreateActionTest.json",
+                  "parent_id":"layoutParent"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 280,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.top": 15,
+              "text": "create something"
+            }
+          }
+        ]
+      },
+      {
+        "_id": "layoutParent",
+        "_type": "Layout",
+        "attributes": {
+          "height":50,
+          "width":"100%",
+          "layout_type": "absolute",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "bottom",
+          "background.color":"#ffffff"
+        },
+        "controls": [
+          
+        ]
+      }
+    ],
+    "data_providers": []
+  }
+}

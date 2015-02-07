@@ -1,0 +1,113 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#ffffff"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXAlertAction"
+        }
+      },
+      {
+        "_id": "layoutButtons",
+        "_type": "Layout",
+        "attributes": {
+          "layout_type": "absolute",
+          "horizontal_alignment": "center",
+          "vertical_alignment": "middle"
+        },
+        "controls": [
+          {
+            "_id": "button",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Alert",
+                "on": "touch_up",
+                "enabled": true,
+                "attributes": {
+                  "title": "touch_up",
+                  "message": "You touched the button!"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 150,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.top": 15,
+              "text": "simple alert."
+            }
+          },
+          {
+            "_id": "button",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Alert",
+                "on": "touch_up",
+                "enabled": true,
+                "actions":[
+                  {
+                    "_type": "Alert",
+                    "on": "button_0_pressed",
+                    "enabled": true,
+                    "actions":[
+                    ],
+                    "attributes": {
+                      "title": "touch_up",
+                      "message": "You touched button0!"
+                    }
+                  },
+                  {
+                    "_type": "Alert",
+                    "on": "button_1_pressed",
+                    "enabled": true,
+                    "actions":[
+                    ],
+                    "attributes": {
+                      "title": "touch_up",
+                      "message": "You touched button1!"
+                    }
+                  }
+                ],
+                "attributes": {
+                  "title": "touch_up",
+                  "message": "You touched the button!",
+                  "button.titles": "button0,button1"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 150,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.top": 15,
+              "text": "fancy alert."
+            }
+          }
+        ]
+      }
+    ],
+    "data_providers": []
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "photoDetail",
+      "status_bar_style": "light",
+      "background.color": "#000000"
+    },
+    "actions": [],
+    "controls": [
+      {
+        "_id": "layoutMain",
+        "_type": "Layout",
+        "attributes": {
+          "width": "100%",
+          "height": "100%",
+          "padding.top": 76,
+          "layout_type": "absolute"
+        },
+        "controls": [
+        {
+            "_id": "imageBg",
+            "_type": "Image",
+            "attributes": {
+              "width": "100%",
+              "height": "100%",
+              "images.default": "/images/bg_2x568.png",
+              "layout_type": "absolute"
+            }
+          },
+          {
+            "_id": "customHeader",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "customSearchHeader.json",
+              "width": "100%",
+              "height": 70,
+              "title": "Photo",
+              "buttonRight": "twitter",
+              "buttonLeft": "back",
+              "background.color": "#000000",
+              "layout_type": "float"
+            }
+          },
+          {
+            "_id": "photoDetailImage",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "customDetailPhoto.json",
+              "width": 308,
+              "title": "Image",
+              "horizontal_alignment": "center"
+            }
+          },
+          {
+            "_id": "photoDetailOverlay",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "photoDetailOverlay.json",
+              "visible": false,
+              "alpha": 0,
+              "width": "100%",
+              "height": "100%",
+              "layout_type": "float"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -9,9 +9,15 @@
 #import "IXNetworkShortCode.h"
 
 #import "IXAppManager.h"
+#import "IXConstants.h"
 #import "IXProperty.h"
 #import "Reachability.h"
 #import "NSString+IXAdditions.h"
+
+// Reachability
+IX_STATIC_CONST_STRING kIXReachable = @"isReachable";
+IX_STATIC_CONST_STRING kIXReachableWifi = @"isReachable.wifi";
+IX_STATIC_CONST_STRING kIXReachableWwan = @"isReachable.wwan";
 
 @implementation IXNetworkShortCode
 
@@ -27,15 +33,15 @@
     }
     
     Reachability* reachability = [[IXAppManager sharedAppManager] reachabilty];
-    if( [propertyName isEqualToString:@"reachable"] )
+    if( [propertyName isEqualToString:kIXReachable] )
     {
         returnValue = [NSString ix_stringFromBOOL:[reachability isReachable]];
     }
-    else if( [propertyName isEqualToString:@"reachable.wifi"] )
+    else if( [propertyName isEqualToString:kIXReachableWifi] )
     {
         returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWiFi]];
     }
-    else if( [propertyName isEqualToString:@"reachable.wwan"] )
+    else if( [propertyName isEqualToString:kIXReachableWwan] )
     {
         returnValue = [NSString ix_stringFromBOOL:[reachability isReachableViaWWAN]];
     }

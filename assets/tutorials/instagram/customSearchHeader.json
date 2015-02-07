@@ -1,0 +1,105 @@
+{
+  "view": {
+    "controls": [
+      {
+        "_id": "layoutHeader",
+        "_type": "Layout",
+        "attributes": {
+          "width": "100%",
+          "height": 50,
+          "margin.top": 20,
+          "layout_type": "absolute"
+        },
+        "controls": [
+          {
+            "_id": "title",
+            "_type": "Text",
+            "attributes": {
+              "width": "100%",
+              "height": 50,
+              "margin.top": 20,
+              "text.color": "ffffff",
+              "layout_type": "float",
+              "horizontal_alignment": "center",
+              "vertical_alignment": "bottom",
+              "text.alignment": "center",
+              "font": "HelveticaNeue-Thin:26",
+              "text": "[[$custom.title]]"
+            }
+          },
+          {
+            "_id": "imageLeft",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "nav_stack_type": "pop"
+                }
+              }
+            ],
+            "attributes": {
+              "visible": [
+                "if :: [[$custom.buttonLeft:length]] < 1 :: false"
+              ],
+              "width": 44,
+              "height": 44,
+              "margin.top": 20,
+              "images.default": "./images/btn_back_44x44.png",
+              "layout_type": "float",
+              "backround.color": "ff00ff",
+              "vertical_alignment": "middle",
+              "horizontal_alignment": "left"
+            }
+          },
+          {
+            "_id": "imageRight",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touch_up",
+                "attributes": {
+                  "_target": "socialTwitter",
+                  "function_name": "present_share_controller"
+                }
+              }
+            ],
+            "attributes": {
+              "visible": [
+                "if :: '[[$custom.buttonRight]]' != 'twitter' :: false"
+              ],
+              "width": 44,
+              "height": 44,
+              "margin.top": 20,
+              "images.default": "./images/btn_tweet_44x44.png",
+              "layout_type": "float",
+              "backround.color": "ff00ff",
+              "vertical_alignment": "middle",
+              "horizontal_alignment": "right"
+            }
+          }
+        ]
+      },
+      {
+        "_id": "socialTwitter",
+        "_type": "Social",
+        "actions": [
+          {
+            "on": "share_done",
+            "_type": "Alert",
+            "attributes": {
+              "title": "share_done"
+            }
+          }
+        ],
+        "attributes": {
+          "share.platform": "twitter",
+          "share.text": "[[session.photoCaption]] by @[[session.photoPhotographer]] on @instagram",
+          "share.image": "[[session.photoUrl]]"
+        }
+      }
+    ]
+  }
+}

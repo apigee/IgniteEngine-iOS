@@ -1,0 +1,304 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "background": {
+        "color": "#f8f8f8"
+      },
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "custom/header.json",
+          "layout_type": "float",
+          "height": 50,
+          "width": "100%",
+          "margin.top": 20,
+          "title": "IXNavigateAction"
+        }
+      },
+      {
+        "_id": "textInputTest",
+        "_type": "TextInput",
+        "actions": [
+          {
+            "_type": "Modify",
+            "on": "text_changed,got_focus",
+            "attributes": {
+              "_target": "session"
+            },
+            "set": {
+              "text_to_speak": "[[$self.text]]"
+            }
+          }
+        ],
+        "attributes": {
+          "font": "HelveticaNeue-Light:22",
+          "is_multiline": false,
+          "width": 150,
+          "height": 50,
+          "text.alignment": "center",
+          "horizontal_alignment": "center",
+          "text.color": "#6c6c6c",
+          "border.width": 1,
+          "border.color": "cdcdcd",
+          "initial_text":0.75,
+          "text.placeholder": "Duration"
+        }
+      },
+      {
+        "_id": "layoutButtonsLeft",
+        "_type": "Layout",
+        "attributes": {
+          "layout_type": "absolute",
+          "width": "50%",
+          "horizontal_alignment": "left",
+          "vertical_alignment": "middle"
+        },
+        "controls": [
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "flip_from_left",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.left": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "flip_from_left"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "flip_from_right",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.left": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "flip_from_right"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "flip_from_top",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.left": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "flip_from_top"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "flip_from_bottom",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.left": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "flip_from_bottom"
+            }
+          }
+        ]
+      },
+      {
+        "_id": "layoutButtonsRight",
+        "_type": "Layout",
+        "attributes": {
+          "layout_type": "absolute",
+          "width": "50%",
+          "horizontal_alignment": "right",
+          "vertical_alignment": "middle"
+        },
+        "controls": [
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "curl_up",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.right": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "curl_up"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "curl_down",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.right": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "curl_down"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "cross_dissolve",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.right": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "cross_dissolve"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touch_up",
+                "attributes": {
+                  "to": "IXNavigateAction1.json",
+                  "nav_stack_type": "push",
+                  "nav_animation_type": "move_in",
+                  "nav_animation_duration": "[[textInputTest.text]]"
+                }
+              }
+            ],
+            "attributes": {
+              "width": 137,
+              "height": 50,
+              "text.color": "6c6c6c",
+              "background.color": "cdcdcd",
+              "touch.text.color": "6c6c6c50",
+              "touch.background.color": "cdcdcd",
+              "margin.right": 15,
+              "margin.top": 15,
+              "font": "HelveticaNeue:15",
+              "text": "move_in"
+            }
+          }
+        ]
+      }
+    ],
+    "data_providers": []
+  }
+}
