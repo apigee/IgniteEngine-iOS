@@ -6,22 +6,21 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Toggle switch to toggle on and to toggle off.
-*/
-
 #import "IXToggle.h"
 
 #import "NSString+IXAdditions.h"
+
+// IXToggle Functions
+IX_STATIC_CONST_STRING kIXToggle = @"toggle";
+IX_STATIC_CONST_STRING kIXToggleOn = @"toggleOn";
+IX_STATIC_CONST_STRING kIXToggleOff = @"toggleOff";
+
+// IXToggle Attributes
+IX_STATIC_CONST_STRING kIDefaultOn = @"defaultOn.enabled"; //default: false
+
+// IXToggle Returns
+IX_STATIC_CONST_STRING kIIsOn = @"isOn";
+
 
 @interface  IXToggle ()
 
@@ -32,134 +31,6 @@
 
 @implementation IXToggle
 
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param initally_selected Should the toggle be selected by default? *(default: FALSE)*<br>*bool*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param is_on Is the toggle on?<br>*(bool)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
-
--(void)Events
-{
-}
-
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
- @param toggle Toggle the toggle
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "on": "touch_up",
-  "_type": "Function",
-  "attributes": {
-    "_target": "toggleText"
-  }
-}
- 
- </pre>
- 
- @param toggle_on Turn the toggle on
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "on": "touch_up",
-  "_type": "Function",
-  "attributes": {
-    "_target": "toggleText",
-    "function_name":"toggle_on"
-  }
-}
- 
- </pre>
- 
- @param toggle_off Turn the toggle off
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "on": "touch_up",
-  "_type": "Function",
-  "attributes": {
-    "_target": "toggleText",
-    "function_name":"toggle_off"
-  }
-}
- 
- </pre>
- 
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "toggleTest",
-  "_type": "Toggle",
-  "attributes": {
-    "layout_type": "absolute",
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
-}
- 
- </pre>
- 
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {
@@ -185,7 +56,7 @@
     if( ![self hasAppliedSettings] )
     {
         [self setHasAppliedSettings:YES];
-        [[self toggleSwitch] setOn:[[self propertyContainer] getBoolPropertyValue:@"initally_selected" defaultValue:NO] animated:NO];
+        [[self toggleSwitch] setOn:[[self propertyContainer] getBoolPropertyValue:kIDefaultOn defaultValue:NO] animated:NO];
     }
 }
 
@@ -193,46 +64,46 @@
 {
     if( [[self toggleSwitch] isOn] )
     {
-        [[self actionContainer] executeActionsForEventNamed:@"toggle"];
-        [[self actionContainer] executeActionsForEventNamed:@"toggle_on"];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggle];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggleOn];
     }
     else
     {        
-        [[self actionContainer] executeActionsForEventNamed:@"toggle"];
-        [[self actionContainer] executeActionsForEventNamed:@"toggle_off"];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggle];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggleOff];
     }
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-    if( [functionName isEqualToString:@"toggle"] )
+    if( [functionName isEqualToString:kIXToggle] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
             animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:![[self toggleSwitch] isOn] animated:animated];
-        [[self actionContainer] executeActionsForEventNamed:@"toggle"];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggle];
 
     }
-    else if( [functionName isEqualToString:@"toggle_on"] )
+    else if( [functionName isEqualToString:kIXToggleOn] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
             animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:YES animated:animated];
-        [[self actionContainer] executeActionsForEventNamed:@"toggle_on"];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggleOn];
 
     }
-    else if( [functionName isEqualToString:@"toggle_off"] )
+    else if( [functionName isEqualToString:kIXToggleOff] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
             animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:NO animated:animated];
-        [[self actionContainer] executeActionsForEventNamed:@"toggle_off"];
+        [[self actionContainer] executeActionsForEventNamed:kIXToggleOff];
         
     }
     else
@@ -244,7 +115,7 @@
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = nil;
-    if( [propertyName isEqualToString:@"is_on"] )
+    if( [propertyName isEqualToString:kIIsOn] )
     {
         returnValue = [NSString ix_stringFromBOOL:[[self toggleSwitch] isOn]];
     }

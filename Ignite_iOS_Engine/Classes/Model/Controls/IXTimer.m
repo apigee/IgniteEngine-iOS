@@ -6,30 +6,16 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Native iOS NSTimer implementation
-*/
-
 #import "IXTimer.h"
-
 #import "IXWeakTimerTarget.h"
 
 // IXTimer Properties
 static NSString* const kIXEnabled = @"enabled"; // Default YES
-static NSString* const kIXRepeats = @"repeats"; // Default NO
-static NSString* const kIXTimeInterval = @"time_interval"; // Default 0.5f. Note: Won't fire if not greater than 0.0f.
+static NSString* const kIXRepeats = @"repeat.enabled"; // Default NO
+static NSString* const kIXTimeInterval = @"repeatInterval"; // Default 0.5f. Note: Won't fire if not greater than 0.0f.
 
 // IXTimer Events
-static NSString* const kIXTimerFired = @"timer_fired";
+static NSString* const kIXTimerFired = @"timerFired";
 
 // IXTimer Functions
 static NSString* const kIXStart = @"start";
@@ -47,94 +33,6 @@ static NSString* const kIXStop = @"stop";
 @end
 
 @implementation IXTimer
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param enabled Enable control *(default: TRUE)*<br>*(bool)*
-    @param repeats Repeat the timer? *(default: FALSE)*<br>*(bool)*
-    @param time_interval Repeat frequency<br>*(float)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param timer_fired Event that occurs each time the timer fires
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param start 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-    @param stop 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
