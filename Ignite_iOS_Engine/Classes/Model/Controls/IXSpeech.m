@@ -6,19 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Converts Text-to-Speech; **Note:** *Device only, does not work in simulator.*
-*/
-
 #import "IXSpeech.h"
 
 @import AVFoundation.AVSpeechSynthesis;
@@ -30,12 +17,12 @@ IX_STATIC_CONST_STRING kIXContinue = @"continue"; // Continues if paused.
 IX_STATIC_CONST_STRING kIXStop = @"stop"; // Stops and clears the utterance queue.
 
 // kIXStart Function Attributes
-IX_STATIC_CONST_STRING kIXUtteranceSentences = @"utterance.sentences"; // Array of sentences.
-IX_STATIC_CONST_STRING kIXUtteranceRate = @"utterance.rate"; // Between 0.0 and 1.0.  Default is 0.5
-IX_STATIC_CONST_STRING kIXUtterancePitch = @"utterance.pitch"; // Between 0.5 and 2.0. Default is 1.0
-IX_STATIC_CONST_STRING kIXUtteranceVolume = @"utterance.volume"; // Between 0.0 and 1.0. Default is 1.0
-IX_STATIC_CONST_STRING kIXUtteranceDelayStart = @"utterance.delay.start"; // Default is 0.0
-IX_STATIC_CONST_STRING kIXUtteranceDelayEnd = @"utterance.delay.start"; // Default is 0.0
+IX_STATIC_CONST_STRING kIXUtteranceSentences = @"sentences"; // Array of sentences.
+IX_STATIC_CONST_STRING kIXUtteranceRate = @"rate"; // Between 0.0 and 1.0.  Default is 0.5
+IX_STATIC_CONST_STRING kIXUtterancePitch = @"pitch"; // Between 0.5 and 2.0. Default is 1.0
+IX_STATIC_CONST_STRING kIXUtteranceVolume = @"volume"; // Between 0.0 and 1.0. Default is 1.0
+IX_STATIC_CONST_STRING kIXUtteranceDelayStart = @"delayStart"; // Default is 0.0
+IX_STATIC_CONST_STRING kIXUtteranceDelayEnd = @"delayEnd"; // Default is 0.0
 
 // kIXPause and kIXStop Function Attributes
 IX_STATIC_CONST_STRING kIXBoundary = @"boundary"; // Default is kIXBoundaryImmediate.
@@ -49,92 +36,6 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 @end
 
 @implementation IXSpeech
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
-
--(void)Events
-{
-}
-
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param queue_utterance 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param pause 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param continue 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param stop 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {
