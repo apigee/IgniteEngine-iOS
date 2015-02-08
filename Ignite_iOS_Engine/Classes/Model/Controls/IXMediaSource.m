@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/** Allows you to select media from the device camera or library.
-*/
-
 #import "IXMediaSource.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
@@ -20,8 +17,28 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
-// IXMediaSource Read-Only Properties
-static NSString* const kIXSelectedMedia = @"selected_media";
+// IXMediaSource Attributes
+IX_STATIC_CONST_STRING kIXCameraSource = @"cameraSource";
+IX_STATIC_CONST_STRING kIXCameraControlsEnabled = @"cameraControls.enabled";
+IX_STATIC_CONST_STRING kIXSource = @"source";
+
+// IXMediaSource Attribute Options
+IX_STATIC_CONST_STRING kIXSourceCamera = @"camera";
+IX_STATIC_CONST_STRING kIXSourceLibrary = @"library";
+IX_STATIC_CONST_STRING kIXCameraFront = @"front";
+IX_STATIC_CONST_STRING kIXCameraRear = @"rear";
+
+// IXMediaSource Events
+IX_STATIC_CONST_STRING kIXDidLoadMedia = @"didLoadMedia";
+IX_STATIC_CONST_STRING kIXError = @"error";
+IX_STATIC_CONST_STRING kIXSuccess = @"success";
+
+// IXMediaSource Functions
+IX_STATIC_CONST_STRING kIXDismiss = @"dismiss";
+IX_STATIC_CONST_STRING kIXPresent = @"present";
+
+// IXMediaSource Returns
+IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
 
 @interface  IXMediaSource() <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
@@ -36,137 +53,6 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 @end
 
 @implementation IXMediaSource
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param urce Style of controls to use<br>*cameralibrary*
-    @param camera Color of the player UI<br>*frontrear*
-    @param show_camera_controls Height of the player UI<br>*(float)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param selected_media The value the knob has been set to<br>*(string)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param did_load_media Fires when the media loads successfully
-    @param failed_load_media Fires when the media fails to load
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-   
- @param present_picker Present the media picker view controller.
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "mediaSourceTest",
-    "function_name": "present_picker"
-  }
-}
- 
- </pre>
- 
- @param dismiss_picker Dismiss the media picker view controller.
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "mediaSourceTest",
-    "function_name": "dismiss_picker"
-  }
-}
- 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "mediaSourceTest",
-  "_type": "MediaSource",
-  "actions": [
-    {
-      "on": "did_load_media",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_load_media: [[$self.selected_media]]"
-      }
-    }
-  ],
-  "attributes": {
-    "source": "library"
-  }
-}
- 
- </pre>
-
-
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
-
 
 -(void)dealloc
 {
@@ -184,9 +70,9 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 {
     [super applySettings];
     
-    [self setSourceTypeString:[[self propertyContainer] getStringPropertyValue:@"source" defaultValue:@"camera"]];
-    [self setCameraDeviceString:[[self propertyContainer] getStringPropertyValue:@"camera" defaultValue:@"rear"]];
-    [self setShowCameraControls:[[self propertyContainer] getBoolPropertyValue:@"show_camera_controls" defaultValue:YES]];
+    [self setSourceTypeString:[[self propertyContainer] getStringPropertyValue:kIXSource defaultValue:kIXSourceCamera]];
+    [self setCameraDeviceString:[[self propertyContainer] getStringPropertyValue:kIXSource defaultValue:kIXCameraRear]];
+    [self setShowCameraControls:[[self propertyContainer] getBoolPropertyValue:kIXCameraControlsEnabled defaultValue:YES]];
     
     [self setPickerSourceType:[UIImagePickerController stringToSourceType:[self sourceTypeString]]];
     [self setPickerDevice:[UIImagePickerController stringToCameraDevice:[self cameraDeviceString]]];
@@ -194,7 +80,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-    if( [functionName isEqualToString:@"present_picker"] )
+    if( [functionName isEqualToString:kIXPresent] )
     {
         if( [[self imagePickerController] presentingViewController] == nil )
         {
@@ -208,7 +94,7 @@ static NSString* const kIXSelectedMedia = @"selected_media";
             [self presentPickerController:animated];
         }
     }
-    else if( [functionName isEqualToString:@"dismiss_picker"] )
+    else if( [functionName isEqualToString:kIXDismiss] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
@@ -286,11 +172,11 @@ static NSString* const kIXSelectedMedia = @"selected_media";
     
     if(info != nil)
     {
-        [self.actionContainer executeActionsForEventNamed:@"did_load_media"];
+        [self.actionContainer executeActionsForEventNamed:kIXSuccess];
     }
     else
     {
-        [self.actionContainer executeActionsForEventNamed:@"failed_load_media"];
+        [self.actionContainer executeActionsForEventNamed:kIXError];
     }
 }
 
