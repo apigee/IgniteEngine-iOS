@@ -11,7 +11,7 @@
 
 @class IXClickableScrollView;
 
-@interface IXLayout : IXBaseControl
+@interface IXView : IXBaseControl
 
 @property (nonatomic,assign,getter = isTopLevelViewControllerLayout) BOOL topLevelViewControllerLayout;
 

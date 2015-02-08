@@ -13,7 +13,7 @@
 #import "IXNavigationViewController.h"
 #import "IXPropertyContainer.h"
 #import "IXActionContainer.h"
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXTextInput.h"
 #import "IXClickableScrollView.h"
 #import "IXPathHandler.h"
@@ -26,7 +26,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 @interface IXViewController ()
 
 @property (nonatomic,strong) IXSandbox* sandbox;
-@property (nonatomic,strong) IXLayout* containerControl;
+@property (nonatomic,strong) IXView* containerControl;
 @property (nonatomic,assign) BOOL hasAppeared;
 @property (nonatomic,copy) NSString* statusBarPreferredStyleString;
 
@@ -83,7 +83,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
         _sandbox = [[IXSandbox alloc] initWithBasePath:nil rootPath:jsonRootPath];
         [_sandbox setViewController:self];
         
-        _containerControl = [[IXLayout alloc] init];
+        _containerControl = [[IXView alloc] init];
         [_containerControl setTopLevelViewControllerLayout:YES];
         [_containerControl setSandbox:_sandbox];
         

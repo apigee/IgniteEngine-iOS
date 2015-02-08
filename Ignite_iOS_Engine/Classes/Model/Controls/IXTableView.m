@@ -8,7 +8,7 @@
 
 #import "IXTableView.h"
 
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXUITableViewCell.h"
 #import "IXCellBackgroundSwipeController.h"
 
@@ -200,7 +200,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     NSArray* visibleIndexPaths = [tableView indexPathsForVisibleRows];
     if( [cell isKindOfClass:[IXUITableViewCell class]] && [visibleIndexPaths indexOfObject:indexPath] != NSNotFound )
     {
-        IXLayout* layout = [(IXUITableViewCell*)cell layoutControl];
+        IXView* layout = [(IXUITableViewCell*)cell layoutControl];
         [[layout actionContainer] executeActionsForEventNamed:kIXWillDisplayCell];
     }
 }
@@ -210,7 +210,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     NSArray* visibleIndexPaths = [tableView indexPathsForVisibleRows];
     if( [cell isKindOfClass:[IXUITableViewCell class]] && [visibleIndexPaths indexOfObject:indexPath] == NSNotFound )
     {
-        IXLayout* layout = [(IXUITableViewCell*)cell layoutControl];
+        IXView* layout = [(IXUITableViewCell*)cell layoutControl];
         [[layout actionContainer] executeActionsForEventNamed:kIXDidHideCell];
     }
 }

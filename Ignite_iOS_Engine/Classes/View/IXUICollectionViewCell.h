@@ -10,7 +10,7 @@
 
 #import "IXCellBasedControl.h"
 
-@class IXLayout;
+@class IXView;
 @class IXSandbox;
 @class IXCellBackgroundSwipeController;
 
@@ -18,8 +18,8 @@
 
 @property (nonatomic,strong,readonly) IXCellBackgroundSwipeController* cellBackgroundSwipeController;
 @property (nonatomic,strong) IXSandbox* cellSandbox;
-@property (nonatomic,strong) IXLayout* layoutControl;
-@property (nonatomic,strong) IXLayout* backgroundLayoutControl;
+@property (nonatomic,strong) IXView* layoutControl;
+@property (nonatomic,strong) IXView* backgroundLayoutControl;
 @property (nonatomic,assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic,assign) BOOL adjustsBackgroundAlphaWithSwipe;
 

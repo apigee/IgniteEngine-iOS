@@ -76,7 +76,7 @@
 #import "IXAppManager.h"
 #import "IXViewController.h"
 #import "IXNavigationViewController.h"
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 
@@ -102,7 +102,7 @@ static NSString* const kIXStaggerDelay = @"stagger_delay";
         [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
         [[IXAppManager sharedAppManager] storeSessionProperties];
     }
-    else if( [objectID isEqualToString:kIX_APP] )
+    else if( [objectID isEqualToString:kIX_CONTROLLER] )
     {
         IXPropertyContainer* appProperties = [[IXAppManager sharedAppManager] appProperties];
         [appProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];

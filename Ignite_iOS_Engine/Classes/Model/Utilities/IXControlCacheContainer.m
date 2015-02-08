@@ -73,7 +73,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
     if( [controlType length] ) {
         controlClass = NSClassFromString([NSString stringWithFormat:kIX_CONTROL_CLASS_NAME_FORMAT,controlType]);
     } else {
-        controlClass = [IXLayout class];
+        controlClass = [IXView class];
     }
     return controlClass;
 }

@@ -70,7 +70,7 @@
 #import "IXAppManager.h"
 #import "IXViewController.h"
 #import "IXNavigationViewController.h"
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 

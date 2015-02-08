@@ -6,7 +6,7 @@
 //  Copyright (c) 2013. All rights reserved.
 //
 
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXClickableScrollView.h"
 #import "IXLayoutEngine.h"
 #import "IXStructs.h"
@@ -43,7 +43,7 @@ IX_STATIC_CONST_STRING kIXZoomScale = @"zoomScale";
 IX_STATIC_CONST_STRING kIXColorGradientTop = @"gradient.top";
 IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
 
-@interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
+@interface IXView () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL zoomEnabled;
 @property (nonatomic,assign) BOOL layoutFlowVertical;
@@ -57,7 +57,7 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
 
 @end
 
-@implementation IXLayout
+@implementation IXView
 
 -(void)dealloc
 {

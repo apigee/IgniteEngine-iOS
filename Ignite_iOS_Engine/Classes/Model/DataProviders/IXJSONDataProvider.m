@@ -475,7 +475,7 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
         {
             returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
         }
-        else if( [objectID isEqualToString:kIX_APP] )
+        else if( [objectID isEqualToString:kIX_CONTROLLER] )
         {
             returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
         }

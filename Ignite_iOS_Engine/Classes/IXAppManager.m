@@ -187,7 +187,7 @@ Disable drawers: *drawer.disable*
 #import "IXControlCacheContainer.h"
 #import "IXDataGrabber.h"
 #import "IXDeviceInfo.h"
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXLogger.h"
 #import "IXNavigationViewController.h"
 #import "IXPathHandler.h"

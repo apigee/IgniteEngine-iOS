@@ -8,15 +8,15 @@
 
 #import "IXLayoutEngine.h"
 
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXControlLayoutInfo.h"
 #import "IXClickableScrollView.h"
 
 @interface IXLayoutEngine ()
 
-+(void)addLayoutChildrenToViewHeirarchy:(IXLayout*)layoutControl;
++(void)addLayoutChildrenToViewHeirarchy:(IXView*)layoutControl;
 
-+(CGFloat)calculateEqualWidthForUnclaimedControls:(IXLayout*)layoutControl
++(CGFloat)calculateEqualWidthForUnclaimedControls:(IXView*)layoutControl
                                         forWidth:(CGFloat)totalWidthAvailable;
 
 +(CGPoint)getControlPosition:(IXBaseControl*)control
@@ -31,7 +31,7 @@
                                     controlPosition:(CGPoint)controlPositiong;
 
 +(IXFrameAndOffset)getControlFrame:(IXBaseControl*)control
-                   forLayoutControl:(IXLayout*)layoutControl
+                   forLayoutControl:(IXView*)layoutControl
                      forLayoutRect:(CGRect)layoutRect
                      currentOffset:(CGFloat)currentOffset
              fixOffsetToLayoutRect:(BOOL)fixOffsetToLayoutRect
@@ -41,7 +41,7 @@
 
 @implementation IXLayoutEngine
 
-+(CGFloat)calculateEqualWidthForUnclaimedControls:(IXLayout*)layoutControl forWidth:(CGFloat)totalWidthAvailable
++(CGFloat)calculateEqualWidthForUnclaimedControls:(IXView*)layoutControl forWidth:(CGFloat)totalWidthAvailable
 {
     CGFloat equalWidthForRemainingUnclaimedControls = 0.0f;
     
@@ -225,7 +225,7 @@
     return returnRect;
 }
 
-+(IXFrameAndOffset)getControlFrame:(IXBaseControl*)control forLayoutControl:(IXLayout*)layoutControl forLayoutRect:(CGRect)layoutRect currentOffset:(CGFloat)currentOffset fixOffsetToLayoutRect:(BOOL)fixOffsetToLayoutRect allowOffAxisAlignment:(BOOL)allowOffAxisAlignment
++(IXFrameAndOffset)getControlFrame:(IXBaseControl*)control forLayoutControl:(IXView*)layoutControl forLayoutRect:(CGRect)layoutRect currentOffset:(CGFloat)currentOffset fixOffsetToLayoutRect:(BOOL)fixOffsetToLayoutRect allowOffAxisAlignment:(BOOL)allowOffAxisAlignment
 {
     IXControlLayoutInfo* controlLayoutInfo = [control layoutInfo];
     
@@ -322,7 +322,7 @@
     return returnFrameAndOffset;
 }
 
-+(void)addLayoutChildrenToViewHeirarchy:(IXLayout*)layoutControl
++(void)addLayoutChildrenToViewHeirarchy:(IXView*)layoutControl
 {
     int nonFloatIndex = 0;
     int floatIndex = 1; // Float index starts at 1 to account for scrollView inside of the layoutControl
@@ -354,7 +354,7 @@
     }
 }
 
-+(void)layoutControl:(IXLayout*)layoutControl inRect:(CGRect)layoutRect
++(void)layoutControl:(IXView*)layoutControl inRect:(CGRect)layoutRect
 {
     [IXLayoutEngine addLayoutChildrenToViewHeirarchy:layoutControl];
     
@@ -509,7 +509,7 @@
     }
 }
 
-+(CGSize)getPreferredSizeForLayoutControl:(IXLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize
++(CGSize)getPreferredSizeForLayoutControl:(IXView*)layoutControl forSuggestedSize:(CGSize)suggestedSize
 {
     CGSize returnSize = CGSizeZero;
 

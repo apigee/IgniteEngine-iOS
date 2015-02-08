@@ -9,7 +9,7 @@
 #import "IXNavigationViewController.h"
 
 #import "IXViewController.h"
-#import "IXLayout.h"
+#import "IXView.h"
 #import "SDWebImageManager.h"
 #import "IXDataGrabber.h"
 #import "IXPropertyContainer.h"

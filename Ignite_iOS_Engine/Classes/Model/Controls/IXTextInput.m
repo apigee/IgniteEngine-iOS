@@ -8,7 +8,7 @@
 
 #import "IXTextInput.h"
 
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
@@ -98,7 +98,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
 @property (nonatomic,assign,getter = shouldHideImagesWhenEmpty) BOOL hideImagesWhenEmpty;
 @property (nonatomic,assign,getter = isRegisteredForKeyboardNotifications) BOOL registeredForKeyboardNotifications;
 
-@property (nonatomic,weak) IXLayout* layoutToScroll;
+@property (nonatomic,weak) IXView* layoutToScroll;
 @property (nonatomic,assign) BOOL adjustsScrollWithScreen;
 @property (nonatomic,assign) CGFloat keyboardPadding;
 @property (nonatomic,assign) CGSize layoutContentSizeAtStartOfEditing;
@@ -356,13 +356,13 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     }
     
     NSString* layoutToScrollID = [[self propertyContainer] getStringPropertyValue:kIXLayoutToScroll defaultValue:nil];
-    IXLayout* layoutToScroll = nil;
+    IXView* layoutToScroll = nil;
     if( [layoutToScrollID length] > 0 )
     {
         IXBaseControl* controlFound = [[[self sandbox] getAllControlsWithID:layoutToScrollID] firstObject];
-        if( [controlFound isKindOfClass:[IXLayout class]] )
+        if( [controlFound isKindOfClass:[IXView class]] )
         {
-            layoutToScroll = (IXLayout*)controlFound;
+            layoutToScroll = (IXView*)controlFound;
         }
     }
     

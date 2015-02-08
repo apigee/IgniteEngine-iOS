@@ -337,9 +337,9 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
     return [[[[self cellToCalculateSize] layoutControl] contentView] bounds].size;
 }
 
--(IXLayout*)layoutForCell:(id<IXCellContainerDelegate>)cell
+-(IXView*)layoutForCell:(id<IXCellContainerDelegate>)cell
 {
-    IXLayout* layoutControl = [[IXLayout alloc] init];
+    IXView* layoutControl = [[IXView alloc] init];
     [[layoutControl contentView] setClipsToBounds:NO];
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
@@ -378,9 +378,9 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
     return layoutControl;
 }
 
--(IXLayout*)backgroundViewForCell:(id<IXCellContainerDelegate>)cell withRowSandbox:(IXSandbox*)rowSandbox
+-(IXView*)backgroundViewForCell:(id<IXCellContainerDelegate>)cell withRowSandbox:(IXSandbox*)rowSandbox
 {
-    IXLayout* layoutControl = [[IXLayout alloc] init];
+    IXView* layoutControl = [[IXView alloc] init];
     [[layoutControl contentView] setClipsToBounds:NO];
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
@@ -397,7 +397,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
     return layoutControl;
 }
 
--(IXLayout*)headerViewForSection:(NSInteger)section
+-(IXView*)headerViewForSection:(NSInteger)section
 {
     int row = (int)section;
     if( [self sectionRowCounts] && [[self sectionRowCounts] objectForKey:[NSNumber numberWithInt:(int)section]] != nil)
@@ -416,7 +416,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
         }
     }
 
-    IXLayout* layoutControl = nil;
+    IXView* layoutControl = nil;
     if([[self sectionHeaderXPath] length] > 0 && [self subControlsDictionary][kIXSectionHeaderControls] != nil )
     {
         IXSandbox* tableViewSandbox = [self sandbox];
@@ -433,7 +433,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
 
         [[self sectionHeaderSandboxes] setObject:sectionHeaderSandbox forKey:[NSNumber numberWithInt:row]];
 
-        layoutControl = [[IXLayout alloc] init];
+        layoutControl = [[IXView alloc] init];
         [[layoutControl contentView] setClipsToBounds:NO];
         [layoutControl setParentObject:self];
         [layoutControl setNotifyParentOfLayoutUpdates:NO];
@@ -475,7 +475,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
 
 -(void)configureCell:(id<IXCellContainerDelegate>)cell withIndexPath:(NSIndexPath*)indexPath isDummy:(BOOL)isDummy
 {
-    IXLayout* cellLayout = [cell layoutControl];
+    IXView* cellLayout = [cell layoutControl];
     if( cellLayout == nil )
     {
         [cell setLayoutControl:[self layoutForCell:cell]];
@@ -530,7 +530,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
         {
             [cell setBackgroundSlidesInFromSide:[self backgroundSlidesInFromSide]];
             
-            IXLayout* backgroundLayoutControl = [cell backgroundLayoutControl];
+            IXView* backgroundLayoutControl = [cell backgroundLayoutControl];
             if( backgroundLayoutControl != nil )
             {
                 [backgroundLayoutControl setSandbox:[cellLayout sandbox]];
@@ -542,7 +542,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
             }
             else if( [[self subControlsDictionary][kIXBackgroundControls] count] > 0 )
             {
-                IXLayout* backgroundLayoutControl = [self backgroundViewForCell:cell withRowSandbox:[cellLayout sandbox]];
+                IXView* backgroundLayoutControl = [self backgroundViewForCell:cell withRowSandbox:[cellLayout sandbox]];
                 
                 [backgroundLayoutControl applySettings];
                 [[backgroundLayoutControl contentView] setFrame:layoutRect];

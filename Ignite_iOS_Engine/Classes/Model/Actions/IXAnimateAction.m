@@ -12,7 +12,7 @@
 #import "IXBaseObject.h"
 #import "IXActionContainer.h"
 #import "IXAppManager.h"
-#import "IXLayout.h"
+#import "IXView.h"
 #import "IXBaseControl.h"
 
 // Animation Properties

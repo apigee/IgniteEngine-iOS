@@ -96,7 +96,7 @@ extern NSString* const kIX_DEBUG;
 extern NSString* const kIX_RELEASE;
 
 extern NSString* const kIX_ID;
-extern NSString* const kIX_APP;
+extern NSString* const kIX_CONTROLLER;
 extern NSString* const kIX_STYLE;
 extern NSString* const kIX_TARGET;
 extern NSString* const kIX_TYPE;

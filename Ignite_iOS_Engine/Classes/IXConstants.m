@@ -33,7 +33,7 @@ NSString* const kIX_DEBUG = @"debug";
 NSString* const kIX_RELEASE = @"release";
 
 NSString* const kIX_ID = @"_id";
-NSString* const kIX_APP = @"app";
+NSString* const kIX_CONTROLLER = @"controller";
 NSString* const kIX_TYPE = @"_type";
 NSString* const kIX_STYLE = @"_style";
 NSString* const kIX_SESSION = @"session";
