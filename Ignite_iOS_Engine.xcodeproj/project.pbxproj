@@ -67,6 +67,7 @@
 		3F66D2D11A7A34C100E8D288 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2CA1A7A34C100E8D288 /* SourceSansPro-Light.otf */; };
 		3F66D2D21A7A34C100E8D288 /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */; };
 		3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2D31A7A34D100E8D288 /* Images.xcassets */; };
+		3FFC589D1A86B548003C434D /* Documentation in Resources */ = {isa = PBXBuildFile; fileRef = 3FFC589C1A86B548003C434D /* Documentation */; };
 		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
 		6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */; };
 		63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63240E7C194A27F200412927 /* IXDataRowDataProvider.m */; };
@@ -109,7 +110,7 @@
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
 		6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */; };
 		639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 639A53181A227ED800640C89 /* NSURL+IXAdditions.m */; };
-		63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXKnob.m */; };
+		63A10B2218AAD7E200130BEA /* IXDial.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXDial.m */; };
 		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
 		63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */; };
 		63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */; };
@@ -261,6 +262,7 @@
 		3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Semibold.otf"; path = "assets/_project/fonts/SourceSansPro-Semibold.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2D31A7A34D100E8D288 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = assets/_project/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
+		3FFC589C1A86B548003C434D /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Documentation; sourceTree = SOURCE_ROOT; };
 		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
 		6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBackgroundSwipeController.h; sourceTree = "<group>"; };
@@ -340,8 +342,8 @@
 		6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCellBasedControl.m; sourceTree = "<group>"; };
 		639A53171A227ED800640C89 /* NSURL+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+IXAdditions.h"; sourceTree = "<group>"; };
 		639A53181A227ED800640C89 /* NSURL+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+IXAdditions.m"; sourceTree = "<group>"; };
-		63A10B2018AAD7E200130BEA /* IXKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXKnob.h; sourceTree = "<group>"; };
-		63A10B2118AAD7E200130BEA /* IXKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXKnob.m; sourceTree = "<group>"; };
+		63A10B2018AAD7E200130BEA /* IXDial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDial.h; sourceTree = "<group>"; };
+		63A10B2118AAD7E200130BEA /* IXDial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDial.m; sourceTree = "<group>"; };
 		63A10B2E18AAF9D900130BEA /* IXSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSound.h; sourceTree = "<group>"; };
 		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
 		63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
@@ -573,10 +575,10 @@
 				63F8A401187368BC00250994 /* IXCollection.m */,
 				6366D6D518A18741000AEEA5 /* IXCustom.h */,
 				6366D6D618A18741000AEEA5 /* IXCustom.m */,
+				63A10B2018AAD7E200130BEA /* IXDial.h */,
+				63A10B2118AAD7E200130BEA /* IXDial.m */,
 				13033F48183ED8F200C29157 /* IXImage.h */,
 				13033F49183ED8F200C29157 /* IXImage.m */,
-				63A10B2018AAD7E200130BEA /* IXKnob.h */,
-				63A10B2118AAD7E200130BEA /* IXKnob.m */,
 				13033F4A183ED8F200C29157 /* IXLayout.h */,
 				13033F4B183ED8F200C29157 /* IXLayout.m */,
 				13033F4C183ED8F200C29157 /* IXMap.h */,
@@ -773,6 +775,7 @@
 			children = (
 				3F66D2C31A7A34A700E8D288 /* assets */,
 				13033F21183ED8F200C29157 /* Classes */,
+				3FFC589C1A86B548003C434D /* Documentation */,
 				6333614E18975672004F3433 /* Fonts */,
 				6324BF561835931C00748F27 /* Supporting Files */,
 			);
@@ -1007,6 +1010,7 @@
 				3F66D2CE1A7A34C100E8D288 /* FontAwesome.ttf in Resources */,
 				3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */,
 				634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */,
+				3FFC589D1A86B548003C434D /* Documentation in Resources */,
 				3F66D2CD1A7A34C100E8D288 /* ARSMaquettePro-Medium.otf in Resources */,
 				3F66D2D21A7A34C100E8D288 /* SourceSansPro-Semibold.otf in Resources */,
 				3F66D2D11A7A34C100E8D288 /* SourceSansPro-Light.otf in Resources */,
@@ -1168,7 +1172,7 @@
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
 				63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */,
 				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
-				63A10B2218AAD7E200130BEA /* IXKnob.m in Sources */,
+				63A10B2218AAD7E200130BEA /* IXDial.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */,
 				6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */,
