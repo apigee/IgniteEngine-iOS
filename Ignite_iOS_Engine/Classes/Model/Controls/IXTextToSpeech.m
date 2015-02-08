@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-#import "IXSpeech.h"
+#import "IXTextToSpeech.h"
 
 @import AVFoundation.AVSpeechSynthesis;
 
@@ -29,13 +29,13 @@ IX_STATIC_CONST_STRING kIXBoundary = @"boundary"; // Default is kIXBoundaryImmed
 IX_STATIC_CONST_STRING kIXBoundaryImmediate = @"immediate";
 IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 
-@interface IXSpeech () <AVSpeechSynthesizerDelegate>
+@interface IXTextToSpeech () <AVSpeechSynthesizerDelegate>
 
 @property (nonatomic,strong) AVSpeechSynthesizer* speechSynthesizer;
 
 @end
 
-@implementation IXSpeech
+@implementation IXTextToSpeech
 
 -(void)buildView
 {

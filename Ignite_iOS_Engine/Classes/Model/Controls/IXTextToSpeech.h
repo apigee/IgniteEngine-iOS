@@ -8,6 +8,6 @@
 
 #import "IXBaseControl.h"
 
-@interface IXSpeech : IXBaseControl
+@interface IXTextToSpeech : IXBaseControl
 
 @end
