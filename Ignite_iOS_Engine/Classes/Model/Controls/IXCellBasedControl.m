@@ -21,44 +21,51 @@
 
 #import "NSString+IXAdditions.h"
 
-// IXCellBasedControl Attributes
-IX_STATIC_CONST_STRING kIXAnimateReload = @"animate_reload";
-IX_STATIC_CONST_STRING kIXAnimateReloadDuration = @"animate_reload.duration";
-IX_STATIC_CONST_STRING kIXBackgroundColor = @"background.color";
-IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
-IX_STATIC_CONST_STRING kIXBackgroundSlidesInFromSide = @"background_slides_in_from_side";
-IX_STATIC_CONST_STRING kIXBackgroundSwipeAdjustsBackgroundAlpha = @"background_swipe_adjusts_background_alpha";
-IX_STATIC_CONST_STRING kIXBackgroundControls = @"background_controls";
-IX_STATIC_CONST_STRING kIXSectionHeaderXPath = @"section_header_xpath";
-IX_STATIC_CONST_STRING kIXSectionHeaderControls = @"section_header_controls";
-IX_STATIC_CONST_STRING kIXSectionHeaderHeight = @"section_header_height";
-IX_STATIC_CONST_STRING kIXSectionHeaderWidth = @"section_header_width";
-IX_STATIC_CONST_STRING kIXDataproviderID = @"dataprovider_id";
-IX_STATIC_CONST_STRING kIXItemWidth = @"item_width";
-IX_STATIC_CONST_STRING kIXItemHeight = @"item_height";
+// Attributes
+IX_STATIC_CONST_STRING kIXAnimateReload = @"reloadAnimation.enabled";
+IX_STATIC_CONST_STRING kIXAnimateReloadDuration = @"reloadAnimation.duration";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"swipe.w";
+IX_STATIC_CONST_STRING kIXBackgroundSlidesInFromSide = @"swipe.slideIn.enabled";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeAdjustsBackgroundAlpha = @"swipe.alpha.enabled";
+IX_STATIC_CONST_STRING kIXBackgroundControls = @"swipe.controls";
+IX_STATIC_CONST_STRING kIXSectionHeaderXPath = @"sectionHeader.xpath";
+IX_STATIC_CONST_STRING kIXSectionHeaderControls = @"sectionHeader.controls";
+IX_STATIC_CONST_STRING kIXSectionHeaderHeight = @"sectionHeader.size.h";
+IX_STATIC_CONST_STRING kIXSectionHeaderWidth = @"sectionHeader.size.w";
+IX_STATIC_CONST_STRING kIXDataproviderID = @"datasource.id";
+IX_STATIC_CONST_STRING kIXItemWidth = @"cell.size.w";
+IX_STATIC_CONST_STRING kIXItemHeight = @"cell.size.h";
 IX_STATIC_CONST_STRING kIXPagingEnabled = @"paging.enabled";
-IX_STATIC_CONST_STRING kIXScrollable = @"scrollable";
-IX_STATIC_CONST_STRING kIXPullToRefreshEnabled = @"pull_to_refresh.enabled";
-IX_STATIC_CONST_STRING kIXPullToRefreshText = @"pull_to_refresh.text";
-IX_STATIC_CONST_STRING kIXPullToRefreshTextColor = @"pull_to_refresh.text.color";
-IX_STATIC_CONST_STRING kIXPullToRefreshTextFont = @"pull_to_refresh.text.font";
-IX_STATIC_CONST_STRING kIXPullToRefreshTintColor = @"pull_to_refresh.tint.color";
-IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scroll_indicator_style";
-IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black";
-IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white";
-IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default";
-IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"shows_scroll_indicators";
-IX_STATIC_CONST_STRING kIXDataRowBasePath = @"datarow.basepath";
+IX_STATIC_CONST_STRING kIXScrollable = @"scrolling.enabled";
+IX_STATIC_CONST_STRING kIXPullToRefreshEnabled = @"pullToRefresh.enabled";
+IX_STATIC_CONST_STRING kIXPullToRefreshText = @"pullToRefresh.text";
+IX_STATIC_CONST_STRING kIXPullToRefreshTextColor = @"pullToRefresh.color";
+IX_STATIC_CONST_STRING kIXPullToRefreshTextFont = @"pullToRefresh.font";
+IX_STATIC_CONST_STRING kIXPullToRefreshTintColor = @"pullToRefresh.tint";
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scrollBars.style";
+IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"scrollBars.enabled";
+IX_STATIC_CONST_STRING kIXDataRowBasePath = @"data.basepath";
+#warning Not implemented:
+IX_STATIC_CONST_STRING kIXShowsVScrollIndicators = @"scrollBars.v.enabled";
+IX_STATIC_CONST_STRING kIXShowsHScrollIndicators = @"scrollBars.h.enabled";
 
-// IXCellBasedControl Readonly Attributes
-IX_STATIC_CONST_STRING kIXRowCount = @"row.count";
+// Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black"; // scrollBars.style
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white"; // scrollBars.style
+IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default"; // scrollBars.style
 
-// IXCellBasedControl Functions
-IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pull_to_refresh.begin";
-IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pull_to_refresh.end";
+// Returns
+#warning Need to enhance this and include total item count, visible item count, number of items per section
+IX_STATIC_CONST_STRING kIXRowCount = @"data.numberOfItems";
 
-// IXCellBasedControl Events
-IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pull_to_refresh.activated";
+// Functions
+#warning Why are these functions?
+IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pullToRefresh.start";
+IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pullToRefresh.end";
+
+// Events
+IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
 
 @interface IXSandbox ()
 
