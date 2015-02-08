@@ -6,19 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Old-school UITableView.
-*/
-
 #import "IXTableView.h"
 
 #import "IXLayout.h"
@@ -28,14 +15,14 @@
 #import "UIScrollView+APParallaxHeader.h"
 
 // IXTableView Attributes (Note: See IXCellBasedControl for the super classes properties as well.)
-IX_STATIC_CONST_STRING kIXRowSelectEnabled = @"row_select_enabled";
-IX_STATIC_CONST_STRING kIXKeepRowHighlightedOnSelect = @"keep_row_highlighted_on_select";
-IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"background_swipe_width";
+IX_STATIC_CONST_STRING kIXRowSelectEnabled = @"rowSelect.enabled";
+IX_STATIC_CONST_STRING kIXKeepRowHighlightedOnSelect = @"rowStaysHighlighted.enabled";
+IX_STATIC_CONST_STRING kIXBackgroundSwipeWidth = @"swipe.w";
 
-IX_STATIC_CONST_STRING kIXImageParallax = @"image.parallax";
-IX_STATIC_CONST_STRING kIXImageParallaxHeight = @"image.parallax.height";
+IX_STATIC_CONST_STRING kIXImageParallax = @"parallaxImage";
+IX_STATIC_CONST_STRING kIXImageParallaxHeight = @"parallaxImage.h";
 
-IX_STATIC_CONST_STRING kIXLayoutFlow = @"layout_flow";
+IX_STATIC_CONST_STRING kIXLayoutFlow = @"layoutFlow";
 IX_STATIC_CONST_STRING kIXLayoutFlowVertical = @"vertical";
 IX_STATIC_CONST_STRING kIXLayoutFlowHorizontal = @"horizontal";
 
@@ -45,17 +32,17 @@ IX_STATIC_CONST_STRING kIXSeperatorStyleNone = @"none";
 IX_STATIC_CONST_STRING kIXSeperatorStyleDefault = @"default";
 
 // IXTableView Events
-IX_STATIC_CONST_STRING kIXStartedScrolling = @"started_scrolling";
-IX_STATIC_CONST_STRING kIXEndedScrolling = @"ended_scrolling";
+IX_STATIC_CONST_STRING kIXStartedScrolling = @"didBeginScrolling";
+IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
 
 // These Events fired on the actual cells. (aka dataRow will work)
-IX_STATIC_CONST_STRING kIXWillDisplayCell = @"will_display_cell";
-IX_STATIC_CONST_STRING kIXDidHideCell = @"did_hide_cell";
-IX_STATIC_CONST_STRING kIXDidSelectCell = @"did_select_cell";
+IX_STATIC_CONST_STRING kIXWillDisplayCell = @"willDisplayCell";
+IX_STATIC_CONST_STRING kIXDidHideCell = @"didHideCell";
+IX_STATIC_CONST_STRING kIXDidSelectCell = @"didSelectCell";
 
 // IXTableView Functions
-IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"reset_all_background_controls";
-IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"set_background_swipe_width";
+IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"resetBgControls";
+IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"setSwipeSize";
 
 // Non property constants
 IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
@@ -68,107 +55,6 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 @end
 
 @implementation IXTableView
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param row_select_enabled Highlight row on touch? *(default: FALSE)*<br>*(string)*
-    @param keep_row_highlighted_on_select Keep the row highlighted on touch_up? *(default: FALSE)*<br>*(float)*
-    @param background_swipe_width How wide should the cell swipe to reveal background controls?<br>*(int)*
-    @param image.parallax http:// or /path/to/image.png for parallaxiness<br>*(bool)*
-    @param image.parallax.height Height of image to display behind table for parallaxiness<br>*(bool)*
-    @param layout_flow Layout flow of table<br>*verticalhorizontal*
-    @param separator.style Show a dividing line between cells?<br>*defaultnone*
-    @param separator.color Color of default separator line<br>*(color)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param started_scrolling Fires when scrolling starts
-    @param ended_scrolling Fires when scrolling stops
-    @param will_display_cell Fires when the cell will come into the view
-    @param did_hide_cell Fires when the cell leaves the view
-    @param did_select_cell Fires when the cell is selected
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param reset_all_background_controls 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-
-
-    @param set_background_swipe_width 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

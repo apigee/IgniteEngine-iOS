@@ -6,25 +6,16 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** A menu that is presented from the bottom of the screen and gives the user the ability to select from several buttons.
-*/
-
 #import "IXScanner.h"
 #import "ZBarSDK.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 
+IX_STATIC_CONST_STRING kIXAutoClose = @"autoClose.enabled";
+IX_STATIC_CONST_STRING kIXSuccess = @"success";
+IX_STATIC_CONST_STRING kIXDismiss = @"dismiss";
+IX_STATIC_CONST_STRING kIXPresent = @"present";
 IX_STATIC_CONST_STRING kIXScannedData = @"data";
 
 static ZBarReaderViewController* sReaderViewController = nil;
@@ -37,104 +28,6 @@ static ZBarReaderViewController* sReaderViewController = nil;
 @end
 
 @implementation IXScanner
-
-/***************************************************************/
-
-/** This control has the following attributes:
- 
- @param auto_close Automatically close the Scanner view controller upon scan? *(default: TRUE)*<br>*(bool)*
- 
- */
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
- 
- @param data Data contained in the scanned code<br>*(string)*
- 
- */
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
- 
- @param scanned Fires when a code is scanned successfully
- 
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
- 
- @param present_reader Present Scanner view controller
- 
-<pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "scannerTest",
-    "function_name": "present_reader"
-  }
-}
-
-</pre>
- 
- @param dismiss_reader Dismiss Scanner view controller
- 
-  <pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "scannerTest",
-    "function_name": "dismiss_reader"
-  }
-}
- </pre>
- 
- */
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-  <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-
-
 
 -(void)dealloc
 {
@@ -162,12 +55,12 @@ static ZBarReaderViewController* sReaderViewController = nil;
 {
     [super applySettings];
     
-    [self setAutoClose:[[self propertyContainer] getBoolPropertyValue:@"auto_close" defaultValue:YES]];
+    [self setAutoClose:[[self propertyContainer] getBoolPropertyValue:kIXAutoClose defaultValue:YES]];
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
-    if( [functionName isEqualToString:@"present_reader"] )
+    if( [functionName isEqualToString:kIXPresent] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
@@ -175,7 +68,7 @@ static ZBarReaderViewController* sReaderViewController = nil;
         }
         [self presentReader:animated];
     }
-    else if( [functionName isEqualToString:@"dismiss_reader"] )
+    else if( [functionName isEqualToString:kIXDismiss] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
@@ -229,7 +122,7 @@ static ZBarReaderViewController* sReaderViewController = nil;
             break;
 
         [self setScannedData:[symbol data]];
-        [[self actionContainer] executeActionsForEventNamed:@"scanned"];
+        [[self actionContainer] executeActionsForEventNamed:kIXScannedData];
     }
     
     if([self shouldAutoClose])

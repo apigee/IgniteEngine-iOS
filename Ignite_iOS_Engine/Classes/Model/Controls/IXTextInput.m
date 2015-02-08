@@ -6,19 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Capture input from the user
-*/
-
 #import "IXTextInput.h"
 
 #import "IXLayout.h"
@@ -32,71 +19,71 @@
 #import "UITextField+IXAdditions.h"
 
 // IXTextInput Properties
-static NSString* const kIXFont = @"font";
-static NSString* const kIXCursorColor = @"cursor.color";
-static NSString* const kIXAutoCorrect = @"autocorrect";
-static NSString* const kIXDismissOnReturn = @"dismiss_on_return";
-static NSString* const kIXLayoutToScroll = @"layout_to_scroll";
-static NSString* const kIXKeyboardAdjustsScreen = @"keyboard_adjusts_screen";
-static NSString* const kIXIsMultiLine = @"is_multiline";
+IX_STATIC_CONST_STRING kIXFont = @"font";
+IX_STATIC_CONST_STRING kIXCursorColor = @"cursor.color";
+IX_STATIC_CONST_STRING kIXAutoCorrect = @"autocorrect.enabled";
+IX_STATIC_CONST_STRING kIXDismissOnReturn = @"dismissOnReturn.enabled";
+IX_STATIC_CONST_STRING kIXLayoutToScroll = @"layout_to_scroll";
+IX_STATIC_CONST_STRING kIXKeyboardAdjustsScreen = @"keyboardAdjustsScreen.enabled";
+IX_STATIC_CONST_STRING kIXIsMultiLine = @"multiline.enabled";
 
-static NSString* const kIXInitialText = @"initial_text";
-static NSString* const kIXTextColor = @"text.color";
-static NSString* const kIXTextPlaceholder = @"text.placeholder";
-static NSString* const kIXTextPlaceholderColor = @"text.placeholder.color";
-static NSString* const kIXTextAlignment = @"text.alignment";
-static NSString* const kIXBackgroundColor = @"background.color";
-static NSString* const kIXClearsOnBeginEditing = @"clears_on_begin_editing"; // Only works on non multiline input.
-static NSString* const kIXRightImage = @"image.right"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
-static NSString* const kIXLeftImage = @"image.left"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
-static NSString* const kIXBackgroundImage = @"image.background";
-static NSString* const kIXHidesImagesWhenEmpty = @"image.hides_when_empty"; // Only works on non multiline input.
+IX_STATIC_CONST_STRING kIXInitialText = @"text.default";
+IX_STATIC_CONST_STRING kIXTextColor = @"color";
+IX_STATIC_CONST_STRING kIXTextPlaceholder = @"placeholder.text";
+IX_STATIC_CONST_STRING kIXTextPlaceholderColor = @"placeholder.color";
+IX_STATIC_CONST_STRING kIXTextAlignment = @"text.align";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXClearsOnBeginEditing = @"clearOnFocus.enabled"; // Only works on non multiline input.
+IX_STATIC_CONST_STRING kIXRightImage = @"image.right"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
+IX_STATIC_CONST_STRING kIXLeftImage = @"image.left"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
+IX_STATIC_CONST_STRING kIXBackgroundImage = @"bg.image";
+IX_STATIC_CONST_STRING kIXHidesImagesWhenEmpty = @"hideImageWhenEmpty.enabled"; // Only works on non multiline input.
 
-static NSString* const kIXKeyboardAppearance = @"keyboard.appearance";
-static NSString* const kIXKeyboardType = @"keyboard.type";
-static NSString* const kIXKeyboardPadding = @"keyboard.padding";
-static NSString* const kIXKeyboardReturnKey = @"keyboard.return_key";
+IX_STATIC_CONST_STRING kIXKeyboardAppearance = @"keyboard.appearance";
+IX_STATIC_CONST_STRING kIXKeyboardType = @"keyboard.type";
+IX_STATIC_CONST_STRING kIXKeyboardPadding = @"keyboard.padding";
+IX_STATIC_CONST_STRING kIXKeyboardReturnKey = @"keyboard.returnKey";
 
-IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"input.format.currency";
-IX_STATIC_CONST_STRING kIXInputFormatCreditCard = @"input.format.credit_card";
-static NSString* const kIXInputRegexAllowed = @"input.regex.allowed";
-static NSString* const kIXInputRegexDisAllowed = @"input.regex.disallowed";
-static NSString* const kIXInputMax = @"input.max";
-static NSString* const kIXInputTransform = @"input.transform";
+IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"formatAsCurrency.enabled";
+IX_STATIC_CONST_STRING kIXInputFormatCreditCard = @"formatAsCreditCard.enabled";
+IX_STATIC_CONST_STRING kIXInputRegexAllowed = @"regex.allowed";
+IX_STATIC_CONST_STRING kIXInputRegexDisAllowed = @"regex.disallowed";
+IX_STATIC_CONST_STRING kIXInputMax = @"maxChars";
+IX_STATIC_CONST_STRING kIXInputTransform = @"text.transform";
 
-static NSString* const kIXFilterDatasource = @"filter_datasource"; //not implemented
+IX_STATIC_CONST_STRING kIXFilterDatasource = @"filter_datasource"; //not implemented
 
 // kIXInputTransform Types
-static NSString* const kIXInputTransformCapitalize = @"capitalize";
-static NSString* const kIXInputTransformLowercase = @"lowercase";
-static NSString* const kIXInputTransformUppercase = @"uppercase";
-static NSString* const kIXInputTransformUppercaseFirst = @"ucfirst";
+IX_STATIC_CONST_STRING kIXInputTransformCapitalize = @"capitalize";
+IX_STATIC_CONST_STRING kIXInputTransformLowercase = @"lowercase";
+IX_STATIC_CONST_STRING kIXInputTransformUppercase = @"uppercase";
+IX_STATIC_CONST_STRING kIXInputTransformUppercaseFirst = @"ucfirst";
 
 // IXTextInput ReadOnly Properties
-static NSString* const kIXText = @"text"; // To set the text use the kIXSetText function.
+IX_STATIC_CONST_STRING kIXText = @"text"; // To set the text use the kIXSetText function.
 
 // IXTextInput Functions
-static NSString* const kIXSetText = @"set_text"; // Parameter is kIXText.
-static NSString* const kIXKeyboardHide = @"keyboard_hide";
-static NSString* const kIXKeyboardShow = @"keyboard_show";
-static NSString* const kIXFocus = @"focus";
+IX_STATIC_CONST_STRING kIXSetText = @"setText"; // Parameter is kIXText.
+IX_STATIC_CONST_STRING kIXKeyboardHide = @"dismissKeyboard";
+IX_STATIC_CONST_STRING kIXKeyboardShow = @"getFocus";
+IX_STATIC_CONST_STRING kIXFocus = @"focus";
 
 // IXTextInput Events
-static NSString* const kIXGotFocus = @"got_focus";
-static NSString* const kIXLostFocus = @"lost_focus";
-static NSString* const kIXReturnKeyPressed = @"return_key_pressed";
-static NSString* const kIXTextChanged = @"text_changed";
-static NSString* const kIXImageRightTapped = @"image.right.tapped";
-static NSString* const kIXImageLeftTapped = @"image.left.tapped";
+IX_STATIC_CONST_STRING kIXGotFocus = @"focus";
+IX_STATIC_CONST_STRING kIXLostFocus = @"focusLost";
+IX_STATIC_CONST_STRING kIXReturnKeyPressed = @"returnKeyPressed";
+IX_STATIC_CONST_STRING kIXTextChanged = @"textChanged";
+IX_STATIC_CONST_STRING kIXImageRightTapped = @"rightImageTapped";
+IX_STATIC_CONST_STRING kIXImageLeftTapped = @"leftImageTapped";
 
 // NSCoding Key Constants
-static NSString* const kIXTextFieldNSCodingKey = @"textField";
-static NSString* const kIXTextViewNSCodingKey = @"textView";
+IX_STATIC_CONST_STRING kIXTextFieldNSCodingKey = @"textField";
+IX_STATIC_CONST_STRING kIXTextViewNSCodingKey = @"textView";
 
 static CGSize sIXKBSize;
 static CGFloat const kIXKeyboardAnimationDefaultDuration = 0.25f;
 static CGFloat const kIXMaxPreferredHeightForTextInput = 40.0f;
-static NSString* const kIXNewLineString = @"\n";
+IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
 
 @interface IXTextInput () <UITextFieldDelegate,UITextViewDelegate>
 
@@ -134,134 +121,6 @@ static NSString* const kIXNewLineString = @"\n";
 @end
 
 @implementation IXTextInput
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param font Text font<br>*(string)*
-    @param cursor.color Cursor color<br>*(color)*
-    @param autocorrect Enables or disables system autocorrect *(default: TRUE)*<br>*(bool)*
-    @param dismiss_on_return Enables automatic closing of keyboard when return key pressed *(default: FALSE)*<br>*(bool)*
-    @param layout_to_scroll Array of reference pointers of view(s) that should scroll when keyboard appears<br>*(ref)*
-    @param keyboard_adjusts_screen Sets whether the keyboard appearing should automatically adjust the current view when<br>*(bool)*
-    @param is_multiline Sets the input to allow multiple lines of text<br>*(bool)*
-    @param initial_text Initial text present in input (not placeholder!)<br>*(string)*
-    @param text.color Text color<br>*(color)*
-    @param text.placeholder Placeholder text (re-appears when input is empty)<br>*(string)*
-    @param text.placeholder.color Color of placeholder text<br>*(color)*
-    @param text.alignment Text alignment (left, center, right, justified)<br>*(string)*
-    @param background.color Background color text input view<br>*(color)*
-    @param clears_on_begin_editing Clears text when input becomes first responder (only works on non-multiline input) *(default: FALSE)*<br>*(bool)*
-    @param image.left Left image – must use relative path including assets/ (only available on multiline input)<br>*(path)*
-    @param image.right Right image – must use relative path including assets/ (only available on multiline input)<br>*(path)*
-    @param image.background <br>*(????)*
-    @param image.hides_when_empty Sets whether defined image should hide when text is empty (only works on multiline input)<br>*(bool)*
-    @param keyboard.appearance Keyboard tint (light, dark, default) *(default: default)*<br>*(string)*
-    @param keyboard.type Keyboard type (email, number, phone, url, decimal, name_phone, numbers_punctuation, default) *(default: default)*<br>*(string)*
-    @param keyboard.padding Keyboard padding *(default: 0)*<br>*(integer)*
-    @param keyboard.return_key Keyboard return key type (go, next, search, done, join, send, route, emergency, google, yahoo) *(default: default)*<br>*(string)*
-    @param input.format.currency Sets whether the input should be formatted as currency *(default: FALSE)*<br>*(bool)*
-    @param input.format.credit_card Sets whether the input should be formatted as a credit card *(default: FALSE)*<br>*(bool)*
-    @param input.regex.allowed A regular expression of explicitly allowed characters<br>*(regex)*
-    @param input.regex.disallowed A regular expression of explicitly disallowed characters<br>*(regex)*
-    @param input.max Maximum allowed number of characters<br>*(integer)*
-    @param input.transform Text transform (capitalize, lowercase, uppercase, ucfirst)<br>*(string)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param text Current text value of the text input control (to set the text use the kIXSetText function)<br>*(string)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param got_focus Fires when the input control becomes first responder
-    @param lost_focus Fires when the input control loses focus
-    @param return_key_pressed Fires when the user selects the return key
-    @param text_changed Fires when text is changed
-    @param image.right.tapped Fires when the right-hand image is tapped
-    @param image.left.tapped Fires when the left-hand image is tapped
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param set_text 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param keyboard_hide 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param keyboard_show, focus 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {

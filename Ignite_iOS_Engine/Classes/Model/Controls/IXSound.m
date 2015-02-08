@@ -29,20 +29,20 @@
 #import "NSString+IXAdditions.h"
 
 // Sound Properties
-static NSString* const kIXSoundLocation = @"sound_location";
+static NSString* const kIXSoundLocation = @"audioUrl";
 static NSString* const kIXVolume = @"volume";
-static NSString* const kIXNumberOfLoops = @"number_of_loops";
-static NSString* const kIXAutoPlay = @"auto_play";
-static NSString* const kIXForceSoundReload = @"force_sound_reload";
+static NSString* const kIXNumberOfLoops = @"repeatCount";
+static NSString* const kIXAutoPlay = @"autoPlay.enabled";
+static NSString* const kIXForceSoundReload = @"forceAudioReload.enabled";
 
 // Sound Read-Only Properties
-static NSString* const kIXIsPlaying = @"is_playing";
+static NSString* const kIXIsPlaying = @"isPlaying";
 static NSString* const kIXDuration = @"duration";
-static NSString* const kIXCurrentTime = @"current_time";
-static NSString* const kIXLastCreationError = @"last_creation_error";
+static NSString* const kIXCurrentTime = @"now";
+static NSString* const kIXLastCreationError = @"error.message";
 
 // Sound Events
-static NSString* const kIXFinished = @"finished";
+static NSString* const kIXFinished = @"done";
 
 // Sound Functions
 static NSString* const kIXPlay = @"play";
