@@ -6,43 +6,30 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** A slider that moves side-to-side.
-*/
-
 #import "IXSlider.h"
 
 #import "NSString+IXAdditions.h"
 
 // Slider Properties
-static NSString* const kIXInitialValue = @"initial_value";
-static NSString* const kIXImagesThumb = @"images.thumb";
-static NSString* const kIXImagesMinimum = @"images.minimum";
-static NSString* const kIXImagesMaximum = @"images.maximum";
-static NSString* const kIXMinimumValue = @"minimum_value";
-static NSString* const kIXMaximumValue = @"maximum_value";
-static NSString* const kIXImagesMaximumCapInsets = @"images.maximum.capInsets";
-static NSString* const kIXImagesMinimumCapInsets = @"images.minimum.capInsets";
+static NSString* const kIXInitialValue = @"value.default";
+static NSString* const kIXImagesThumb = @"thumbImage";
+static NSString* const kIXImagesMinimum = @"image.min";
+static NSString* const kIXImagesMaximum = @"image.max";
+static NSString* const kIXMinimumValue = @"value.min";
+static NSString* const kIXMaximumValue = @"value.max";
+static NSString* const kIXImagesMaximumCapInsets = @"capInsets.max";
+static NSString* const kIXImagesMinimumCapInsets = @"capInsets.min";
 
 // Slider Read-Only Properties
 static NSString* const kIXValue = @"value";
 
 // Slider Events
-static NSString* const kIXValueChanged = @"value_changed";
+static NSString* const kIXValueChanged = @"valueChanged";
 static NSString* const kIXTouch = @"touch";
-static NSString* const kIXTouchUp = @"touch_up";
+static NSString* const kIXTouchUp = @"touchUp";
 
 // Slider Functions
-static NSString* const kIXUpdateSliderValue = @"update_slider_value"; // Params : "animated"
+static NSString* const kIXUpdateSliderValue = @"setValue"; // Params : "animated"
 
 // NSCoding Key Constants
 static NSString* const kIXValueNSCodingKey = @"value";
@@ -56,129 +43,6 @@ static NSString* const kIXValueNSCodingKey = @"value";
 @end
 
 @implementation IXSlider
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param initial_value Initial value of the slider<br>*(float)*
-    @param images.thumb /path/to/image.png<br>*(string)*
-    @param images.minimum /path/to/image.png<br>*(string)*
-    @param images.maximum /path/to/image.png<br>*(string)*
-    @param minimum_value Minimum value boundary<br>*(float)*
-    @param maximum_value Maximum value boundary<br>*(float)*
-    @param images.maximum.capInsets /path/to/image.png<br>*(string)*
-    @param images.minimum.capInsets /path/to/image.png<br>*(string)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param value Current value of the slider<br>*(float)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param value_changed Fires when the value of the slider changes
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param update_slider_value 
- 
-<pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "sliderTest",
-    "function_name": "update_slider_value"
-  },
-  "set": {
-    "value": 0.75
-  }
-}
- 
-</pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
- 
-<pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "sliderTest",
-  "_type": "Slider",
-  "actions": [
-    {
-      "on": "value_changed",
-      "_type": "Refresh",
-      "attributes": {
-        "_target": "title"
-      }
-    }
-  ],
-  "attributes": {
-    "layout_type": "absolute",
-    "width": 280,
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
-}
- 
-</pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
