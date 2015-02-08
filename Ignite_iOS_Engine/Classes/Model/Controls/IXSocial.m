@@ -30,7 +30,7 @@ static NSString* const kIX_SharePlatform_Facebook = @"facebook";
 static NSString* const kIX_SharePlatform_Twitter = @"twitter";
 static NSString* const kIX_SharePlatform_Flickr = @"flickr";
 static NSString* const kIX_SharePlatform_Vimeo = @"vimeo";
-static NSString* const kIX_SharePlatform_SinaWeibo = @"sinaweibo";
+static NSString* const kIX_SharePlatform_SinaWeibo = @"sinaWeibo";
 
 // Social Read-Only Properties
 static NSString* const kIX_Facebook_Available = @"isAllowed.facebook";
