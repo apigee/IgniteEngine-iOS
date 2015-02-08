@@ -6,19 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Interact with Passbook Passes directly without calling out to Safari.
-*/
-
 #import "IXPassKit.h"
 
 #import "NSString+IXAdditions.h"
@@ -29,20 +16,20 @@
 @import PassKit;
 
 // PassKit Attributes
-IX_STATIC_CONST_STRING kIXPassLocation = @"pass.location";
+IX_STATIC_CONST_STRING kIXPassLocation = @"passUrl";
 
 // PassKit Read-Only Properties
-IX_STATIC_CONST_STRING kIXPassKitAvailable = @"passkit.available";
-IX_STATIC_CONST_STRING kIXPassKitContainsPass = @"passkit.containsPass";
-IX_STATIC_CONST_STRING kIXPassError = @"pass.error";
+IX_STATIC_CONST_STRING kIXPassKitAvailable = @"isAllowed";
+IX_STATIC_CONST_STRING kIXPassKitContainsPass = @"hasPass";
+IX_STATIC_CONST_STRING kIXPassError = @"error.message";
 
 // PassKit Functions
-IX_STATIC_CONST_STRING kIXPassControllerPresent = @"pass.controller.present";
-IX_STATIC_CONST_STRING kIXPassControllerDismiss = @"pass.controller.dismiss";
+IX_STATIC_CONST_STRING kIXPassControllerPresent = @"present";
+IX_STATIC_CONST_STRING kIXPassControllerDismiss = @"dismiss";
 
 // PassKit Events
-IX_STATIC_CONST_STRING kIXPassCreationSuccess = @"pass.creation.success";
-IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
+IX_STATIC_CONST_STRING kIXPassCreationSuccess = @"success";
+IX_STATIC_CONST_STRING kIXPassCreationFailed = @"error";
 
 @interface IXPassKit () <PKAddPassesViewControllerDelegate>
 
@@ -61,126 +48,6 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"pass.creation.failed";
 {
     [self dismissPassController:YES];
 }
-
-/*  -----------------------------  */
-//  [Documentation]
-
-/** This control has the following attributes:
-
-    @param pass.location http:// or /path/to/pass.passkit  <br>    *(string)*
- 
-*/
-
--(void)attributes
-{
-    // Documentation: Config
-}
-
-/** Events
- 
- IXPassKit has the following events:
- 
- @param pass.creation.success Fires when the pass is displayed successfully
- @param pass.creation.failed Fires when an error occurs when displaying the pass
- 
-*/
-
--(void)events
-{
-    // Documentation: Events
-}
-
-/** Functions
- 
- @param pass.controller.present Present PassKit view controller
- 
- <pre class="brush: js; toolbar: false;">
-     {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.present"
-      }
-    }
- </pre>
-
- 
- @param pass.controller.dismiss Dismiss PassKit view controller
- 
- <pre class="brush: js; toolbar: false;">
-     {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.dismiss"
-      }
-    }
- </pre>
-
- */
-
--(void)functions
-{
-    // Documentation: Functions
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Read-Only Attributes
- 
- @param passkit.available	 *(bool)*   |   Is Does this device support PassKit?
- @param passkit.containsPass *(bool)*   |   Does the file you’ve pointed to actually contain a PassKit pass?
- @param pass.error *(string)*   |   Whoopsie.
- 
-*/
-
--(void)returns
-{
-    // Documentation: Read-only Attributes
-}
-
-/**
-<pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "passKitTest",
-  "_type": "PassKit",
-  "actions": [
-    {
-      "on": "pass.creation.success",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Pass created."
-      }
-    },
-    {
-      "on": "pass.creation.failed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Pass failed."
-      }
-    }
-  ],
-  "attributes": {
-    "pass.location": "/data/boardingpass.pkpass"
-  }
-}
- 
-</pre>
- 
-*/
-
--(void)example
-{
-    // Documentation: Sample Code
-}
-
-//  /[Documentation]
-/*  -----------------------------  */
-
 
 -(void)buildView
 {
