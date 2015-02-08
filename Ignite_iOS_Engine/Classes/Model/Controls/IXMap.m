@@ -1,54 +1,37 @@
 //
-//  IXImageControl.m
+//  IXMap.m
 //  Ignite iOS Engine (IX)
 //
 //  Created by Jeremy Anticouni on 11/15/13.
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Displays a native iOS Map. Can display a single annotation, or, point to a Data Provider to display a whole heap of pins.
-*/
-
-#import "IXMap.h"
-
 @import MapKit;
-
+#import "IXMap.h"
 #import "MKMapView+IXAdditions.h"
-
 #import "IXDataRowDataProvider.h"
-
 #import "SVPulsingAnnotationView.h"
 
 // IXMap Attributes
-IX_STATIC_CONST_STRING kIXDataProviderID = @"dataprovider_id";
-IX_STATIC_CONST_STRING kIXShowsUserLocation = @"shows_user_location";
-IX_STATIC_CONST_STRING kIXShowsPointsOfInterest = @"shows_points_of_interest";
-IX_STATIC_CONST_STRING kIXShowsBuildings = @"shows_buildings";
-IX_STATIC_CONST_STRING kIXMapType = @"map_type";
-IX_STATIC_CONST_STRING kIXZoomLevel = @"zoom_level";
-IX_STATIC_CONST_STRING kIXCenterLatitude = @"center.latitude";
-IX_STATIC_CONST_STRING kIXCenterLongitude = @"center.longitude";
+IX_STATIC_CONST_STRING kIXDataProviderID = @"datasource.id";
+IX_STATIC_CONST_STRING kIXShowsUserLocation = @"userLocation.enabled";
+IX_STATIC_CONST_STRING kIXShowsPointsOfInterest = @"pointsOfInterest.enabled";
+IX_STATIC_CONST_STRING kIXShowsBuildings = @"buildings.enabled";
+IX_STATIC_CONST_STRING kIXMapType = @"mapType";
+IX_STATIC_CONST_STRING kIXZoomLevel = @"zoom";
+IX_STATIC_CONST_STRING kIXCenterLatitude = @"center.lat";
+IX_STATIC_CONST_STRING kIXCenterLongitude = @"center.long";
 
-IX_STATIC_CONST_STRING kIXAnnotationImage = @"annotation.image";
-IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetX = @"annotation.image.center.offset.x";
-IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetY = @"annotation.image.center.offset.y";
+IX_STATIC_CONST_STRING kIXAnnotationImage = @"pin.image";
+IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetX = @"pin.centerOffset.x";
+IX_STATIC_CONST_STRING kIXAnnotationImageCenterOffsetY = @"pin.centerOffset.y";
 IX_STATIC_CONST_STRING kIXAnnotationTitle = @"annotation.title";
 IX_STATIC_CONST_STRING kIXAnnotationSubTitle = @"annotation.subtitle";
-IX_STATIC_CONST_STRING kIXAnnotationLatitude = @"annotation.latitude";
-IX_STATIC_CONST_STRING kIXAnnotationLongitude = @"annotation.longitude";
-IX_STATIC_CONST_STRING kIXAnnoationAccessoryLeftImage = @"annotation.accessory.left.image";
-IX_STATIC_CONST_STRING kIXAnnoationPinColor = @"annotation.pin.color";
-IX_STATIC_CONST_STRING kIXAnnoationPinAnimatesDrop = @"annotation.pin.animates_drop";
+IX_STATIC_CONST_STRING kIXAnnotationLatitude = @"pin.lat";
+IX_STATIC_CONST_STRING kIXAnnotationLongitude = @"pin.long";
+IX_STATIC_CONST_STRING kIXAnnoationAccessoryLeftImage = @"pin.leftImage";
+IX_STATIC_CONST_STRING kIXAnnoationPinColor = @"pin.color";
+IX_STATIC_CONST_STRING kIXAnnoationPinAnimatesDrop = @"animatePinDrop.enabled";
 
 // kIXMapType Accepted Values
 IX_STATIC_CONST_STRING kIXMapTypeStandard = @"standard";
@@ -61,12 +44,12 @@ IX_STATIC_CONST_STRING kIXAnnoationPinColorGreen = @"green";
 IX_STATIC_CONST_STRING kIXAnnoationPinColorPurple = @"purple";
 
 // IXMap Functions
-IX_STATIC_CONST_STRING kIXReloadAnnotations = @"reload_annotations";
-IX_STATIC_CONST_STRING kIXShowAllAnnotations = @"show_all_annotations";
+IX_STATIC_CONST_STRING kIXReloadAnnotations = @"refreshPins";
+IX_STATIC_CONST_STRING kIXShowAllAnnotations = @"showAllPins";
 
 // IXMap Events
 IX_STATIC_CONST_STRING kIXTouch = @"touch";
-IX_STATIC_CONST_STRING kIXTouchUp = @"touch_up";
+IX_STATIC_CONST_STRING kIXTouchUp = @"touchUp";
 
 // Reuseable Annotation Ident
 IX_STATIC_CONST_STRING kIXMapPinAnnotationIdentifier = @"kIXMapPinAnnotationIdentifier";
@@ -137,112 +120,6 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 @end
 
 @implementation IXMap
-
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param dataprovider_id Data Provider ID<br>*(string)*
-    @param shows_user_location Display user's location *(default: FALSE)*<br>*(bool)*
-    @param shows_points_of_interest Show points of interest *(default: TRUE)*<br>*(bool)*
-    @param shows_buildings Show buildings *(default: TRUE)*<br>*(bool)*
-    @param map_type Map type *(default: standard)*<br>*standard, satellite, hybrid*
-    @param zoom_level Default zoom level<br>*(int)*
-    @param center.latitude Center map on this latitude<br>*(float)*
-    @param center.longitude Center map on this longitude<br>*(float)*
-    @param annotation.image Custom pin image<br>*(string)*
-    @param annotation.image.center.offset.x Custom pin image offset X<br>*(float)*
-    @param annotation.image.center.offset.y Custom pin image offset Y<br>*(float)*
-    @param annotation.title Annotation title<br>*(string)*
-    @param annotation.subtitle Annotation subtitle<br>*(string)*
-    @param annotation.latitude Annotation latitude<br>*(float)*
-    @param annotation.longitude Annotation longitude<br>*(float)*
-    @param annotation.accessory.left.image Map type *(default: standard)*<br>*standard, satellite, hybrid*
-    @param annotation.pin.color Annotation pin color (when not using custom pin image) *(default: red)*<br>*red, green, purple*
-    @param annotation.pin.animates_drop Animate pins dropping from the sky *(default: TRUE)*<br>*(bool)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
-
-
-
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param touch Fires when an annotation is touched
-    @param touch_up Fires on annotation touch up inside
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param reload_annotations 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-    @param show_all_annotations 
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-<pre class="brush: js; toolbar: false;">
-
-</pre>
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
-
 
 -(void)dealloc
 {
