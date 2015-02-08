@@ -14,7 +14,7 @@
 #import "IXViewController.h"
 #import "IXNavigationViewController.h"
 #import "IXBaseControl.h"
-#import "IXView.h"
+#import "IXLayout.h"
 #import "IXPropertyContainer.h"
 #import "IXAlertAction.h"
 #import "IXLogger.h"

@@ -9,7 +9,7 @@
 #import "IXUITableViewCell.h"
 
 #import "IXCellBackgroundSwipeController.h"
-#import "IXView.h"
+#import "IXLayout.h"
 #import "IXProperty.h"
 #import "UIView+IXAdditions.h"
 
@@ -69,7 +69,7 @@
     [[self cellBackgroundSwipeController] setCellsStartingCenterXPosition:[self center].x];
 }
 
--(void)setLayoutControl:(IXView *)layoutControl
+-(void)setLayoutControl:(IXLayout *)layoutControl
 {
     [[_layoutControl contentView] removeFromSuperview];
     _layoutControl = layoutControl;
@@ -83,7 +83,7 @@
     [[self cellBackgroundSwipeController] setLayoutControl:_layoutControl];
 }
 
--(void)setBackgroundLayoutControl:(IXView *)backgroundLayoutControl
+-(void)setBackgroundLayoutControl:(IXLayout *)backgroundLayoutControl
 {
     [[_backgroundLayoutControl contentView] removeFromSuperview];
     _backgroundLayoutControl = backgroundLayoutControl;

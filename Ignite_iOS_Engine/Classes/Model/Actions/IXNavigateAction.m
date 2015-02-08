@@ -94,7 +94,7 @@
 #import "IXLogger.h"
 #import "IXSandbox.h"
 #import "IXCustomNavPushPopTransition.h"
-#import "IXView.h"
+#import "IXLayout.h"
 
 #import "MMDrawerController.h"
 

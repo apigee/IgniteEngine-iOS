@@ -21,7 +21,7 @@
 		13033F9B183ED8F200C29157 /* IXBaseControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F45183ED8F200C29157 /* IXBaseControl.m */; };
 		13033F9C183ED8F200C29157 /* IXBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F47183ED8F200C29157 /* IXBrowser.m */; };
 		13033F9D183ED8F200C29157 /* IXImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F49183ED8F200C29157 /* IXImage.m */; };
-		13033F9E183ED8F200C29157 /* IXView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4B183ED8F200C29157 /* IXView.m */; };
+		13033F9E183ED8F200C29157 /* IXLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4B183ED8F200C29157 /* IXLayout.m */; };
 		13033F9F183ED8F200C29157 /* IXMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4D183ED8F200C29157 /* IXMap.m */; };
 		13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4F183ED8F200C29157 /* IXMediaPlayer.m */; };
 		13033FA1183ED8F200C29157 /* IXMediaPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F51183ED8F200C29157 /* IXMediaPicker.m */; };
@@ -188,8 +188,8 @@
 		13033F47183ED8F200C29157 /* IXBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXBrowser.m; sourceTree = "<group>"; };
 		13033F48183ED8F200C29157 /* IXImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXImage.h; sourceTree = "<group>"; };
 		13033F49183ED8F200C29157 /* IXImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXImage.m; sourceTree = "<group>"; };
-		13033F4A183ED8F200C29157 /* IXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXView.h; sourceTree = "<group>"; };
-		13033F4B183ED8F200C29157 /* IXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXView.m; sourceTree = "<group>"; };
+		13033F4A183ED8F200C29157 /* IXLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLayout.h; sourceTree = "<group>"; };
+		13033F4B183ED8F200C29157 /* IXLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLayout.m; sourceTree = "<group>"; };
 		13033F4C183ED8F200C29157 /* IXMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMap.h; sourceTree = "<group>"; };
 		13033F4D183ED8F200C29157 /* IXMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMap.m; sourceTree = "<group>"; };
 		13033F4E183ED8F200C29157 /* IXMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMediaPlayer.h; sourceTree = "<group>"; };
@@ -583,6 +583,8 @@
 				63A10B2118AAD7E200130BEA /* IXDial.m */,
 				13033F48183ED8F200C29157 /* IXImage.h */,
 				13033F49183ED8F200C29157 /* IXImage.m */,
+				13033F4A183ED8F200C29157 /* IXLayout.h */,
+				13033F4B183ED8F200C29157 /* IXLayout.m */,
 				13033F4C183ED8F200C29157 /* IXMap.h */,
 				13033F4D183ED8F200C29157 /* IXMap.m */,
 				13033F50183ED8F200C29157 /* IXMediaPicker.h */,
@@ -613,8 +615,6 @@
 				13033F63183ED8F200C29157 /* IXToggle.m */,
 				1387A0C519CBA80600A85B04 /* IXTouchID.h */,
 				1387A0C619CBA80600A85B04 /* IXTouchID.m */,
-				13033F4A183ED8F200C29157 /* IXView.h */,
-				13033F4B183ED8F200C29157 /* IXView.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1197,7 +1197,7 @@
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
 				13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */,
 				63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */,
-				13033F9E183ED8F200C29157 /* IXView.m in Sources */,
+				13033F9E183ED8F200C29157 /* IXLayout.m in Sources */,
 				63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */,
 				63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */,
 			);

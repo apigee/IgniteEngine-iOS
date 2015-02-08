@@ -11,15 +11,15 @@
 #import "IXCellBackgroundSwipeController.h"
 
 @class IXDataRowDataProvider;
-@class IXView;
+@class IXLayout;
 @class IXSandbox;
 
 @protocol IXCellContainerDelegate <NSObject>
 
 @property (nonatomic,strong,readonly) IXCellBackgroundSwipeController* cellBackgroundSwipeController;
 @property (nonatomic,strong) IXSandbox* cellSandbox;
-@property (nonatomic,strong) IXView* layoutControl;
-@property (nonatomic,strong) IXView* backgroundLayoutControl;
+@property (nonatomic,strong) IXLayout* layoutControl;
+@property (nonatomic,strong) IXLayout* backgroundLayoutControl;
 @property (nonatomic,assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic,assign) BOOL adjustsBackgroundAlphaWithSwipe;
 
@@ -52,6 +52,6 @@
 
 -(CGSize)sizeForCellAtIndexPath:(NSIndexPath*)indexPath;
 -(void)configureCell:(id<IXCellContainerDelegate>)cell withIndexPath:(NSIndexPath*)indexPath;
--(IXView*)headerViewForSection:(NSInteger)section;
+-(IXLayout*)headerViewForSection:(NSInteger)section;
 
 @end

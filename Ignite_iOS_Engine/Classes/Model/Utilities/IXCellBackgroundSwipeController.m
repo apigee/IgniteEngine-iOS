@@ -8,7 +8,7 @@
 
 #import "IXCellBackgroundSwipeController.h"
 
-#import "IXView.h"
+#import "IXLayout.h"
 
 @interface IXCellBackgroundSwipeController () <UIGestureRecognizerDelegate>
 

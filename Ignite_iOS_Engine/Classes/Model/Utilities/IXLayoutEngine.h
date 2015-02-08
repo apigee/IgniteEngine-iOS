@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @class IXBaseControl;
-@class IXView;
+@class IXLayout;
 
 @interface IXLayoutEngine : NSObject
 
-+(void)layoutControl:(IXView*)layoutControl inRect:(CGRect)layoutRect;
++(void)layoutControl:(IXLayout*)layoutControl inRect:(CGRect)layoutRect;
 +(CGSize)getControlSize:(IXBaseControl*)control forLayoutSize:(CGSize)layoutSize;
-+(CGSize)getPreferredSizeForLayoutControl:(IXView*)layoutControl forSuggestedSize:(CGSize)suggestedSize;
++(CGSize)getPreferredSizeForLayoutControl:(IXLayout*)layoutControl forSuggestedSize:(CGSize)suggestedSize;
 +(CGRect)getInternalLayoutRectForControl:(IXBaseControl*)control forOuterLayoutRect:(CGRect)outerLayoutRect;
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class IXSandbox;
-@class IXView;
+@class IXLayout;
 @class IXPropertyContainer;
 @class IXActionContainer;
 @class IXTextInput;
@@ -20,7 +20,7 @@ typedef void(^IXViewControllerCreationCompletionBlock)(BOOL didSucceed, IXViewCo
 @interface IXViewController : UIViewController <NSCoding>
 
 @property (nonatomic,strong,readonly) IXSandbox* sandbox;
-@property (nonatomic,strong,readonly) IXView* containerControl;
+@property (nonatomic,strong,readonly) IXLayout* containerControl;
 
 /**
  *  Creates and loads a view controller configuring it and its containerControl 

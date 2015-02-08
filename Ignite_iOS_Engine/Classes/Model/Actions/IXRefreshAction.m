@@ -81,7 +81,7 @@
 #import "IXAppManager.h"
 #import "IXViewController.h"
 #import "IXNavigationViewController.h"
-#import "IXView.h"
+#import "IXLayout.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
 

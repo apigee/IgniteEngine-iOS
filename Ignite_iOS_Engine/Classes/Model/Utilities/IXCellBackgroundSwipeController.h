@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IXView;
+@class IXLayout;
 @class IXSandbox;
 
 @protocol IXCellBackgroundSwipeControllerDelegate <NSObject>
@@ -20,8 +20,8 @@
 
 @property (nonatomic,weak) id<IXCellBackgroundSwipeControllerDelegate> delegate;
 @property (nonatomic,weak) UIView* cellView;
-@property (nonatomic,weak) IXView* layoutControl;
-@property (nonatomic,weak) IXView* backgroundLayoutControl;
+@property (nonatomic,weak) IXLayout* layoutControl;
+@property (nonatomic,weak) IXLayout* backgroundLayoutControl;
 
 @property (nonatomic,assign) BOOL adjustsBackgroundAlphaWithSwipe;
 @property (nonatomic,assign) NSInteger cellsStartingCenterXPosition;

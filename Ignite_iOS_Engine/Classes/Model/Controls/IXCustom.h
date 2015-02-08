@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-#import "IXView.h"
+#import "IXLayout.h"
 
-@interface IXCustom : IXView
+@interface IXCustom : IXLayout
 
 @property (nonatomic,assign,getter = isFirstLoad) BOOL firstLoad;
 @property (nonatomic,strong) NSString* pathToJSON;

@@ -14,7 +14,7 @@
 #import "IXSandbox.h"
 #import "IXViewController.h"
 #import "IXAppManager.h"
-#import "IXView.h"
+#import "IXLayout.h"
 
 @implementation IXGetShortCode
 
@@ -29,11 +29,11 @@
         propertyName = [parameterProperty getPropertyValue];
     }
     
-    if( [[self objectID] isEqualToString:kIX_SESSION] )
+    if( [[self objectID] isEqualToString:@"session"] )
     {
         returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }
-    else if( [[self objectID] isEqualToString:kIX_CONTROLLER] )
+    else if( [[self objectID] isEqualToString:@"view"] )
     {
         IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
         IXViewController* viewController = [sandbox viewController];
