@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-#import "IXMediaSource.h"
+#import "IXMediaPicker.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
@@ -40,7 +40,7 @@ IX_STATIC_CONST_STRING kIXPresent = @"present";
 // IXMediaSource Returns
 IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
 
-@interface  IXMediaSource() <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface  IXMediaPicker() <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic,strong) NSString* sourceTypeString;
 @property (nonatomic,strong) NSString* cameraDeviceString;
@@ -52,7 +52,7 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
 
 @end
 
-@implementation IXMediaSource
+@implementation IXMediaPicker
 
 -(void)dealloc
 {

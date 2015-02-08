@@ -19,7 +19,7 @@
 /** Plays sound. That's about it.
 */
 
-#import "IXSound.h"
+#import "IXAudioPlayer.h"
 
 @import AVFoundation.AVAudioPlayer;
 
@@ -49,7 +49,7 @@ static NSString* const kIXPlay = @"play";
 static NSString* const kIXPause = @"pause";
 static NSString* const kIXStop = @"stop";
 
-@interface IXSound () <AVAudioPlayerDelegate>
+@interface IXAudioPlayer () <AVAudioPlayerDelegate>
 
 @property (nonatomic,strong) AVAudioPlayer* audioPlayer;
 
@@ -63,7 +63,7 @@ static NSString* const kIXStop = @"stop";
 
 @end
 
-@implementation IXSound
+@implementation IXAudioPlayer
 
 /*
 * Docs

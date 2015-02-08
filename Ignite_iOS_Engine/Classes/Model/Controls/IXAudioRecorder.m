@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-#import "IXSoundRecorder.h"
+#import "IXAudioRecorder.h"
 
 @import AVFoundation.AVAudioSession;
 @import AVFoundation.AVAudioRecorder;
@@ -37,7 +37,7 @@ static NSString* const kIXStopRecording = @"stop";
 // kIX_FINISHED -> Fires when the recording has finished.
 // kIX_ERROR    -> Fires when the sound recorder control throws an error when "record_permission_granted" is false as well as when "record_to_location" is an invalid path.
 
-@interface IXSoundRecorder () <AVAudioRecorderDelegate>
+@interface IXAudioRecorder () <AVAudioRecorderDelegate>
 
 @property (nonatomic,assign,readonly) BOOL recordPermissionGranted;
 @property (nonatomic,strong) NSString* lastErrorMessage;
@@ -48,7 +48,7 @@ static NSString* const kIXStopRecording = @"stop";
 
 @end
 
-@implementation IXSoundRecorder
+@implementation IXAudioRecorder
 
 -(void)dealloc
 {

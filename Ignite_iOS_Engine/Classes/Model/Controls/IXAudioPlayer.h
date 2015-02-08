@@ -8,6 +8,6 @@
 
 #import "IXBaseControl.h"
 
-@interface IXSound : IXBaseControl
+@interface IXAudioPlayer : IXBaseControl
 
 @end

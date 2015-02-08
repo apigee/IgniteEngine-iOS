@@ -24,7 +24,7 @@
 		13033F9E183ED8F200C29157 /* IXLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4B183ED8F200C29157 /* IXLayout.m */; };
 		13033F9F183ED8F200C29157 /* IXMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4D183ED8F200C29157 /* IXMap.m */; };
 		13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4F183ED8F200C29157 /* IXMediaPlayer.m */; };
-		13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F51183ED8F200C29157 /* IXMediaSource.m */; };
+		13033FA1183ED8F200C29157 /* IXMediaPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F51183ED8F200C29157 /* IXMediaPicker.m */; };
 		13033FA2183ED8F200C29157 /* IXMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F53183ED8F200C29157 /* IXMessage.m */; };
 		13033FA4183ED8F200C29157 /* IXScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F57183ED8F200C29157 /* IXScanner.m */; };
 		13033FA5183ED8F200C29157 /* IXSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F59183ED8F200C29157 /* IXSocial.m */; };
@@ -111,7 +111,7 @@
 		6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */; };
 		639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 639A53181A227ED800640C89 /* NSURL+IXAdditions.m */; };
 		63A10B2218AAD7E200130BEA /* IXDial.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2118AAD7E200130BEA /* IXDial.m */; };
-		63A10B3018AAF9D900130BEA /* IXSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXSound.m */; };
+		63A10B3018AAF9D900130BEA /* IXAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A10B2F18AAF9D900130BEA /* IXAudioPlayer.m */; };
 		63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */; };
 		63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */; };
 		63A812631A16CFBE00311B10 /* IXPassKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A812621A16CFBE00311B10 /* IXPassKit.m */; };
@@ -130,7 +130,7 @@
 		63CC9A5A18B7F06200ECCECB /* IXBaseControlConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9A5918B7F06200ECCECB /* IXBaseControlConfig.m */; };
 		63CC9AB118BD0BB000ECCECB /* IXWeakTimerTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */; };
 		63CC9AB418BD0BD700ECCECB /* IXGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB318BD0BD700ECCECB /* IXGIFImageView.m */; };
-		63CC9AB918BD12C200ECCECB /* IXSoundRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB818BD12C200ECCECB /* IXSoundRecorder.m */; };
+		63CC9AB918BD12C200ECCECB /* IXAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9AB818BD12C200ECCECB /* IXAudioRecorder.m */; };
 		63CC9ABC18BD1D8700ECCECB /* IXPathHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */; };
 		63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABE18BE8AB600ECCECB /* IXLogger.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
@@ -194,8 +194,8 @@
 		13033F4D183ED8F200C29157 /* IXMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMap.m; sourceTree = "<group>"; };
 		13033F4E183ED8F200C29157 /* IXMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMediaPlayer.h; sourceTree = "<group>"; };
 		13033F4F183ED8F200C29157 /* IXMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMediaPlayer.m; sourceTree = "<group>"; };
-		13033F50183ED8F200C29157 /* IXMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMediaSource.h; sourceTree = "<group>"; };
-		13033F51183ED8F200C29157 /* IXMediaSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMediaSource.m; sourceTree = "<group>"; };
+		13033F50183ED8F200C29157 /* IXMediaPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMediaPicker.h; sourceTree = "<group>"; };
+		13033F51183ED8F200C29157 /* IXMediaPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMediaPicker.m; sourceTree = "<group>"; };
 		13033F52183ED8F200C29157 /* IXMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMessage.h; sourceTree = "<group>"; };
 		13033F53183ED8F200C29157 /* IXMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMessage.m; sourceTree = "<group>"; };
 		13033F56183ED8F200C29157 /* IXScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXScanner.h; sourceTree = "<group>"; };
@@ -344,8 +344,8 @@
 		639A53181A227ED800640C89 /* NSURL+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+IXAdditions.m"; sourceTree = "<group>"; };
 		63A10B2018AAD7E200130BEA /* IXDial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDial.h; sourceTree = "<group>"; };
 		63A10B2118AAD7E200130BEA /* IXDial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDial.m; sourceTree = "<group>"; };
-		63A10B2E18AAF9D900130BEA /* IXSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSound.h; sourceTree = "<group>"; };
-		63A10B2F18AAF9D900130BEA /* IXSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSound.m; sourceTree = "<group>"; };
+		63A10B2E18AAF9D900130BEA /* IXAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAudioPlayer.h; sourceTree = "<group>"; };
+		63A10B2F18AAF9D900130BEA /* IXAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAudioPlayer.m; sourceTree = "<group>"; };
 		63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXFileDataProvider.h; sourceTree = "<group>"; };
 		63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFileDataProvider.m; sourceTree = "<group>"; };
@@ -380,8 +380,8 @@
 		63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXWeakTimerTarget.m; sourceTree = "<group>"; };
 		63CC9AB218BD0BD700ECCECB /* IXGIFImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXGIFImageView.h; sourceTree = "<group>"; };
 		63CC9AB318BD0BD700ECCECB /* IXGIFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXGIFImageView.m; sourceTree = "<group>"; };
-		63CC9AB718BD12C200ECCECB /* IXSoundRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSoundRecorder.h; sourceTree = "<group>"; };
-		63CC9AB818BD12C200ECCECB /* IXSoundRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSoundRecorder.m; sourceTree = "<group>"; };
+		63CC9AB718BD12C200ECCECB /* IXAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAudioRecorder.h; sourceTree = "<group>"; };
+		63CC9AB818BD12C200ECCECB /* IXAudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAudioRecorder.m; sourceTree = "<group>"; };
 		63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPathHandler.h; sourceTree = "<group>"; };
 		63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPathHandler.m; sourceTree = "<group>"; };
 		63CC9ABD18BE8AB600ECCECB /* IXLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLogger.h; sourceTree = "<group>"; };
@@ -557,6 +557,10 @@
 				635F0DFF1979B695002C0DBA /* IXAddressBook.m */,
 				CAEB7E0618D26437005E1A2F /* IXAttributedText.h */,
 				CAEB7E0718D26437005E1A2F /* IXAttributedText.m */,
+				63A10B2E18AAF9D900130BEA /* IXAudioPlayer.h */,
+				63A10B2F18AAF9D900130BEA /* IXAudioPlayer.m */,
+				63CC9AB718BD12C200ECCECB /* IXAudioRecorder.h */,
+				63CC9AB818BD12C200ECCECB /* IXAudioRecorder.m */,
 				13033F44183ED8F200C29157 /* IXBaseControl.h */,
 				13033F45183ED8F200C29157 /* IXBaseControl.m */,
 				13033F46183ED8F200C29157 /* IXBrowser.h */,
@@ -583,10 +587,10 @@
 				13033F4B183ED8F200C29157 /* IXLayout.m */,
 				13033F4C183ED8F200C29157 /* IXMap.h */,
 				13033F4D183ED8F200C29157 /* IXMap.m */,
+				13033F50183ED8F200C29157 /* IXMediaPicker.h */,
+				13033F51183ED8F200C29157 /* IXMediaPicker.m */,
 				13033F4E183ED8F200C29157 /* IXMediaPlayer.h */,
 				13033F4F183ED8F200C29157 /* IXMediaPlayer.m */,
-				13033F50183ED8F200C29157 /* IXMediaSource.h */,
-				13033F51183ED8F200C29157 /* IXMediaSource.m */,
 				13033F52183ED8F200C29157 /* IXMessage.h */,
 				13033F53183ED8F200C29157 /* IXMessage.m */,
 				63A812611A16CFBE00311B10 /* IXPassKit.h */,
@@ -597,10 +601,6 @@
 				6366D6DF18A95A7A000AEEA5 /* IXSlider.m */,
 				13033F58183ED8F200C29157 /* IXSocial.h */,
 				13033F59183ED8F200C29157 /* IXSocial.m */,
-				63A10B2E18AAF9D900130BEA /* IXSound.h */,
-				63A10B2F18AAF9D900130BEA /* IXSound.m */,
-				63CC9AB718BD12C200ECCECB /* IXSoundRecorder.h */,
-				63CC9AB818BD12C200ECCECB /* IXSoundRecorder.m */,
 				634EE0961982D16F00C08FCD /* IXSpeech.h */,
 				634EE0971982D16F00C08FCD /* IXSpeech.m */,
 				13033F5A183ED8F200C29157 /* IXTableView.h */,
@@ -1144,10 +1144,10 @@
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
 				CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */,
 				63F0B1D019DB29DA0061D870 /* IXAFHTTPRequestOperationLogger.m in Sources */,
-				63A10B3018AAF9D900130BEA /* IXSound.m in Sources */,
+				63A10B3018AAF9D900130BEA /* IXAudioPlayer.m in Sources */,
 				634895061863637A008C3760 /* UILabel+IXAdditions.m in Sources */,
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
-				63CC9AB918BD12C200ECCECB /* IXSoundRecorder.m in Sources */,
+				63CC9AB918BD12C200ECCECB /* IXAudioRecorder.m in Sources */,
 				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
 				CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */,
 				CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */,
@@ -1193,7 +1193,7 @@
 				13033FA7183ED8F200C29157 /* IXText.m in Sources */,
 				1387A0C719CBA80600A85B04 /* IXTouchID.m in Sources */,
 				CA5021E718E3DE4500FC1FF6 /* IXAnimateAction.m in Sources */,
-				13033FA1183ED8F200C29157 /* IXMediaSource.m in Sources */,
+				13033FA1183ED8F200C29157 /* IXMediaPicker.m in Sources */,
 				13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */,
 				13033FAF183ED8F200C29157 /* IXSandbox.m in Sources */,
 				63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */,

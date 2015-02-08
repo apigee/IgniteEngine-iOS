@@ -8,6 +8,6 @@
 
 #import "IXBaseControl.h"
 
-@interface IXMediaSource : IXBaseControl
+@interface IXMediaPicker : IXBaseControl
 
 @end
