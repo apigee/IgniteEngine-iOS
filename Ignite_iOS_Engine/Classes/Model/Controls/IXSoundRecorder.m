@@ -6,20 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Record audio from the device microphone.
-*/
-
-
 #import "IXSoundRecorder.h"
 
 @import AVFoundation.AVAudioSession;
