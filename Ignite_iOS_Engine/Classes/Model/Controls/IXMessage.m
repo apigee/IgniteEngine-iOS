@@ -6,19 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Send an email or SMS/iMessage.
-*/
-
 #import "IXMessage.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
@@ -27,6 +14,18 @@
 #import "UIViewController+IXAdditions.h"
 
 #import <MessageUI/MessageUI.h>
+
+IX_STATIC_CONST_STRING kIXBcc = @"bcc";
+IX_STATIC_CONST_STRING kIXBody = @"body";
+IX_STATIC_CONST_STRING kIXCc = @"cc";
+IX_STATIC_CONST_STRING kIXTo = @"to";
+IX_STATIC_CONST_STRING kIXSubject = @"subject";
+IX_STATIC_CONST_STRING kIXType = @"type";
+IX_STATIC_CONST_STRING kIXCancelled = @"cancelled";
+IX_STATIC_CONST_STRING kIXError = @"error";
+IX_STATIC_CONST_STRING kIXSuccess = @"success";
+IX_STATIC_CONST_STRING kIXPresentEmail = @"present.email";
+IX_STATIC_CONST_STRING kIXPresentSms = @"present.sms";
 
 @interface  IXMessage () <MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
 
@@ -42,144 +41,6 @@
 @end
 
 @implementation IXMessage
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param message.type The type of message to create<br>*textemail*
-    @param message.to Send message to? (Email/Phone/iMessage address)<br>*(string)*
-    @param message.cc Send a copy to?<br>*(string)*
-    @param message.bcc Blind copy to? (Email)<br>*(string)*
-    @param message.subject Message subject (Email)<br>*(string)*
-    @param message.body Message body (Email/Text)<br>*(string)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param message_cancelled Fires when the file is inaccessible
-    @param message_failed Fires when the message fails to send
-    @param message_sent Fires on message send success
- 
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param present_text_message_controller 
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "messageTest",
-    "function_name": "present_text_message_controller"
-  }
-}
- 
- </pre>
-
-    @param present_email_controller 
- 
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "messageTest",
-    "function_name": "present_email_controller"
-  }
-}
- 
-
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "messageTest",
-  "_type": "Message",
-  "actions": [
-    {
-      "on": "message_sent",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Message sent!"
-      }
-    },
-    {
-      "on": "message_cancelled",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Message cancelled!"
-      }
-    }
-  ],
-  "attributes": {
-    "message.type": "text",
-    "message.to": "555-867-5309"
-  }
-}
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
@@ -199,16 +60,16 @@
 {
     [super applySettings];
     
-    [self setMessageSubject:[[self propertyContainer] getStringPropertyValue:@"message.subject" defaultValue:nil]];
-    [self setMessageBody:[[self propertyContainer] getStringPropertyValue:@"message.body" defaultValue:nil]];
-    [self setMessageToRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:@"message.to" defaultValue:nil]];
-    [self setMessageCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:@"message.cc" defaultValue:nil]];
-    [self setMessageBCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:@"message.bcc" defaultValue:nil]];
+    [self setMessageSubject:[[self propertyContainer] getStringPropertyValue:kIXSubject defaultValue:nil]];
+    [self setMessageBody:[[self propertyContainer] getStringPropertyValue:kIXBody defaultValue:nil]];
+    [self setMessageToRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTo defaultValue:nil]];
+    [self setMessageCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXCc defaultValue:nil]];
+    [self setMessageBCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBcc defaultValue:nil]];
 }
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
-    if( [functionName isEqualToString:@"present_email_controller"] )
+    if( [functionName isEqualToString:kIXPresentEmail] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
@@ -216,7 +77,7 @@
         }
         [self presentEmailController:animated];
     }
-    else if( [functionName isEqualToString:@"present_text_message_controller"] )
+    else if( [functionName isEqualToString:kIXPresentSms] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
@@ -287,13 +148,13 @@
     switch (result)
     {
         case MessageComposeResultCancelled:
-            [[self actionContainer] executeActionsForEventNamed:@"message_cancelled"];
+            [[self actionContainer] executeActionsForEventNamed:kIXCancelled];
             break;
         case MessageComposeResultFailed:
-            [[self actionContainer] executeActionsForEventNamed:@"message_failed"];
+            [[self actionContainer] executeActionsForEventNamed:kIXError];
             break;
         case MessageComposeResultSent:
-            [[self actionContainer] executeActionsForEventNamed:@"message_sent"];
+            [[self actionContainer] executeActionsForEventNamed:kIXSuccess];
             break;
         default:
             break;
@@ -306,13 +167,13 @@
     switch (result)
     {
         case MFMailComposeResultCancelled:
-            [[self actionContainer] executeActionsForEventNamed:@"message_cancelled"];
+            [[self actionContainer] executeActionsForEventNamed:kIXCancelled];
             break;
         case MFMailComposeResultFailed:
-            [[self actionContainer] executeActionsForEventNamed:@"message_failed"];
+            [[self actionContainer] executeActionsForEventNamed:kIXError];
             break;
         case MFMailComposeResultSent:
-            [[self actionContainer] executeActionsForEventNamed:@"message_sent"];
+            [[self actionContainer] executeActionsForEventNamed:kIXSuccess];
             break;
         default:
             break;
