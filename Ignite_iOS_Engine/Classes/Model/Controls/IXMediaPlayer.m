@@ -6,25 +6,38 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Plays media.. audio, video, you name it.
-*/
-
 #import "IXMediaPlayer.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
-
 #import "ALMoviePlayerController.h"
+
+// IXMediaPlayer Attributes
+IX_STATIC_CONST_STRING kIXAutoPlayEnabled = @"autoPlay.enabled";
+IX_STATIC_CONST_STRING kIXBarColor = @"bar.color";
+IX_STATIC_CONST_STRING kIXBarSize = @"bar.size.h";
+IX_STATIC_CONST_STRING kIXPlayerControls = @"playerControls"; //default
+IX_STATIC_CONST_STRING kIXVideoUrl = @"videoUrl";
+
+// IXMediaPlayer Attribute Values
+IX_STATIC_CONST_STRING kIXDefault = @"default";
+IX_STATIC_CONST_STRING kIXEmbedded = @"embedded";
+IX_STATIC_CONST_STRING kIXFullscreen = @"fullscreen";
+IX_STATIC_CONST_STRING kIXNone = @"none";
+
+// IXMediaPlayer Events
+IX_STATIC_CONST_STRING kIXPlaybackStopped = @"playbackStopped";
+IX_STATIC_CONST_STRING kIXPlaybackTimedOut = @"playbackTimedOut";
+IX_STATIC_CONST_STRING kIXTouchUp = @"touchUp";
+
+// IXMediaPlayer Functions
+IX_STATIC_CONST_STRING kIXPause = @"pause";
+IX_STATIC_CONST_STRING kIXPlay = @"play";
+IX_STATIC_CONST_STRING kIXStop = @"stop";
+IX_STATIC_CONST_STRING kIXGoTo = @"goTo";
+
+// IXMediaPlayer Function parameters
+IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 
 @interface  IXMediaPlayer() <ALMoviePlayerControllerDelegate>
 
@@ -37,113 +50,6 @@
 @end
 
 @implementation IXMediaPlayer
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param controls Style of controls to use<br>*embeddedfullscreennone*
-    @param bar.color Color of the player UI<br>*(color)*
-    @param bar.height Height of the player UI<br>*(float)*
-    @param video URL or /path/to/video.mov<br>*(string)*
-    @param auto_play Automatically play?<br>*(bool)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param movie_timed_out Fires when the file is inaccessible
-    @param movie_stopped Fires on touch
-    @param touch_up Fires on touch up inside
- 
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
-    @param play Play media file
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-    @param pause Pause media file
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-    @param stop Stop media file
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-
-    @param goto Go to time
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
@@ -190,16 +96,16 @@
     [super applySettings];
     
     ALMoviePlayerControls* movieControls = [[self moviePlayer] controls];
-    NSString* controlsStyle = [[self propertyContainer] getStringPropertyValue:@"controls" defaultValue:kIX_DEFAULT];
-    if( [controlsStyle isEqualToString:@"embedded"] )
+    NSString* controlsStyle = [[self propertyContainer] getStringPropertyValue:kIXPlayerControls defaultValue:kIX_DEFAULT];
+    if( [controlsStyle isEqualToString:kIXEmbedded] )
     {
         [movieControls setStyle:ALMoviePlayerControlsStyleEmbedded];
     }
-    else if( [controlsStyle isEqualToString:@"fullscreen"] )
+    else if( [controlsStyle isEqualToString:kIXFullscreen] )
     {
         [movieControls setStyle:ALMoviePlayerControlsStyleFullscreen];
     }
-    else if( [controlsStyle isEqualToString:@"none"] )
+    else if( [controlsStyle isEqualToString:kIXNone] )
     {
         [movieControls setStyle:ALMoviePlayerControlsStyleNone];
     }
@@ -209,8 +115,8 @@
     }
     
     //[movieControls setAdjustsFullscreenImage:NO];
-    [movieControls setBarColor:[[self propertyContainer] getColorPropertyValue:@"bar.color" defaultValue:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]]];
-    [movieControls setBarHeight:[[self propertyContainer] getFloatPropertyValue:@"bar.height" defaultValue:30.0f]];
+    [movieControls setBarColor:[[self propertyContainer] getColorPropertyValue:kIXBarColor defaultValue:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]]];
+    [movieControls setBarHeight:[[self propertyContainer] getFloatPropertyValue:kIXBarSize defaultValue:30.0f]];
     [movieControls setTimeRemainingDecrements:YES];
     //[movieControls setFadeDelay:2.0];
     //[movieControls setBarHeight:100.f];
@@ -230,14 +136,14 @@
     });
     
     //THEN set contentURL
-    [self setMovieURL:[[self propertyContainer] getURLPathPropertyValue:@"video" basePath:nil defaultValue:nil]];
+    [self setMovieURL:[[self propertyContainer] getURLPathPropertyValue:kIXVideoUrl basePath:nil defaultValue:nil]];
     
     if( ![[[[self moviePlayer] contentURL] absoluteString] isEqualToString:[[self movieURL] absoluteString]] )
     {
         [[self moviePlayer] setContentURL:[self movieURL]];
     }
     
-    BOOL autoPlay = [[self propertyContainer] getBoolPropertyValue:@"auto_play" defaultValue:YES];
+    BOOL autoPlay = [[self propertyContainer] getBoolPropertyValue:kIXAutoPlayEnabled defaultValue:YES];
     if( autoPlay )
     {
         if( [[self moviePlayer] playbackState] != MPMoviePlaybackStatePlaying )
@@ -258,7 +164,7 @@
 
 -(void)movieTimedOut
 {
-    [[self actionContainer] executeActionsForEventNamed:@"movie_timed_out"];
+    [[self actionContainer] executeActionsForEventNamed:kIXPlaybackTimedOut];
 }
 
 -(void)moviePlaybackStopped
@@ -266,7 +172,7 @@
     if( ![self didFireStopped] )
     {
         [self setDidFireStopped:YES];
-        [[self actionContainer] executeActionsForEventNamed:@"movie_stopped"];
+        [[self actionContainer] executeActionsForEventNamed:kIXPlaybackStopped];
     }
 }
 
@@ -288,7 +194,7 @@
 
 -(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
 {
-    if( [functionName compare:@"play"] == NSOrderedSame )
+    if( [functionName compare:kIXPlay] == NSOrderedSame )
     {
         if( ![[[[self moviePlayer] contentURL] absoluteString] isEqualToString:[[self movieURL] absoluteString]] )
         {
@@ -296,17 +202,17 @@
         }        
         [[self moviePlayer] play];
     }
-    else if( [functionName compare:@"pause"] == NSOrderedSame )
+    else if( [functionName compare:kIXPause] == NSOrderedSame )
     {
         [[self moviePlayer] pause];
     }
-    else if( [functionName compare:@"stop"] == NSOrderedSame )
+    else if( [functionName compare:kIXStop] == NSOrderedSame )
     {
         [[self moviePlayer] stop];
     }
-    else if( [functionName compare:@"goto"] == NSOrderedSame )
+    else if( [functionName compare:kIXGoTo] == NSOrderedSame )
     {
-        float seconds = [parameterContainer getFloatPropertyValue:@"seconds" defaultValue:[[self moviePlayer] currentPlaybackTime]];
+        float seconds = [parameterContainer getFloatPropertyValue:kIXGoToSeconds defaultValue:[[self moviePlayer] currentPlaybackTime]];
         if( [[self moviePlayer] playbackState] != MPMoviePlaybackStatePlaying )
         {
             [[self moviePlayer] setInitialPlaybackTime:seconds];
