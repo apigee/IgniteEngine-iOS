@@ -32,20 +32,20 @@
 #import "IXLogger.h"
 
 // IXSoundRecorder Properties
-static NSString* const kIXRecordToLocation = @"record_to_location";
+static NSString* const kIXRecordToLocation = @"savePath";
 static NSString* const kIXDuration = @"duration";
 
 // IXSoundRecorder Read-Only Properties
-static NSString* const kIXRecordPermissionGranted = @"record_permission_granted";
-static NSString* const kIXLastErrorMessage = @"last_error_message";
-static NSString* const kIXCurrentTime = @"current_time";
-static NSString* const kIXIsRecording = @"is_recording";
+static NSString* const kIXRecordPermissionGranted = @"isAllowed";
+static NSString* const kIXLastErrorMessage = @"error.message";
+static NSString* const kIXCurrentTime = @"now";
+static NSString* const kIXIsRecording = @"isRecording";
 
 // IXSoundRecorder Functions
-static NSString* const kIXStartRecording = @"start_recording";
-static NSString* const kIXPauseRecording = @"pause_recording";
-static NSString* const kIXResumeRecording = @"resume_recording";
-static NSString* const kIXStopRecording = @"stop_recording";
+static NSString* const kIXStartRecording = @"start";
+static NSString* const kIXPauseRecording = @"pause";
+static NSString* const kIXResumeRecording = @"resume";
+static NSString* const kIXStopRecording = @"stop";
 
 // IXSoundRecorder Events
 // kIX_FINISHED -> Fires when the recording has finished.
@@ -63,168 +63,6 @@ static NSString* const kIXStopRecording = @"stop_recording";
 @end
 
 @implementation IXSoundRecorder
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param record_to_location /path/to/save/recording.mp3<br>*(string)*
-    @param duration (!) Not sure.. *(default: -1)*<br>*(float)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param record_permission_granted Has the user granted access to the microphone?<br>*(bool)*
- @param is_recording Are we recording?<br>*(bool)*
- @param current_time Current duration of recording<br>*(float)*
- @param last_error_message Whoopsie?<br>*(string)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param finished Fires when the recording is finished
-    @param error Fires when an error occurs
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
- @param start_recording
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundRecorderTest",
-    "function_name": "start_recording"
-  }
-}
- 
- </pre>
- 
- @param pause_recording
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundRecorderTest",
-    "function_name": "pause_recording"
-  }
-}
- 
- </pre>
- 
- @param resume_recording
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundRecorderTest",
-    "function_name": "resume_recording"
-  }
-}
- 
- </pre>
- 
- @param stop_recording
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundRecorderTest",
-    "function_name": "stop_recording"
-  }
-} 
- 
- </pre>
-
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "soundRecorderTest",
-  "_type": "SoundRecorder",
-  "actions": [
-    {
-      "on": "finished",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Finished",
-        "message": "Recorded sound: [[$self.record_to_location]]"
-      }
-    }
-  ],
-  "attributes": {
-    "record_to_location": "docs://recording.mp3"
-  }
-}
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
