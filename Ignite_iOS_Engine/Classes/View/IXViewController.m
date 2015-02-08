@@ -19,6 +19,27 @@
 #import "IXPathHandler.h"
 #import "IXControlCacheContainer.h"
 
+// Attributes
+IX_STATIC_CONST_STRING kIXStatusBarStyle = @"statusBar.style";
+IX_STATIC_CONST_STRING kIXBgColor = @"bg.color";
+
+// Attribute values
+IX_STATIC_CONST_STRING kIXStatusBarStyleDark = @"dark";
+IX_STATIC_CONST_STRING kIXStatusBarStyleLight = @"light";
+IX_STATIC_CONST_STRING kIXStatusBarStyleHidden = @"hidden";
+
+// Events
+IX_STATIC_CONST_STRING kIXWillFirstAppear = @"willFirstAppear";
+IX_STATIC_CONST_STRING kIXWillAppear = @"willAppear";
+IX_STATIC_CONST_STRING kIXDidAppear = @"didAppear";
+IX_STATIC_CONST_STRING kIXWillDisappear = @"willDisappear";
+IX_STATIC_CONST_STRING kIXDidDisappear = @"didDisappear";
+
+// Functions
+IX_STATIC_CONST_STRING kIXStateSave = @"state.save";
+IX_STATIC_CONST_STRING kIXStateClear = @"state.clear";
+IX_STATIC_CONST_STRING kIXCacheId = @"cacheId";
+
 // NSCoding Key Constants
 static NSString* const kIXSandboxNSCodingKey = @"sandbox";
 static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
@@ -136,31 +157,31 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
     {
         [self setHasAppeared:YES];
         [[self sandbox] loadAllDataProviders];
-        [self fireViewEventNamed:@"will_first_appear"];
+        [self fireViewEventNamed:kIXWillFirstAppear];
     }
     
-    [self fireViewEventNamed:@"will_appear"];
+    [self fireViewEventNamed:kIXWillAppear];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self fireViewEventNamed:@"did_appear"];
+    [self fireViewEventNamed:kIXDidAppear];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self fireViewEventNamed:@"will_disappear"];
+    [self fireViewEventNamed:kIXWillDisappear];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
  
-    [self fireViewEventNamed:@"did_disappear"];
+    [self fireViewEventNamed:kIXDidDisappear];
 }
 
 //- (void) viewDidLayoutSubviews {
@@ -204,14 +225,14 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 -(void)applyViewControllerSpecificSettings
 {
     IXPropertyContainer* propertyContainer = [[self containerControl] propertyContainer];
-    NSString* statusBarStyle = [propertyContainer getStringPropertyValue:@"status_bar_style" defaultValue:@"dark"];
+    NSString* statusBarStyle = [propertyContainer getStringPropertyValue:kIXStatusBarStyle defaultValue:kIXStatusBarStyleDark];
     if( ![[self statusBarPreferredStyleString] isEqualToString:statusBarStyle] )
     {
         [self setStatusBarPreferredStyleString:statusBarStyle];
         [self setNeedsStatusBarAppearanceUpdate];
     }
     
-    UIColor* backgroundColor = [propertyContainer getColorPropertyValue:@"background.color" defaultValue:[UIColor clearColor]];
+    UIColor* backgroundColor = [propertyContainer getColorPropertyValue:kIXBgColor defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
 }
 
@@ -223,7 +244,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-    if( [functionName isEqualToString:@"save_state"] )
+    if( [functionName isEqualToString:kIXStateSave] )
     {
         NSString* viewID = [[self containerControl] ID];
         if( [viewID length] > 0 )
@@ -236,9 +257,9 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
             }
         }
     }
-    else if( [functionName isEqualToString:@"clear_saved_state"] )
+    else if( [functionName isEqualToString:kIXStateClear] )
     {
-        NSString* viewID = [parameterContainer getStringPropertyValue:@"cache_id" defaultValue:nil];
+        NSString* viewID = [parameterContainer getStringPropertyValue:kIXCacheId defaultValue:nil];
         if( viewID != nil )
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:viewID];
@@ -250,7 +271,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 -(UIStatusBarStyle)preferredStatusBarStyle
 {
     UIStatusBarStyle preferredStatusBarStyle = UIStatusBarStyleDefault;
-    if( [[self statusBarPreferredStyleString] isEqualToString:@"light"] )
+    if( [[self statusBarPreferredStyleString] isEqualToString:kIXStatusBarStyleLight] )
     {
         preferredStatusBarStyle = UIStatusBarStyleLightContent;
     }
@@ -259,7 +280,7 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 
 -(BOOL)prefersStatusBarHidden
 {
-    return ( [[self statusBarPreferredStyleString] isEqualToString:@"hidden"] );
+    return ( [[self statusBarPreferredStyleString] isEqualToString:kIXStatusBarStyleHidden] );
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
