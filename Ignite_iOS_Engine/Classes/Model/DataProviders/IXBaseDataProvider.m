@@ -59,7 +59,7 @@ IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 // IXBaseDataProvider Functions
 IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data providers kIXCacheID.
 IX_STATIC_CONST_STRING kIXDeleteCookies = @"deleteCookies"; // kIXCookieURL is the parameter for this function.
-IX_STATIC_CONST_STRING kIXCookieURL = @"cookie.url";
+IX_STATIC_CONST_STRING kIXCookieURL = @"cookie.url"; // Parameter on deleteCookies
 
 // IXBaseDataProvider Events
 IX_STATIC_CONST_STRING kIXStarted = @"began";
