@@ -13,7 +13,7 @@
             "apigee_app_id": "***APIGEE_APP_ID***", 
             "apigee_org_id": "***APIGEE_ORG_ID***", 
             "apigee_push_notifier": "***APIGEE_PUSH_NOTIFIER***", 
-            "default_view": "IXButton.json", 
+            "view.index": "IXButton.json", 
             "drawer.view.left": "menu.json", 
             "enable_layout_debugging": false, 
             "enable_request_logging": true, 
