@@ -6,109 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- 
- ###    Native iOS UI control that displays a menu from the bottom of the screen.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ##  <a name="attributes">Attributes</a>
- 
- | Name                       | Type                           | Description                                                        | Default |
- |----------------------------|--------------------------------|--------------------------------------------------------------------|---------|
- | data.baseurl               | *(string)*                     | http:// or /baseurl Base URL of the data location                  |         |
- | data.path                  | *(string)*                     | /path/to/data.json                                                 |         |
- | auto_load                  | *(bool)*                       | Automatically fetch data?                                          | true    |
- | cache_id                   | *(string)*                     | If defined, data will be cached                                    |         |
- | http_method                | *GET<br>POST<br>PUT<br>DELETE* | HTTP Method                                                        | GET     |
- | http_body                  | *(string)*                     | Raw HTTP Body to send                                              |         |
- | basic.username             | *(string)*                     | Username when using Basic Auth                                     |         |
- | basic.password             | *(string)*                     | Password when using Basic Auth                                     |         |
- | parameter_encoding         | *json<br>form<br>plist*        | Parameter encoding                                                 | json    |
- | parse_parameters_as_object | *(bool)*                       | Parse Parameters as an Object                                      | true    |
- | accepted_content_type      | *application/json, etc.*       | The type of response to accept                                     |         |
- | datarow.basepath           | *(string)*                     | Which array in the data do you want to use for a table/collection? |         |
- | predicate.format           | *(string)*                     | Filter data using predicate; e.g. "%K CONTAINS[c] %@"              |         |
- | predicate.arguments        | *(string)*                     | Predicate arguments; e.g. "email,[[inputbox.text]]"                |         |
- | sort.order                 | *ascending<br>descending*      | Sort order                                                         |         |
- | sort.key                   | *(string)*                     | dataRow to sort on                                                 |         |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name              | Type       | Description                                         |
- |-------------------|------------|-----------------------------------------------------|
- | raw_data_response | *(string)* | Raw data returned by Data Provider                  |
- | response_headers  | *(string)* | Response Headers                                    |
- | status_code       | *(string)* | Status Code                                         |
- | count_rows        | *(int)*    | Count of rows (requires datarow.basepath to be set) |
- | total.{dataRow}   | *(float)*  | Does math on defined dataRow key values             |
- | error_message     | *(string)* | Whoopsie.                                           |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name         | Description                        |
- |--------------|------------------------------------|
- | success      | Fires when API call is successful  |
- | failed       | Fires when API call fails          |
- | started      | Fires when API call is started     |
- | auth_success | Fires when authentication succeeds |
- | auth_fail    | Fires when authentication fails    |
- 
-
- ##  <a name="functions">Functions</a>
- 
-Clear Cache: *clear_cache*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "dataProviderTest",
-        "function_name": "clear_cache"
-      }
-    }
-
-Delete Cookies for URL: *delete_cookies*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "dataProviderTest",
-        "function_name": "delete_cookies",
-        "cookie_url" : "http://apigee.com"
-      }
-    }
- 
- 
- ##  <a name="example">Example JSON</a> 
- 
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
-
 #import "IXBaseDataProvider.h"
 
 #import "AFHTTPClient.h"
@@ -131,17 +28,17 @@ Delete Cookies for URL: *delete_cookies*
 NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdateNotification";
 
 // IXBaseDataProvider Properties
-IX_STATIC_CONST_STRING kIXDataBaseUrl = @"data.baseurl";
-IX_STATIC_CONST_STRING kIXDataPath = @"data.path";
-IX_STATIC_CONST_STRING kIXAutoLoad = @"auto_load";
-IX_STATIC_CONST_STRING kIXCacheID = @"cache_id";
-IX_STATIC_CONST_STRING kIXHTTPMethod = @"http_method";
-IX_STATIC_CONST_STRING kIXHTTPBody = @"http_body";
-IX_STATIC_CONST_STRING kIXBasicUserName = @"basic.username";
-IX_STATIC_CONST_STRING kIXBasicPassword = @"basic.password";
-IX_STATIC_CONST_STRING kIXParameterEncoding = @"parameter_encoding";
-IX_STATIC_CONST_STRING kIXParseParametsAsObject = @"parse_parameters_as_object";
-IX_STATIC_CONST_STRING kIXAcceptedContentType = @"accepted_content_type";
+IX_STATIC_CONST_STRING kIXDataBaseUrl = @"baseUrl";
+IX_STATIC_CONST_STRING kIXDataPath = @"pathSuffix";
+IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled ";
+IX_STATIC_CONST_STRING kIXCacheID = @"cache.id";
+IX_STATIC_CONST_STRING kIXHTTPMethod = @"http.method";
+IX_STATIC_CONST_STRING kIXHTTPBody = @"http.body";
+IX_STATIC_CONST_STRING kIXBasicUserName = @"auth.basic.username";
+IX_STATIC_CONST_STRING kIXBasicPassword = @"auth.basic.password";
+IX_STATIC_CONST_STRING kIXParameterEncoding = @"http.body.encoding";
+IX_STATIC_CONST_STRING kIXParseParametsAsObject = @"parseParameters.enabled";
+IX_STATIC_CONST_STRING kIXAcceptedContentType = @"http.headers.accept";
 
 // kIXSortOrder Accepted Types
 IX_STATIC_CONST_STRING kIXSortOrderNone = @"none";
@@ -154,20 +51,20 @@ IX_STATIC_CONST_STRING kIXParameterEncodingPList = @"plist";
 IX_STATIC_CONST_STRING kIXParameterEncodingForm = @"form";
 
 // IXBaseDataProvider Read-Only Properties
-IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
-IX_STATIC_CONST_STRING kIXResponseHeaders = @"response_headers";
-IX_STATIC_CONST_STRING kIXStatusCode = @"status_code";
-IX_STATIC_CONST_STRING kIXErrorMessage = @"error_message";
+IX_STATIC_CONST_STRING kIXRawDataResponse = @"response.raw";
+IX_STATIC_CONST_STRING kIXResponseHeaders = @"response.headers";
+IX_STATIC_CONST_STRING kIXStatusCode = @"response.status.code";
+IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 
 // IXBaseDataProvider Functions
-IX_STATIC_CONST_STRING kIXClearCache = @"clear_cache"; // Clears the cached data that is associated with this data providers kIXCacheID.
-IX_STATIC_CONST_STRING kIXDeleteCookies = @"delete_cookies"; // kIXCookieURL is the parameter for this function.
-IX_STATIC_CONST_STRING kIXCookieURL = @"cookie_url";
+IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data providers kIXCacheID.
+IX_STATIC_CONST_STRING kIXDeleteCookies = @"deleteCookies"; // kIXCookieURL is the parameter for this function.
+IX_STATIC_CONST_STRING kIXCookieURL = @"cookie.url";
 
 // IXBaseDataProvider Events
-IX_STATIC_CONST_STRING kIXStarted = @"started";
-IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth_success";
-IX_STATIC_CONST_STRING kIXAuthFail = @"auth_fail";
+IX_STATIC_CONST_STRING kIXStarted = @"began";
+IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth.success";
+IX_STATIC_CONST_STRING kIXAuthFail = @"auth.error";
 
 // Non Property constants.
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
