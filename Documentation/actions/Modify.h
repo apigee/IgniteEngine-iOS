@@ -77,5 +77,38 @@
 {
 }
 /***************************************************************/
+/***************************************************************/
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+{
+    "_id": "button0",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Modify",
+            "attributes": {
+                "_target": "button1"
+            },
+            "enabled": true,
+            "on": "touchUp",
+            "set": {
+                "text": "this is different."
+            }
+        }
+    ],
+    "attributes": {
+        "bg.color": "cdcdcd",
+        "size.h": 50,
+        "size.w": 280
+    }
+}
+</pre>
+*/
+
+-(void)Example
+{
+}
+/***************************************************************/
 
 @end

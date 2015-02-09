@@ -69,5 +69,36 @@
 {
 }
 /***************************************************************/
+/***************************************************************/
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+{
+    "_id": "button0",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Refresh",
+            "attributes": {
+                "_target": "button1"
+            },
+            "enabled": true,
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "bg.color": "cdcdcd",
+        "size.h": 50,
+        "size.w": 280,
+        "text": "refresh button1 text"
+    }
+}
+</pre>
+*/
+
+-(void)Example
+{
+}
+/***************************************************************/
 
 @end

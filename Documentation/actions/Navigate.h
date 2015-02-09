@@ -91,5 +91,39 @@
 {
 }
 /***************************************************************/
+/***************************************************************/
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+{
+    "_id": "button0",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Navigate",
+            "attributes": {
+                "animation.duration": 0.5,
+                "animation.type": "flip.r",
+                "stackType": "push",
+                "to": "IXNavigateAction1.json"
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "bg.color": "cdcdcd",
+        "font": "HelveticaNeue:15",
+        "size.h": 50,
+        "size.w": 137,
+        "text": "flip.r"
+    }
+}
+</pre>
+*/
+
+-(void)Example
+{
+}
+/***************************************************************/
 
 @end

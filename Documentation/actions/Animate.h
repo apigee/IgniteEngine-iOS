@@ -57,5 +57,42 @@
 {
 }
 /***************************************************************/
+/***************************************************************/
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+{
+    "_id": "button0",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Animate",
+            "attributes": {
+                "_target": "layoutSpinMe",
+                "animation": "spin",
+                "duration": 1,
+                "repeatCount": 0
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "bg.color": "cdcdcd",
+        "color": "6c6c6c",
+        "margin.top": 15,
+        "size.h": 50,
+        "size.w": 280,
+        "text": "animate",
+        "touch.bg.color": "cdcdcd",
+        "touch.color": "6c6c6c50"
+    }
+}
+</pre>
+*/
+
+-(void)Example
+{
+}
+/***************************************************************/
 
 @end

@@ -53,14 +53,45 @@
 /***************************************************************/
 /***************************************************************/
 
-/** Alert returns no values.
- 
- */
-
 -(void)Returns
 {
 }
 /***************************************************************/
+/***************************************************************/
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+{
+    "_id": "button",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "You touched the button!",
+                "title": "touchUp"
+            },
+            "enabled": true,
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "bg.color": "cdcdcd",
+        "color": "6c6c6c",
+        "margin.top": 15,
+        "size.h": 50,
+        "size.w": 150,
+        "text": "simple alert.",
+        "touch.bg.color": "cdcdcd",
+        "touch.color": "6c6c6c50"
+    }
+}
+</pre>
+*/
 
+-(void)Example
+{
+}
+/***************************************************************/
 
 @end

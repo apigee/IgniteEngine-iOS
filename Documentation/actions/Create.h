@@ -61,5 +61,40 @@
 {
 }
 /***************************************************************/
+/***************************************************************/
+/** Go on, try it out!
+ 
+ <pre class="brush: js; toolbar: false;">
+{
+    "_id": "button0",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Create",
+            "attributes": {
+                "control.url": "../custom/IXCreateActionTest.json",
+                "parentId": "layoutParent"
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "bg.color": "cdcdcd",
+        "color": "6c6c6c",
+        "margin.top": 15,
+        "size.h": 50,
+        "size.w": 280,
+        "text": "create something",
+        "touch.bg.color": "cdcdcd",
+        "touch.color": "6c6c6c50"
+    }
+}
+</pre>
+*/
+
+-(void)Example
+{
+}
+/***************************************************************/
 
 @end
