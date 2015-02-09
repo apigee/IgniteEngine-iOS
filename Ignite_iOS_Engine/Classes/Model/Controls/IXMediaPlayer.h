@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+#warning Should rename to VideoPlayer
+
 #import "IXBaseControl.h"
 
 /** This object is used to display video files, including .mov .mp4 .mpv .3gp.

@@ -8,6 +8,8 @@
 
 #import "IXDataRowDataProvider.h"
 
+#warning These haven't been renamed yet
+
 // IXDataRowDataProvider Attributes
 IX_STATIC_CONST_STRING kIXDataRowBasePath = @"datarow.basepath";
 IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.g. "%K CONTAINS[c] %@"
@@ -25,6 +27,7 @@ IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
 IX_STATIC_CONST_STRING kIXCount = @"count_rows";
 
 // Non Attribute constants.
+#warning We probably should rename dataRow to something more consistenc.
 IX_STATIC_CONST_STRING kIXDataRow = @"dataRow.";
 IX_STATIC_CONST_STRING kIXTotal = @"total.";
 
