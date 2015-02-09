@@ -64,7 +64,7 @@ IX_STATIC_CONST_STRING kIXImagesDefaultFailed = @"error";
 
 // IXImage Functions
 IX_STATIC_CONST_STRING kIXStartAnimation = @"start";
-IX_STATIC_CONST_STRING kIXRestartAnimation = @"restartAnimation";
+IX_STATIC_CONST_STRING kIXRestartAnimation = @"restart";
 IX_STATIC_CONST_STRING kIXStopAnimation = @"stop";
 IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
 

@@ -61,7 +61,7 @@
  
  </pre>
  
- @param restartAnimation Restart animation
+ @param restart Restart animation
  <pre class=""brush: js; toolbar: false;"">
  
  
