@@ -1,292 +1,251 @@
 {
-  "view": {
-    "actions": [],
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
+        "actions": [], 
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "Toggle Example"
-        }
-      },
-      {
-        "_id": "layoutToggle0",
-        "_type": "Layout",
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
         "controls": [
-          {
-            "_id": "toggle0",
-            "_type": "Toggle",
-            "actions": [
-              {
-                "_type": "Refresh",
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
                 "attributes": {
-                  "_target": "toggle0_label"
-                },
-                "enabled": true,
-                "on": "toggle,toggle_on,toggle_off"
-              }
-            ],
-            "attributes": {
-              "initally_selected": true
-            }
-          },
-          {
-            "_id": "toggle0_label",
-            "_type": "Text",
-            "attributes": {
-              "font": "HelveticaNeue-Light:22",
-              "text.color": "#6c6c6c",
-              "margin.left": 20,
-              "text": "Default On (On: [[toggle0.is_on]])"
-            }
-          }
-        ],
-        "attributes": {
-          "layout_flow": "horizontal",
-          "height": 50,
-          "margin.left": 20,
-          "margin.top": 10
-        }
-      },
-      {
-        "_id": "layoutButtons",
-        "_type": "Layout",
-        "controls": [
-          {
-            "_id": "button",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
-                "attributes": {
-                  "_target": "toggle0",
-                  "function_name": "toggle_on"
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
                 }
-              }
-            ],
-            "attributes": {
-              "width": 86,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "border.radius": 5,
-              "border.width": 2,
-              "border.color": "6c6c6c",
-              "text": "On"
-            }
-          },
-          {
-            "_id": "button",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
+            }, 
+            {
+                "_id": "layoutToggle0", 
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "toggle0",
-                  "function_name": "toggle"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 86,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.left": 11,
-              "border.radius": 5,
-              "border.width": 2,
-              "border.color": "6c6c6c",
-              "text": "Toggle"
-            }
-          },
-          {
-            "_id": "button",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
+                    "layoutFlow": "horizontal", 
+                    "size.h": 50
+                }, 
+                "controls": [
+                    {
+                        "_id": "toggle0", 
+                        "_type": "Toggle", 
+                        "actions": [
+                            {
+                                "_type": "Refresh", 
+                                "attributes": {
+                                    "_target": "toggle0_label"
+                                }, 
+                                "on": "toggle,toggle_on,toggle_off"
+                            }
+                        ], 
+                        "attributes": {
+                            "initally_selected": true
+                        }
+                    }, 
+                    {
+                        "_id": "toggle0_label", 
+                        "_type": "Text", 
+                        "attributes": {
+                            "color": "#6c6c6c"
+                        }
+                    }
+                ]
+            }, 
+            {
+                "_id": "layoutButtons", 
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "toggle0",
-                  "function_name": "toggle_off"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 86,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.left": 11,
-              "border.radius": 5,
-              "border.width": 2,
-              "border.color": "6c6c6c",
-              "text": "Off"
-            }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "layout_flow": "horizontal",
-          "height": 50,
-          "horizontal_alignment": "center",
-          "margin.top": 0
-        }
-      },
-      {
-        "_id": "layoutToggle1",
-        "_type": "Layout",
-        "controls": [
-          {
-            "_id": "toggle1",
-            "_type": "Toggle",
-            "actions": [
-              {
-                "_type": "Refresh",
+                    "align.h": "center", 
+                    "layoutFlow": "horizontal", 
+                    "size.h": 50, 
+                    "size.w": 280
+                }, 
+                "controls": [
+                    {
+                        "_id": "button", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "toggle0", 
+                                    "function_name": "toggle_on"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "border.size": 2, 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 86, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }, 
+                    {
+                        "_id": "button", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "toggle0", 
+                                    "function_name": "toggle"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "border.size": 2, 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 86, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }, 
+                    {
+                        "_id": "button", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "toggle0", 
+                                    "function_name": "toggle_off"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "border.size": 2, 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 86, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }
+                ]
+            }, 
+            {
+                "_id": "layoutToggle1", 
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "toggle1_label"
-                },
-                "enabled": true,
-                "on": "toggle,toggle_on,toggle_off"
-              }
-            ],
-            "attributes": {
-              "initally_selected": false
-            }
-          },
-          {
-            "_id": "toggle1_label",
-            "_type": "Text",
-            "attributes": {
-              "font": "HelveticaNeue-Light:22",
-              "text.color": "#6c6c6c",
-              "margin.left": 20,
-              "text": "Default Off (On: [[toggle1.is_on]])"
-            }
-          }
-        ],
-        "attributes": {
-          "layout_flow": "horizontal",
-          "height": 50,
-          "margin.left": 20,
-          "margin.top": 20
-        }
-      },
-      {
-        "_id": "layoutButtons",
-        "_type": "Layout",
-        "controls": [
-          {
-            "_id": "button",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
+                    "layoutFlow": "horizontal", 
+                    "size.h": 50
+                }, 
+                "controls": [
+                    {
+                        "_id": "toggle1", 
+                        "_type": "Toggle", 
+                        "actions": [
+                            {
+                                "_type": "Refresh", 
+                                "attributes": {
+                                    "_target": "toggle1_label"
+                                }, 
+                                "on": "toggle,toggle_on,toggle_off"
+                            }
+                        ], 
+                        "attributes": {
+                            "initally_selected": false
+                        }
+                    }, 
+                    {
+                        "_id": "toggle1_label", 
+                        "_type": "Text", 
+                        "attributes": {
+                            "color": "#6c6c6c"
+                        }
+                    }
+                ]
+            }, 
+            {
+                "_id": "layoutButtons", 
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "toggle1",
-                  "function_name": "toggle_on"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 86,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "border.radius": 5,
-              "border.width": 2,
-              "border.color": "6c6c6c",
-              "text": "On"
+                    "align.h": "center", 
+                    "layoutFlow": "horizontal", 
+                    "size.h": 50, 
+                    "size.w": 280
+                }, 
+                "controls": [
+                    {
+                        "_id": "button", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "toggle1", 
+                                    "function_name": "toggle_on"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "border.size": 2, 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 86, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }, 
+                    {
+                        "_id": "button", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "toggle1", 
+                                    "function_name": "toggle"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "border.size": 2, 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 86, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }, 
+                    {
+                        "_id": "button", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "toggle1", 
+                                    "function_name": "toggle_off"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "border.size": 2, 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 86, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }
+                ]
             }
-          },
-          {
-            "_id": "button",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
-                "attributes": {
-                  "_target": "toggle1",
-                  "function_name": "toggle"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 86,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.left": 11,
-              "border.radius": 5,
-              "border.width": 2,
-              "border.color": "6c6c6c",
-              "text": "Toggle"
-            }
-          },
-          {
-            "_id": "button",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
-                "attributes": {
-                  "_target": "toggle1",
-                  "function_name": "toggle_off"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 86,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.left": 11,
-              "border.radius": 5,
-              "border.width": 2,
-              "border.color": "6c6c6c",
-              "text": "Off"
-            }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "layout_flow": "horizontal",
-          "height": 50,
-          "horizontal_alignment": "center",
-          "margin.top": 0
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

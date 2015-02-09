@@ -1,54 +1,46 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXButton"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Alert",
-            "on": "touch_up",
-            "attributes": {
-              "title": "touch_up",
-              "message": "You touched the button!"
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {
+                            "message": "You touched the button!"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "layoutType": "absolute", 
+                    "size.h": 50, 
+                    "size.w": 100, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
             }
-          }
-        ],
-        "attributes": {
-          "width": 100,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "layout_type": "absolute",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle",
-          "touch.background.color": "cdcdcd",
-          "border.radius": 0,
-          "text": "Hi."
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

@@ -1,86 +1,75 @@
 {
-  "view": {
-    "attributes": {},
-    "controls": [
-      {
-        "_id": "layoutPhotoDetail",
-        "_type": "Layout",
-        "actions": [
-          {
-            "_type": "Modify",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "photoDetailOverlay"
-            },
-            "set": {
-              "visible": true
-            }
-          },
-          {
-            "_type": "Modify",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "photoDetailOverlay",
-              "duration": 0.75
-            },
-            "set": {
-              "alpha": 1
-            }
-          }
-        ],
-        "attributes": {
-          "width": 308,
-          "height": 308
-        },
+    "view": {
+        "attributes": {}, 
         "controls": [
-          {
-            "_id": "imageAlreadyLoaded",
-            "_type": "Image",
-            "actions": [],
-            "attributes": {
-              "width": 308,
-              "height": 308,
-              "layout_type": "absolute",
-              "images.default": "[[session.photoThumbUrl]]"
+            {
+                "_id": "layoutPhotoDetail", 
+                "_type": "Layout", 
+                "actions": [
+                    {
+                        "_type": "Modify", 
+                        "attributes": {
+                            "_target": "photoDetailOverlay"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {}
+                    }, 
+                    {
+                        "_type": "Modify", 
+                        "attributes": {
+                            "_target": "photoDetailOverlay"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {}
+                    }
+                ], 
+                "attributes": {
+                    "size.h": 308, 
+                    "size.w": 308
+                }, 
+                "controls": [
+                    {
+                        "_id": "imageAlreadyLoaded", 
+                        "_type": "Image", 
+                        "actions": [], 
+                        "attributes": {
+                            "image": "[[session.photoThumbUrl]]", 
+                            "layoutType": "absolute", 
+                            "size.h": 308, 
+                            "size.w": 308
+                        }
+                    }, 
+                    {
+                        "_id": "imageStandardResolution", 
+                        "_type": "Image", 
+                        "actions": [], 
+                        "attributes": {
+                            "image": "[[session.photoUrl]]", 
+                            "layoutType": "absolute", 
+                            "size.h": 308, 
+                            "size.w": 308
+                        }
+                    }
+                ]
+            }, 
+            {
+                "_id": "textCaption", 
+                "_type": "Text", 
+                "attributes": {
+                    "align.h": "center", 
+                    "color": "#ffffff", 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "textPhotographer", 
+                "_type": "Text", 
+                "attributes": {
+                    "align.h": "center", 
+                    "color": "#ffffff", 
+                    "size.w": "100%"
+                }
             }
-          },
-          {
-            "_id": "imageStandardResolution",
-            "_type": "Image",
-            "actions": [],
-            "attributes": {
-              "width": 308,
-              "height": 308,
-              "layout_type": "absolute",
-              "images.default": "[[session.photoUrl]]"
-            }
-          }
         ]
-      },
-      {
-        "_id": "textCaption",
-        "_type": "Text",
-        "attributes": {
-          "margin.top": 10,
-          "width": "100%",
-          "text.color": "#ffffff",
-          "horizontal_alignment": "center",
-          "font": "HelveticaNeue:18",
-          "text": "by @[[session.photoPhotographer]]"
-        }
-      },
-      {
-        "_id": "textPhotographer",
-        "_type": "Text",
-        "attributes": {
-          "margin.top": 5,
-          "width": "100%",
-          "text.color": "#ffffff",
-          "horizontal_alignment": "center",
-          "font": "HelveticaNeue-Medium:13",
-          "text": "[[session.photoCaption]]"
-        }
-      }
-    ]
-  }
+    }
 }

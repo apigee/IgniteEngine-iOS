@@ -1,102 +1,102 @@
 {
     "view": {
         "attributes": {
-            "height": "100%",
-            "width": "100%",
-            "padding.top": 100,
-            "background": {
-				"color": "#FFFFFF"
-			}
-        },
+            "background": {}, 
+            "size.h": "100%", 
+            "size.w": "100%"
+        }, 
         "controls": [
-         {
-            "_id": "playText",
-            "_type": "Text",
-            "actions": [{
-                    "on": "touch_up",
-                    "_type": "Function",
-                    "attributes": {
-                        "_target": "mediaPlayerControl",
-                        "function_name": "play"
+            {
+                "_id": "playText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "mediaPlayerControl", 
+                            "function_name": "play"
+                        }, 
+                        "on": "touch_up"
                     }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Play Movie"
-            }
-         },
-         {
-            "_id": "pauseText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+                ], 
                 "attributes": {
-                    "_target": "mediaPlayerControl",
-                    "function_name": "pause"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Pause Movie"
-            }
-         },
-         {
-            "_id": "stopText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+            }, 
+            {
+                "_id": "pauseText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "mediaPlayerControl", 
+                            "function_name": "pause"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
                 "attributes": {
-                    "_target": "mediaPlayerControl",
-                    "function_name": "goto"
-                },
-                "set":{
-                    "seconds":30
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Go To 30 seconds in Movie"
-            }
-         },
-         {
-            "_id": "stopText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+            }, 
+            {
+                "_id": "stopText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "mediaPlayerControl", 
+                            "function_name": "goto"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {
+                            "seconds": 30
+                        }
+                    }
+                ], 
                 "attributes": {
-                    "_target": "mediaPlayerControl",
-                    "function_name": "stop"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Stop Movie"
+            }, 
+            {
+                "_id": "stopText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "mediaPlayerControl", 
+                            "function_name": "stop"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "layoutType": "relative"
+                }
+            }, 
+            {
+                "_id": "mediaPlayerControl", 
+                "_type": "MediaPlayer", 
+                "attributes": {
+                    "align.h": "center", 
+                    "autoPlay.enabled": false, 
+                    "bar": {
+                        "size.h": 50
+                    }, 
+                    "controls": "embedded", 
+                    "layoutType": "relative", 
+                    "size.h": 132, 
+                    "size.w": 236, 
+                    "videoUrl": "/videos/tv_skating_video.mp4"
+                }
             }
-         },
-         {
-            "_id": "mediaPlayerControl",
-            "_type": "MediaPlayer",
-            "attributes": {
-                "width": 236,
-                "height": 132,
-                "layout_type": "relative",
-                "horizontal_alignment":"center",
-                "video": "/videos/tv_skating_video.mp4",
-                "controls": "embedded",
-                "bar": {
-                    "height": 50,
-                    "color": "#00FF0050"
-                },
-                "auto_play": false
-            }
-         }
         ]
     }
 }

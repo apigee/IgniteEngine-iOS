@@ -1,78 +1,67 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 70,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXMessage"
-        }
-      },
-      {
-        "_id": "messageTest",
-        "_type": "Message",
-        "actions": [
-          {
-            "on": "message_sent",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Message sent!"
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "messageTest", 
+                "_type": "Message", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "message_sent"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "message_cancelled"
+                    }
+                ], 
+                "attributes": {
+                    "to": "555-867-5309", 
+                    "type": "text"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "messageTest", 
+                            "function_name": "present_email_controller"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "layoutType": "absolute", 
+                    "size.h": 50, 
+                    "size.w": 200, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
             }
-          },
-          {
-            "on": "message_cancelled",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Message cancelled!"
-            }
-          }
-        ],
-        "attributes": {
-          "message.type": "text",
-          "message.to": "555-867-5309"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Function",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "messageTest",
-              "function_name": "present_email_controller"
-            }
-          }
-        ],
-        "attributes": {
-          "width": 200,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "layout_type": "absolute",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle",
-          "touch.background.color": "cdcdcd",
-          "border.radius": 0,
-          "text": "send a text."
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

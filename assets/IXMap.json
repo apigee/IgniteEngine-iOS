@@ -1,54 +1,45 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 70,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXMap"
-        }
-      },
-      {
-        "_id": "mapControl",
-        "_type": "Map",
-        "actions": [
-          {
-            "on": "touch_up",
-            "_type": "Alert",
-            "attributes": {
-              "title": "You touched on [[$self.annotation.title]]."
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "mapControl", 
+                "_type": "Map", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "annotation": {
+                        "latitude": "37.333916", 
+                        "longitude": "-121.894076", 
+                        "pin.animates_drop": true, 
+                        "subtitle": "Subtitle"
+                    }, 
+                    "autofill.h": true, 
+                    "size.w": "100%", 
+                    "userLocation.enabled": true, 
+                    "zoom": 12
+                }
             }
-          }
-        ],
-        "attributes": {
-          "visible": true,
-          "fill_remaining_height": true,
-          "width": "100%",
-          "zoom_level": 12,
-          "shows_user_location": true,
-          "annotation": {
-            "pin.animates_drop": true,
-            "title": "Title",
-            "subtitle": "Subtitle",
-            "latitude": "37.333916",
-            "longitude": "-121.894076"
-          }
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

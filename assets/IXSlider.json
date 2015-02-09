@@ -1,92 +1,79 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 70,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXSlider"
-        }
-      },
-      {
-        "_id": "sliderTest",
-        "_type": "Slider",
-        "actions": [
-          {
-            "on": "value_changed",
-            "_type": "Refresh",
-            "attributes": {
-              "_target": "title"
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "sliderTest", 
+                "_type": "Slider", 
+                "actions": [
+                    {
+                        "_type": "Refresh", 
+                        "attributes": {
+                            "_target": "title"
+                        }, 
+                        "on": "value_changed"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "layoutType": "absolute", 
+                    "size.w": 280
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "sliderTest", 
+                            "function_name": "update_slider_value"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {}
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "bottom", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "layoutType": "absolute", 
+                    "size.h": 50, 
+                    "size.w": 225, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }, 
+            {
+                "_id": "title", 
+                "_type": "Text", 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "bottom", 
+                    "color": "6c6c6c", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": 200
+                }
             }
-          }
-        ],
-        "attributes": {
-          "layout_type": "absolute",
-          "width": 280,
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Function",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "sliderTest",
-              "function_name": "update_slider_value"
-            },
-            "set": {
-              "value": 0.75
-            }
-          }
-        ],
-        "attributes": {
-          "width": 225,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "layout_type": "absolute",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "bottom",
-          "margin.bottom":200,
-          "touch.background.color": "cdcdcd",
-          "border.radius": 0,
-          "text": "Change slider to 0.75"
-        }
-      },
-      {
-        "_id": "title",
-        "_type": "Text",
-        "attributes": {
-          "width": 200,
-          "height": 50,
-          "margin.bottom": 15,
-          "text.color": "6c6c6c",
-          "layout_type": "float",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "bottom",
-          "font": "HelveticaNeue:15",
-          "text": "IXSlider value: [[sliderTest.value]]"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

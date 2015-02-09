@@ -6,85 +6,6 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- 
- ###    Raises an event on the _target control ID.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ##  <a name="attributes">Attributes</a>
- 
- | Name                   | Type                                                                                                                          | Description                      | Default |
- |------------------------|-------------------------------------------------------------------------------------------------------------------------------|----------------------------------|---------|
- | to                     | *(string)*                                                                                                                    | http:// or /path/to/control.json |         |
- | nav_stack_type         | *push<br>pop<br>replace<br>external*                                                                                          | Duration                         | push    |
- | nav_animation_type     | *flip_from_left<br>flip_from_right<br>flip_from_top<br>flip_from_bottom<br>curl_up<br>curl_down<br>cross_dissolve<br>move_in* | Navigation animation style       | 0       |
- | nav_pop_to_view_id     | If performing a 'pop' navigation, and *don't* want to pop to the immediately preceding view.                                  |                                  |         |
- | nav_animation_delay    | Delay animation                                                                                                               |                                  |         |
- | nav_animation_duration | Animation duration                                                                                                            |                                  |         |
-
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name            | Description                                     |
- |-----------------|-------------------------------------------------|
- | success         | Fires when control is created successfully      |
- | failed          | Fires when create control fails                 |
- 
- ##  <a name="functions">Functions</a>
- 
->   None
-
- 
- ##  <a name="example">Example JSON</a> 
-
-### Navigate with default options:
- 
-    {
-      "_type": "Navigate",
-      "on": "touch_up",
-      "attributes": {
-        "to": "IXButton.json"
-      }
-    }
- 
-### Navigate to new view with no animation:
- 
-    {
-      "_type": "Navigate",
-      "on": "touch_up",
-      "attributes": {
-        "to": "IXButton.json",
-        "nav_stack_type": "push",
-        "nav_animation_type": "cross_dissolve",
-        "nav_animation_duration": 0
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
-
 #import "IXNavigateAction.h"
 
 #import "IXPropertyContainer.h"
@@ -100,11 +21,11 @@
 
 // IXNavigateAction Properties
 static NSString* const kIXTo = @"to";
-static NSString* const kIXNavStackType = @"nav_stack_type";
-static NSString* const kIXNavAnimationType = @"nav_animation_type";
-static NSString* const kIXNavPopToViewID = @"nav_pop_to_view_id";
-static NSString* const kIXNavAnimationDelay = @"nav_animation_delay";
-static NSString* const kIXNavAnimationDuration = @"nav_animation_duration";
+static NSString* const kIXNavStackType = @"stackType";
+static NSString* const kIXNavAnimationType = @"animation.type";
+static NSString* const kIXNavPopToViewID = @"pop.to";
+static NSString* const kIXNavAnimationDelay = @"animation.delay";
+static NSString* const kIXNavAnimationDuration = @"animation.duration";
 
 // kIXNavStackType Types
 static NSString* const kIXNavStackTypePush = @"push";
@@ -113,14 +34,14 @@ static NSString* const kIXNavStackTypeReplace = @"replace";
 static NSString* const kIXNavStackTypeExternal = @"external";
 
 // kIXNavAnimationType Types
-static NSString* const kIXNavAnimationTypeFlipFromLeft = @"flip_from_left";
-static NSString* const kIXNavAnimationTypeFlipFromRight = @"flip_from_right";
-static NSString* const kIXNavAnimationTypeFlipFromTop = @"flip_from_top";
-static NSString* const kIXNavAnimationTypeFlipFromBottom = @"flip_from_bottom";
-static NSString* const kIXNavAnimationTypeCurlUp = @"curl_up";
-static NSString* const kIXNavAnimationTypeCurlDown = @"curl_down";
-static NSString* const kIXNavAnimationTypeCrossDissolve = @"cross_dissolve";
-static NSString* const kIXNavAnimationTypeMoveIn = @"move_in";
+static NSString* const kIXNavAnimationTypeFlipFromLeft = @"flip.l";
+static NSString* const kIXNavAnimationTypeFlipFromRight = @"flip.r";
+static NSString* const kIXNavAnimationTypeFlipFromTop = @"flip.t";
+static NSString* const kIXNavAnimationTypeFlipFromBottom = @"flip.b";
+static NSString* const kIXNavAnimationTypeCurlUp = @"curl.u";
+static NSString* const kIXNavAnimationTypeCurlDown = @"curl.d";
+static NSString* const kIXNavAnimationTypeCrossDissolve = @"crossDissolve";
+static NSString* const kIXNavAnimationTypeMoveIn = @"moveIn";
 
 // IXNavigateAction Events: kIX_SUCCESS and kIX_FAILED
 

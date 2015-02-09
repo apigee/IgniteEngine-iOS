@@ -1,40 +1,34 @@
 {
     "view": {
         "attributes": {
-            "height": "100%",
-            "width": "100%",
-            "padding.top": 100,
-            "background": {
-				"color": "#FFFFFF"
-			}
-        },
+            "background": {}, 
+            "size.h": "100%", 
+            "size.w": "100%"
+        }, 
         "controls": [
-         {
-            "_id": "startText",
-            "_type": "Text",
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Wait For The Alert",
-                "font": "HelveticaNeue:50"
-            }
-         },
-         {
-            "_id": "timerControl",
-            "_type": "Timer",
-            "actions": [{
-                "on": "timer_fired",
-                "_type": "Alert",
+            {
+                "_id": "startText", 
+                "_type": "Text", 
                 "attributes": {
-                    "title": "Timer Fired!"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "enabled" : true,
-                "repeats": true,
-                "time_interval": 5
+            }, 
+            {
+                "_id": "timerControl", 
+                "_type": "Timer", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "timer_fired"
+                    }
+                ], 
+                "attributes": {
+                    "repeat.enabled": true, 
+                    "repeatInterval": 5
+                }
             }
-         }
         ]
     }
 }

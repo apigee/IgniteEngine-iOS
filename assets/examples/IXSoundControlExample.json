@@ -1,82 +1,81 @@
 {
     "view": {
         "attributes": {
-            "height": "100%",
-            "width": "100%",
-            "padding.top": 100,
-            "background": {
-				"color": "#FFFFFF"
-			}
-        },
+            "background": {}, 
+            "size.h": "100%", 
+            "size.w": "100%"
+        }, 
         "controls": [
-         {
-            "_id": "playText",
-            "_type": "Text",
-            "actions": [{
-                    "on": "touch_up",
-                    "_type": "Function",
-                    "attributes": {
-                        "_target": "soundControl",
-                        "function_name": "play"
+            {
+                "_id": "playText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "soundControl", 
+                            "function_name": "play"
+                        }, 
+                        "on": "touch_up"
                     }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Play Sound"
-            }
-         },
-         {
-            "_id": "pauseText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+                ], 
                 "attributes": {
-                    "_target": "soundControl",
-                    "function_name": "pause"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Pause Sound"
-            }
-         },
-        {
-            "_id": "stopText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+            }, 
+            {
+                "_id": "pauseText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "soundControl", 
+                            "function_name": "pause"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
                 "attributes": {
-                    "_target": "soundControl",
-                    "function_name": "stop"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Stop Sound"
-            }
-         },
-         {
-            "_id": "soundControl",
-            "_type": "Sound",
-            "actions": [{
-                "on": "finished",
-                "_type": "Alert",
+            }, 
+            {
+                "_id": "stopText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "soundControl", 
+                            "function_name": "stop"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
                 "attributes": {
-                    "title": "Sound Finished Playing"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "sound_location": "http://www.zultys.com/phone_sounds/Gong1.wav",
-                "volume": 1,
-                "number_of_loops": 0,
-                "auto_play": false
+            }, 
+            {
+                "_id": "soundControl", 
+                "_type": "Sound", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "finished"
+                    }
+                ], 
+                "attributes": {
+                    "audioUrl": "http://www.zultys.com/phone_sounds/Gong1.wav", 
+                    "autoPlay.enabled": false, 
+                    "repeatCount": 0
+                }
             }
-         }
         ]
     }
 }

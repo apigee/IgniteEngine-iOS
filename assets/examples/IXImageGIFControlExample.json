@@ -1,60 +1,59 @@
 {
     "view": {
         "attributes": {
-            "height": "100%",
-            "width": "100%",
-            "padding.top": 100,
-            "background": {
-				"color": "#FFFFFF"
-			}
-        },
+            "background": {}, 
+            "size.h": "100%", 
+            "size.w": "100%"
+        }, 
         "controls": [
-         {
-            "_id": "startAnimationText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+            {
+                "_id": "startAnimationText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "animatedImageControl", 
+                            "function_name": "start_animation"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
                 "attributes": {
-                    "_target": "animatedImageControl",
-                    "function_name": "start_animation"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Start Animation"
-            }
-         },
-         {
-            "_id": "stopAnimationText",
-            "_type": "Text",
-            "actions": [{
-                "on": "touch_up",
-                "_type": "Function",
+            }, 
+            {
+                "_id": "stopAnimationText", 
+                "_type": "Text", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "animatedImageControl", 
+                            "function_name": "stop_animation"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
                 "attributes": {
-                    "_target": "animatedImageControl",
-                    "function_name": "stop_animation"
+                    "align.h": "center", 
+                    "layoutType": "relative"
                 }
-            }],
-            "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
-                "text": "Stop Animation"
+            }, 
+            {
+                "_id": "animatedImageControl", 
+                "_type": "Image", 
+                "attributes": {
+                    "align.h": "center", 
+                    "image": [
+                        "images/fireplace_on.gif"
+                    ], 
+                    "size.h": "400", 
+                    "size.w": "100%"
+                }
             }
-         },
-         {
-            "_id": "animatedImageControl",
-            "_type": "Image",
-            "attributes": {
-                "width": "100%",
-                "height": "400",
-                "horizontal_alignment":"center",
-                "images.default" : [
-                    "images/fireplace_on.gif"
-                ]
-            }
-         }
         ]
     }
 }

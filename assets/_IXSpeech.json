@@ -1,131 +1,121 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-     "actions": [
-      {
-        "_type": "Function",
-        "on": "did_appear",
-        "attributes": {
-          "_target": "textInputTest",
-          "function_name": "keyboard_show"
-        }
-      }
-    ],
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
-        "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXSpeech"
-        }
-      },
-      {
-        "_id": "textInputTest",
-        "_type": "TextInput",
+    "view": {
         "actions": [
-          {
-            "_type": "Modify",
-            "on": "text_changed,got_focus",
-            "attributes": {
-              "_target": "session"
-            },
-            "set": {
-              "text_to_speak": "[[$self.text]]"
+            {
+                "_type": "Function", 
+                "attributes": {
+                    "_target": "textInputTest", 
+                    "function_name": "keyboard_show"
+                }, 
+                "on": "did_appear"
             }
-          }
-        ],
+        ], 
         "attributes": {
-          "font": "HelveticaNeue-Light:22",
-          "is_multiline": true,
-          "width": 280,
-          "height": 120,
-          "text.alignment": "center",
-          "horizontal_alignment": "center",
-          "text.color": "#6c6c6c",
-          "initial_text": "How much wood could a woodchuck chuck if a woodchuck could chuck wood ?",
-          "text.placeholder": "Type something.."
-        }
-      },
-      {
-        "_id": "customSlider",
-        "_type": "Slider",
-        "actions": [
-          {
-            "on": "value_changed",
-            "_type": "Refresh",
-            "attributes": {
-              "_target": "button"
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "textInputTest", 
+                "_type": "TextInput", 
+                "actions": [
+                    {
+                        "_type": "Modify", 
+                        "attributes": {
+                            "_target": "session"
+                        }, 
+                        "on": "text_changed,got_focus", 
+                        "set": {
+                            "text_to_speak": "[[$self.text]]"
+                        }
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "color": "#6c6c6c", 
+                    "multiline.enabled": true, 
+                    "placeholder.text": "Type something..", 
+                    "size.h": 120, 
+                    "size.w": 280, 
+                    "text.align": "center", 
+                    "text.default": "How much wood could a woodchuck chuck if a woodchuck could chuck wood ?"
+                }
+            }, 
+            {
+                "_id": "customSlider", 
+                "_type": "Slider", 
+                "actions": [
+                    {
+                        "_type": "Refresh", 
+                        "attributes": {
+                            "_target": "button"
+                        }, 
+                        "on": "value_changed"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "size.w": 280, 
+                    "value.default": 0.3, 
+                    "value.max": 1, 
+                    "value.min": 0
+                }
+            }, 
+            {
+                "_id": "speechTest", 
+                "_type": "Speech", 
+                "attributes": {}
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Modify", 
+                        "attributes": {
+                            "_target": "session"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {
+                            "text_to_speak": "[[TextInput.text]]"
+                        }
+                    }, 
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "speechTest", 
+                            "function_name": "queue_utterance"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {
+                            "rate": "[[customSlider.value]]", 
+                            "sentences": "[[session.text_to_speak]]"
+                        }
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "border.size": 2, 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
             }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "horizontal_alignment": "center",
-          "initial_value": 0.3,
-          "minimum_value": 0,
-          "maximum_value": 1
-        }
-      },
-      {
-        "_type": "Speech",
-        "_id": "speechTest",
-        "attributes": {}
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Modify",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "session"
-            },
-            "set": {
-              "text_to_speak": "[[TextInput.text]]"
-            }
-          },
-          {
-            "_type": "Function",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "speechTest",
-              "function_name": "queue_utterance"
-            },
-            "set": {
-              "utterance.sentences": "[[session.text_to_speak]]",
-              "utterance.rate": "[[customSlider.value]]"
-            }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 10,
-          "border.radius": 5,
-          "border.width": 2,
-          "border.color": "6c6c6c",
-          "text": "Speak! (Rate: {{var percent = [[customSlider.value]]*100; percent.toFixed(0)}}%)"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

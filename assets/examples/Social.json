@@ -1,159 +1,120 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "Social Example"
-        }
-      },
-      {
-        "_type": "Social",
-        "_id": "socialShareTwitter",
-        "actions": [
-          {
-            "_type": "Alert",
-            "attributes": {
-              "title": "share_done"
-            },
-            "on": "share_done"
-          },
-          {
-            "_type": "Alert",
-            "attributes": {
-              "title": "share_cancelled"
-            },
-            "on": "share_cancelled"
-          }
-        ],
-        "attributes": {
-          "visible": true,
-          "width": "100%",
-          "height": "50",
-          "share": {
-            "platform": "twitter",
-            "text": "tweet tweet!",
-            "url": "http://twitter.com",
-            "image": "images/twitter.png"
-          },
-          "color": {
-            "background": "#00FFFF"
-          }
-        }
-      },
-      {
-        "_type": "Social",
-        "_id": "socialShareFacebook",
-        "actions": [
-          {
-            "_type": "Alert",
-            "attributes": {
-              "title": "share_done"
-            },
-            "on": "share_done"
-          },
-          {
-            "_type": "Alert",
-            "attributes": {
-              "title": "share_cancelled"
-            },
-            "on": "share_cancelled"
-          }
-        ],
-        "attributes": {
-          "visible": true,
-          "width": "100%",
-          "height": "50",
-          "share": {
-            "platform": "facebook",
-            "text": "But first, let me take a selfie!",
-            "url": "http://facebook.com",
-            "image": "images/selfie.jpg"
-          },
-          "color": {
-            "background": "#00FFFF"
-          }
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Function",
-            "attributes": {
-              "_target": "socialShareTwitter",
-              "function_name": "present_share_controller"
-            },
-            "on": "touch_up"
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 10,
-          "border.radius": 5,
-          "border.width": 2,
-          "border.color": "6c6c6c",
-          "alpha": [
-            "if :: [[socialShareTwitter.twitter_available]] == false :: 0.5"
-          ],
-          "enabled": "[[socialShareTwitter.twitter_available]]",
-          "text": "Share to Twitter"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Function",
-            "attributes": {
-              "_target": "socialShareFacebook",
-              "function_name": "present_share_controller"
-            },
-            "on": "touch_up"
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 10,
-          "border.radius": 5,
-          "border.width": 2,
-          "border.color": "6c6c6c",
-          "alpha": [
-            "if :: [[socialShareTwitter.facebook_available]] == false :: 0.5"
-          ],
-          "enabled": "[[socialShareTwitter.facebook_available]]",
-          "text": "Share to Facebook"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "socialShareTwitter", 
+                "_type": "Social", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "share_done"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "share_cancelled"
+                    }
+                ], 
+                "attributes": {
+                    "share": {
+                        "image": "images/twitter.png", 
+                        "platform": "twitter", 
+                        "url": "http://twitter.com"
+                    }, 
+                    "size.h": "50", 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "socialShareFacebook", 
+                "_type": "Social", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "share_done"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "share_cancelled"
+                    }
+                ], 
+                "attributes": {
+                    "share": {
+                        "image": "images/selfie.jpg", 
+                        "platform": "facebook", 
+                        "url": "http://facebook.com"
+                    }, 
+                    "size.h": "50", 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "socialShareTwitter", 
+                            "function_name": "present_share_controller"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "border.size": 2, 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "socialShareFacebook", 
+                            "function_name": "present_share_controller"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "border.size": 2, 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }
+        ], 
+        "data_providers": []
+    }
 }

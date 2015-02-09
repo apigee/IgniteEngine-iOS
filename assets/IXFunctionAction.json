@@ -1,103 +1,88 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#f8f8f8"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXFunctionAction"
-        }
-      },
-      {
-        "_id": "layoutButtons",
-        "_type": "Layout",
-        "attributes": {
-          "layout_type": "absolute",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle"
-        },
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
         "controls": [
-          {
-            "_id": "button0",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Function",
-                "on": "touch_up",
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
                 "attributes": {
-                  "_target": "actionSheetTest",
-                  "function_name": "show_sheet"
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
                 }
-              }
-            ],
-            "attributes": {
-              "width": 280,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.top": 15,
-              "text": "function: show_sheet"
+            }, 
+            {
+                "_id": "layoutButtons", 
+                "_type": "Layout", 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "layoutType": "absolute"
+                }, 
+                "controls": [
+                    {
+                        "_id": "button0", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "actionSheetTest", 
+                                    "function_name": "show_sheet"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 280, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }
+                ]
+            }, 
+            {
+                "_id": "actionSheetTest", 
+                "_type": "ActionSheet", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "cancel_pressed"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "other_pressed"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "someOther2_pressed"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "[destructiveButtonTitle](#//api/name/destructiveButtonTitle)_pressed"
+                    }
+                ], 
+                "attributes": {
+                    "buttons.cancel": "cancelButtonTitle", 
+                    "buttons.destructive": "destructiveButtonTitle", 
+                    "buttons.others": "other,someOther2", 
+                    "sheet.style": "black.opaque", 
+                    "title": "sheetTitle"
+                }
             }
-          }
-        ]
-      },
-      {
-        "_type": "ActionSheet",
-        "_id": "actionSheetTest",
-        "attributes": {
-          "sheet.style": "black.opaque",
-          "sheet.title": "sheetTitle",
-          "sheet.button.title.cancel": "cancelButtonTitle",
-          "sheet.button.title.destructive": "destructiveButtonTitle",
-          "sheet.button.title.others": "other,someOther2"
-        },
-        "actions": [
-          {
-            "on": "cancel_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Cancel Pressed"
-            }
-          },
-          {
-            "on": "other_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "other pressed [[app.bundle.version]]"
-            }
-          },
-          {
-            "on": "someOther2_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "someOther2 pressed"
-            }
-          },
-          {
-            "on": "[destructiveButtonTitle](#//api/name/destructiveButtonTitle)_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "[destructiveButtonTitle](#//api/name/destructiveButtonTitle) pressed"
-            }
-          }
-        ]
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

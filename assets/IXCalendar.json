@@ -1,86 +1,75 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXCalendar"
-        }
-      },
-      {
-        "_type": "Calendar",
-        "_id": "calendarTest",
-        "actions": [
-          {
-            "_type": "Alert",
-            "attributes": {
-              "title": "add_event_success"
-            },
-            "on": "add_event_success"
-          },
-          {
-            "_type": "Alert",
-            "attributes": {
-              "title": "add_event_failed"
-            },
-            "on": "add_event_failed"
-          }
-        ],
-        "attributes": {
-          "event.title": "Event Title",
-          "event.allDay": false,
-          "event.location": "1234 Some Street, City, State Zip",
-          "event.notes": "Event Notes",
-          "event.url": "http://meetings-are-fun.com",
-          "event.date.format": "yyyy-MM-dd HH:mm:ss",
-          "event.date.start": "2015-12-31 23:00:00",
-          "event.date.end": "2016-01-01 00:00:00",
-          "event.alarm.offset": -1800,
-          "event.recurrence.frequency": "none"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Function",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "calendarTest",
-              "function_name": "add_event"
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "calendarTest", 
+                "_type": "Calendar", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "add_event_success"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "add_event_failed"
+                    }
+                ], 
+                "attributes": {
+                    "alarmOffset": -1800, 
+                    "allDay.enabled": false, 
+                    "date.end": "2016-01-01 00:00:00", 
+                    "date.format": "yyyy-MM-dd HH:mm:ss", 
+                    "date.start": "2015-12-31 23:00:00", 
+                    "location": "1234 Some Street, City, State Zip", 
+                    "notes": "Event Notes", 
+                    "repeatFrequency": "none", 
+                    "title": "Event Title", 
+                    "url": "http://meetings-are-fun.com"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "calendarTest", 
+                            "function_name": "add_event"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "layoutType": "absolute", 
+                    "size.h": 80, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
             }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 80,
-          "text.color": "6c6c6c",
-          "layout_type": "absolute",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle",
-          "touch.background.color": "cdcdcd",
-          "border.radius": 0,
-          "text": "Add to Calendar: 10/21/2015"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

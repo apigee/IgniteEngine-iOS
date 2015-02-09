@@ -1,113 +1,96 @@
 {
-  "view": {
-    "actions": [],
-    "attributes": {
-      "_id": "test",
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
+        "actions": [], 
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "TableView Example"
-        }
-      },
-      {
-        "_id": "tableSettings",
-        "_type": "TableView",
-        "attributes": {
-          "height": "100%",
-          "separator.style": "none",
-          "dataprovider_id": "test_data",
-          "datarow.basepath":"",
-          "enabled": true,
-          "fill_remaining_width": true,
-          "margin.top": 70,
-          "item_height": 50,
-          "item_width": "100%",
-          "background.color":"00ff00"
-        },
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
         "controls": [
-          {
-            "_type": "Layout",
-            "actions": [
-              {
-                "_type": "Alert",
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
                 "attributes": {
-                  "title": "You touched: [[dataRow.name]] ([[dataRow.abbreviation]])"
-                },
-                "enabled": false,
-                "on": "touch_up"
-              },
-              {
-                "_type": "Navigate",
-                "attributes": {
-                  "to": "Social.json",
-                  "nav_stack_type":"push",
-                  "nav_animation_type":"cross_dissolve",
-                  "nav_animation_duration":0
-                },
-                "enabled": true,
-                "on": "touch_up"
-              }
-            ],
-            "attributes": {
-              "layout_flow": "horizontal",
-              "layout_type": "absolute",
-              "vertical_alignment": "middle"
-            },
-            "controls": [
-              {
-                "_type": "Text",
-                "attributes": {
-                  "font": "HelveticaNeue-Light:22",
-                  "text.color": "#6c6c6c",
-                  "margin.left": 20,
-                  "text": "[[dataRow.name]]"
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
                 }
-              },
-              {
-                "_type": "Text",
+            }, 
+            {
+                "_id": "tableSettings", 
+                "_type": "TableView", 
                 "attributes": {
-                  "font": "HelveticaNeue-Light:22",
-                  "text.color": "#6c6c6c",
-                  "margin.left": 5,
-                  "text": "([[dataRow.abbreviation]])"
-                }
-              }
-            ]
-          },
-          {
-            "_type": "Image",
-            "attributes": {
-              "horizontal_alignment": "right",
-              "layout_type": "absolute",
-              "width": 50,
-              "height": 50,
-              "images.default": "../images/btn_chevron_50x50.png"
+                    "autofill.w": true, 
+                    "bg.color": "00ff00", 
+                    "cell.size.h": 50, 
+                    "cell.size.w": "100%", 
+                    "data.basepath": "", 
+                    "datasource.id": "test_data", 
+                    "size.h": "100%"
+                }, 
+                "controls": [
+                    {
+                        "_type": "Layout", 
+                        "actions": [
+                            {
+                                "_type": "Alert", 
+                                "attributes": {}, 
+                                "on": "touch_up"
+                            }, 
+                            {
+                                "_type": "Navigate", 
+                                "attributes": {
+                                    "nav_animation_duration": 0, 
+                                    "nav_animation_type": "cross_dissolve", 
+                                    "nav_stack_type": "push", 
+                                    "to": "Social.json"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "align.v": "middle", 
+                            "layoutFlow": "horizontal", 
+                            "layoutType": "absolute"
+                        }, 
+                        "controls": [
+                            {
+                                "_type": "Text", 
+                                "attributes": {
+                                    "color": "#6c6c6c"
+                                }
+                            }, 
+                            {
+                                "_type": "Text", 
+                                "attributes": {
+                                    "color": "#6c6c6c"
+                                }
+                            }
+                        ]
+                    }, 
+                    {
+                        "_type": "Image", 
+                        "attributes": {
+                            "align.h": "right", 
+                            "image": "../images/btn_chevron_50x50.png", 
+                            "layoutType": "absolute", 
+                            "size.h": 50, 
+                            "size.w": 50
+                        }
+                    }, 
+                    {
+                        "_type": "Layout", 
+                        "attributes": {
+                            "align.v": "bottom", 
+                            "bg.color": "#cdcdcd", 
+                            "layoutType": "float", 
+                            "size.h": 1, 
+                            "size.w": "100%"
+                        }
+                    }
+                ]
             }
-          },
-          {
-            "_type": "Layout",
-            "attributes": {
-              "height": 1,
-              "width": "100%",
-              "layout_type": "float",
-              "vertical_alignment": "bottom",
-              "background.color": "#cdcdcd"
-            }
-          }
         ]
-      }
-    ]
-  }
+    }
 }

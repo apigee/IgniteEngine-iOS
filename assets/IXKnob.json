@@ -1,145 +1,127 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXDial"
-        }
-      },
-      {
-        "_id": "customKnob",
-        "_type": "Knob",
-        "actions": [
-          {
-            "_type": "Refresh",
-            "attributes": {
-              "_target": "knobValue"
-            },
-            "enabled": true,
-            "on": "value_changed"
-          }
-        ],
-        "attributes": {
-          "color": {
-            "background": "#00000000"
-          },
-          "width": 250,
-          "height": 250,
-          "horizontal_alignment": "center",
-          "layout_type": "relative",
-          "initial_value": 0,
-          "minimum_value": 0,
-          "maximum_value": 100,
-          "knob_animation_duration": 0.5,
-          "images": {
-            "pointer": "images/marker.png",
-            "background": "images/bg.png"
-          }
-        }
-      },
-      {
-        "_id": "knobValue",
-        "_type": "Button",
-        "actions": [
-          {
-            "on": "touch_up",
-            "_type": "Function",
-            "attributes": {
-              "_target": "customKnob",
-              "function_name": "update_knob_value"
-            },
-            "set": {
-              "value": 0,
-              "animated": true
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "customKnob", 
+                "_type": "Knob", 
+                "actions": [
+                    {
+                        "_type": "Refresh", 
+                        "attributes": {
+                            "_target": "knobValue"
+                        }, 
+                        "on": "value_changed"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "animation.duration": 0.5, 
+                    "images": {
+                        "background": "images/bg.png", 
+                        "pointer": "images/marker.png"
+                    }, 
+                    "layoutType": "relative", 
+                    "size.h": 250, 
+                    "size.w": 250, 
+                    "value.default": 0, 
+                    "value.max": 100, 
+                    "value.min": 0
+                }
+            }, 
+            {
+                "_id": "knobValue", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "customKnob", 
+                            "function_name": "update_knob_value"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {
+                            "animated": true
+                        }
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "customKnob", 
+                            "function_name": "update_knob_value"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {
+                            "animated": true
+                        }
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "customKnob", 
+                            "function_name": "update_knob_value"
+                        }, 
+                        "on": "touch_up", 
+                        "set": {
+                            "animated": true
+                        }
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
             }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 10,
-          "text": "Knob Value: [[customKnob.value]]"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "on": "touch_up",
-            "_type": "Function",
-            "attributes": {
-              "_target": "customKnob",
-              "function_name": "update_knob_value"
-            },
-            "set": {
-              "value": 50,
-              "animated": true
-            }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 10,
-          "text": "Change Knob Value: 50"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "on": "touch_up",
-            "_type": "Function",
-            "attributes": {
-              "_target": "customKnob",
-              "function_name": "update_knob_value"
-            },
-            "set": {
-              "value": 100,
-              "animated": true
-            }
-          }
-        ],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 10,
-          "text": "Change Knob Value: 100"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

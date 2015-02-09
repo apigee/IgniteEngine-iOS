@@ -1,52 +1,43 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 70,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXToggle"
-        }
-      },
-      {
-        "_id": "toggleTest",
-        "_type": "Toggle",
-        "actions": [
-          {
-            "on": "pass.creation.success",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Pass created."
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "toggleTest", 
+                "_type": "Toggle", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "pass.creation.success"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "pass.creation.failed"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "layoutType": "absolute"
+                }
             }
-          },
-          {
-            "on": "pass.creation.failed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Pass failed."
-            }
-          }
-        ],
-        "attributes": {
-          "layout_type": "absolute",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

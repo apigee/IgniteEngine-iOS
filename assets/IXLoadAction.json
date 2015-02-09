@@ -1,170 +1,144 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 70,
-      "background": {
-        "color": "#f8f8f8"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXLoadAction"
-        }
-      },
-      {
-        "_id": "tableSettings",
-        "_type": "TableView",
-        "attributes": {
-          "height": "100%",
-          "width": "100%",
-          "separator.style": "none",
-          "background.color": "#ff00ff00",
-          "dataprovider_id": "dataMenu",
-          "padding.bottom":65,
-          "enabled": true,
-          "item_height": 42,
-          "margin.top": 0,
-          "animate_reload": false
-        },
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
         "controls": [
-          {
-            "_id": "buttonEmployeeList",
-            "_type": "Layout",
-            "actions": [
-              {
-                "_type": "Navigate",
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
                 "attributes": {
-                  "to": "[[dataRow.name]].json"
-                },
-                "on": "touch_up"
-              },
-              {
-                "_type": "Event",
-                "attributes": {
-                  "delay": 0.5,
-                  "_target": "imageMenu",
-                  "event_name": "close"
-                },
-                "on": "touch_up"
-              }
-            ],
-            "attributes": {
-              "alpha": 1,
-              "font": "[[app.font]]:20",
-              "padding.left": 0,
-              "height": 42
-            },
-            "controls": [
-              {
-                "_id": "textCategory",
-                "_type": "Text",
-                "actions": [],
-                "attributes": {
-                  "alpha": 1,
-                  "font": "FontAwesome:16",
-                  "text": "[[dataRow.icon]]",
-                  "vertical_alignment": "middle",
-                  "layout_type": "absolute",
-                  "text.color": "#8f8f8f",
-                  "padding.left": 20,
-                  "touch.text.color": "[[app.color.touch]]",
-                  "width": 60
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
                 }
-              },
-              {
-                "_id": "textCategory",
-                "_type": "Text",
-                "actions": [],
+            }, 
+            {
+                "_id": "tableSettings", 
+                "_type": "TableView", 
                 "attributes": {
-                  "alpha": 1,
-                  "font": "HelveticaNeue-Light:18",
-                  "text": "[[dataRow.name]]",
-                  "vertical_alignment": "middle",
-                  "layout_type": "absolute",
-                  "padding.left": 60,
-                  "text.color": "#8f8f8f",
-                  "touch.text.color": "[[app.color.touch]]",
-                  "width": "100%"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "_id": "layoutButtons",
-        "_type": "Layout",
-        "attributes": {
-          "layout_type": "absolute",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "bottom",
-          "padding.bottom":15
-        },
-        "controls": [
-          {
-            "_id": "button0",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Load",
-                "on": "touch_up",
-                "enabled": true,
+                    "bg.color": "#ff00ff00", 
+                    "cell.size.h": 42, 
+                    "datasource.id": "dataMenu", 
+                    "reloadAnimation.enabled": false, 
+                    "size.h": "100%", 
+                    "size.w": "100%"
+                }, 
+                "controls": [
+                    {
+                        "_id": "buttonEmployeeList", 
+                        "_type": "Layout", 
+                        "actions": [
+                            {
+                                "_type": "Navigate", 
+                                "attributes": {
+                                    "to": "[[dataRow.name]].json"
+                                }, 
+                                "on": "touch_up"
+                            }, 
+                            {
+                                "_type": "Event", 
+                                "attributes": {
+                                    "_target": "imageMenu", 
+                                    "delay": 0.5, 
+                                    "event_name": "close"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "size.h": 42
+                        }, 
+                        "controls": [
+                            {
+                                "_id": "textCategory", 
+                                "_type": "Text", 
+                                "actions": [], 
+                                "attributes": {
+                                    "align.v": "middle", 
+                                    "color": "#8f8f8f", 
+                                    "layoutType": "absolute", 
+                                    "size.w": 60, 
+                                    "touch.text.color": "[[app.color.touch]]"
+                                }
+                            }, 
+                            {
+                                "_id": "textCategory", 
+                                "_type": "Text", 
+                                "actions": [], 
+                                "attributes": {
+                                    "align.v": "middle", 
+                                    "color": "#8f8f8f", 
+                                    "layoutType": "absolute", 
+                                    "size.w": "100%", 
+                                    "touch.text.color": "[[app.color.touch]]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }, 
+            {
+                "_id": "layoutButtons", 
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "dataMenu"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 280,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.top": 15,
-              "text": "load data: dataMenu"
+                    "align.h": "center", 
+                    "align.v": "bottom", 
+                    "layoutType": "absolute"
+                }, 
+                "controls": [
+                    {
+                        "_id": "button0", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Load", 
+                                "attributes": {
+                                    "_target": "dataMenu"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 280, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }
+                ]
             }
-          }
+        ], 
+        "data_providers": [
+            {
+                "_id": "dataMenu", 
+                "_type": "JSON", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {
+                            "messade": "Category: [[session.category_id]]\n\nRow Count: [[$self.count]]"
+                        }, 
+                        "on": "success"
+                    }
+                ], 
+                "attributes": {
+                    "auto_load": false, 
+                    "cache_id": "menu", 
+                    "data.basepath": "entities", 
+                    "data.baseurl": "/data", 
+                    "data.path": "menu.json", 
+                    "http_method": "GET", 
+                    "sort.key": "name", 
+                    "sort.order": "ascending"
+                }, 
+                "parameters": {}
+            }
         ]
-      }
-    ],
-    "data_providers": [
-      {
-        "_id": "dataMenu",
-        "_type": "JSON",
-        "actions": [
-          {
-            "_type": "Alert",
-            "attributes": {
-              "messade": "Category: [[session.category_id]]\n\nRow Count: [[$self.count]]",
-              "title": "admin_orders.json success",
-              "enabled": false
-            },
-            "on": "success"
-          }
-        ],
-        "attributes": {
-          "auto_load": false,
-          "data.baseurl": "/data",
-          "data.path": "menu.json",
-          "sort.order": "ascending",
-          "sort.key": "name",
-          "datarow.basepath": "entities",
-          "cache_id": "menu",
-          "http_method": "GET"
-        },
-        "parameters": {}
-      }
-    ]
-  }
+    }
 }

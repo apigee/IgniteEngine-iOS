@@ -1,72 +1,70 @@
 {
-  "view": {
-    "attributes": {
-      "height": "100%",
-      "layout_type": "float",
-      "width": "100%"
-    },
-    "actions": [],
-    "controls": [
-      {
-        "_id": "layoutHeader",
-        "_type": "Layout",
+    "view": {
+        "actions": [], 
         "attributes": {
-          "width": "100%",
-          "height": 50,
-          "layout_type": "float"
-        },
+            "layoutType": "float", 
+            "size.h": "100%", 
+            "size.w": "100%"
+        }, 
         "controls": [
-          {
-            "_type": "Text",
-            "attributes": {
-              "text.color": "#6c6c6c",
-              "width": "100%",
-              "layout_type": "absolute",
-              "vertical_alignment": "middle",
-              "text.alignment": "center",
-              "text": "[[$custom.title]]"
-            }
-          },
-          {
-            "_id": "imageMenu",
-            "_type": "Image",
-            "actions": [
-              {
-                "_type": "Function",
+            {
+                "_id": "layoutHeader", 
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "app",
-                  "function_name": "drawer.toggle.left"
-                },
-                "on": "touch_up"
-              },
-              {
-                "_type": "Function",
-                "on": "touch_up",
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }, 
+                "controls": [
+                    {
+                        "_type": "Text", 
+                        "attributes": {
+                            "align.v": "middle", 
+                            "color": "#6c6c6c", 
+                            "layoutType": "absolute", 
+                            "size.w": "100%", 
+                            "text.align": "center"
+                        }
+                    }, 
+                    {
+                        "_id": "imageMenu", 
+                        "_type": "Image", 
+                        "actions": [
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "app", 
+                                    "function_name": "drawer.toggle.left"
+                                }, 
+                                "on": "touch_up"
+                            }, 
+                            {
+                                "_type": "Function", 
+                                "attributes": {
+                                    "_target": "TextInput", 
+                                    "function_name": "keyboard_hide"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "image": "../../images/btn_menu_50x50.png", 
+                            "layoutType": "absolute", 
+                            "size.h": 50, 
+                            "size.w": 50
+                        }
+                    }
+                ]
+            }, 
+            {
+                "_type": "Layout", 
                 "attributes": {
-                  "_target": "TextInput",
-                  "function_name": "keyboard_hide"
+                    "bg.color": "#cdcdcd", 
+                    "layoutType": "float", 
+                    "size.h": 1, 
+                    "size.w": "100%"
                 }
-              }
-            ],
-            "attributes": {
-              "layout_type": "absolute",
-              "height": 50,
-              "width": 50,
-              "images.default": "../../images/btn_menu_50x50.png"
             }
-          }
         ]
-      },
-      {
-        "_type": "Layout",
-        "attributes": {
-          "height": 1,
-          "margin.top": 49,
-          "layout_type": "float",
-          "width": "100%",
-          "background.color": "#cdcdcd"
-        }
-      }
-    ]
-  }
+    }
 }

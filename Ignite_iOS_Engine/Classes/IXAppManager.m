@@ -6,174 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/29/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- 
- ###    App level app attributes 'n stuff.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ##  <a name="attributes">Attributes</a>
- 
- | Name                        | Type                                   | Description                              | Default |
- |-----------------------------|----------------------------------------|------------------------------------------|---------|
- | mode                        | *release<br>debug*                     | /local/path/to/save/file.zip             | debug   |
- | log_level                   | *release<br>debug<br>error<br>verbose* | /local/path/to/extract                   | debug   |
- | default_view                | *(string)*                             | /path/to/default.json                    |         |
- | drawer.view.left            | *(string)*                             | /path/to/leftDrawer.json                 |         |
- | drawer.view.left.max.width  | *(int)*                                | Maximum width of left drawer             |         |
- | drawer.view.right           | *(string)*                             | /path/to/rightDrawer.json                |         |
- | drawer.view.right.max.width | *(int)*                                | Maximum width of right drawer            |         |
- | drawer.toggle.velocity      | *(float)*                              | Velocity of drawer toggle                |         |
- | enable_layout_debugging     | *(bool)*                               | Enable Layout debugging                  |         |
- | enable_request_logging      | *(bool)*                               | Enable API request debugging             | false   |
- | enable_remote_logging       | *(bool)*                               | Enable remote logging                    | false   |
- | shows_navigation_bar        | *(bool)*                               | Use stock iOS navigation view controller | false   |
- | preload_images              | *(array)*                              | Preload images into cache                |         |
- | apigee_org_id               | *(string)*                             | Apigee Org Name                          |         |
- | apigee_app_id               | *(string)*                             | Apigee App Name                          |         |
- | apigee_base_url             | *(string)*                             | Apigee Base URL                          |         |
- | apigee_push_notifier        | *(string)*                             | Apigee Notifier ID                       |         |
- 
-
- ##  <a name="readonly">Read Only Attributes</a>
- 
- | Name                      | Type       | Description             |
- |---------------------------|------------|-------------------------|
- | device.model              | *(string)* | Device model            |
- | device.type               | *(string)* | Device type             |
- | device.screen.width       | *(float)*  | Device screen width     |
- | device.screen.width       | *(float)*  | Device screen height    |
- | device.screen.scale       | *(float)*  | Device screen scale     |
- | device.os.version         | *(string)* | Device OS version       |
- | device.os.version.integer | *(int)*    | Device OS version minor |
- | device.os.version.major   | *(int)*    | Device OS version major |
- | push_token                | *(string)* | APNS token              |
- | apigee.device.uuid        | *(string)* | Apigee Device UUID      |
- | bundle.version            | *(string)* | App bundle version      |
- 
- ##  <a name="inherits">Inherits</a>
- 
->  None
- 
- ##  <a name="events">Events</a>
-
- | Name                                   | Description                                                  |
- |----------------------------------------|--------------------------------------------------------------|
- | app_will_resign_active                 | Fires when app will resign active                            |
- | app_did_enter_background               | Fires when app will enter background                         |
- | app_will_enter_foreground              | Fires when app will enter foreground                         |
- | app_did_become_active                  | Fires when app did become active                             |
- | app_will_terminate                     | Fires when app will terminate                                |
- | app_register_for_notifications_success | Fires when app successfully registers for push notifications |
- | app_register_for_notifications_failed  | Fires when app fails to register for push notifications      |
- | push_recieved                          | Fires when a push notification is received                   |
- | custom_url_scheme_opened               | Fires when app opens via custom URL scheme                   |
- 
- ##  <a name="functions">Functions</a>
- 
-Reset App: *reset*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "$app",
-        "function_name": "reset"
-      }
-    }
-
-Destroy all session variables: *session.destroy*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "$app",
-        "function_name": "session.destroy"
-      }
-    }
- 
-Toggle left/right drawer: *drawer.toggle.left/right*
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "$app",
-        "function_name": "drawer.toggle.left"
-      }
-    }
-
-Enable drawers: *drawer.enable*
- 
-*must have one of the following suffixes:*
- 
-* .open
-* .close
-* .open_close
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "$app",
-        "function_name": "drawer.enable.open_close"
-      }
-    }
-
-Disable drawers: *drawer.disable*
- 
-*must have one of the following suffixes:*
- 
-* .open
-* .close
-* .open_close
-
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "$app",
-        "function_name": "drawer.disable.open_close"
-      }
-    }
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-    {
-      "_id": "imageTest",
-      "_type": "Image",
-      "attributes": {
-        "height": 100,
-        "width": 100,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "middle",
-        "images.default": "/images/btn_notifications_25x25.png",
-        "images.default.tintColor": "#a9d5c7"
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
-
 #import "IXAppManager.h"
 
 @import AVFoundation.AVAudioSession;
@@ -208,32 +40,32 @@ Disable drawers: *drawer.disable*
 // Top Level Containers
 IX_STATIC_CONST_STRING kIXAppActions = @"app.actions";
 IX_STATIC_CONST_STRING kIXAppAttributes = @"app.attributes";
-IX_STATIC_CONST_STRING kIXAppDataProviders = @"app.data_providers";
+IX_STATIC_CONST_STRING kIXAppDataProviders = @"app.datasources";
 IX_STATIC_CONST_STRING kIXSessionDefaults = @"session.defaults";
 
 // App Attributes
 IX_STATIC_CONST_STRING kIXAppMode = @"mode";
-IX_STATIC_CONST_STRING kIXLogLevel = @"log_level";
-IX_STATIC_CONST_STRING kIXDefaultView = @"default_view";
-IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawer.view.left";
-IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawer.view.left.max.width";
-IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawer.view.right";
-IX_STATIC_CONST_STRING kIXDrawerViewRightMaxWidth = @"drawer.view.right.max.width";
-IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.toggle.velocity";
-IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"enable_layout_debugging";
-IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"enable_request_logging";
-IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"enable_remote_logging";
+IX_STATIC_CONST_STRING kIXLogLevel = @"logging.level";
+IX_STATIC_CONST_STRING kIXDefaultView = @"controller.index";
+IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawerController.l.url";
+IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawerController.l.max.w";
+IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawerController.r.url";
+IX_STATIC_CONST_STRING kIXDrawerViewRightMaxWidth = @"drawerController.r.max.w";
+IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawerController.toggleVelocity";
+IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"debug.layout.enabled";
+IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"logging.datasource.enabled";
+IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"logging.remote.enabled";
 IX_STATIC_CONST_STRING kIXLocationAccuracy = @"location.accuracy";
-IX_STATIC_CONST_STRING kIXShowsNavigationBar = @"shows_navigation_bar";
-IX_STATIC_CONST_STRING kIXPreloadImages = @"preload_images";
-IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee_org_id";
-IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee_app_id";
-IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee_base_url";
-IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee_push_notifier";
+IX_STATIC_CONST_STRING kIXShowsNavigationBar = @"navigationBar.enabled";
+IX_STATIC_CONST_STRING kIXPreloadImages = @"preloadImages.enabled";
+IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee.org";
+IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee.app";
+IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee.baseUrl";
+IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee.notifier";
 
 IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"requestAccess.push.auto"; // Should app automatically request access to push. If NO must use app function kIXRequestAccessPush to request push
-IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"requestAccess.microphone.auto"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
-IX_STATIC_CONST_STRING kIXRequestAccessLocationAuto = @"requestAccess.location.auto"; // Should app automatically request access to location. If NO must use app function kIXRequestAccessLocation to track location.  This will begin tracking automatically as well when set to YES.
+IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"mic.autoRequest.enabled"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
+IX_STATIC_CONST_STRING kIXRequestAccessLocationAuto = @"location.autoRequest.enabled"; // Should app automatically request access to location. If NO must use app function kIXRequestAccessLocation to track location.  This will begin tracking automatically as well when set to YES.
 
 IX_STATIC_CONST_STRING kIXLocationAccuracyBest = @"best";
 IX_STATIC_CONST_STRING kIXLocationAccuracyBestForNavigation = @"bestForNavigation";
@@ -244,30 +76,32 @@ IX_STATIC_CONST_STRING kIXLocationAccuracyThreeKilometers = @"threeKilometers";
 
 // App Functions
 IX_STATIC_CONST_STRING kIXReset = @"reset";
-IX_STATIC_CONST_STRING kIXDestorySession = @"session.destroy";
+IX_STATIC_CONST_STRING kIXDestorySession = @"destroySession";
 
-IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawer.toggle.left";
-IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawer.toggle.right";
+IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawerController.l.toggle";
+IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawerController.r.toggle";
 
-IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawer.enable"; // Function name must have one of the following suffixes.
-IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function name must have one of the following suffixes.
-
+#warning These should be cleaned up and adjusted to drawerController.open.enable and drawerController.close.disable and drawerController.all.enable etc.
+IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawerController.enabled"; // Function name must have one of the following suffixes.
+IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawerController.disable"; // Function name must have one of the following suffixes.
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
-IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".open_close";
+IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".openClose";
 
-IX_STATIC_CONST_STRING kIXRequestAccessPush = @"requestPush";
-IX_STATIC_CONST_STRING kIXRequestAccessMicrophone = @"requestMic";
-IX_STATIC_CONST_STRING kIXRequestAccessLocation = @"requestLocation";
+IX_STATIC_CONST_STRING kIXRequestAccessPush = @"push.auth.request";
+IX_STATIC_CONST_STRING kIXRequestAccessMicrophone = @"mic.auth.request";
+IX_STATIC_CONST_STRING kIXRequestAccessLocation = @"location.auth.request";
 
-IX_STATIC_CONST_STRING kIXStartLocationTracking = @"start.location.tracking";
-IX_STATIC_CONST_STRING kIXStopLocationTracking = @"stop.location.tracking";
+IX_STATIC_CONST_STRING kIXStartLocationTracking = @"location.beginTracking";
+IX_STATIC_CONST_STRING kIXStopLocationTracking = @"location.endTracking";
 
 // Device Readonly Attributes
 IX_STATIC_CONST_STRING kIXDeviceModel = @"model";
 IX_STATIC_CONST_STRING kIXDeviceType = @"type";
-IX_STATIC_CONST_STRING kIXDeviceScreenWidth = @"screen.width";
-IX_STATIC_CONST_STRING kIXDeviceScreenHeight = @"screen.height";
+IX_STATIC_CONST_STRING kIXDeviceScreenWidth = @"screen.w";
+IX_STATIC_CONST_STRING kIXDeviceScreenWidthX = @"screen.width";
+IX_STATIC_CONST_STRING kIXDeviceScreenHeight = @"screen.h";
+IX_STATIC_CONST_STRING kIXDeviceScreenHeightX = @"screen.height";
 IX_STATIC_CONST_STRING kIXDeviceScreenScale = @"screen.scale";
 IX_STATIC_CONST_STRING kIXDeviceOSVersion = @"os.version";
 IX_STATIC_CONST_STRING kIXDeviceOSVersionInteger = @"os.version.integer";
@@ -468,7 +302,9 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                                                            kIXDeviceType: [IXDeviceInfo deviceType],
                                                                                            kIX_ORIENTATION: [IXDeviceInfo interfaceOrientation],
                                                                                            kIXDeviceScreenWidth: [IXDeviceInfo screenWidth],
+                                                                                           kIXDeviceScreenWidthX: [IXDeviceInfo screenWidth],
                                                                                            kIXDeviceScreenHeight: [IXDeviceInfo screenHeight],
+                                                                                           kIXDeviceScreenHeightX: [IXDeviceInfo screenHeight],
                                                                                            kIXDeviceScreenScale: [IXDeviceInfo screenScale],
                                                                                            kIXDeviceOSVersion: [IXDeviceInfo osVersion],
                                                                                            kIXDeviceOSVersionInteger: [IXDeviceInfo osVersionAsInteger],

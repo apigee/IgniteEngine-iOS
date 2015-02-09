@@ -1,102 +1,87 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background.color":"#f8f8f8",
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXActionSheet"
-        }
-      },
-      {
-        "_type": "ActionSheet",
-        "_id": "actionSheetTest",
-        "attributes": {
-          "sheet.style": "black.opaque",
-          "sheet.title": "sheetTitle",
-          "sheet.button.title.cancel": "cancelButtonTitle",
-          "sheet.button.title.destructive": "destructiveButtonTitle",
-          "sheet.button.title.others": "other,someOther2"
-        },
-        "actions": [
-          {
-            "on": "cancel_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Cancel Pressed"
+            "_id": "test", 
+            "bg.color": "#f8f8f8", 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "actionSheetTest", 
+                "_type": "ActionSheet", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "cancel_pressed"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "other_pressed"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "someOther2_pressed"
+                    }, 
+                    {
+                        "_type": "Alert", 
+                        "attributes": {}, 
+                        "on": "destructiveButtonTitle_pressed"
+                    }
+                ], 
+                "attributes": {
+                    "buttons.cancel": "cancelButtonTitle", 
+                    "buttons.destructive": "destructiveButtonTitle", 
+                    "buttons.others": "other,someOther2", 
+                    "sheet.style": "black.opaque", 
+                    "title": "sheetTitle"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [
+                    {
+                        "_type": "Alert", 
+                        "attributes": {
+                            "message": "You touched the button!"
+                        }, 
+                        "on": "touch_up"
+                    }, 
+                    {
+                        "_type": "Function", 
+                        "attributes": {
+                            "_target": "actionSheetTest", 
+                            "function_name": "show_sheet"
+                        }, 
+                        "on": "touch_up"
+                    }
+                ], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "layoutType": "absolute", 
+                    "size.h": 50, 
+                    "size.w": 150, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
             }
-          },
-          {
-            "on": "other_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "other pressed [[app.bundle.version]]"
-            }
-          },
-          {
-            "on": "someOther2_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "someOther2 pressed"
-            }
-          },
-          {
-            "on": "destructiveButtonTitle_pressed",
-            "_type": "Alert",
-            "attributes": {
-              "title": "destructiveButtonTitle pressed"
-            }
-          }
-        ]
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Alert",
-            "on": "touch_up",
-            "enabled": false,
-            "attributes": {
-              "title": "touch_up",
-              "message": "You touched the button!"
-            }
-          },
-          {
-            "_type": "Function",
-            "on": "touch_up",
-            "attributes": {
-              "_target": "actionSheetTest",
-              "function_name": "show_sheet"
-            }
-          }
-        ],
-        "attributes": {
-          "width": 150,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "layout_type": "absolute",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle",
-          "touch.background.color": "cdcdcd",
-          "border.radius": 0,
-          "text": "sheet."
-        }
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

@@ -1,88 +1,76 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#f8f8f8"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "IXEventAction"
-        }
-      },
-      {
-        "_id": "layoutButtons",
-        "_type": "Layout",
-        "attributes": {
-          "layout_type": "absolute",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle"
-        },
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
         "controls": [
-          {
-            "_id": "button0",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Event",
-                "on": "touch_up",
-                "enabled": true,
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
                 "attributes": {
-                  "_target": "button1",
-                  "event_name": "touch_up"
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
                 }
-              }
-            ],
-            "attributes": {
-              "width": 280,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.top": 15,
-              "text": "raise touch_up on button1"
-            }
-          },
-          {
-            "_id": "button1",
-            "_type": "Button",
-            "actions": [
-              {
-                "_type": "Alert",
-                "on": "touch_up",
-                "enabled": true,
+            }, 
+            {
+                "_id": "layoutButtons", 
+                "_type": "Layout", 
                 "attributes": {
-                  "title": "[[$self._id]]",
-                  "message": "[[$self.text]]"
-                }
-              }
-            ],
-            "attributes": {
-              "width": 280,
-              "height": 50,
-              "text.color": "6c6c6c",
-              "background.color": "cdcdcd",
-              "touch.text.color": "6c6c6c50",
-              "touch.background.color": "cdcdcd",
-              "margin.top": 15,
-              "text": "button1 title"
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "layoutType": "absolute"
+                }, 
+                "controls": [
+                    {
+                        "_id": "button0", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Event", 
+                                "attributes": {
+                                    "_target": "button1", 
+                                    "event_name": "touch_up"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 280, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }, 
+                    {
+                        "_id": "button1", 
+                        "_type": "Button", 
+                        "actions": [
+                            {
+                                "_type": "Alert", 
+                                "attributes": {
+                                    "message": "[[$self.text]]"
+                                }, 
+                                "on": "touch_up"
+                            }
+                        ], 
+                        "attributes": {
+                            "bg.color": "cdcdcd", 
+                            "color": "6c6c6c", 
+                            "size.h": 50, 
+                            "size.w": 280, 
+                            "touch.background.color": "cdcdcd", 
+                            "touch.text.color": "6c6c6c50"
+                        }
+                    }
+                ]
             }
-          }
-        ]
-      }
-    ],
-    "data_providers": []
-  }
+        ], 
+        "data_providers": []
+    }
 }

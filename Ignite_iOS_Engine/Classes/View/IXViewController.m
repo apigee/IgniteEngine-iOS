@@ -38,7 +38,7 @@ IX_STATIC_CONST_STRING kIXDidDisappear = @"didDisappear";
 // Functions
 IX_STATIC_CONST_STRING kIXStateSave = @"state.save";
 IX_STATIC_CONST_STRING kIXStateClear = @"state.clear";
-IX_STATIC_CONST_STRING kIXCacheId = @"cacheId";
+IX_STATIC_CONST_STRING kIXCacheId = @"cache.id";
 
 // NSCoding Key Constants
 static NSString* const kIXSandboxNSCodingKey = @"sandbox";

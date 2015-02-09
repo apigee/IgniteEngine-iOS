@@ -1,62 +1,51 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "background": {
-        "color": "#ffffff"
-      },
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "custom/header.json",
-          "layout_type": "float",
-          "height": 50,
-          "width": "100%",
-          "margin.top": 20,
-          "title": "Button Example"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [],
-        "attributes": {
-          "width": 200,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "border.radius": 5,
-          "text": "Touch Me"
-        }
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [],
-        "attributes": {
-          "width": 280,
-          "height": 50,
-          "text.color": "6c6c6c",
-          "background.color": "cdcdcd",
-          "touch.text.color": "6c6c6c50",
-          "horizontal_alignment": "center",
-          "touch.background.color": "cdcdcd",
-          "margin.top": 20,
-          "border.radius": 5,
-          "border.width": 2,
-          "border.color": "6c6c6c",
-          "text": "Touch Me"
-        }
-      }
-    ],
-    "data_providers": []
-  }
+            "_id": "test", 
+            "background": {}, 
+            "status_bar_style": "dark"
+        }, 
+        "controls": [
+            {
+                "_id": "customHeader", 
+                "_type": "Custom", 
+                "attributes": {
+                    "control_location": "custom/header.json", 
+                    "layoutType": "float", 
+                    "size.h": 50, 
+                    "size.w": "100%"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 200, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }, 
+            {
+                "_id": "button", 
+                "_type": "Button", 
+                "actions": [], 
+                "attributes": {
+                    "align.h": "center", 
+                    "bg.color": "cdcdcd", 
+                    "border.size": 2, 
+                    "color": "6c6c6c", 
+                    "size.h": 50, 
+                    "size.w": 280, 
+                    "touch.background.color": "cdcdcd", 
+                    "touch.text.color": "6c6c6c50"
+                }
+            }
+        ], 
+        "data_providers": []
+    }
 }

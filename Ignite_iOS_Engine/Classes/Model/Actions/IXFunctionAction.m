@@ -82,7 +82,7 @@
 #import "MMDrawerController.h"
 
 // IXFunctionAction Properties
-static NSString* const kIXFunctionName = @"function_name";
+static NSString* const kIXFunctionName = @"functionName";
 static NSString* const kIXDuration = @"duration";
 
 @implementation IXFunctionAction

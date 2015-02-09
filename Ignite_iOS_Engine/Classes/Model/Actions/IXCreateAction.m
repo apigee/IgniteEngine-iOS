@@ -6,69 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/30/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- 
- ###    Creates a new control from .json file.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ##  <a name="attributes">Attributes</a>
- 
- | Name             | Type       | Description                               | Default |
- |------------------|------------|-------------------------------------------|---------|
- | control_location | *(string)* | http:// or /path/to/control.json          |         |
- | parent_id        | *(string)* | ID of the destination parent control      |         |
-
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
- | Name            | Description                                     |
- |-----------------|-------------------------------------------------|
- | success         | Fires when control is created successfully      |
- | failed          | Fires when create control fails                 |
- | created         | Fires on the newly created control when created |
-
- ##  <a name="functions">Functions</a>
- 
->   None
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-### Create new control:
-
-    {
-      "_type": "Create",
-      "on": "touch_up",
-      "attributes": {
-        "control_location": "/path/to/control.json",
-        "parent_id": "parendId"
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
 #import "IXCreateAction.h"
 
 #import "IXAppManager.h"
@@ -82,8 +19,8 @@
 #import "IXBaseControl.h"
 
 // IXCreateAction Properties
-static NSString* const kIXControlLocation = @"control_location";
-static NSString* const kIXParentID = @"parent_id";
+static NSString* const kIXControlLocation = @"control.url";
+static NSString* const kIXParentID = @"parent.id";
 
 // IXCreateAction Events: kIX_SUCCESS and kIX_FAILED
 static NSString* const kIXCreated = @"created"; // Fires on the actual created control. 
@@ -148,7 +85,7 @@ static NSString* const kIXCreated = @"created"; // Fires on the actual created c
                 }
                 else
                 {
-                    [weakSelf actionDidFinishWithEvents:@[kIX_FAILED]];
+                    [weakSelf actionDidFinishWithEvents:@[kIX_ERROR]];
                 }
              }];
         }
@@ -156,7 +93,7 @@ static NSString* const kIXCreated = @"created"; // Fires on the actual created c
     
     if( needsToSendFailed )
     {
-        [self actionDidFinishWithEvents:@[kIX_FAILED]];
+        [self actionDidFinishWithEvents:@[kIX_ERROR]];
     }
 }
 

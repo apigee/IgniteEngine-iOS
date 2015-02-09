@@ -6,68 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/30/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- 
- ###    Raises an event on the _target control ID.
-  
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ##  <a name="attributes">Attributes</a>
- 
- | Name            | Type                                           | Description                                                                        | Default |
- |-----------------|------------------------------------------------|------------------------------------------------------------------------------------|---------|
- | animation_style | *ease_in_out<br>ease_in<br>ease_out<br>linear* | Animation Style                                                                    |         |
- | duration        | *(float)*                                      | Duration                                                                           |         |
- | stagger_delay   | *(float)*                                      | If using a comma-separated list of control IDs, stagger each modify by this amount | 0       |
-
- 
- ##  <a name="inherits">Inherits</a>
- 
->  IXBaseControl
- 
- ##  <a name="events">Events</a>
-
->   None
-
- ##  <a name="functions">Functions</a>
- 
->   None
-
- 
- ##  <a name="example">Example JSON</a> 
- 
-### Modify the :
- 
-    {
-      "_type": "Modify",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "buttonTest"
-      },
-      "set": {
-        "text": "Text was changed."
-      }
-    }
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
 #import "IXModifyAction.h"
 
 #import "IXSandbox.h"
@@ -82,15 +20,15 @@
 
 // IXModifyAction Properties
 static NSString* const kIXDuration = @"duration";
-static NSString* const kIXAnimationStyle = @"animation_style";
+static NSString* const kIXAnimationStyle = @"animationStyle";
 
 // kIXAnimationStyle Types
-static NSString* const kIXEaseInOut = @"ease_in_out";
-static NSString* const kIXEaseIn = @"ease_in";
-static NSString* const kIXEaseOut = @"ease_out";
+static NSString* const kIXEaseInOut = @"easeInOut";
+static NSString* const kIXEaseIn = @"easeIn";
+static NSString* const kIXEaseOut = @"easeOut";
 static NSString* const kIXLinear = @"linear";
 
-static NSString* const kIXStaggerDelay = @"stagger_delay";
+static NSString* const kIXStaggerDelay = @"staggerDelay";
 
 @implementation IXModifyAction
 

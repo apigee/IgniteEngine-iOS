@@ -1,60 +1,55 @@
 {
-  "view": {
-    "attributes": {
-      "layout_type": "float",
-      "width": "100%",
-      "height": "100%",
-      "background.color": "#000000"
-    },
-    "actions": [
-      {
-        "_type": "Modify",
-        "on": "touch_up",
-        "attributes": {
-          "_target": "$custom",
-          "duration": 0.25
-        },
-        "set": {
-          "alpha": 0
-        }
-      },
-      {
-        "_type": "Modify",
-        "on": "touch_up",
-        "attributes": {
-          "_target": "photoDetailOverlay",
-          "delay": 0.25
-        },
-        "set": {
-          "visible": false
-        }
-      }
-    ],
-    "controls": [
-      {
-        "_id": "layoutPhotoDetail",
-        "_type": "Layout",
-        "actions": [],
-        "attributes": {
-          "width": 308,
-          "height": 308,
-          "layout_type": "absolute",
-          "horizontal_alignment": "center",
-          "vertical_alignment": "middle"
-        },
-        "controls": [
-          {
-            "_id": "imageStandardResolution",
-            "_type": "Image",
-            "actions": [],
-            "attributes": {
-              "width": 308,
-              "height": 308,
-              "images.default": "[[session.photoUrl]]"
+    "view": {
+        "actions": [
+            {
+                "_type": "Modify", 
+                "attributes": {
+                    "_target": "$custom"
+                }, 
+                "on": "touch_up", 
+                "set": {}
+            }, 
+            {
+                "_type": "Modify", 
+                "attributes": {
+                    "_target": "photoDetailOverlay", 
+                    "delay": 0.25
+                }, 
+                "on": "touch_up", 
+                "set": {}
             }
-          }
+        ], 
+        "attributes": {
+            "bg.color": "#000000", 
+            "layoutType": "float", 
+            "size.h": "100%", 
+            "size.w": "100%"
+        }, 
+        "controls": [
+            {
+                "_id": "layoutPhotoDetail", 
+                "_type": "Layout", 
+                "actions": [], 
+                "attributes": {
+                    "align.h": "center", 
+                    "align.v": "middle", 
+                    "layoutType": "absolute", 
+                    "size.h": 308, 
+                    "size.w": 308
+                }, 
+                "controls": [
+                    {
+                        "_id": "imageStandardResolution", 
+                        "_type": "Image", 
+                        "actions": [], 
+                        "attributes": {
+                            "image": "[[session.photoUrl]]", 
+                            "size.h": 308, 
+                            "size.w": 308
+                        }
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
+    }
 }

@@ -18,7 +18,7 @@
 // Animation Properties
 static NSString* const kIXDuration = @"duration";
 static NSString* const kIXAnimation = @"animation";
-static NSString* const kIXRepeatCount = @"repeat_count";
+static NSString* const kIXRepeatCount = @"repeatCount";
 
 // Animation Options
 static NSString* const kIXDirection = @"direction";
