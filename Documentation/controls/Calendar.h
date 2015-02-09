@@ -14,26 +14,21 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-
-    @param event.allDay All day event? *(default: FALSE)*<br>*(bool)*
-    @param event.title Event Title<br>*(string)*
-    @param event.location Location<br>*(string)*
-    @param event.url URL<br>*(string)*
-    @param event.notes Notes<br>*(string)*
-    @param event.date.format Date Format<br>*(string)*
-    @param event.date.start Date Start<br>*(date)*
-    @param event.date.end Date End<br>*(date)*
-    @param event.alarm.offset Alarm Offset<br>*(float)*
-"    @param event.recurrence.frequency Recurrance Frequency<br>*none
-daily
-weekly
-monthly
-yearly*"
-    @param access_granted Permission status (Read-only)<br>*(bool)*
-
-*/
+/** Calendar has the following attributes:
+ 
+ @param isAllowed Access to the device granted<br><code>bool</code>
+ @param alarmOffset Alarm offset<br><code>float</code>
+ @param allDay.enabled All day event<br><code>bool</code> *FALSE*
+ @param date.end Date end<br><code>date</code>
+ @param date.format Date format<br><code>date</code>
+ @param date.start Date start<br><code>date</code>
+ @param location Location<br><code>string</code>
+ @param notes Notes<br><code>string</code>
+ @param repeatFrequency Repeat frequency<br><code>int</code>
+ @param title Title<br><code>string</code>
+ @param url URL<br><code>string</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -41,53 +36,43 @@ yearly*"
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param add_event_success The event was added successfully
-    @param add_event_failed Event failed to add to calendar.
-
+/** Calendar has the following events:
+ 
+ @param error Error occured when adding event
+ @param success Fires on success
+ 
  */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param add_event Adds an event to the device calendar
-
- <pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "calendarTest",
-    "function_name": "add_event"
-  }
-} 
+/** Calendar has the following functions:
+ 
+ @param addEvent Add event
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
+ 
  </pre>
-
-*/
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** Calendar returns the following values:
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

@@ -1,8 +1,8 @@
 {
     "view": {
         "attributes": {
-            "height": "100%",
-            "width": "100%",
+            "size.h": "100%",
+            "size.w": "100%",
             "padding.top": 100,
             "background": {
 				"color": "#FFFFFF"
@@ -13,14 +13,14 @@
             "_id": "saveSignatureText",
             "_type": "Text",
             "actions": [{
-                "on": "touch_up",
+                "on": "touchUp",
                 "_type": "Function",
-                "attributes": { "_target": "signatureControl", "function_name": "save_signature" },
+                "attributes": { "_target": "signatureControl", "functionName": "save_signature" },
                 "set": { "to":"docs://signatures/my_signature.png" }
             }],
             "attributes": {
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
+                "align.h":"center",
+                "layoutType": "relative",
                 "text": "Save Signature"
             }
          },
@@ -28,10 +28,10 @@
             "_id": "signatureControl",
             "_type": "Signature",
             "attributes": {
-                "height": "200",
-                "width": "60%",
-                "horizontal_alignment":"center",
-                "layout_type": "relative"
+                "size.h": "200",
+                "size.w": "60%",
+                "align.h":"center",
+                "layoutType": "relative"
             },
             "actions": [{
                 "on": ["success","fail"],
@@ -52,8 +52,8 @@
              "_type": "Text",
              "attributes": {
                 "margin.top":100,
-                "horizontal_alignment":"center",
-                "layout_type": "relative",
+                "align.h":"center",
+                "layoutType": "relative",
                 "text": "The following image is the saved signature.  Will update when you save signature."
              }
          },
@@ -61,11 +61,11 @@
              "_id": "saveSignatureImage",
              "_type": "Image",
              "attributes": {
-                 "height": "200",
-                 "width": "60%",
-                 "horizontal_alignment":"center",
-                 "layout_type": "relative",
-                 "images.default": "docs://signatures/my_signature.png"
+                 "size.h": "200",
+                 "size.w": "60%",
+                 "align.h":"center",
+                 "layoutType": "relative",
+                 "image": "docs://signatures/my_signature.png"
              }
          },
         ]

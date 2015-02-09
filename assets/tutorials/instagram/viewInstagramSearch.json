@@ -1,95 +1,103 @@
 {
-    "view": {
-        "actions": [], 
+  "view": {
+    "attributes": {
+      "_id": "photoSearch",
+      "status_bar_style": "light",
+      "bg.color": "#000000"
+    },
+    "actions": [],
+    "controls": [
+      {
+        "_id": "layoutMain",
+        "_type": "Layout",
         "attributes": {
-            "_id": "photoSearch", 
-            "bg.color": "#000000", 
-            "status_bar_style": "light"
-        }, 
+          "size.w": "100%",
+          "size.h": "100%",
+          "bg.color": "#000000",
+          "layoutType": "absolute"
+        },
         "controls": [
-            {
-                "_id": "layoutMain", 
-                "_type": "Layout", 
-                "attributes": {
-                    "bg.color": "#000000", 
-                    "layoutType": "absolute", 
-                    "size.h": "100%", 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "imageBg", 
-                        "_type": "Image", 
-                        "attributes": {
-                            "image": "/images/bg_2x568.png", 
-                            "layoutType": "absolute", 
-                            "size.h": "100%", 
-                            "size.w": "100%"
-                        }
-                    }, 
-                    {
-                        "_id": "customHeader", 
-                        "_type": "Custom", 
-                        "attributes": {
-                            "bg.color": "#000000", 
-                            "control_location": "customSearchHeader.json", 
-                            "layoutType": "absolute", 
-                            "size.h": 70, 
-                            "size.w": "100%"
-                        }
-                    }, 
-                    {
-                        "_id": "customInput", 
-                        "_type": "Custom", 
-                        "attributes": {
-                            "bg.color": "ffffff00", 
-                            "control_location": "customSearchInput.json", 
-                            "layoutType": "absolute", 
-                            "size.h": 46, 
-                            "size.w": "100%"
-                        }
-                    }, 
-                    {
-                        "_id": "customCollection", 
-                        "_type": "Custom", 
-                        "attributes": {
-                            "autofill.h": true, 
-                            "bg.color": "ff00ff00", 
-                            "control_location": "customSearchCollection.json", 
-                            "size.w": "100%"
-                        }, 
-                        "controls": []
-                    }
-                ]
+          {
+            "_id": "imageBg",
+            "_type": "Image",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": "100%",
+              "image": "/images/bg_2x568.png",
+              "layoutType": "absolute"
             }
-        ], 
-        "data_providers": [
-            {
-                "_id": "dataInstagram", 
-                "_type": "JSON", 
-                "actions": [
-                    {
-                        "_type": "Alert", 
-                        "attributes": {
-                            "message": "Success"
-                        }, 
-                        "on": "success"
-                    }
-                ], 
-                "attributes": {
-                    "auto_load": false, 
-                    "cache_id": "dataInstagram", 
-                    "data.basepath": "data", 
-                    "data.baseurl": "https://api.instagram.com", 
-                    "data.path": "/v1/tags/[[session.query:url_encode]]/media/recent", 
-                    "http_method": "GET", 
-                    "sort.key": "name", 
-                    "sort.order": "ascending"
-                }, 
-                "parameters": {
-                    "client_id": "e3363508f9e449ea88a73b70ff7107bc"
-                }
+          },
+          {
+            "_id": "customHeader",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "customSearchHeader.json",
+              "size.w": "100%",
+              "title": "Search",
+              "size.h": 70,
+              "bg.color": "#000000",
+              "layoutType": "absolute"
             }
+          },
+          {
+            "_id": "customInput",
+            "_type": "Custom",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": 46,
+              "margin.top": 70,
+              "bg.color": "ffffff00",
+              "layoutType": "absolute",
+              "control_location": "customSearchInput.json"
+            }
+          },
+          {
+            "_id": "customCollection",
+            "_type": "Custom",
+            "attributes": {
+              "padding": 4,
+              "padding.top": 0,
+              "padding.bottom": 0,
+              "margin.top": 112,
+              "fill_remaining_size.h": true,
+              "size.w": "100%",
+              "bg.color": "ff00ff00",
+              "control_location": "customSearchCollection.json"
+            },
+            "controls": []
+          }
         ]
-    }
+      }
+    ],
+    "datasources": [
+      {
+        "_id": "dataInstagram",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Alert",
+            "on": "success",
+            "enabled":false,
+            "attributes": {
+              "title": "[[$self._id]]",
+              "message": "Success"
+            }
+          }
+        ],
+        "attributes": {
+          "auto_load": false,
+          "data.baseurl": "https://api.instagram.com",
+          "data.path": "/v1/tags/[[session.query:url_encode]]/media/recent",
+          "sort.order": "ascending",
+          "sort.key": "name",
+          "cache_id": "dataInstagram",
+          "datarow.basepath": "data",
+          "http_method": "GET"
+        },
+        "parameters": {
+          "client_id": "e3363508f9e449ea88a73b70ff7107bc"
+        }
+      }
+    ]
+  }
 }

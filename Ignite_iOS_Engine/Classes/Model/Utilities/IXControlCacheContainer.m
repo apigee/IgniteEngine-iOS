@@ -272,7 +272,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
                 
                 IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDictionary[kIX_ACTIONS]];
                 NSArray* childConfigControls = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDictionary[kIX_CONTROLS]];
-                NSArray* dataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:controlJSONDictionary[kIX_DATA_PROVIDERS]];
+                NSArray* dataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:controlJSONDictionary[kIX_datasources]];
                 
                 IXControlCacheContainer* controlCacheContainer = [[IXControlCacheContainer alloc] initWithControlType:controlType
                                                                                                            styleClass:controlStyleClass

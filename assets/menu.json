@@ -1,192 +1,210 @@
 {
-    "view": {
-        "actions": [], 
+  "view": {
+    "attributes": {
+      "_id": "menu",
+      "status_bar_style": "dark",
+      "bg.color": "#5a5a5a"
+    },
+    "actions": [
+      {
+        "_type": "Load",
+        "on": "willFirstAppear",
+        "enabled": true,
         "attributes": {
-            "_id": "menu", 
-            "bg.color": "#5a5a5a", 
-            "status_bar_style": "dark"
-        }, 
+          "_target": "dataMenu"
+        }
+      }
+    ],
+    "controls": [
+      {
+        "_id": "layoutMenu",
+        "_type": "Layout",
+        "attributes": {
+          "size.w": "100%",
+          "size.h": "100%",
+          "margin.left": 0,
+          "layoutType": "float"
+        },
         "controls": [
-            {
-                "_id": "layoutMenu", 
-                "_type": "Layout", 
+          {
+            "_id": "layoutTable",
+            "_type": "Layout",
+            "attributes": {
+              "layoutType": "float",
+              "size.w": "100%",
+              "size.h": "100%",
+              "padding.top": 70,
+              "bg.color": "#fafafa00"
+            },
+            "controls": [
+              {
+                "_id": "tableSettings",
+                "_type": "TableView",
                 "attributes": {
-                    "layoutType": "float", 
-                    "size.h": "100%", 
-                    "size.w": "100%"
-                }, 
+                  "sectionHeader.xpath": "type",
+                  "sectionHeader.xpath.size.h": 20,
+                  "sectionHeader.xpath.size.w": "100%",
+                  "size.h": "100%",
+                  "size.w": 275,
+                  "separator.style": "none",
+                  "bg.color": "#ff00ff00",
+                  "datasource.id": "dataMenu",
+                  "data.basepath": "entities",
+                  "enabled": true,
+                  "cell.size.h": 42,
+                  "cell.size.w": 275,
+                  "margin.top": 0,
+                  "animate_reload": false
+                },
+                "section_header_controls": [
+                  {
+                    "_id": "layoutSectionHeader",
+                    "_type": "Layout",
+                    "actions": [
+                      {
+                        "_id": "textCategory",
+                        "_type": "Text",
+                        "actions": [],
+                        "attributes": {
+                          "alpha": 1,
+                          "font": "HelveticaNeue-Light:16",
+                          "text": "[[dataRow.type]]",
+                          "align.v": "middle",
+                          "layoutType": "absolute",
+                          "color": "#8f8f8f",
+                          "padding.left": 10,
+                          "size.w": "100%"
+                        }
+                      }
+                    ],
+                    "attributes": {
+                      "bg.color": "#ffffff50",
+                      "size.w": 275,
+                      "size.h": "100%"
+                    }
+                  }
+                ],
                 "controls": [
-                    {
-                        "_id": "layoutTable", 
-                        "_type": "Layout", 
+                  {
+                    "_id": "buttonEmployeeList",
+                    "_type": "Layout",
+                    "actions": [
+                      {
+                        "_type": "Navigate",
                         "attributes": {
-                            "bg.color": "#fafafa00", 
-                            "layoutType": "float", 
-                            "size.h": "100%", 
-                            "size.w": "100%"
-                        }, 
-                        "controls": [
-                            {
-                                "_id": "tableSettings", 
-                                "_type": "TableView", 
-                                "attributes": {
-                                    "bg.color": "#ff00ff00", 
-                                    "cell.size.h": 42, 
-                                    "datasource.id": "dataMenu", 
-                                    "reloadAnimation.enabled": false, 
-                                    "sectionHeader.size.h": 20, 
-                                    "sectionHeader.size.w": "100%", 
-                                    "sectionHeader.xpath": "type", 
-                                    "size.h": "100%", 
-                                    "size.w": "100%"
-                                }, 
-                                "controls": [
-                                    {
-                                        "_id": "buttonEmployeeList", 
-                                        "_type": "Layout", 
-                                        "actions": [
-                                            {
-                                                "_type": "Navigate", 
-                                                "attributes": {
-                                                    "to": "[[dataRow.view]]"
-                                                }, 
-                                                "on": "touch_up"
-                                            }, 
-                                            {
-                                                "_type": "Event", 
-                                                "attributes": {
-                                                    "_target": "imageMenu", 
-                                                    "delay": 0.5, 
-                                                    "event_name": "close"
-                                                }, 
-                                                "on": "touch_up"
-                                            }
-                                        ], 
-                                        "attributes": {
-                                            "size.h": 42
-                                        }, 
-                                        "controls": [
-                                            {
-                                                "_id": "textCategory", 
-                                                "_type": "Text", 
-                                                "actions": [], 
-                                                "attributes": {
-                                                    "align.v": "middle", 
-                                                    "color": "#8f8f8f", 
-                                                    "layoutType": "absolute", 
-                                                    "size.w": 60, 
-                                                    "touch.text.color": "[[app.color.touch]]"
-                                                }
-                                            }, 
-                                            {
-                                                "_id": "textCategory", 
-                                                "_type": "Text", 
-                                                "actions": [], 
-                                                "attributes": {
-                                                    "align.v": "middle", 
-                                                    "color": "#8f8f8f", 
-                                                    "layoutType": "absolute", 
-                                                    "size.w": "100%", 
-                                                    "touch.text.color": "[[app.color.touch]]"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ], 
-                                "sectionHeader.controls": [
-                                    {
-                                        "_id": "layoutSectionHeader", 
-                                        "_type": "Layout", 
-                                        "actions": [
-                                            {
-                                                "_id": "textCategory", 
-                                                "_type": "Text", 
-                                                "actions": [], 
-                                                "attributes": {
-                                                    "align.v": "middle", 
-                                                    "color": "#8f8f8f", 
-                                                    "layoutType": "absolute", 
-                                                    "size.w": "100%"
-                                                }
-                                            }
-                                        ], 
-                                        "attributes": {
-                                            "bg.color": "#ffffff50", 
-                                            "size.h": "100%", 
-                                            "size.w": "100%"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
+                          "to": "/examples/[[dataRow.name]].json"
+                        },
+                        "on": "touchUp"
+                      },
+                      {
+                        "_type": "Event",
+                        "attributes": {
+                          "delay": 0.5,
+                          "_target": "imageMenu",
+                          "event_name": "close"
+                        },
+                        "on": "touchUp"
+                      }
+                    ],
+                    "attributes": {
+                      "alpha": 1,
+                      "font": "[[app.font]]:20",
+                      "padding.left": 0,
+                      "size.w":275,
+                      "size.h": 42
+                    },
+                    "controls": [
+                      {
+                        "_id": "textCategory",
+                        "_type": "Text",
+                        "actions": [],
+                        "attributes": {
+                          "alpha": 1,
+                          "font": "FontAwesome:16",
+                          "text": "[[dataRow.icon]]",
+                          "align.v": "middle",
+                          "layoutType": "absolute",
+                          "color": "#8f8f8f",
+                          "padding.left": 20,
+                          "touch.color": "[[app.color.touch]]",
+                          "size.w": 60
+                        }
+                      },
+                      {
+                        "_id": "textCategory",
+                        "_type": "Text",
+                        "actions": [],
+                        "attributes": {
+                          "alpha": 1,
+                          "font": "HelveticaNeue-Light:18",
+                          "text": "[[dataRow.name]]",
+                          "align.v": "middle",
+                          "layoutType": "absolute",
+                          "padding.left": 60,
+                          "color": "#8f8f8f",
+                          "touch.color": "[[app.color.touch]]",
+                          "size.w": "100%"
+                        }
+                      }
+                    ]
+                  }
                 ]
-            }, 
-            {
-                "_id": "layoutHeader", 
-                "_type": "Layout", 
-                "attributes": {
-                    "bg.color": "#666666", 
-                    "layoutType": "float", 
-                    "size.h": 70, 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "layoutButtonHome", 
-                        "_type": "Layout", 
-                        "attributes": {
-                            "align.v": "bottom", 
-                            "layoutFlow": "horizontal", 
-                            "layoutType": "absolute"
-                        }, 
-                        "controls": [
-                            {
-                                "_id": "textSignedInAs", 
-                                "_type": "Text", 
-                                "actions": [], 
-                                "attributes": {
-                                    "color": "#a7a7a7"
-                                }
-                            }, 
-                            {
-                                "_id": "textSignedInAs", 
-                                "_type": "Text", 
-                                "actions": [], 
-                                "attributes": {
-                                    "color": "#ffffff"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-        ], 
-        "data_providers": [
-            {
-                "_id": "dataMenu", 
-                "_type": "JSON", 
-                "actions": [
-                    {
-                        "_type": "Alert", 
-                        "attributes": {
-                            "messade": "Category: [[session.category_id]]\n\nRow Count: [[$self.count]]"
-                        }, 
-                        "on": "success"
-                    }
-                ], 
-                "attributes": {
-                    "auto_load": true, 
-                    "cache_id": "menu", 
-                    "data.basepath": "entities", 
-                    "data.baseurl": "/data", 
-                    "data.path": "menu.json", 
-                    "http_method": "GET", 
-                    "sort.key": "type", 
-                    "sort.order": "ascending"
-                }, 
-                "parameters": {}
-            }
+              }
+            ]
+          }
         ]
-    }
+      },
+      {
+        "_id": "layoutHeader",
+        "_type": "Layout",
+        "attributes": {
+          "visible": true,
+          "size.w": "100%",
+          "size.h": 70,
+          "margin.top": 0,
+          "layoutType": "float",
+          "bg.color": "#666666"
+        },
+        "controls": [
+          {
+            "_id": "layoutButtonHome",
+            "_type": "Layout",
+            "controls": [
+              {
+                "_id": "textSignedInAs",
+                "_type": "Text",
+                "actions": [],
+                "attributes": {
+                  "font": "HelveticaNeue:14",
+                  "margin.left": 20,
+                  "text": "Welcome to ",
+                  "color": "#a7a7a7"
+                }
+              },
+              {
+                "_id": "textSignedInAs",
+                "_type": "Text",
+                "actions": [],
+                "attributes": {
+                  "font": "HelveticaNeue:14",
+                  "margin.left": 0,
+                  "text": "IX",
+                  "color": "#ffffff"
+                }
+              }
+            ],
+            "attributes": {
+              "layoutFlow": "horizontal",
+              "margin.bottom": 8,
+              "layoutType": "absolute",
+              "align.v": "bottom"
+            }
+          }
+        ]
+      }
+    ],
+    "datasources": [
+      
+    ]
+  }
 }

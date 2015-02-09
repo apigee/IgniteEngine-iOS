@@ -16,8 +16,8 @@
 
 /** AddressBook has the following attributes:
  
- @param isAllowed Access to the device granted<br><code>bool</code> *FALSE*
- @param company Company Name<br><code>string</code>
+ @param company.name Company Name<br><code>string</code>
+ @param company.title Company Title<br><code>string</code>
  @param email.home Email: Home<br><code>string</code>
  @param email.work Email: Work<br><code>string</code>
  @param name.first First Name<br><code>string</code>
@@ -32,10 +32,40 @@
  @param username.facebook Username: Facebook<br><code>string</code>
  @param username.linkedin Username: LinkedIn<br><code>string</code>
  @param username.twitter Username: Twitter<br><code>string</code>
-
-*/
+ 
+ */
 
 -(void)Attributes
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** AddressBook has the following events:
+ 
+ @param success Fires on success
+ @param error Fires when adding contact failed
+ 
+ */
+
+-(void)Events
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** AddressBook has the following functions:
+ 
+ @param addContact Adds contact
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
+ 
+ </pre>
+ 
+ */
+
+-(void)Functions
 {
 }
 /***************************************************************/
@@ -44,52 +74,12 @@
 /** AddressBook returns the following values:
  
  @param isAllowed Access to the device granted<br><code>bool</code>
-
-*/
+ 
+ */
 
 -(void)Returns
 {
 }
-
-/***************************************************************/
-/***************************************************************/
-
-/** AddressBook fires the following events:
- 
- @param error Fires when adding contact failed
- @param success Fires when contact added successfully
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-@param addContact Adds contact
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "addressbookTest",
-    "function_name": "addContact"
-  }
-}
- </pre>
-
-
-
-*/
-
--(void)Functions
-{
-}
-
 /***************************************************************/
 /***************************************************************/
 

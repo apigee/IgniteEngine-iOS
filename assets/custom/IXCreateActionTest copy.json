@@ -1,22 +1,25 @@
 {
-    "view": {
+  "view": {
+    "attributes": {
+      "size.w":"100%",
+      "size.h":"100%"
+    },
+    "controls": [
+      {
+        "_id": "title",
+        "_type": "Text",
         "attributes": {
-            "size.h": "100%", 
-            "size.w": "100%"
-        }, 
-        "controls": [
-            {
-                "_id": "title", 
-                "_type": "Text", 
-                "attributes": {
-                    "align.h": "center", 
-                    "align.v": "middle", 
-                    "color": "696969", 
-                    "layoutType": "float", 
-                    "size.w": "100%", 
-                    "text.align": "center"
-                }
-            }
-        ]
-    }
+          "size.w": "100%",
+          "margin.bottom":15,
+          "color": "696969",
+          "layoutType": "float",
+          "align.h": "center",
+          "align.v": "middle",
+          "font":"HelveticaNeue:15",
+          "text.align": "center",
+          "text": "I was created, down here!"
+        }
+      }
+    ]
+  }
 }

@@ -14,14 +14,14 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param share.platform Where shall we share to?<br>*facebooktwitterflickrvimeosina_weibo*
-    @param share.text What text do you want to share?<br>*(string)*
-    @param share.url Shall we share a URL?<br>*(string)*
-    @param share.image Ducklips?<br>*(string)*
-
-*/
+/** IXSocial has the following attributes:
+ 
+ @param platform facebook<ul><li>facebook</li><li>twitter</li><li>flickr</li><li>vimeo</li><li>sinaWeibo</li></ul>
+ @param image Image<br><code>string</code>
+ @param text Text<br><code>string</code>
+ @param url URL<br><code>string</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -29,77 +29,56 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-
- @param facebook_available Is Facebook sharing available?<br>*(bool)*
- @param twitter_available Is Twitter sharing available?<br>*(bool)*
- @param flickr_available Is flickr sharing available?<br>*(bool)*
- @param vimeo_available Is Vimeo sharing available?<br>*(bool)*
- @param sina_weibo_available Is Sina Weibo sharing available?<br>*(bool)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param share_done Fires when shared successfully
-    @param share_cancelled Fires if the user dismisses the view controller
-
-*/
+/** IXSocial has the following events:
+ 
+ @param cancelled Fires on cancelled
+ @param success Fires on success
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
- @param present_share_controller
+/** IXSocial has the following functions:
  
- <pre class="brush: js; toolbar: false;">
+ @param dismiss Dismisses the share controller
+ <pre class=""brush: js; toolbar: false;"">
  
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "socialTest",
-    "function_name": "present_share_controller"
-  }
-}
+ 
  
  </pre>
  
- @param dismiss_share_controller
+ @param present Presents share view controller
+ <pre class=""brush: js; toolbar: false;"">
  
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "socialTest",
-    "function_name": "dismiss_share_controller"
-  }
-}
+ 
  
  </pre>
  
-*/
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXSocial returns the following values:
+ 
+ @param isAllowed.facebook Returns true if Facebook is available<br><code>bool</code>
+ @param isAllowed.flickr Returns true if Flickr is available<br><code>bool</code>
+ @param isAllowed.sinaWeibo Returns true if Sina Weibo is available<br><code>bool</code>
+ @param isAllowed.twitter Returns true if Twitter is available<br><code>bool</code>
+ @param isAvailable.vimeo Returns true if Vimeo is available<br><code>bool</code>
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

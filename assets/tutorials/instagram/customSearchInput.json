@@ -1,77 +1,85 @@
 {
-    "view": {
+  "view": {
+    "controls": [
+      {
+        "_id": "layoutSearch",
+        "_type": "Layout",
+        "attributes": {
+          "size.w": "100%",
+          "size.h": 38,
+          "layoutType": "absolute",
+          "align.v": "middle",
+          "align.h": "center",
+          "layoutFlow": "horizontal"
+        },
         "controls": [
-            {
-                "_id": "layoutSearch", 
-                "_type": "Layout", 
+          {
+            "_id": "inputSearch",
+            "_type": "TextInput",
+            "actions": [
+              {
+                "_type": "Modify",
+                "on": "text_changed",
+                "enabled": true,
                 "attributes": {
-                    "align.h": "center", 
-                    "align.v": "middle", 
-                    "layoutFlow": "horizontal", 
-                    "layoutType": "absolute", 
-                    "size.h": 38, 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "inputSearch", 
-                        "_type": "TextInput", 
-                        "actions": [
-                            {
-                                "_type": "Modify", 
-                                "attributes": {
-                                    "_target": "session"
-                                }, 
-                                "on": "text_changed", 
-                                "set": {
-                                    "query": "[[$self.text]]"
-                                }
-                            }, 
-                            {
-                                "_type": "Refresh", 
-                                "attributes": {
-                                    "_target": "dataInstagram"
-                                }, 
-                                "on": "return_key_pressed,"
-                            }
-                        ], 
-                        "attributes": {
-                            "bg.color": "#ffffff", 
-                            "clearOnFocus.enabled": true, 
-                            "placeholder.text": "Search Instagram for..", 
-                            "size.h": "100%", 
-                            "size.w": 257
-                        }
-                    }, 
-                    {
-                        "_id": "imageSearch", 
-                        "_type": "Image", 
-                        "actions": [
-                            {
-                                "_type": "Refresh", 
-                                "attributes": {
-                                    "_target": "dataInstagram", 
-                                    "repeat_delay": 0.34
-                                }, 
-                                "on": "touch_up"
-                            }, 
-                            {
-                                "_type": "Function", 
-                                "attributes": {
-                                    "_target": "inputSearch", 
-                                    "function_name": "keyboard_hide"
-                                }, 
-                                "on": "touch_up"
-                            }
-                        ], 
-                        "attributes": {
-                            "image": "./images/btn_search_55x38.png", 
-                            "size.h": 38, 
-                            "size.w": 55
-                        }
-                    }
-                ]
+                  "_target": "session"
+                },
+                "set": {
+                  "query": "[[$self.text]]"
+                }
+              },
+              {
+                "_type": "Refresh",
+                "on": "return_key_pressed,",
+                "enabled": true,
+                "attributes": {
+                  "_target": "dataInstagram"
+                }
+              }
+            ],
+            "attributes": {
+              "margin.left": 4,
+              "padding.left": 8,
+              "size.w": 257,
+              "size.h": "100%",
+              "bg.color": "#ffffff",
+              "font": "HelveticaNeue-Light:18",
+              "keyboard.appearance": "dark",
+              "clears_on_begin_editing": true,
+              "text.placeholder": "Search Instagram for.."
             }
+          },
+          {
+            "_id": "imageSearch",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Refresh",
+                "on": "touchUp",
+                "enabled": true,
+                "attributes": {
+                  "_target": "dataInstagram",
+                  "repeat_delay": 0.34
+                }
+              },
+              {
+                "_type": "Function",
+                "on": "touchUp",
+                "enabled": true,
+                "attributes": {
+                  "_target": "inputSearch",
+                  "functionName": "keyboard_hide"
+                }
+              }
+            ],
+            "attributes": {
+              "size.w": 55,
+              "size.h": 38,
+              "image": "./images/btn_search_55x38.png"
+            }
+          }
         ]
-    }
+      }
+    ]
+  }
 }

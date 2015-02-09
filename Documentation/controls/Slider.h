@@ -11,21 +11,20 @@
 */
 
 @implementation Slider
-
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param initial_value Initial value of the slider<br>*(float)*
-    @param images.thumb /path/to/image.png<br>*(string)*
-    @param images.minimum /path/to/image.png<br>*(string)*
-    @param images.maximum /path/to/image.png<br>*(string)*
-    @param minimum_value Minimum value boundary<br>*(float)*
-    @param maximum_value Maximum value boundary<br>*(float)*
-    @param images.maximum.capInsets /path/to/image.png<br>*(string)*
-    @param images.minimum.capInsets /path/to/image.png<br>*(string)*
-
-*/
+/** IXSlider has the following attributes:
+ 
+ @param capInsets.max Cap inset maximum image<br><code>string</code>
+ @param capInsets.min Cap inset minimum image<br><code>string</code>
+ @param value.default Default value<br><code>float</code>
+ @param image.max Maximum track image<br><code>string</code>
+ @param value.max Maximum value<br><code>float</code>
+ @param image.min Minimum track image<br><code>string</code>
+ @param thumbImage Thumb image<br><code>string</code>
+ @param value.min Value minimum<br><code>float</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -33,60 +32,44 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-
- @param value Current value of the slider<br>*(float)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param value_changed Fires when the value of the slider changes
-
-*/
+/** IXSlider has the following events:
+ 
+ @param valueChanged Fires when the slider value changed
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param update_slider_value 
+/** IXSlider has the following functions:
  
-<pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "sliderTest",
-    "function_name": "update_slider_value"
-  },
-  "set": {
-    "value": 0.75
-  }
-}
+ @param setValue Sets the value of the slider
+ <pre class=""brush: js; toolbar: false;"">
  
-</pre>
-
-*/
+ 
+ 
+ </pre>
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXSlider returns the following values:
+ 
+ @param value Returns the value of the slider<br><code>float</code>
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

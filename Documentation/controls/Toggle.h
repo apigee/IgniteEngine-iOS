@@ -14,11 +14,11 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param initally_selected Should the toggle be selected by default? *(default: FALSE)*<br>*bool*
-
-*/
+/** IXToggle has the following attributes:
+ 
+ @param defaultOn.enabled Default On<br><code>bool</code> *FALSE*
+ 
+ */
 
 -(void)Attributes
 {
@@ -26,83 +26,56 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-
- @param is_on Is the toggle on?<br>*(bool)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
+/** IXToggle has no events.
+ 
+ */
 
 -(void)Events
 {
 }
-
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
- @param toggle Toggle the toggle
+/** IXToggle has the following functions:
  
- <pre class="brush: js; toolbar: false;">
+ @param toggle Toggle
+ <pre class=""brush: js; toolbar: false;"">
  
-{
-  "on": "touch_up",
-  "_type": "Function",
-  "attributes": {
-    "_target": "toggleText"
-  }
-}
+ 
  
  </pre>
  
- @param toggle_on Turn the toggle on
+ @param toggleOff Toggle off
+ <pre class=""brush: js; toolbar: false;"">
  
- <pre class="brush: js; toolbar: false;">
  
-{
-  "on": "touch_up",
-  "_type": "Function",
-  "attributes": {
-    "_target": "toggleText",
-    "function_name":"toggle_on"
-  }
-}
  
  </pre>
  
- @param toggle_off Turn the toggle off
+ @param toggleOn Toggle on
+ <pre class=""brush: js; toolbar: false;"">
  
- <pre class="brush: js; toolbar: false;">
  
-{
-  "on": "touch_up",
-  "_type": "Function",
-  "attributes": {
-    "_target": "toggleText",
-    "function_name":"toggle_off"
-  }
-}
  
  </pre>
  
-*/
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXToggle returns the following values:
+ 
+ @param isOn Returns true if toggle is on<br><code>bool</code>
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

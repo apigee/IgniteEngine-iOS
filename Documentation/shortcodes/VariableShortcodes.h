@@ -14,7 +14,7 @@
 
 /***************************************************************/
 
-/** ActionSheet has the following attributes:
+/** VariableShortcodes description blah blah blah
  
  @param base64.decode Decodes string from Base64<br><pre>[[textTest.text:base64.decode]]</pre>
  @param base64.encode Encodes string as Base64<br><pre>[[textTest.text:base64.encode]]</pre>

@@ -106,7 +106,7 @@ extern NSString* const kIX_CONTROLS;
 extern NSString* const kIX_ACTION;
 extern NSString* const kIX_ACTIONS;
 extern NSString* const kIX_ATTRIBUTES;
-extern NSString* const kIX_DATA_PROVIDERS;
+extern NSString* const kIX_datasources;
 extern NSString* const kIX_VALUE;
 extern NSString* const kIX_ORIENTATION;
 extern NSString* const kIX_LANDSCAPE;

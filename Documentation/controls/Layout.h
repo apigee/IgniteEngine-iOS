@@ -14,27 +14,27 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param layout_flow Orientation of relative layout flow<br>*horizontalvertical*
-    @param vertical_scroll_enabled Minimum value allowed<br>*(bool)*
-    @param horizontal_scroll_enabled Minimum value allowed<br>*(bool)*
-    @param enable_scrolls_to_top Image to overlay<br>*(bool)*
-    @param scroll_indicator_style Image to underlay<br>*blackwhite*
-    @param background.blur Image pointer<br>*extra_lightlightdark*
-    @param background.blur.tintColor Maximum angle<br>*(float)*
-    @param background.blur.tint.alpha Animation duration<br>*(float)*
-    @param shows_scroll_indicators Display scroll indicators?<br>*(bool)*
-    @param shows_horizontal_scroll_indicator Display horizontal scroll indicator<br>*(bool)*
-    @param shows_vertical_scroll_indicator Display vertical scroll indicator<br>*(bool)*
-    @param max_zoom_scale Maximum zoom scale<br>*(bool)*
-    @param min_zoom_scale Minimum zoom scale<br>*(float)*
-    @param enable_zoom Enable zoom<br>*(bool)*
-    @param zoom_scale Zoom scale<br>*(float)*
-    @param color.gradient_top Gradient color top<br>*(color)*
-    @param color.gradient_bottom <br>*(color)*
-
-*/
+/** Layout has the following attributes:
+ 
+ @param bg.blur.alpha Background blur alpha<br><code>float</code>
+ @param bg.blur.tint Background blur color<br><code>color</code>
+ @param bg.blur Background blur type<ul><li>xlight</li><li>light</li><li>dark</il></ul>
+ @param scrollBars.h.enabled Display horizontal scrollbars<br><code>bool</code>
+ @param scrollBars.enabled Display scrollbars<br><code>bool</code>
+ @param scrollBars.v.enabled Display vertical scrollbars<br><code>bool</code>
+ @param scrolling.h.enabled Horizontal scrolling enabled<br><code>bool</code>
+ @param layoutFlow Layout flow<ul><li>*vertical*</li><li>horizontal</li></ul>
+ @param scrollTop.enabled Scroll to top when status bar touched<br><code>bool</code>
+ @param scrollBars.style Scrollbar style<ul><li>*default*</li><li>black</li><li>white</li></ul>
+ @param scrolling.v.enabled Vertical scrolling enabled<br><code>bool</code>
+ @param zoom.enabled Zoom enabled<br><code>bool</code>
+ @param zoomScale.max Zoom scale minimum<br><code>float</code>
+ @param zoomScale.min Zoom scale minimum<br><code>float</code>
+ @param gradient.top <br><code>color</code>
+ @param gradient.bottom <br><code>color</code>
+ @param zoomScale <br><code>float</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -42,35 +42,33 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
+/** Layout fires no events.
+ 
+ */
 
 -(void)Events
 {
 }
-
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-*/
+/** Layout has no functions.
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** Layout returns no values.
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

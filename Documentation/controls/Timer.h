@@ -12,20 +12,15 @@
 
 @implementation Timer
 
-/*
-* Docs
-*
-*/
-
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param enabled Enable control *(default: TRUE)*<br>*(bool)*
-    @param repeats Repeat the timer? *(default: FALSE)*<br>*(bool)*
-    @param time_interval Repeat frequency<br>*(float)*
-
-*/
+/** IXTimer has the following attributes:
+ 
+ @param enabled Control is enabled<br><code>bool</code> *TRUE*
+ @param repeat.enabled Repeat enabled<br><code>bool</code>
+ @param repeatInterval Repeat interval<br><code>float</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -33,50 +28,49 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param timer_fired Event that occurs each time the timer fires
-
-*/
+/** IXTimer has the following events:
+ 
+ @param timerFired Fires when timer fires
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param start 
- <pre class="brush: js; toolbar: false;">
+/** IXTimer has the following functions:
+ 
+ @param start Starts timer
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-
-    @param stop 
- <pre class="brush: js; toolbar: false;">
+ 
+ @param stop Stops timer
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-*/
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXTimer returns no values.
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

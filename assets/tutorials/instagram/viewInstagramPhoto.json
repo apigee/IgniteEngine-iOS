@@ -1,65 +1,70 @@
 {
-    "view": {
-        "actions": [], 
+  "view": {
+    "attributes": {
+      "_id": "photoDetail",
+      "status_bar_style": "light",
+      "bg.color": "#000000"
+    },
+    "actions": [],
+    "controls": [
+      {
+        "_id": "layoutMain",
+        "_type": "Layout",
         "attributes": {
-            "_id": "photoDetail", 
-            "bg.color": "#000000", 
-            "status_bar_style": "light"
-        }, 
+          "size.w": "100%",
+          "size.h": "100%",
+          "padding.top": 76,
+          "layoutType": "absolute"
+        },
         "controls": [
-            {
-                "_id": "layoutMain", 
-                "_type": "Layout", 
-                "attributes": {
-                    "layoutType": "absolute", 
-                    "size.h": "100%", 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "imageBg", 
-                        "_type": "Image", 
-                        "attributes": {
-                            "image": "/images/bg_2x568.png", 
-                            "layoutType": "absolute", 
-                            "size.h": "100%", 
-                            "size.w": "100%"
-                        }
-                    }, 
-                    {
-                        "_id": "customHeader", 
-                        "_type": "Custom", 
-                        "attributes": {
-                            "bg.color": "#000000", 
-                            "buttonLeft": "back", 
-                            "buttonRight": "twitter", 
-                            "control_location": "customSearchHeader.json", 
-                            "layoutType": "float", 
-                            "size.h": 70, 
-                            "size.w": "100%"
-                        }
-                    }, 
-                    {
-                        "_id": "photoDetailImage", 
-                        "_type": "Custom", 
-                        "attributes": {
-                            "align.h": "center", 
-                            "control_location": "customDetailPhoto.json", 
-                            "size.w": 308
-                        }
-                    }, 
-                    {
-                        "_id": "photoDetailOverlay", 
-                        "_type": "Custom", 
-                        "attributes": {
-                            "control_location": "photoDetailOverlay.json", 
-                            "layoutType": "float", 
-                            "size.h": "100%", 
-                            "size.w": "100%"
-                        }
-                    }
-                ]
+        {
+            "_id": "imageBg",
+            "_type": "Image",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": "100%",
+              "image": "/images/bg_2x568.png",
+              "layoutType": "absolute"
             }
+          },
+          {
+            "_id": "customHeader",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "customSearchHeader.json",
+              "size.w": "100%",
+              "size.h": 70,
+              "title": "Photo",
+              "buttonRight": "twitter",
+              "buttonLeft": "back",
+              "bg.color": "#000000",
+              "layoutType": "float"
+            }
+          },
+          {
+            "_id": "photoDetailImage",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "customDetailPhoto.json",
+              "size.w": 308,
+              "title": "Image",
+              "align.h": "center"
+            }
+          },
+          {
+            "_id": "photoDetailOverlay",
+            "_type": "Custom",
+            "attributes": {
+              "control_location": "photoDetailOverlay.json",
+              "visible": false,
+              "alpha": 0,
+              "size.w": "100%",
+              "size.h": "100%",
+              "layoutType": "float"
+            }
+          }
         ]
-    }
+      }
+    ]
+  }
 }

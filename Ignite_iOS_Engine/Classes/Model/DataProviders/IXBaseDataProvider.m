@@ -30,7 +30,7 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 // IXBaseDataProvider Properties
 IX_STATIC_CONST_STRING kIXDataBaseUrl = @"baseUrl";
 IX_STATIC_CONST_STRING kIXDataPath = @"pathSuffix";
-IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled ";
+IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled";
 IX_STATIC_CONST_STRING kIXCacheID = @"cache.id";
 IX_STATIC_CONST_STRING kIXHTTPMethod = @"http.method";
 IX_STATIC_CONST_STRING kIXHTTPBody = @"http.body";

@@ -68,7 +68,7 @@
 /***************************************************************/
 /***************************************************************/
 
-/** AttributedText supports no functions.
+/** AttributedText has no functions.
  
  */
 
@@ -82,7 +82,7 @@
  
  @param selectedMention Value of mention selected<br><code>string</code>
  @param selectedLink Value of url selected<br><code>string</code>
- @param enabled Alpha<br><code>bool</code>
+ @param alpha Alpha<br><code>float</code>
  
  */
 

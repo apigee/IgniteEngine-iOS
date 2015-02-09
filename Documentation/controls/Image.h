@@ -14,25 +14,24 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-
-    @param images.default /path/to/image.png<br>*(string)*
-    @param images.default.tintColor Color to overlay transparent png<br>*(color)*
-    @param images.default.blur.radius Blur image<br>*(float)*
-    @param images.default.blur.tintColor Blur tint<br>*(color)*
-    @param images.default.blur.saturation Blur saturation<br>*(float)*
-    @param images.default.force_refresh Force image to reload when enters view<br>*(bool)*
-    @param images.height.max Maximum height of image<br>*(int)*
-    @param images.width.max Maximum width of image<br>*(int)*
-    @param gif_duration Duration of GIF (pronounced JIF) animation<br>*(float)*
-    @param flip_horizontal Flip image horizontally *(default: FALSE)*<br>*(bool)*
-    @param flip_vertical Flip image vertically *(default: FALSE)*<br>*(bool)*
-    @param rotate Rotate image in degrees<br>*(int)*
-    @param image.binary Binary data of image file<br>*(string)*
-    @param images.default.resize Dynamically resize image using imageMagick<br>*(special)*
-
-*/
+/** Image has the following attributes:
+ 
+ @param binaryString Binary representation of image data<br><code>string</code>
+ @param blur.radius Blur radius<br><code>float</code>
+ @param blur.saturation Blur saturation<br><code>float</code>
+ @param blur.tint Blur tint<br><code>color</code>
+ @param tint Color tint image<br><code>color</code>
+ @param animatedGif.duration Duration of animated GIF<br><code>float</code>
+ @param transform.flip.h Flip image horizontally<br><code>bool</code>
+ @param transform.flip.v Flip image vertically<br><code>bool</code>
+ @param forceRedraw.enabled Force reload resource<br><code>bool</code> *FALSE*
+ @param image Image<br><code>string</code>
+ @param max.h Maximum height<br><code>float</code>
+ @param max.w Maximum width<br><code>float</code>
+ @param resizeMask Resize image mask<br><code>string</code>
+ @param transform.rotate Rotate image in degrees<br><code>float</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -40,105 +39,68 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-
- @param is_animating Is it animating?<br>*(bool)*
- @param image.height Actual height of image<br>*(int)*
- @param image.width Actual width of image<br>*(int)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param images_default_loaded Fires when the image loads successfully
-    @param images_default_failed Fires when the image fails to load
-
-*/
+/** Image has the following events:
+ 
+ @param error Error loading image
+ @param success Fires on success
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param start_animation Starts a GIF animation
+/** Image has the following functions:
  
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "imageTest",
-    "function_name": "start_animation"
-  }
-}
+ @param loadLatestPhoto Loads latest photo
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-    @param restart_animation Restarts GIF animation
  
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "imageTest",
-    "function_name": "restart_animation"
-  }
-}
+ @param restartAnimation Restart animation
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-    @param stop_animation Stops GIF animation
  
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "imageTest",
-    "function_name": "stop_animation"
-  }
-}
+ @param start Start GIF animation
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-    @param load_last_photo Loads the most recent photo from device Camera Roll
  
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "imageTest",
-    "function_name": "load_last_photo"
-  }
-}
+ @param stop Stop GIF animation
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-*/
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** Image returns the following values:
+ 
+ @param isAnimating Is animating<br><code>bool</code>
+ @param source.size.h Source height<br><code>float</code>
+ @param source.size.w Source width<br><code>float</code>
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

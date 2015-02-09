@@ -1,56 +1,87 @@
 {
-    "app": {
-        "actions": [], 
+  "app": {
+    "actions": [],
+    "attributes": {
+      "_OPTIONAL:drawer.toggle.velocity": 1000,
+      "_OPTIONAL:drawer.view.right": "examples/TableView.json",
+      "_OPTIONAL:preload_images": [
+        "assets/images/pin_32x30.png",
+        "assets/images/pin_32x30@2x.png"
+      ],
+      "apigee.AppId": "***APIGEE_APP_ID***",
+      "apigee.OrgId": "***APIGEE_ORG_ID***",
+      "apigee.NotifierId": "***APIGEE_PUSH_NOTIFIER***",
+      "view.index": "examples/IXLoadAction.json",
+      "drawerController.l.url": "menu.json",
+      "drawerController.l.max.w": 275,      
+      "debug.layout.enabled": false,
+      "logging.datasource.enabled": true,
+      "logLevel": "verbose",
+      "mode": "verbose",
+      "search_query": "Santa Barbara, CA",
+      "navigationBar.enabled": false
+    },
+    "datasources": [
+      {
+        "_id": "test_data",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "tableSettings"
+            },
+            "on": [
+              "success",
+              "fail"
+            ]
+          },
+          {
+            "_type": "Alert",
+            "attributes": {},
+            "on": "fail,success"
+          }
+        ],
         "attributes": {
-            "1default_view": "IXLoadAction.json", 
-            "_OPTIONAL:drawer.toggle.velocity": 1000, 
-            "_OPTIONAL:drawer.view.left.max.width": 275, 
-            "_OPTIONAL:drawer.view.right": "examples/TableView.json", 
-            "_OPTIONAL:preload_images": [
-                "assets/images/pin_32x30.png", 
-                "assets/images/pin_32x30@2x.png"
-            ], 
-            "apigee_app_id": "***APIGEE_APP_ID***", 
-            "apigee_org_id": "***APIGEE_ORG_ID***", 
-            "apigee_push_notifier": "***APIGEE_PUSH_NOTIFIER***", 
-            "view.index": "IXButton.json", 
-            "drawer.view.left": "menu.json", 
-            "enable_layout_debugging": false, 
-            "enable_request_logging": true, 
-            "log_level": "verbose", 
-            "mode": "verbose", 
-            "search_query": "Santa Barbara, CA", 
-            "shows_navigation_bar": false, 
-            "status_bar_style": "light"
-        }, 
-        "data_providers": [
-            {
-                "_id": "test_data", 
-                "_type": "JSON", 
-                "actions": [
-                    {
-                        "_type": "Refresh", 
-                        "attributes": {
-                            "_target": "tableSettings"
-                        }, 
-                        "on": [
-                            "success", 
-                            "fail"
-                        ]
-                    }, 
-                    {
-                        "_type": "Alert", 
-                        "attributes": {}, 
-                        "on": "fail,success"
-                    }
-                ], 
-                "attributes": {
-                    "auto_load": true, 
-                    "data.baseurl": "/data/states.json", 
-                    "http_method": "GET", 
-                    "objects_path": ""
-                }
-            }
-        ]
-    }
+          "auto_load": true,
+          "data.baseurl": "/data/states.json",
+          "http_method": "GET",
+          "objects_path": ""
+        }
+      },
+      {
+        "_id": "dataMenu",
+        "_type": "JSON",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "message": "Category: [[session.category_id]]\n\nRow Count: [[$self.count]]",
+              "title": "admin_orders.json success",
+              "enabled": false
+            },
+            "on": "success"
+          },
+          {
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "tableDemo"
+            },
+            "on": "success"
+          }
+        ],
+        "attributes": {
+          "autoLoad.enabled": true,
+          "baseUrl": "/data",
+          "pathSuffix": "menu.json",
+          "sort.order": "ascending",
+          "sort.key": "name",
+          "data.basepath": "entities",
+          "cache.id": "menu",
+          "http.method": "GET"
+        },
+        "parameters": {}
+      }
+    ]
+  }
 }

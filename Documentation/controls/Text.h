@@ -14,15 +14,15 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param text Text to display<br>*(string)*
-    @param text.alignment Alignment of the text *(default: left)*<br>*leftrightcenterjustifiednatural*
-    @param text.color Color of the text *(default: #000000)*<br>*(color)*
-    @param font The text font name and size (font:size) *(default: HelveticaNeue:20)*<br>*(string)*
-    @param size_to_fit Shall the size the text to fit dynamically? *(default: FALSE)*<br>*(bool)*
-
-*/
+/** IXText has the following attributes:
+ 
+ @param color Color<br><code>color</code>
+ @param font Font<br><code>font</code>
+ @param sizeToFit.enabled Size to fit enabled<br><code>bool</code>
+ @param text Text<br><code>string</code>
+ @param text.align   Text alignment<ul><li>*left*</li><li>center</li><li>right</li></ul>
+ 
+ */
 
 -(void)Attributes
 {
@@ -30,35 +30,32 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
+/** IXText has no events:
+ 
+ */
 
 -(void)Events
 {
 }
-
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-*/
+/** IXText has no functions.
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXText returns no values.
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

@@ -1,108 +1,117 @@
 {
-    "view": {
+  "view": {
+    "attributes": {
+      "_id": "photoSearch",
+      "status_bar_style": "light",
+      "bg.color": "#fff000"
+    },
+    "controls": [
+      {
+        "_id": "layoutMain",
+        "_type": "Layout",
         "attributes": {
-            "_id": "photoSearch", 
-            "bg.color": "#fff000", 
-            "status_bar_style": "light"
-        }, 
+          "size.w": "100%",
+          "size.h": "100%",
+          "bg.color": "#000000",
+          "layoutType": "absolute"
+        },
         "controls": [
-            {
-                "_id": "layoutMain", 
-                "_type": "Layout", 
+          {
+            "_id": "layoutHeader",
+            "_type": "Layout",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": 70,
+              "layoutType": "absolute"
+            },
+            "controls": [
+              {
+                "_id": "title",
+                "_type": "Text",
                 "attributes": {
-                    "bg.color": "#000000", 
-                    "layoutType": "absolute", 
-                    "size.h": "100%", 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "layoutHeader", 
-                        "_type": "Layout", 
-                        "attributes": {
-                            "layoutType": "absolute", 
-                            "size.h": 70, 
-                            "size.w": "100%"
-                        }, 
-                        "controls": [
-                            {
-                                "_id": "title", 
-                                "_type": "Text", 
-                                "attributes": {
-                                    "align.h": "center", 
-                                    "align.v": "bottom", 
-                                    "color": "ffffff", 
-                                    "layoutType": "float", 
-                                    "size.h": 50, 
-                                    "size.w": "100%", 
-                                    "text.align": "center"
-                                }
-                            }
-                        ]
-                    }, 
-                    {
-                        "_id": "layoutSearch", 
-                        "_type": "Layout", 
-                        "attributes": {
-                            "bg.color": "ffffff50", 
-                            "layoutType": "absolute", 
-                            "size.h": 42, 
-                            "size.w": "100%"
-                        }, 
-                        "controls": [
-                            {
-                                "_id": "textInputTest", 
-                                "_type": "TextInput", 
-                                "actions": [
-                                    {
-                                        "_type": "Modify", 
-                                        "attributes": {
-                                            "_target": "session"
-                                        }, 
-                                        "on": "text_changed,got_focus", 
-                                        "set": {
-                                            "text_to_speak": "[[$self.text]]"
-                                        }
-                                    }
-                                ], 
-                                "attributes": {
-                                    "align.h": "left", 
-                                    "border.size": 1, 
-                                    "color": "#6c6c6c", 
-                                    "multiline.enabled": false, 
-                                    "placeholder.text": "Duration", 
-                                    "size.h": "100%", 
-                                    "size.w": 257, 
-                                    "text.align": "center", 
-                                    "text.default": 0.75
-                                }
-                            }, 
-                            {
-                                "_id": "imageTest", 
-                                "_type": "Image", 
-                                "actions": [
-                                    {
-                                        "_type": "Alert", 
-                                        "attributes": {
-                                            "message": "Sized to [[$self.actual.width]]pt x [[$self.actual.height]]pt."
-                                        }, 
-                                        "on": "touch_up"
-                                    }
-                                ], 
-                                "attributes": {
-                                    "align.h": "right", 
-                                    "align.v": "middle", 
-                                    "image": "/images/btn_search_55x38.png", 
-                                    "layoutType": "absolute", 
-                                    "size.h": 38, 
-                                    "size.w": 55
-                                }
-                            }
-                        ]
+                  "size.w": "100%",
+                  "size.h": 50,
+                  "margin.top": 20,
+                  "color": "ffffff",
+                  "layoutType": "float",
+                  "align.h": "center",
+                  "align.v": "bottom",
+                  "text.align": "center",
+                  "font": "HelveticaNeue-Light:26",
+                  "text": "Search"
+                }
+              }
+            ]
+          },
+          {
+            "_id": "layoutSearch",
+            "_type": "Layout",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": 42,
+              "margin.top": 70,
+              "bg.color": "ffffff50",
+              "layoutType": "absolute"
+            },
+            "controls": [
+              {
+                "_id": "textInputTest",
+                "_type": "TextInput",
+                "actions": [
+                  {
+                    "_type": "Modify",
+                    "on": "text_changed,got_focus",
+                    "attributes": {
+                      "_target": "session"
+                    },
+                    "set": {
+                      "text_to_speak": "[[$self.text]]"
                     }
-                ]
-            }
-        ], 
-        "data_providers": []
+                  }
+                ],
+                "attributes": {
+                  "font": "HelveticaNeue-Light:22",
+                  "is_multiline": false,
+                  "size.w": 257,
+                  "size.h": "100%",
+                  "border.size.w":4,
+                  "border.color":"ff00ff",
+                  "text.align": "center",
+                  "align.h": "left",
+                  "color": "#6c6c6c",
+                  "border.size.w": 1,
+                  "border.color": "cdcdcd",
+                  "initial_text": 0.75,
+                  "text.placeholder": "Duration"
+                }
+              },
+              {
+  "_id": "imageTest",
+  "_type": "Image",
+  "actions": [
+    {
+      "_type": "Alert",
+      "on": "touchUp",
+      "attributes": {
+        "title": "touchUp",
+        "message": "Sized to [[$self.actual.size.w]]pt x [[$self.actual.size.h]]pt."
+      }
     }
+  ],
+  "attributes": {
+    "size.w":55,
+    "size.h":38,
+    "image": "/images/btn_search_55x38.png",
+    "layoutType": "absolute",
+    "align.v": "middle",
+    "align.h": "right"
+  }
+}
+            ]
+          }
+        ]
+      }
+    ],
+    "datasources": []
+  }
 }

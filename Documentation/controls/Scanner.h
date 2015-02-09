@@ -11,12 +11,11 @@
 */
 
 @implementation Scanner
-
 /***************************************************************/
 
-/** This control has the following attributes:
+/** IXScanner has the following attributes:
  
- @param auto_close Automatically close the Scanner view controller upon scan? *(default: TRUE)*<br>*(bool)*
+ @param autoClose.enabled Automatically close the scanner view controller<br><code>bool</code> *TRUE*
  
  */
 
@@ -26,62 +25,32 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
+/** IXScanner has the following events:
  
- @param data Data contained in the scanned code<br>*(string)*
+ @param success Fires on success
  
  */
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
- 
- @param scanned Fires when a code is scanned successfully
- 
-*/
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
+/** IXSlider has the following functions:
  
- @param present_reader Present Scanner view controller
+ @param dismiss Dismisses the reader
+ <pre class=""brush: js; toolbar: false;"">
  
-<pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "scannerTest",
-    "function_name": "present_reader"
-  }
-}
-
-</pre>
  
- @param dismiss_reader Dismiss Scanner view controller
  
-  <pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "scannerTest",
-    "function_name": "dismiss_reader"
-  }
-}
+ </pre>
+ 
+ @param present Presents scanner view controller
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
+ 
  </pre>
  
  */
@@ -89,7 +58,18 @@
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXScanner returns the following values:
+ 
+ @param data Returns data contained in code scanned<br><code>string</code>
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

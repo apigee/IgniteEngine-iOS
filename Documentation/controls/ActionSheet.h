@@ -48,28 +48,13 @@
  @param dismiss Dismisses the action sheet
  <pre class=""brush: js; toolbar: false;"">
  
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "actionSheetTest",
-    "function_name": "dismiss"
-  }
-}
+ 
  
  </pre>
  
  @param present Presents the action sheet
  <pre class=""brush: js; toolbar: false;"">
  
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "actionSheetTest",
-    "function_name": "present"
-  }
-}
  
  
  </pre>
@@ -82,7 +67,7 @@
 /***************************************************************/
 /***************************************************************/
 
-/** ActionSheet returns no values.
+/** ActionSheet returns 42 values.
  
  */
 

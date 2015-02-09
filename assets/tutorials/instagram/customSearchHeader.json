@@ -1,91 +1,105 @@
 {
-    "view": {
+  "view": {
+    "controls": [
+      {
+        "_id": "layoutHeader",
+        "_type": "Layout",
+        "attributes": {
+          "size.w": "100%",
+          "size.h": 50,
+          "margin.top": 20,
+          "layoutType": "absolute"
+        },
         "controls": [
-            {
-                "_id": "layoutHeader", 
-                "_type": "Layout", 
-                "attributes": {
-                    "layoutType": "absolute", 
-                    "size.h": 50, 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "title", 
-                        "_type": "Text", 
-                        "attributes": {
-                            "align.h": "center", 
-                            "align.v": "bottom", 
-                            "color": "ffffff", 
-                            "layoutType": "float", 
-                            "size.h": 50, 
-                            "size.w": "100%", 
-                            "text.align": "center"
-                        }
-                    }, 
-                    {
-                        "_id": "imageLeft", 
-                        "_type": "Image", 
-                        "actions": [
-                            {
-                                "_type": "Navigate", 
-                                "attributes": {
-                                    "nav_stack_type": "pop"
-                                }, 
-                                "on": "touch_up"
-                            }
-                        ], 
-                        "attributes": {
-                            "align.h": "left", 
-                            "align.v": "middle", 
-                            "backround.color": "ff00ff", 
-                            "image": "./images/btn_back_44x44.png", 
-                            "layoutType": "float", 
-                            "size.h": 44, 
-                            "size.w": 44
-                        }
-                    }, 
-                    {
-                        "_id": "imageRight", 
-                        "_type": "Image", 
-                        "actions": [
-                            {
-                                "_type": "Function", 
-                                "attributes": {
-                                    "_target": "socialTwitter", 
-                                    "function_name": "present_share_controller"
-                                }, 
-                                "on": "touch_up"
-                            }
-                        ], 
-                        "attributes": {
-                            "align.h": "right", 
-                            "align.v": "middle", 
-                            "backround.color": "ff00ff", 
-                            "image": "./images/btn_tweet_44x44.png", 
-                            "layoutType": "float", 
-                            "size.h": 44, 
-                            "size.w": 44
-                        }
-                    }
-                ]
-            }, 
-            {
-                "_id": "socialTwitter", 
-                "_type": "Social", 
-                "actions": [
-                    {
-                        "_type": "Alert", 
-                        "attributes": {}, 
-                        "on": "share_done"
-                    }
-                ], 
-                "attributes": {
-                    "image": "[[session.photoUrl]]", 
-                    "platform": "twitter", 
-                    "text": "[[session.photoCaption]] by @[[session.photoPhotographer]] on @instagram"
-                }
+          {
+            "_id": "title",
+            "_type": "Text",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": 50,
+              "margin.top": 20,
+              "color": "ffffff",
+              "layoutType": "float",
+              "align.h": "center",
+              "align.v": "bottom",
+              "text.align": "center",
+              "font": "HelveticaNeue-Thin:26",
+              "text": "[[$custom.title]]"
             }
+          },
+          {
+            "_id": "imageLeft",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "on": "touchUp",
+                "attributes": {
+                  "nav_stack_type": "pop"
+                }
+              }
+            ],
+            "attributes": {
+              "visible": [
+                "if :: [[$custom.buttonLeft:length]] < 1 :: false"
+              ],
+              "size.w": 44,
+              "size.h": 44,
+              "margin.top": 20,
+              "image": "./images/btn_back_44x44.png",
+              "layoutType": "float",
+              "backround.color": "ff00ff",
+              "align.v": "middle",
+              "align.h": "left"
+            }
+          },
+          {
+            "_id": "imageRight",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touchUp",
+                "attributes": {
+                  "_target": "socialTwitter",
+                  "functionName": "present_share_controller"
+                }
+              }
+            ],
+            "attributes": {
+              "visible": [
+                "if :: '[[$custom.buttonRight]]' != 'twitter' :: false"
+              ],
+              "size.w": 44,
+              "size.h": 44,
+              "margin.top": 20,
+              "image": "./images/btn_tweet_44x44.png",
+              "layoutType": "float",
+              "backround.color": "ff00ff",
+              "align.v": "middle",
+              "align.h": "right"
+            }
+          }
         ]
-    }
+      },
+      {
+        "_id": "socialTwitter",
+        "_type": "Social",
+        "actions": [
+          {
+            "on": "share_done",
+            "_type": "Alert",
+            "attributes": {
+              "title": "share_done"
+            }
+          }
+        ],
+        "attributes": {
+          "share.platform": "twitter",
+          "share.text": "[[session.photoCaption]] by @[[session.photoPhotographer]] on @instagram",
+          "share.image": "[[session.photoUrl]]"
+        }
+      }
+    ]
+  }
 }

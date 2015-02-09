@@ -1,0 +1,50 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXToggle"
+        }
+      },
+      {
+        "_id": "toggleTest",
+        "_type": "Toggle",
+        "actions": [
+          {
+            "on": "toggleOn",
+            "_type": "Alert",
+            "attributes": {
+              "title": "toggleOn"
+            }
+          },
+          {
+            "on": "toggleOff",
+            "_type": "Alert",
+            "attributes": {
+              "title": "toggleOff"
+            }
+          }
+        ],
+        "attributes": {
+          "layoutType": "absolute",
+          "align.h": "center",
+          "align.v": "middle"
+        }
+      }
+    ],
+    "datasources": []
+  }
+}

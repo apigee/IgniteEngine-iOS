@@ -18,7 +18,7 @@
 
     @param url The URL to load<br>*(string)*
     @param html.string Load string of HTML<br>*(string)*
-    @param html.base_url Base URL when using HTML string<br>*(string)*
+    @param html.baseUrl Base URL when using HTML string<br>*(string)*
 
 */
 
@@ -41,8 +41,8 @@
 /** This control fires the following events:
 
     @param started Page load initiated.
-    @param failed Page failed to load.
-    @param finished Page loaded successfully.
+    @param error Page failed to load.
+    @param success Page loaded successfully.
 
 */
 

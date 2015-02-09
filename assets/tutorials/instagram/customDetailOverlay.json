@@ -1,55 +1,60 @@
 {
-    "view": {
-        "actions": [
-            {
-                "_type": "Modify", 
-                "attributes": {
-                    "_target": "$custom"
-                }, 
-                "on": "touch_up", 
-                "set": {}
-            }, 
-            {
-                "_type": "Modify", 
-                "attributes": {
-                    "_target": "photoDetailOverlay", 
-                    "delay": 0.25
-                }, 
-                "on": "touch_up", 
-                "set": {}
-            }
-        ], 
+  "view": {
+    "attributes": {
+      "layoutType": "float",
+      "size.w": "100%",
+      "size.h": "100%",
+      "bg.color": "#000000"
+    },
+    "actions": [
+      {
+        "_type": "Modify",
+        "on": "touchUp",
         "attributes": {
-            "bg.color": "#000000", 
-            "layoutType": "float", 
-            "size.h": "100%", 
-            "size.w": "100%"
-        }, 
+          "_target": "$custom",
+          "duration": 0.25
+        },
+        "set": {
+          "alpha": 0
+        }
+      },
+      {
+        "_type": "Modify",
+        "on": "touchUp",
+        "attributes": {
+          "_target": "photoDetailOverlay",
+          "delay": 0.25
+        },
+        "set": {
+          "visible": false
+        }
+      }
+    ],
+    "controls": [
+      {
+        "_id": "layoutPhotoDetail",
+        "_type": "Layout",
+        "actions": [],
+        "attributes": {
+          "size.w": 308,
+          "size.h": 308,
+          "layoutType": "absolute",
+          "align.h": "center",
+          "align.v": "middle"
+        },
         "controls": [
-            {
-                "_id": "layoutPhotoDetail", 
-                "_type": "Layout", 
-                "actions": [], 
-                "attributes": {
-                    "align.h": "center", 
-                    "align.v": "middle", 
-                    "layoutType": "absolute", 
-                    "size.h": 308, 
-                    "size.w": 308
-                }, 
-                "controls": [
-                    {
-                        "_id": "imageStandardResolution", 
-                        "_type": "Image", 
-                        "actions": [], 
-                        "attributes": {
-                            "image": "[[session.photoUrl]]", 
-                            "size.h": 308, 
-                            "size.w": 308
-                        }
-                    }
-                ]
+          {
+            "_id": "imageStandardResolution",
+            "_type": "Image",
+            "actions": [],
+            "attributes": {
+              "size.w": 308,
+              "size.h": 308,
+              "image": "[[session.photoUrl]]"
             }
+          }
         ]
-    }
+      }
+    ]
+  }
 }

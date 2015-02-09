@@ -14,16 +14,13 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param message.type The type of message to create<br>*textemail*
-    @param message.to Send message to? (Email/Phone/iMessage address)<br>*(string)*
-    @param message.cc Send a copy to?<br>*(string)*
-    @param message.bcc Blind copy to? (Email)<br>*(string)*
-    @param message.subject Message subject (Email)<br>*(string)*
-    @param message.body Message body (Email/Text)<br>*(string)*
-
-*/
+/** Message has the following attributes:
+ 
+ @param bcc bcc recipients<br><code>string</code>
+ @param body Body of message<br><code>string</code>
+ @param cc cc recipients<br><code>string</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -31,72 +28,50 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param message_cancelled Fires when the file is inaccessible
-    @param message_failed Fires when the message fails to send
-    @param message_sent Fires on message send success
+/** Message has the following events:
  
-*/
+ @param to Recipient<br><code>string</code>
+ @param subject Subject of message<br><code>string</code>
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param present_text_message_controller 
+/** Message has the following functions:
  
- <pre class="brush: js; toolbar: false;">
+ @param hasPass Returns true if passUrl contains a valid pass <br><code>bool</code>
+ <pre class=""brush: js; toolbar: false;"">
  
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "messageTest",
-    "function_name": "present_text_message_controller"
-  }
-}
+ 
  
  </pre>
-
-    @param present_email_controller 
  
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "messageTest",
-    "function_name": "present_email_controller"
-  }
-}
+ @param cancelled Fires on cancelled
+ <pre class=""brush: js; toolbar: false;"">
  
-
+ 
+ 
  </pre>
-
-*/
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** Message returns no values.
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

@@ -7,90 +7,55 @@
 //  Copyright (c) 2015 Ignite. All rights reserved.
 //
 
-/** Interact with Passbook Passes directly without calling out to Safari.
-*/
+/***************************************************************/
 
-@implementation PassKit
-
-/*  -----------------------------  */
-//  [Documentation]
-
-/** This control has the following attributes:
-
-    @param pass.location http:// or /path/to/pass.passkit  <br>    *(string)*
+/** PassKit has the following attributes:
  
-*/
-
--(void)attributes
-{
-    // Documentation: Config
-}
-
-/** Events
+ @param passUrl Pass URL<br><code>string</code>
  
- PassKit has the following events:
- 
- @param pass.creation.success Fires when the pass is displayed successfully
- @param pass.creation.failed Fires when an error occurs when displaying the pass
- 
-*/
-
--(void)events
-{
-    // Documentation: Events
-}
-
-/** Functions
- 
- @param pass.controller.present Present PassKit view controller
- 
- <pre class="brush: js; toolbar: false;">
-    {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.present"
-      }
-    }
- </pre>
-
- 
- @param pass.controller.dismiss Dismiss PassKit view controller
- 
- <pre class="brush: js; toolbar: false;">
-     {
-      "_type": "Function",
-      "on": "touch_up",
-      "attributes": {
-        "_target": "passkitTest",
-        "function_name": "pass.controller.dismiss"
-      }
-    }
- </pre>
-
  */
 
--(void)functions
+-(void)Attributes
 {
-    // Documentation: Functions
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** Read-Only Attributes
+/** PassKit has the following events:
  
- @param passkit.available	 *(bool)*   |   Is Does this device support PassKit?
- @param passkit.containsPass *(bool)*   |   Does the file you’ve pointed to actually contain a PassKit pass?
- @param pass.error *(string)*   |   Whoopsie.
+ @param error Fires on error
+ @param success Fires on success
  
-*/
+ */
 
--(void)returns
+-(void)Events
 {
-    // Documentation: Read-only Attributes
 }
+/***************************************************************/
+/***************************************************************/
+
+/** PassKit has no functions.
+ 
+ */
+
+-(void)Functions
+{
+}
+/***************************************************************/
+/***************************************************************/
+
+/** PassKit returns the following values:
+ 
+ @param error.message Returns error message<br><code>string</code>
+ @param isAllowed Returns true if PassKit is available<br><code>bool</code>
+ @param hasPass Returns true if passUrl contains a valid pass <br><code>bool</code>
+ 
+ */
+
+-(void)Returns
+{
+}
+/***************************************************************/
 
 /**
 <pre class="brush: js; toolbar: false;">

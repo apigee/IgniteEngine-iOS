@@ -1,88 +1,94 @@
 {
-    "view": {
-        "controls": [
-            {
-                "_id": "collectionPhotos", 
-                "_type": "Collection", 
-                "actions": [
-                    {
-                        "_type": "Function", 
-                        "attributes": {
-                            "_target": "inputSearch", 
-                            "function_name": "keyboard_hide"
-                        }, 
-                        "on": "started_scrolling"
-                    }
-                ], 
-                "attributes": {
-                    "bg.color": "#ff00ff00", 
-                    "cell.size.h": 154, 
-                    "cell.size.w": 154, 
-                    "datasource.id": "dataInstagram", 
-                    "reloadAnimation.enabled": false, 
-                    "size.h": "100%", 
-                    "size.w": "100%"
-                }, 
-                "controls": [
-                    {
-                        "_id": "layoutButtons", 
-                        "_type": "Layout", 
-                        "actions": [
-                            {
-                                "_type": "Function", 
-                                "attributes": {
-                                    "_target": "inputSearch", 
-                                    "function_name": "keyboard_hide"
-                                }, 
-                                "on": "touch_up"
-                            }, 
-                            {
-                                "_type": "Modify", 
-                                "attributes": {
-                                    "_target": "session"
-                                }, 
-                                "on": "touch_up", 
-                                "set": {
-                                    "photoCaption": "[[dataRow.caption.text]]", 
-                                    "photoIndex": "[[dataRow.index]]", 
-                                    "photoPhotographer": "[[dataRow.user.username]]", 
-                                    "photoThumbUrl": "[[dataRow.images.low_resolution.url]]", 
-                                    "photoUrl": "[[dataRow.images.standard_resolution.url]]"
-                                }
-                            }, 
-                            {
-                                "_type": "Navigate", 
-                                "attributes": {
-                                    "1nav_animation_duration": 0, 
-                                    "1nav_animation_type": "cross_dissolve", 
-                                    "1nav_stack_type": "push", 
-                                    "to": "viewInstagramPhoto.json"
-                                }, 
-                                "on": "touch_up"
-                            }
-                        ], 
-                        "attributes": {
-                            "bg.color": "00ff0000", 
-                            "size.h": "100%", 
-                            "size.w": "100%"
-                        }, 
-                        "controls": [
-                            {
-                                "_id": "imageTest", 
-                                "_type": "Image", 
-                                "attributes": {
-                                    "align.h": "center", 
-                                    "align.v": "middle", 
-                                    "image": "[[dataRow.images.low_resolution.url]]", 
-                                    "layoutType": "absolute", 
-                                    "size.h": "100%", 
-                                    "size.w": "100%"
-                                }
-                            }
-                        ]
-                    }
-                ]
+  "view": {
+    "controls": [
+      {
+        "_id": "collectionPhotos",
+        "_type": "Collection",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "started_scrolling",
+            "enabled": true,
+            "attributes": {
+              "_target": "inputSearch",
+              "functionName": "keyboard_hide"
             }
+          }
+        ],
+        "attributes": {
+          "size.h": "100%",
+          "size.w": "100%",
+          "separator.style": "none",
+          "bg.color": "#ff00ff00",
+          "dataprovider_id": "dataInstagram",
+          "enabled": true,
+          "item_size.h": 154,
+          "item_size.w": 154,
+          "margin.top": 0,
+          "animate_reload": false
+        },
+        "controls": [
+          {
+            "_id": "layoutButtons",
+            "_type": "Layout",
+            "actions": [
+              {
+                "_type": "Function",
+                "on": "touchUp",
+                "enabled": true,
+                "attributes": {
+                  "_target": "inputSearch",
+                  "functionName": "keyboard_hide"
+                }
+              },
+              {
+                "_type": "Modify",
+                "on": "touchUp",
+                "attributes": {
+                  "_target": "session"
+                },
+                "set": {
+                  "photoIndex": "[[dataRow.index]]",
+                  "photoUrl": "[[dataRow.images.standard_resolution.url]]",
+                  "photoCaption": "[[dataRow.caption.text]]",
+                  "photoThumbUrl": "[[dataRow.images.low_resolution.url]]",
+                  "photoPhotographer": "[[dataRow.user.username]]"
+                }
+              },
+              {
+                "_type": "Navigate",
+                "on": "touchUp",
+                "attributes": {
+                  "to": "viewInstagramPhoto.json",
+                  "1nav_stack_type": "push",
+                  "1nav_animation_type": "cross_dissolve",
+                  "1nav_animation_duration": 0
+                }
+              }
+            ],
+            "attributes": {
+              "margin.top": 4,
+              "size.h": "100%",
+              "size.w": "100%",
+              "bg.color": "00ff0000"
+            },
+            "controls": [
+              {
+                "_id": "imageTest",
+                "_type": "Image",
+                "attributes": {
+                  "size.w": "100%",
+                  "size.h": "100%",
+                  "image": "[[dataRow.images.low_resolution.url]]",
+                  "layoutType": "absolute",
+                  "align.v": "middle",
+                  "align.h": "center"
+                }
+              }
+            ]
+          }
         ]
-    }
+      }
+    ]
+  }
 }

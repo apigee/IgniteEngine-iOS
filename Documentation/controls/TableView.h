@@ -14,18 +14,18 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param row_select_enabled Highlight row on touch? *(default: FALSE)*<br>*(string)*
-    @param keep_row_highlighted_on_select Keep the row highlighted on touch_up? *(default: FALSE)*<br>*(float)*
-    @param background_swipe_width How wide should the cell swipe to reveal background controls?<br>*(int)*
-    @param image.parallax http:// or /path/to/image.png for parallaxiness<br>*(bool)*
-    @param image.parallax.height Height of image to display behind table for parallaxiness<br>*(bool)*
-    @param layout_flow Layout flow of table<br>*verticalhorizontal*
-    @param separator.style Show a dividing line between cells?<br>*defaultnone*
-    @param separator.color Color of default separator line<br>*(color)*
-
-*/
+/** IXTableView has the following attributes:
+ 
+ @param parallaxImage.h Height of parallax image<br><code>float</code>
+ @param parallaxImage Image displayed in background using parallax<br><code>string</code>
+ @param layoutFlow Layout flow<ul><li>*vertical*</li><li>horizontal</li></ul>
+ @param separator.style none<ul><li>*default*</li><li>none</li></ul>
+ @param rowSelect.enabled Row select enabled<br><code>bool</code>
+ @param rowStaysHighlighted.enabled Row stays highlighted<br><code>bool</code>
+ @param separator.color Separator color<br><code>color</code>
+ @param swipe.w Width cell will slide to reval background controls<br><code>float</code>
+ 
+ */
 
 -(void)Attributes
 {
@@ -33,58 +33,53 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param started_scrolling Fires when scrolling starts
-    @param ended_scrolling Fires when scrolling stops
-    @param will_display_cell Fires when the cell will come into the view
-    @param did_hide_cell Fires when the cell leaves the view
-    @param did_select_cell Fires when the cell is selected
-
-*/
+/** IXTableView has the following events:
+ 
+ @param didSelectCell Fires on did select cell
+ @param didHideCell Fires when did hide cell
+ @param didBeginScrolling Fires when scrolling begins
+ @param didEndScrolling Fires when scrolling ends
+ @param willDisplayCell Fires when will display cell
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param reset_all_background_controls 
+/** IXTableView has the following functions:
  
- <pre class="brush: js; toolbar: false;">
+ @param resetBgControls Resets background cell controls
+ <pre class=""brush: js; toolbar: false;"">
  
- </pre>
-
-
-
-
-    @param set_background_swipe_width 
  
- <pre class="brush: js; toolbar: false;">
  
  </pre>
-
-*/
+ 
+ @param setSwipeSize Sets background swipe width
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
+ 
+ </pre>
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXTableView returns no values.
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

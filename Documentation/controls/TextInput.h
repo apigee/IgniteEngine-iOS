@@ -14,38 +14,38 @@
 
 /***************************************************************/
 
-/** This control has the following attributes:
-
-    @param font Text font<br>*(string)*
-    @param cursor.color Cursor color<br>*(color)*
-    @param autocorrect Enables or disables system autocorrect *(default: TRUE)*<br>*(bool)*
-    @param dismiss_on_return Enables automatic closing of keyboard when return key pressed *(default: FALSE)*<br>*(bool)*
-    @param layout_to_scroll Array of reference pointers of view(s) that should scroll when keyboard appears<br>*(ref)*
-    @param keyboard_adjusts_screen Sets whether the keyboard appearing should automatically adjust the current view when<br>*(bool)*
-    @param is_multiline Sets the input to allow multiple lines of text<br>*(bool)*
-    @param initial_text Initial text present in input (not placeholder!)<br>*(string)*
-    @param text.color Text color<br>*(color)*
-    @param text.placeholder Placeholder text (re-appears when input is empty)<br>*(string)*
-    @param text.placeholder.color Color of placeholder text<br>*(color)*
-    @param text.alignment Text alignment (left, center, right, justified)<br>*(string)*
-    @param background.color Background color text input view<br>*(color)*
-    @param clears_on_begin_editing Clears text when input becomes first responder (only works on non-multiline input) *(default: FALSE)*<br>*(bool)*
-    @param image.left Left image – must use relative path including assets/ (only available on multiline input)<br>*(path)*
-    @param image.right Right image – must use relative path including assets/ (only available on multiline input)<br>*(path)*
-    @param image.background <br>*(????)*
-    @param image.hides_when_empty Sets whether defined image should hide when text is empty (only works on multiline input)<br>*(bool)*
-    @param keyboard.appearance Keyboard tint (light, dark, default) *(default: default)*<br>*(string)*
-    @param keyboard.type Keyboard type (email, number, phone, url, decimal, name_phone, numbers_punctuation, default) *(default: default)*<br>*(string)*
-    @param keyboard.padding Keyboard padding *(default: 0)*<br>*(integer)*
-    @param keyboard.return_key Keyboard return key type (go, next, search, done, join, send, route, emergency, google, yahoo) *(default: default)*<br>*(string)*
-    @param input.format.currency Sets whether the input should be formatted as currency *(default: FALSE)*<br>*(bool)*
-    @param input.format.credit_card Sets whether the input should be formatted as a credit card *(default: FALSE)*<br>*(bool)*
-    @param input.regex.allowed A regular expression of explicitly allowed characters<br>*(regex)*
-    @param input.regex.disallowed A regular expression of explicitly disallowed characters<br>*(regex)*
-    @param input.max Maximum allowed number of characters<br>*(integer)*
-    @param input.transform Text transform (capitalize, lowercase, uppercase, ucfirst)<br>*(string)*
-
-*/
+/** IXTextInput has the following attributes:
+ 
+ @param keyboardAdjustsScreen.enabled Adjust a target layout to accomodate keyboard<br><code>bool</code>
+ @param bg.color Background color<br><code>color</code>
+ @param bg.image Background image<br><code>string</code>
+ @param clearOnFocus.enabled Clear existing text on focus<br><code>bool</code> *FALSE*
+ @param color Color<br><code>color</code>
+ @param cursor.color Cursor color<br><code>color</code>
+ @param text.default Default text<br><code>string</code>
+ @param dismissOnReturn.enabled Dismiss keyboard on return key press<br><code>bool</code> *TRUE*
+ @param font Font<br><code>font</code>
+ @param formatAsCreditCard.enabled Format text as a credit card<br><code>bool</code> *FALSE*
+ @param formatAsCurrency.enabled Format text as currency<br><code>bool</code> *FALSE*
+ @param hideImageWhenEmpty.enabled Hide image when empty<br><code>bool</code> *FALSE*
+ @param image.left Image displayed on left<br><code>string</code>
+ @param image.right Image displayed on right<br><code>string</code>
+ @param keyboard.appearance Keyboard appearance<ul><li>*light*</li><li>dark</li></ul>
+ @param keyboard.padding Keyboard padding<br><code>float</code>
+ @param keyboard.returnKey Keyboard return key<ul><li>*done*</li><li>go</li><li>next</li><li>search</li><li>done</li><li>join</li><li>send</li><li>route</li><li>emergency</li><li>google</li><li>yahoo</li></ul>
+ @param keyboard.type Keyboard type<ul><li>*default*</li><li>email</li><li>number</li><li>phone</li><li>url</li><li>decimal</li><li>name_phone</li><li>numbers_punctuation</li><li>emergency</li><li>google</li><li>yahoo</li></ul>
+ @param layout_to_scroll Layout to scroll<br><code>string</code>
+ @param maxChars Maximum allowed characters<br><code>int</code>
+ @param multiline.enabled Multiline<br><code>bool</code>
+ @param placeholder.text Placeholder text<br><code>string</code>
+ @param placeholder.color Placeholder text color<br><code>color</code>
+ @param regex.allowed Regex allowed<br><code>string</code>
+ @param regex.disallowed Regex disallowed<br><code>string</code>
+ @param text.align   Text alignment<ul><li>*left*</li><li>center</li><li>right</li></ul>
+ @param text.transform Transform text<ul><li>capitalize</li><li>lowercase</li><li>uppercase</li><li>ucfirst</li></ul>
+ @param autocorrect.enabled Use autocorrect<br><code>bool</code> *TRUE*
+ 
+ */
 
 -(void)Attributes
 {
@@ -53,65 +53,63 @@
 /***************************************************************/
 /***************************************************************/
 
-/** This control has the following attributes:
-
- @param text Current text value of the text input control (to set the text use the kSetText function)<br>*(string)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param got_focus Fires when the input control becomes first responder
-    @param lost_focus Fires when the input control loses focus
-    @param return_key_pressed Fires when the user selects the return key
-    @param text_changed Fires when text is changed
-    @param image.right.tapped Fires when the right-hand image is tapped
-    @param image.left.tapped Fires when the left-hand image is tapped
-
-*/
+/** IXTextInput has the following events:
+ 
+ @param focus Fires on focus
+ @param focusLost Fires on focus lost
+ @param leftImageTapped Fires when left image tapped
+ @param returnKeyPressed Fires when return key pressed
+ @param rightImageTapped Fires when right image tapped
+ @param textChanged Fires when text changed
+ 
+ */
 
 -(void)Events
 {
 }
-
 /***************************************************************/
 /***************************************************************/
 
-/** This control supports the following functions:
-
-
-    @param set_text 
+/** IXTextInput has the following functions:
  
- <pre class="brush: js; toolbar: false;">
+ @param dismissKeyboard Dismisses the keyboard
+ <pre class=""brush: js; toolbar: false;"">
  
- </pre>
-
-    @param keyboard_hide 
  
- <pre class="brush: js; toolbar: false;">
  
  </pre>
-
-    @param keyboard_show, focus 
  
- <pre class="brush: js; toolbar: false;">
+ @param getFocus Gives focus
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
  
  </pre>
-
-*/
+ 
+ @param setText Sets text
+ <pre class=""brush: js; toolbar: false;"">
+ 
+ 
+ 
+ </pre>
+ 
+ */
 
 -(void)Functions
 {
 }
+/***************************************************************/
+/***************************************************************/
 
+/** IXTextInput returns the following values:
+ 
+ @param text Returns text<br><code>string</code>
+ 
+ */
+
+-(void)Returns
+{
+}
 /***************************************************************/
 /***************************************************************/
 

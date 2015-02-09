@@ -1,121 +1,129 @@
 {
-    "view": {
-        "actions": [
-            {
-                "_type": "Function", 
-                "attributes": {
-                    "_target": "textInputTest", 
-                    "function_name": "keyboard_show"
-                }, 
-                "on": "did_appear"
-            }
-        ], 
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+     "actions": [
+      {
+        "_type": "Function",
+        "on": "didAppear",
         "attributes": {
-            "_id": "test", 
-            "background": {}, 
-            "status_bar_style": "dark"
-        }, 
-        "controls": [
-            {
-                "_id": "customHeader", 
-                "_type": "Custom", 
-                "attributes": {
-                    "control_location": "custom/header.json", 
-                    "layoutType": "float", 
-                    "size.h": 50, 
-                    "size.w": "100%"
-                }
-            }, 
-            {
-                "_id": "textInputTest", 
-                "_type": "TextInput", 
-                "actions": [
-                    {
-                        "_type": "Modify", 
-                        "attributes": {
-                            "_target": "session"
-                        }, 
-                        "on": "text_changed,got_focus", 
-                        "set": {
-                            "text_to_speak": "[[$self.text]]"
-                        }
-                    }
-                ], 
-                "attributes": {
-                    "align.h": "center", 
-                    "color": "#6c6c6c", 
-                    "multiline.enabled": true, 
-                    "placeholder.text": "Type something..", 
-                    "size.h": 120, 
-                    "size.w": 280, 
-                    "text.align": "center", 
-                    "text.default": "How much wood could a woodchuck chuck if a woodchuck could chuck wood ?"
-                }
-            }, 
-            {
-                "_id": "customSlider", 
-                "_type": "Slider", 
-                "actions": [
-                    {
-                        "_type": "Refresh", 
-                        "attributes": {
-                            "_target": "button"
-                        }, 
-                        "on": "value_changed"
-                    }
-                ], 
-                "attributes": {
-                    "align.h": "center", 
-                    "size.w": 280, 
-                    "value.default": 0.3, 
-                    "value.max": 1, 
-                    "value.min": 0
-                }
-            }, 
-            {
-                "_id": "speechTest", 
-                "_type": "Speech", 
-                "attributes": {}
-            }, 
-            {
-                "_id": "button", 
-                "_type": "Button", 
-                "actions": [
-                    {
-                        "_type": "Modify", 
-                        "attributes": {
-                            "_target": "session"
-                        }, 
-                        "on": "touch_up", 
-                        "set": {
-                            "text_to_speak": "[[TextInput.text]]"
-                        }
-                    }, 
-                    {
-                        "_type": "Function", 
-                        "attributes": {
-                            "_target": "speechTest", 
-                            "function_name": "queue_utterance"
-                        }, 
-                        "on": "touch_up", 
-                        "set": {
-                            "rate": "[[customSlider.value]]", 
-                            "sentences": "[[session.text_to_speak]]"
-                        }
-                    }
-                ], 
-                "attributes": {
-                    "align.h": "center", 
-                    "bg.color": "cdcdcd", 
-                    "border.size": 2, 
-                    "color": "6c6c6c", 
-                    "size.h": 50, 
-                    "size.w": 280, 
-                    "touch.background.color": "cdcdcd", 
-                    "touch.text.color": "6c6c6c50"
-                }
+          "_target": "textInputTest",
+          "functionName": "keyboard_show"
+        }
+      }
+    ],
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXSpeech"
+        }
+      },
+      {
+        "_id": "textInputTest",
+        "_type": "TextInput",
+        "actions": [
+          {
+            "_type": "Modify",
+            "on": "text_changed,got_focus",
+            "attributes": {
+              "_target": "session"
+            },
+            "set": {
+              "text_to_speak": "[[$self.text]]"
             }
-        ], 
-        "data_providers": []
-    }
+          }
+        ],
+        "attributes": {
+          "font": "HelveticaNeue-Light:22",
+          "is_multiline": true,
+          "size.w": 280,
+          "size.h": 120,
+          "text.align": "center",
+          "align.h": "center",
+          "color": "#6c6c6c",
+          "initial_text": "How much wood could a woodchuck chuck if a woodchuck could chuck wood ?",
+          "text.placeholder": "Type something.."
+        }
+      },
+      {
+        "_id": "customSlider",
+        "_type": "Slider",
+        "actions": [
+          {
+            "on": "value_changed",
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "button"
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 280,
+          "align.h": "center",
+          "initial_value": 0.3,
+          "minimum_value": 0,
+          "maximum_value": 1
+        }
+      },
+      {
+        "_type": "Speech",
+        "_id": "speechTest",
+        "attributes": {}
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Modify",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "session"
+            },
+            "set": {
+              "text_to_speak": "[[TextInput.text]]"
+            }
+          },
+          {
+            "_type": "Function",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "speechTest",
+              "functionName": "queue_utterance"
+            },
+            "set": {
+              "utterance.sentences": "[[session.text_to_speak]]",
+              "utterance.rate": "[[customSlider.value]]"
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 280,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "touch.bg.color": "cdcdcd",
+          "margin.top": 10,
+          "border.radius": 5,
+          "border.size.w": 2,
+          "border.color": "6c6c6c",
+          "text": "Speak! (Rate: {{var percent = [[customSlider.value]]*100; percent.toFixed(0)}}%)"
+        }
+      }
+    ],
+    "datasources": []
+  }
 }
