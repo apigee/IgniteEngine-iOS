@@ -1,0 +1,84 @@
+{
+    "view": {
+        "attributes": {
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 90,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXCalendar"
+                }
+            },
+            {
+                "_id": "calendarTest",
+                "_type": "Calendar",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "success"
+                        },
+                        "on": "success"
+                    },
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "error"
+                        },
+                        "on": "error"
+                    }
+                ],
+                "attributes": {
+                    "alarm.offset": -1800,
+                    "allDay.enabled": false,
+                    "date.end": "2016-01-01 00:00:00",
+                    "date.format": "yyyy-MM-dd HH:mm:ss",
+                    "date.start": "2015-12-31 23:00:00",
+                    "location": "1234 Some Street, City, State Zip",
+                    "notes": "Event Notes",
+                    "repeatFrequency": "none",
+                    "title": "Event Title",
+                    "url": "http://meetings-are-fun.com"
+                }
+            },
+            {
+                "_id": "button",
+                "_type": "Button",
+                "actions": [
+                    {
+                        "_type": "Function",
+                        "attributes": {
+                            "_target": "calendarTest",
+                            "functionName": "addEvent"
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "middle",
+                    "bg.color": "cdcdcd",
+                    "border.radius": 0,
+                    "color": "6c6c6c",
+                    "layoutType": "absolute",
+                    "size.h": 80,
+                    "size.w": 280,
+                    "text": "Add to Calendar: 10/21/2015",
+                    "touch.bg.color": "cdcdcd",
+                    "touch.color": "6c6c6c50"
+                }
+            }
+        ],
+        "datasources": []
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "view": {
+        "attributes": {
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 70,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXSoundRecorder"
+                }
+            },
+            {
+                "_id": "soundRecorderTest",
+                "_type": "SoundRecorder",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Recorded sound: [[$self.record_to_location]]",
+                            "title": "Finished"
+                        },
+                        "on": "finished"
+                    }
+                ],
+                "attributes": {
+                    "record_to_location": "docs://recording.mp3"
+                }
+            },
+            {
+                "_id": "button",
+                "_type": "Button",
+                "actions": [
+                    {
+                        "_type": "Function",
+                        "attributes": {
+                            "_target": "soundRecorderTest",
+                            "functionName": "start_recording"
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "middle",
+                    "bg.color": "cdcdcd",
+                    "border.radius": 0,
+                    "color": "6c6c6c",
+                    "layoutType": "absolute",
+                    "size.h": 50,
+                    "size.w": 200,
+                    "text": "Say something nice.",
+                    "touch.bg.color": "cdcdcd",
+                    "touch.color": "6c6c6c50"
+                }
+            },
+            {
+                "_id": "button",
+                "_type": "Button",
+                "actions": [
+                    {
+                        "_type": "Function",
+                        "attributes": {
+                            "_target": "soundRecorderTest",
+                            "functionName": "start_recording"
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "bottom",
+                    "bg.color": "cdcdcd",
+                    "border.radius": 0,
+                    "color": "6c6c6c",
+                    "layoutType": "absolute",
+                    "margin.bottom": 200,
+                    "size.h": 50,
+                    "size.w": 200,
+                    "text": "Stop recording.",
+                    "touch.bg.color": "cdcdcd",
+                    "touch.color": "6c6c6c50"
+                }
+            },
+            {
+                "_id": "title",
+                "_type": "Text",
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "bottom",
+                    "color": "6c6c6c",
+                    "font": "HelveticaNeue:15",
+                    "layoutType": "float",
+                    "margin.bottom": 15,
+                    "size.h": 50,
+                    "size.w": 280,
+                    "text": "IXSoundRecorder",
+                    "text.align": "center"
+                }
+            }
+        ],
+        "datasources": []
+    }
+}

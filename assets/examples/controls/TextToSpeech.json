@@ -1,0 +1,126 @@
+{
+    "view": {
+        "actions": [
+            {
+                "_type": "Function",
+                "attributes": {
+                    "_target": "TextInput",
+                    "functionName": "keyboard_show"
+                },
+                "on": "didAppear"
+            }
+        ],
+        "attributes": {
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 90,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXSpeech"
+                }
+            },
+            {
+                "_id": "speechTest",
+                "_type": "Speech",
+                "attributes": {}
+            },
+            {
+                "_id": "TextInput",
+                "_type": "TextInput",
+                "actions": [
+                    {
+                        "_type": "Modify",
+                        "attributes": {
+                            "_target": "session"
+                        },
+                        "on": "textChanged,focus",
+                        "set": {
+                            "text_to_speak": "[[$self.text]]"
+                        }
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "color": "#6c6c6c",
+                    "font": "HelveticaNeue-Light:22",
+                    "initial_text": "How much wood could a woodchuck chuck if a woodchuck could chuck wood ?",
+                    "multiline.enabled": true,
+                    "placeholder": "Type something...",
+                    "size.h": 120,
+                    "size.w": 280,
+                    "text.align": "left"
+                }
+            },
+            {
+                "_id": "customSlider",
+                "_type": "Slider",
+                "actions": [
+                    {
+                        "_type": "Refresh",
+                        "attributes": {
+                            "_target": "button"
+                        },
+                        "on": "value_changed"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "initial_value": 0.3,
+                    "maximum_value": 1,
+                    "minimum_value": 0,
+                    "size.w": 280
+                }
+            },
+            {
+                "_id": "button",
+                "_type": "Button",
+                "actions": [
+                    {
+                        "_type": "Modify",
+                        "attributes": {
+                            "_target": "session"
+                        },
+                        "on": "touchUp",
+                        "set": {
+                            "text_to_speak": "[[TextInput.text]]"
+                        }
+                    },
+                    {
+                        "_type": "Function",
+                        "attributes": {
+                            "_target": "speechTest",
+                            "functionName": "queue_utterance"
+                        },
+                        "on": "touchUp",
+                        "set": {
+                            "utterance.rate": "[[customSlider.value]]",
+                            "utterance.sentences": "[[session.text_to_speak]]"
+                        }
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "bg.color": "cdcdcd",
+                    "color": "6c6c6c",
+                    "margin.top": 5,
+                    "size.h": 50,
+                    "size.w": 280,
+                    "text": "Speak rate: {{var percent = [[customSlider.value]]*100; percent.toFixed(0)}}%)",
+                    "touch.bg.color": "cdcdcd",
+                    "touch.color": "6c6c6c50"
+                }
+            }
+        ],
+        "datasources": []
+    }
+}

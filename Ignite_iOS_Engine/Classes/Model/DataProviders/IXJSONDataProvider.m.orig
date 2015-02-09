@@ -1,0 +1,463 @@
+//
+//  IXJSONDataProvider.m
+//  Ignite_iOS_Engine
+//
+//  Created by Robert Walsh on 12/6/13.
+//  Copyright (c) 2013 Ignite. All rights reserved.
+//
+
+#import "IXJSONDataProvider.h"
+
+#import "AFHTTPClient.h"
+#import "AFOAuth2Client.h"
+
+#import "IXAFJSONRequestOperation.h"
+#import "IXAppManager.h"
+#import "IXImage.h"
+#import "IXJSONGrabber.h"
+#import "IXPathHandler.h"
+#import "IXLogger.h"
+
+@interface IXImage ()
+
+@property (nonatomic,strong) UIImage* defaultImage;
+
+@end
+
+@interface IXJSONDataProvider ()
+
+@property (nonatomic,assign) BOOL isLocalPath;
+
+@property (nonatomic,copy) NSString* httpMethod;
+@property (nonatomic,copy) NSString* httpBody;
+@property (nonatomic,copy) NSString* rowBaseDataPath;
+@property (nonatomic,strong) NSArray* rowDataResults;
+
+@property (nonatomic,strong) id lastJSONResponse;
+
+@end
+
+@implementation IXJSONDataProvider
+
+-(void)applySettings
+{
+    [super applySettings];
+ 
+    if( [self dataLocation] == nil )
+        return;
+    
+    [self setRowBaseDataPath:[[self propertyContainer] getStringPropertyValue:@"datarow.basepath" defaultValue:nil]];
+    [self setIsLocalPath:[IXPathHandler pathIsLocal:[self dataLocation]]];
+    
+    if( ![self isLocalPath] )
+    {        
+        AFHTTPClientParameterEncoding paramEncoding = AFJSONParameterEncoding;
+        NSString* parameterEncoding = [[self propertyContainer] getStringPropertyValue:@"parameter_encoding" defaultValue:@"json"];
+        if( [parameterEncoding isEqualToString:@"form"] ) {
+            paramEncoding = AFFormURLParameterEncoding;
+        } else if( [parameterEncoding isEqualToString:@"plist"] ) {
+            paramEncoding = AFPropertyListParameterEncoding;
+        }
+        
+        [[self httpClient] setParameterEncoding:paramEncoding];
+        
+        [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:@"http_method" defaultValue:@"GET"]];
+    }
+    else
+    {
+        [self setDataLocation:[[self propertyContainer] getPathPropertyValue:@"data.baseurl" basePath:nil defaultValue:nil]];
+        [self setHttpClient:nil];
+        [self setHttpMethod:nil];
+    }
+}
+
+-(void)fireLoadFinishedEventsFromCachedResponse
+{
+    NSString* rawResponseString = [self rawResponse];
+    NSData* rawResponseData = [rawResponseString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError* __autoreleasing error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:rawResponseData options:0 error:&error];
+    if( jsonObject )
+    {
+        [self setLastJSONResponse:jsonObject];
+        [super fireLoadFinishedEventsFromCachedResponse];
+    }
+}
+
+-(void)loadData:(BOOL)forceGet
+{
+    [super loadData:forceGet];
+    
+    if (forceGet == NO)
+    {
+        [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
+    }
+    else
+    {
+        [self setRawResponse:nil];
+        [self setLastJSONResponse:nil];
+        [self setLastResponseStatusCode:0];
+        [self setLastResponseErrorMessage:nil];
+        
+        if ( [self dataLocation] != nil )
+        {
+            if( ![self isLocalPath] )
+            {
+                NSMutableURLRequest* request = nil;
+                
+                NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentProperties] getAllPropertiesURLValues]];
+                [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
+
+                NSDictionary* parameters = nil;
+                if( [[self propertyContainer] getBoolPropertyValue:@"parse_parameters_as_object" defaultValue:YES] )
+                {
+                    parameters = [[self requestParameterProperties] getAllPropertiesObjectValues];
+                }
+                else
+                {
+                    parameters = [[self requestParameterProperties] getAllPropertiesStringValues];
+                }
+                
+                NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
+                IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
+                
+                if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
+                {
+<<<<<<< HEAD
+                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+=======
+                    request = [[self httpClient] multipartFormRequestWithMethod:[self httpMethod] path:[self objectsPath] parameters:[[self requestParameterProperties] getAllPropertiesObjectValues] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+>>>>>>> 54105e63f576c4094dd8b0d1db5aa8070dcbaf80
+                        
+                        if( [imageControl isKindOfClass:[IXImage class]] )
+                        {
+                            NSString* attachementImageName = [[self fileAttachmentProperties] getStringPropertyValue:@"image.name"
+                                                                                                        defaultValue:nil];
+                            NSString* imageMimeType = [[self fileAttachmentProperties] getStringPropertyValue:@"image.mimeType"
+                                                                                                 defaultValue:nil];
+                            
+                            NSString* imageType = [[imageMimeType componentsSeparatedByString:@"/"] lastObject];
+                            
+                            NSData* imageData = nil;
+                            if( [imageType isEqualToString:@"png"] )
+                            {
+                                imageData = UIImagePNGRepresentation(imageControl.defaultImage);
+                            }
+                            else if( [imageType isEqualToString:@"jpeg"] )
+                            {
+                                float imageJPEGCompression = [[self fileAttachmentProperties] getFloatPropertyValue:@"image.jpegCompression" defaultValue:0.5f];
+                                imageData = UIImageJPEGRepresentation(imageControl.defaultImage, imageJPEGCompression);
+                            }
+                            
+                            if( imageData && [attachementImageName length] > 0 && [imageMimeType length] > 0 && [imageType length] > 0 )
+                            {
+                                [formData appendPartWithFileData:imageData
+                                                            name:attachementImageName
+                                                        fileName:[NSString stringWithFormat:@"%@.%@",attachementImageName,imageType]
+                                                        mimeType:imageMimeType];
+                            }
+                        }
+                        
+                        [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                            if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
+                            {
+                                [formData appendPartWithFileURL:obj name:key error:nil];
+                            }
+                        }];
+                    }];
+                }
+                else
+                {
+                    request = [[self httpClient] requestWithMethod:[self httpMethod]
+                                                              path:[self objectsPath]
+                                                        parameters:parameters];
+                }
+                [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
+                
+                __weak typeof(self) weakSelf = self;
+                IXAFJSONRequestOperation *operation = [IXAFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    
+                    [weakSelf setLastResponseStatusCode:[response statusCode]];
+                    
+                    NSError* __autoreleasing jsonConvertError = nil;
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                    if( jsonConvertError == nil && jsonData )
+                    {
+                        NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        [weakSelf setRawResponse:jsonString];
+                        [weakSelf setLastJSONResponse:JSON];
+                        [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
+                    }
+                    else
+                    {
+                        [weakSelf setLastResponseErrorMessage:[jsonConvertError description]];
+                        [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
+                    }
+                    
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    
+                    [weakSelf setLastResponseStatusCode:[response statusCode]];
+                    [weakSelf setLastResponseErrorMessage:[error description]];
+                    
+                    @try {
+                        NSError* __autoreleasing jsonConvertError = nil;
+                        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                        if( jsonConvertError == nil && jsonData )
+                        {
+                            NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                            [weakSelf setRawResponse:jsonString];
+                            [weakSelf setLastJSONResponse:JSON];
+                        }
+                    }
+                    @catch (NSException *exception) {
+                        IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@",THIS_FILE,THIS_METHOD,[exception description]);
+                    }
+                    [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
+                }];
+                
+                [self authenticateAndEnqueRequestOperation:operation];
+            }
+            else
+            {
+                NSString* dataPath = [self dataLocation];
+                if( ![[self dataLocation] hasSuffix:@"/"] && ![[self objectsPath] hasPrefix:@"/"] )
+                {
+                    if( [self objectsPath].length )
+                    {
+                        dataPath = [NSString stringWithFormat:@"%@/%@",[self dataLocation],[self objectsPath]];
+                    }
+                }
+                else
+                {
+                    dataPath = [[self dataLocation] stringByAppendingString:[self objectsPath]];
+                }
+                
+                __weak typeof(self) weakSelf = self;
+                [[IXJSONGrabber sharedJSONGrabber] grabJSONFromPath:dataPath
+                                                             asynch:YES
+                                                        shouldCache:NO
+                                                    completionBlock:^(id jsonObject, NSError *error) {
+                                                        
+                                                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                            NSError* jsonError = error;
+                                                            NSData* jsonData = nil;
+                                                            if( jsonObject )
+                                                            {
+                                                                NSError* __autoreleasing jsonConvertError = nil;
+                                                                jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                                                                if( jsonConvertError != nil )
+                                                                {
+                                                                    jsonError = jsonConvertError;
+                                                                }
+                                                            }
+                                                            if( jsonData )
+                                                            {
+                                                                NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                                                [weakSelf setRawResponse:jsonString];
+                                                                [weakSelf setLastJSONResponse:jsonObject];
+                                                                IX_dispatch_main_sync_safe(^{
+                                                                    [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
+                                                                });
+                                                            }
+                                                            else
+                                                            {
+                                                                [weakSelf setLastResponseErrorMessage:[jsonError description]];
+                                                                IX_dispatch_main_sync_safe(^{
+                                                                    [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
+                                                                });
+                                                            }
+                                                        });
+                }];
+            }
+        }
+        else
+        {
+            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataLocation);
+        }
+    }
+}
+
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
+{
+    [self setRowDataResults:nil];
+    if( loadDidSucceed )
+    {
+        NSObject* jsonObject = nil;
+        if( [self rowBaseDataPath].length <= 0 && [[self lastJSONResponse] isKindOfClass:[NSArray class]] )
+        {
+            jsonObject = [self lastJSONResponse];
+        }
+        else
+        {
+            jsonObject = [self objectForPath:[self rowBaseDataPath] container:[self lastJSONResponse]];
+        }
+
+        NSArray* rowDataResults = nil;
+        if( [jsonObject isKindOfClass:[NSArray class]] )
+        {
+            rowDataResults = (NSArray*)jsonObject;
+        }
+        if( rowDataResults )
+        {
+            NSPredicate* predicate = [self predicate];
+            if( predicate )
+            {
+                rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
+            }
+            NSSortDescriptor* sortDescriptor = [self sortDescriptor];
+            if( sortDescriptor )
+            {
+                rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
+            }
+            [self setRowDataResults:rowDataResults];
+        }
+    }
+    [super fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse];
+}
+
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
+    if( returnValue == nil )
+    {
+        if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
+        {
+            NSObject* jsonObject = [self objectForPath:propertyName container:[self lastJSONResponse]];
+            if( jsonObject )
+            {
+                if( [jsonObject isKindOfClass:[NSString class]] )
+                {
+                    returnValue = (NSString*)jsonObject;
+                }
+                else
+                {
+                    NSError* __autoreleasing jsonConvertError = nil;
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                    if( jsonConvertError == nil && jsonData )
+                    {
+                        returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                    }
+                }
+            }
+        }
+    }
+    return returnValue;
+}
+
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath
+{
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath];
+    if( keyPath && rowIndexPath )
+    {
+        NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
+        returnValue = [self stringForPath:jsonKeyPath container:[self rowDataResults]];
+    }
+    return returnValue;
+}
+
+-(NSUInteger)getRowCount
+{
+    return [[self rowDataResults] count];
+}
+
+-(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject*)container
+{
+    NSString* returnValue = nil;
+    NSObject* jsonObject = [self objectForPath:jsonXPath container:container];
+    if( jsonObject )
+    {
+        if( [jsonObject isKindOfClass:[NSString class]] )
+        {
+            returnValue = (NSString*)jsonObject;
+        }
+        else if( [jsonObject isKindOfClass:[NSNumber class]] )
+        {
+            returnValue = [((NSNumber*)jsonObject) stringValue];
+        }
+        else if( [jsonObject isKindOfClass:[NSNull class]] )
+        {
+            returnValue = nil;
+        }
+        else
+        {
+            NSError* __autoreleasing jsonConvertError = nil;
+            if( [NSJSONSerialization isValidJSONObject:jsonObject] )
+            {
+                NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+                                                                   options:NSJSONWritingPrettyPrinted
+                                                                     error:&jsonConvertError];
+                if( jsonConvertError == nil && jsonData )
+                {
+                    returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                }
+                else
+                {
+                    IX_LOG_WARN(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
+                }
+            }
+            else
+            {
+                IX_LOG_WARN(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
+            }
+        }
+    }
+    return returnValue;
+}
+
+- (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode
+{
+    if (currentNode == nil) {
+        return nil;
+    }
+    
+    if(![currentNode isKindOfClass:[NSDictionary class]] && ![currentNode isKindOfClass:[NSArray class]]) {
+        return currentNode;
+    }
+    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPERATOR]) {
+        jsonXPath = [jsonXPath substringFromIndex:1];
+    }
+    
+    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPERATOR] firstObject];
+    NSObject *nextNode;
+    // if dict -> get value
+    if ([currentNode isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *currentDict = (NSDictionary *) currentNode;
+        nextNode = currentDict[jsonXPath];
+        if( nextNode != nil )
+        {
+            return nextNode;
+        }
+        else
+        {
+            nextNode = currentDict[currentKey];
+        }
+    }
+    
+    if ([currentNode isKindOfClass:[NSArray class]]) {
+        // current key must be an number
+        @try {
+            NSArray * currentArray = (NSArray *) currentNode;
+            if ([currentArray count] > 0)
+                nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
+            else
+                @throw [NSException
+                        exceptionWithName:@"NSRangeException"
+                        reason:@"Specified array index is out of bounds"
+                        userInfo:nil];
+        }
+        @catch (NSException *exception) {
+            IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
+        }
+    }
+    
+    // remove the currently processed key from the xpath like path
+    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
+    if( nextXPath.length <= 0 )
+    {
+        return nextNode;
+    }
+    // call recursively with the new xpath and the new Node
+    return [self objectForPath:nextXPath container: nextNode];
+}
+
+@end
