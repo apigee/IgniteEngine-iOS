@@ -1,193 +1,193 @@
 {
   "entities": [
     {
-      "name": "IXActionSheet",
-      "name": "IXActionSheet",
+      "name": "ActionSheet",
+      "name": "ActionSheet",
       "type": "control"
     },
     {
-      "name": "IXActivityIndicator",
-      "name": "IXActivityIndicator",
+      "name": "ActivityIndicator",
+      "name": "ActivityIndicator",
       "type": "control"
     },
     {
-      "name": "IXAddressBook",
-      "name": "IXAddressBook",
+      "name": "AddressBook",
+      "name": "AddressBook",
       "type": "control"
     },
     {
-      "name": "IXAttributedText",
-      "name": "IXAttributedText",
+      "name": "AttributedText",
+      "name": "AttributedText",
       "type": "control"
     },
     {
-      "name": "IXBaseControl",
-      "name": "IXBaseControl",
+      "name": "BaseControl",
+      "name": "BaseControl",
       "type": "control"
     },
     {
-      "name": "IXBrowser",
-      "name": "IXBrowser",
+      "name": "Browser",
+      "name": "Browser",
       "type": "control"
     },
     {
-      "name": "IXButton",
-      "name": "IXButton",
+      "name": "Button",
+      "name": "Button",
       "type": "control"
     },
     {
-      "name": "IXCalendar",
-      "name": "IXCalendar",
+      "name": "Calendar",
+      "name": "Calendar",
       "type": "control"
     },
     {
-      "name": "IXCamera",
-      "name": "IXCamera",
+      "name": "Camera",
+      "name": "Camera",
       "type": "control"
     },
     {
-      "name": "IXCellBasedControl",
-      "name": "IXCellBasedControl",
+      "name": "CellBasedControl",
+      "name": "CellBasedControl",
       "type": "control"
     },
     {
-      "name": "IXCircle",
+      "name": "Circle",
       "type": "control"
     },
     {
-      "name": "IXCollection",
+      "name": "Collection",
       "type": "control"
     },
     {
-      "name": "IXImage",
+      "name": "Image",
       "type": "control"
     },
     {
-      "name": "IXDial",
+      "name": "Dial",
       "type": "control"
     },
     {
-      "name": "IXLayout",
+      "name": "Layout",
       "type": "control"
     },
     {
-      "name": "IXMap",
+      "name": "Map",
       "type": "control"
     },
     {
-      "name": "IXMapAnnotation",
+      "name": "MapAnnotation",
       "type": "control"
     },
     {
-      "name": "IXMediaPlayer",
+      "name": "MediaPlayer",
       "type": "control"
     },
     {
-      "name": "IXMediaSource",
+      "name": "MediaSource",
       "type": "control"
     },
     {
-      "name": "IXMessage",
+      "name": "Message",
       "type": "control"
     },
     {
-      "name": "IXScanner",
+      "name": "Scanner",
       "type": "control"
     },
     {
-      "name": "IXSignature",
+      "name": "Signature",
       "type": "control"
     },
     {
-      "name": "IXSlider",
+      "name": "Slider",
       "type": "control"
     },
     {
-      "name": "IXSocial",
+      "name": "Social",
       "type": "control"
     },
     {
-      "name": "IXAudioPlayer",
+      "name": "AudioPlayer",
       "type": "control"
     },
     {
-      "name": "IXSoundRecorder",
+      "name": "SoundRecorder",
       "type": "control"
     },
     {
-      "name": "IXSpeech",
+      "name": "Speech",
       "type": "control"
     },
     {
-      "name": "IXTableView",
+      "name": "TableView",
       "type": "control"
     },
     {
-      "name": "IXText",
+      "name": "Text",
       "type": "control"
     },
     {
-      "name": "IXTextInput",
+      "name": "TextInput",
       "type": "control"
     },
     {
-      "name": "IXTimer",
+      "name": "Timer",
       "type": "control"
     },
     {
-      "name": "IXToggle",
+      "name": "Toggle",
       "type": "control"
     },
     {
-      "name": "IXTouchID",
+      "name": "TouchID",
       "type": "control"
     },
     {
-      "name": "IXAlertAction",
+      "name": "AlertAction",
       "type": "action"
     },
     {
-      "name": "IXModifyAction",
+      "name": "ModifyAction",
       "type": "action"
     },
     {
-      "name": "IXFunctionAction",
+      "name": "FunctionAction",
       "type": "action"
     },
     {
-      "name": "IXLogAction",
+      "name": "LogAction",
       "type": "action"
     },
     {
-      "name": "IXNavigateAction1",
+      "name": "NavigateAction1",
       "type": "action"
     },
     {
-      "name": "IXNavigateAction",
+      "name": "NavigateAction",
       "type": "action"
     },
     {
-      "name": "IXRefreshAction",
+      "name": "RefreshAction",
       "type": "action"
     },
     {
-      "name": "IXLoadAction",
+      "name": "LoadAction",
       "type": "action"
     },
     {
-      "name": "IXCreateAction",
+      "name": "CreateAction",
       "type": "action"
     },
     {
-      "name": "IXAnimateAction",
+      "name": "AnimateAction",
       "type": "action"
     },
     {
-      "name": "IXEventAction",
+      "name": "EventAction",
       "type": "action"
     },
     {
-      "name": "IXAnimateAction",
+      "name": "AnimateAction",
       "type": "action"
     },
     {
