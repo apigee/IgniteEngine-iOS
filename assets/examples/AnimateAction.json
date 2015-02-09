@@ -1,0 +1,115 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "bg.color": "ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXAnimationAction"
+        }
+      },
+      {
+        "_id": "layoutButtons",
+        "_type": "Layout",
+        "attributes": {
+          "layoutType": "absolute",
+          "align.h": "center",
+          "align.v": "middle"
+        },
+        "controls": [
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Animate",
+                "on": "touchUp",
+                "attributes": {
+                  "_target": "layoutSpinMe",
+                  "duration": 1,
+                  "repeatCount": 0,
+                  "animation": "spin"
+                }
+              }
+            ],
+            "attributes": {
+              "size.w": 280,
+              "size.h": 50,
+              "color": "6c6c6c",
+              "bg.color": "cdcdcd",
+              "touch.color": "6c6c6c50",
+              "touch.bg.color": "cdcdcd",
+              "margin.top": 15,
+              "text": "animate"
+            }
+          },
+          {
+            "_id": "button0",
+            "_type": "Button",
+            "actions": [
+              {
+                "_type": "Modify",
+                "on": "touchUp",
+                "enabled": true,
+                "attributes": {
+                  "_target": "circleTest"
+                },
+                "set": {
+                  "color": "293aba"
+                }
+              }
+            ],
+            "attributes": {
+              "size.w": 280,
+              "size.h": 50,
+              "color": "6c6c6c",
+              "bg.color": "cdcdcd",
+              "touch.color": "6c6c6c50",
+              "touch.bg.color": "cdcdcd",
+              "margin.top": 15,
+              "text": "change dot color"
+            }
+          }
+        ]
+      },
+      {
+        "_id": "layoutSpinMe",
+        "_type": "Layout",
+        "attributes": {
+          "layoutType": "absolute",
+          "size.h": 40,
+          "size.w": 40,
+          "margin.bottom":40,
+          "bg.color": "ff00ff00",
+          "align.h": "center",
+          "align.v": "bottom"
+        },
+        "controls": [
+          {
+            "_id": "circleTest",
+            "_type": "Circle",
+            "attributes": {
+              "size": 8,
+              "color": "#fa4c06",
+              "layoutType": "absolute",
+              "align.h": "left",
+              "align.v": "top"
+            }
+          }
+        ]
+      }
+    ],
+    "datasources": []
+  }
+}

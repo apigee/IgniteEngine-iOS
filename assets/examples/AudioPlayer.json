@@ -1,0 +1,95 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXSound"
+        }
+      },
+      {
+        "_id": "soundTest",
+        "_type": "AudioPlayer",
+        "actions": [
+          {
+            "on": "finished",
+            "_type": "Alert",
+            "attributes": {
+              "title": "Finished",
+              "message":"Played sound: resources/sounds/powerup.caf"
+            }
+          }
+        ],
+        "attributes": {
+          "audioUrl": "resources/sounds/powerup.caf",
+          "repeatCount": 0,
+          "autoPlay.enabled": false
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "soundTest",
+              "functionName": "play"
+            }
+          },
+          {
+            "_type": "Refresh",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "title",
+              "delay":0.25
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 200,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "layoutType": "absolute",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "align.v": "middle",
+          "touch.bg.color": "cdcdcd",
+          "border.radius": 0,
+          "text": "Power up."
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "size.w": 280,
+          "size.h": 50,
+          "margin.bottom": 15,
+          "color": "6c6c6c",
+          "layoutType": "float",
+          "text.align": "center",
+          "align.h": "center",
+          "align.v": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "IXSound: is_playing: [[soundTest.is_playing]]\nPlay /resources/sounds/powerup.caf"
+        }
+      }
+    ],
+    "datasources": []
+  }
+}

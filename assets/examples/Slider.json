@@ -1,0 +1,90 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXSlider"
+        }
+      },
+      {
+        "_id": "sliderTest",
+        "_type": "Slider",
+        "actions": [
+          {
+            "on": "valueChanged",
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "title"
+            }
+          }
+        ],
+        "attributes": {
+          "layoutType": "absolute",
+          "size.w": 280,
+          "align.h": "center",
+          "align.v": "middle"
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "sliderTest",
+              "functionName": "setValue"
+            },
+            "set": {
+              "value": 0.75
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 225,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "layoutType": "absolute",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "align.v": "bottom",
+          "margin.bottom":200,
+          "touch.bg.color": "cdcdcd",
+          "border.radius": 0,
+          "text": "Change slider to 0.75"
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "size.w": 200,
+          "size.h": 50,
+          "margin.bottom": 15,
+          "color": "6c6c6c",
+          "layoutType": "float",
+          "align.h": "center",
+          "align.v": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "IXSlider value: [[sliderTest.value]]"
+        }
+      }
+    ],
+    "datasources": []
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXAddressBook"
+        }
+      },
+      {
+        "_type": "AddressBook",
+        "_id": "addressBookTest",
+        "actions": [
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "success"
+            },
+            "on": "success"
+          },
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "error"
+            },
+            "on": "error"
+          }
+        ],
+        "attributes": {
+          "name.first": "Johnny",
+          "name.last": "Appleseed",
+          "company.name": "Farmers, Inc.",
+          "company.title": "CEO",
+          "phone.mobile": "+15551212",
+          "phone.main": "+15551313",
+          "email.home": "johnnyappleseed@gmail.com",
+          "email.work": "johnny@appleseed.com",
+          "username.twitter": "johnnyappleseed",
+          "username.linkedIn": "johnnyappleseed",
+          "username.facebook": "johnnyappleseed",
+          "url.home": "[http://johnnyappleseed.com](http://johnnyappleseed.com)",
+          "url.homePage": "[http://johnnyappleseed.com](http://johnnyappleseed.com)",
+          "url.work": "[http://farmersinc.com](http://farmersinc.com)",
+          "url.linkedIn": "",
+          "url.facebook": ""
+        }
+      },
+      {
+        "_id": "title",
+        "_type": "Text",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "addressbookTest",
+              "functionName": "addContact"
+            }
+          },
+          {
+            "_type": "Alert",
+            "attributes": {
+              "title": "move along..",
+              "message":"there's nothing to see here. \n\n(IXAddressBook has no ui)"
+            },
+            "on": "touchUp"
+          }
+        ],
+        "attributes": {
+          "size.w": 200,
+          "size.h": 50,
+          "margin.bottom": 15,
+          "color": "6c6c6c",
+          "layoutType": "float",
+          "align.h": "center",
+          "align.v": "bottom",
+          "font": "HelveticaNeue:15",
+          "text": "IXAddressBook: add_contact"
+        }
+      }
+    ],
+    "datasources": []
+  }
+}
