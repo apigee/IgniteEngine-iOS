@@ -80,26 +80,53 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
- 
+<pre class="brush: js; toolbar: false;">
 {
-  "_id": "MediaPickerTest",
-  "_type": "MediaPicker",
-  "actions": [
-    {
-      "on": "did_load_media",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_load_media: [[$self.selected_media]]"
-      }
+    "_id": "mediaPickerTest",
+    "_type": "MediaPicker",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Loaded media at [[$self.selectedMedia]]"
+            },
+            "on": "didLoadMedia"
+        }
+    ],
+    "attributes": {
+        "camera": "front",
+        "cameraControls.enabled": true,
+        "source": "library"
     }
-  ],
-  "attributes": {
-    "source": "library"
-  }
+},
+{
+    "_id": "button",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Function",
+            "attributes": {
+                "_target": "mediaPickerTest",
+                "functionName": "present"
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "bg.color": "cdcdcd",
+        "border.radius": 0,
+        "color": "6c6c6c",
+        "layoutType": "absolute",
+        "size.h": 50,
+        "size.w": 200,
+        "text": "Pick something.",
+        "touch.bg.color": "cdcdcd",
+        "touch.color": "6c6c6c50"
+    }
 }
- 
- </pre>
+</pre>
 
 
 

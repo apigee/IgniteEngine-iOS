@@ -98,33 +98,58 @@
 
 
  <pre class="brush: js; toolbar: false;">
- 
 {
-  "_id": "cameraTest",
-  "_type": "Camera",
-  "actions": [
-    {
-      "on": "did_capture_image",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_capture_image"
-      }
-    },
-    {
-      "on": "did_finish_saving_capture",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_finish_saving_capture"
-      }
+    "_id": "cameraTest",
+    "_type": "Camera",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Captured!"
+            },
+            "on": "didCaptureImage"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Saved!"
+            },
+            "on": "didSaveImage"
+        }
+    ],
+    "attributes": {
+        "camera": "rear",
+        "size.h": "100%",
+        "size.w": "100%"
     }
-  ],
-  "attributes": {
-    "camera": "rear",
-    "height": "100%",
-    "width": "100%"
-  }
+},
+{
+    "_id": "button",
+    "_type": "Button",
+    "actions": [
+        {
+            "_type": "Function",
+            "attributes": {
+                "_target": "cameraTest",
+                "functionName": "capture"
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "bg.color": "cdcdcd",
+        "border.radius": 0,
+        "color": "6c6c6c",
+        "layoutType": "absolute",
+        "size.h": 50,
+        "size.w": 150,
+        "text": "Capture image.",
+        "touch.bg.color": "cdcdcd",
+        "touch.color": "6c6c6c50"
+    }
 }
- 
  </pre>
  
 

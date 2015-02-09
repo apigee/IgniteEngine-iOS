@@ -81,45 +81,45 @@
  
  <pre class="brush: js; toolbar: false;">
 {
-  "_type": "ActionSheet",
-  "_id": "actionSheetTest",
-  "attributes": {
-    "sheet.style": "black.opaque",
-    "sheet.title": "sheetTitle",
-    "sheet.button.title.cancel": "cancelButtonTitle",
-    "sheet.button.title.destructive": "destructiveButtonTitle",
-    "sheet.button.title.others": "other,someOther2"
-  },
-  "actions": [
-    {
-      "on": "cancel_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Cancel Pressed"
-      }
-    },
-    {
-      "on": "other_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "other pressed [[app.bundle.version]]"
-      }
-    },
-    {
-      "on": "someOther2_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "someOther2 pressed"
-      }
-    },
-    {
-      "on": "destructiveButtonTitle_pressed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "destructiveButtonTitle pressed"
-      }
+    "_id": "actionSheetTest",
+    "_type": "ActionSheet",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Cancel Pressed"
+            },
+            "on": "cancel"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "other pressed [[app.bundle.version]]"
+            },
+            "on": "other"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "someOther2 pressed"
+            },
+            "on": "someOther2"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "destructiveButtonTitle pressed"
+            },
+            "on": "destructive"
+        }
+    ],
+    "attributes": {
+        "buttons.cancel": "cancelButtonTitle",
+        "buttons.destructive": "destructiveButtonTitle",
+        "buttons.others": "other,someOther2",
+        "style": "black.opaque",
+        "title": "sheetTitle"
     }
-  ]
 }
  </pre>
  */

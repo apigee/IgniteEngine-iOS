@@ -87,42 +87,42 @@
  
 <pre class="brush: js; toolbar: false;">
 {
-  "_type": "AddressBook",
-  "_id": "addressBookTest",
-  "actions": [
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "add_contact_success"
-      },
-      "on": "add_contact_success"
-    },
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "add_contact_failed"
-      },
-      "on": "add_contact_failed"
+    "_id": "addressBookTest",
+    "_type": "AddressBook",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "success"
+            },
+            "on": "success"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "error"
+            },
+            "on": "error"
+        }
+    ],
+    "attributes": {
+        "company.name": "Farmers, Inc.",
+        "company.title": "CEO",
+        "email.home": "johnnyappleseed@gmail.com",
+        "email.work": "johnny@appleseed.com",
+        "name.first": "Johnny",
+        "name.last": "Appleseed",
+        "phone.main": "+15551313",
+        "phone.mobile": "+15551212",
+        "url.facebook": "",
+        "url.home": "[http://johnnyappleseed.com](http://johnnyappleseed.com)",
+        "url.homePage": "[http://johnnyappleseed.com](http://johnnyappleseed.com)",
+        "url.linkedIn": "",
+        "url.work": "[http://farmersinc.com](http://farmersinc.com)",
+        "username.facebook": "johnnyappleseed",
+        "username.linkedIn": "johnnyappleseed",
+        "username.twitter": "johnnyappleseed"
     }
-  ],
-  "attributes": {
-    "name.first": "Johnny",
-    "name.last": "Appleseed",
-    "company.name": "Farmers, Inc.",
-    "company.title": "CEO",
-    "phone.mobile": "+15551212",
-    "phone.main": "+15551313",
-    "email.home": "johnnyappleseed@gmail.com",
-    "email.work": "johnny@appleseed.com",
-    "username.twitter": "johnnyappleseed",
-    "username.linkedIn": "johnnyappleseed",
-    "username.facebook": "johnnyappleseed",
-    "url.home": "http://johnnyappleseed.com",
-    "url.homePage": "http://johnnyappleseed.com",
-    "url.work": "http://farmersinc.com",
-    "url.linkedIn": "",
-    "url.facebook": ""
-  }
 }
 </pre>
 

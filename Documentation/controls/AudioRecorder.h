@@ -5,6 +5,9 @@
 //
 //  Created by Jeremy Anticouni on 2/6/2015.
 //  Copyright (c) 2015 Ignite. All rights reserved.
+
+#warning Incomplete
+
 //
 
 /** Record audio from the device microphone.
@@ -135,25 +138,23 @@
 
 
  <pre class="brush: js; toolbar: false;">
- 
 {
-  "_id": "AudioRecorderTest",
-  "_type": "AudioRecorder",
-  "actions": [
-    {
-      "on": "finished",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Finished",
-        "message": "Recorded sound: [[$self.record_to_location]]"
-      }
+    "_id": "soundRecorderTest",
+    "_type": "SoundRecorder",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "Recorded sound: [[$self.record_to_location]]",
+                "title": "Finished"
+            },
+            "on": "finished"
+        }
+    ],
+    "attributes": {
+        "record_to_location": "docs://recording.mp3"
     }
-  ],
-  "attributes": {
-    "record_to_location": "docs://recording.mp3"
-  }
 }
- 
  </pre>
 
 */

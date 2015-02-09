@@ -1,51 +1,51 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 70,
-      "bg.color":"#ffffff",
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "../custom/header.json",
-          "layoutType": "float",
-          "size.h": 50,
-          "size.w": "100%",
-          "margin.top": 20,
-          "title": "IXMap"
-        }
-      },
-      {
-        "_id": "mapControl",
-        "_type": "Map",
-        "actions": [
-          {
-            "on": "touchUp",
-            "_type": "Alert",
-            "attributes": {
-              "title": "You touched on [[$self.annotation.title]]."
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 70,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXMap"
+                }
+            },
+            {
+                "_id": "mapControl",
+                "_type": "Map",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "You touched on [[$self.pin.title]]."
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "animatePinDrop.enabled": true,
+                    "pin": {
+                        "lat": "37.333916",
+                        "long": "-121.894076",
+                        "subtitle": "Subtitle",
+                        "title": "Title"
+                    },
+                    "size.h": "100%",
+                    "size.w": "100%",
+                    "userLocation.enabled": true,
+                    "zoomLevel": 12
+                }
             }
-          }
         ],
-        "attributes": {
-          "size.w": "100%",
-          "size.h": "100%",
-          "zoomLevel": 12,
-          "animatePinDrop.enabled":true,
-          "userLocation.enabled": true,
-          "pin": {
-            "title": "Title",
-            "subtitle": "Subtitle",
-            "lat": "37.333916",
-            "long": "-121.894076"
-          }
-        }
-      }
-    ],
-    "datasources": []
-  }
+        "datasources": []
+    }
 }

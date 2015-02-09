@@ -115,10 +115,23 @@
 
 /** Go on, try it out!
 
- 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
+<pre class="brush: js; toolbar: false;">
+{
+    "_id": "textInput",
+    "_type": "TextInput",
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "keyboard.returnKey": "go",
+        "keyboardAdjustsScreen.enabled": true,
+        "layoutType": "absolute",
+        "placeholder.text": "Type something...",
+        "size.h": 400,
+        "size.w": 200,
+        "text.align": "left"
+    }
+}
+</pre>
 
 */
 

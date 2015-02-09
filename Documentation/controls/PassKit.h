@@ -59,31 +59,29 @@
 
 /**
 <pre class="brush: js; toolbar: false;">
- 
 {
-  "_id": "passKitTest",
-  "_type": "PassKit",
-  "actions": [
-    {
-      "on": "pass.creation.success",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Pass created."
-      }
-    },
-    {
-      "on": "pass.creation.failed",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Pass failed."
-      }
+    "_id": "passKitTest",
+    "_type": "PassKit",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Pass created."
+            },
+            "on": "success"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Pass failed."
+            },
+            "on": "error"
+        }
+    ],
+    "attributes": {
+        "pass.location": "../data/boardingpass.pkpass"
     }
-  ],
-  "attributes": {
-    "pass.location": "/data/boardingpass.pkpass"
-  }
 }
- 
 </pre>
  
 */

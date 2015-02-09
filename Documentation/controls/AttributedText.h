@@ -96,26 +96,26 @@
 
 <pre class="brush: js; toolbar: false;">
 {
-  "_type": "AttributedText",
-  "_id": "attributedText",
-  "actions": [
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "You long_press'd:",
-        "message": "[[$self.selected_mention]]"
-      },
-      "on": "touch_up"
+    "_id": "attributedText",
+    "_type": "AttributedText",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "[[$self.selectedMention]]",
+                "title": "You long_press'd:"
+            },
+            "on": "longPressMention"
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "layoutType": "absolute",
+        "size.w": "200",
+        "text": "Johnny, @paula, silly and @sally were #hoodwinked.",
+        "text.align": "center"
     }
-  ],
-  "attributes": {
-    "text": "Johnny, @paula, silly and @sally were #hoodwinked.",
-    "text.align": "center",
-    "width": "200",
-    "layout_type": "absolute",
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
 }
 </pre>
 */

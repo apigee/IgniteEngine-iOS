@@ -62,9 +62,20 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
+<pre class="brush: js; toolbar: false;">
+{
+    "_id": "textTest",
+    "_type": "Text",
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "layoutType": "absolute",
+        "size.w": "200",
+        "text": "Johnny, Paula, Silly and Sally were hoodwinked.",
+        "text.align": "center"
+    }
+}
+</pre>
 
 */
 

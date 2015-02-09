@@ -77,27 +77,25 @@
 
  
 <pre class="brush: js; toolbar: false;">
- 
 {
-  "_id": "sliderTest",
-  "_type": "Slider",
-  "actions": [
-    {
-      "on": "value_changed",
-      "_type": "Refresh",
-      "attributes": {
-        "_target": "title"
-      }
+    "_id": "sliderTest",
+    "_type": "Slider",
+    "actions": [
+        {
+            "_type": "Refresh",
+            "attributes": {
+                "_target": "title"
+            },
+            "on": "valueChanged"
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "layoutType": "absolute",
+        "size.w": 280
     }
-  ],
-  "attributes": {
-    "layout_type": "absolute",
-    "width": 280,
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
 }
- 
 </pre>
 
 */

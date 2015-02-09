@@ -79,41 +79,31 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
-
+<pre class="brush: js; toolbar: false;">
 {
-  "_id": "customDial",
-  "_type": "Dial",
-  "actions": [
-    {
-      "_type": "Refresh",
-      "attributes": {
-        "_target": "DialValue"
-      },
-      "enabled": true,
-      "on": "value_changed"
+    "_id": "imageTest",
+    "_type": "Image",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "Sized to [[$self.size.w.computed]]pt x [[$self.size.h.computed]]pt.",
+                "title": "touchUp"
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "color": "6c6c6c",
+        "image": "/images/bgs/storage_wars.jpg",
+        "image.blur.radius": 20,
+        "layoutType": "absolute",
+        "max.w": "100%"
     }
-  ],
-  "attributes": {
-    "color": {
-      "background": "#00000000"
-    },
-    "width": 250,
-    "height": 250,
-    "horizontal_alignment": "center",
-    "layout_type": "relative",
-    "initial_value": 0,
-    "minimum_value": 0,
-    "maximum_value": 100,
-    "Dial_animation_duration": 0.5,
-    "images": {
-      "pointer": "images/marker.png",
-      "background": "images/bg.png"
-    }
-  }
 }
- 
- </pre>
+</pre>
 
 */
 

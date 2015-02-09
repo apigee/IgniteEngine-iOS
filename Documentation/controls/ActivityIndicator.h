@@ -61,15 +61,15 @@
 
 <pre class="brush: js; toolbar: false;">
 {
-  "_id": "spinner",
-  "_type": "ActivityIndicator",
-  "attributes": {
-    "color": "#fa4c06",
-    "layout_type": "float",
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle",
-    "style": "gray"
-  }
+    "_id": "myActivityIndicator",
+    "_type": "ActivityIndicator",
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "color": "#fa4c06",
+        "layoutType": "float",
+        "size": "small"
+    }
 }
 </pre>
 */

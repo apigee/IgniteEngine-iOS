@@ -7,6 +7,8 @@
 //  Copyright (c) 2015 Ignite. All rights reserved.
 //
 
+#warning Missing example
+
 /** Have some data? Toss it in a Collection View!
 */
 

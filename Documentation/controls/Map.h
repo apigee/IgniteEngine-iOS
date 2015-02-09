@@ -92,7 +92,32 @@
 /** Go on, try it out!
 
 <pre class="brush: js; toolbar: false;">
-
+{
+    "_id": "mapControl",
+    "_type": "Map",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "You touched on [[$self.pin.title]]."
+            },
+            "on": "touchUp"
+        }
+    ],
+    "attributes": {
+        "animatePinDrop.enabled": true,
+        "pin": {
+            "lat": "37.333916",
+            "long": "-121.894076",
+            "subtitle": "Subtitle",
+            "title": "Title"
+        },
+        "size.h": "100%",
+        "size.w": "100%",
+        "userLocation.enabled": true,
+        "zoomLevel": 12
+    }
+}
 </pre>
 */
 

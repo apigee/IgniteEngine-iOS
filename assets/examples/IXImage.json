@@ -1,64 +1,64 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "bg.color":"#ffffff",
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "../custom/header.json",
-          "layoutType": "float",
-          "size.h": 50,
-          "size.w": "100%",
-          "margin.top": 20,
-          "title": "IXImage"
-        }
-      },
-      {
-        "_id": "imageTest",
-        "_type": "Image",
-        "actions": [
-          {
-            "_type": "Alert",
-            "on": "touchUp",
-            "attributes": {
-              "title": "touchUp",
-              "message": "Sized to [[$self.actual.size.w]]pt x [[$self.actual.size.h]]pt."
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 90,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXImage"
+                }
+            },
+            {
+                "_id": "imageTest",
+                "_type": "Image",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Sized to [[$self.size.w.computed]]pt x [[$self.size.h.computed]]pt.",
+                            "title": "touchUp"
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "middle",
+                    "color": "6c6c6c",
+                    "image": "/images/bgs/storage_wars.jpg",
+                    "image.blur.radius": 20,
+                    "layoutType": "absolute",
+                    "max.w": "100%"
+                }
+            },
+            {
+                "_id": "title",
+                "_type": "Text",
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "bottom",
+                    "color": "6c6c6c",
+                    "font": "HelveticaNeue:15",
+                    "layoutType": "float",
+                    "margin.bottom": 15,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "text": "IXImage: blurred 20pt",
+                    "text.align": "center"
+                }
             }
-          }
         ],
-        "attributes": {
-          "max.w": "100%",
-          "image": "/images/bgs/storage_wars.jpg",
-          "color": "6c6c6c",
-          "image.blur.radius": 20,
-          "layoutType": "absolute",
-          "align.v": "middle",
-          "align.h": "center"
-        }
-      },
-      {
-        "_id": "title",
-        "_type": "Text",
-        "attributes": {
-          "size.w": "100%",
-          "text.align": "center",
-          "size.h": 50,
-          "margin.bottom": 15,
-          "color": "6c6c6c",
-          "layoutType": "float",
-          "align.h": "center",
-          "align.v": "bottom",
-          "font": "HelveticaNeue:15",
-          "text": "IXImage: blurred 20pt"
-        }
-      }
-    ],
-    "datasources": []
-  }
+        "datasources": []
+    }
 }

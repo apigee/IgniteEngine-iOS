@@ -75,9 +75,25 @@
 
 /** Go on, try it out!
 
-  <pre class="brush: js; toolbar: false;">
- 
- </pre>
+<pre class="brush: js; toolbar: false;">
+{
+    "_id": "scannerTest",
+    "_type": "Scanner",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "[[$self.data]]",
+                "title": "Scanned."
+            },
+            "on": "scanned"
+        }
+    ],
+    "attributes": {
+        "autoClose.enabled": true
+    }
+} 
+</pre>
 
 */
 

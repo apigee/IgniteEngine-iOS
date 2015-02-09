@@ -87,7 +87,38 @@
 /** Go on, try it out!
 
 <pre class="brush: js; toolbar: false;">
-
+{
+    "_id": "speechTest",
+    "_type": "Speech",
+    "attributes": {}
+},
+{
+    "_id": "TextInput",
+    "_type": "TextInput",
+    "actions": [
+        {
+            "_type": "Modify",
+            "attributes": {
+                "_target": "session"
+            },
+            "on": "textChanged,focus",
+            "set": {
+                "text_to_speak": "[[$self.text]]"
+            }
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "color": "#6c6c6c",
+        "font": "HelveticaNeue-Light:22",
+        "initial_text": "How much wood could a woodchuck chuck if a woodchuck could chuck wood ?",
+        "multiline.enabled": true,
+        "placeholder": "Type something...",
+        "size.h": 120,
+        "size.w": 280,
+        "text.align": "left"
+    }
+}
 </pre>
 */
 

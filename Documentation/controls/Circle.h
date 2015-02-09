@@ -61,15 +61,15 @@
  
  <pre class="brush: js; toolbar: false;">
 {
-  "_id": "circleTest",
-  "_type": "Circle",
-  "attributes": {
-    "size": 50,
-    "color": "#fa4c06",
-    "layout_type": "absolute",
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
+    "_id": "circleTest",
+    "_type": "Circle",
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "color": "#fa4c06",
+        "layoutType": "absolute",
+        "size": 50
+    }
 }
  </pre>
  

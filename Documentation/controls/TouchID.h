@@ -72,14 +72,24 @@
 
 /** Go on, try it out!
  
- <pre class="brush: js; toolbar: false;">
- 
+<pre class="brush: js; toolbar: false;">
 {
-  "_type": "Speech",
-  "_id": "speechTest"
+    "_id": "touchIDTest",
+    "_type": "TouchID",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Authenticated Successfully!"
+            },
+            "on": "success"
+        }
+    ],
+    "attributes": {
+        "title": "Please Authenticate"
+    }
 }
- 
- </pre>
+</pre>
 
 */
 

@@ -68,15 +68,24 @@
 /** Go on, try it out!
 
  <pre class="brush: js; toolbar: false;">
-
 {
-  "_id": "browserTest",
-  "_type": "Browser",
-  "attributes": {
-    "height": "100%",
-    "width": "100%",
-    "url": "http://apigee.com"
-  }
+    "_id": "browserTest",
+    "_type": "Browser",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "finished."
+            },
+            "on": "finished"
+        }
+    ],
+    "attributes": {
+        "bg.color": "#cdcdcd",
+        "size.h": "100%",
+        "size.w": "100%",
+        "url": "http://apigee.com"
+    }
 }
  </pre>
 

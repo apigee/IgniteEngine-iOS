@@ -81,36 +81,36 @@
 
  <pre class="brush: js; toolbar: false;">
 {
-  "_type": "Calendar",
-  "_id": "calendarTest",
-  "actions": [
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "add_event_success"
-      },
-      "on": "add_event_success"
-    },
-    {
-      "_type": "Alert",
-      "attributes": {
-        "title": "add_event_failed"
-      },
-      "on": "add_event_failed"
+    "_id": "calendarTest",
+    "_type": "Calendar",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "success"
+            },
+            "on": "success"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "error"
+            },
+            "on": "error"
+        }
+    ],
+    "attributes": {
+        "alarm.offset": -1800,
+        "allDay.enabled": false,
+        "date.end": "2016-01-01 00:00:00",
+        "date.format": "yyyy-MM-dd HH:mm:ss",
+        "date.start": "2015-12-31 23:00:00",
+        "location": "1234 Some Street, City, State Zip",
+        "notes": "Event Notes",
+        "repeatFrequency": "none",
+        "title": "Event Title",
+        "url": "http://meetings-are-fun.com"
     }
-  ],
-  "attributes": {
-    "event.title": "Event Title",
-    "event.allDay": false,
-    "event.location": "1234 Some Street, City, State Zip",
-    "event.notes": "Event Notes",
-    "event.url": "http://meetings-are-fun.com",
-    "event.date.format": "yyyy-MM-dd HH:mm:ss",
-    "event.date.start": "2015-12-31 23:00:00",
-    "event.date.end": "2016-01-01 00:00:00",
-    "event.alarm.offset": -1800,
-    "event.recurrence.frequency": "none"
-  }
 }
  </pre>
 

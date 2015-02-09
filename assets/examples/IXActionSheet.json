@@ -1,102 +1,102 @@
 {
-  "view": {
-    "attributes": {
-      "_id": "test",
-      "padding.top": 90,
-      "bg.color":"#f8f8f8",
-      "status_bar_style": "dark"
-    },
-    "controls": [
-      {
-        "_id": "customHeader",
-        "_type": "Custom",
+    "view": {
         "attributes": {
-          "control_location": "../custom/header.json",
-          "layoutType": "float",
-          "size.h": 50,
-          "size.w": "100%",
-          "margin.top": 20,
-          "title": "IXActionSheet"
-        }
-      },
-      {
-        "_type": "ActionSheet",
-        "_id": "actionSheetTest",
-        "attributes": {
-          "style": "black.opaque",
-          "title": "sheetTitle",
-          "buttons.cancel": "cancelButtonTitle",
-          "buttons.destructive": "destructiveButtonTitle",
-          "buttons.others": "other,someOther2"
+            "_id": "test",
+            "bg.color": "#f8f8f8",
+            "padding.top": 90,
+            "status_bar_style": "dark"
         },
-        "actions": [
-          {
-            "on": "cancel",
-            "_type": "Alert",
-            "attributes": {
-              "title": "Cancel Pressed"
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXActionSheet"
+                }
+            },
+            {
+                "_id": "actionSheetTest",
+                "_type": "ActionSheet",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "Cancel Pressed"
+                        },
+                        "on": "cancel"
+                    },
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "other pressed [[app.bundle.version]]"
+                        },
+                        "on": "other"
+                    },
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "someOther2 pressed"
+                        },
+                        "on": "someOther2"
+                    },
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "destructiveButtonTitle pressed"
+                        },
+                        "on": "destructive"
+                    }
+                ],
+                "attributes": {
+                    "buttons.cancel": "cancelButtonTitle",
+                    "buttons.destructive": "destructiveButtonTitle",
+                    "buttons.others": "other,someOther2",
+                    "style": "black.opaque",
+                    "title": "sheetTitle"
+                }
+            },
+            {
+                "_id": "button",
+                "_type": "Button",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "You touched the button!",
+                            "title": "touchUp"
+                        },
+                        "enabled": false,
+                        "on": "touchUp"
+                    },
+                    {
+                        "_type": "Function",
+                        "attributes": {
+                            "_target": "actionSheetTest",
+                            "functionName": "present"
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "middle",
+                    "bg.color": "cdcdcd",
+                    "border.radius": 0,
+                    "color": "6c6c6c",
+                    "layoutType": "absolute",
+                    "size.h": 50,
+                    "size.w": 150,
+                    "text": "sheet.",
+                    "touch.bg.color": "cdcdcd",
+                    "touch.color": "6c6c6c50"
+                }
             }
-          },
-          {
-            "on": "other",
-            "_type": "Alert",
-            "attributes": {
-              "title": "other pressed [[app.bundle.version]]"
-            }
-          },
-          {
-            "on": "someOther2",
-            "_type": "Alert",
-            "attributes": {
-              "title": "someOther2 pressed"
-            }
-          },
-          {
-            "on": "destructive",
-            "_type": "Alert",
-            "attributes": {
-              "title": "destructiveButtonTitle pressed"
-            }
-          }
-        ]
-      },
-      {
-        "_id": "button",
-        "_type": "Button",
-        "actions": [
-          {
-            "_type": "Alert",
-            "on": "touchUp",
-            "enabled": false,
-            "attributes": {
-              "title": "touchUp",
-              "message": "You touched the button!"
-            }
-          },
-          {
-            "_type": "Function",
-            "on": "touchUp",
-            "attributes": {
-              "_target": "actionSheetTest",
-              "functionName": "present"
-            }
-          }
         ],
-        "attributes": {
-          "size.w": 150,
-          "size.h": 50,
-          "color": "6c6c6c",
-          "layoutType": "absolute",
-          "bg.color": "cdcdcd",
-          "touch.color": "6c6c6c50",
-          "align.h": "center",
-          "align.v": "middle",
-          "touch.bg.color": "cdcdcd",
-          "border.radius": 0,
-          "text": "sheet."
-        }
-      }
-    ],
-    "datasources": []
-  }
+        "datasources": []
+    }
 }

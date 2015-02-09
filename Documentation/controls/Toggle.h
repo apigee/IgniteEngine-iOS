@@ -82,19 +82,33 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
- 
+<pre class="brush: js; toolbar: false;">
 {
-  "_id": "toggleTest",
-  "_type": "Toggle",
-  "attributes": {
-    "layout_type": "absolute",
-    "horizontal_alignment": "center",
-    "vertical_alignment": "middle"
-  }
+    "_id": "toggleTest",
+    "_type": "Toggle",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "toggleOn"
+            },
+            "on": "toggleOn"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "toggleOff"
+            },
+            "on": "toggleOff"
+        }
+    ],
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "layoutType": "absolute"
+    }
 }
- 
- </pre>
+</pre>
  
 */
 

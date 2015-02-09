@@ -122,23 +122,23 @@
 <pre class="brush: js; toolbar: false;">
 
 {
-  "_id": "soundTest",
-  "_type": "Audio",
-  "actions": [
-    {
-      "on": "finished",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Finished",
-        "message": "Played sound: /resources/sounds/powerup.caf"
-      }
+    "_id": "soundTest",
+    "_type": "AudioPlayer",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "Played sound: resources/sounds/powerup.caf",
+                "title": "Finished"
+            },
+            "on": "finished"
+        }
+    ],
+    "attributes": {
+        "audioUrl": "resources/sounds/powerup.caf",
+        "autoPlay.enabled": false,
+        "repeatCount": 0
     }
-  ],
-  "attributes": {
-    "sound_location": "/resources/sounds/powerup.caf",
-    "number_of_loops": 0,
-    "auto_play": false
-  }
 }
  
 </pre>

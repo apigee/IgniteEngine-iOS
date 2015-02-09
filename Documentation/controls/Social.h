@@ -85,29 +85,26 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
- 
+<pre class="brush: js; toolbar: false;">
 {
-  "_id": "socialTest",
-  "_type": "Social",
-  "actions": [
-    {
-      "on": "share_done",
-      "_type": "Alert",
-      "attributes": {
-        "title": "share_done"
-      }
+    "_id": "socialTest",
+    "_type": "Social",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "success"
+            },
+            "on": "success"
+        }
+    ],
+    "attributes": {
+        "image": "http://images.sodahead.com/slideshows/000020095/1537637670_ducklips87y6-103619834647_xlarge.png",
+        "platform": "twitter",
+        "text": "I can't wait for you all to see this pic!",
+        "url": "http://duck.lips"
     }
-  ],
-  "attributes": {
-    "share.platform": "twitter",
-    "share.text": "I can't wait for you all to see this pic!",
-    "share.url": "http://duck.lips",
-    "share.image": "http://images.sodahead.com/slideshows/000020095/1537637670_ducklips87y6-103619834647_xlarge.png"
-  }
-}
- 
- </pre>
+}</pre>
 
 */
 

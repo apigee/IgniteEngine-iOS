@@ -7,6 +7,8 @@
 //  Copyright (c) 2015 Ignite. All rights reserved.
 //
 
+#warning We should drop View from this control's name
+
 /** Old-school UITableView.
 */
 
@@ -86,9 +88,94 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
+<pre class="brush: js; toolbar: false;">
+{
+    "_id": "tableSettings",
+    "_type": "TableView",
+    "attributes": {
+        "autofill.w": true,
+        "bg.color": "[[app.color]]",
+        "cell.size.h": 50,
+        "cell.size.w": "100%",
+        "datasourceid": "test_data",
+        "enabled": true,
+        "fill_remaining_size.h": true,
+        "margin.top": 70,
+        "separator.style": "none"
+    },
+    "controls": [
+        {
+            "_type": "Layout",
+            "actions": [
+                {
+                    "_type": "Alert",
+                    "attributes": {
+                        "title": "You touched: [[dataRow.name]] ([[dataRow.abbreviation]])"
+                    },
+                    "enabled": false,
+                    "on": "touchUp"
+                },
+                {
+                    "_type": "Navigate",
+                    "attributes": {
+                        "nav_animation_duration": 0,
+                        "nav_animation_type": "cross_dissolve",
+                        "nav_stack_type": "push",
+                        "to": "Social.json"
+                    },
+                    "enabled": true,
+                    "on": "touchUp"
+                }
+            ],
+            "attributes": {
+                "align.v": "middle",
+                "layoutFlow": "horizontal",
+                "layoutType": "absolute"
+            },
+            "controls": [
+                {
+                    "_type": "Text",
+                    "attributes": {
+                        "color": "#6c6c6c",
+                        "font": "HelveticaNeue-Light:22",
+                        "margin.left": 20,
+                        "text": "[[dataRow.name]]"
+                    }
+                },
+                {
+                    "_type": "Text",
+                    "attributes": {
+                        "color": "#6c6c6c",
+                        "font": "HelveticaNeue-Light:22",
+                        "margin.left": 5,
+                        "text": "([[dataRow.abbreviation]])"
+                    }
+                }
+            ]
+        },
+        {
+            "_type": "Image",
+            "attributes": {
+                "align.h": "right",
+                "image": "../images/btn_chevron_50x50.png",
+                "layoutType": "absolute",
+                "size.h": 50,
+                "size.w": 50
+            }
+        },
+        {
+            "_type": "Layout",
+            "attributes": {
+                "align.v": "bottom",
+                "bg.color": "#cdcdcd",
+                "layoutType": "float",
+                "size.h": 1,
+                "size.w": "100%"
+            }
+        }
+    ]
+}
+</pre>
 
 */
 

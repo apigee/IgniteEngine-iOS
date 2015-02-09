@@ -75,20 +75,73 @@
 /** Go on, try it out!
 
 
- <pre class="brush: js; toolbar: false;">
-
+<pre class="brush: js; toolbar: false;">
 {
-  "_id": "layoutTest",
-  "_type": "Layout",
-  "attributes": {
-    "width": "100%",
-    "height": "100%",
-    "background.color": "#cdcdcd"
-  },
-  "controls": []
+    "_id": "layoutTest",
+    "_type": "Layout",
+    "attributes": {
+        "align.h": "center",
+        "align.v": "middle",
+        "layoutType": "absolute",
+        "padding": 75,
+        "padding.left": 60,
+        "padding.right": 60,
+        "padding.top": 145,
+        "size.h": "100%",
+        "size.w": "100%"
+    },
+    "controls": [
+        {
+            "_id": "layoutTest",
+            "_type": "Layout",
+            "attributes": {
+                "bg.color": "#cdcdcd",
+                "layoutFlow": "horizontal",
+                "size.h": "100%",
+                "size.w": "100%"
+            },
+            "controls": [
+                {
+                    "_id": "layoutTest",
+                    "_type": "Layout",
+                    "attributes": {
+                        "bg.color": "#696969",
+                        "size.h": "100%",
+                        "size.w": 50
+                    }
+                },
+                {
+                    "_id": "layoutTest",
+                    "_type": "Layout",
+                    "attributes": {
+                        "bg.color": "#69696950",
+                        "size.h": "100%",
+                        "size.w": 50
+                    }
+                },
+                {
+                    "_id": "layoutTest",
+                    "_type": "Layout",
+                    "attributes": {
+                        "bg.color": "#69696925",
+                        "size.h": "100%",
+                        "size.w": 50
+                    }
+                },
+                {
+                    "_id": "layoutTest",
+                    "_type": "Layout",
+                    "attributes": {
+                        "bg.color": "#69696900",
+                        "size.h": "100%",
+                        "size.w": 50
+                    }
+                }
+            ]
+        }
+    ]
 }
- 
- </pre>
+</pre>
 
 */
 

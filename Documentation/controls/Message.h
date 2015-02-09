@@ -77,35 +77,32 @@
 
 /** Go on, try it out!
 
-
- <pre class="brush: js; toolbar: false;">
- 
+<pre class="brush: js; toolbar: false;">
 {
-  "_id": "messageTest",
-  "_type": "Message",
-  "actions": [
-    {
-      "on": "message_sent",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Message sent!"
-      }
-    },
-    {
-      "on": "message_cancelled",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Message cancelled!"
-      }
+    "_id": "messageTest",
+    "_type": "Message",
+    "actions": [
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Message sent!"
+            },
+            "on": "success"
+        },
+        {
+            "_type": "Alert",
+            "attributes": {
+                "title": "Message cancelled!"
+            },
+            "on": "cancelled"
+        }
+    ],
+    "attributes": {
+        "to": "info@apigee.com",
+        "type": "text"
     }
-  ],
-  "attributes": {
-    "message.type": "text",
-    "message.to": "555-867-5309"
-  }
 }
- 
- </pre>
+</pre>
 
 */
 

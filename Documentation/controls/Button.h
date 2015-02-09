@@ -89,33 +89,33 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
 
 
 <pre class="brush: js; toolbar: false;">
- {
+{
     "_id": "button",
     "_type": "Button",
     "actions": [
-      {
-        "_type": "Alert",
-        "on": "touch_up",
-        "attributes": {
-          "title": "touch_up",
-          "message": "You touched the button!"
+        {
+            "_type": "Alert",
+            "attributes": {
+                "message": "You touched the button!",
+                "title": "touchUp"
+            },
+            "on": "touchUp"
         }
-      }
     ],
     "attributes": {
-      "width": 100,
-      "height": 50,
-      "text.color": "6c6c6c",
-      "layout_type": "absolute",
-      "background.color": "cdcdcd",
-      "touch.text.color": "6c6c6c50",
-      "horizontal_alignment": "center",
-      "vertical_alignment": "middle",
-      "touch.background.color": "cdcdcd",
-      "border.radius": 0,
-      "text": "Hi."
+        "align.h": "center",
+        "align.v": "middle",
+        "bg.color": "cdcdcd",
+        "border.radius": 0,
+        "color": "6c6c6c",
+        "layoutType": "absolute",
+        "size.h": 50,
+        "size.w": 100,
+        "text": "Hi.",
+        "touch.bg.color": "cdcdcd",
+        "touch.color": "6c6c6c50"
     }
-  }
+}
 </pre>
 
 */

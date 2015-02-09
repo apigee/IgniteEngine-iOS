@@ -7,6 +7,8 @@
 //  Copyright (c) 2015 Ignite. All rights reserved.
 //
 
+#warning No example
+
 /** Native iOS NSTimer implementation
 */
 
@@ -77,9 +79,8 @@
 /** Go on, try it out!
 
  
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
+<pre class="brush: js; toolbar: false;">
+</pre>
 
 */
 
