@@ -17,6 +17,7 @@
 // NSCoding Key Constants
 static NSString* const kIXRawValueNSCodingKey = @"rawValue";
 static NSString* const kIXObjectIDNSCodingKey = @"objectID";
+#warning Suggest "method" and "function"
 static NSString* const kIXMethodNameNSCodingKey = @"methodName";
 static NSString* const kIXFunctionNameNSCodingKey = @"functionName";
 static NSString* const kIXParametersNSCodingKey = @"parameters";

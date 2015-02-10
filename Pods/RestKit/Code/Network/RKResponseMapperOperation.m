@@ -250,6 +250,7 @@ static NSMutableDictionary *RKRegisteredResponseMapperOperationDataSourceClasses
 
 - (void)setMappingMetadata:(NSDictionary *)mappingMetadata
 {
+#warning Rename to "http.method" and "http.headers"
     NSDictionary *HTTPMetadata = @{ @"HTTP": @{ @"request":  @{ @"URL": self.request.URL, @"method": self.request.HTTPMethod, @"headers": [self.request allHTTPHeaderFields] ?: @{} },
                                                 @"response": @{ @"URL": self.response.URL, @"headers": [self.response allHeaderFields] ?: @{} } } };
     _mappingMetadata = RKDictionaryByMergingDictionaryWithDictionary(HTTPMetadata, mappingMetadata);

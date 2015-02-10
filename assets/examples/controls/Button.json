@@ -29,7 +29,7 @@
                             "message": "You touched the button!",
                             "title": "touchUp"
                         },
-                        "on": "touchUp"
+                        "zon": "touchUp"
                     }
                 ],
                 "attributes": {
@@ -37,13 +37,15 @@
                     "align.v": "middle",
                     "bg.color": "cdcdcd",
                     "border.radius": 0,
-                    "color": "6c6c6c",
+                    "zzcolor": "6c6c6c,red,blue",
+                    "zzzcolor": "eee,666",
+                    "alpha": "1,0.7",
                     "layoutType": "absolute",
                     "size.h": 50,
                     "size.w": 100,
                     "text": "Hi.",
-                    "touch.bg.color": "cdcdcd",
-                    "touch.color": "6c6c6c50"
+                    "icon.tint": "#444,#aaa",
+                    "icon": "http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_itunes.png"
                 }
             }
         ],

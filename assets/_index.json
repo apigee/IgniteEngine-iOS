@@ -11,7 +11,7 @@
       "apigee.AppId": "***APIGEE_APP_ID***",
       "apigee.OrgId": "***APIGEE_ORG_ID***",
       "apigee.NotifierId": "***APIGEE_PUSH_NOTIFIER***",
-      "view.index": "examples/Button.json",
+      "view.index": "examples/controls/Button.json",
       "drawerController.l.url": "menu.json",
       "drawerController.l.max.w": 275,      
       "debug.layout.enabled": false,

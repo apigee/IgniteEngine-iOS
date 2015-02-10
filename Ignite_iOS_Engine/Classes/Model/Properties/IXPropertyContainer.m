@@ -18,6 +18,7 @@
 #import "ColorUtils.h"
 #import "SDWebImageManager.h"
 #import "UIImage+IXAdditions.h"
+#import "UIFont+IXAdditions.h"
 #import "IXLogger.h"
 
 // NSCoding Key Constants
@@ -403,6 +404,17 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnArray;
 }
 
+-(NSArray*)getPipeCommaPipeSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue
+{
+    NSArray* returnArray = defaultValue;
+    NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
+    if( stringValue != nil )
+    {
+        returnArray = [stringValue componentsSeparatedByString:kIX_PIPECOMMAPIPE_SEPERATOR];
+    }
+    return returnArray;
+}
+
 -(NSArray*)getPipeSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue
 {
     NSArray* returnArray = defaultValue;
@@ -581,18 +593,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     NSString* stringValue = [self getStringPropertyValue:propertyName defaultValue:nil];
     if( stringValue )
     {
-        NSArray* fontComponents = [stringValue componentsSeparatedByString:kIX_COLON_SEPERATOR];
-        
-        NSString* fontName = [fontComponents firstObject];
-        CGFloat fontSize = [[fontComponents lastObject] floatValue];
-        
-        if( fontName )
+        returnFont = [UIFont ix_fontFromString:stringValue];
+        if( returnFont == nil )
         {
-            returnFont = [UIFont fontWithName:fontName size:fontSize];
-            if( returnFont == nil )
-            {
-                returnFont = defaultValue;
-            }
+            returnFont = defaultValue;
         }
     }
     return returnFont;

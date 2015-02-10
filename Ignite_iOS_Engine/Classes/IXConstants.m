@@ -37,6 +37,7 @@ NSString* const kIX_APP = @"app";
 NSString* const kIX_TYPE = @"_type";
 NSString* const kIX_STYLE = @"_style";
 NSString* const kIX_SESSION = @"session";
+#warning Should we change this to "target.id" ? or "control.id"
 NSString* const kIX_TARGET = @"_target";
 NSString* const kIX_VIEW = @"view";
 NSString* const kIX_CONTROLS = @"controls";
@@ -58,6 +59,7 @@ NSString* const kIX_FALSE = @"false";
 NSString* const kIX_ZERO = @"0";
 NSString* const kIX_EMPTY_STRING = @"";
 NSString* const kIX_COMMA_SEPERATOR = @",";
+NSString* const kIX_PIPECOMMAPIPE_SEPERATOR = @"|,|";
 NSString* const kIX_PIPE_SEPERATOR = @"|";
 NSString* const kIX_PERIOD_SEPERATOR = @".";
 NSString* const kIX_COLON_SEPERATOR = @":";
@@ -65,6 +67,7 @@ NSString* const kIX_EVAL_BRACKETS = @"{{";
 
 // DATA PROVIDER SPECIFIC NODES
 NSString* const kIX_DP_PARAMETERS = @"parameters";
+#warning rename to http.headers
 NSString* const kIX_DP_HEADERS = @"headers";
 NSString* const kIX_DP_ATTACHMENTS = @"attachments";
 NSString* const kIX_DP_ENTITY = @"entity";
@@ -73,6 +76,7 @@ NSString* const kIX_DP_ENTITY = @"entity";
 NSString* const kIX_ERROR = @"error";
 NSString* const kIX_FAILED = @"failed";
 NSString* const kIX_FINISHED = @"finished";
+NSString* const kIX_DONE = @"done";
 NSString* const kIX_SUCCESS = @"success";
 
 // ACTION TYPES

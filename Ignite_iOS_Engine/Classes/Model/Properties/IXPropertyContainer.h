@@ -47,6 +47,7 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(UIColor*)getColorPropertyValue:(NSString*)propertyName defaultValue:(UIColor*)defaultValue;
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
 -(NSArray*)getPipeSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
+-(NSArray*)getPipeCommaPipeSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue;
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock;
 -(void)getImageProperty:(NSString*)propertyName successBlock:(IXPropertyContainerImageSuccessCompletedBlock)successBlock failBlock:(IXPropertyContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage;
 -(UIFont*)getFontPropertyValue:(NSString*)propertyName defaultValue:(UIFont*)defaultValue;

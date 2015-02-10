@@ -23,6 +23,8 @@
 
 #import "UIImage+IXAdditions.h"
 #import "UIButton+IXAdditions.h"
+#import "UIFont+IXAdditions.h"
+#import "ColorUtils.h"
 
 // Attributes
 IX_STATIC_CONST_STRING kIXTextDefault = @"text";
@@ -65,133 +67,11 @@ IX_STATIC_CONST_STRING kIXDisabled = @"disabled";
 
 @end
 
+NSArray* backgroundColors;
+NSArray* alphas;
 
 
 @implementation IXButton
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param text The text displayed<br>*(string)*
-    @param text.color The text color *(default: #ffffff)*<br>*(color)*
-"    @param font The text font name and size (font:size) 
-See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*(string)*"
-    @param background.color The background color<br>*(color)*
-    @param icon The icon image path<br>*(string)*
-    @param icon.tintColor The icon tint color<br>*(color)*
-    @param touch.text The text displayed on touch events<br>*(string)*
-    @param touch.font The text font displayed on touch events<br>*(string)*
-    @param touch.text.color The text color on touch events<br>*(color)*
-    @param touch.background.color The background color on touch events<br>*(color)*
-    @param touch.icon The icon image path on touch events<br>*(string)*
-    @param touch.icon.tintColor The icon tint color on touch events<br>*(color)*
-    @param touch.alpha The button alpha on touch events<br>*(float)*
-    @param disabled.text The text displayed when button is disabled<br>*(string)*
-    @param disabled.font The font when button is disabled<br>*(string)*
-    @param disabled.text.color The text color when button is disabled<br>*(color)*
-    @param disabled.background.color The background color when button is disabled<br>*(color)*
-    @param disabled.icon The icon displayed when button is disabled<br>*(string)*
-    @param disabled.icon.tintColor The icon tint color when button is disabled<br>*(color)*
-    @param disabled.alpha The button alpha when button is disabled<br>*(float)*
-    @param darkens_image_on_touch Darkens image on touch events *(default: FALSE)*<br>*(bool)*
-    @param touch.duration The touch duration to trigger a touch event *(default: 0.4)*<br>*(float)*
-    @param touch_up.duration The touch duration to trigger a touch_up event *(default: 0.4)*<br>*(float)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param touch Fires when the control is touched
-    @param touch_up Fires when the control touch is released
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
-<pre class="brush: js; toolbar: false;">
- {
-    "_id": "button",
-    "_type": "Button",
-    "actions": [
-      {
-        "_type": "Alert",
-        "on": "touch_up",
-        "attributes": {
-          "title": "touch_up",
-          "message": "You touched the button!"
-        }
-      }
-    ],
-    "attributes": {
-      "width": 100,
-      "height": 50,
-      "text.color": "6c6c6c",
-      "layout_type": "absolute",
-      "background.color": "cdcdcd",
-      "touch.text.color": "6c6c6c50",
-      "horizontal_alignment": "center",
-      "vertical_alignment": "middle",
-      "touch.background.color": "cdcdcd",
-      "border.radius": 0,
-      "text": "Hi."
-    }
-  }
-</pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
@@ -210,6 +90,7 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
     
     [_button addTarget:self action:@selector(buttonTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [_button addTarget:self action:@selector(buttonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [_button addTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
     [_button addTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchUpOutside];
     [[self contentView] addSubview:_button];
 }
@@ -237,77 +118,61 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
     [[self button] setAttributedTitle:nil forState:UIControlStateHighlighted];
     [[self button] setAttributedTitle:nil forState:UIControlStateDisabled];
 
-    NSString* defaultTextForTitles = nil;
-    UIColor* defaultColorForTitles = [UIColor lightGrayColor];
-    UIFont* defaultFontForTitles = [UIFont fontWithName:@"HelveticaNeue" size:20.0f];
+    __block NSString* defaultColorForTitles = @"#606060";
+    __block NSString* defaultFontForTitles = @"HelveticaNeue:20.0f";
 
-    UIColor* defaultTintColorForImages = nil;
+    // Grab the title states - comma separated
+    __block NSArray* titleTexts = [self getButtonStatesForArray:[[self propertyContainer] getPipeCommaPipeSeperatedArrayListValue:kIXTextDefault defaultValue:nil]];
+    __block NSArray* titleColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultColor defaultValue:@[defaultColorForTitles]]];
+    __block NSArray* titleFonts = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultFont defaultValue:@[defaultFontForTitles]]];
+    __block NSArray* iconTintColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXIconDefaultTintColor defaultValue:nil]];
+    alphas = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]];
+    backgroundColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]];
+
+
+    NSLog(@"%@", titleColors);
     
-    NSArray* differentTitleStates = @[kIXNormal,kIXTouch,kIXDisabled];
-    for( NSString* titleState in differentTitleStates )
-    {
+    [@[kIXNormal, kIXTouch, kIXDisabled] enumerateObjectsUsingBlock:^(NSString* titleState, NSUInteger idx, BOOL *stop) {
+        
         UIControlState controlState = UIControlStateNormal;
-        NSString* titleTextPropertyName = kIXTextDefault;
-        NSString* titleColorPropertyName = kIXTextDefaultColor;
-        NSString* titleFontPropertyName = kIXTextDefaultFont;
-        NSString* imagePropertyName = kIXIconDefault;
-        NSString* imageTintColorPropertyName = kIXIconDefaultTintColor;
-        
-        if( [titleState isEqualToString:kIXTouch])
-        {
+        if ([titleState isEqualToString:kIXNormal])
+            controlState = UIControlStateNormal;
+        else if ([titleState isEqualToString:kIXTouch])
             controlState = UIControlStateHighlighted;
-            titleTextPropertyName = kIXTouchText;
-            titleColorPropertyName = kIXTouchTextColor;
-            titleFontPropertyName = kIXTouchFont;
-            imagePropertyName = kIXTouchIcon;
-            imageTintColorPropertyName = kIXTouchIconTintColor;
-        }
-        else if( [titleState isEqualToString:kIXDisabled])
-        {
+        else if ([titleState isEqualToString:kIXDisabled]) {
             controlState = UIControlStateDisabled;
-            titleTextPropertyName = kIXDisabledText;
-            titleColorPropertyName = kIXDisabledTextColor;
-            titleFontPropertyName = kIXDisabledFont;
-            imagePropertyName = kIXDisabledIcon;
-            imageTintColorPropertyName = kIXDisabledIconTintColor;
+            [[self button] setBackgroundColor:[UIColor colorWithString:backgroundColors[idx]]];
+            [[self button] setAlpha:[alphas[idx] floatValue]];
         }
         
-        NSString* titleText = [[self propertyContainer] getStringPropertyValue:titleTextPropertyName defaultValue:defaultTextForTitles];
+        NSString* titleText = titleTexts[idx];
+        
         if( [titleText length] )
         {
-            UIColor* titleTextColor = [[self propertyContainer] getColorPropertyValue:titleColorPropertyName defaultValue:defaultColorForTitles];
-            UIFont* titleTextFont = [[self propertyContainer] getFontPropertyValue:titleFontPropertyName defaultValue:defaultFontForTitles];
-            
-            NSAttributedString* attributedTitle = [[NSAttributedString alloc] initWithString:titleText
-                                                                                  attributes:@{NSForegroundColorAttributeName: titleTextColor,
-                                                                                               NSFontAttributeName:titleTextFont}];
-            if( controlState == UIControlStateNormal )
-            {
-                defaultTextForTitles = titleText;
-                defaultColorForTitles = titleTextColor;
-                defaultFontForTitles = titleTextFont;
+            UIColor* titleTextColor = [UIColor colorWithString:titleColors[idx]];
+            UIFont* titleTextFont = [UIFont ix_fontFromString:titleFonts[idx]];
+            NSAttributedString* attributedTitle;
+            if (titleTextColor && titleTextFont) {
+                attributedTitle = [[NSAttributedString alloc] initWithString:titleText
+                                                                  attributes:@{NSForegroundColorAttributeName: titleTextColor,
+                                                                               NSFontAttributeName:titleTextFont}];
             }
             
             [[self button] setAttributedTitle:attributedTitle forState:controlState];
         }
         
-        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:imageTintColorPropertyName defaultValue:defaultTintColorForImages];
+        __block UIColor* imageTintColorForState = [UIColor colorWithString:iconTintColors[idx]];
         
-        if( controlState == UIControlStateNormal )
-        {
-            defaultTintColorForImages = imageTintColor;
-        }
-                
         __weak typeof(self) weakSelf = self;
-        [[self propertyContainer] getImageProperty:imagePropertyName
+        [[self propertyContainer] getImageProperty:kIXIconDefault
                                       successBlock:^(UIImage *image) {
-                                          if( imageTintColor )
+                                          if( imageTintColorForState )
                                           {
-                                              image = [image tintedImageUsingColor:imageTintColor];
+                                              image = [image tintedImageUsingColor:imageTintColorForState];
                                           }
                                           [[weakSelf button] setImage:image forState:controlState];
                                       } failBlock:nil];
-    }
+    }];
 }
 
 -(void)buttonTouchedDown:(id)sender
@@ -315,24 +180,20 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
     if (self.button.shouldHighlightImageOnTouch)
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.04];
-        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXTouchIconTintColor defaultValue:nil];
-        UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXTouchBackgroundColor defaultValue:nil];
-        CGFloat buttonAlpha = [self.propertyContainer getFloatPropertyValue:kIXTouchAlpha defaultValue:1.0f];
+        CGFloat alpha = [alphas[1] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][1] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[1] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][1])];
+        
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                          animations:^{
-                             if (buttonAlpha < 1)
+                             if (alpha < 1)
                              {
-                                 self.button.alpha = buttonAlpha;
+                                 self.button.alpha = alpha;
                              }
-                             if (imageTintColor)
+                             if (backgroundColor)
                              {
-                                 [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateHighlighted];
-                             }
-                             if (buttonBackgroundColor)
-                             {
-                                 self.contentView.backgroundColor = buttonBackgroundColor;
+                                 self.contentView.backgroundColor = backgroundColor;
                              }
                          }
                          completion:^(BOOL finished){
@@ -348,21 +209,17 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
     if (self.button.shouldHighlightImageOnTouch)
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
-        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
-        UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:nil];
-        CGFloat buttonAlpha = [self.propertyContainer getFloatPropertyValue:kIXAlpha defaultValue:1.0f];
+        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][0] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][0])];
+        
         [UIView transitionWithView:self.button
                           duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
-                            self.button.alpha = buttonAlpha;
-                            if (imageTintColor)
+                            self.button.alpha = alpha;
+                            if (backgroundColor)
                             {
-                                [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
-                            }
-                            if (buttonBackgroundColor)
-                            {
-                                self.contentView.backgroundColor = buttonBackgroundColor;
+                                self.contentView.backgroundColor = backgroundColor;
                             }
                         }
                         completion:^(BOOL finished){
@@ -378,21 +235,17 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
     if (self.button.shouldHighlightImageOnTouch)
     {
         CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
-        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:kIXIconDefaultTintColor defaultValue:nil];
-        UIColor* buttonBackgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:nil];
-        CGFloat buttonAlpha = [self.propertyContainer getFloatPropertyValue:kIXAlpha defaultValue:1.0f];
+        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][0] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][0])];
+
         [UIView transitionWithView:self.button
-                          duration:duration
+                          duration:duration + 0.1
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
-                            self.button.alpha = buttonAlpha;
-                            if (imageTintColor)
+                            self.button.alpha = alpha;
+                            if (backgroundColor)
                             {
-                                [self.button setImage:[self.button.currentImage tintedImageUsingColor:imageTintColor] forState:UIControlStateNormal];
-                            }
-                            if (buttonBackgroundColor)
-                            {
-                                self.contentView.backgroundColor = buttonBackgroundColor;
+                                self.contentView.backgroundColor = backgroundColor;
                             }
                         }
                         completion:^(BOOL finished){
@@ -400,6 +253,22 @@ See http://iosfonts.com/ for available fonts. *(default: HelveticaNeue:20)*<br>*
                         }];
     }
     else
-        [self processCancelTouch:YES];}
+        [self processCancelTouch:YES];
+}
+
+- (NSArray*)getButtonStatesForArray:(NSArray*)array {
+    if (array) {
+        if (array.count == 1)
+            return @[array[0], array[0], array[0]];
+        else if (array.count == 2)
+            return @[array[0], array[1], array[0]];
+        else if (array.count == 3)
+            return @[array[0], array[1], array[2]];
+        else
+            return @[array[0], array[0], array[0]];
+    } else {
+        return nil;
+    }
+}
 
 @end
