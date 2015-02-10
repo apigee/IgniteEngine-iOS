@@ -27,7 +27,7 @@
 
 NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdateNotification";
 
-// IXBaseDataProvider Properties
+// IXBaseDataProvider Attributes
 IX_STATIC_CONST_STRING kIXDataBaseUrl = @"baseUrl";
 IX_STATIC_CONST_STRING kIXDataPath = @"pathSuffix";
 IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled";
@@ -39,16 +39,24 @@ IX_STATIC_CONST_STRING kIXBasicPassword = @"auth.basic.password";
 IX_STATIC_CONST_STRING kIXParameterEncoding = @"http.body.encoding";
 IX_STATIC_CONST_STRING kIXParseParametsAsObject = @"parseParameters.enabled";
 IX_STATIC_CONST_STRING kIXAcceptedContentType = @"http.headers.accept";
+IX_STATIC_CONST_STRING kIXCachePolicy = @"cache.policy";
 
-// kIXSortOrder Accepted Types
-IX_STATIC_CONST_STRING kIXSortOrderNone = @"none";
-IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending";
-IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending";
+// IXBaseDataProvider Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXSortOrderNone = @"none"; // kIXSortOrder
+IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending"; // kIXSortOrder
+IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // kIXSortOrder
+IX_STATIC_CONST_STRING kIXParameterEncodingJSON = @"json"; // kIXParameterEncoding
+IX_STATIC_CONST_STRING kIXParameterEncodingPList = @"plist"; // kIXParameterEncoding
+IX_STATIC_CONST_STRING kIXParameterEncodingForm = @"form"; // kIXParameterEncoding
+IX_STATIC_CONST_STRING kIXCachePolicyUseProtocolCachePolicy = @"useProtocolCachePolicy";
+IX_STATIC_CONST_STRING kIXCachePolicyReloadIgnoringLocalCacheData = @"reloadIgnoringLocalCache";
+IX_STATIC_CONST_STRING kIXCachePolicyReloadIgnoringLocalAndRemoteCacheData = @"reloadIgnoringLocalAndRemoteCache";
+IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataElseLoad = @"useCacheElseLoad";
+IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataDontLoad = @"useCacheDontLoad";
+IX_STATIC_CONST_STRING kIXCachePolicyReloadRevalidatingCacheData = @"reloadRevalidatingCache";
 
-// kIXParameterEncoding Accepted Types
-IX_STATIC_CONST_STRING kIXParameterEncodingJSON = @"json";
-IX_STATIC_CONST_STRING kIXParameterEncodingPList = @"plist";
-IX_STATIC_CONST_STRING kIXParameterEncodingForm = @"form";
+// Accepted Value Defaults
+IX_STATIC_CONST_STRING kIXCachePolicyDefault = @"reloadIgnoringLocalCache";
 
 // IXBaseDataProvider Read-Only Properties
 IX_STATIC_CONST_STRING kIXRawDataResponse = @"response.raw";
@@ -80,7 +88,9 @@ IX_STATIC_CONST_STRING kIXRequestHeaderPropertiesNSCodingKey = @"requestHeaderPr
 IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachmentProperties";
 
 @interface IXImage ()
+
 @property (nonatomic,strong) UIImage* defaultImage;
+
 @end
 
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
@@ -95,6 +105,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 @property (nonatomic,copy) NSString* fullDataLocation;
 @property (nonatomic,copy) NSString* dataBaseURL;
 @property (nonatomic,copy) NSString* dataPath;
+@property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
 @end
 
@@ -174,6 +185,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     [self setAcceptedContentType:[[self propertyContainer] getStringPropertyValue:kIXAcceptedContentType defaultValue:nil]];
     [self setDataBaseURL:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
     [self setDataPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
+    [self setCachePolicy:[self cachePolicyFromString:[[self propertyContainer] getStringPropertyValue:kIXCachePolicy defaultValue:kIXCachePolicyDefault]]];
     
     NSString* fullDataLocation = [[self propertyContainer] getPathPropertyValue:kIXDataBaseUrl basePath:nil defaultValue:nil];
     if( [[self dataPath] length] )
@@ -409,6 +421,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
                                                   path:[self dataPath]
                                             parameters:parameters];
     }
+    
+    if (_cachePolicy) {
+        
+    }
 
     if( [[self httpBody] length] > 0 ) {
         [request setHTTPBody:[[self httpBody] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -416,6 +432,37 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 
     [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
     return request;
+}
+
+
+
+- (NSURLRequestCachePolicy)cachePolicyFromString:(NSString*)policy {
+    NSURLRequestCachePolicy returnPolicy;
+    if ([policy isEqualToString:kIXCachePolicyDefault]) {
+        returnPolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    }
+    else if ([policy isEqualToString:kIXCachePolicyUseProtocolCachePolicy]) {
+        returnPolicy = NSURLRequestUseProtocolCachePolicy;
+    }
+    else if ([policy isEqualToString:kIXCachePolicyReloadIgnoringLocalCacheData]) {
+        returnPolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    }
+    else if ([policy isEqualToString:kIXCachePolicyReloadIgnoringLocalAndRemoteCacheData]) {
+        returnPolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+    }
+    else if ([policy isEqualToString:kIXCachePolicyReturnCacheDataElseLoad]) {
+        returnPolicy = NSURLRequestReturnCacheDataElseLoad;
+    }
+    else if ([policy isEqualToString:kIXCachePolicyReturnCacheDataDontLoad]) {
+        returnPolicy = NSURLRequestReturnCacheDataDontLoad;
+    }
+    else if ([policy isEqualToString:kIXCachePolicyReloadRevalidatingCacheData]) {
+        returnPolicy = NSURLRequestReloadRevalidatingCacheData;
+    }
+    else {
+        returnPolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    }
+    return returnPolicy;
 }
 
 @end

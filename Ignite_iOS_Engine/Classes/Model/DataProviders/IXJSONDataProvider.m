@@ -31,6 +31,7 @@ IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.
 IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
 IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
+#warning These should be migrated to base data provider
 IX_STATIC_CONST_STRING kIXResponseHeadersPrefix = @"responseHeaders.";
 IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
 
