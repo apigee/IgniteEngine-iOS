@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
+#warning These warnings are really annoying.  We shouldnt use them for notes.  Use comments.  Warnings make it seem like something is wrong.  Dilutes the code base.  
+
 #import "IXAppManager.h"
 
 @import AVFoundation.AVAudioSession;

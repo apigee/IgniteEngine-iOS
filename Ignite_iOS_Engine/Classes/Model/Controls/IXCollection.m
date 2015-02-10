@@ -41,7 +41,7 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
 // IXCollection Functions
 IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"resetBgControls";
 
-#warning Why is this required?
+#warning Why is this required? Because otherwise you would have to reload the whole table control and all the cells.
 IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"setSwipeWidth";
 
 
