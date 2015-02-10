@@ -17,28 +17,25 @@
 #import "AFOAuth2Client.h"
 
 // IXOAuth2DataProvider Attributes
-IX_STATIC_CONST_STRING kIXOAuthClientID = @"oauth.client_id";
-IX_STATIC_CONST_STRING kIXOAuthSecret = @"oauth.secret";
-IX_STATIC_CONST_STRING kIXOAuthTokenStorageID = @"oauth.storage_id";
-IX_STATIC_CONST_STRING kIXOAuthGrantType = @"oauth.grant_type";
-IX_STATIC_CONST_STRING kIXOAuthAuthorizePath = @"oauth.authorize_path";
-IX_STATIC_CONST_STRING kIXOAuthAccessTokenPath = @"oauth.access_token_path";
-IX_STATIC_CONST_STRING kIXOAuthRedirectURI = @"oauth.redirect_uri";
-IX_STATIC_CONST_STRING kIXOAuthScope = @"oauth.scope";
-IX_STATIC_CONST_STRING kIXOAuthResponseType = @"oauth.response_type";
+IX_STATIC_CONST_STRING kIXOAuthClientID = @"client.id";
+IX_STATIC_CONST_STRING kIXOAuthSecret = @"client.secret";
+IX_STATIC_CONST_STRING kIXOAuthTokenStorageID = @"storage.id";
+IX_STATIC_CONST_STRING kIXOAuthGrantType = @"grantType";
+IX_STATIC_CONST_STRING kIXOAuthAuthorizePath = @"pathSuffix.auth";
+IX_STATIC_CONST_STRING kIXOAuthAccessTokenPath = @"pathSuffix.token";
+IX_STATIC_CONST_STRING kIXOAuthRedirectURI = @"redirectUri";
+IX_STATIC_CONST_STRING kIXOAuthScope = @"scope";
+IX_STATIC_CONST_STRING kIXOAuthResponseType = @"responseType";
 
 // IXOAuth2DataProvider Read Only Attributes
-IX_STATIC_CONST_STRING kIXAccessToken = @"access_token";
+IX_STATIC_CONST_STRING kIXAccessToken = @"token";
 
 // IXOAuth2DataProvider Functions
-IX_STATIC_CONST_STRING kIXClearAccessToken = @"clear_access_token"; // kIXOAuthTokenStorageID is the parameter for this.
+IX_STATIC_CONST_STRING kIXClearAccessToken = @"destroyToken"; // kIXOAuthTokenStorageID is the parameter for this.
 
 // IXOAuth2DataProvider Events
-IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth_success";
-IX_STATIC_CONST_STRING kIXAuthFail = @"auth_fail";
-
-// Non Property constants.
-IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
+IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth.success";
+IX_STATIC_CONST_STRING kIXAuthFail = @"auth.fail";
 
 @interface AFOAuth2Client ()
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
@@ -63,6 +60,10 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
 @property (nonatomic,copy) NSString* oAuthResponseType;
 
 @end
+
+// Non Property constants
+IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
+
 
 @implementation IXOAuth2DataProvider
 

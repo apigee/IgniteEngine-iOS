@@ -38,22 +38,6 @@ IX_STATIC_CONST_STRING kIXDarkensImageOnTouch = @"darkenOnTouch.enabled";
 IX_STATIC_CONST_STRING kIXTouchDuration = @"touch.duration";
 IX_STATIC_CONST_STRING kIXTouchUpDuration = @"touchUp.duration";
 
-# warning Deprecate these and merge into comma-separated values in default attribute
-IX_STATIC_CONST_STRING kIXTouchText = @"touch.text";
-IX_STATIC_CONST_STRING kIXTouchFont = @"touch.font";
-IX_STATIC_CONST_STRING kIXTouchTextColor = @"touch.text.color";
-IX_STATIC_CONST_STRING kIXTouchBackgroundColor = @"touch.background.color";
-IX_STATIC_CONST_STRING kIXTouchIcon = @"touch.icon";
-IX_STATIC_CONST_STRING kIXTouchIconTintColor = @"touch.icon.tintColor";
-IX_STATIC_CONST_STRING kIXTouchAlpha = @"touch.alpha";
-IX_STATIC_CONST_STRING kIXDisabledText = @"disabled.text";
-IX_STATIC_CONST_STRING kIXDisabledFont = @"disabled.font";
-IX_STATIC_CONST_STRING kIXDisabledTextColor = @"disabled.text.color";
-IX_STATIC_CONST_STRING kIXDisabledBackgroundColor = @"disabled.background.color";
-IX_STATIC_CONST_STRING kIXDisabledIcon = @"disabled.icon";
-IX_STATIC_CONST_STRING kIXDisabledIconTintColor = @"disabled.icon.tintColor";
-IX_STATIC_CONST_STRING kIXDisabledAlpha = @"disabled.alpha";
-
 // IXButton states
 IX_STATIC_CONST_STRING kIXNormal = @"normal";
 IX_STATIC_CONST_STRING kIXTouch = @"touch";
@@ -119,7 +103,7 @@ NSArray* alphas;
     [[self button] setAttributedTitle:nil forState:UIControlStateDisabled];
 
     __block NSString* defaultColorForTitles = @"#606060";
-    __block NSString* defaultFontForTitles = @"HelveticaNeue:20.0f";
+    __block NSString* defaultFontForTitles = @"HelveticaNeue:16.0f";
 
     // Grab the title states - comma separated
     __block NSArray* titleTexts = [self getButtonStatesForArray:[[self propertyContainer] getPipeCommaPipeSeperatedArrayListValue:kIXTextDefault defaultValue:nil]];

@@ -63,6 +63,8 @@ IX_STATIC_CONST_STRING kIXCookieURL = @"cookie.url"; // Parameter on deleteCooki
 
 // IXBaseDataProvider Events
 IX_STATIC_CONST_STRING kIXStarted = @"began";
+
+#warning These are not used?
 IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth.success";
 IX_STATIC_CONST_STRING kIXAuthFail = @"auth.error";
 
