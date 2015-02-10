@@ -18,7 +18,7 @@
 #import "Formatter.h"
 #import "UITextField+IXAdditions.h"
 
-// IXTextInput Properties
+// IXTextInput Attributes
 IX_STATIC_CONST_STRING kIXFont = @"font";
 IX_STATIC_CONST_STRING kIXCursorColor = @"cursor.color";
 IX_STATIC_CONST_STRING kIXAutoCorrect = @"autocorrect.enabled";
@@ -26,7 +26,6 @@ IX_STATIC_CONST_STRING kIXDismissOnReturn = @"dismissOnReturn.enabled";
 IX_STATIC_CONST_STRING kIXLayoutToScroll = @"layout_to_scroll";
 IX_STATIC_CONST_STRING kIXKeyboardAdjustsScreen = @"keyboardAdjustsScreen.enabled";
 IX_STATIC_CONST_STRING kIXIsMultiLine = @"multiline.enabled";
-
 IX_STATIC_CONST_STRING kIXInitialText = @"text.default";
 IX_STATIC_CONST_STRING kIXTextColor = @"color";
 IX_STATIC_CONST_STRING kIXTextPlaceholder = @"placeholder.text";
@@ -38,28 +37,31 @@ IX_STATIC_CONST_STRING kIXRightImage = @"image.right"; // Must use full path wit
 IX_STATIC_CONST_STRING kIXLeftImage = @"image.left"; // Must use full path within assets (aka "assets/images/image.png" ). Only works on non multiline input.
 IX_STATIC_CONST_STRING kIXBackgroundImage = @"bg.image";
 IX_STATIC_CONST_STRING kIXHidesImagesWhenEmpty = @"hideImageWhenEmpty.enabled"; // Only works on non multiline input.
-
 IX_STATIC_CONST_STRING kIXKeyboardAppearance = @"keyboard.appearance";
 IX_STATIC_CONST_STRING kIXKeyboardType = @"keyboard.type";
 IX_STATIC_CONST_STRING kIXKeyboardPadding = @"keyboard.padding";
 IX_STATIC_CONST_STRING kIXKeyboardReturnKey = @"keyboard.returnKey";
-
-IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"formatAsCurrency.enabled";
-IX_STATIC_CONST_STRING kIXInputFormatCreditCard = @"formatAsCreditCard.enabled";
+IX_STATIC_CONST_STRING kIXFormat = @"format"; // Credit card, currency, password
+//IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"formatAsCurrency.enabled";
+//IX_STATIC_CONST_STRING kIXInputFormatCreditCard = @"formatAsCreditCard.enabled";
 IX_STATIC_CONST_STRING kIXInputRegexAllowed = @"regex.allowed";
 IX_STATIC_CONST_STRING kIXInputRegexDisAllowed = @"regex.disallowed";
 IX_STATIC_CONST_STRING kIXInputMax = @"maxChars";
 IX_STATIC_CONST_STRING kIXInputTransform = @"text.transform";
 
-IX_STATIC_CONST_STRING kIXFilterDatasource = @"filter_datasource"; //not implemented
+#warning not implemented?
+IX_STATIC_CONST_STRING kIXFilterDatasource = @"filter_datasource"; // not implemented
 
-// kIXInputTransform Types
-IX_STATIC_CONST_STRING kIXInputTransformCapitalize = @"capitalize";
-IX_STATIC_CONST_STRING kIXInputTransformLowercase = @"lowercase";
-IX_STATIC_CONST_STRING kIXInputTransformUppercase = @"uppercase";
-IX_STATIC_CONST_STRING kIXInputTransformUppercaseFirst = @"ucfirst";
+// IXTextInput Attribute Allowed Values
+IX_STATIC_CONST_STRING kIXInputTransformCapitalize = @"capitalize"; // kIXInputTransform
+IX_STATIC_CONST_STRING kIXInputTransformLowercase = @"lowercase"; // kIXInputTransform
+IX_STATIC_CONST_STRING kIXInputTransformUppercase = @"uppercase"; // kIXInputTransform
+IX_STATIC_CONST_STRING kIXInputTransformUppercaseFirst = @"ucfirst"; // kIXInputTransform
+IX_STATIC_CONST_STRING kIXInputFormatPassword = @"password"; // kIXFormat
+IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"currency"; // kIXFormat
+IX_STATIC_CONST_STRING kIXInputFormatCC = @"creditcard"; // kIXFormat
 
-// IXTextInput ReadOnly Properties
+// IXTextInput Returns
 IX_STATIC_CONST_STRING kIXText = @"text"; // To set the text use the kIXSetText function.
 
 // IXTextInput Functions
@@ -106,6 +108,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
 @property (nonatomic,assign) BOOL inputFormatCurrency;
 @property (nonatomic,assign) BOOL inputFormatCreditCard;
 
+@property (nonatomic,assign) NSString *inputFormat;
 @property (nonatomic,assign) NSString *previousTextFieldContent;
 @property (nonatomic,assign) UITextRange *previousSelection;
 
@@ -343,9 +346,11 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
     [self setFilterDatasource:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXFilterDatasource defaultValue:nil]];
     
-    [self setInputFormatCurrency:[[self propertyContainer] getBoolPropertyValue:kIXInputFormatCurrency defaultValue:NO]];
+    [self setInputFormat:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
     
-    [self setInputFormatCreditCard:[[self propertyContainer] getBoolPropertyValue:kIXInputFormatCreditCard defaultValue:NO]];
+    if ([_inputFormat isEqualToString:kIXInputFormatPassword]) {
+        _textView.secureTextEntry = YES;
+    }
     
     [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
     if( [[self inputAllowedRegexString] length] > 1 )
@@ -851,83 +856,82 @@ andPreserveCursorPosition:&targetCursorPosition];
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
-    if( [self inputFormatCreditCard] )
+    if( [self inputFormat] )
     {
-        _previousTextFieldContent = textField.text;
-        _previousSelection = textField.selectedTextRange;
-        
-        [self reformatAsCardNumber:_textField];
-    }
-    
-    if( [self inputFormatCurrency] )
-    {
-        NSMutableCharacterSet *numberSet = [[NSCharacterSet decimalDigitCharacterSet] mutableCopy];
-        [numberSet formUnionWithCharacterSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSCharacterSet *nonNumberSet = [numberSet invertedSet];
-        
-        BOOL result = NO;
-        
-        if([string length] == 0){
-            result = YES;
+        if ([_inputFormat isEqualToString:kIXInputFormatCC]) {
+            _previousTextFieldContent = textField.text;
+            _previousSelection = textField.selectedTextRange;
+            
+            [self reformatAsCardNumber:_textField];
         }
-        else{
-            if([string stringByTrimmingCharactersInSet:nonNumberSet].length > 0){
+        else if ([_inputFormat isEqualToString:kIXInputFormatCurrency]) {
+            NSMutableCharacterSet *numberSet = [[NSCharacterSet decimalDigitCharacterSet] mutableCopy];
+            [numberSet formUnionWithCharacterSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSCharacterSet *nonNumberSet = [numberSet invertedSet];
+            
+            BOOL result = NO;
+            
+            if([string length] == 0){
                 result = YES;
             }
-        }
-        
-        if(result){
-            NSMutableString* mstring = [[textField text] mutableCopy];
-            
-            if([string length] > 0){
-                [mstring insertString:string atIndex:range.location];
-            }
-            else {
-                [mstring deleteCharactersInRange:range];
+            else{
+                if([string stringByTrimmingCharactersInSet:nonNumberSet].length > 0){
+                    result = YES;
+                }
             }
             
-            NSLocale* locale = [NSLocale currentLocale];
-            NSString *localCurrencySymbol = [locale objectForKey:NSLocaleCurrencySymbol];
-            NSString *localGroupingSeparator = [locale objectForKey:NSLocaleGroupingSeparator];
-            
-            NSString* clean_string = [[mstring stringByReplacingOccurrencesOfString:localGroupingSeparator
-                                                                         withString:@""]
-                                      stringByReplacingOccurrencesOfString:localCurrencySymbol
-                                      withString:@""];
-            
-            if([[Formatters currencyFormatter] maximumFractionDigits] > 0){
-                NSMutableString *mutableCleanString = [clean_string mutableCopy];
+            if(result){
+                NSMutableString* mstring = [[textField text] mutableCopy];
                 
                 if([string length] > 0){
-                    NSRange theRange = [mutableCleanString rangeOfString:@"."];
-                    if( theRange.location != NSNotFound )
-                    {
-                        [mutableCleanString deleteCharactersInRange:theRange];
-                        [mutableCleanString insertString:@"." atIndex:(theRange.location + 1)];
-                    }
-                    clean_string = mutableCleanString;
+                    [mstring insertString:string atIndex:range.location];
                 }
                 else {
-                    [mutableCleanString insertString:@"0" atIndex:0];
-                    NSRange theRange = [mutableCleanString rangeOfString:@"."];
-                    if( theRange.location != NSNotFound )
-                    {
-                        [mutableCleanString deleteCharactersInRange:theRange];
-                        [mutableCleanString insertString:@"." atIndex:(theRange.location - 1)];
-                    }
-                    clean_string = mutableCleanString;
+                    [mstring deleteCharactersInRange:range];
                 }
+                
+                NSLocale* locale = [NSLocale currentLocale];
+                NSString *localCurrencySymbol = [locale objectForKey:NSLocaleCurrencySymbol];
+                NSString *localGroupingSeparator = [locale objectForKey:NSLocaleGroupingSeparator];
+                
+                NSString* clean_string = [[mstring stringByReplacingOccurrencesOfString:localGroupingSeparator
+                                                                             withString:@""]
+                                          stringByReplacingOccurrencesOfString:localCurrencySymbol
+                                          withString:@""];
+                
+                if([[Formatters currencyFormatter] maximumFractionDigits] > 0){
+                    NSMutableString *mutableCleanString = [clean_string mutableCopy];
+                    
+                    if([string length] > 0){
+                        NSRange theRange = [mutableCleanString rangeOfString:@"."];
+                        if( theRange.location != NSNotFound )
+                        {
+                            [mutableCleanString deleteCharactersInRange:theRange];
+                            [mutableCleanString insertString:@"." atIndex:(theRange.location + 1)];
+                        }
+                        clean_string = mutableCleanString;
+                    }
+                    else {
+                        [mutableCleanString insertString:@"0" atIndex:0];
+                        NSRange theRange = [mutableCleanString rangeOfString:@"."];
+                        if( theRange.location != NSNotFound )
+                        {
+                            [mutableCleanString deleteCharactersInRange:theRange];
+                            [mutableCleanString insertString:@"." atIndex:(theRange.location - 1)];
+                        }
+                        clean_string = mutableCleanString;
+                    }
+                }
+                
+                NSNumber* number = [[Formatters basicFormatter] numberFromString: clean_string];
+                NSMutableString *numberString = [[[Formatters currencyFormatter] stringFromNumber:number] mutableCopy];
+                [numberString deleteCharactersInRange:NSMakeRange(0, 1)];
+                [textField setText:numberString];
+                [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
             }
-            
-            NSNumber* number = [[Formatters basicFormatter] numberFromString: clean_string];
-            NSMutableString *numberString = [[[Formatters currencyFormatter] stringFromNumber:number] mutableCopy];
-            [numberString deleteCharactersInRange:NSMakeRange(0, 1)];
-            [textField setText:numberString];
-            [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];
+            return NO;
         }
-        return NO;
     }
-    
     return YES;
     
 }
