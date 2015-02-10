@@ -11,8 +11,10 @@
 
 // Attributes
 IX_STATIC_CONST_STRING kIXVisible = @"visible";
+# warning These are bool values - should be .enabled
 IX_STATIC_CONST_STRING kIXFillRemainingWidth = @"autofill.w";
 IX_STATIC_CONST_STRING kIXFillRemainingHeight = @"autofill.h";
+# warning This is a bool value - should be .enabled
 IX_STATIC_CONST_STRING kIXIncludeInParentAutosize = @"autosize.includeInParent";
 #warning Suggest simply "layout"
 IX_STATIC_CONST_STRING kIXLayoutType = @"layoutType";

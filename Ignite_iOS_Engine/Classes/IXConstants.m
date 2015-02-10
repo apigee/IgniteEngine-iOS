@@ -67,7 +67,6 @@ NSString* const kIX_EVAL_BRACKETS = @"{{";
 
 // DATA PROVIDER SPECIFIC NODES
 NSString* const kIX_DP_PARAMETERS = @"parameters";
-#warning rename to http.headers
 NSString* const kIX_DP_HEADERS = @"headers";
 NSString* const kIX_DP_ATTACHMENTS = @"attachments";
 NSString* const kIX_DP_ENTITY = @"entity";

@@ -24,28 +24,25 @@
                 "_type": "Button",
                 "actions": [
                     {
-                        "_type": "Alert",
+                        "1_type": "Alert",
                         "attributes": {
                             "message": "You touched the button!",
                             "title": "touchUp"
                         },
-                        "zon": "touchUp"
+                        "on": "touchUp"
                     }
                 ],
                 "attributes": {
                     "align.h": "center",
                     "align.v": "middle",
+                    "color": "red",
                     "bg.color": "cdcdcd",
                     "border.radius": 0,
-                    "zzcolor": "6c6c6c,red,blue",
-                    "zzzcolor": "eee,666",
-                    "alpha": "1,0.7",
+                    "alpha": "1,0.5",
                     "layoutType": "absolute",
                     "size.h": 50,
                     "size.w": 100,
-                    "text": "Hi.",
-                    "icon.tint": "#444,#aaa",
-                    "icon": "http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_itunes.png"
+                    "text": "Hi."
                 }
             }
         ],

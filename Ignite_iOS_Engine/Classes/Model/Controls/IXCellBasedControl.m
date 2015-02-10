@@ -73,6 +73,9 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
 
 @end
 
+IX_STATIC_CONST_STRING kIXSizeH = @"size.h"; // must match BaseControl height property name
+IX_STATIC_CONST_STRING kIXSizeW = @"size.w"; // must match BaseControl width property name
+
 @interface IXCellBasedControl ()
 
 @property (nonatomic, weak) IXDataRowDataProvider* dataProvider;
