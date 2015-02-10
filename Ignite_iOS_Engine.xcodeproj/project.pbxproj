@@ -69,6 +69,7 @@
 		3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2D31A7A34D100E8D288 /* Images.xcassets */; };
 		3FFC589D1A86B548003C434D /* Documentation in Resources */ = {isa = PBXBuildFile; fileRef = 3FFC589C1A86B548003C434D /* Documentation */; };
 		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
+		631DA69A1A8A997600968BC4 /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631DA6991A8A997600968BC4 /* ApigeeiOSSDK.framework */; };
 		6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */; };
 		63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63240E7C194A27F200412927 /* IXDataRowDataProvider.m */; };
 		63240E80194A318300412927 /* IXOAuth2DataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63240E7F194A318300412927 /* IXOAuth2DataProvider.m */; };
@@ -95,7 +96,6 @@
 		634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */ = {isa = PBXBuildFile; fileRef = 634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */; };
 		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
-		635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */; };
 		635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0DFF1979B695002C0DBA /* IXAddressBook.m */; };
 		635F0E031979CA54002C0DBA /* IXCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0E021979CA54002C0DBA /* IXCalendar.m */; };
 		635F0E061979ED62002C0DBA /* IXActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0E051979ED62002C0DBA /* IXActionSheet.m */; };
@@ -267,6 +267,7 @@
 		618C8EBF28383F34FE27BB6C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
+		631DA6991A8A997600968BC4 /* ApigeeiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApigeeiOSSDK.framework; path = "Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.16/lib/ApigeeiOSSDK.framework"; sourceTree = "<group>"; };
 		6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBackgroundSwipeController.h; sourceTree = "<group>"; };
 		6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCellBackgroundSwipeController.m; sourceTree = "<group>"; };
 		63240E7B194A27F200412927 /* IXDataRowDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDataRowDataProvider.h; sourceTree = "<group>"; };
@@ -315,7 +316,6 @@
 		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
 		635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCoreDataDataProvider.m; sourceTree = "<group>"; };
-		635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApigeeiOSSDK.framework; path = "Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.10/lib/ApigeeiOSSDK.framework"; sourceTree = "<group>"; };
 		635F0DFE1979B695002C0DBA /* IXAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAddressBook.h; sourceTree = "<group>"; };
 		635F0DFF1979B695002C0DBA /* IXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAddressBook.m; sourceTree = "<group>"; };
 		635F0E011979CA54002C0DBA /* IXCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCalendar.h; sourceTree = "<group>"; };
@@ -441,7 +441,6 @@
 				131591EB18396B3E0046B16D /* libiconv.dylib in Frameworks */,
 				DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */,
 				632807E3193E1D1100F5D2DE /* AssetsLibrary.framework in Frameworks */,
-				635D2DAC18F32C8100CA82BD /* ApigeeiOSSDK.framework in Frameworks */,
 				1312FD1E1837112100A20FF7 /* CFNetwork.framework in Frameworks */,
 				1312FD1C183710C200A20FF7 /* CoreData.framework in Frameworks */,
 				6324BF521835931C00748F27 /* CoreGraphics.framework in Frameworks */,
@@ -455,6 +454,7 @@
 				1312FD1A183710B900A20FF7 /* Security.framework in Frameworks */,
 				1312FE201838468800A20FF7 /* Social.framework in Frameworks */,
 				1312FDE4183715DD00A20FF7 /* SystemConfiguration.framework in Frameworks */,
+				631DA69A1A8A997600968BC4 /* ApigeeiOSSDK.framework in Frameworks */,
 				6324BF541835931C00748F27 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -762,7 +762,7 @@
 				63AEA72A193EA3DC0088F480 /* libxml2.dylib */,
 				131591EA18396B3E0046B16D /* libiconv.dylib */,
 				05D522CE73164D978B4CF70F /* libPods.a */,
-				635D2DAB18F32C8100CA82BD /* ApigeeiOSSDK.framework */,
+				631DA6991A8A997600968BC4 /* ApigeeiOSSDK.framework */,
 				632807E2193E1D1100F5D2DE /* AssetsLibrary.framework */,
 				1312FD1D1837112100A20FF7 /* CFNetwork.framework */,
 				1312FD1B183710C200A20FF7 /* CoreData.framework */,
