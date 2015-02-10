@@ -1,0 +1,41 @@
+{
+    "view": {
+        "datasources": [
+            {
+                "_id": "dataAuth",
+                "_type": "OAuth2",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Please check your username and password and try again.",
+                            "title": "Whoops!"
+                        },
+                        "on": "auth.error"
+                    },
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Authenticated! [[dataAuth.token]]",
+                            "title": "Yay"
+                        },
+                        "on": "auth.success"
+                    }
+                ],
+                "attributes": {
+                    "headers.Content-Type": "application/json",
+                    "autoLoad.enabled": true,
+                    "client.id": "2oS2KX7LTrCiPKlGJUIrbp2WY1PN2ly6",
+                    "baseUrl": "https://demo34-test.apigee.net",
+                    "grantType": "refresh_token",
+                    "pathSuffix.auth": "/oauth/authorize",
+                    "pathSuffix.token": "/oauth/token",
+                    "redirectUri": "http://localhost",
+                    "responseType": "token",
+                    "scope": "READ",
+                    "storage.id": "token_time"
+                }
+            }
+        ]
+    }
+}
