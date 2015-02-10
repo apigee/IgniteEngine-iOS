@@ -1,1 +1,0 @@
-PODS_ALMOVIEPLAYERCONTROLLER_OTHER_LDFLAGS = -framework MediaPlayer -framework QuartzCore

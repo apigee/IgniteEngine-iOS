@@ -194,7 +194,9 @@
 
                     if (error.code != NSURLErrorNotConnectedToInternet && error.code != NSURLErrorCancelled && error.code != NSURLErrorTimedOut) {
                         @synchronized (self.failedURLs) {
-                            [self.failedURLs addObject:url];
+                            if (![self.failedURLs containsObject:url]) {
+                                [self.failedURLs addObject:url];
+                            }
                         }
                     }
                 }
@@ -323,24 +325,6 @@
 //        self.cancelBlock = nil;
         _cancelBlock = nil;
     }
-}
-
-@end
-
-
-@implementation SDWebImageManager (Deprecated)
-
-// deprecated method, uses the non deprecated method
-// adapter for the completion block
-- (id <SDWebImageOperation>)downloadWithURL:(NSURL *)url options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletedWithFinishedBlock)completedBlock {
-    return [self downloadImageWithURL:url
-                              options:options
-                             progress:progressBlock
-                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                                if (completedBlock) {
-                                    completedBlock(image, error, cacheType, finished);
-                                }
-                            }];
 }
 
 @end

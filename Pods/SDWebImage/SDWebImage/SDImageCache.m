@@ -48,7 +48,6 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
     static id instance;
     dispatch_once(&once, ^{
         instance = [self new];
-        kPNGSignatureData = [NSData dataWithBytes:kPNGSignatureBytes length:8];
     });
     return instance;
 }
@@ -60,6 +59,9 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
 - (id)initWithNamespace:(NSString *)ns {
     if ((self = [super init])) {
         NSString *fullNamespace = [@"com.hackemist.SDWebImageCache." stringByAppendingString:ns];
+
+        // initialise PNG signature data
+        kPNGSignatureData = [NSData dataWithBytes:kPNGSignatureBytes length:8];
 
         // Create IO serial queue
         _ioQueue = dispatch_queue_create("com.hackemist.SDWebImageCache", DISPATCH_QUEUE_SERIAL);
@@ -147,7 +149,7 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
         return;
     }
 
-    [self.memCache setObject:image forKey:key cost:image.size.height * image.size.width * image.scale];
+    [self.memCache setObject:image forKey:key cost:image.size.height * image.size.width * image.scale * image.scale];
 
     if (toDisk) {
         dispatch_async(self.ioQueue, ^{
@@ -234,7 +236,7 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
     // Second check the disk cache...
     UIImage *diskImage = [self diskImageForKey:key];
     if (diskImage) {
-        CGFloat cost = diskImage.size.height * diskImage.size.width * diskImage.scale;
+        CGFloat cost = diskImage.size.height * diskImage.size.width * diskImage.scale * diskImage.scale;
         [self.memCache setObject:diskImage forKey:key cost:cost];
     }
 
@@ -302,7 +304,7 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
         @autoreleasepool {
             UIImage *diskImage = [self diskImageForKey:key];
             if (diskImage) {
-                CGFloat cost = diskImage.size.height * diskImage.size.width * diskImage.scale;
+                CGFloat cost = diskImage.size.height * diskImage.size.width * diskImage.scale * diskImage.scale;
                 [self.memCache setObject:diskImage forKey:key cost:cost];
             }
 

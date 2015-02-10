@@ -177,9 +177,8 @@ the URL before to use it as a cache key:
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    SDWebImageManager.sharedManager.cacheKeyFilter:^(NSURL *url)
-    {
-        url = [[[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path] autorelease];
+    SDWebImageManager.sharedManager.cacheKeyFilter = ^(NSURL *url) {
+        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
         return [url absoluteString];
     };
 
@@ -194,7 +193,7 @@ Common Problems
 
 ### Using dynamic image size with UITableViewCell
 
-UITableView determins the size of the image by the first image set for a cell. If your remote images
+UITableView determines the size of the image by the first image set for a cell. If your remote images
 don't have the same size as your placeholder image, you may experience strange anamorphic scaling issue.
 The following article gives a way to workaround this issue:
 
@@ -233,6 +232,13 @@ There are three ways to use SDWebImage in your project:
 ```
 platform :ios, '6.1'
 pod 'SDWebImage', '~>3.6'
+```
+
+### Installation by cloning the repository
+
+In order to gain access to all the files from the repository, you should clone it.
+```
+git clone --recursive https://github.com/rs/SDWebImage.git
 ```
 
 ### Add the SDWebImage project to your project
