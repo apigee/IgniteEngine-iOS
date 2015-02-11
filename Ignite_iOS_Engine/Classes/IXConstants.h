@@ -115,6 +115,7 @@ extern NSString* const kIX_IF;
 extern NSString* const kIX_ENABLED;
 extern NSString* const kIX_ON;
 extern NSString* const kIX_DELAY;
+#warning Move repeat delay const to action container
 extern NSString* const kIX_REPEAT_DELAY;
 extern NSString* const kIX_TRUE;
 extern NSString* const kIX_FALSE;

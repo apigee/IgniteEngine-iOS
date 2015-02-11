@@ -11,7 +11,8 @@
 @import AVFoundation.AVSpeechSynthesis;
 
 // IXSpeech Functions
-IX_STATIC_CONST_STRING kIXQueueUtterance = @"queue";
+IX_STATIC_CONST_STRING kIXQueueUtterance = @"queue"; // Adds string to queue
+IX_STATIC_CONST_STRING kIXStartUtterance = @"start"; // Starts speaking
 IX_STATIC_CONST_STRING kIXPause = @"pause"; // Pauses so it can be continued.
 IX_STATIC_CONST_STRING kIXContinue = @"continue"; // Continues if paused.
 IX_STATIC_CONST_STRING kIXStop = @"stop"; // Stops and clears the utterance queue.
@@ -32,6 +33,8 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 @interface IXTextToSpeech () <AVSpeechSynthesizerDelegate>
 
 @property (nonatomic,strong) AVSpeechSynthesizer* speechSynthesizer;
+@property (nonatomic,strong) AVSpeechUtterance* utterance;
+@property (nonatomic,strong) NSMutableArray* utteranceSentences;
 
 @end
 
@@ -46,27 +49,23 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 -(void)applySettings
 {
     [super applySettings];
+    
+    _utteranceSentences = [[[self propertyContainer] getCommaSeperatedArrayListValue:kIXUtteranceSentences defaultValue:nil] mutableCopy];
+    
+    [self speakUtteranceForSentencesArray];
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-    if( [functionName isEqualToString:kIXQueueUtterance] )
+    if( [functionName isEqualToString:kIXStartUtterance] )
     {
-        NSArray* utteranceSentences = [parameterContainer getCommaSeperatedArrayListValue:kIXUtteranceSentences defaultValue:nil];
-        for( NSString* utteranceToSpeak in utteranceSentences )
-        {
-            if( [utteranceToSpeak length] > 0 )
-            {
-#warning Why are these function params? Should be control attributes
-                AVSpeechUtterance* utterance = [[AVSpeechUtterance alloc] initWithString:utteranceToSpeak];
-                [utterance setRate:[parameterContainer getFloatPropertyValue:kIXUtteranceRate defaultValue:AVSpeechUtteranceDefaultSpeechRate]];
-                [utterance setPitchMultiplier:[parameterContainer getFloatPropertyValue:kIXUtterancePitch defaultValue:1.0f]];
-                [utterance setVolume:[parameterContainer getFloatPropertyValue:kIXUtteranceVolume defaultValue:1.0f]];
-                [utterance setPreUtteranceDelay:[parameterContainer getFloatPropertyValue:kIXUtteranceDelayStart defaultValue:0.0f]];
-                [utterance setPostUtteranceDelay:[parameterContainer getFloatPropertyValue:kIXUtteranceDelayEnd defaultValue:0.0f]];
-                [[self speechSynthesizer] speakUtterance:utterance];
-            }
+        if (_utterance.speechString.length > 0) {
+            [[self speechSynthesizer] speakUtterance:_utterance];
         }
+    }
+    else if( [functionName isEqualToString:kIXQueueUtterance] )
+    {
+        [_utteranceSentences addObjectsFromArray:[parameterContainer getCommaSeperatedArrayListValue:kIXUtteranceSentences defaultValue:nil]];
     }
     else if( [functionName isEqualToString:kIXContinue] )
     {
@@ -90,6 +89,29 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
     {
         [super applyFunction:functionName withParameters:parameterContainer];
     }
+}
+
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance {
+    if (_utteranceSentences.count > 0) {
+        [self speakUtteranceForSentencesArray];
+    }
+}
+
+- (void)speakUtteranceForSentencesArray {
+    
+    [_utteranceSentences enumerateObjectsUsingBlock:^(NSString* utteranceToSpeak, NSUInteger idx, BOOL *stop) {
+        if( [utteranceToSpeak length] > 0 )
+        {
+            _utterance = [[AVSpeechUtterance alloc] initWithString:utteranceToSpeak];
+            [_utterance setRate:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceRate defaultValue:AVSpeechUtteranceDefaultSpeechRate]];
+            [_utterance setPitchMultiplier:[[self propertyContainer] getFloatPropertyValue:kIXUtterancePitch defaultValue:1.0f]];
+            [_utterance setVolume:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceVolume defaultValue:1.0f]];
+            [_utterance setPreUtteranceDelay:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceDelayStart defaultValue:0.0f]];
+            [_utterance setPostUtteranceDelay:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceDelayEnd defaultValue:0.0f]];
+        }
+        [_utteranceSentences removeObjectAtIndex:idx];
+    }];
 }
 
 @end
