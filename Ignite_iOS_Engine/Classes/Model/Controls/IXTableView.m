@@ -41,7 +41,7 @@ IX_STATIC_CONST_STRING kIXDidHideCell = @"didHideCell";
 IX_STATIC_CONST_STRING kIXDidSelectCell = @"didSelectCell";
 
 // IXTableView Functions
-IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"resetBgControls";
+IX_STATIC_CONST_STRING kIXResetAllBackgroundControls = @"resetSwipeControls";
 IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"setSwipeSize";
 
 // Non property constants

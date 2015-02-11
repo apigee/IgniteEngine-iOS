@@ -16,14 +16,14 @@
 IX_STATIC_CONST_STRING kIXAutoPlayEnabled = @"autoPlay.enabled";
 IX_STATIC_CONST_STRING kIXBarColor = @"bar.color";
 IX_STATIC_CONST_STRING kIXBarSize = @"bar.size.h";
-IX_STATIC_CONST_STRING kIXPlayerControls = @"playerControls"; //default
+IX_STATIC_CONST_STRING kIXPlayerControls = @"interface"; //default
 IX_STATIC_CONST_STRING kIXVideoUrl = @"videoUrl";
 
 // IXMediaPlayer Attribute Values
-IX_STATIC_CONST_STRING kIXDefault = @"default";
-IX_STATIC_CONST_STRING kIXEmbedded = @"embedded";
-IX_STATIC_CONST_STRING kIXFullscreen = @"fullscreen";
-IX_STATIC_CONST_STRING kIXNone = @"none";
+IX_STATIC_CONST_STRING kIXDefault = @"default"; //kIXPlayerControls
+IX_STATIC_CONST_STRING kIXEmbedded = @"embedded"; //kIXPlayerControls
+IX_STATIC_CONST_STRING kIXFullscreen = @"fullscreen"; //kIXPlayerControls
+IX_STATIC_CONST_STRING kIXNone = @"none"; //kIXPlayerControls
 
 // IXMediaPlayer Events
 IX_STATIC_CONST_STRING kIXPlaybackStopped = @"playbackStopped";

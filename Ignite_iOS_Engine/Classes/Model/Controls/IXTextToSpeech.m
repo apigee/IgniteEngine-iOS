@@ -57,6 +57,7 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
         {
             if( [utteranceToSpeak length] > 0 )
             {
+#warning Why are these function params? Should be control attributes
                 AVSpeechUtterance* utterance = [[AVSpeechUtterance alloc] initWithString:utteranceToSpeak];
                 [utterance setRate:[parameterContainer getFloatPropertyValue:kIXUtteranceRate defaultValue:AVSpeechUtteranceDefaultSpeechRate]];
                 [utterance setPitchMultiplier:[parameterContainer getFloatPropertyValue:kIXUtterancePitch defaultValue:1.0f]];
