@@ -160,7 +160,7 @@ NSArray* alphas;
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.04];
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.05];
         CGFloat alpha = [alphas[1] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][1] floatValue];
         UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[1] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][1])];
         
@@ -189,7 +189,7 @@ NSArray* alphas;
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.15];
         CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][0] floatValue];
         UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][0])];
         
@@ -215,12 +215,12 @@ NSArray* alphas;
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.15];
+        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.15];
         CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][0] floatValue];
         UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][0])];
 
         [UIView transitionWithView:self.button
-                          duration:duration + 0.1
+                          duration:duration
                            options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                         animations:^{
                             self.button.alpha = alpha;

@@ -80,6 +80,7 @@ IX_STATIC_CONST_STRING kIXTouch = @"touch";
 IX_STATIC_CONST_STRING kIXTouchUp = @"touchUp";
 IX_STATIC_CONST_STRING kIXTouchCancelled = @"touchCancelled";
 IX_STATIC_CONST_STRING kIXTap = @"tap";
+#warning Should support events on swipe.<direction> rather than this or make swipe.direction a read-only property
 IX_STATIC_CONST_STRING kIXSwipe = @"swipe";
 IX_STATIC_CONST_STRING kIXSwipeDirection = @"swipe.direction";
 IX_STATIC_CONST_STRING kIXPan = @"pan";
