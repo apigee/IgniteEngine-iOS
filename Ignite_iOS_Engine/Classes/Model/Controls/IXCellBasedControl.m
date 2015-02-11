@@ -57,7 +57,7 @@ IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default"; // scrollBar
 
 // Returns
 #warning Need to enhance this and include total item count, visible item count, number of items per section
-IX_STATIC_CONST_STRING kIXRowCount = @"data.numberOfItems";
+IX_STATIC_CONST_STRING kIXRowCount = @"data.count";
 
 // Functions
 #warning Why are these functions?
@@ -65,7 +65,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pullToRefresh.start";
 IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pullToRefresh.end";
 
 // Events
-IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
+#warning Need pull to refresh start and end events
+IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh";
 
 @interface IXSandbox ()
 
