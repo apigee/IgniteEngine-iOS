@@ -6,16 +6,14 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-typedef enum
-{
+typedef NS_ENUM(NSUInteger, IXLayoutVerticalAlignment) {
     IXLayoutVerticalAlignmentTop,
     IXLayoutVerticalAlignmentMiddle,
     IXLayoutVerticalAlignmentBottom
-} IXLayoutVerticalAlignment;
+};
 
-typedef enum
-{
+typedef NS_ENUM(NSUInteger, IXLayoutHorizontalAlignment) {
     IXLayoutHorizontalAlignmentRight,
     IXLayoutHorizontalAlignmentCenter,
     IXLayoutHorizontalAlignmentLeft
-} IXLayoutHorizontalAlignment;
+};

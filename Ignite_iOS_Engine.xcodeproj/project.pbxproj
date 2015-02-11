@@ -40,7 +40,6 @@
 		13033FB3183ED8F200C29157 /* IXAppShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F78183ED8F200C29157 /* IXAppShortCode.m */; };
 		13033FB4183ED8F200C29157 /* IXBaseShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7A183ED8F200C29157 /* IXBaseShortCode.m */; };
 		13033FB5183ED8F200C29157 /* IXControlLayoutInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */; };
-		13033FB6183ED8F200C29157 /* IXLayoutEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F7F183ED8F200C29157 /* IXLayoutEngine.m */; };
 		13033FB8183ED8F200C29157 /* IXClickableScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F86183ED8F200C29157 /* IXClickableScrollView.m */; };
 		13033FB9183ED8F200C29157 /* IXControlContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F88183ED8F200C29157 /* IXControlContentView.m */; };
 		13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F8A183ED8F200C29157 /* IXNavigationViewController.m */; };
@@ -105,6 +104,8 @@
 		6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6DC18A30BC7000AEEA5 /* UIImage+IXAdditions.m */; };
 		6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6DF18A95A7A000AEEA5 /* IXSlider.m */; };
 		636949EA19A3E0E80009AF81 /* Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 636949E919A3E0E80009AF81 /* Formatter.m */; };
+		637E91821A8ABFFB00146EA4 /* LayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E91811A8ABFFB00146EA4 /* LayoutEngine.swift */; };
+		637E91841A8AC09400146EA4 /* IXStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 637E91831A8AC09400146EA4 /* IXStructs.m */; };
 		638226BE18ADF48D00E856ED /* IXTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 638226BD18ADF48D00E856ED /* IXTimer.m */; };
 		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
@@ -334,6 +335,9 @@
 		6366D6DF18A95A7A000AEEA5 /* IXSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSlider.m; sourceTree = "<group>"; };
 		636949E819A3E0E80009AF81 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
 		636949E919A3E0E80009AF81 /* Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Formatter.m; sourceTree = "<group>"; };
+		637E917E1A8ABFE500146EA4 /* Ignite_iOS_Engine-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ignite_iOS_Engine-Bridging-Header.h"; sourceTree = "<group>"; };
+		637E91811A8ABFFB00146EA4 /* LayoutEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
+		637E91831A8AC09400146EA4 /* IXStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXStructs.m; sourceTree = "<group>"; };
 		638226BC18ADF48D00E856ED /* IXTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTimer.h; sourceTree = "<group>"; };
 		638226BD18ADF48D00E856ED /* IXTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTimer.m; sourceTree = "<group>"; };
 		638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDatarowShortCode.h; sourceTree = "<group>"; };
@@ -477,6 +481,7 @@
 				63311BD5184581EE0048C668 /* IXDataGrabber.h */,
 				63311BD6184581EE0048C668 /* IXDataGrabber.m */,
 				13033F2B183ED8F200C29157 /* IXStructs.h */,
+				637E91831A8AC09400146EA4 /* IXStructs.m */,
 				13033F2C183ED8F200C29157 /* Model */,
 				13033F84183ED8F200C29157 /* View */,
 				63A10B2318AAE15D00130BEA /* ThirdParty */,
@@ -696,6 +701,7 @@
 				13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */,
 				CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */,
 				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
+				637E91811A8ABFFB00146EA4 /* LayoutEngine.swift */,
 				13033F7E183ED8F200C29157 /* IXLayoutEngine.h */,
 				13033F7F183ED8F200C29157 /* IXLayoutEngine.m */,
 				63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */,
@@ -799,6 +805,7 @@
 		6324BF561835931C00748F27 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				637E917E1A8ABFE500146EA4 /* Ignite_iOS_Engine-Bridging-Header.h */,
 				3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */,
 				634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */,
 				13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */,
@@ -1101,7 +1108,6 @@
 			files = (
 				63311BD118444D600048C668 /* NSString+IXAdditions.m in Sources */,
 				63311BCB1844439E0048C668 /* UIViewController+IXAdditions.m in Sources */,
-				13033FB6183ED8F200C29157 /* IXLayoutEngine.m in Sources */,
 				13BF0469183EBE7E00894760 /* main.m in Sources */,
 				63CC9AB418BD0BD700ECCECB /* IXGIFImageView.m in Sources */,
 				63CC9A5A18B7F06200ECCECB /* IXBaseControlConfig.m in Sources */,
@@ -1111,6 +1117,7 @@
 				63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */,
 				634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
+				637E91841A8AC09400146EA4 /* IXStructs.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */,
@@ -1190,6 +1197,7 @@
 				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
 				63A10B2218AAD7E200130BEA /* IXDial.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
+				637E91821A8ABFFB00146EA4 /* LayoutEngine.swift in Sources */,
 				639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */,
 				6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
@@ -1306,6 +1314,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Jeremy Anticouni (DTK434NTWA)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1321,6 +1330,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/assets/_project/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1329,6 +1339,8 @@
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
 				PROVISIONING_PROFILE = "e2780067-fd6e-4a1a-ac37-08140579207a";
+				SWIFT_OBJC_BRIDGING_HEADER = "Ignite_iOS_Engine-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1339,6 +1351,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: APIGEE CORPORATION";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1354,6 +1367,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/assets/_project/Ignite_iOS_Engine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1362,6 +1376,7 @@
 				);
 				PRODUCT_NAME = Ignite_iOS_Engine;
 				PROVISIONING_PROFILE = "2A7DEE59-BD9A-4F61-8E38-F4CABCFE8D46";
+				SWIFT_OBJC_BRIDGING_HEADER = "Ignite_iOS_Engine-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

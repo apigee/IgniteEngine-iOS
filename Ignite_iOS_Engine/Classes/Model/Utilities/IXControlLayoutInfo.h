@@ -48,10 +48,10 @@
 +(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName;
 
 IXEdgeInsets IXEdgeInsetsZero();
--(UIEdgeInsets)evaluateEdgeInsets:(IXEdgeInsets)edgeInsets usingMaxSize:(CGSize)maxSize;
+UIEdgeInsets ixEvaluateEdgeInsets(IXEdgeInsets edgeInsets, CGSize maxSize);
 
 IXSizeValuePercentage IXSizeValuePercentageZero();
-IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* stringValue, float defaultValue);
-float ixEvaluateSizeValuePercentageForMaxValue(IXSizeValuePercentage sizeValuePercentage, CGFloat maxValue);
+IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* stringValue, CGFloat defaultValue);
+CGFloat ixEvaluateSizeValuePercentageForMaxValue(IXSizeValuePercentage sizeValuePercentage, CGFloat maxValue);
 
 @end

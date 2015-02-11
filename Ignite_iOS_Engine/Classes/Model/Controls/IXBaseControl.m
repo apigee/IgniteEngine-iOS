@@ -11,11 +11,11 @@
 #import "IXAppManager.h"
 #import "IXPropertyContainer.h"
 #import "ColorUtils.h"
-#import "IXLayoutEngine.h"
 #import "IXControlLayoutInfo.h"
 #import "IXLogger.h"
 
 #import "UIImage+ResizeMagick.h"
+#import "Ignite_iOS_Engine-Swift.h"
 
 #warning Clean this up and organize it into Attributes/Returns/Events/Functions
 
@@ -203,7 +203,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     }
     else
     {
-        CGRect internalLayoutRect = [IXLayoutEngine getInternalLayoutRectForControl:self forOuterLayoutRect:[[self contentView] bounds]];
+        CGRect internalLayoutRect = [LayoutEngine calculateInternalLayoutRect:self rect:[[self contentView] bounds]];
         [self layoutControlContentsInRect:internalLayoutRect];
     }
 }

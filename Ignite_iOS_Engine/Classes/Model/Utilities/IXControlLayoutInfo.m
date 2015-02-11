@@ -217,7 +217,7 @@ IXEdgeInsets IXEdgeInsetsZero()
     return edgeInsets;
 }
 
--(UIEdgeInsets)evaluateEdgeInsets:(IXEdgeInsets)edgeInsets usingMaxSize:(CGSize)maxSize
+UIEdgeInsets ixEvaluateEdgeInsets(IXEdgeInsets edgeInsets, CGSize maxSize)
 {
     return UIEdgeInsetsMake(ixEvaluateSizeValuePercentageForMaxValue(edgeInsets.top, maxSize.height),
                             ixEvaluateSizeValuePercentageForMaxValue(edgeInsets.left, maxSize.width),
@@ -234,7 +234,7 @@ IXSizeValuePercentage IXSizeValuePercentageZero()
     return sizeValuePercentage;
 }
 
-IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* stringValue, float defaultValue)
+IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* stringValue, CGFloat defaultValue)
 {
     IXSizeValuePercentage sizeValuePercentage = IXSizeValuePercentageZero();
     sizeValuePercentage.propertyWasDefined = ( stringValue != nil );
@@ -258,9 +258,9 @@ IXSizeValuePercentage ixSizePercentageValueWithStringOrDefaultValue(NSString* st
     return sizeValuePercentage;
 }
 
-float ixEvaluateSizeValuePercentageForMaxValue(IXSizeValuePercentage sizeValuePercentage, CGFloat maxValue)
+CGFloat ixEvaluateSizeValuePercentageForMaxValue(IXSizeValuePercentage sizeValuePercentage, CGFloat maxValue)
 {
-    float returnFloat = sizeValuePercentage.value;
+    CGFloat returnFloat = sizeValuePercentage.value;
     if( sizeValuePercentage.isPercentage )
     {
         returnFloat = returnFloat * maxValue;

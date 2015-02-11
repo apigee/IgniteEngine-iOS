@@ -15,11 +15,7 @@ typedef struct IXFrameAndOffset
     
 } IXFrameAndOffset;
 
-static const IXFrameAndOffset IXFrameAndOffsetZero = {
-    
-    .frame   = { {0.0f,0.0f},{0.0f,0.0f} },
-    .offset  = 0.0f
-};
+extern const IXFrameAndOffset IXFrameAndOffsetZero;
 
 typedef struct IXSizeAndPosition
 {
@@ -28,11 +24,7 @@ typedef struct IXSizeAndPosition
     
 } IXSizeAndPosition;
 
-static const IXSizeAndPosition IXSizeAndPositionZero = {
-    
-    .size   = { .width = 0.0f, .height = 0.0f },
-    .position  = { .x = 0.0f, .y = 0.0f }
-};
+extern const IXSizeAndPosition IXSizeAndPositionZero;
 
 typedef struct IXSizeValuePercentage
 {

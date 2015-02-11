@@ -11,7 +11,6 @@
 #import "IXDataRowDataProvider.h"
 #import "IXCollection.h"
 #import "IXCustom.h"
-#import "IXLayoutEngine.h"
 #import "IXProperty.h"
 #import "IXTableView.h"
 
@@ -19,6 +18,7 @@
 #import "IXUITableViewCell.h"
 #import "IXCellBackgroundSwipeController.h"
 
+#import "Ignite_iOS_Engine-Swift.h"
 #import "NSString+IXAdditions.h"
 
 // Attributes
@@ -530,7 +530,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [cellLayout applySettings];
         
         // Need to apply settings first on the layout to be able to get the size for the layout.  Then we can layout.
-        CGSize layoutSize = [IXLayoutEngine getControlSize:cellLayout forLayoutSize:[self itemSize]];
+        CGSize layoutSize = [LayoutEngine calculateControlSize:cellLayout layoutSize:[self itemSize]];
         CGRect layoutRect = CGRectIntegral(CGRectMake(0.0f, 0.0f, layoutSize.width, layoutSize.height));
         
         [[cellLayout contentView] setFrame:layoutRect];
