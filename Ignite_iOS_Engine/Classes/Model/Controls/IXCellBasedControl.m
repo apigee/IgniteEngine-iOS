@@ -73,8 +73,15 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh.activated";
 
 @end
 
-IX_STATIC_CONST_STRING kIXSizeH = @"size.h"; // must match BaseControl height property name
-IX_STATIC_CONST_STRING kIXSizeW = @"size.w"; // must match BaseControl width property name
+// The following properties MUST match their equivalent names specified in BaseControl
+IX_STATIC_CONST_STRING kIXSizeH = @"size.h";
+IX_STATIC_CONST_STRING kIXSizeW = @"size.w";
+IX_STATIC_CONST_STRING kIXMargin = @"margin";
+IX_STATIC_CONST_STRING kIXPadding = @"padding";
+IX_STATIC_CONST_STRING kIXLayoutType = @"layoutType";
+IX_STATIC_CONST_STRING kIXLayoutTypeDefault = @"absolute";
+IX_STATIC_CONST_STRING kIXVerticalScrollEnabled = @"scrolling.v.enabled";
+IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 
 @interface IXCellBasedControl ()
 
@@ -356,7 +363,7 @@ IX_STATIC_CONST_STRING kIXSizeW = @"size.w"; // must match BaseControl width pro
         NSString* itemHeight = [[self propertyContainer] getStringPropertyValue:kIXItemHeight defaultValue:nil];
         if( [itemHeight length] > 0 )
         {
-            [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:@"height" rawValue:itemHeight]];
+            [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:kIXSizeH rawValue:itemHeight]];
         }
     }
 
@@ -443,12 +450,12 @@ IX_STATIC_CONST_STRING kIXSizeW = @"size.w"; // must match BaseControl width pro
 
         IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
 
-        [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
-                                                 [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
-                                                 [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
-                                                 [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
-                                                 [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
-                                                 [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
+        [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:kIXMargin rawValue:@"0"],
+                                                 [IXProperty propertyWithPropertyName:kIXPadding rawValue:@"0"],
+                                                 [IXProperty propertyWithPropertyName:kIXSizeW rawValue:@"100%"],
+                                                 [IXProperty propertyWithPropertyName:kIXLayoutType rawValue:kIXLayoutTypeDefault],
+                                                 [IXProperty propertyWithPropertyName:kIXVerticalScrollEnabled rawValue:@"NO"],
+                                                 [IXProperty propertyWithPropertyName:kIXHorizontalScrollEnabled rawValue:@"NO"]]];
 
         [layoutControl setPropertyContainer:layoutPropertyContainer];
         [layoutControl setActionContainer:[[self actionContainer] copy]];
