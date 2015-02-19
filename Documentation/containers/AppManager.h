@@ -15,11 +15,11 @@
 /***************************************************************/
 
 /** AppManager has the following containers:
- 
+
  @param app.actions Array of actions that fire on app-level events<br><pre>array</pre>
  @param app.attributes Object of app-level attributes<br><pre>object</pre>
  @param app.datasources Array of datasources available app-wide<br><pre>array</pre>
- 
+
  */
 
 -(void)Containers
@@ -29,7 +29,7 @@
 /***************************************************************/
 
 /** AppManager has the following attributes:
- 
+
  @param mode App mode<ul><li>*debug*</li><li>release</li></ul>
  @param logLevel Logging leven<ul><li>*debug*</li><li>release</li><li>error</li><li>verbose</li></ul>
  @param controller.default Default controller to display when app opens<br><pre>string</pre>
@@ -44,8 +44,8 @@
  @param location.accuracy Accuracy of location tracking<ul><li>*best*</li><li>bestForNavigation</li><li>nearestTenMeters</li><li>hundredMeters</li><li>kilometer</li><li>threeKilometers</li></ul>
  @param navigationBar.enabled Enable stock Navigation Bar<br><pre>bool</pre>
  @param preloadImages Object containing images to preload<br><pre>object</pre>
- @param apigee.OrgId Apigee BaaS Org ID<br><pre>string</pre>
- @param apigee.AppId Apigee BaaS App ID<br><pre>string</pre>
+ @param apigee.org Apigee BaaS Org ID<br><pre>string</pre>
+ @param apigee.app Apigee BaaS App ID<br><pre>string</pre>
  @param apigee.BaseUrl Apigee BaaS base url<br><pre>string</pre>
  @param apigee.NotifierId Apigee BaaS Push Notifier ID<br><pre>string</pre>
  @param push.autoRequest.enabled Automatically request authorization for push notifications<br><pre>bool</pre>
@@ -57,7 +57,7 @@
  @param hundredMeters Location accuracy: Accurate to within one hundred meters.<br><pre>string</pre>
  @param kilometer Location accuracy: Accurate to the nearest kilometer.<br><pre>string</pre>
  @param threeKilometers Location accuracy: Accurate to the nearest three kilometers.<br><pre>string</pre>
- 
+
  */
 
 -(void)Attributes
@@ -67,7 +67,7 @@
 /***************************************************************/
 
 /** AppManager fires the following events:
- 
+
  @param willResignActive Fires will the app will move from the active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the app and it begins the transition to the background state. An app in the inactive state continues to run but does not dispatch incoming events to responders.
  @param didEnterBackground Fires when the app entered the background. Use this method to release shared resources, invalidate timers, and store enough app state information to restore your app to its current state in case it is terminated later.
  @param willEnterForeground Fires when the app will transition from the background to the active state. You can use this method to undo many of the changes you made to your app upon entering the background.
@@ -80,7 +80,7 @@
  @param location.auth.changed Fires when location authorization has changed
  @param location.changed Fires when device location has changed
  @param mic.auth.changed Fires when device micrphone authorization has changed
- 
+
  */
 
 -(void)Events
@@ -90,7 +90,7 @@
 /***************************************************************/
 
 /** AppManager has the following functions:
- 
+
  @param reset Resets app. Clears image and data cache and reloads app.
  @param destroySession Destroys all session variables.
  @param drawerController.l.toggle Toggles left drawer controller.
@@ -106,7 +106,7 @@
  @param location.auth.request Request authorization for access to device location
  @param location.beginTracking Begin location tracking
  @param location.endTracking End location tracking
- 
+
  */
 
 -(void)Functions
@@ -116,7 +116,7 @@
 /***************************************************************/
 
 /** AppManager returns the following values:
- 
+
  @param model Returns device model<br><pre>string</pre>
  @param type Returns device type<br><pre>string</pre>
  @param screen.w Returns device screen width<br><pre>float</pre>
@@ -125,7 +125,7 @@
  @param osVersion Returns device OS version<br><pre>string</pre>
  @param osVersion.integer Returns device OS version integer<br><pre>string</pre>
  @param osVersion.major Returns device OS version major<br><pre>string</pre>
- 
+
  */
 
 -(void)Returns
