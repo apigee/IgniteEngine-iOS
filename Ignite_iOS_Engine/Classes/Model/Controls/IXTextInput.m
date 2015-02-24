@@ -15,7 +15,7 @@
 #import "IXClickableScrollView.h"
 #import "IXProperty.h"
 #import "IXNavigateAction.h"
-#import "Formatter.h"
+#import "IXFormatter.h"
 #import "UITextField+IXAdditions.h"
 
 // IXTextInput Attributes
@@ -899,7 +899,7 @@ andPreserveCursorPosition:&targetCursorPosition];
                                           stringByReplacingOccurrencesOfString:localCurrencySymbol
                                           withString:@""];
                 
-                if([[Formatters currencyFormatter] maximumFractionDigits] > 0){
+                if([[IXFormatter currencyFormatter] maximumFractionDigits] > 0){
                     NSMutableString *mutableCleanString = [clean_string mutableCopy];
                     
                     if([string length] > 0){
@@ -923,8 +923,8 @@ andPreserveCursorPosition:&targetCursorPosition];
                     }
                 }
                 
-                NSNumber* number = [[Formatters basicFormatter] numberFromString: clean_string];
-                NSMutableString *numberString = [[[Formatters currencyFormatter] stringFromNumber:number] mutableCopy];
+                NSNumber* number = [[IXFormatter basicFormatter] numberFromString: clean_string];
+                NSMutableString *numberString = [[[IXFormatter currencyFormatter] stringFromNumber:number] mutableCopy];
                 [numberString deleteCharactersInRange:NSMakeRange(0, 1)];
                 [textField setText:numberString];
                 [[self actionContainer] executeActionsForEventNamed:kIXTextChanged];

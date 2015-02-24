@@ -1,14 +1,14 @@
 //
-//  Formatters.m
+//  IXFormatter.m
 //  NegotiatorApp
 //
 //  Created by Michael Atwood on 12/1/11.
 //  Copyright (c) 2011 Michael Atwood. All rights reserved.
 //
 
-#import "Formatter.h"
+#import "IXFormatter.h"
 
-@implementation Formatters
+@implementation IXFormatter
 
 // MARK: -
 // MARK: Formatters

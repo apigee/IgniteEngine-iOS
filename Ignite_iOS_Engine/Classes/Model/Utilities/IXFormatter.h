@@ -1,5 +1,5 @@
 //
-//  Formatters.h
+//  IXFormatter.h
 //  NegotiatorApp
 //
 //  Created by Michael Atwood on 12/1/11.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Formatters : NSObject
+@interface IXFormatter : NSObject
 
 //data formats
 +(NSNumberFormatter*) currencyFormatter;
