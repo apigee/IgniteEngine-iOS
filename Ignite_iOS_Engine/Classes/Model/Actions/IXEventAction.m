@@ -16,7 +16,7 @@
 #import "IXBaseObject.h"
 
 // IXEventAction Properties
-static NSString* const kIXEventName = @"event_name";
+static NSString* const kIXEventName = @"eventName";
 
 @implementation IXEventAction
 

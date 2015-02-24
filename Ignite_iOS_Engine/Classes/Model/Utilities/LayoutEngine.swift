@@ -259,58 +259,59 @@ import Foundation
         if let children = layout.childObjects {
             for child in layout.childObjects {
                 if let childControl = child as? IXBaseControl {
-                    if childControl.contentView == nil || childControl.layoutInfo.isHidden {
-                        continue
-                    }
-                    let layoutInfo = childControl.layoutInfo
-                    let controlIsAbsolute = layoutInfo.isAbsolutePositioned
-
-                    var fixOffsetToLayoutRect = false
-                    var layoutRectForCalculatingFrame = absoluteRect
-
-                    if !controlIsAbsolute {
-                        layoutRectForCalculatingFrame = relativeRect
-                        fixOffsetToLayoutRect = processEqualHorizontalLayout && !layoutInfo.widthWasDefined
-                        if fixOffsetToLayoutRect {
-                            layoutRectForCalculatingFrame.size.width = equalWidthForLayoutsControls
+                    if let layoutInfo = childControl.layoutInfo {
+                        if childControl.contentView == nil || layoutInfo.isHidden {
+                            continue
                         }
-                    }
+                        let controlIsAbsolute = layoutInfo.isAbsolutePositioned
 
-                    var frameAndOffset = LayoutEngine.calculateControlFrame(childControl, layout: layout, layoutRect: layoutRectForCalculatingFrame, currentOffset:(controlIsAbsolute ? 0.0 : currentOffset), fixOffsetToLayout: fixOffsetToLayoutRect, allowOffAxisAlign: true)
+                        var fixOffsetToLayoutRect = false
+                        var layoutRectForCalculatingFrame = absoluteRect
 
-                    layoutInfo.layoutRect = frameAndOffset.frame
-                    if !controlIsAbsolute {
-                        currentOffset = frameAndOffset.offset
-                    }
-
-                    if layoutInfo.canPushParentsBounds {
-                        let controlsMaxX = CGRectGetMaxX(layoutInfo.layoutRect)
-                        if controlsMaxX > maxPoint.x {
-                            if controlIsAbsolute {
-                                addXPaddingToScroll = false
-                            } else if !layoutInfo.isFloatPositioned {
-                                addXPaddingToScroll = true
+                        if !controlIsAbsolute {
+                            layoutRectForCalculatingFrame = relativeRect
+                            fixOffsetToLayoutRect = processEqualHorizontalLayout && !layoutInfo.widthWasDefined
+                            if fixOffsetToLayoutRect {
+                                layoutRectForCalculatingFrame.size.width = equalWidthForLayoutsControls
                             }
-                            maxPoint.x = controlsMaxX
                         }
-                        let controlsMaxY = CGRectGetMaxY(layoutInfo.layoutRect)
-                        if controlsMaxY > maxPoint.y {
-                            if controlIsAbsolute {
-                                addYPaddingToScroll = false
-                            } else if !layoutInfo.isFloatPositioned {
-                                addYPaddingToScroll = true
+
+                        var frameAndOffset = LayoutEngine.calculateControlFrame(childControl, layout: layout, layoutRect: layoutRectForCalculatingFrame, currentOffset:(controlIsAbsolute ? 0.0 : currentOffset), fixOffsetToLayout: fixOffsetToLayoutRect, allowOffAxisAlign: true)
+
+                        layoutInfo.layoutRect = frameAndOffset.frame
+                        if !controlIsAbsolute {
+                            currentOffset = frameAndOffset.offset
+                        }
+
+                        if layoutInfo.canPushParentsBounds {
+                            let controlsMaxX = CGRectGetMaxX(layoutInfo.layoutRect)
+                            if controlsMaxX > maxPoint.x {
+                                if controlIsAbsolute {
+                                    addXPaddingToScroll = false
+                                } else if !layoutInfo.isFloatPositioned {
+                                    addXPaddingToScroll = true
+                                }
+                                maxPoint.x = controlsMaxX
                             }
-                            maxPoint.y = controlsMaxY
+                            let controlsMaxY = CGRectGetMaxY(layoutInfo.layoutRect)
+                            if controlsMaxY > maxPoint.y {
+                                if controlIsAbsolute {
+                                    addYPaddingToScroll = false
+                                } else if !layoutInfo.isFloatPositioned {
+                                    addYPaddingToScroll = true
+                                }
+                                maxPoint.y = controlsMaxY
+                            }
                         }
-                    }
 
-                    childControl.contentView.hidden = layoutInfo.isHidden
-                    childControl.contentView.frame = layoutInfo.layoutRect
-                    if childControl.contentView.hidden || CGSizeEqualToSize(layoutInfo.layoutRect.size, CGSize.zeroSize) {
-                        continue
+                        childControl.contentView.hidden = layoutInfo.isHidden
+                        childControl.contentView.frame = layoutInfo.layoutRect
+                        if childControl.contentView.hidden || CGSizeEqualToSize(layoutInfo.layoutRect.size, CGSize.zeroSize) {
+                            continue
+                        }
+                        
+                        childControl.layoutControlContentsInRect(CGRectIntegral(LayoutEngine.calculateInternalLayoutRect(childControl, rect: childControl.contentView.bounds)))
                     }
-
-                    childControl.layoutControlContentsInRect(CGRectIntegral(LayoutEngine.calculateInternalLayoutRect(childControl, rect: childControl.contentView.bounds)))
                 }
             }
         }

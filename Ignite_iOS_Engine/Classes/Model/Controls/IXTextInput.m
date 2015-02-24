@@ -67,7 +67,7 @@ IX_STATIC_CONST_STRING kIXText = @"text"; // To set the text use the kIXSetText 
 // IXTextInput Functions
 IX_STATIC_CONST_STRING kIXSetText = @"setText"; // Parameter is kIXText.
 IX_STATIC_CONST_STRING kIXKeyboardHide = @"dismissKeyboard";
-IX_STATIC_CONST_STRING kIXKeyboardShow = @"getFocus";
+IX_STATIC_CONST_STRING kIXKeyboardShow = @"showKeyboard";
 IX_STATIC_CONST_STRING kIXFocus = @"focus";
 
 // IXTextInput Events

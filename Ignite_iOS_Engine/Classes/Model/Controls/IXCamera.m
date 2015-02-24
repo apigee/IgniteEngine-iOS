@@ -6,21 +6,9 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 // 
 
-// todo: This will probably break if we try and add two Camera controls <running> at the same time.
-// Need to find a graceful way of deallocating previously started IXCameras.
+#warning This will probably break if we try and add two Camera controls <running> at the same time. Need to find a graceful way of deallocating previously started IXCameras.
+#warning Todo: requires a read only accessor for the image. Would properly require a function to add to IXImage to update image with UIImage
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Calls upon the device camera to capture an image.
-*/
 
 #import "IXCamera.h"
 
@@ -35,28 +23,28 @@
 #import "NSString+IXAdditions.h"
 
 // Temp properties
-static NSString* const kIXWidth = @"size.w";
-static NSString* const kIXHeight = @"size.h";
+IX_STATIC_CONST_STRING kIXWidth = @"size.w";
+IX_STATIC_CONST_STRING kIXHeight = @"size.h";
 
 // Functions
-static NSString* const kIXStart = @"start";
-static NSString* const kIXRestart = @"restart";
-static NSString* const kIXStop = @"stop";
-static NSString* const kIXAutoStart = @"autoStart.enabled";
-static NSString* const kIXCaptureImage = @"capture";
+IX_STATIC_CONST_STRING kIXStart = @"start";
+IX_STATIC_CONST_STRING kIXRestart = @"restart";
+IX_STATIC_CONST_STRING kIXStop = @"stop";
+IX_STATIC_CONST_STRING kIXAutoStart = @"autoStart.enabled";
+IX_STATIC_CONST_STRING kIXCaptureImage = @"capture";
 
 // Properties
-static NSString* const kIXCamera = @"cameraSource";
-static NSString* const kIXFront = @"front";
-static NSString* const kIXRear = @"rear";
-static NSString* const kIXCaptureResize = @"resizeMask";
-static NSString* const kIXCaptureDelay = @"captureDelay";
-static NSString* const kIXCapturedImage = @"capturedImage";
-static NSString* const kIXAutoSaveToCameraRoll = @"autoSave.enabled";
+IX_STATIC_CONST_STRING kIXCamera = @"cameraSource";
+IX_STATIC_CONST_STRING kIXFront = @"front";
+IX_STATIC_CONST_STRING kIXRear = @"rear";
+IX_STATIC_CONST_STRING kIXCaptureResize = @"resizeMask";
+IX_STATIC_CONST_STRING kIXCaptureDelay = @"captureDelay";
+//IX_STATIC_CONST_STRING kIXCapturedImage = @"capturedImage";
+IX_STATIC_CONST_STRING kIXAutoSaveToCameraRoll = @"autoSave.enabled";
 
 // Events
-static NSString* const kIXDidCaptureImage = @"didCaptureImage";
-static NSString* const kIXDidFinishSavingCapture = @"didSaveImage";
+IX_STATIC_CONST_STRING kIXDidCaptureImage = @"didCaptureImage";
+IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
 
 @interface IXCamera ()
 
@@ -71,163 +59,6 @@ static NSString* const kIXDidFinishSavingCapture = @"didSaveImage";
 @end
 
 @implementation IXCamera : IXBaseControl
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes: 
-    @param width Width of Camera preview<br>*(integer)*
-    @param height Height of Camera preview<br>*(integer)*
-    @param camera Which Camera to use<br>*frontrear*
-    @param capture.resize Resize captured image<br>*(string)*
-    @param capture.delay Delay image capture<br>*(float)*
-    @param captured_image Captured Image<br>*(string)*
-    @param auto_start Automatically present the Camera view controller<br>*(bool)*
-    @param auto_save_to_camera_roll Automatically save captured image to camera roll<br>*(bool)* 
- 
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param did_capture_image Image captured successfully
-    @param did_finish_saving_capture Image saved successfully 
- 
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
- @param start Presents the Camera view controller
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "cameraTest",
-    "function_name": "start"
-  }
-}
- </pre>
-
- @param restart Restarts the Camera view controller
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "cameraTest",
-    "function_name": "restart"
-  }
-}
- </pre>
- 
-  @param stop Dismisses the Camera view controller
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "cameraTest",
-    "function_name": "stop"
-  }
-}
- </pre>
-
-  @param capture_image Captures + saves the image.
-<pre class="brush: js; toolbar: false;">
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "cameraTest",
-    "function_name": "capture_image"
-  }
-}
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_id": "cameraTest",
-  "_type": "Camera",
-  "actions": [
-    {
-      "on": "did_capture_image",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_capture_image"
-      }
-    },
-    {
-      "on": "did_finish_saving_capture",
-      "_type": "Alert",
-      "attributes": {
-        "title": "did_finish_saving_capture"
-      }
-    }
-  ],
-  "attributes": {
-    "camera": "rear",
-    "height": "100%",
-    "width": "100%"
-  }
-}
- 
- </pre>
- 
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
@@ -506,48 +337,5 @@ static NSString* const kIXDidFinishSavingCapture = @"didSaveImage";
 {
     [self.actionContainer executeActionsForEventNamed:kIXDidFinishSavingCapture];
 }
-
-// trololol it looks like we don't need this at all!
-
-// Create a UIImage from sample buffer data
-//-(UIImage *)imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer
-//{
-//    // Get a CMSampleBuffer's Core Video image buffer for the media data
-//    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-//    // Lock the base address of the pixel buffer
-//    CVPixelBufferLockBaseAddress(imageBuffer, 0);
-//    
-//    // Get the number of bytes per row for the pixel buffer
-//    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
-//    
-//    // Get the number of bytes per row for the pixel buffer
-//    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-//    // Get the pixel buffer width and height
-//    size_t width = CVPixelBufferGetWidth(imageBuffer);
-//    size_t height = CVPixelBufferGetHeight(imageBuffer);
-//    
-//    // Create a device-dependent RGB color space
-//    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-//    
-//    // Create a bitmap graphics context with the sample buffer data
-//    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8,
-//                                                 bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-//    // Create a Quartz image from the pixel data in the bitmap graphics context
-//    CGImageRef quartzImage = CGBitmapContextCreateImage(context);
-//    // Unlock the pixel buffer
-//    CVPixelBufferUnlockBaseAddress(imageBuffer,0);
-//    
-//    // Free up the context and color space
-//    CGContextRelease(context);
-//    CGColorSpaceRelease(colorSpace);
-//    
-//    // Create an image object from the Quartz image
-//    UIImage *image = [UIImage imageWithCGImage:quartzImage];
-//    
-//    // Release the Quartz image
-//    CGImageRelease(quartzImage);
-//    
-//    return (image);
-//}
 
 @end

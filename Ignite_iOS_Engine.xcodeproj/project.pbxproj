@@ -23,7 +23,7 @@
 		13033F9D183ED8F200C29157 /* IXImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F49183ED8F200C29157 /* IXImage.m */; };
 		13033F9E183ED8F200C29157 /* IXLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4B183ED8F200C29157 /* IXLayout.m */; };
 		13033F9F183ED8F200C29157 /* IXMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4D183ED8F200C29157 /* IXMap.m */; };
-		13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4F183ED8F200C29157 /* IXMediaPlayer.m */; };
+		13033FA0183ED8F200C29157 /* IXVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F4F183ED8F200C29157 /* IXVideoPlayer.m */; };
 		13033FA1183ED8F200C29157 /* IXMediaPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F51183ED8F200C29157 /* IXMediaPicker.m */; };
 		13033FA2183ED8F200C29157 /* IXMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F53183ED8F200C29157 /* IXMessage.m */; };
 		13033FA4183ED8F200C29157 /* IXScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F57183ED8F200C29157 /* IXScanner.m */; };
@@ -104,8 +104,6 @@
 		6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6DC18A30BC7000AEEA5 /* UIImage+IXAdditions.m */; };
 		6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6DF18A95A7A000AEEA5 /* IXSlider.m */; };
 		636949EA19A3E0E80009AF81 /* Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 636949E919A3E0E80009AF81 /* Formatter.m */; };
-		637E91821A8ABFFB00146EA4 /* LayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E91811A8ABFFB00146EA4 /* LayoutEngine.swift */; };
-		637E91841A8AC09400146EA4 /* IXStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 637E91831A8AC09400146EA4 /* IXStructs.m */; };
 		638226BE18ADF48D00E856ED /* IXTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 638226BD18ADF48D00E856ED /* IXTimer.m */; };
 		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
@@ -122,6 +120,8 @@
 		63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */; };
 		63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */; };
 		63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */; };
+		63B0FE711A9D394B00B1DB99 /* LayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */; };
+		63B0FE741A9D39BE00B1DB99 /* IXStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0FE731A9D39BE00B1DB99 /* IXStructs.m */; };
 		63B92C2719C0F4E5004C0A13 /* IXMMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */; };
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
@@ -136,6 +136,7 @@
 		63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABE18BE8AB600ECCECB /* IXLogger.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
 		63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */; };
+		63D8690D1A9CFF2800603602 /* IXSocketDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D8690C1A9CFF2800603602 /* IXSocketDataProvider.m */; };
 		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
 		63EAB3F618BEC588001AC248 /* IXBaseDataProviderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAB3F518BEC588001AC248 /* IXBaseDataProviderConfig.m */; };
 		63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFBD018D798830016CA69 /* IXControlCacheContainer.m */; };
@@ -155,12 +156,11 @@
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
 		CA7525C91A898028002C54CD /* UIFont+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */; };
 		CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEB7E0718D26437005E1A2F /* IXAttributedText.m */; };
-		DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D522CE73164D978B4CF70F /* libPods.a */; };
+		F8B88554BE461ED555984CDF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 241ECECBCF76B3E53F59CD4D /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		040674DC9F98C0FDF08BD498 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		05D522CE73164D978B4CF70F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13033F22183ED8F200C29157 /* IXAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAppDelegate.h; sourceTree = "<group>"; };
 		13033F23183ED8F200C29157 /* IXAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAppDelegate.m; sourceTree = "<group>"; };
 		13033F24183ED8F200C29157 /* IXAppManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAppManager.h; sourceTree = "<group>"; };
@@ -195,8 +195,8 @@
 		13033F4B183ED8F200C29157 /* IXLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLayout.m; sourceTree = "<group>"; };
 		13033F4C183ED8F200C29157 /* IXMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMap.h; sourceTree = "<group>"; };
 		13033F4D183ED8F200C29157 /* IXMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMap.m; sourceTree = "<group>"; };
-		13033F4E183ED8F200C29157 /* IXMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMediaPlayer.h; sourceTree = "<group>"; };
-		13033F4F183ED8F200C29157 /* IXMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMediaPlayer.m; sourceTree = "<group>"; };
+		13033F4E183ED8F200C29157 /* IXVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXVideoPlayer.h; sourceTree = "<group>"; };
+		13033F4F183ED8F200C29157 /* IXVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXVideoPlayer.m; sourceTree = "<group>"; };
 		13033F50183ED8F200C29157 /* IXMediaPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMediaPicker.h; sourceTree = "<group>"; };
 		13033F51183ED8F200C29157 /* IXMediaPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMediaPicker.m; sourceTree = "<group>"; };
 		13033F52183ED8F200C29157 /* IXMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMessage.h; sourceTree = "<group>"; };
@@ -254,6 +254,7 @@
 		1387A0C619CBA80600A85B04 /* IXTouchID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTouchID.m; sourceTree = "<group>"; };
 		13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Ignite_iOS_Engine-Prefix.pch"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		13BF0466183EBE7E00894760 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ignite_iOS_Engine/main.m; sourceTree = SOURCE_ROOT; };
+		241ECECBCF76B3E53F59CD4D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F66D2C31A7A34A700E8D288 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
 		3F66D2C51A7A34C100E8D288 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Light.otf"; path = "assets/_project/fonts/ARSMaquettePro-Light.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2C61A7A34C100E8D288 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Medium.otf"; path = "assets/_project/fonts/ARSMaquettePro-Medium.otf"; sourceTree = SOURCE_ROOT; };
@@ -335,9 +336,6 @@
 		6366D6DF18A95A7A000AEEA5 /* IXSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSlider.m; sourceTree = "<group>"; };
 		636949E819A3E0E80009AF81 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
 		636949E919A3E0E80009AF81 /* Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Formatter.m; sourceTree = "<group>"; };
-		637E917E1A8ABFE500146EA4 /* Ignite_iOS_Engine-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ignite_iOS_Engine-Bridging-Header.h"; sourceTree = "<group>"; };
-		637E91811A8ABFFB00146EA4 /* LayoutEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
-		637E91831A8AC09400146EA4 /* IXStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXStructs.m; sourceTree = "<group>"; };
 		638226BC18ADF48D00E856ED /* IXTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTimer.h; sourceTree = "<group>"; };
 		638226BD18ADF48D00E856ED /* IXTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTimer.m; sourceTree = "<group>"; };
 		638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDatarowShortCode.h; sourceTree = "<group>"; };
@@ -368,6 +366,9 @@
 		63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCustomNavPushPopTransition.m; sourceTree = "<group>"; };
 		63B0E9AB19476D37002BF48E /* IXShortCodeFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXShortCodeFunction.h; sourceTree = "<group>"; };
 		63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXShortCodeFunction.m; sourceTree = "<group>"; };
+		63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
+		63B0FE721A9D395B00B1DB99 /* Ignite_iOS_Engine-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Ignite_iOS_Engine-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		63B0FE731A9D39BE00B1DB99 /* IXStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXStructs.m; sourceTree = "<group>"; };
 		63B92C2519C0F4E5004C0A13 /* IXMMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMMDrawerController.h; sourceTree = "<group>"; };
 		63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMMDrawerController.m; sourceTree = "<group>"; };
 		63C0A7AF18CFDAB700F72064 /* IXNetworkShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNetworkShortCode.h; sourceTree = "<group>"; };
@@ -395,6 +396,8 @@
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
 		63D23AB21845B3E400C93BC7 /* IXAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAFJSONRequestOperation.h; sourceTree = "<group>"; };
 		63D23AB31845B3E400C93BC7 /* IXAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAFJSONRequestOperation.m; sourceTree = "<group>"; };
+		63D8690B1A9CFF2800603602 /* IXSocketDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSocketDataProvider.h; sourceTree = "<group>"; };
+		63D8690C1A9CFF2800603602 /* IXSocketDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSocketDataProvider.m; sourceTree = "<group>"; };
 		63DFD9E6188F1A3200C5941E /* IXUICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUICollectionViewCell.h; sourceTree = "<group>"; };
 		63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXUICollectionViewCell.m; sourceTree = "<group>"; };
 		63EAB3F418BEC588001AC248 /* IXBaseDataProviderConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseDataProviderConfig.h; sourceTree = "<group>"; };
@@ -443,7 +446,6 @@
 				63A69FCA19491B0E00D5D712 /* libz.1.2.5.dylib in Frameworks */,
 				63AEA72B193EA3DC0088F480 /* libxml2.dylib in Frameworks */,
 				131591EB18396B3E0046B16D /* libiconv.dylib in Frameworks */,
-				DC33DC76CDF64EE8A8AD7118 /* libPods.a in Frameworks */,
 				632807E3193E1D1100F5D2DE /* AssetsLibrary.framework in Frameworks */,
 				1312FD1E1837112100A20FF7 /* CFNetwork.framework in Frameworks */,
 				1312FD1C183710C200A20FF7 /* CoreData.framework in Frameworks */,
@@ -460,6 +462,7 @@
 				1312FDE4183715DD00A20FF7 /* SystemConfiguration.framework in Frameworks */,
 				631DA69A1A8A997600968BC4 /* ApigeeiOSSDK.framework in Frameworks */,
 				6324BF541835931C00748F27 /* UIKit.framework in Frameworks */,
+				F8B88554BE461ED555984CDF /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +484,7 @@
 				63311BD5184581EE0048C668 /* IXDataGrabber.h */,
 				63311BD6184581EE0048C668 /* IXDataGrabber.m */,
 				13033F2B183ED8F200C29157 /* IXStructs.h */,
-				637E91831A8AC09400146EA4 /* IXStructs.m */,
+				63B0FE731A9D39BE00B1DB99 /* IXStructs.m */,
 				13033F2C183ED8F200C29157 /* Model */,
 				13033F84183ED8F200C29157 /* View */,
 				63A10B2318AAE15D00130BEA /* ThirdParty */,
@@ -598,8 +601,6 @@
 				13033F4D183ED8F200C29157 /* IXMap.m */,
 				13033F50183ED8F200C29157 /* IXMediaPicker.h */,
 				13033F51183ED8F200C29157 /* IXMediaPicker.m */,
-				13033F4E183ED8F200C29157 /* IXMediaPlayer.h */,
-				13033F4F183ED8F200C29157 /* IXMediaPlayer.m */,
 				13033F52183ED8F200C29157 /* IXMessage.h */,
 				13033F53183ED8F200C29157 /* IXMessage.m */,
 				63A812611A16CFBE00311B10 /* IXPassKit.h */,
@@ -624,6 +625,8 @@
 				13033F63183ED8F200C29157 /* IXToggle.m */,
 				1387A0C519CBA80600A85B04 /* IXTouchID.h */,
 				1387A0C619CBA80600A85B04 /* IXTouchID.m */,
+				13033F4E183ED8F200C29157 /* IXVideoPlayer.h */,
+				13033F4F183ED8F200C29157 /* IXVideoPlayer.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -645,6 +648,8 @@
 				635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */,
 				63240E7E194A318300412927 /* IXOAuth2DataProvider.h */,
 				63240E7F194A318300412927 /* IXOAuth2DataProvider.m */,
+				63D8690B1A9CFF2800603602 /* IXSocketDataProvider.h */,
+				63D8690C1A9CFF2800603602 /* IXSocketDataProvider.m */,
 				CA13689D1A702C73009E7DA1 /* IXSwaggerDataProvider.h */,
 				CA13689E1A702C73009E7DA1 /* IXSwaggerDataProvider.m */,
 				63AEA72F193EA6D50088F480 /* IXXMLDataProvider.h */,
@@ -701,9 +706,9 @@
 				13033F7D183ED8F200C29157 /* IXControlLayoutInfo.m */,
 				CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */,
 				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
-				637E91811A8ABFFB00146EA4 /* LayoutEngine.swift */,
 				13033F7E183ED8F200C29157 /* IXLayoutEngine.h */,
 				13033F7F183ED8F200C29157 /* IXLayoutEngine.m */,
+				63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */,
 				63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */,
 				63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */,
 				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
@@ -767,7 +772,6 @@
 				63A69FC919491B0E00D5D712 /* libz.1.2.5.dylib */,
 				63AEA72A193EA3DC0088F480 /* libxml2.dylib */,
 				131591EA18396B3E0046B16D /* libiconv.dylib */,
-				05D522CE73164D978B4CF70F /* libPods.a */,
 				631DA6991A8A997600968BC4 /* ApigeeiOSSDK.framework */,
 				632807E2193E1D1100F5D2DE /* AssetsLibrary.framework */,
 				1312FD1D1837112100A20FF7 /* CFNetwork.framework */,
@@ -785,6 +789,7 @@
 				1312FDE3183715DD00A20FF7 /* SystemConfiguration.framework */,
 				6324BF531835931C00748F27 /* UIKit.framework */,
 				6324BF681835931D00748F27 /* XCTest.framework */,
+				241ECECBCF76B3E53F59CD4D /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -805,7 +810,7 @@
 		6324BF561835931C00748F27 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				637E917E1A8ABFE500146EA4 /* Ignite_iOS_Engine-Bridging-Header.h */,
+				63B0FE721A9D395B00B1DB99 /* Ignite_iOS_Engine-Bridging-Header.h */,
 				3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */,
 				634EE09F1982DA9A00C08FCD /* PhoneFormats.dat */,
 				13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */,
@@ -1117,8 +1122,8 @@
 				63EAFBD118D798830016CA69 /* IXControlCacheContainer.m in Sources */,
 				634816E718EDB5F400EC6FEE /* IXOAuthWebAuthViewController.m in Sources */,
 				13033F8E183ED8F200C29157 /* IXAppManager.m in Sources */,
-				637E91841A8AC09400146EA4 /* IXStructs.m in Sources */,
 				13033FA4183ED8F200C29157 /* IXScanner.m in Sources */,
+				63B0FE741A9D39BE00B1DB99 /* IXStructs.m in Sources */,
 				63F8A402187368BC00250994 /* IXCollection.m in Sources */,
 				CA50B3BC18EB9D39009282D0 /* YLMoment+IXAdditions.m in Sources */,
 				634EE0981982D16F00C08FCD /* IXTextToSpeech.m in Sources */,
@@ -1127,7 +1132,7 @@
 				635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */,
 				6333614818971802004F3433 /* IXCreateAction.m in Sources */,
 				13033F9D183ED8F200C29157 /* IXImage.m in Sources */,
-				13033FA0183ED8F200C29157 /* IXMediaPlayer.m in Sources */,
+				13033FA0183ED8F200C29157 /* IXVideoPlayer.m in Sources */,
 				13033F9F183ED8F200C29157 /* IXMap.m in Sources */,
 				63F87BF318AC47AA00282DB8 /* MHRotaryKnob.m in Sources */,
 				63F87BEC18AC25BA00282DB8 /* UIImageView+IXAdditions.m in Sources */,
@@ -1193,12 +1198,13 @@
 				6366D6D718A18741000AEEA5 /* IXCustom.m in Sources */,
 				63CC9ABC18BD1D8700ECCECB /* IXPathHandler.m in Sources */,
 				13033FA2183ED8F200C29157 /* IXMessage.m in Sources */,
+				63B0FE711A9D394B00B1DB99 /* LayoutEngine.swift in Sources */,
 				63311BC818442F270048C668 /* UITextField+IXAdditions.m in Sources */,
 				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
 				63A10B2218AAD7E200130BEA /* IXDial.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
-				637E91821A8ABFFB00146EA4 /* LayoutEngine.swift in Sources */,
 				639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */,
+				63D8690D1A9CFF2800603602 /* IXSocketDataProvider.m in Sources */,
 				6366D6DD18A30BC7000AEEA5 /* UIImage+IXAdditions.m in Sources */,
 				13033F91183ED8F200C29157 /* IXActionContainer.m in Sources */,
 				63311BD7184581EE0048C668 /* IXDataGrabber.m in Sources */,

@@ -216,3 +216,9 @@
 #define COCOAPODS_VERSION_MINOR_ZipArchive 3
 #define COCOAPODS_VERSION_PATCH_ZipArchive 0
 
+// jetfire
+#define COCOAPODS_POD_AVAILABLE_jetfire
+#define COCOAPODS_VERSION_MAJOR_jetfire 0
+#define COCOAPODS_VERSION_MINOR_jetfire 1
+#define COCOAPODS_VERSION_PATCH_jetfire 2
+

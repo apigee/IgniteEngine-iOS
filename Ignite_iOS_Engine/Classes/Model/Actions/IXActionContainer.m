@@ -20,7 +20,8 @@
 #import "IXLogger.h"
 
 // NSCoding Key Constants
-static NSString* const kIXActionsDictNSCodingKey = @"actionsDict";
+IX_STATIC_CONST_STRING kIXActionsDictNSCodingKey = @"actionsDict";
+IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wait before firing action to prevent rapid repeating of actions (useful on keyboard input actions)
 
 @interface IXActionContainer ()
 
