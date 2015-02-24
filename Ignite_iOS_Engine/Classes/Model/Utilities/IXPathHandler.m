@@ -14,6 +14,7 @@ static NSString* sIXCachesDirectoryPath = nil;
 
 static NSString* const kIXHTTPPrefix = @"http://";
 static NSString* const kIXHTTPSPrefix = @"https://";
+static NSString* const kIXWSPrefix = @"ws://";
 static NSString* const kIXDocsPrefix = @"docs://";
 static NSString* const kIXCachePrefix = @"cache://";
 static NSString* const kIXDevicePrefix = @"device://";
@@ -34,7 +35,7 @@ static NSString* const kIXAssetsLibraryPrefix = @"assets-library://";
 
 +(BOOL)pathIsLocal:(NSString*)path
 {
-    return ![path hasPrefix:kIXHTTPPrefix] && ![path hasPrefix:kIXHTTPSPrefix];
+    return ![path hasPrefix:kIXHTTPPrefix] && ![path hasPrefix:kIXHTTPSPrefix] && ![path hasPrefix:kIXWSPrefix];
 }
 
 +(BOOL)pathIsAssetsLibrary:(NSString*)path
