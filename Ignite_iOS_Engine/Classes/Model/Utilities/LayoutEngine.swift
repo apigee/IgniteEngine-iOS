@@ -10,7 +10,7 @@ import Foundation
 
 @objc class LayoutEngine {
 
-    private class func calculateEqualWidthForLayoutsControls(layout:IXLayout, totalWidthAvailable:CGFloat) -> CGFloat {
+    private final class func calculateEqualWidthForLayoutsControls(layout:IXLayout, totalWidthAvailable:CGFloat) -> CGFloat {
         var totalUnclaimedControls:Int = 0
         var unclaimedWidth:CGFloat = totalWidthAvailable
         if let children = layout.childObjects {
@@ -36,7 +36,7 @@ import Foundation
         return equalWidthForLayoutsControls;
     }
 
-    private class func calculateControlPosition(control:IXBaseControl,size:CGSize,layoutRect:CGRect) -> CGPoint {
+    private final class func calculateControlPosition(control:IXBaseControl,size:CGSize,layoutRect:CGRect) -> CGPoint {
 
         var controlPosition = CGPointMake(layoutRect.origin.x, layoutRect.origin.y)
 
@@ -74,7 +74,7 @@ import Foundation
         return controlPosition;
     }
 
-    internal class func calculateControlSize(control:IXBaseControl,layoutSize:CGSize) -> CGSize {
+    internal final class func calculateControlSize(control:IXBaseControl,layoutSize:CGSize) -> CGSize {
 
         var controlSize = CGSize.zeroSize
         if let layoutInfo = control.layoutInfo {
@@ -107,7 +107,7 @@ import Foundation
         return controlSize
     }
 
-    private class func calculateRemainingSize(controlLayoutInfo:IXControlLayoutInfo,rect:CGRect,controlSize:CGSize,controlPosition:CGPoint) -> CGSize {
+    private final class func calculateRemainingSize(controlLayoutInfo:IXControlLayoutInfo,rect:CGRect,controlSize:CGSize,controlPosition:CGPoint) -> CGSize {
         var remainingSize = controlSize
         if controlLayoutInfo.fillRemainingWidth {
             let remainingWidth = rect.size.width - controlPosition.x + rect.origin.x
@@ -124,7 +124,7 @@ import Foundation
         return remainingSize
     }
 
-    private class func calculateControlFrame(control:IXBaseControl,layout:IXLayout,layoutRect:CGRect,currentOffset:CGFloat,fixOffsetToLayout:Bool,allowOffAxisAlign:Bool) -> IXFrameAndOffset {
+    private final class func calculateControlFrame(control:IXBaseControl,layout:IXLayout,layoutRect:CGRect,currentOffset:CGFloat,fixOffsetToLayout:Bool,allowOffAxisAlign:Bool) -> IXFrameAndOffset {
 
         var offset = currentOffset
         var sizeAndPosition = IXSizeAndPositionZero
@@ -196,7 +196,7 @@ import Foundation
         return IXFrameAndOffset(frame: CGRectMake(round(sizeAndPosition.position.x), round(sizeAndPosition.position.y), round(sizeAndPosition.size.width), round(sizeAndPosition.size.height)), offset: offset)
     }
 
-    private class func addLayoutChildrenToViewHeirarchy(layoutControl:IXLayout) {
+    private final class func addLayoutChildrenToViewHeirarchy(layoutControl:IXLayout) {
         if let children = layoutControl.childObjects {
             var nonFloatIndex:Int = 0
             var floatIndex:Int = 1 // Float index starts at 1 to account for scrollView inside of the layoutControl
@@ -222,7 +222,7 @@ import Foundation
         }
     }
 
-    internal class func calculateInternalLayoutRect(control:IXBaseControl,rect:CGRect) -> CGRect {
+    internal final class func calculateInternalLayoutRect(control:IXBaseControl,rect:CGRect) -> CGRect {
         var internalRect = rect
         if let layoutInfo = control.layoutInfo {
             let controlPaddingInsets = ixEvaluateEdgeInsets(layoutInfo.paddingInsets,rect.size)
@@ -234,7 +234,7 @@ import Foundation
         return internalRect
     }
 
-    internal class func layout(layout:IXLayout,layoutRect:CGRect) {
+    internal final class func layout(layout:IXLayout,layoutRect:CGRect) {
 
         LayoutEngine.addLayoutChildrenToViewHeirarchy(layout)
 
@@ -353,7 +353,7 @@ import Foundation
         layoutsScrollView.scrollEnabled = layout.zoomEnabled || contentSizeIsLargerThanBounds
     }
 
-    internal class func getPreferredSize(layout:IXLayout,suggestedSize:CGSize) -> CGSize {
+    internal final class func getPreferredSize(layout:IXLayout,suggestedSize:CGSize) -> CGSize {
         var preferredSize = CGSize.zeroSize
         if let layoutInfo = layout.layoutInfo {
             let paddingInsets = ixEvaluateEdgeInsets(layoutInfo.paddingInsets, suggestedSize)
