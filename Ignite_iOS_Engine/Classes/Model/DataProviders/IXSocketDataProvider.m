@@ -23,7 +23,7 @@ IX_STATIC_CONST_STRING kIXIsOpen = @"isOpen";
 IX_STATIC_CONST_STRING kIXOpen = @"open";
 IX_STATIC_CONST_STRING kIXClose = @"close";
 
-// IXSocketDataProvider Functions
+// IXSocketDataProvider Events
 IX_STATIC_CONST_STRING kIXOpened = @"opened";
 IX_STATIC_CONST_STRING KIXClosed = @"closed";
 
