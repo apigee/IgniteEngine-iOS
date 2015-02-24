@@ -97,8 +97,8 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
 
     [[self collectionView] setBackgroundColor:[[self contentView] backgroundColor]];
     [[self collectionView] setScrollEnabled:[self scrollEnabled]];
-    [[self collectionView] setShowsHorizontalScrollIndicator:[self showsScrollIndicators]];
-    [[self collectionView] setShowsVerticalScrollIndicator:[self showsScrollIndicators]];
+    [[self collectionView] setShowsHorizontalScrollIndicator:[self showsHorizScrollIndicators]];
+    [[self collectionView] setShowsVerticalScrollIndicator:[self showsVertScrollIndicators]];
     [[self collectionView] setIndicatorStyle:[self scrollIndicatorStyle]];
     [[self collectionView] setPagingEnabled:[self pagingEnabled]];
 

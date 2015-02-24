@@ -44,9 +44,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshTextColor = @"pullToRefresh.color";
 IX_STATIC_CONST_STRING kIXPullToRefreshTextFont = @"pullToRefresh.font";
 IX_STATIC_CONST_STRING kIXPullToRefreshTintColor = @"pullToRefresh.tint";
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyle = @"scrollBars.style";
-IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"scrollBars.enabled";
 IX_STATIC_CONST_STRING kIXDataRowBasePath = @"data.basepath";
-#warning Not implemented:
+IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"scrollBars.enabled";
 IX_STATIC_CONST_STRING kIXShowsVScrollIndicators = @"scrollBars.v.enabled";
 IX_STATIC_CONST_STRING kIXShowsHScrollIndicators = @"scrollBars.h.enabled";
 
@@ -94,7 +93,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 @property (nonatomic, assign) BOOL backgroundSlidesInFromSide;
 @property (nonatomic, assign) BOOL scrollEnabled;
 @property (nonatomic, assign) BOOL pagingEnabled;
-@property (nonatomic, assign) BOOL showsScrollIndicators;
+@property (nonatomic, assign) BOOL showsVertScrollIndicators;
+@property (nonatomic, assign) BOOL showsHorizScrollIndicators;
 @property (nonatomic, assign) UIScrollViewIndicatorStyle scrollIndicatorStyle;
 @property (nonatomic, strong) id<IXCellContainerDelegate> cellToCalculateSize;
 @property (nonatomic, assign) BOOL pullToRefreshEnabled;
@@ -160,10 +160,13 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:kIXAnimateReload defaultValue:NO]];
     [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimateReloadDuration defaultValue:0.2f]];
     [self setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXScrollable defaultValue:YES]];
-    [self setShowsScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES]];
     [self setPagingEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPagingEnabled defaultValue:NO]];
     [self setPullToRefreshEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPullToRefreshEnabled defaultValue:NO]];
-    
+
+    BOOL showsScrollIndicators = [[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES];
+    [self setShowsHorizScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsHScrollIndicators defaultValue:showsScrollIndicators]];
+    [self setShowsVertScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsVScrollIndicators defaultValue:showsScrollIndicators]];
+
     if( [self pullToRefreshEnabled] )
     {
         if( [self refreshControl] == nil )
