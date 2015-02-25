@@ -107,6 +107,12 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
 {
     [super applySettings];
     
+    UIColor* tint = [[self propertyContainer] getColorPropertyValue:kIXTint defaultValue:nil];
+    if( tint != nil )
+    {
+        [[self slider] setTintColor:tint];
+    }
+
     UIImage* maxImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesMaximum defaultValue:nil]];
     if( maxImage )
     {
