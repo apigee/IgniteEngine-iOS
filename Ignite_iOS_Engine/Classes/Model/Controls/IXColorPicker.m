@@ -21,6 +21,12 @@ IX_STATIC_CONST_STRING kIXCurrentColor = @"color";
 // IXColorPicker Events
 IX_STATIC_CONST_STRING kIXColorUpdated = @"colorUpdated";
 
+// Non property constants
+IX_STATIC_CONST_FLOAT kIXSaturationDefault = 1.0f;
+IX_STATIC_CONST_FLOAT kIXTileSizeDefault = 3.0f;
+IX_STATIC_CONST_FLOAT kIXBrightnessDefault = 1.0f;
+IX_STATIC_CONST_STRING kIXColorDefault = @"#FFFFFF"; // Note we can't change this.
+
 @interface IXColorPicker ()
 
 @property (nonatomic,strong) HRColorMapView* colorMapView;
@@ -34,10 +40,10 @@ IX_STATIC_CONST_STRING kIXColorUpdated = @"colorUpdated";
     [super buildView];
 
     _colorMapView = [[HRColorMapView alloc] init];
-    _colorMapView.saturationUpperLimit = @1;
-    _colorMapView.tileSize = @3;
-    _colorMapView.brightness = 1.0;
-    _colorMapView.color = [UIColor colorWithString:@"#FFFFFF"];
+    _colorMapView.saturationUpperLimit = [NSNumber numberWithFloat:kIXSaturationDefault];
+    _colorMapView.tileSize = [NSNumber numberWithFloat:kIXTileSizeDefault];
+    _colorMapView.brightness = kIXBrightnessDefault;
+    _colorMapView.color = [UIColor colorWithString:kIXColorDefault];
     [_colorMapView addTarget:self
                       action:@selector(colorMapColorChanged:)
             forControlEvents:UIControlEventValueChanged];
@@ -54,19 +60,19 @@ IX_STATIC_CONST_STRING kIXColorUpdated = @"colorUpdated";
 {
     [super applySettings];
 
-    float brightness = [[self propertyContainer] getFloatPropertyValue:kIXBrightness defaultValue:1.0f];
+    float brightness = [[self propertyContainer] getFloatPropertyValue:kIXBrightness defaultValue:kIXBrightnessDefault];
     if( [[self colorMapView] brightness] != brightness )
     {
         [[self colorMapView] setBrightness:brightness];
     }
 
-    float saturation = [[self propertyContainer] getFloatPropertyValue:kIXSaturation defaultValue:1.0f];
+    float saturation = [[self propertyContainer] getFloatPropertyValue:kIXSaturation defaultValue:kIXSaturationDefault];
     if( [[[self colorMapView] saturationUpperLimit] floatValue] != saturation )
     {
         [[self colorMapView] setSaturationUpperLimit:[NSNumber numberWithFloat:saturation]];
     }
 
-    float tileSize = [[self propertyContainer] getFloatPropertyValue:kIXTileSize defaultValue:3.0f];
+    float tileSize = [[self propertyContainer] getFloatPropertyValue:kIXTileSize defaultValue:kIXTileSizeDefault];
     if( [[[self colorMapView] tileSize] floatValue] != tileSize )
     {
         [[self colorMapView] setTileSize:[NSNumber numberWithFloat:tileSize]];
