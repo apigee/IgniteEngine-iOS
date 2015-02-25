@@ -66,6 +66,12 @@
 #define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 0
 #define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 0
 
+// Color-Picker-for-iOS
+#define COCOAPODS_POD_AVAILABLE_Color_Picker_for_iOS
+#define COCOAPODS_VERSION_MAJOR_Color_Picker_for_iOS 2
+#define COCOAPODS_VERSION_MINOR_Color_Picker_for_iOS 0
+#define COCOAPODS_VERSION_PATCH_Color_Picker_for_iOS 0
+
 // ColorUtils
 #define COCOAPODS_POD_AVAILABLE_ColorUtils
 #define COCOAPODS_VERSION_MAJOR_ColorUtils 1

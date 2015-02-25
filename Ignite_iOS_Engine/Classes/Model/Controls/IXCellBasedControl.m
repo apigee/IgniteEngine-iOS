@@ -59,7 +59,6 @@ IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default"; // scrollBar
 IX_STATIC_CONST_STRING kIXRowCount = @"data.count";
 
 // Functions
-#warning Why are these functions?
 IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pullToRefresh.start";
 IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pullToRefresh.end";
 

@@ -33,10 +33,6 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 @property(nonatomic, strong)NSURL *url;
 @end
 
-@interface IXDataRowDataProvider ()
-@property (nonatomic,copy) NSString* dataRowBasePath;
-@end
-
 @interface IXSocketDataProvider () <JFRWebSocketDelegate>
 
 @property (nonatomic,strong) JFRWebSocket* webSocket;

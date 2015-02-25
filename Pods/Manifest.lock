@@ -15,6 +15,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0-rc):
     - CocoaLumberjack/Default
+  - Color-Picker-for-iOS (2.0)
   - ColorUtils (1.1.2)
   - FontAwesome+iOS (0.1.1)
   - jetfire (0.1.2)
@@ -66,6 +67,7 @@ DEPENDENCIES:
   - ApigeeiOSSDK (from `https://github.com/apigee/apigee-ios-sdk.git`)
   - APParallaxHeader (HEAD)
   - CocoaLumberjack (= 2.0.0-rc)
+  - Color-Picker-for-iOS (~> 2.0)
   - ColorUtils (~> 1.1.1)
   - FontAwesome+iOS (~> 0.1)
   - jetfire (~> 0.1)
@@ -101,6 +103,7 @@ SPEC CHECKSUMS:
   ApigeeiOSSDK: 6e6cce5a6bdea21bac364cfc8c906c3b78d2fad0
   APParallaxHeader: 6e7cc27c052be34e1a5655dc2fab6c40eecbbe55
   CocoaLumberjack: 6186e27827fc574b50b16c10102fcc591437f06c
+  Color-Picker-for-iOS: 2eec454aa6b24a8b7c2537da0f61c6ead936949e
   ColorUtils: 2455988658eafc34f302a7d91113d7a9415d072c
   FontAwesome+iOS: 3c574273fb301c2e0a88f983551562bf8768b623
   jetfire: b90ecf14bf066ade2e9ce4c83556edb4ef692161

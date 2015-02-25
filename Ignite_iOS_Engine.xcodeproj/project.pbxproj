@@ -122,6 +122,7 @@
 		63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */; };
 		63B0FE711A9D394B00B1DB99 /* LayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */; };
 		63B0FE741A9D39BE00B1DB99 /* IXStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0FE731A9D39BE00B1DB99 /* IXStructs.m */; };
+		63B0FE771A9D58D700B1DB99 /* IXColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0FE761A9D58D700B1DB99 /* IXColorPicker.m */; };
 		63B92C2719C0F4E5004C0A13 /* IXMMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */; };
 		63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B018CFDAB700F72064 /* IXNetworkShortCode.m */; };
 		63C0A7B418CFDB9600F72064 /* IXDeviceShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */; };
@@ -367,6 +368,8 @@
 		63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
 		63B0FE721A9D395B00B1DB99 /* Ignite_iOS_Engine-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Ignite_iOS_Engine-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		63B0FE731A9D39BE00B1DB99 /* IXStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXStructs.m; sourceTree = "<group>"; };
+		63B0FE751A9D58D700B1DB99 /* IXColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXColorPicker.h; sourceTree = "<group>"; };
+		63B0FE761A9D58D700B1DB99 /* IXColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXColorPicker.m; sourceTree = "<group>"; };
 		63B92C2519C0F4E5004C0A13 /* IXMMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMMDrawerController.h; sourceTree = "<group>"; };
 		63B92C2619C0F4E5004C0A13 /* IXMMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXMMDrawerController.m; sourceTree = "<group>"; };
 		63C0A7AF18CFDAB700F72064 /* IXNetworkShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNetworkShortCode.h; sourceTree = "<group>"; };
@@ -587,6 +590,8 @@
 				CA1279EA18D69618007EEC5A /* IXCircle.m */,
 				63F8A400187368BC00250994 /* IXCollection.h */,
 				63F8A401187368BC00250994 /* IXCollection.m */,
+				63B0FE751A9D58D700B1DB99 /* IXColorPicker.h */,
+				63B0FE761A9D58D700B1DB99 /* IXColorPicker.m */,
 				6366D6D518A18741000AEEA5 /* IXCustom.h */,
 				6366D6D618A18741000AEEA5 /* IXCustom.m */,
 				63A10B2018AAD7E200130BEA /* IXDial.h */,
@@ -1139,6 +1144,7 @@
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
 				6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */,
 				63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */,
+				63B0FE771A9D58D700B1DB99 /* IXColorPicker.m in Sources */,
 				13033FBA183ED8F200C29157 /* IXNavigationViewController.m in Sources */,
 				63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */,
 				63311BCE184445060048C668 /* UIImagePickerController+IXAdditions.m in Sources */,

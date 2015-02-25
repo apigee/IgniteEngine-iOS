@@ -1,0 +1,38 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "bg.color": "[[poop.color]]",
+      "status_bar_style": "dark",
+        "padding.top": 70
+    },
+    "actions": [
+      
+    ],
+    "controls": [                 
+                 {
+                 "_id": "textPoop",
+                 "_type": "Text",
+                 "attributes": {
+                 "text": "Color [[poop.color]]",
+                 "size.w": "100%",
+                 "size.h": 100
+                 }
+                 },
+                 {
+                 "_id": "poop",
+                 "_type": "ColorPicker",
+                 "actions": [{
+                             "_type": "Refresh",
+                             "attributes": {
+                             "_target": "$view"
+                             },
+                             "on": "colorUpdated"
+                             }],
+                 "attributes": {
+                 "size.w": "100%",
+                 "size.h": "50%"
+                 }
+                 }
+          ]  }
+}
