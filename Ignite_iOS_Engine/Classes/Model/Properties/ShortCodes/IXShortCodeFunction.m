@@ -72,6 +72,7 @@
 #import "YLMoment.h"
 
 #import "NSString+IXAdditions.h"
+#import "ColorUtils.h"
 
 // NOTE: Please add function name here in alphabetical order as well as adding the function block below in the same order.
 // Also to enable use of the function, ensure you have also set the function in the shortCodeFunctionWithName in the load method.
@@ -95,7 +96,8 @@ IX_STATIC_CONST_STRING kIXMoment = @"moment";                       // [[?:momen
 IX_STATIC_CONST_STRING kIXMonogram = @"monogram";                   // [[?:monogram]]                           -> String monogram value
 IX_STATIC_CONST_STRING kIXNow = @"now";                             // [[app:now]]                              -> Current date as string (can specify dateFormat)
 IX_STATIC_CONST_STRING kIXRandomNumber = @"randomNumber";           // [[app:random_number(upBounds)]]          -> Random number generator (can specify lower bounds)
-
+IX_STATIC_CONST_STRING kIXToHex = @"hex";                           // [[?:hex]]                                -> String value of RGB ?,?,?,? in hex value.  Last value can be used for alpha otherwise it is 1.0f.
+IX_STATIC_CONST_STRING kIXToRGB = @"rgb";                           // [[?:rgb]]                                -> String value of hex string to RGB.
 IX_STATIC_CONST_STRING kIXToMD5 = @"md5.encode";                    // [[?:to_md5]]                             -> String to MD5 hashed value
 IX_STATIC_CONST_STRING kIXToUppercase = @"uppercase";               // [[?:to_uppercase]]                       -> String value in UPPERCASE
 IX_STATIC_CONST_STRING kIXToLowercase = @"lowercase";               // [[?:to_lowercase]]                       -> String value in lowercase
@@ -267,6 +269,33 @@ static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* 
         return stringToEncode;
 };
 
+static IXBaseShortCodeFunction const kIXToHexFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    NSString* hexString = nil;
+    NSArray* rgbArray = [stringToModify componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+    if( [rgbArray count] > 2 )
+    {
+        float red = [[rgbArray firstObject] floatValue] / 255;
+        float green = [[rgbArray objectAtIndex:1] floatValue] / 255;
+        float blue = [[rgbArray objectAtIndex:2] floatValue] / 255;
+        float alpha = 1.0f;
+        if( [rgbArray count] > 3 )
+        {
+            alpha = [[rgbArray lastObject] floatValue];
+        }
+
+        UIColor* color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+        if (color.alpha < 1.0f)
+        {
+            hexString = [NSString stringWithFormat:@"#%.8x", color.RGBAValue];
+        }
+        else
+        {
+            hexString = [NSString stringWithFormat:@"#%.6x", color.RGBValue];
+        }
+    }
+    return hexString;
+};
+
 static IXBaseShortCodeFunction const kIXToMD5Function = ^NSString*(NSString* stringToHash,NSArray* parameters){
     if (stringToHash)
         return [NSString ix_toMD5String:stringToHash];
@@ -280,6 +309,20 @@ static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSStrin
 
 static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify uppercaseString];
+};
+
+static IXBaseShortCodeFunction const kIXToRGBFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    NSString* rgbString = nil;
+    if( [stringToModify length] > 0 )
+    {
+        UIColor* color = [UIColor colorWithString:stringToModify];
+        rgbString = [NSString stringWithFormat:@"%0.0f,%0.0f,%0.0f",color.red*255,color.green*255,color.blue*255];
+        if (color.alpha < 1.0f)
+        {
+            rgbString = [NSString stringWithFormat:@"%@,%0.0f",rgbString,color.alpha];
+        }
+    }
+    return rgbString;
 };
 
 static IXBaseShortCodeFunction const kIXURLEncodeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
@@ -320,8 +363,10 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXNow:               [kIXNowFunction copy],
                                     kIXRandomNumber:      [kIXRandomNumberFunction copy],
                                     kIXToBase64:          [kIXToBase64Function copy],
+                                    kIXToHex:             [kIXToHexFunction copy],
                                     kIXToMD5:             [kIXToMD5Function copy],
                                     kIXToLowercase:       [kIXToLowerCaseFunction copy],
+                                    kIXToRGB:             [kIXToRGBFunction copy],
                                     kIXToUppercase:       [kIXToUppercaseFunction copy],
                                     kIXURLEncode:         [kIXURLEncodeFunction copy],
                                     kIXURLDecode:         [kIXURLDecodeFunction copy],
