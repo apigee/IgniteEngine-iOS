@@ -9,30 +9,35 @@
 #import "IXSlider.h"
 
 #import "NSString+IXAdditions.h"
+#import "UIImage+ImageEffects.h"
 
 // Slider Properties
-static NSString* const kIXInitialValue = @"value.default";
-static NSString* const kIXImagesThumb = @"thumbImage";
-static NSString* const kIXImagesMinimum = @"image.min";
-static NSString* const kIXImagesMaximum = @"image.max";
-static NSString* const kIXMinimumValue = @"value.min";
-static NSString* const kIXMaximumValue = @"value.max";
-static NSString* const kIXImagesMaximumCapInsets = @"capInsets.max";
-static NSString* const kIXImagesMinimumCapInsets = @"capInsets.min";
+IX_STATIC_CONST_STRING kIXInitialValue = @"value.default";
+IX_STATIC_CONST_STRING kIXTint = @"tint";
+IX_STATIC_CONST_STRING kIXImagesThumb = @"thumbImage";
+IX_STATIC_CONST_STRING kIXImagesThumbTint = @"thumbImage.tint";
+IX_STATIC_CONST_STRING kIXImagesMinimum = @"image.min";
+IX_STATIC_CONST_STRING kIXImagesMinimumTint = @"image.min.tint";
+IX_STATIC_CONST_STRING kIXImagesMaximum = @"image.max";
+IX_STATIC_CONST_STRING kIXImagesMaximumTint = @"image.max.tint";
+IX_STATIC_CONST_STRING kIXMinimumValue = @"value.min";
+IX_STATIC_CONST_STRING kIXMaximumValue = @"value.max";
+IX_STATIC_CONST_STRING kIXImagesMaximumCapInsets = @"capInsets.max";
+IX_STATIC_CONST_STRING kIXImagesMinimumCapInsets = @"capInsets.min";
 
 // Slider Read-Only Properties
-static NSString* const kIXValue = @"value";
+IX_STATIC_CONST_STRING kIXValue = @"value";
 
 // Slider Events
-static NSString* const kIXValueChanged = @"valueChanged";
-static NSString* const kIXTouch = @"touch";
-static NSString* const kIXTouchUp = @"touchUp";
+IX_STATIC_CONST_STRING kIXValueChanged = @"valueChanged";
+IX_STATIC_CONST_STRING kIXTouch = @"touch";
+IX_STATIC_CONST_STRING kIXTouchUp = @"touchUp";
 
 // Slider Functions
-static NSString* const kIXUpdateSliderValue = @"setValue"; // Params : "animated"
+IX_STATIC_CONST_STRING kIXUpdateSliderValue = @"setValue"; // Params : "animated"
 
 // NSCoding Key Constants
-static NSString* const kIXValueNSCodingKey = @"value";
+IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
 
 @interface IXSlider ()
 
@@ -111,6 +116,13 @@ static NSString* const kIXValueNSCodingKey = @"value";
             UIEdgeInsets maxEdgeInsets = UIEdgeInsetsFromString(maxInsetsString);
             maxImage = [maxImage resizableImageWithCapInsets:maxEdgeInsets];
         }
+
+        UIColor* maxImageTint = [[self propertyContainer] getColorPropertyValue:kIXImagesMaximumTint defaultValue:nil];
+        if( maxImageTint != nil )
+        {
+            maxImage = [maxImage applyTintEffectWithColor:maxImageTint];
+        }
+
         [[self slider] setMaximumTrackImage:maxImage forState:UIControlStateNormal];
     }
     
@@ -123,12 +135,25 @@ static NSString* const kIXValueNSCodingKey = @"value";
             UIEdgeInsets minEdgeInsets = UIEdgeInsetsFromString(minInsetsString);
             minImage = [minImage resizableImageWithCapInsets:minEdgeInsets];
         }
+        
+        UIColor* minImageTint = [[self propertyContainer] getColorPropertyValue:kIXImagesMinimumTint defaultValue:nil];
+        if( minImageTint != nil )
+        {
+            minImage = [minImage applyTintEffectWithColor:minImageTint];
+        }
+
         [[self slider] setMinimumTrackImage:minImage forState:UIControlStateNormal];
     }
     
     UIImage* thumbImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesThumb defaultValue:nil]];
     if( thumbImage )
     {
+        UIColor* thumbImageTint = [[self propertyContainer] getColorPropertyValue:kIXImagesThumbTint defaultValue:nil];
+        if( thumbImageTint != nil )
+        {
+            thumbImage = [thumbImage applyTintEffectWithColor:thumbImageTint];
+        }
+
         [[self slider] setThumbImage:thumbImage forState:UIControlStateNormal];
     }
     
