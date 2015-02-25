@@ -2,7 +2,7 @@
   "view": {
     "attributes": {
       "_id": "test",
-      "bg.color": "[[poop.color]]",
+        "bg.color": "[[poop.color]]",
       "status_bar_style": "dark",
         "padding.top": 70
     },
@@ -13,8 +13,15 @@
                  {
                  "_id": "textPoop",
                  "_type": "Text",
+                 "actions": [{
+                             "_type": "Alert",
+                             "attributes": {
+                             "title": "[[poop.color:rgb]] [[poop.colorAsRGB:hex]]"
+                             },
+                             "on": "touchUp"
+                             }],
                  "attributes": {
-                 "text": "Color [[poop.color]]",
+                 "text": "RGB: [[poop.color:rgb]]  HEX: [[poop.colorAsRGB:hex]]",
                  "size.w": "100%",
                  "size.h": 100
                  }
@@ -30,6 +37,7 @@
                              "on": "colorUpdated"
                              }],
                  "attributes": {
+                 "colorAsRGB":"[[poop.color:rgb]]",
                  "size.w": "100%",
                  "size.h": "50%"
                  }
