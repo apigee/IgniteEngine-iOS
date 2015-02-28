@@ -372,7 +372,7 @@ import Foundation
                 preferredSize.height + paddingInsets.top + paddingInsets.bottom)
 
             var equalWidthForLayoutsControls:CGFloat = 0.0
-            var processEqualHorizontalLayout = (!layout.layoutFlowVertical && layout.layoutInfo.widthWasDefined)
+            var processEqualHorizontalLayout = (!layout.layoutFlowVertical && layoutInfo.widthWasDefined)
             if processEqualHorizontalLayout {
                 equalWidthForLayoutsControls = LayoutEngine.calculateEqualWidthForLayoutsControls(layout, totalWidthAvailable: relativeRect.size.width)
             }

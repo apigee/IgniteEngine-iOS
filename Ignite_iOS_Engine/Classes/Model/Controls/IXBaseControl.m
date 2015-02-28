@@ -168,6 +168,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 //
 -(void)buildView
 {
+    _layoutInfo = [[IXControlLayoutInfo alloc] init];
     _contentView = [[IXControlContentView alloc] initWithFrame:CGRectZero viewTouchDelegate:self];
     [_contentView setClipsToBounds:NO];
 }
@@ -220,11 +221,16 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
         }
         else
         {
+            [_layoutInfo setPropertyContainer:[self propertyContainer]];
             [_layoutInfo refreshLayoutInfo];
         }
         
         [self applyContentViewSettings];
         [self applyGestureRecognizerSettings];
+    }
+    else
+    {
+        _layoutInfo = nil;
     }
     
     for( IXBaseControl* baseControl in [self childObjects] )
