@@ -8,6 +8,10 @@
 
 #import "IXCellBasedControl.h"
 
-@interface IXTableView : IXCellBasedControl
+@interface IXTable : IXCellBasedControl
+
+@end
+
+@interface IXTableView : IXTable
 
 @end
