@@ -43,6 +43,14 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
 @implementation IXSocketDataProvider
 
+-(void)dealloc
+{
+    if( [[self webSocket] isConnected] )
+    {
+        [[self webSocket] disconnect];
+    }
+}
+
 -(instancetype)init
 {
     self = [super init];
