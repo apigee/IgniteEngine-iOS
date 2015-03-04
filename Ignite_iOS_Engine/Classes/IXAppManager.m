@@ -34,6 +34,7 @@
 #import "ApigeeDataClient.h"
 #import "ApigeeMonitoringOptions.h"
 #import "IXMMDrawerController.h"
+#import "MMDrawerVisualState.h"
 #import "Reachability.h"
 #import "RKLog.h"
 #import "SDWebImageManager.h"
@@ -64,6 +65,14 @@ IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee.org";
 IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee.app";
 IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee.baseUrl";
 IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee.notifier";
+
+IX_STATIC_CONST_STRING kIXDrawerViewShadow = @"drawerController.shadow.enabled";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimation = @"drawerController.animation";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimationSlide = @"slide";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimationSlideAndScale = @"slideAndScale";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimationSwingingDoor = @"swingingDoor";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallax = @"parallax";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallaxFactor = @"drawerController.animation.parallaxFactor";
 
 IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"requestAccess.push.auto"; // Should app automatically request access to push. If NO must use app function kIXRequestAccessPush to request push
 IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"mic.autoRequest.enabled"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
@@ -407,6 +416,32 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [self applyFunction:kIXRequestAccessLocation parameters:nil];
         [self applyFunction:kIXStartLocationTracking parameters:nil];
     }
+    
+    [[self drawerController] setShowsShadow:[[self appProperties] getBoolPropertyValue:kIXDrawerViewShadow defaultValue:YES] ];
+    
+    
+    
+    NSString* animation = [[self appProperties] getStringPropertyValue:kIXDrawerViewAnimation defaultValue:nil];
+    if( [animation length] ) {
+        
+        if ([animation isEqualToString:kIXDrawerViewAnimationSlide])
+        {
+            [[self drawerController] setDrawerVisualStateBlock: [MMDrawerVisualState slideVisualStateBlock]];
+        }
+        else if ([animation isEqualToString:kIXDrawerViewAnimationSlideAndScale])
+        {
+            [[self drawerController] setDrawerVisualStateBlock: [MMDrawerVisualState slideAndScaleVisualStateBlock]];
+        }
+        else if ([animation isEqualToString:kIXDrawerViewAnimationSwingingDoor])
+        {
+            [[self drawerController] setDrawerVisualStateBlock: [MMDrawerVisualState swingingDoorVisualStateBlock]];
+        }
+        else if ([animation isEqualToString:kIXDrawerViewAnimationParallax])
+        {
+            [[self drawerController] setDrawerVisualStateBlock: [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:[[self appProperties] getFloatPropertyValue:kIXDrawerViewAnimationParallaxFactor defaultValue:2] ]];
+        }
+    }
+    
 }
 
 -(void)loadApplicationDefaultView
@@ -511,6 +546,9 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     {
         if( [[self drawerController] leftDrawerViewController] )
         {
+            
+
+            
             [[self drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
         }
     }
