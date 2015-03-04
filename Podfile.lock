@@ -17,7 +17,7 @@ PODS:
     - CocoaLumberjack/Default
   - Color-Picker-for-iOS (2.0)
   - ColorUtils (1.1.3)
-  - FontAwesome+iOS (0.1.4)
+  - FontAwesome+iOS (0.0.1)
   - IQKeyboardManager (3.2.1.1)
   - jetfire (0.1.2)
   - MMDrawerController (0.5.7):
@@ -70,7 +70,7 @@ DEPENDENCIES:
   - CocoaLumberjack (= 2.0.0-rc)
   - Color-Picker-for-iOS (~> 2.0)
   - ColorUtils (~> 1.1.1)
-  - FontAwesome+iOS (~> 0.1)
+  - FontAwesome+iOS (from `https://github.com/jeremyanticouni/ios-fontawesome.git`)
   - IQKeyboardManager
   - jetfire (~> 0.1)
   - MMDrawerController (~> 0.5.6)
@@ -88,6 +88,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   ApigeeiOSSDK:
     :git: https://github.com/apigee/apigee-ios-sdk.git
+  FontAwesome+iOS:
+    :git: https://github.com/jeremyanticouni/ios-fontawesome.git
   TTTAttributedLabel:
     :branch: longpresssupport
     :git: https://github.com/jamztang/TTTAttributedLabel.git
@@ -96,6 +98,9 @@ CHECKOUT OPTIONS:
   ApigeeiOSSDK:
     :commit: 43798e479870fe0480579c33b3c0bf5e287e2d73
     :git: https://github.com/apigee/apigee-ios-sdk.git
+  FontAwesome+iOS:
+    :commit: 3290959b86e5ff96eb0b0ec62ec3c864d388e81c
+    :git: https://github.com/jeremyanticouni/ios-fontawesome.git
   TTTAttributedLabel:
     :commit: 3562a15fdbac1cc556a7fca065f13b25b913192c
     :git: https://github.com/jamztang/TTTAttributedLabel.git
@@ -110,7 +115,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 6186e27827fc574b50b16c10102fcc591437f06c
   Color-Picker-for-iOS: 2eec454aa6b24a8b7c2537da0f61c6ead936949e
   ColorUtils: d99b38d2a7abf81df1698477b19f895576578738
-  FontAwesome+iOS: 816c20304edef4ca92835de669577005cbaaf261
+  FontAwesome+iOS: 2aa702396e80d0f9a553a8110fc6de660ad2c8e3
   IQKeyboardManager: 4e83eef847c6f5edbd670284e50c7e3d643ebdb5
   jetfire: b90ecf14bf066ade2e9ce4c83556edb4ef692161
   MMDrawerController: c3ab7a318ddc7e2bcd133139c3161af08c6e1197
