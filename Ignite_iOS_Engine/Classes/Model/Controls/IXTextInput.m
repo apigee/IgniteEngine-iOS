@@ -23,8 +23,6 @@ IX_STATIC_CONST_STRING kIXFont = @"font";
 IX_STATIC_CONST_STRING kIXCursorColor = @"cursor.color";
 IX_STATIC_CONST_STRING kIXAutoCorrect = @"autocorrect.enabled";
 IX_STATIC_CONST_STRING kIXDismissOnReturn = @"dismissOnReturn.enabled";
-IX_STATIC_CONST_STRING kIXLayoutToScroll = @"layout_to_scroll";
-IX_STATIC_CONST_STRING kIXKeyboardAdjustsScreen = @"keyboardAdjustsScreen.enabled";
 IX_STATIC_CONST_STRING kIXIsMultiLine = @"multiline.enabled";
 IX_STATIC_CONST_STRING kIXInitialText = @"text.default";
 IX_STATIC_CONST_STRING kIXTextColor = @"color";
@@ -82,8 +80,6 @@ IX_STATIC_CONST_STRING kIXImageLeftTapped = @"leftImageTapped";
 IX_STATIC_CONST_STRING kIXTextFieldNSCodingKey = @"textField";
 IX_STATIC_CONST_STRING kIXTextViewNSCodingKey = @"textView";
 
-static CGSize sIXKBSize;
-static CGFloat const kIXKeyboardAnimationDefaultDuration = 0.25f;
 static CGFloat const kIXMaxPreferredHeightForTextInput = 40.0f;
 IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
 
@@ -100,8 +96,6 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
 @property (nonatomic,assign,getter = shouldHideImagesWhenEmpty) BOOL hideImagesWhenEmpty;
 @property (nonatomic,assign,getter = isRegisteredForKeyboardNotifications) BOOL registeredForKeyboardNotifications;
 
-@property (nonatomic,weak) IXLayout* layoutToScroll;
-@property (nonatomic,assign) BOOL adjustsScrollWithScreen;
 @property (nonatomic,assign) CGFloat keyboardPadding;
 @property (nonatomic,assign) CGSize layoutContentSizeAtStartOfEditing;
 
@@ -156,7 +150,6 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     [super buildView];
     
     _firstLoad = YES;
-    _adjustsScrollWithScreen = YES;
     _registeredForKeyboardNotifications = NO;
 }
 
@@ -254,7 +247,8 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
     
     [self setHideImagesWhenEmpty:[[self propertyContainer] getBoolPropertyValue:kIXHidesImagesWhenEmpty defaultValue:NO]];
-    
+    [self setInputFormat:[[self propertyContainer] getStringPropertyValue:kIXFormat defaultValue:nil]];
+
     if( ![self isUsingUITextView] )
     {
         [[self textField] setEnabled:[[self contentView] isEnabled]];
@@ -277,7 +271,10 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
         [[self textField] setKeyboardType:keyboardType];
         [[self textField] setReturnKeyType:returnKeyType];
         [[self textField] setBackgroundColor:backgroundColor];
-        
+        if ([[self inputFormat] isEqualToString:kIXInputFormatPassword]) {
+            [[self textField] setSecureTextEntry:YES];
+        }
+
         [[self textField] setClearsOnBeginEditing:[[self propertyContainer] getBoolPropertyValue:kIXClearsOnBeginEditing defaultValue:NO]];
         
         [[self textField] setRightViewMode:UITextFieldViewModeAlways];
@@ -285,33 +282,33 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
         
         [[self textField] setRightView:nil];
         [[self textField] setLeftView:nil];
-        
-        NSString* rightImage = [[self propertyContainer] getStringPropertyValue:kIXRightImage defaultValue:nil];
-        if( [rightImage length] > 0 )
+
+        for( NSString* imagePropertyName in @[kIXRightImage,kIXLeftImage] )
         {
-            UIImageView* rightImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:rightImage]];
-            [rightImageView setUserInteractionEnabled:YES];
-            
-            UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightViewTapDetected:)];
-            [tapGestureRecognizer setNumberOfTapsRequired:1];
-            [rightImageView addGestureRecognizer:tapGestureRecognizer];
-            
-            [[self textField] setRightView:rightImageView];
+            NSString* imageLocationString = [[self propertyContainer] getStringPropertyValue:imagePropertyName defaultValue:nil];
+            if( [imageLocationString length] > 0 )
+            {
+                UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageLocationString]];
+                [imageView setUserInteractionEnabled:YES];
+
+                BOOL isRightViewImage = [imagePropertyName isEqualToString:kIXRightImage];
+                SEL imageTapSelector = isRightViewImage ? @selector(rightViewTapDetected:) : @selector(leftViewTapDetected:);
+
+                UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:imageTapSelector];
+                [tapGestureRecognizer setNumberOfTapsRequired:1];
+                [imageView addGestureRecognizer:tapGestureRecognizer];
+
+                if( isRightViewImage )
+                {
+                    [[self textField] setRightView:imageView];
+                }
+                else
+                {
+                    [[self textField] setLeftView:imageView];
+                }
+            }
         }
-        
-        NSString* leftImage = [[self propertyContainer] getStringPropertyValue:kIXLeftImage defaultValue:nil];
-        if( [leftImage length] > 0 )
-        {
-            UIImageView* leftImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:leftImage]];
-            [leftImageView setUserInteractionEnabled:YES];
-            
-            UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leftViewTapDetected:)];
-            [tapGestureRecognizer setNumberOfTapsRequired:1];
-            [leftImageView addGestureRecognizer:tapGestureRecognizer];
-            
-            [[self textField] setLeftView:leftImageView];
-        }
-        
+
         if( [self shouldHideImagesWhenEmpty] && [[[self textField] text] length] <= 0 )
         {
             [[self backgroundImage] setHidden:YES];
@@ -330,8 +327,11 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
         [[self textView] setKeyboardType:keyboardType];
         [[self textView] setReturnKeyType:returnKeyType];
         [[self textView] setBackgroundColor:backgroundColor];
+        if ([[self inputFormat] isEqualToString:kIXInputFormatPassword]) {
+            [[self textView] setSecureTextEntry:YES];
+        }
     }
-    
+
     __weak typeof(self) weakSelf = self;
     [[self propertyContainer] getImageProperty:kIXBackgroundImage
                                   successBlock:^(UIImage *image) {
@@ -345,42 +345,16 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
     [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
     [self setFilterDatasource:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXFilterDatasource defaultValue:nil]];
-    
-    [self setInputFormat:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
-    
-    if ([_inputFormat isEqualToString:kIXInputFormatPassword]) {
-        _textView.secureTextEntry = YES;
-    }
-    
+
     [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
     if( [[self inputAllowedRegexString] length] > 1 )
     {
-        NSMutableString *positiveAssertion = [[NSMutableString alloc] initWithString:[self inputAllowedRegexString]];
+        NSMutableString *positiveAssertion = [[self inputAllowedRegexString] mutableCopy];
         [positiveAssertion insertString:@"^" atIndex:1];
         [self setInputAllowedRegexString:positiveAssertion];
     }
     
-    NSString* layoutToScrollID = [[self propertyContainer] getStringPropertyValue:kIXLayoutToScroll defaultValue:nil];
-    IXLayout* layoutToScroll = nil;
-    if( [layoutToScrollID length] > 0 )
-    {
-        IXBaseControl* controlFound = [[[self sandbox] getAllControlsWithID:layoutToScrollID] firstObject];
-        if( [controlFound isKindOfClass:[IXLayout class]] )
-        {
-            layoutToScroll = (IXLayout*)controlFound;
-        }
-    }
-    
-    [self setAdjustsScrollWithScreen:[[self propertyContainer] getBoolPropertyValue:kIXKeyboardAdjustsScreen defaultValue:(layoutToScroll != nil)]];
-    if( layoutToScroll == nil && [self adjustsScrollWithScreen] )
-    {
-        layoutToScroll = [[[self sandbox] viewController] containerControl];
-    }
-    
     [self setKeyboardPadding:[[self propertyContainer] getFloatPropertyValue:kIXKeyboardPadding defaultValue:0.0f]];
-    [self setLayoutToScroll:layoutToScroll];
-    
-    
 }
 
 -(void)rightViewTapDetected:(UITapGestureRecognizer*)tapRecognizer
@@ -492,18 +466,6 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     {
         [self setRegisteredForKeyboardNotifications:YES];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShown:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillBeHidden:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillChangeFrame:)
-                                                     name:UIKeyboardDidChangeFrameNotification
-                                                   object:nil];
         if( [self isUsingUITextView] )
         {
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -527,16 +489,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     if( [self isRegisteredForKeyboardNotifications] )
     {
         [self setRegisteredForKeyboardNotifications:NO];
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIKeyboardWillShowNotification
-                                                      object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIKeyboardWillHideNotification
-                                                      object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIKeyboardDidChangeFrameNotification
-                                                      object:nil];
+
         if( [self isUsingUITextView] )
         {
             [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -549,100 +502,6 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
                                                             name:UITextFieldTextDidChangeNotification
                                                           object:nil];
         }
-    }
-}
-
-- (void)keyboardWillChangeFrame:(NSNotification*)aNotification
-{
-    sIXKBSize = [[aNotification userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [self adjustScrollViewForKeyboard:animationDuration];
-}
-
-- (void)keyboardWillShown:(NSNotification*)aNotification
-{
-    sIXKBSize = [[aNotification userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [self adjustScrollViewForKeyboard:animationDuration];
-}
-
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    if( [self adjustsScrollWithScreen] )
-    {
-        double animationDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        
-        UIView* textInputView = nil;
-        if( [self isUsingUITextView] ) {
-            textInputView = [self textView];
-        }
-        else {
-            textInputView = [self textField];
-        }
-        
-        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-        
-        CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
-        
-        CGPoint point = [scrollView contentOffset];
-        point.y += [textInputView bounds].size.height - keyboardHeight - [self keyboardPadding];
-        
-        if( point.y < 0.0f )
-        point.y = 0.0f;
-        
-        [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
-                              delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             
-                             [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
-                             [scrollView setContentOffset:point animated:YES];
-                             
-                         } completion:nil];
-    }
-}
-
--(void)adjustScrollViewForKeyboard:(float)animationDuration
-{
-    if( ( ![[self textView] isFirstResponder] && ![[self textField] isFirstResponder] ) || ![self adjustsScrollWithScreen] )
-    return;
-    
-    CGFloat keyboardHeight = fmin(sIXKBSize.height,sIXKBSize.width);
-    if( keyboardHeight > 0 )
-    {
-        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-        UIView* textInputView = nil;
-        if( [self isUsingUITextView] )
-        {
-            textInputView = [self textView];
-        }
-        else
-        {
-            textInputView = [self textField];
-        }
-        
-        CGRect textInputBounds = [textInputView bounds];
-        CGRect convertedTextInputBounds = [textInputView convertRect:textInputBounds toView:scrollView];
-        CGFloat scrollViewHeight = [scrollView bounds].size.height;
-        
-        CGPoint point = convertedTextInputBounds.origin;
-        point.x = 0.0f;
-        point.y -= scrollViewHeight - keyboardHeight - textInputBounds.size.height - [self keyboardPadding];
-        
-        //    if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
-        //    {
-        [UIView animateWithDuration:((animationDuration > 0.0f) ? animationDuration : kIXKeyboardAnimationDefaultDuration)
-                              delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             if( CGRectGetMaxY((convertedTextInputBounds)) > scrollViewHeight - keyboardHeight + scrollView.contentOffset.y )
-                             {
-                                 [scrollView setContentSize:CGSizeMake([scrollView contentSize].width,scrollView.contentSize.height + keyboardHeight)];
-                             }
-                             [scrollView setContentOffset:point animated:NO];
-                         } completion:nil];
-        //    }
-        
     }
 }
 
@@ -754,12 +613,6 @@ andPreserveCursorPosition:&targetCursorPosition];
 
 - (void)textInputDidEndEditing:(id<UITextInput>)textInput
 {
-    if( [self adjustsScrollWithScreen] )
-    {
-        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-        [scrollView setContentSize:[self layoutContentSizeAtStartOfEditing]];
-    }
-    
     [self unregisterForKeyboardNotifications];
     
     [self setInputAllowedRegex:nil];
@@ -775,15 +628,8 @@ andPreserveCursorPosition:&targetCursorPosition];
 
 -(void)textInputDidBeginEditing:(id<UITextInput>)textInput
 {
-    if( [self adjustsScrollWithScreen] )
-    {
-        UIScrollView* scrollView = [[self layoutToScroll] scrollView];
-        [self setLayoutContentSizeAtStartOfEditing:[scrollView contentSize]];
-    }
-    
     [self registerForKeyboardNotifications];
-    [self adjustScrollViewForKeyboard:kIXKeyboardAnimationDefaultDuration];
-    
+
     [self setInputAllowedRegex:nil];
     [self setInputDisallowedRegex:nil];
     
