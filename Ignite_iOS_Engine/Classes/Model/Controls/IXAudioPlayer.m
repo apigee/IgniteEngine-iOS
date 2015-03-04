@@ -26,6 +26,15 @@ IX_STATIC_CONST_STRING kIXForceSoundReload = @"forceAudioReload.enabled";
 IX_STATIC_CONST_STRING kIXIsPlaying = @"isPlaying";
 IX_STATIC_CONST_STRING kIXDuration = @"duration";
 IX_STATIC_CONST_STRING kIXCurrentTime = @"now";
+
+IX_STATIC_CONST_STRING kIXSecondsDuration = @"seconds.duration";
+IX_STATIC_CONST_STRING kIXSecondsRemaining = @"seconds.remaining";
+IX_STATIC_CONST_STRING kIXSecondsElapsed = @"seconds.elapsed";
+
+IX_STATIC_CONST_STRING kIXTimeDuration = @"time.duration";
+IX_STATIC_CONST_STRING kIXTimeRemaining = @"time.remaining";
+IX_STATIC_CONST_STRING kIXTimeElapsed = @"time.elapsed";
+
 IX_STATIC_CONST_STRING kIXLastCreationError = @"error.message";
 
 // Sound Events
@@ -139,9 +148,43 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     {
         returnValue = [NSString ix_stringFromFloat:[[self audioPlayer] duration]];
     }
+   
     else if( [propertyName isEqualToString:kIXCurrentTime] )
     {
         returnValue = [NSString ix_stringFromFloat:[[self audioPlayer] currentTime]];
+    }
+    
+    else if( [propertyName isEqualToString:kIXSecondsDuration] )
+    {
+        returnValue = [NSString ix_stringFromFloat:[[self audioPlayer] duration]];
+    }
+    else if( [propertyName isEqualToString:kIXSecondsElapsed] )
+    {
+        returnValue = [NSString ix_stringFromFloat:[[self audioPlayer] currentTime]];
+    }
+    else if( [propertyName isEqualToString:kIXSecondsRemaining] )
+    {
+        NSInteger duration = [[self audioPlayer] duration];
+        NSInteger elapsed = [[self audioPlayer] currentTime];
+        NSInteger remaining = duration - elapsed;
+        returnValue = [NSString ix_stringFromFloat:remaining];
+    }
+    else if( [propertyName isEqualToString:kIXTimeDuration] )
+    {
+        NSInteger duration = [[self audioPlayer] duration];
+        return [self timeFormatted:duration];
+    }
+    else if( [propertyName isEqualToString:kIXTimeElapsed] )
+    {
+        NSInteger currentTime = (int) [[self audioPlayer] currentTime];
+        return [self timeFormatted:currentTime];
+    }
+    else if( [propertyName isEqualToString:kIXTimeRemaining] )
+    {
+        NSInteger currentTime = (int) [[self audioPlayer] currentTime];
+        NSInteger duration = (int) [[self audioPlayer] duration];
+        NSInteger remainingTime = duration - currentTime;
+        return [self timeFormatted:remainingTime];
     }
     else if( [propertyName isEqualToString:kIXLastCreationError] )
     {
@@ -203,6 +246,27 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [[self actionContainer] executeActionsForEventNamed:kIXFinished];
+}
+
+- (NSString *)timeFormatted:(NSInteger)totalSeconds
+{
+    
+    NSInteger seconds = totalSeconds % 60;
+    NSInteger minutes = (totalSeconds / 60) % 60;
+    NSInteger hours = totalSeconds / 3600;
+    
+    NSString* returnString;
+    
+    if( hours > 0 )
+    {
+        returnString = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",(long)hours, (long)minutes, (long)seconds];
+    }
+    else
+    {
+        returnString = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    }
+    
+    return returnString;
 }
 
 @end
