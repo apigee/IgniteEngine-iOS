@@ -18,6 +18,7 @@ PODS:
   - Color-Picker-for-iOS (2.0)
   - ColorUtils (1.1.3)
   - FontAwesome+iOS (0.1.4)
+  - IQKeyboardManager (3.2.1.1)
   - jetfire (0.1.2)
   - MMDrawerController (0.5.7):
     - MMDrawerController/Core (= 0.5.7)
@@ -70,6 +71,7 @@ DEPENDENCIES:
   - Color-Picker-for-iOS (~> 2.0)
   - ColorUtils (~> 1.1.1)
   - FontAwesome+iOS (~> 0.1)
+  - IQKeyboardManager
   - jetfire (~> 0.1)
   - MMDrawerController (~> 0.5.6)
   - RaptureXML (~> 1.0)
@@ -103,12 +105,13 @@ SPEC CHECKSUMS:
   AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
   AFOAuth2Client: 4f05d29e0a26c7ddf529dd7c4480af6ee1e982c6
   ALMoviePlayerController: bee05da71110002321ba4f87dc021e97348d7a6a
-  ApigeeiOSSDK: 6e6cce5a6bdea21bac364cfc8c906c3b78d2fad0
+  ApigeeiOSSDK: 8653fbd4330bbdd200da0ce672943c56489b19c3
   APParallaxHeader: 6e7cc27c052be34e1a5655dc2fab6c40eecbbe55
   CocoaLumberjack: 6186e27827fc574b50b16c10102fcc591437f06c
   Color-Picker-for-iOS: 2eec454aa6b24a8b7c2537da0f61c6ead936949e
   ColorUtils: d99b38d2a7abf81df1698477b19f895576578738
   FontAwesome+iOS: 816c20304edef4ca92835de669577005cbaaf261
+  IQKeyboardManager: 4e83eef847c6f5edbd670284e50c7e3d643ebdb5
   jetfire: b90ecf14bf066ade2e9ce4c83556edb4ef692161
   MMDrawerController: c3ab7a318ddc7e2bcd133139c3161af08c6e1197
   RaptureXML: b9b0aca9c68c684c189af73dd5e8f8fdeec74600
@@ -119,9 +122,9 @@ SPEC CHECKSUMS:
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6
   SVWebViewController: fbf917baa92744c54cfb89a52a4c056e409973a4
   TransitionKit: b573f93c422f6aedf7d40e93e7c2f202d1295063
-  TTTAttributedLabel: 8e1144745e8c02875247d622454b116d62c8e12a
+  TTTAttributedLabel: cc759a194a485c1fdf2446bf2ee7a55bada1f08d
   YLMoment: 5b7c49abe2f05fefe748022d0e858c0aef753ac9
   ZBarSDK: 3ed560856963f765b66d834f464590bd6ba13b44
   ZipArchive: c0062c1241a22fa28bf67e5dcdbc068226378ea3
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.35.0

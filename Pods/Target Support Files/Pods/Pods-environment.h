@@ -84,6 +84,13 @@
 #define COCOAPODS_VERSION_MINOR_FontAwesome_iOS 1
 #define COCOAPODS_VERSION_PATCH_FontAwesome_iOS 4
 
+// IQKeyboardManager
+#define COCOAPODS_POD_AVAILABLE_IQKeyboardManager
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 3.2.1.1.
+
 // MMDrawerController
 #define COCOAPODS_POD_AVAILABLE_MMDrawerController
 #define COCOAPODS_VERSION_MAJOR_MMDrawerController 0

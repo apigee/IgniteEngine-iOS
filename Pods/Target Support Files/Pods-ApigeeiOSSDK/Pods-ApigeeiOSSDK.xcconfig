@@ -1,0 +1,2 @@
+PODS_APIGEEIOSSDK_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.16/lib"
+PODS_APIGEEIOSSDK_OTHER_LDFLAGS = -framework "ApigeeiOSSDK" -framework "CoreLocation" -framework "CoreTelephony" -framework "Security" -framework "SystemConfiguration" -framework "UIKit"
