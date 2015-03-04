@@ -12,6 +12,7 @@
 #import "AFOAuth2Client.h"
 #import "IXImage.h"
 #import "IXPropertyContainer.h"
+#import "IXTableView.h"
 #import "IXEntityContainer.h"
 #import "IXAppManager.h"
 #import "IXLogger.h"

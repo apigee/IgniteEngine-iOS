@@ -28,7 +28,7 @@
 		13033FA2183ED8F200C29157 /* IXMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F53183ED8F200C29157 /* IXMessage.m */; };
 		13033FA4183ED8F200C29157 /* IXScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F57183ED8F200C29157 /* IXScanner.m */; };
 		13033FA5183ED8F200C29157 /* IXSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F59183ED8F200C29157 /* IXSocial.m */; };
-		13033FA6183ED8F200C29157 /* IXTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5B183ED8F200C29157 /* IXTable.m */; };
+		13033FA6183ED8F200C29157 /* IXTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5B183ED8F200C29157 /* IXTableView.m */; };
 		13033FA7183ED8F200C29157 /* IXText.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F5D183ED8F200C29157 /* IXText.m */; };
 		13033FA9183ED8F200C29157 /* IXTextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F61183ED8F200C29157 /* IXTextInput.m */; };
 		13033FAA183ED8F200C29157 /* IXToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 13033F63183ED8F200C29157 /* IXToggle.m */; };
@@ -206,8 +206,8 @@
 		13033F57183ED8F200C29157 /* IXScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXScanner.m; sourceTree = "<group>"; };
 		13033F58183ED8F200C29157 /* IXSocial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSocial.h; sourceTree = "<group>"; };
 		13033F59183ED8F200C29157 /* IXSocial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSocial.m; sourceTree = "<group>"; };
-		13033F5A183ED8F200C29157 /* IXTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTable.h; sourceTree = "<group>"; };
-		13033F5B183ED8F200C29157 /* IXTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTable.m; sourceTree = "<group>"; };
+		13033F5A183ED8F200C29157 /* IXTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTableView.h; sourceTree = "<group>"; };
+		13033F5B183ED8F200C29157 /* IXTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTableView.m; sourceTree = "<group>"; };
 		13033F5C183ED8F200C29157 /* IXText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXText.h; sourceTree = "<group>"; };
 		13033F5D183ED8F200C29157 /* IXText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXText.m; sourceTree = "<group>"; };
 		13033F60183ED8F200C29157 /* IXTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTextInput.h; sourceTree = "<group>"; };
@@ -614,8 +614,8 @@
 				6366D6DF18A95A7A000AEEA5 /* IXSlider.m */,
 				13033F58183ED8F200C29157 /* IXSocial.h */,
 				13033F59183ED8F200C29157 /* IXSocial.m */,
-				13033F5A183ED8F200C29157 /* IXTable.h */,
-				13033F5B183ED8F200C29157 /* IXTable.m */,
+				13033F5A183ED8F200C29157 /* IXTableView.h */,
+				13033F5B183ED8F200C29157 /* IXTableView.m */,
 				13033F5C183ED8F200C29157 /* IXText.h */,
 				13033F5D183ED8F200C29157 /* IXText.m */,
 				13033F60183ED8F200C29157 /* IXTextInput.h */,
@@ -1157,7 +1157,7 @@
 				CA00FA3B18C666EB0090263D /* UIImage+ResizeMagick.m in Sources */,
 				13033FA5183ED8F200C29157 /* IXSocial.m in Sources */,
 				6333614D18973DA6004F3433 /* IXDeleteAction.m in Sources */,
-				13033FA6183ED8F200C29157 /* IXTable.m in Sources */,
+				13033FA6183ED8F200C29157 /* IXTableView.m in Sources */,
 				13033F9B183ED8F200C29157 /* IXBaseControl.m in Sources */,
 				63C4ED5F1A8455EB005A13DE /* IXLocationManager.m in Sources */,
 				63C4F4DC1960F9CE00577B75 /* UIImage+ImageEffects.m in Sources */,

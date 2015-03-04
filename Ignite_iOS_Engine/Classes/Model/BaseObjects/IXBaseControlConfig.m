@@ -12,6 +12,7 @@
 #import "IXActionContainer.h"
 #import "IXPropertyContainer.h"
 #import "IXLogger.h"
+#import "IXTableView.h"
 
 static NSString* const kIXControlsSuffix = @"controls";
 

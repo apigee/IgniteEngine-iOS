@@ -12,7 +12,7 @@
 #import "IXCollection.h"
 #import "IXCustom.h"
 #import "IXProperty.h"
-#import "IXTable.h"
+#import "IXTableView.h"
 
 #import "IXUICollectionViewCell.h"
 #import "IXUITableViewCell.h"
@@ -338,7 +338,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     {
         if( [self isKindOfClass:[IXCollection class]] ) {
             [self setCellToCalculateSize:[[IXUICollectionViewCell alloc] initWithFrame:CGRectZero]];
-        } else if( [self isKindOfClass:[IXTable class]] ) {
+        } else if( [self isKindOfClass:[IXTableView class]] ) {
             [self setCellToCalculateSize:[[IXUITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil]];
         }
         

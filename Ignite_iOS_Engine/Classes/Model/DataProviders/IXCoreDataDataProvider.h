@@ -10,6 +10,7 @@
 #import <RestKit/CoreData.h>
 
 @class IXEntityContainer;
+@class IXTableView;
 
 @interface IXCoreDataDataProvider : IXDataRowDataProvider
 
