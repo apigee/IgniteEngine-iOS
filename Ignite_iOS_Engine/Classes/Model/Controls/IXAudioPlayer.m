@@ -6,19 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Plays sound. That's about it.
-*/
-
 #import "IXAudioPlayer.h"
 
 @import AVFoundation.AVAudioPlayer;
@@ -29,25 +16,29 @@
 #import "NSString+IXAdditions.h"
 
 // Sound Properties
-static NSString* const kIXSoundLocation = @"audioUrl";
-static NSString* const kIXVolume = @"volume";
-static NSString* const kIXNumberOfLoops = @"repeatCount";
-static NSString* const kIXAutoPlay = @"autoPlay.enabled";
-static NSString* const kIXForceSoundReload = @"forceAudioReload.enabled";
+IX_STATIC_CONST_STRING kIXSoundLocation = @"audioUrl";
+IX_STATIC_CONST_STRING kIXVolume = @"volume";
+IX_STATIC_CONST_STRING kIXNumberOfLoops = @"repeatCount";
+IX_STATIC_CONST_STRING kIXAutoPlay = @"autoPlay.enabled";
+IX_STATIC_CONST_STRING kIXForceSoundReload = @"forceAudioReload.enabled";
 
 // Sound Read-Only Properties
-static NSString* const kIXIsPlaying = @"isPlaying";
-static NSString* const kIXDuration = @"duration";
-static NSString* const kIXCurrentTime = @"now";
-static NSString* const kIXLastCreationError = @"error.message";
+IX_STATIC_CONST_STRING kIXIsPlaying = @"isPlaying";
+IX_STATIC_CONST_STRING kIXDuration = @"duration";
+IX_STATIC_CONST_STRING kIXCurrentTime = @"now";
+IX_STATIC_CONST_STRING kIXLastCreationError = @"error.message";
 
 // Sound Events
-static NSString* const kIXFinished = @"done";
+IX_STATIC_CONST_STRING kIXFinished = @"done";
 
 // Sound Functions
-static NSString* const kIXPlay = @"play";
-static NSString* const kIXPause = @"pause";
-static NSString* const kIXStop = @"stop";
+IX_STATIC_CONST_STRING kIXPlay = @"play";
+IX_STATIC_CONST_STRING kIXPause = @"pause";
+IX_STATIC_CONST_STRING kIXStop = @"stop";
+IX_STATIC_CONST_STRING kIXGoTo = @"goTo";
+
+// IXMediaPlayer Function parameters
+IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 
 @interface IXAudioPlayer () <AVAudioPlayerDelegate>
 
@@ -65,155 +56,7 @@ static NSString* const kIXStop = @"stop";
 
 @implementation IXAudioPlayer
 
-/*
-* Docs
-*
-*/
 
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param sound_location http:// or /path/to/sound.mp3<br>*(string)*
-    @param volume LOUD?<br>*(float)*
-    @param number_of_loops How many times do you want to loop it?<br>*(int)*
-    @param auto_play Automatically play the sound?<br>*(bool)*
-    @param force_sound_reload Clear cache and load fresh<br>*(bool)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-
- @param is_playing Are we playing anything?<br>*(bool)*
- @param duration Duration of the track<br>*(float)*
- @param current_time Time of playhead<br>*(float)*
- @param last_creation_error Whoopsie?<br>*(string)*
-
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-
-
-    @param finished Fires when the sound finishes playing
-
-*/
-
--(void)Events
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-
- @param play Plays sound file
- 
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundTest",
-    "function_name": "play"
-  }
-}
- 
- </pre>
- 
- @param pause Pauses sound file
- 
- <pre class="brush: js; toolbar: false;">
-
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundTest",
-    "function_name": "pause"
-  }
-}
- 
- </pre>
- 
- @param stop Stops playback
- 
- <pre class="brush: js; toolbar: false;">
- 
-{
-  "_type": "Function",
-  "on": "touch_up",
-  "attributes": {
-    "_target": "soundTest",
-    "function_name": "stop"
-  }
-} 
- 
- </pre>
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
-<pre class="brush: js; toolbar: false;">
-
-{
-  "_id": "soundTest",
-  "_type": "Sound",
-  "actions": [
-    {
-      "on": "finished",
-      "_type": "Alert",
-      "attributes": {
-        "title": "Finished",
-        "message": "Played sound: /resources/sounds/powerup.caf"
-      }
-    }
-  ],
-  "attributes": {
-    "sound_location": "/resources/sounds/powerup.caf",
-    "number_of_loops": 0,
-    "auto_play": false
-  }
-}
- 
-</pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)dealloc
 {
@@ -233,13 +76,13 @@ static NSString* const kIXStop = @"stop";
     [self setVolume:[[self propertyContainer] getFloatPropertyValue:kIXVolume defaultValue:1.0f]];
     [self setNumberOfLoops:[[self propertyContainer] getIntPropertyValue:kIXNumberOfLoops defaultValue:0]];
     [self setForceSoundReload:[[self propertyContainer] getBoolPropertyValue:kIXForceSoundReload defaultValue:NO]];
-
+    
     NSURL* soundURL = [[self propertyContainer] getURLPathPropertyValue:kIXSoundLocation basePath:nil defaultValue:nil];
     if( ![[self lastSoundURL] isEqual:soundURL] || [self audioPlayer] == nil || [self forceSoundReload] )
     {
         [self setLastSoundURL:soundURL];
         [self setShouldAutoPlay:[[self propertyContainer] getBoolPropertyValue:kIXAutoPlay defaultValue:YES]];
-
+        
         [self setLastCreationErrorMessage:nil];
         [[self audioPlayer] setDelegate:nil];
         [[self audioPlayer] stop];
@@ -266,6 +109,18 @@ static NSString* const kIXStop = @"stop";
     else if( [functionName isEqualToString:kIXStop] )
     {
         [[self audioPlayer] stop];
+    }
+    else if( [functionName compare:kIXGoTo] == NSOrderedSame )
+    {
+        float seconds = [parameterContainer getFloatPropertyValue:kIXGoToSeconds defaultValue:[[self audioPlayer] currentTime]];
+        if( [[self audioPlayer] isPlaying])
+        {
+            [[self audioPlayer] setCurrentTime:seconds];
+        }
+        else
+        {
+            [[self audioPlayer] setCurrentTime:seconds];
+        }
     }
     else
     {
