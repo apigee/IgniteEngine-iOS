@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-#import "IXTableView.h"
+#import "IXTable.h"
 
 #import "IXLayout.h"
 #import "IXUITableViewCell.h"
@@ -47,14 +47,14 @@ IX_STATIC_CONST_STRING kIXSetBackgroundSwipeWidth = @"setSwipeSize";
 // Non property constants
 IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
 
-@interface IXTableView () <UITableViewDataSource,UITableViewDelegate>
+@interface IXTable () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, assign) BOOL keepRowHighlightedOnSelect;
 
 @end
 
-@implementation IXTableView
+@implementation IXTable
 
 -(void)dealloc
 {
@@ -289,5 +289,9 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     [[self actionContainer] executeActionsForEventNamed:kIXEndedScrolling];
 }
 
+
+@end
+
+@implementation IXTableView
 
 @end
