@@ -34,18 +34,6 @@
     return self;
 }
 
--(IXPropertyContainer*)layoutPropertyContainerForCell
-{
-    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
-    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:@"margin" rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:@"padding" rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:@"width" rawValue:@"100%"],
-                                             [IXProperty propertyWithPropertyName:@"layout_type" rawValue:@"absolute"],
-                                             [IXProperty propertyWithPropertyName:@"vertical_scroll_enabled" rawValue:@"NO"],
-                                             [IXProperty propertyWithPropertyName:@"horizontal_scroll_enabled" rawValue:@"NO"]]];
-    return layoutPropertyContainer;
-}
-
 -(void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];

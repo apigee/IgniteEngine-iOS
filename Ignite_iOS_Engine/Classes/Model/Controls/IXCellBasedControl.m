@@ -350,6 +350,18 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     return [[[[self cellToCalculateSize] layoutControl] contentView] bounds].size;
 }
 
++(IXPropertyContainer*)layoutPropertyContainerForCells
+{
+    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
+    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:kIXMargin rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:kIXPadding rawValue:@"0"],
+                                             [IXProperty propertyWithPropertyName:kIXSizeW rawValue:@"100%"],
+                                             [IXProperty propertyWithPropertyName:kIXLayoutType rawValue:kIXLayoutTypeDefault],
+                                             [IXProperty propertyWithPropertyName:kIXVerticalScrollEnabled rawValue:@"NO"],
+                                             [IXProperty propertyWithPropertyName:kIXHorizontalScrollEnabled rawValue:@"NO"]]];
+    return layoutPropertyContainer;
+}
+
 -(IXLayout*)layoutForCell:(id<IXCellContainerDelegate>)cell
 {
     IXLayout* layoutControl = [[IXLayout alloc] init];
@@ -358,7 +370,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     [layoutControl setActionContainer:[[self actionContainer] copy]];
     
-    IXPropertyContainer* layoutPropertyContainer = [cell layoutPropertyContainerForCell];
+    IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
 
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXItemHeight] )
@@ -398,7 +410,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     
-    IXPropertyContainer* layoutPropertyContainer = [cell layoutPropertyContainerForCell];
+    IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
     [layoutControl setActionContainer:[[self actionContainer] copy]];
     
@@ -451,15 +463,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [layoutControl setParentObject:self];
         [layoutControl setNotifyParentOfLayoutUpdates:NO];
 
-        IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
-
-        [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:kIXMargin rawValue:@"0"],
-                                                 [IXProperty propertyWithPropertyName:kIXPadding rawValue:@"0"],
-                                                 [IXProperty propertyWithPropertyName:kIXSizeW rawValue:@"100%"],
-                                                 [IXProperty propertyWithPropertyName:kIXLayoutType rawValue:kIXLayoutTypeDefault],
-                                                 [IXProperty propertyWithPropertyName:kIXVerticalScrollEnabled rawValue:@"NO"],
-                                                 [IXProperty propertyWithPropertyName:kIXHorizontalScrollEnabled rawValue:@"NO"]]];
-
+        IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
         [layoutControl setPropertyContainer:layoutPropertyContainer];
         [layoutControl setActionContainer:[[self actionContainer] copy]];
         [layoutControl setSandbox:sectionHeaderSandbox];
