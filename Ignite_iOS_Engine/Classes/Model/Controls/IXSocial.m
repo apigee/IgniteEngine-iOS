@@ -20,32 +20,34 @@
 #import "SDWebImageManager.h"
 
 // Social Properties
-static NSString* const kIX_SharePlatform = @"platform"; // kIX_SharePlatform Types Accepted
-static NSString* const kIX_ShareText = @"text";
-static NSString* const kIX_ShareImage = @"image";
-static NSString* const kIX_ShareUrl = @"url";
+IX_STATIC_CONST_STRING kIX_SharePlatform = @"platform"; // kIX_SharePlatform Types Accepted
+IX_STATIC_CONST_STRING kIX_ShareText = @"text";
+IX_STATIC_CONST_STRING kIX_ShareImage = @"image";
+IX_STATIC_CONST_STRING kIX_ShareUrl = @"url";
 
 // kIX_SharePlatform Types
-static NSString* const kIX_SharePlatform_Facebook = @"facebook";
-static NSString* const kIX_SharePlatform_Twitter = @"twitter";
-static NSString* const kIX_SharePlatform_Flickr = @"flickr";
-static NSString* const kIX_SharePlatform_Vimeo = @"vimeo";
-static NSString* const kIX_SharePlatform_SinaWeibo = @"sinaWeibo";
+IX_STATIC_CONST_STRING kIX_SharePlatform_Facebook = @"facebook";
+IX_STATIC_CONST_STRING kIX_SharePlatform_Twitter = @"twitter";
+IX_STATIC_CONST_STRING kIX_SharePlatform_Flickr = @"flickr";
+IX_STATIC_CONST_STRING kIX_SharePlatform_Vimeo = @"vimeo";
+IX_STATIC_CONST_STRING kIX_SharePlatform_SinaWeibo = @"sinaWeibo";
 
 // Social Read-Only Properties
-static NSString* const kIX_Facebook_Available = @"isAllowed.facebook";
-static NSString* const kIX_Twitter_Available = @"isAllowed.twitter";
-static NSString* const kIX_Flickr_Available = @"isAllowed.flickr";
-static NSString* const kIX_Vimeo_Available = @"isAvailable.vimeo";
-static NSString* const kIX_Sina_Weibo_Available = @"isAllowed.sinaWeibo";
+IX_STATIC_CONST_STRING kIX_Facebook_Available = @"isAllowed.facebook";
+IX_STATIC_CONST_STRING kIX_Twitter_Available = @"isAllowed.twitter";
+IX_STATIC_CONST_STRING kIX_Flickr_Available = @"isAllowed.flickr";
+IX_STATIC_CONST_STRING kIX_Vimeo_Available = @"isAvailable.vimeo";
+IX_STATIC_CONST_STRING kIX_Sina_Weibo_Available = @"isAllowed.sinaWeibo";
+IX_STATIC_CONST_STRING kIXLastError = @"error.message";
 
 // Social Events
-static NSString* const kIX_Share_Done = @"success";
-static NSString* const kIX_Share_Cancelled = @"cancelled";
+IX_STATIC_CONST_STRING kIX_Share_Done = @"success";
+IX_STATIC_CONST_STRING kIX_Share_Error = @"error";
+IX_STATIC_CONST_STRING kIX_Share_Cancelled = @"cancelled";
 
 // Social Functions
-static NSString* const kIX_Present_Share_Controller = @"present"; // Params : "animated"
-static NSString* const kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "animated"
+IX_STATIC_CONST_STRING kIX_Present_Share_Controller = @"present"; // Params : "animated"
+IX_STATIC_CONST_STRING kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "animated"
 
 @interface  IXSocial ()
 
@@ -56,6 +58,7 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "a
 @property (nonatomic,strong) NSString* shareInitialText;
 @property (nonatomic,strong) UIImage* shareImage;
 @property (nonatomic,strong) NSURL* shareUrl;
+@property (nonatomic,strong) NSString* errorMessage;
 
 @end
 
@@ -147,6 +150,10 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "a
     {
         returnValue = [NSString ix_stringFromBOOL:[SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]];
     }
+    else if( [propertyName isEqualToString:kIXLastError] )
+    {
+        returnValue = [[self errorMessage] copy];
+    }
     else
     {
         returnValue = [super getReadOnlyPropertyValue:propertyName];
@@ -192,6 +199,11 @@ static NSString* const kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "a
             
             [[[IXAppManager sharedAppManager] rootViewController] presentViewController:[self composeViewController] animated:animated completion:nil];
         }
+    }
+    else
+    {
+        [self setErrorMessage:[NSString stringWithFormat:@"Service for %@ is unavailable.",[self shareServiceType]]];
+        [[self actionContainer] executeActionsForEventNamed:kIX_Share_Error];
     }
 }
 

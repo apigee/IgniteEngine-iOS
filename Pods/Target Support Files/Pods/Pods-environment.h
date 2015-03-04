@@ -76,13 +76,13 @@
 #define COCOAPODS_POD_AVAILABLE_ColorUtils
 #define COCOAPODS_VERSION_MAJOR_ColorUtils 1
 #define COCOAPODS_VERSION_MINOR_ColorUtils 1
-#define COCOAPODS_VERSION_PATCH_ColorUtils 2
+#define COCOAPODS_VERSION_PATCH_ColorUtils 3
 
 // FontAwesome+iOS
 #define COCOAPODS_POD_AVAILABLE_FontAwesome_iOS
 #define COCOAPODS_VERSION_MAJOR_FontAwesome_iOS 0
 #define COCOAPODS_VERSION_MINOR_FontAwesome_iOS 1
-#define COCOAPODS_VERSION_PATCH_FontAwesome_iOS 1
+#define COCOAPODS_VERSION_PATCH_FontAwesome_iOS 4
 
 // MMDrawerController
 #define COCOAPODS_POD_AVAILABLE_MMDrawerController
@@ -123,8 +123,8 @@
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability
 #define COCOAPODS_VERSION_MAJOR_Reachability 3
-#define COCOAPODS_VERSION_MINOR_Reachability 1
-#define COCOAPODS_VERSION_PATCH_Reachability 1
+#define COCOAPODS_VERSION_MINOR_Reachability 2
+#define COCOAPODS_VERSION_PATCH_Reachability 0
 
 // RestKit
 #define COCOAPODS_POD_AVAILABLE_RestKit
@@ -219,7 +219,7 @@
 // ZipArchive
 #define COCOAPODS_POD_AVAILABLE_ZipArchive
 #define COCOAPODS_VERSION_MAJOR_ZipArchive 1
-#define COCOAPODS_VERSION_MINOR_ZipArchive 3
+#define COCOAPODS_VERSION_MINOR_ZipArchive 4
 #define COCOAPODS_VERSION_PATCH_ZipArchive 0
 
 // jetfire
