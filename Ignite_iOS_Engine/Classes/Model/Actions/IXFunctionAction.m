@@ -95,7 +95,7 @@ static NSString* const kIXDuration = @"duration";
     
     if( [objectIDs count] && [functionName length] > 0 )
     {
-        if ([[objectIDs firstObject] isEqualToString:kIX_APP])
+        if ([[objectIDs firstObject] isEqualToString:kIXAppRef])
         {
             [[IXAppManager sharedAppManager] applyFunction:functionName parameters:[self parameterProperties]];
         }

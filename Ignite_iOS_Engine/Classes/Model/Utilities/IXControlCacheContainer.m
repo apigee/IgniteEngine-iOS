@@ -18,7 +18,8 @@
 #import "IXBaseControlConfig.h"
 
 static NSCache* sControlCacheContainerCache;
-static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlCacheContainerCache";
+IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlCacheContainerCache";
+IX_STATIC_CONST_STRING kIXViewJSONNode = @"view";
 
 @implementation IXControlCacheContainer
 
@@ -247,7 +248,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             
             if( [jsonObject isKindOfClass:[NSDictionary class]] )
             {
-                NSDictionary* controlJSONDictionary = jsonObject[kIX_VIEW];
+                NSDictionary* controlJSONDictionary = jsonObject[kIXViewJSONNode];
                 if( controlJSONDictionary == nil )
                 {
                     controlJSONDictionary = jsonObject;
@@ -272,7 +273,7 @@ static NSString* const kIXControlCacheContainerCacheName = @"com.ignite.ControlC
                 
                 IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDictionary[kIX_ACTIONS]];
                 NSArray* childConfigControls = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDictionary[kIX_CONTROLS]];
-                NSArray* dataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:controlJSONDictionary[kIX_datasources]];
+                NSArray* dataProviderConfigs = [IXBaseDataProviderConfig dataProviderConfigsWithJSONArray:controlJSONDictionary[kIX_DATASOURCES]];
                 
                 IXControlCacheContainer* controlCacheContainer = [[IXControlCacheContainer alloc] initWithControlType:controlType
                                                                                                            styleClass:controlStyleClass

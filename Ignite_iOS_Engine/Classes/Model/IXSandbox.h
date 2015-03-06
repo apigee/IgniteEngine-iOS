@@ -30,6 +30,12 @@
 @class IXBaseDataProvider;
 @class IXDataRowDataProvider;
 
+extern NSString* const kIXSelfControlRef;
+extern NSString* const kIXViewControlRef;
+extern NSString* const kIXSessionRef;
+extern NSString* const kIXAppRef;
+extern NSString* const kIXCustomContainerControlRef;
+
 @interface IXSandbox : NSObject <NSCoding>
 
 @property (nonatomic,weak) IXViewController* viewController;

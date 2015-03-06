@@ -233,7 +233,7 @@ IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wai
             if( shouldFireAction )
             {
                 CGFloat delay = [[action actionProperties] getFloatPropertyValue:kIX_DELAY defaultValue:0.0f];
-                CGFloat repeatDelay = [[action actionProperties] getFloatPropertyValue:kIX_REPEAT_DELAY defaultValue:0.0f];
+                CGFloat repeatDelay = [[action actionProperties] getFloatPropertyValue:kIXRepeatDelay defaultValue:0.0f];
 
                 if (repeatDelay > 0.0f)
                 {

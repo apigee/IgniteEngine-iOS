@@ -33,18 +33,15 @@ NSString* const kIX_DEBUG = @"debug";
 NSString* const kIX_RELEASE = @"release";
 
 NSString* const kIX_ID = @"_id";
-NSString* const kIX_APP = @"app";
 NSString* const kIX_TYPE = @"_type";
 NSString* const kIX_STYLE = @"_style";
-NSString* const kIX_SESSION = @"session";
 #warning Should we change this to "target.id" ? or "control.id"
 NSString* const kIX_TARGET = @"_target";
-NSString* const kIX_VIEW = @"view";
 NSString* const kIX_CONTROLS = @"controls";
 NSString* const kIX_ACTION = @"action";
 NSString* const kIX_ACTIONS = @"actions";
 NSString* const kIX_ATTRIBUTES = @"attributes";
-NSString* const kIX_datasources = @"datasources";
+NSString* const kIX_DATASOURCES = @"datasources";
 NSString* const kIX_VALUE = @"value";
 NSString* const kIX_ORIENTATION = @"orientation";
 NSString* const kIX_LANDSCAPE = @"landscape";
@@ -53,7 +50,6 @@ NSString* const kIX_IF = @"if";
 NSString* const kIX_ENABLED = @"enabled";
 NSString* const kIX_ON = @"on";
 NSString* const kIX_DELAY = @"delay";
-NSString* const kIX_REPEAT_DELAY = @"repeatDelay";
 NSString* const kIX_TRUE = @"true";
 NSString* const kIX_FALSE = @"false";
 NSString* const kIX_ZERO = @"0";

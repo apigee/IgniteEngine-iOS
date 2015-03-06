@@ -29,11 +29,12 @@
         propertyName = [parameterProperty getPropertyValue];
     }
     
-    if( [[self objectID] isEqualToString:@"session"] )
+    if( [[self objectID] isEqualToString:kIXSessionRef
+         ] )
     {
         returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:nil];
     }
-    else if( [[self objectID] isEqualToString:@"view"] )
+    else if( [[self objectID] isEqualToString:kIXViewControlRef] )
     {
         IXSandbox* sandbox = [[[[self property] propertyContainer] ownerObject] sandbox];
         IXViewController* viewController = [sandbox viewController];

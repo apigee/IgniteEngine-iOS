@@ -472,15 +472,15 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
     {
         NSString* objectID = [seperatedValue firstObject];
         NSString* propertyName = [seperatedValue lastObject];
-        if( [objectID isEqualToString:kIX_SESSION] )
+        if( [objectID isEqualToString:kIXSessionRef] )
         {
             returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
         }
-        else if( [objectID isEqualToString:kIX_APP] )
+        else if( [objectID isEqualToString:kIXAppRef] )
         {
             returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
         }
-        else if( [objectID isEqualToString:kIX_VIEW] )
+        else if( [objectID isEqualToString:kIXViewControlRef] )
         {
             returnValue = [[[self sandbox] viewController] getViewPropertyNamed:propertyName];
             if( returnValue == nil )

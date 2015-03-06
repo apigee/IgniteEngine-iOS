@@ -20,9 +20,11 @@
 
 #import "MMDrawerController.h"
 
-static NSString* const kIXSelfControlRef = @"$self";
-static NSString* const kIXViewControlRef = @"$view";
-static NSString* const kIXCustomContainerControlRef = @"$custom";
+NSString* const kIXSelfControlRef = @"$self";
+NSString* const kIXViewControlRef = @"$view";
+NSString* const kIXSessionRef = @"$session";
+NSString* const kIXAppRef = @"$app";
+NSString* const kIXCustomContainerControlRef = @"$custom";
 
 // NSCoding Key Constants
 static NSString* const kIXBasePathNSCodingKey = @"basePath";
