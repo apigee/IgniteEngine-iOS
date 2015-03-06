@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Apigee, Inc. All rights reserved.
 //
 
-#warning These warnings are really annoying.  We shouldnt use them for notes.  Use comments.  Warnings make it seem like something is wrong.  Dilutes the code base.  
-
 #import "IXAppManager.h"
 
 @import AVFoundation.AVAudioSession;
@@ -61,6 +59,7 @@ IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"logging.remote.enabled";
 IX_STATIC_CONST_STRING kIXLocationAccuracy = @"location.accuracy";
 IX_STATIC_CONST_STRING kIXShowsNavigationBar = @"navigationBar.enabled";
 IX_STATIC_CONST_STRING kIXPreloadImages = @"preloadImages.enabled";
+IX_STATIC_CONST_STRING kIXPreloadDrawers = @"preloadDrawers.enabled";
 IX_STATIC_CONST_STRING kIXApigeeOrgID = @"apigee.org";
 IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee.app";
 IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee.baseUrl";
@@ -463,7 +462,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                  [self showJSONAlertWithName:kIXDefaultView error:error];
                                              }
                                          }];
-    
+
+    BOOL preloadDrawers = [[self appProperties] getBoolPropertyValue:kIXPreloadDrawers defaultValue:NO];
     if( [[self appLeftDrawerViewPath] length] > 0 ) {
         [IXViewController createViewControllerWithPathToJSON:[self appLeftDrawerViewPath]
                                                    loadAsync:NO
@@ -475,6 +475,10 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                      [[self drawerController] setLeftDrawerViewController:viewController];
                                                      [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                      [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
+
+                                                     if( preloadDrawers ) {
+                                                         [viewController viewWillAppear:YES];
+                                                     }
                                                  }
                                                  else
                                                  {
@@ -494,6 +498,10 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                      [[self drawerController] setRightDrawerViewController:viewController];
                                                      [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                      [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];
+
+                                                     if( preloadDrawers ) {
+                                                         [viewController viewWillAppear:YES];
+                                                     }
                                                  }
                                                  else
                                                  {
