@@ -355,11 +355,11 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
             }
             else
             {
-                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXTitle defaultValue:nil]
+                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXTitle defaultValue:@""]
                                     forKey:MPMediaItemPropertyTitle];
-                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXArtist defaultValue:nil]
+                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXArtist defaultValue:@""]
                                     forKey:MPMediaItemPropertyArtist];
-                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXAlbum defaultValue:nil]
+                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXAlbum defaultValue:@""]
                                     forKey:MPMediaItemPropertyAlbumTitle];
             }
 
