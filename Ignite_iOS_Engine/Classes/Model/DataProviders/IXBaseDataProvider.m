@@ -30,6 +30,7 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 IX_STATIC_CONST_STRING kIXDataBaseUrl = @"baseUrl";
 IX_STATIC_CONST_STRING kIXDataPath = @"pathSuffix";
 IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled";
+IX_STATIC_CONST_STRING kIXAutoEncodeParams = @"autoEncodeParams.enabled";
 IX_STATIC_CONST_STRING kIXCacheID = @"cache.id";
 IX_STATIC_CONST_STRING kIXHTTPMethod = @"http.method";
 IX_STATIC_CONST_STRING kIXHTTPBody = @"http.body";
@@ -95,6 +96,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
+@property (nonatomic,assign,getter = shouldAutoEncodeParams) BOOL autoEncodeParams;
 @property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
 @property (nonatomic,copy) NSString* cacheID;
@@ -180,6 +182,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     [self setHttpMethod:[[self propertyContainer] getStringPropertyValue:kIXHTTPMethod defaultValue:@"GET"]];
     [self setHttpBody:[[self propertyContainer] getStringPropertyValue:kIXHTTPBody defaultValue:nil]];
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:kIXAutoLoad defaultValue:NO]];
+    [self setAutoEncodeParams:[[self propertyContainer] getBoolPropertyValue:kIXAutoEncodeParams defaultValue:YES]];
     [self setCacheID:[[self propertyContainer] getStringPropertyValue:kIXCacheID defaultValue:nil]];
     [self setAcceptedContentType:[[self propertyContainer] getStringPropertyValue:kIXAcceptedContentType defaultValue:nil]];
     [self setDataBaseURL:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
@@ -363,11 +366,11 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     NSDictionary* parameters = nil;
     if( [[self propertyContainer] getBoolPropertyValue:kIXParseParametsAsObject defaultValue:YES] )
     {
-        parameters = [[self requestParameterProperties] getAllPropertiesObjectValues];
+        parameters = [[self requestParameterProperties] getAllPropertiesObjectValues:[self shouldAutoEncodeParams]];
     }
     else
     {
-        parameters = [[self requestParameterProperties] getAllPropertiesStringValues];
+        parameters = [[self requestParameterProperties] getAllPropertiesStringValues:[self shouldAutoEncodeParams]];
     }
     
     NSString* imageControlRef = [[self fileAttachmentProperties] getStringPropertyValue:@"image.id" defaultValue:nil];
@@ -429,7 +432,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
         [request setHTTPBody:[[self httpBody] dataUsingEncoding:NSUTF8StringEncoding]];
     }
 
-    [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues]];
+    [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues:NO]];
     return request;
 }
 

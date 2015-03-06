@@ -256,7 +256,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     }];
 }
 
--(NSDictionary*)getAllPropertiesObjectValues
+-(NSDictionary*)getAllPropertiesObjectValues:(BOOL)urlEncodeStringValues
 {
     NSMutableDictionary* returnDictionary = nil;
     if( [[[self propertiesDict] allKeys] count] > 0 )
@@ -266,7 +266,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         for( NSString* propertyName in [[self propertiesDict] allKeys] )
         {
             NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:kIX_EMPTY_STRING];
-            
+            if( urlEncodeStringValues ) {
+                propertyValue = [propertyValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            }
+
             NSMutableArray* propertyNameComponents = [NSMutableArray arrayWithArray:[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR]];
             if( [propertyNameComponents count] > 1 )
             {
@@ -346,7 +349,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnDictionary;
 }
 
--(NSDictionary*)getAllPropertiesStringValues
+-(NSDictionary*)getAllPropertiesStringValues:(BOOL)urlEncodeValues
 {
     NSMutableDictionary* returnDictionary = nil;
     if( [[[self propertiesDict] allKeys] count] > 0 )
@@ -357,8 +360,12 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         for( NSString* propertyName in propertyNames )
         {
             NSString* propertyValue = [self getStringPropertyValue:propertyName defaultValue:kIX_EMPTY_STRING];
-            
-            [returnDictionary setObject:propertyValue forKey:propertyName];
+            if( urlEncodeValues ) {
+                propertyValue = [propertyValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            }
+            if( propertyValue ) {
+                [returnDictionary setObject:propertyValue forKey:propertyName];
+            }
         }
     }
     return returnDictionary;

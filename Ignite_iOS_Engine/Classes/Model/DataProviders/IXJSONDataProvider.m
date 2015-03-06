@@ -276,7 +276,7 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"responseTime";
                     id jsonToAppendObject = nil;
                     if( [parameterContainer getBoolPropertyValue:kIXParseJSONAsObject defaultValue:NO] )
                     {
-                        jsonToAppendObject = [[parameterContainer getAllPropertiesObjectValues] objectForKey:kIXJSONToAppend];
+                        jsonToAppendObject = [[parameterContainer getAllPropertiesObjectValues:NO] objectForKey:kIXJSONToAppend];
                     }
                     else
                     {
