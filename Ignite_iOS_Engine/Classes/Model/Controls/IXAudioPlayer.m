@@ -34,6 +34,7 @@ IX_STATIC_CONST_STRING kIXUseMetaData = @"autoMetaData";
 IX_STATIC_CONST_STRING kIXTitle = @"title";
 IX_STATIC_CONST_STRING kIXAlbum = @"album";
 IX_STATIC_CONST_STRING kIXArtist = @"artist";
+IX_STATIC_CONST_STRING kIXArtwork = @"artwork";
 
 // Sound Read-Only Properties
 IX_STATIC_CONST_STRING kIXIsPlaying = @"isPlaying";
@@ -361,6 +362,18 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
                                     forKey:MPMediaItemPropertyArtist];
                 [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXAlbum defaultValue:@""]
                                     forKey:MPMediaItemPropertyAlbumTitle];
+                [[self propertyContainer] getImageProperty:kIXArtwork
+                                              successBlock:^(UIImage *image) {
+                                                  if( image )
+                                                  {
+                                                      MPMediaItemArtwork* artwork = [[MPMediaItemArtwork alloc]initWithImage:image];
+                                                      [[self songInfo] setObject:artwork forKey:MPMediaItemPropertyArtwork];
+                                                      [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:[self songInfo]];
+                                                  }
+                                              } failBlock:^(NSError *error) {
+                                                  [[self songInfo] removeObjectForKey:MPMediaItemPropertyArtwork];
+                                              }];
+
             }
 
             [[self songInfo] setObject:[NSNumber numberWithDouble:CMTimeGetSeconds([[playerItem asset] duration])] forKey:MPMediaItemPropertyPlaybackDuration];
