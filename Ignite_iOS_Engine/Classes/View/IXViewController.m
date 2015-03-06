@@ -44,6 +44,9 @@ IX_STATIC_CONST_STRING kIXCacheId = @"cache.id";
 static NSString* const kIXSandboxNSCodingKey = @"sandbox";
 static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 
+NSString* IXViewControllerRemoteControlEventNotificationUserInfoEventKey = @"IXViewControllerRemoteControlEventNotificationUserInfoEventKey";
+NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewControllerDidRecieveRemoteControlEventNotification";
+
 @interface IXViewController ()
 
 @property (nonatomic,strong) IXSandbox* sandbox;
@@ -287,6 +290,19 @@ static NSString* const kIXContainerControlNSCodingKey = @"containerControl";
 {
     [self applySettings];
     [self layoutControls];
+}
+
+-(BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)receivedEvent {
+    dispatch_async(dispatch_get_main_queue(),^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:IXViewControllerDidRecieveRemoteControlEventNotification
+                                                            object:self
+                                                          userInfo:@{IXViewControllerRemoteControlEventNotificationUserInfoEventKey:receivedEvent}];
+    });
 }
 
 @end

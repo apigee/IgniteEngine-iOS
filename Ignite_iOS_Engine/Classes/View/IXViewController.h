@@ -15,6 +15,9 @@
 @class IXTextInput;
 @class IXViewController;
 
+extern NSString* IXViewControllerDidRecieveRemoteControlEventNotification;
+extern NSString* IXViewControllerRemoteControlEventNotificationUserInfoEventKey;
+
 typedef void(^IXViewControllerCreationCompletionBlock)(BOOL didSucceed, IXViewController* viewController, NSError* error);
 
 @interface IXViewController : UIViewController <NSCoding>
