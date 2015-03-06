@@ -30,6 +30,10 @@ IX_STATIC_CONST_STRING kIXVolume = @"volume";
 IX_STATIC_CONST_STRING kIXNumberOfLoops = @"repeatCount";
 IX_STATIC_CONST_STRING kIXAutoPlay = @"autoPlay.enabled";
 IX_STATIC_CONST_STRING kIXForceSoundReload = @"forceAudioReload.enabled";
+IX_STATIC_CONST_STRING kIXUseMetaData = @"autoMetaData";
+IX_STATIC_CONST_STRING kIXTitle = @"title";
+IX_STATIC_CONST_STRING kIXAlbum = @"album";
+IX_STATIC_CONST_STRING kIXArtist = @"artist";
 
 // Sound Read-Only Properties
 IX_STATIC_CONST_STRING kIXIsPlaying = @"isPlaying";
@@ -75,6 +79,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 
 @property (nonatomic,assign) BOOL forceSoundReload;
 @property (nonatomic,assign) BOOL shouldAutoPlay;
+@property (nonatomic,assign) BOOL useMetaData;
 @property (nonatomic,assign) float volume;
 @property (nonatomic,assign) NSInteger numberOfLoops;
 
@@ -132,6 +137,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 
     [self setVolume:[[self propertyContainer] getFloatPropertyValue:kIXVolume defaultValue:1.0f]];
     [self setForceSoundReload:[[self propertyContainer] getBoolPropertyValue:kIXForceSoundReload defaultValue:NO]];
+    [self setUseMetaData:[[self propertyContainer] getBoolPropertyValue:kIXUseMetaData defaultValue:NO]];
     if( [self player] ) {
         [[self player] setVolume:[self volume]];
     }
@@ -326,23 +332,35 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
         if( [self player] && ![[self player] error] )
         {
             AVPlayerItem *playerItem = [[self player] currentItem];
-            NSArray *metadataList = [[playerItem asset] commonMetadata];
-            for (AVMetadataItem *metaItem in metadataList) {
-                if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyTitle] ) {
-                    [[self songInfo] setObject:[metaItem value] forKey:MPMediaItemPropertyTitle];
-                } else if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyArtist] ) {
-                    [[self songInfo] setObject:[metaItem value] forKey:MPMediaItemPropertyArtist];
-                } else if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyAlbumName] ) {
-                    [[self songInfo] setObject:[metaItem value] forKey:MPMediaItemPropertyAlbumTitle];
-                } else if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyArtwork] ) {
-                    id value = [metaItem value];
-                    if( [value isKindOfClass:[NSData class]] ) {
-                        UIImage* image = [UIImage imageWithData:(NSData*)value];
-                        if( image ) {
-                            [[self songInfo] setObject:[[MPMediaItemArtwork alloc]initWithImage:image] forKey:MPMediaItemPropertyArtwork];
+            if( [self useMetaData] )
+            {
+                NSArray *metadataList = [[playerItem asset] commonMetadata];
+                for (AVMetadataItem *metaItem in metadataList) {
+                    if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyTitle] ) {
+                        [[self songInfo] setObject:[metaItem value] forKey:MPMediaItemPropertyTitle];
+                    } else if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyArtist] ) {
+                        [[self songInfo] setObject:[metaItem value] forKey:MPMediaItemPropertyArtist];
+                    } else if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyAlbumName] ) {
+                        [[self songInfo] setObject:[metaItem value] forKey:MPMediaItemPropertyAlbumTitle];
+                    } else if( [[metaItem commonKey] isEqualToString:AVMetadataCommonKeyArtwork] ) {
+                        id value = [metaItem value];
+                        if( [value isKindOfClass:[NSData class]] ) {
+                            UIImage* image = [UIImage imageWithData:(NSData*)value];
+                            if( image ) {
+                                [[self songInfo] setObject:[[MPMediaItemArtwork alloc]initWithImage:image] forKey:MPMediaItemPropertyArtwork];
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXTitle defaultValue:nil]
+                                    forKey:MPMediaItemPropertyTitle];
+                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXArtist defaultValue:nil]
+                                    forKey:MPMediaItemPropertyArtist];
+                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXAlbum defaultValue:nil]
+                                    forKey:MPMediaItemPropertyAlbumTitle];
             }
 
             [[self songInfo] setObject:[NSNumber numberWithDouble:CMTimeGetSeconds([[playerItem asset] duration])] forKey:MPMediaItemPropertyPlaybackDuration];
