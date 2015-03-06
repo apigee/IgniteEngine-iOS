@@ -217,7 +217,7 @@ IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wai
     UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
     for( IXBaseAction* action in actionsForEventName )
     {
-        BOOL enabled = [[action actionProperties] getBoolPropertyValue:kIX_ENABLED defaultValue:YES];
+        BOOL enabled = [action actionProperties] ? [[action actionProperties] getBoolPropertyValue:kIX_ENABLED defaultValue:YES] : YES;
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
             BOOL shouldFireAction = (value == nil || propertyName == nil );

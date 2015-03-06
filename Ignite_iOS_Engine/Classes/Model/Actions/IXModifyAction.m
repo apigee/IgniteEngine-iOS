@@ -17,6 +17,7 @@
 #import "IXLayout.h"
 #import "IXBaseControl.h"
 #import "IXBaseDataProvider.h"
+#import "IXProperty.h"
 
 // IXModifyAction Properties
 static NSString* const kIXDuration = @"duration";
@@ -30,9 +31,86 @@ static NSString* const kIXLinear = @"linear";
 
 static NSString* const kIXStaggerDelay = @"staggerDelay";
 
+// NSCoding Key Constants
+static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
+
+
+@interface IXPropertyContainer ()
+@property (nonatomic,strong) NSMutableDictionary* propertiesDict;
+@end
+
+@interface IXModifyAction ()
+@property (nonatomic,strong) NSMutableDictionary* objectIDAndParameters;
+@end
+
 @implementation IXModifyAction
 
--(void)modifyObjectID:(NSString *)objectID withOwnerObject:(IXBaseObject *)ownerObject withSandbox:(IXSandbox *)sandbox
+-(instancetype)initWithEventName:(NSString*)eventName
+                actionProperties:(IXPropertyContainer*)actionProperties
+             parameterProperties:(IXPropertyContainer*)parameterProperties
+              subActionContainer:(IXActionContainer*)subActionContainer
+{
+    self = [super initWithEventName:eventName actionProperties:actionProperties parameterProperties:parameterProperties subActionContainer:subActionContainer];
+    if( self )
+    {
+        if( ![actionProperties propertyExistsForPropertyNamed:kIX_TARGET] )
+        {
+            _objectIDAndParameters = [NSMutableDictionary dictionary];
+            NSDictionary* parameters = [[self parameterProperties] propertiesDict];
+            [parameters enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSArray* propertyArray, BOOL *stop) {
+                for( IXProperty* property in propertyArray ) {
+                    NSMutableArray* keySeperated = [[key componentsSeparatedByString:kIX_PERIOD_SEPERATOR] mutableCopy];
+                    if( [keySeperated count] > 1 ) {
+                        NSString* objectID = [keySeperated firstObject];
+                        [keySeperated removeObject:objectID];
+                        NSString* propertyName = [keySeperated componentsJoinedByString:kIX_PERIOD_SEPERATOR];
+                        if( [propertyName length] > 0 ) {
+                            [property setPropertyName:propertyName];
+                            NSMutableArray* parametersForObjectID = _objectIDAndParameters[objectID];
+                            if( parametersForObjectID ) {
+                                [parametersForObjectID addObject:property];
+                            } else {
+                                parametersForObjectID = [NSMutableArray arrayWithObject:property];
+                                [_objectIDAndParameters setObject:parametersForObjectID forKey:objectID];
+                            }
+                        }
+                    }
+                }
+            }];
+            [[self parameterProperties] removeAllProperties];
+        }
+    }
+    return self;
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    IXModifyAction* actionCopy = [super copyWithZone:zone];
+    if( actionCopy )
+    {
+        [actionCopy setObjectIDAndParameters:[[self objectIDAndParameters] copy]];
+    }
+    return actionCopy;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setObjectIDAndParameters:[aDecoder decodeObjectForKey:kIXObjectIDAndParameters]];
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+
+    [aCoder encodeObject:[self objectIDAndParameters] forKey:kIXObjectIDAndParameters];
+}
+
+-(void)modifyObjectID:(NSString *)objectID
 {
     if( [objectID isEqualToString:kIXSessionRef] )
     {
@@ -48,8 +126,9 @@ static NSString* const kIXStaggerDelay = @"staggerDelay";
     }
     else
     {
-        NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithID:objectID
-                                                                withSelfObject:ownerObject];
+        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
+        NSArray* objectsWithID = [[ownerObject sandbox] getAllControlsAndDataProvidersWithID:objectID
+                                                                              withSelfObject:ownerObject];
         for( IXBaseObject* baseObject in objectsWithID )
         {
             [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
@@ -64,17 +143,35 @@ static NSString* const kIXStaggerDelay = @"staggerDelay";
     }
 }
 
+-(void)performModifyUsingObjectIdsFromParameters
+{
+    __block BOOL needsLayout = NO;
+    [[self objectIDAndParameters] enumerateKeysAndObjectsUsingBlock:^(NSString* objectID, NSArray* parameters, BOOL *stop) {
+        [[self parameterProperties] addProperties:parameters replaceOtherPropertiesWithTheSameName:YES];
+        [self modifyObjectID:objectID];
+        if( !needsLayout )
+        {
+            needsLayout = [[self parameterProperties] hasLayoutProperties];
+        }
+        [[self parameterProperties] removeAllProperties];
+    }];
+
+    if( needsLayout )
+    {
+        [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
+    }
+
+    [self actionDidFinishWithEvents:nil];
+}
+
 -(void)performModify
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    
     if( [objectIDs count] > 0 && [self parameterProperties] != nil )
     {
-        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
-        IXSandbox* sandbox = [ownerObject sandbox];
         for( NSString* objectID in objectIDs )
         {
-            [self modifyObjectID:objectID withOwnerObject:ownerObject withSandbox:sandbox];
+            [self modifyObjectID:objectID];
         }
 
         if( [[self parameterProperties] hasLayoutProperties] )
@@ -83,6 +180,10 @@ static NSString* const kIXStaggerDelay = @"staggerDelay";
         }
         
         [self actionDidFinishWithEvents:nil];
+    }
+    else
+    {
+        [self performModifyUsingObjectIdsFromParameters];
     }
 }
 
@@ -93,8 +194,6 @@ static NSString* const kIXStaggerDelay = @"staggerDelay";
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
     if( [objectIDs count] && [self parameterProperties] != nil )
     {
-        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
-        IXSandbox* sandbox = [ownerObject sandbox];
         CGFloat delay = 0.0f;
         for( NSString* objectID in objectIDs )
         {
@@ -103,7 +202,7 @@ static NSString* const kIXStaggerDelay = @"staggerDelay";
                                   delay:delay
                                 options: animationCurve | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
                              animations:^{
-                                 [self modifyObjectID:objectID withOwnerObject:ownerObject withSandbox:sandbox];
+                                 [self modifyObjectID:objectID];
                              } completion:nil];
             delay += staggerDelay;
         }
@@ -114,6 +213,10 @@ static NSString* const kIXStaggerDelay = @"staggerDelay";
         }
         
         [self actionDidFinishWithEvents:nil];
+    }
+    else
+    {
+        [self performModifyUsingObjectIdsFromParameters];
     }
 }
 

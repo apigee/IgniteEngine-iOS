@@ -91,59 +91,6 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
     [aCoder encodeObject:[self subActionContainer] forKey:kIXSubActionContainerNSCodingKey];
 }
 
--(void)setEventName:(NSString *)eventName
-{
-//  Disabled when adding proper support for app-level actions -- can be deleted?
-//    [self unregisterForMatchingNotifications];
-    
-    _eventName = [eventName copy];
-
-//  Disabled when adding proper support for app-level actions -- can be deleted?
-//    [self registerForMatchingNotifications];
-}
-
-//  Disabled when adding proper support for app-level actions -- can be deleted?
-//-(void)registerForMatchingNotifications
-//{
-//    if( ![self didRegisterForNotifications] && [[self eventName] length] > 0 )
-//    {
-//        if( [[self eventName] isEqualToString:kIXAppEnteredForegroundEvent] )
-//        {
-//            [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                     selector:@selector(executeBecauseOfNotification:)
-//                                                         name:UIApplicationWillEnterForegroundNotification
-//                                                       object:nil];
-//        }
-//        else if( [[self eventName] isEqualToString:kIXAppEnteredBackgroundEvent] )
-//        {
-//            [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                     selector:@selector(executeBecauseOfNotification:)
-//                                                         name:UIApplicationDidEnterBackgroundNotification
-//                                                       object:nil];
-//        }
-//        
-//        [self setDidRegisterForNotifications:YES];
-//    }
-//}
-//
-//  Disabled when adding proper support for app-level actions -- can be deleted?
-//
-//-(void)unregisterForMatchingNotifications
-//{
-//    if( [self didRegisterForNotifications] && [[self eventName] length] > 0 )
-//    {
-//        if( [[self eventName] isEqualToString:kIXAppEnteredForegroundEvent] )
-//        {
-//            [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
-//        }
-//        else if( [[self eventName] isEqualToString:kIXAppEnteredBackgroundEvent] )
-//        {
-//            [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-//        }
-//    }
-//    [self setDidRegisterForNotifications:NO];
-//}
-
 +(instancetype)actionWithRemoteNotificationInfo:(NSDictionary *)remoteNotificationInfo
 {
     IXBaseAction* action = nil;
