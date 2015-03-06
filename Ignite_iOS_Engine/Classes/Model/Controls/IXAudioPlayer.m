@@ -97,6 +97,10 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
+    AVAudioSession *sharedSession = [AVAudioSession sharedInstance];
+    [sharedSession setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [sharedSession setActive:YES error:nil];
+    
     [self registerForNotifications];
 }
 
