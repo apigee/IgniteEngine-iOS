@@ -47,7 +47,7 @@ IX_STATIC_CONST_STRING kIXInputRegexDisAllowed = @"regex.disallowed";
 IX_STATIC_CONST_STRING kIXInputMax = @"maxChars";
 IX_STATIC_CONST_STRING kIXInputTransform = @"text.transform";
 
-#warning not implemented?
+// TODO: not implemented?
 IX_STATIC_CONST_STRING kIXFilterDatasource = @"filter_datasource"; // not implemented
 
 // IXTextInput Attribute Allowed Values

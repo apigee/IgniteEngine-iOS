@@ -13,7 +13,7 @@ IX_STATIC_CONST_STRING kIXActivityIndicatorStyle = @"size";
 IX_STATIC_CONST_STRING kIXActivityIndicatorColor = @"color"; // Note: Setting this overrides the color set by kIXActivityIndicatorStyle
 
 // Attribute Accepted Values
-#warning TO BE DEPRECATED kIXActivityIndicatorStyleGray
+//TODO: TO BE DEPRECATED kIXActivityIndicatorStyleGray
 IX_STATIC_CONST_STRING kIXActivityIndicatorStyleGray = @"gray";
 #pragma end
 

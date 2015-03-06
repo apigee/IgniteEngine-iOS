@@ -8,7 +8,7 @@
 
 #import "IXDataRowDataProvider.h"
 
-#warning These haven't been renamed yet
+// TODO: These haven't been renamed yet
 
 // IXDataRowDataProvider Attributes
 IX_STATIC_CONST_STRING kIXDataRowBasePath = @"data.basepath";
@@ -27,7 +27,7 @@ IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
 IX_STATIC_CONST_STRING kIXCount = @"count_rows";
 
 // Non Attribute constants.
-#warning We probably should rename dataRow to something more consistent. Maybe indexPath.row?
+//TODO:: We probably should rename dataRow to something more consistent. Maybe indexPath.row?
 IX_STATIC_CONST_STRING kIXDataRow = @"dataRow.";
 IX_STATIC_CONST_STRING kIXTotal = @"total.";
 

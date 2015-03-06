@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 // 
 
-#warning This will probably break if we try and add two Camera controls <running> at the same time. Need to find a graceful way of deallocating previously started IXCameras.
-#warning Todo: requires a read only accessor for the image. Would properly require a function to add to IXImage to update image with UIImage
+// TODO: This will probably break if we try and add two Camera controls <running> at the same time. Need to find a graceful way of deallocating previously started IXCameras.
+// TODO: Todo: requires a read only accessor for the image. Would properly require a function to add to IXImage to update image with UIImage
 
 
 #import "IXCamera.h"

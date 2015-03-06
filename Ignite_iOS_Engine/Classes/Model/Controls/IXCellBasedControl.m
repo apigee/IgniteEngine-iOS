@@ -55,7 +55,7 @@ IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white"; // scrollBars.st
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default"; // scrollBars.style
 
 // Returns
-#warning Need to enhance this and include total item count, visible item count, number of items per section
+// TODO: Need to enhance this and include total item count, visible item count, number of items per section
 IX_STATIC_CONST_STRING kIXRowCount = @"data.count";
 
 // Functions
@@ -63,7 +63,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pullToRefresh.start";
 IX_STATIC_CONST_STRING kIXPullToRefreshEnd = @"pullToRefresh.end";
 
 // Events
-#warning Need pull to refresh start and end events
+// TODO: Need pull to refresh start and end events
 IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh";
 
 @interface IXSandbox ()

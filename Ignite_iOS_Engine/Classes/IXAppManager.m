@@ -91,7 +91,7 @@ IX_STATIC_CONST_STRING kIXDestorySession = @"destroySession";
 IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawerController.l.toggle";
 IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawerController.r.toggle";
 
-#warning These should be cleaned up and adjusted to drawerController.open.enable and drawerController.close.disable and drawerController.all.enable etc.
+// TODO: These should be cleaned up and adjusted to drawerController.open.enable and drawerController.close.disable and drawerController.all.enable etc.
 IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawerController.enabled"; // Function name must have one of the following suffixes.
 IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawerController.disable"; // Function name must have one of the following suffixes.
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";

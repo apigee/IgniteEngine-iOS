@@ -48,7 +48,7 @@ IX_STATIC_CONST_STRING kIXGIFDuration = @"animatedGif.duration";
 IX_STATIC_CONST_STRING kIXFlipHorizontal = @"transform.flip.h";
 IX_STATIC_CONST_STRING kIXFlipVertical = @"transform.flip.v";
 IX_STATIC_CONST_STRING kIXRotate = @"transform.rotate";
-#warning should support loading a binary string into image (bool property?)
+// should support loading a binary string into image (bool property?)
 IX_STATIC_CONST_STRING kIXImageBinary = @"binaryString";
 
 // IXImage Manipulation -- use a resizedImageByMagick mask for these

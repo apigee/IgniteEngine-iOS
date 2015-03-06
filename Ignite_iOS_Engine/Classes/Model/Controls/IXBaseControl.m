@@ -17,7 +17,7 @@
 #import "UIImage+ResizeMagick.h"
 #import "Ignite_iOS_Engine-Swift.h"
 
-#warning Clean this up and organize it into Attributes/Returns/Events/Functions
+// TODO: Clean this up and organize it into Attributes/Returns/Events/Functions
 
 // Attributes
 IX_STATIC_CONST_STRING kIXAlpha = @"alpha";
@@ -40,8 +40,6 @@ IX_STATIC_CONST_STRING kIXShadowAlpha = @"shadow.alpha";
 IX_STATIC_CONST_STRING kIXShadowColor = @"shadow.color";
 IX_STATIC_CONST_STRING kIXShadowOffsetRight = @"shadow.offset.r";
 IX_STATIC_CONST_STRING kIXShadowOffsetDown = @"shadow.offset.b";
-#warning Suspect the following "visible" is not required
-// IX_STATIC_CONST_STRING kIXVisible = @"visible"; // pretty sure this is used in IXControlLayoutInfo only
 IX_STATIC_CONST_STRING kIXPanReset = @"pan.resetOnRelease.enabled";
 IX_STATIC_CONST_STRING kIXPanSnap = @"pan.snapToBounds.enabled";
 IX_STATIC_CONST_STRING kIXTapCount = @"tap.count";
@@ -80,7 +78,7 @@ IX_STATIC_CONST_STRING kIXTouch = @"touch";
 IX_STATIC_CONST_STRING kIXTouchUp = @"touchUp";
 IX_STATIC_CONST_STRING kIXTouchCancelled = @"touchCancelled";
 IX_STATIC_CONST_STRING kIXTap = @"tap";
-#warning Should support events on swipe.<direction> rather than this or make swipe.direction a read-only property
+// TODO: Should support events on swipe.<direction> rather than this or make swipe.direction a read-only property
 IX_STATIC_CONST_STRING kIXSwipe = @"swipe";
 IX_STATIC_CONST_STRING kIXSwipeDirection = @"swipe.direction";
 IX_STATIC_CONST_STRING kIXPan = @"pan";
@@ -92,7 +90,7 @@ IX_STATIC_CONST_STRING kIXSnapshotFailed = @"snapshot.error";
 
 // Functions
 IX_STATIC_CONST_STRING kIXSpin = @"spin";
-#warning Suspect the following "start_animation" is not required
+// TODO: Suspect the following "start_animation" is not required
 IX_STATIC_CONST_STRING kIXStartAnimation = @"start_animation"; // deprecate?
 IX_STATIC_CONST_STRING kIXStopAnimation = @"stopAnimating";
 IX_STATIC_CONST_STRING kIXSnapshot = @"takeSnapshot";
@@ -249,7 +247,6 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
                                                                              defaultValue:kIXBackgroundImageScaleCover];
         
         static NSDictionary *sIXBackgroundImageScaleFormatDictionary = nil;
-# warning Not sure a dispatch_once is going to work properly here? Means you can never change it
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             sIXBackgroundImageScaleFormatDictionary = @{kIXBackgroundImageScaleCover: @"%.0fx%.0f^",

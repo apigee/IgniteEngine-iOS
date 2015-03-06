@@ -35,7 +35,7 @@ NSString* const kIX_RELEASE = @"release";
 NSString* const kIX_ID = @"_id";
 NSString* const kIX_TYPE = @"_type";
 NSString* const kIX_STYLE = @"_style";
-#warning Should we change this to "target.id" ? or "control.id"
+// TODO: Should we change this to "target.id" ? or "control.id"
 NSString* const kIX_TARGET = @"_target";
 NSString* const kIX_CONTROLS = @"controls";
 NSString* const kIX_ACTION = @"action";
