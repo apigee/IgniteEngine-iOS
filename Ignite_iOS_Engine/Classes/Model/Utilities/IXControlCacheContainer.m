@@ -19,7 +19,6 @@
 
 static NSCache* sControlCacheContainerCache;
 IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlCacheContainerCache";
-IX_STATIC_CONST_STRING kIXViewJSONNode = @"view";
 
 @implementation IXControlCacheContainer
 
@@ -248,7 +247,7 @@ IX_STATIC_CONST_STRING kIXViewJSONNode = @"view";
             
             if( [jsonObject isKindOfClass:[NSDictionary class]] )
             {
-                NSDictionary* controlJSONDictionary = jsonObject[kIXViewJSONNode];
+                NSDictionary* controlJSONDictionary = jsonObject[kIXViewControlRef];
                 if( controlJSONDictionary == nil )
                 {
                     controlJSONDictionary = jsonObject;

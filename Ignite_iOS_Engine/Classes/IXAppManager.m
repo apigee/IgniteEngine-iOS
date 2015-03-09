@@ -39,10 +39,10 @@
 #import "IXLocationManager.h"
 
 // Top Level Containers
-IX_STATIC_CONST_STRING kIXAppActions = @"app.actions";
-IX_STATIC_CONST_STRING kIXAppAttributes = @"app.attributes";
-IX_STATIC_CONST_STRING kIXAppDataProviders = @"app.datasources";
-IX_STATIC_CONST_STRING kIXSessionDefaults = @"session.defaults";
+IX_STATIC_CONST_STRING kIXAppActions = @"$app.actions";
+IX_STATIC_CONST_STRING kIXAppAttributes = @"$app.attributes";
+IX_STATIC_CONST_STRING kIXAppDataProviders = @"$app.datasources";
+IX_STATIC_CONST_STRING kIXSessionDefaults = @"$session.defaults";
 
 // App Attributes
 IX_STATIC_CONST_STRING kIXAppMode = @"mode";
@@ -554,9 +554,6 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     {
         if( [[self drawerController] leftDrawerViewController] )
         {
-            
-
-            
             [[self drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
         }
     }

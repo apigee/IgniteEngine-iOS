@@ -33,7 +33,6 @@
  | capitalize      | [[?:capitalize]]                        | String value Capitalized                                                         |
  | currency        | [[?:currency(GBP)]]                     | String value in currency form (Defaults to USD, can specify ISO 4217 Alpha Code) |
  | distance        | [[app:distance(lat1:long1,lat2:long2)]] | Distance from lat1,long1 to lat2,long2.                                          |
- | session.destroy | [[app:session.destroy]]                 | Removes all session attributes from memory. Returns nil.                         |
  | from_base64     | [[?:from_base64]]                       | Base64 value to string                                                           |
  | is_empty        | [[?:is_empty]]                          | True if the string is empty (aka "")                                             |
  | is_nil          | [[?:is_nil]]                            | True if the string is nil                                                        |
@@ -83,7 +82,6 @@
 IX_STATIC_CONST_STRING kIXCapitalize = @"capitalize";               // [[?:capitalize]]                         -> String value Capitalized
 IX_STATIC_CONST_STRING kIXCurrency = @"currency";                   // [[?:currency(GBP)]]                      -> String value in currency form (*USD*, or specify ISO 4217)
 IX_STATIC_CONST_STRING kIXDistance = @"distance";                   // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
-IX_STATIC_CONST_STRING kIXDestroySession = @"session.destroy";      // [[app:session.destroy]]                  -> Removes all session attributes from memory. Returns nil.
 IX_STATIC_CONST_STRING kIXToBase64 = @"base64.encode";              // [[?:to_base64]]                          -> String to Base64 value
 IX_STATIC_CONST_STRING kIXFromBase64 = @"base64.decode";            // [[?:from_base64]]                        -> Base64 value to string
 IX_STATIC_CONST_STRING kIXIsEmpty = @"isEmpty";                     // [[?:is_empty]]                           -> True if the string is empty (aka "")
@@ -189,12 +187,6 @@ static IXBaseShortCodeFunction const kIXDistanceFunction = ^NSString*(NSString* 
         returnString = [formatter stringFromDistance:[point1 distanceFromLocation:point2]];
     }
     return returnString;
-};
-
-static IXBaseShortCodeFunction const kIXDestroySessionFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
-    [[[IXAppManager sharedAppManager] sessionProperties] removeAllProperties];
-    [[IXAppManager sharedAppManager] storeSessionProperties];
-    return nil;
 };
 
 static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* stringToDecode,NSArray* parameters){
@@ -349,7 +341,6 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
     dispatch_once(&onceToken, ^{
         sIXFunctionDictionary = @{  kIXCapitalize:        [kIXCapitalizeFunction copy],
                                     kIXCurrency:          [kIXCurrencyFunction copy],
-                                    kIXDestroySession:    [kIXDestroySessionFunction copy],
                                     kIXDistance:          [kIXDistanceFunction copy],
                                     kIXFromBase64:        [kIXFromBase64Function copy],
                                     kIXIsEmpty:           [kIXIsEmptyFunction copy],
