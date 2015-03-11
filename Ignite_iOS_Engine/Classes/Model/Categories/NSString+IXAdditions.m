@@ -102,12 +102,7 @@ static NSString* const kIXFloatFormat = @"%f";
 {
     if (string.length > 0 && toDateFormat.length > 0)
     {
-        BOOL fromNow = false;
-        if ([toDateFormat hasSuffix:@":fromNow"])
-        {
-            fromNow = true;
-            toDateFormat = [toDateFormat substringToIndex:[toDateFormat length] - 8]; //8 characters to remove the :fromNow from string
-        }
+        BOOL fromNow = ([toDateFormat isEqualToString:@"fromNow"]);
         
         YLMoment* moment = nil;
         if ( [fromDateFormat length] > 0)
@@ -134,7 +129,11 @@ static NSString* const kIXFloatFormat = @"%f";
         }
         else
         {
-            return [moment format:toDateFormat];
+            if (fromNow) {
+                return [moment fromNow];
+            } else {
+                return [moment format:toDateFormat];
+            }
         }
     }
     else
