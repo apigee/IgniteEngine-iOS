@@ -215,14 +215,18 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     if( [functionName isEqualToString:kIXPlay] )
     {
         [self play];
+        [[self actionContainer] executeActionsForEventNamed:kIXPlayPressed];
     }
     else if( [functionName isEqualToString:kIXPause] )
     {
         [self pause];
+        [[self actionContainer] executeActionsForEventNamed:kIXPausePressed];
     }
     else if( [functionName isEqualToString:kIXStop] )
     {
         [self pause];
+        [[self actionContainer] executeActionsForEventNamed:kIXStopPressed];
+
     }
     else if( [functionName compare:kIXGoTo] == NSOrderedSame )
     {
