@@ -43,6 +43,9 @@ IX_STATIC_CONST_STRING kIXZoomScale = @"zoomScale";
 IX_STATIC_CONST_STRING kIXColorGradientTop = @"gradient.top";
 IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
 
+IX_STATIC_CONST_STRING kIXStartedScrolling = @"didBeginScrolling";
+IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
+
 @interface IXLayout () <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL zoomEnabled;
@@ -76,7 +79,7 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
     _horizontalScrollEnabled = YES;
     _topLevelViewControllerLayout = NO;
     _gradientLayer = [CAGradientLayer layer];
-
+    
     _scrollView = [[IXClickableScrollView alloc] initWithFrame:CGRectZero];
     [_scrollView setDelegate:self];
     [_scrollView setParentControl:self];
@@ -173,12 +176,12 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
     [super layoutControlContentsInRect:rect];
     
     [LayoutEngine layout:self layoutRect:rect];
-
+    
     [self.overlayView removeFromSuperview];
     self.overlayView = nil;
     [self.visualEffectView removeFromSuperview];
     self.visualEffectView = nil;
-
+    
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXBlurBackground] )
     {
         NSString* blurStyle = [[self propertyContainer] getStringPropertyValue:kIXBlurBackground defaultValue:kIX_DEFAULT];
@@ -192,19 +195,19 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
         } else {
             blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         }
-
+        
         //Header blur
         [self setVisualEffectView:[[UIVisualEffectView alloc] initWithEffect:blurEffect]];
         self.visualEffectView.frame = _scrollViewContentView.bounds;
-
+        
         [self setOverlayView:[[UIView alloc] initWithFrame:_scrollViewContentView.bounds]];
         self.overlayView.alpha = [[self propertyContainer] getFloatPropertyValue:kIXBlurTintAlpha defaultValue:0.0f];
         self.overlayView.backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBlurTintColor defaultValue:[UIColor clearColor]];
-
+        
         [_scrollViewContentView insertSubview:[self overlayView] atIndex:0];
         [_scrollViewContentView insertSubview:[self visualEffectView] atIndex:0];
     }
-
+    
     if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
     {
         if( [[self gradientLayer] superlayer] != [[self scrollView] layer] )
@@ -236,6 +239,16 @@ IX_STATIC_CONST_STRING kIXColorGradientBottom = @"gradient.bottom";
     }
     
     [super applyFunction:functionName withParameters:parameterContainer];
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXStartedScrolling];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXEndedScrolling];
 }
 
 @end
