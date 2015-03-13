@@ -9,18 +9,18 @@
 #import "IXConstants.h"
 
 // APP LEVEL NOTIFICATIONS
-NSString* const kIXAppWillResignActiveEvent = @"app_will_resign_active";
-NSString* const kIXAppDidEnterBackgroundEvent = @"app_did_enter_background";
-NSString* const kIXAppWillEnterForegroundEvent = @"app_will_enter_foreground";
-NSString* const kIXAppDidBecomeActiveEvent = @"app_did_become_active";
-NSString* const kIXAppWillTerminateEvent = @"app_will_terminate";
-NSString* const kIXAppRegisterForRemoteNotificationsSuccess = @"app_register_for_notifications_success";
-NSString* const kIXAppRegisterForRemoteNotificationsFailed = @"app_register_for_notifications_failed";
-NSString* const kIXPushRecievedEvent = @"push_recieved";
-NSString* const kIXCustomURLSchemeOpened = @"custom_url_scheme_opened";
-NSString* const kIXLocationAuthChanged = @"location_auth_changed";
-NSString* const kIXLocationLocationUpdated = @"location_updated";
-NSString* const kIXMicrophoneAuthChanged = @"microphone_auth_changed";
+NSString* const kIXAppWillResignActiveEvent = @"willResignActive";
+NSString* const kIXAppDidEnterBackgroundEvent = @"didEnterBackground";
+NSString* const kIXAppWillEnterForegroundEvent = @"willEnterForeground";
+NSString* const kIXAppDidBecomeActiveEvent = @"didBecomeActive";
+NSString* const kIXAppWillTerminateEvent = @"willTerminate";
+NSString* const kIXAppRegisterForRemoteNotificationsSuccess = @"push.register.success";
+NSString* const kIXAppRegisterForRemoteNotificationsFailed = @"push.register.error";
+NSString* const kIXPushRecievedEvent = @"push.received";
+NSString* const kIXCustomURLSchemeOpened = @"customUrl.opened";
+NSString* const kIXLocationAuthChanged = @"location.auth.changed";
+NSString* const kIXLocationLocationUpdated = @"location.changed";
+NSString* const kIXMicrophoneAuthChanged = @"mic.auth.changed";
 
 // SPECIAL
 NSString* const kIX_CONTROL_CLASS_NAME_FORMAT = @"IX%@";
