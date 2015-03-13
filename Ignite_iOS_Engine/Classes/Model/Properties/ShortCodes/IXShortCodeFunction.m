@@ -6,59 +6,6 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/30/2015
-//
-//  Copyright (c) 2015 Apigee. All rights reserved.
-//
-/*  -----------------------------  */
-/**
- 
- ###    Shortcodes are awesome.
- 
- <a href="#attributes">Attributes</a>,
- <a href="#readonly">Read-Only</a>,
- <a href="#inherits">Inherits</a>,
- <a href="#events">Events</a>,
- <a href="#functions">Functions</a>,
- <a href="#example">Example JSON</a>
- 
- ##  <a name="attributes">Shortcodes</a>
- 
- | Name            | Format                                  | Description                                                                      |
- |-----------------|-----------------------------------------|----------------------------------------------------------------------------------|
- | capitalize      | [[?:capitalize]]                        | String value Capitalized                                                         |
- | currency        | [[?:currency(GBP)]]                     | String value in currency form (Defaults to USD, can specify ISO 4217 Alpha Code) |
- | distance        | [[app:distance(lat1:long1,lat2:long2)]] | Distance from lat1,long1 to lat2,long2.                                          |
- | from_base64     | [[?:from_base64]]                       | Base64 value to string                                                           |
- | is_empty        | [[?:is_empty]]                          | True if the string is empty (aka "")                                             |
- | is_nil          | [[?:is_nil]]                            | True if the string is nil                                                        |
- | is_nil_or_empty | [[?:is_nil_or_empty]]                   | True if the string is empty or nil                                               |
- | is_not_empty    | [[?:is_not_empty]]                      | True if the string is not empty                                                  |
- | is_not_nil      | [[?:is_not_nil]]                        | True if the string is not nil                                                    |
- | length          | [[?:length]]                            | Length of the attributes string                                                  |
- | moment          | [[?:moment(toDateFormat)]]              | String as date with the given format (can have 2 params)                         |
- | monogram        | [[?:monogram]]                          | String monogram value                                                            |
- | now             | [[app:now]]                             | Current date as string (can specify dateFormat)                                  |
- | random_number   | [[app:random_number(upBounds)]]         | Random number generator (can specify lower bounds)                               |
- | to_base64       | [[?:to_base64]]                         | String to Base64 value                                                           |
- | to_md5          | [[?:to_md5]]                            | String to MD5 hashed value                                                       |
- | to_uppercase    | [[?:to_uppercase]]                      | String value in UPPERCASE                                                        |
- | to_lowercase    | [[?:to_lowercase]]                      | String value in lowercase                                                        |
- | url_encode      | [[?:url_encode]]                        | URL encode string                                                                |
- | truncate        | [[?:truncate(toIndex)]]                 | Trucates the string to specified index                                           |
- 
- 
- 
- 
- */
-//
-//  [/Documentation]
-/*  -----------------------------  */
-
 #import "IXShortCodeFunction.h"
 
 @import CoreLocation;
@@ -101,6 +48,7 @@ IX_STATIC_CONST_STRING kIXToUppercase = @"uppercase";               // [[?:to_up
 IX_STATIC_CONST_STRING kIXToLowercase = @"lowercase";               // [[?:to_lowercase]]                       -> String value in lowercase
 IX_STATIC_CONST_STRING kIXURLEncode = @"url.encode";                // [[?:url_encode]]                         -> URL encode string
 IX_STATIC_CONST_STRING kIXURLDecode = @"url.decode";                // [[?:url_decode]]                         -> URL decode string
+IX_STATIC_CONST_STRING kIXTimeFromSeconds = @"timeFromSeconds";     // [[?:timeFromSeconds]]                    -> Trucates the string to specified index
 IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
 
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
@@ -327,6 +275,25 @@ static IXBaseShortCodeFunction const kIXURLDecodeFunction = ^NSString*(NSString*
     return [stringToModify stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 };
 
+static IXBaseShortCodeFunction const kIXTimeFromSecondsFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    int totalSeconds = [stringToModify intValue];;
+    NSInteger seconds = totalSeconds % 60;
+    NSInteger minutes = (totalSeconds / 60) % 60;
+    NSInteger hours = totalSeconds / 3600;
+    
+    NSString* returnString;
+    if( hours > 0 )
+    {
+        returnString = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",(long)hours, (long)minutes, (long)seconds];
+    }
+    else
+    {
+        returnString = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    }
+    
+    return returnString;
+
+};
 
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] getPropertyValue] intValue]] : stringToModify;
@@ -361,6 +328,7 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXToUppercase:       [kIXToUppercaseFunction copy],
                                     kIXURLEncode:         [kIXURLEncodeFunction copy],
                                     kIXURLDecode:         [kIXURLDecodeFunction copy],
+                                    kIXTimeFromSeconds:   [kIXTimeFromSecondsFunction copy],
                                     kIXTruncate:          [kIXTruncateFunction copy]};
     });
     
