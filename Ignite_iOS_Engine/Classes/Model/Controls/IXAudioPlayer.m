@@ -56,7 +56,7 @@ IX_STATIC_CONST_STRING kIXLastCreationError = @"error.message";
 // Sound Events
 IX_STATIC_CONST_STRING kIXFinished = @"done";
 IX_STATIC_CONST_STRING kIXPlayPressed = @"play";
-IX_STATIC_CONST_STRING kIXPausePressed = @"paused";
+IX_STATIC_CONST_STRING kIXPausePressed = @"pause";
 IX_STATIC_CONST_STRING kIXNextPressed = @"next";
 IX_STATIC_CONST_STRING kIXPreviousPressed = @"previous";
 IX_STATIC_CONST_STRING kIXStopPressed = @"stop";
@@ -66,6 +66,8 @@ IX_STATIC_CONST_STRING kIXProgress = @"progress";
 IX_STATIC_CONST_STRING kIXPlay = @"play";
 IX_STATIC_CONST_STRING kIXPause = @"pause";
 IX_STATIC_CONST_STRING kIXStop = @"stop";
+IX_STATIC_CONST_STRING kIXNext = @"next";
+IX_STATIC_CONST_STRING kIXPrevious = @"previous";
 IX_STATIC_CONST_STRING kIXGoTo = @"goTo";
 
 // IXMediaPlayer Function parameters
@@ -226,7 +228,14 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     {
         [self pause];
         [[self actionContainer] executeActionsForEventNamed:kIXStopPressed];
-
+    }
+    if( [functionName isEqualToString:kIXPrevious] )
+    {
+        [[self actionContainer] executeActionsForEventNamed:kIXPreviousPressed];
+    }
+    if( [functionName isEqualToString:kIXNext] )
+    {
+        [[self actionContainer] executeActionsForEventNamed:kIXNextPressed];
     }
     else if( [functionName compare:kIXGoTo] == NSOrderedSame )
     {
