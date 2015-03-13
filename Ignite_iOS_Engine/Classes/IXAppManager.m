@@ -235,6 +235,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 {
     IX_LOG_DEBUG(@"Push Notification Info : %@",[userInfo description]);
 
+    [_actionContainer executeActionsForEventNamed:kIXPushRecievedEvent];
+    
     IXBaseAction* action = [IXBaseAction actionWithRemoteNotificationInfo:userInfo];
     if( action )
     {
@@ -252,6 +254,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 -(BOOL)appDidOpenWithCustomURL:(NSURL *)customURL
 {
     IX_LOG_DEBUG(@"App opened with Custom URL : %@",[customURL absoluteString]);
+    
+    [_actionContainer executeActionsForEventNamed:kIXCustomURLSchemeOpened];
 
     IXBaseAction* action = [IXBaseAction actionWithCustomURLQueryParams:[customURL ix_parseQueryStringToParamsDict]];
     if( action )
