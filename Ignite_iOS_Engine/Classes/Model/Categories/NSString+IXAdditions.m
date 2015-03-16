@@ -12,6 +12,7 @@
 #import "YLMoment.h"
 #import "YLMoment+IXAdditions.h"
 #import <CommonCrypto/CommonDigest.h>
+#import <objc/runtime.h>
 
 static NSString* const kIXFloatFormat = @"%f";
 
@@ -144,5 +145,27 @@ static NSString* const kIXFloatFormat = @"%f";
 {
     return [self rangeOfString:substring options:options].location != NSNotFound;
 }
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
+
++ (void)load {
+    @autoreleasepool {
+        [self ix_modernizeSelector:NSSelectorFromString(@"containsString:") withSelector:@selector(ix_containsString:)];
+    }
+}
+
++ (void)ix_modernizeSelector:(SEL)originalSelector withSelector:(SEL)newSelector {
+    if (![NSString instancesRespondToSelector:originalSelector]) {
+        Method newMethod = class_getInstanceMethod(self, newSelector);
+        class_addMethod(self, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod));
+    }
+}
+
+// containsString: has been added in iOS 8. We dynamically add this if we run on iOS 7.
+- (BOOL)ix_containsString:(NSString *)aString {
+    return [self rangeOfString:aString].location != NSNotFound;
+}
+
+#endif
 
 @end

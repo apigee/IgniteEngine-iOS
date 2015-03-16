@@ -254,7 +254,7 @@
 		13BF0464183EBE7E00894760 /* Ignite_iOS_Engine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Ignite_iOS_Engine-Prefix.pch"; path = "Ignite_iOS_Engine/Ignite_iOS_Engine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		13BF0466183EBE7E00894760 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ignite_iOS_Engine/main.m; sourceTree = SOURCE_ROOT; };
 		241ECECBCF76B3E53F59CD4D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F66D2C31A7A34A700E8D288 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		3F66D2C31A7A34A700E8D288 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = SOURCE_ROOT; };
 		3F66D2C51A7A34C100E8D288 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Light.otf"; path = "assets/_project/fonts/ARSMaquettePro-Light.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2C61A7A34C100E8D288 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Medium.otf"; path = "assets/_project/fonts/ARSMaquettePro-Medium.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2C71A7A34C100E8D288 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = assets/_project/fonts/FontAwesome.ttf; sourceTree = SOURCE_ROOT; };

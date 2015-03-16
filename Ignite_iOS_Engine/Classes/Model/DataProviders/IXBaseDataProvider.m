@@ -60,7 +60,7 @@ IX_STATIC_CONST_STRING kIXCachePolicyDefault = @"reloadIgnoringLocalCache";
 
 // IXBaseDataProvider Read-Only Properties
 IX_STATIC_CONST_STRING kIXRawDataResponse = @"response.raw";
-IX_STATIC_CONST_STRING kIXResponseHeaders = @"response.headers";
+// IX_STATIC_CONST_STRING kIXResponseHeaders = @"response.headers"; This is removed from BaseData provider and only implmeented in JSONDP.
 IX_STATIC_CONST_STRING kIXStatusCode = @"response.status.code";
 IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 
@@ -247,10 +247,20 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
     {
         returnValue = [[self responseRawString] copy];
     }
-//    else if( [propertyName isEqualToString:kIXResponseHeaders] )
-//    {
-//        returnValue = [self responseHeaders];
-//    }
+// TODO: Remove this from JSON DP and implement here instead
+    /* This is removed from BaseData provider and only implmeented in JSONDP.
+    else if( [propertyName containsString:kIXResponseHeaders] )
+    {
+        @try {
+            NSString* responseHeader = [[[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR] lastObject] lowercaseString];
+            returnValue = [self responseHeaders][responseHeader];
+
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"Tried to reference a response header object that didn't exist: %@", returnValue);
+        }
+    }
+     */
     else if( [propertyName isEqualToString:kIXStatusCode] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self responseStatusCode]];

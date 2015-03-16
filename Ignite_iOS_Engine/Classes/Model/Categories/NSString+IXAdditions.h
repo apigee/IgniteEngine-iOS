@@ -20,4 +20,10 @@
 +(NSString*)ix_toMD5String:(NSString *)string;
 -(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
+
+- (BOOL)containsString:(NSString *)aString;
+
+#endif
+
 @end
