@@ -13,6 +13,7 @@
 #import "IXLogger.h"
 
 static NSString* const kIXIfRegexString = @"^if *:: *(.*) *:: *(.*$)";
+static NSString* const kIXIfElseRegexString = @"^if *:: *(.*) *:: *(.*) *:: *(.*$)";
 static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
 
 // NSCoding Key Constants
@@ -62,28 +63,46 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
         if( [stringValue length] )
         {
             static NSRegularExpression *sIXIfRegex = nil;
+            static NSRegularExpression *sIXIfElseRegex = nil;
             static dispatch_once_t onceToken;
             dispatch_once(&onceToken, ^{
-                NSError* __autoreleasing error = nil;
+                NSError* __autoreleasing errorIf = nil;
+                NSError* __autoreleasing errorElse = nil;
                 sIXIfRegex = [[NSRegularExpression alloc] initWithPattern:kIXIfRegexString
                                                                   options:NSRegularExpressionDotMatchesLineSeparators
-                                                                    error:&error];
-                if( error )
-                    IX_LOG_ERROR(@"Critical Error!!! IF REGEX %@ invalid with error: %@.",kIXIfRegexString,[error description]);
+                                                                    error:&errorIf];
+                sIXIfElseRegex = [[NSRegularExpression alloc] initWithPattern:kIXIfElseRegexString
+                                                                  options:NSRegularExpressionDotMatchesLineSeparators
+                                                                    error:&errorElse];
+                if( errorIf )
+                    IX_LOG_ERROR(@"Critical Error!!! IF REGEX %@ invalid with error: %@.",kIXIfRegexString,[errorIf description]);
+                if( errorElse )
+                    IX_LOG_ERROR(@"Critical Error!!! IF REGEX %@ invalid with error: %@.",kIXIfElseRegexString,[errorElse description]);
+                
             });
             
-            NSTextCheckingResult* conditionalMatch = [sIXIfRegex firstMatchInString:stringValue
+            NSTextCheckingResult* conditionalMatchIf = [sIXIfRegex firstMatchInString:stringValue
+                                                                            options:0
+                                                                              range:NSMakeRange(0, [stringValue length])];
+            NSTextCheckingResult* conditionalMatchIfElse = [sIXIfElseRegex firstMatchInString:stringValue
                                                                             options:0
                                                                               range:NSMakeRange(0, [stringValue length])];
             
-            NSUInteger rangeCount = [conditionalMatch numberOfRanges];
-            if( rangeCount > 2 )
-            {
+            if ([conditionalMatchIfElse numberOfRanges] > 3) {
                 conditionalProperty = [IXProperty propertyWithPropertyName:propertyName
-                                                                  rawValue:[stringValue substringWithRange:[conditionalMatch rangeAtIndex:2]]];
+                                                                  rawValue:[stringValue substringWithRange:[conditionalMatchIfElse rangeAtIndex:2]]];
+
+                conditionalProperty = [IXProperty propertyWithPropertyName:propertyName
+                                                                  rawValue:[stringValue substringWithRange:[conditionalMatchIfElse rangeAtIndex:3]]];
+
+                [conditionalProperty setConditionalProperty:[IXProperty propertyWithPropertyName:nil
+                                                                                        rawValue:[stringValue substringWithRange:[conditionalMatchIf rangeAtIndex:1]]]];
+            } else if( [conditionalMatchIf numberOfRanges] > 2 ) {
+                conditionalProperty = [IXProperty propertyWithPropertyName:propertyName
+                                                                  rawValue:[stringValue substringWithRange:[conditionalMatchIf rangeAtIndex:2]]];
                 
                 [conditionalProperty setConditionalProperty:[IXProperty propertyWithPropertyName:nil
-                                                                                        rawValue:[stringValue substringWithRange:[conditionalMatch rangeAtIndex:1]]]];
+                                                                                        rawValue:[stringValue substringWithRange:[conditionalMatchIf rangeAtIndex:1]]]];
             }
         }
     }
