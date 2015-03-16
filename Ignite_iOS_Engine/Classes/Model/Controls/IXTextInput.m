@@ -17,6 +17,7 @@
 #import "IXNavigateAction.h"
 #import "IXFormatter.h"
 #import "UITextField+IXAdditions.h"
+#import "IQKeyboardManager.h"
 
 // IXTextInput Attributes
 IX_STATIC_CONST_STRING kIXFont = @"font";
@@ -39,6 +40,7 @@ IX_STATIC_CONST_STRING kIXKeyboardAppearance = @"keyboard.appearance";
 IX_STATIC_CONST_STRING kIXKeyboardType = @"keyboard.type";
 IX_STATIC_CONST_STRING kIXKeyboardPadding = @"keyboard.padding";
 IX_STATIC_CONST_STRING kIXKeyboardReturnKey = @"keyboard.returnKey";
+IX_STATIC_CONST_STRING kIXKeyboardToolbar = @"keyboard.toolbar.enabled";
 IX_STATIC_CONST_STRING kIXFormat = @"format"; // Credit card, currency, password
 //IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"formatAsCurrency.enabled";
 //IX_STATIC_CONST_STRING kIXInputFormatCreditCard = @"formatAsCreditCard.enabled";
@@ -161,6 +163,9 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
         
         [self setBackgroundImage:[[UIImageView alloc] initWithFrame:CGRectZero]];
         [[self contentView] addSubview:[self backgroundImage]];
+        
+        BOOL shouldShowKeyboardToolbar = [[self propertyContainer] getBoolPropertyValue:kIXKeyboardToolbar defaultValue:NO];
+        [IQKeyboardManager sharedManager].enableAutoToolbar = shouldShowKeyboardToolbar;
         
         NSString* initialText = [[self propertyContainer] getStringPropertyValue:kIXInitialText defaultValue:nil];
         
