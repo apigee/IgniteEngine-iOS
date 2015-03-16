@@ -197,13 +197,13 @@ static NSString* const kIXStopRecording = @"stop";
     
     if( audioRecorderWasRecording )
     {
-        [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
+        [[self actionContainer] executeActionsForEventNamed:kIX_DONE];
     }
 }
 
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
+    [[self actionContainer] executeActionsForEventNamed:kIX_DONE];
 }
 
 @end

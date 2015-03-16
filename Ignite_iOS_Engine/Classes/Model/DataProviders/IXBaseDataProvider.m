@@ -343,8 +343,8 @@ IX_STATIC_CONST_STRING kIXFileAttachmentPropertiesNSCodingKey = @"fileAttachment
         [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_FAILED,locationSpecificEventSuffix]];
     }
     
-    [[self actionContainer] executeActionsForEventNamed:kIX_FINISHED];
-    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_FINISHED,locationSpecificEventSuffix]];
+    [[self actionContainer] executeActionsForEventNamed:kIX_DONE];
+    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_DONE,locationSpecificEventSuffix]];
 
     dispatch_async(dispatch_get_main_queue(),^{
         [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification

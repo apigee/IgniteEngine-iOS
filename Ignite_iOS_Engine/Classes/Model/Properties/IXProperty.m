@@ -68,8 +68,8 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
                 NSString* valueIfFalse = (conditionalComponents.count == 4) ? [conditionalComponents[3] trimLeadingAndTrailingWhitespace] : nil;
                 conditionalProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:valueIfTrue];
                 [conditionalProperty setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:conditionalStatement]];
-                if (!conditionalProperty.isConditionalTrue) {
-                    conditionalProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:valueIfFalse];
+                if (!conditionalProperty.isConditionalTrue && [valueIfFalse length]) {
+                    conditionalProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:valueIfTrue];
                 }
             }
         }

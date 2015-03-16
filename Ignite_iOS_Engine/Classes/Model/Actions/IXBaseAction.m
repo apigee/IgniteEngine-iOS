@@ -279,7 +279,7 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
     {
         [subActionContainer executeActionsForEventNamed:eventToFire];
     }
-    [subActionContainer executeActionsForEventNamed:kIX_FINISHED];
+    [subActionContainer executeActionsForEventNamed:kIX_DONE];
 }
 
 -(NSString*)description

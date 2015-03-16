@@ -128,6 +128,7 @@ extern NSString* const kIX_EVAL_BRACKETS;
 extern NSString* const kIX_ERROR;
 extern NSString* const kIX_FAILED;
 extern NSString* const kIX_FINISHED;
+extern NSString* const kIX_DONE;
 extern NSString* const kIX_SUCCESS;
 
 // DATA PROVIDER SPECIFIC NODES
