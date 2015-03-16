@@ -121,6 +121,7 @@ extern NSString* const kIX_PIPE_SEPERATOR;
 extern NSString* const kIX_PIPECOMMAPIPE_SEPERATOR;
 extern NSString* const kIX_PERIOD_SEPERATOR;
 extern NSString* const kIX_COLON_SEPERATOR;
+extern NSString* const kIX_DOUBLE_COLON_SEPERATOR;
 extern NSString* const kIX_EVAL_BRACKETS;
 
 // GLOBAL EVENT NAMES

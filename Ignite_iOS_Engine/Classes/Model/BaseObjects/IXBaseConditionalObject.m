@@ -80,25 +80,25 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
     return orientationIsValid;
 }
 
--(BOOL)isConditionalValid
+-(BOOL)isConditionalTrue
 {
-    BOOL conditionalPropertyIsValid = YES;
+    BOOL conditionalPropertyEvaluatesTrue = YES;
     if( [self conditionalProperty] != nil )
     {
         NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue];
         if( conditionalPropertyValue && [conditionalPropertyValue length] > 0 )
         {
-            NSString* conditionalPropertyValueReturned = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];
+            NSString* evaluationResult = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];
             
-            conditionalPropertyIsValid = !( conditionalPropertyValueReturned == nil || [conditionalPropertyValueReturned length] <= 0 || [conditionalPropertyValueReturned isEqualToString:kIX_ZERO] || [conditionalPropertyValueReturned isEqualToString:kIX_FALSE] );
+            conditionalPropertyEvaluatesTrue = !( evaluationResult == nil || [evaluationResult length] <= 0 || [evaluationResult isEqualToString:kIX_ZERO] || [evaluationResult isEqualToString:kIX_FALSE] );
         }
     }
-    return conditionalPropertyIsValid;
+    return conditionalPropertyEvaluatesTrue;
 }
 
 -(BOOL)areConditionalAndOrientationMaskValid:(UIInterfaceOrientation)interfaceOrientation
 {
-    return [self isConditionalValid] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
+    return [self isConditionalTrue] && [self isOrientationMaskValidForOrientation:interfaceOrientation];
 }
 
 +(UIInterfaceOrientationMask)orientationMaskForValue:(id)orientationValue

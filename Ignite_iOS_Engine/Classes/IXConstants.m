@@ -59,6 +59,7 @@ NSString* const kIX_PIPECOMMAPIPE_SEPERATOR = @"|,|";
 NSString* const kIX_PIPE_SEPERATOR = @"|";
 NSString* const kIX_PERIOD_SEPERATOR = @".";
 NSString* const kIX_COLON_SEPERATOR = @":";
+NSString* const kIX_DOUBLE_COLON_SEPERATOR = @"::";
 NSString* const kIX_EVAL_BRACKETS = @"{{";
 
 // DATA PROVIDER SPECIFIC NODES

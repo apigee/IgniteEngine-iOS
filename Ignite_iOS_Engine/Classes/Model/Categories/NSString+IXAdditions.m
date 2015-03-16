@@ -141,6 +141,10 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
+- (NSString*)trimLeadingAndTrailingWhitespace {
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 -(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options
 {
     return [self rangeOfString:substring options:options].location != NSNotFound;
