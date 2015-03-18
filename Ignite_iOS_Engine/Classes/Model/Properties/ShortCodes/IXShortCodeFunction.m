@@ -308,7 +308,7 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
 static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     CGFloat radians = [stringToModify floatValue];
     if (radians > 0 || radians < 0) {
-        return [NSString stringWithFormat:@"%0.4f", RADIANS_TO_DEGREES(radians)];
+        return [NSString stringWithFormat:@"%f", RADIANS_TO_DEGREES(radians)];
     } else {
         return stringToModify;
     }
@@ -317,7 +317,7 @@ static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NS
 static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     CGFloat degrees = [stringToModify floatValue];
     if (degrees > 0 || degrees < 0) {
-        return [NSString stringWithFormat:@"%0.4f", DEGREES_TO_RADIANS(degrees)];
+        return [NSString stringWithFormat:@"%f", DEGREES_TO_RADIANS(degrees)];
     } else {
         return stringToModify;
     }
