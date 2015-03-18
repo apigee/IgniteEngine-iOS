@@ -48,6 +48,7 @@ IX_STATIC_CONST_STRING kIXPinchReset = @"pinch.resetOnRelease.enabled";
 IX_STATIC_CONST_STRING kIXPinchMax = @"pinch.zoomScale.max";
 IX_STATIC_CONST_STRING kIXPinchMin = @"pinch.zoomScale.min";
 IX_STATIC_CONST_STRING kIXPinchElastic = @"pinch.zoomScale.elasticity";
+IX_STATIC_CONST_STRING kIXRotation = @"rotation"; // rotates a control, in degrees
 
 // Attribute Accepted Values
 IX_STATIC_CONST_STRING kIXBackgroundImageScaleCover = @"cover"; // bg.scale
@@ -67,6 +68,7 @@ IX_STATIC_CONST_STRING kIXReverse = @"reverse"; // spin direction
 
 // Returns
 IX_STATIC_CONST_STRING kIXPinchTransformScale = @"transform.scale"; // pinch transform scale
+IX_STATIC_CONST_STRING KIXTransformRotation = @"transform.rotation"; // control rotation in degrees
 IX_STATIC_CONST_STRING kIXLocation = @"position"; // what is returned here? comma separated?
 IX_STATIC_CONST_STRING kIXLocationX = @"position.x";
 IX_STATIC_CONST_STRING kIXLocationY = @"position.y";
@@ -115,6 +117,7 @@ IX_STATIC_CONST_STRING kIXToggle = @"dev_toggle";
 @end
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define RADIANS_TO_DEGREES(radians) ((radians) * 180.0 / M_PI)
 
 @implementation IXBaseControl
 
@@ -340,6 +343,17 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     {
         [[[self contentView] layer] setShouldRasterize:NO];
         [[[self contentView] layer] setShadowOpacity:0.0f];
+    }
+    
+    CGFloat rotationInDegrees = [[self propertyContainer] getFloatPropertyValue:kIXRotation defaultValue:0];
+    if (rotationInDegrees != 0) {
+        CGFloat rotationInRadians = DEGREES_TO_RADIANS(rotationInDegrees);
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        transform = CGAffineTransformRotate(transform, rotationInRadians);
+        _contentView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        _contentView.contentMode = UIViewContentModeScaleAspectFill;
+        _contentView.clipsToBounds = YES;
+        _contentView.transform = transform;
     }
 }
 

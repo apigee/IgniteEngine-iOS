@@ -51,6 +51,12 @@ IX_STATIC_CONST_STRING kIXURLDecode = @"url.decode";                // [[?:url_d
 IX_STATIC_CONST_STRING kIXTimeFromSeconds = @"timeFromSeconds";     // [[?:timeFromSeconds]]                    -> Trucates the string to specified index
 IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
 
+IX_STATIC_CONST_STRING kIXRadiansToDegress = @"degreesToRadians";
+IX_STATIC_CONST_STRING kIXDegreesToRadians = @"radiansToDegress";
+
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define RADIANS_TO_DEGREES(radians) ((radians) * 180.0 / M_PI)
+
 static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
 };
@@ -299,6 +305,24 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] getPropertyValue] intValue]] : stringToModify;
 };
 
+static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    CGFloat radians = [stringToModify floatValue];
+    if (radians > 0 || radians < 0) {
+        return [NSString stringWithFormat:@"%0.4f", RADIANS_TO_DEGREES(radians)];
+    } else {
+        return stringToModify;
+    }
+};
+
+static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    CGFloat degrees = [stringToModify floatValue];
+    if (degrees > 0 || degrees < 0) {
+        return [NSString stringWithFormat:@"%0.4f", DEGREES_TO_RADIANS(degrees)];
+    } else {
+        return stringToModify;
+    }
+};
+
 @implementation IXShortCodeFunction
 
 +(IXBaseShortCodeFunction)shortCodeFunctionWithName:(NSString*)functionName
@@ -329,7 +353,9 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
                                     kIXURLEncode:         [kIXURLEncodeFunction copy],
                                     kIXURLDecode:         [kIXURLDecodeFunction copy],
                                     kIXTimeFromSeconds:   [kIXTimeFromSecondsFunction copy],
-                                    kIXTruncate:          [kIXTruncateFunction copy]};
+                                    kIXTruncate:          [kIXTruncateFunction copy],
+                                    kIXDegreesToRadians:  [kIXDegreesToRadiansFunction copy],
+                                    kIXRadiansToDegress:  [kIXRadiansToDegreesFunction copy]};
     });
     
     return [sIXFunctionDictionary[functionName] copy];
