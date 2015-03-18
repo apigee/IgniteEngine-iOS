@@ -18,6 +18,7 @@
 #import "IXViewController.h"
 #import "IXSandbox.h"
 
+// TODO: Clean up naming and document
 IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
 IX_STATIC_CONST_STRING kIXModifyType = @"modify.type";
 IX_STATIC_CONST_STRING kIXDelete = @"delete";

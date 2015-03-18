@@ -120,6 +120,7 @@ IX_STATIC_CONST_STRING kIXDeviceOSVersionMajor = @"os.version.major";
 // Non attribute constants
 IX_STATIC_CONST_STRING kIXAssetsBasePath = @"assets/";
 IX_STATIC_CONST_STRING kIXDefaultIndexPath = @"assets/app.json";
+// TODO: deprecate in future releases
 IX_STATIC_CONST_STRING kIXDefaultIndexPathOld = @"assets/_index.json";
 IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x";
 
@@ -162,6 +163,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     if( self )
     {
         _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPath];
+// TODO: deprecate in future releases
         if (!_appIndexFilePath) _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPathOld];
         
         _appProperties = [[IXPropertyContainer alloc] init];

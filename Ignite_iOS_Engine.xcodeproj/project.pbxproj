@@ -66,7 +66,6 @@
 		3F66D2D11A7A34C100E8D288 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2CA1A7A34C100E8D288 /* SourceSansPro-Light.otf */; };
 		3F66D2D21A7A34C100E8D288 /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */; };
 		3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F66D2D31A7A34D100E8D288 /* Images.xcassets */; };
-		3FFC589D1A86B548003C434D /* Documentation in Resources */ = {isa = PBXBuildFile; fileRef = 3FFC589C1A86B548003C434D /* Documentation */; };
 		6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314B51C1846B7A700C14F96 /* IXNavigateAction.m */; };
 		631DA69A1A8A997600968BC4 /* ApigeeiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631DA6991A8A997600968BC4 /* ApigeeiOSSDK.framework */; };
 		6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6320A056193FF9B000ABC932 /* IXCellBackgroundSwipeController.m */; };
@@ -264,7 +263,6 @@
 		3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Semibold.otf"; path = "assets/_project/fonts/SourceSansPro-Semibold.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2D31A7A34D100E8D288 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = assets/_project/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		3F66D2D51A7A34DC00E8D288 /* Ignite_iOS_Engine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Ignite_iOS_Engine-Info.plist"; path = "assets/_project/Ignite_iOS_Engine-Info.plist"; sourceTree = SOURCE_ROOT; };
-		3FFC589C1A86B548003C434D /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Documentation; sourceTree = SOURCE_ROOT; };
 		618C8EBF28383F34FE27BB6C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
@@ -800,7 +798,6 @@
 			children = (
 				3F66D2C31A7A34A700E8D288 /* assets */,
 				13033F21183ED8F200C29157 /* Classes */,
-				3FFC589C1A86B548003C434D /* Documentation */,
 				6333614E18975672004F3433 /* Fonts */,
 				6324BF561835931C00748F27 /* Supporting Files */,
 			);
@@ -1038,7 +1035,6 @@
 				3F66D2CE1A7A34C100E8D288 /* FontAwesome.ttf in Resources */,
 				3F66D2D41A7A34D100E8D288 /* Images.xcassets in Resources */,
 				634EE0A01982DAA700C08FCD /* PhoneFormats.dat in Resources */,
-				3FFC589D1A86B548003C434D /* Documentation in Resources */,
 				3F66D2CD1A7A34C100E8D288 /* ARSMaquettePro-Medium.otf in Resources */,
 				3F66D2D21A7A34C100E8D288 /* SourceSansPro-Semibold.otf in Resources */,
 				3F66D2D11A7A34C100E8D288 /* SourceSansPro-Light.otf in Resources */,
