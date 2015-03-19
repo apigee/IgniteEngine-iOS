@@ -197,8 +197,10 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     CGFloat rotationInDegrees = [[self propertyContainer] getFloatPropertyValue:kIXRotation defaultValue:0];
     if (rotationInDegrees != 0) {
         CGFloat rotationInRadians = DEGREES_TO_RADIANS(rotationInDegrees);
+        _contentView.transform = CGAffineTransformIdentity;
         _contentView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        _contentView.transform = CGAffineTransformRotate(_contentView.transform, rotationInRadians);
+        CGAffineTransform transform = CGAffineTransformRotate(_contentView.transform, rotationInRadians);
+        _contentView.transform = transform;
     }
 }
 

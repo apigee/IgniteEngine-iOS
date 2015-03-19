@@ -6,18 +6,6 @@
 //  Copyright (c) 2013 Ignite. All rights reserved.
 //
 
-/*
- 
- ACTION
- 
- - TYPE : "Refresh"
- 
- - PROPERTIES
- 
- * name="id"            default=""        type="STRING"
- 
- */
-
 #import "IXBaseAction.h"
 
 @interface IXRefreshAction : IXBaseAction
