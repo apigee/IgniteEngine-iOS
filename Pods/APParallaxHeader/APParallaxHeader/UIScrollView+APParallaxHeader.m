@@ -31,10 +31,14 @@ static char UIScrollViewParallaxView;
 @implementation UIScrollView (APParallaxHeader)
 
 - (void)addParallaxWithImage:(UIImage *)image andHeight:(CGFloat)height {
-    [self addParallaxWithImage:image andHeight:height andShadow:YES];
+    [self addParallaxWithImage:image withWidth:0 andHeight:height andShadow:YES];
 }
 
-- (void)addParallaxWithImage:(UIImage *)image andHeight:(CGFloat)height andShadow:(BOOL)shadow {
+- (void)addParallaxWithImage:(UIImage *)image withWidth:(CGFloat)width andHeight:(CGFloat)height {
+    [self addParallaxWithImage:image withWidth:(CGFloat)width andHeight:height andShadow:YES];
+}
+
+- (void)addParallaxWithImage:(UIImage *)image withWidth:(CGFloat)width andHeight:(CGFloat)height andShadow:(BOOL)shadow {
     if(self.parallaxView) {
         if(self.parallaxView.currentSubView) {
             [self.parallaxView.currentSubView removeFromSuperview];
@@ -43,7 +47,10 @@ static char UIScrollViewParallaxView;
     }
     else
     {
-        APParallaxView *parallaxView = [[APParallaxView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width*2, height) andShadow:shadow];
+        if (width == 0) width = self.bounds.size.width;
+        CGFloat yOffset = (self.bounds.size.width - width) / 2;
+        if (yOffset > 0) yOffset = yOffset * -1;
+        APParallaxView *parallaxView = [[APParallaxView alloc] initWithFrame:CGRectMake(0, yOffset, width, height) andShadow:shadow];
         [parallaxView setClipsToBounds:YES];
         [parallaxView.imageView setImage:image];
         

@@ -19,7 +19,8 @@ pod 'YLMoment', '~> 0.2.0'
 pod 'AFOAuth2Client', '~> 0.1'
 pod 'AFHTTPRequestOperationLogger', '~> 1.0'
 pod 'ApigeeiOSSDK', :git => 'https://github.com/apigee/apigee-ios-sdk.git'
-pod 'APParallaxHeader', :head
+#pod 'APParallaxHeader', :head
+pod 'APParallaxHeader', :git => 'https://github.com/r3mus/APParallaxHeader.git'
 pod 'RaptureXML', '~> 1.0'
 pod 'MMDrawerController', '~> 0.5.6'
 pod 'ZipArchive', '~> 1.2'

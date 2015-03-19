@@ -6,7 +6,7 @@ PODS:
     - AFNetworking (~> 1.3)
   - ALMoviePlayerController (0.3.0)
   - ApigeeiOSSDK (2.0.16)
-  - APParallaxHeader (HEAD based on 0.1.6)
+  - APParallaxHeader (0.1.6)
   - CocoaLumberjack (2.0.0-rc):
     - CocoaLumberjack/Default (= 2.0.0-rc)
     - CocoaLumberjack/Extensions (= 2.0.0-rc)
@@ -66,7 +66,7 @@ DEPENDENCIES:
   - AFOAuth2Client (~> 0.1)
   - ALMoviePlayerController (~> 0.3.0)
   - ApigeeiOSSDK (from `https://github.com/apigee/apigee-ios-sdk.git`)
-  - APParallaxHeader (HEAD)
+  - APParallaxHeader (from `https://github.com/r3mus/APParallaxHeader.git`)
   - CocoaLumberjack (= 2.0.0-rc)
   - Color-Picker-for-iOS (~> 2.0)
   - ColorUtils (~> 1.1.1)
@@ -88,6 +88,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   ApigeeiOSSDK:
     :git: https://github.com/apigee/apigee-ios-sdk.git
+  APParallaxHeader:
+    :git: https://github.com/r3mus/APParallaxHeader.git
   FontAwesome+iOS:
     :git: https://github.com/jeremyanticouni/ios-fontawesome.git
   TTTAttributedLabel:
@@ -98,6 +100,9 @@ CHECKOUT OPTIONS:
   ApigeeiOSSDK:
     :commit: 43798e479870fe0480579c33b3c0bf5e287e2d73
     :git: https://github.com/apigee/apigee-ios-sdk.git
+  APParallaxHeader:
+    :commit: 2e54fbdebecfd136786b07398beb0d1eee53501c
+    :git: https://github.com/r3mus/APParallaxHeader.git
   FontAwesome+iOS:
     :commit: 3290959b86e5ff96eb0b0ec62ec3c864d388e81c
     :git: https://github.com/jeremyanticouni/ios-fontawesome.git
@@ -111,7 +116,7 @@ SPEC CHECKSUMS:
   AFOAuth2Client: 4f05d29e0a26c7ddf529dd7c4480af6ee1e982c6
   ALMoviePlayerController: bee05da71110002321ba4f87dc021e97348d7a6a
   ApigeeiOSSDK: 8653fbd4330bbdd200da0ce672943c56489b19c3
-  APParallaxHeader: 6e7cc27c052be34e1a5655dc2fab6c40eecbbe55
+  APParallaxHeader: 5369815639059caa4e195a178c020f8e2b998336
   CocoaLumberjack: 6186e27827fc574b50b16c10102fcc591437f06c
   Color-Picker-for-iOS: 2eec454aa6b24a8b7c2537da0f61c6ead936949e
   ColorUtils: d99b38d2a7abf81df1698477b19f895576578738

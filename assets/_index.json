@@ -15,7 +15,7 @@
       "view.index": "watch.json",
       "1drawerController.l.url": "menu.json",
       "1drawerController.l.max.w": 275,      
-      "debug.layout.enabled": true,
+      "debug.layout.enabled": false,
       "logging.datasource.enabled": true,
       "logging.level": "verbose",
       "mode": "verbose",
@@ -23,33 +23,7 @@
       "navigationBar.enabled": false
     },
     "datasources": [
-      {
-        "_id": "test_data",
-        "_type": "JSON",
-        "actions": [
-          {
-            "_type": "Refresh",
-            "attributes": {
-              "_target": "tableSettings"
-            },
-            "on": [
-              "success",
-              "fail"
-            ]
-          },
-          {
-            "_type": "Alert",
-            "attributes": {},
-            "on": "fail,success"
-          }
-        ],
-        "attributes": {
-          "auto_load": true,
-          "data.baseurl": "/data/states.json",
-          "http_method": "GET",
-          "objects_path": ""
-        }
-      },
+      
       {
         "_id": "dataMenu",
         "_type": "JSON",
