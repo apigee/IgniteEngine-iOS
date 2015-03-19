@@ -194,7 +194,12 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
-    
+    CGFloat rotationInDegrees = [[self propertyContainer] getFloatPropertyValue:kIXRotation defaultValue:0];
+    if (rotationInDegrees != 0) {
+        CGFloat rotationInRadians = DEGREES_TO_RADIANS(rotationInDegrees);
+        _contentView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        _contentView.transform = CGAffineTransformRotate(_contentView.transform, rotationInRadians);
+    }
 }
 
 -(void)layoutControl
@@ -343,17 +348,6 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     {
         [[[self contentView] layer] setShouldRasterize:NO];
         [[[self contentView] layer] setShadowOpacity:0.0f];
-    }
-    
-    CGFloat rotationInDegrees = [[self propertyContainer] getFloatPropertyValue:kIXRotation defaultValue:0];
-    if (rotationInDegrees != 0) {
-        CGFloat rotationInRadians = DEGREES_TO_RADIANS(rotationInDegrees);
-        CGAffineTransform transform = CGAffineTransformIdentity;
-        transform = CGAffineTransformRotate(transform, rotationInRadians);
-        _contentView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        _contentView.contentMode = UIViewContentModeScaleAspectFill;
-        _contentView.clipsToBounds = YES;
-        _contentView.transform = transform;
     }
 }
 
@@ -654,27 +648,41 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
 {
     NSString* returnValue = nil;
-    if ( [propertyName hasPrefix:kIXLocation] && [[self propertyContainer] hasLayoutProperties] )
-    {
-        UIView* rootView = [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] view];
-        CGPoint location = [self.contentView convertPoint:self.contentView.frame.origin toView:rootView];
-        
-        if ( [propertyName isEqualToString:kIXLocationX] )
-            returnValue = [NSString stringWithFormat:@"%f", location.x / 2];
-        if ( [propertyName isEqualToString:kIXLocationY] )
-            returnValue = [NSString stringWithFormat:@"%f", location.y / 2];
-        if ( [propertyName isEqualToString:kIXLocation] )
-            returnValue = NSStringFromCGPoint(CGPointMake(location.x / 2, location.y / 2));
-    }
-    if ( [propertyName hasPrefix:kIXActualHeight] && [[self propertyContainer] hasLayoutProperties] )
-    {
-        CGFloat selfHeight=self.contentView.bounds.size.height;
-        returnValue = [NSString stringWithFormat: @"%.0f", selfHeight];
-    }
-    if ( [propertyName hasPrefix:kIXActualWidth] && [[self propertyContainer] hasLayoutProperties] )
-    {
-        CGFloat selfWidth=self.contentView.bounds.size.width;
-        returnValue = [NSString stringWithFormat: @"%.0f", selfWidth];
+    if ([[self propertyContainer] hasLayoutProperties]) {
+        if ( [propertyName hasPrefix:kIXLocation] )
+        {
+            UIView* rootView = [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] view];
+            CGPoint location = [self.contentView convertPoint:self.contentView.frame.origin toView:rootView];
+            
+            if ( [propertyName isEqualToString:kIXLocationX] )
+                returnValue = [NSString stringWithFormat:@"%f", location.x / 2];
+            if ( [propertyName isEqualToString:kIXLocationY] )
+                returnValue = [NSString stringWithFormat:@"%f", location.y / 2];
+            if ( [propertyName isEqualToString:kIXLocation] )
+                returnValue = NSStringFromCGPoint(CGPointMake(location.x / 2, location.y / 2));
+        }
+        if ( [propertyName hasPrefix:kIXActualHeight] )
+        {
+            CGFloat selfHeight=self.contentView.bounds.size.height;
+            returnValue = [NSString stringWithFormat: @"%.0f", selfHeight];
+        }
+        if ( [propertyName hasPrefix:kIXActualWidth] )
+        {
+            CGFloat selfWidth=self.contentView.bounds.size.width;
+            returnValue = [NSString stringWithFormat: @"%.0f", selfWidth];
+        }
+        if ( [propertyName isEqualToString:kIXPinchTransformScale] )
+        {
+            CGAffineTransform transform = _contentView.transform;
+            CGFloat scaleFactor = sqrt(fabs(transform.a * transform.d - transform.b * transform.c));
+            returnValue = [NSString stringWithFormat: @"%f", scaleFactor];
+        }
+        if ( [propertyName isEqualToString:KIXTransformRotation] )
+        {
+            CGAffineTransform transform = _contentView.transform;
+            CGFloat radians = atan2f(transform.b, transform.a);
+            returnValue = [NSString stringWithFormat: @"%f", RADIANS_TO_DEGREES(radians)];
+        }
     }
     return returnValue;
 }

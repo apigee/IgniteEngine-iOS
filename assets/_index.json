@@ -1,5 +1,5 @@
 {
-  "app": {
+  "$app": {
     "actions": [],
     "attributes": {
       "_OPTIONAL:drawer.toggle.velocity": 1000,
@@ -12,10 +12,10 @@
       "apigee.org": "***APIGEE_ORG_ID***",
       "apigee.notifier": "***APIGEE_PUSH_NOTIFIER***",
       "zview.index": "examples/datasources/OAuth2.json",      
-      "view.index": "examples/controls/Button.json",
-      "drawerController.l.url": "menu.json",
-      "drawerController.l.max.w": 275,      
-      "debug.layout.enabled": false,
+      "view.index": "watch.json",
+      "1drawerController.l.url": "menu.json",
+      "1drawerController.l.max.w": 275,      
+      "debug.layout.enabled": true,
       "logging.datasource.enabled": true,
       "logging.level": "verbose",
       "mode": "verbose",
