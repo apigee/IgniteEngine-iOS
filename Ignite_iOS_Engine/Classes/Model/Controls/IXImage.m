@@ -271,7 +271,6 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
-    [super layoutControlContentsInRect:rect];
     [[self imageView] setFrame:rect];
 }
 
