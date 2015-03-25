@@ -72,7 +72,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh";
 
 @end
 
-// The following properties MUST match their equivalent names specified in BaseControl
+// The following properties MUST match their equivalent names specified in IXBaseControl
 IX_STATIC_CONST_STRING kIXSizeH = @"size.h";
 IX_STATIC_CONST_STRING kIXSizeW = @"size.w";
 IX_STATIC_CONST_STRING kIXMargin = @"margin";

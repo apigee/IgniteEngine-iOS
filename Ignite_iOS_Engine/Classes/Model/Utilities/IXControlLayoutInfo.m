@@ -22,8 +22,6 @@ IX_STATIC_CONST_STRING kIXVerticalAlignment = @"align.v";
 IX_STATIC_CONST_STRING kIXVerticalAlignmentX = @"align.vertical";
 IX_STATIC_CONST_STRING kIXHorizontalAlignment = @"align.h";
 IX_STATIC_CONST_STRING kIXHorizontalAlignmentX = @"align.horizontal";
-IX_STATIC_CONST_STRING kIXWidth = @"size.w";
-IX_STATIC_CONST_STRING kIXHeight = @"size.h";
 IX_STATIC_CONST_STRING kIXTopPosition = @"position.t";
 IX_STATIC_CONST_STRING kIXLeftPosition = @"position.l";
 IX_STATIC_CONST_STRING kIXBottomPosition = @"position.b";
@@ -82,6 +80,7 @@ IX_STATIC_CONST_STRING kIXDefaultLayoutTypeRelative = @"relative"; // Default la
 // Internal Properties
 IX_STATIC_CONST_STRING kIXAlign = @"align"; // used as prefix to determine if control is a layout control
 IX_STATIC_CONST_STRING kIXPosition = @"position"; // used as prefix to determine if control is a layout control
+IX_STATIC_CONST_STRING kIXSize = @"size"; // used as prefix to determine if control is a layout control
 
 @implementation IXControlLayoutInfo
 
@@ -161,8 +160,9 @@ IX_STATIC_CONST_STRING kIXPosition = @"position"; // used as prefix to determine
     else if( [horizontalAlignmentString isEqualToString:kIXRight] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
-    _width = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXWidth defaultValue:nil], 0.0f);
-    _height = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXHeight defaultValue:nil], 0.0f);
+    IXSize* size = [[self propertyContainer] getSizePropertyValue];
+    _width = ixSizePercentageValueWithStringOrDefaultValue(size.width, 0.0f);
+    _height = ixSizePercentageValueWithStringOrDefaultValue(size.height, 0.0f);
     _topPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXTopPosition defaultValue:nil], 0.0f);
     _leftPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXLeftPosition defaultValue:nil], 0.0f);
     _bottomPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXBottomPosition defaultValue:nil], 0.0f);
@@ -194,8 +194,7 @@ IX_STATIC_CONST_STRING kIXPosition = @"position"; // used as prefix to determine
 {
     if([propertyName isEqualToString:kIXVisible] ||
        [propertyName isEqualToString:kIXLayoutType] ||
-       [propertyName rangeOfString:kIXHeight].location != NSNotFound ||
-       [propertyName rangeOfString:kIXWidth].location != NSNotFound ||
+       [propertyName hasPrefix:kIXSize] ||
        [propertyName hasPrefix:kIXMargin] ||
        [propertyName hasPrefix:kIXPadding] ||
        [propertyName hasPrefix:kIXPosition] ||

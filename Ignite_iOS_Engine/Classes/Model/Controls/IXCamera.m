@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Ignite. All rights reserved.
 // 
 
-// TODO: This will probably break if we try and add two Camera controls <running> at the same time. Need to find a graceful way of deallocating previously started IXCameras.
-// TODO: Todo: requires a read only accessor for the image. Would properly require a function to add to IXImage to update image with UIImage
+//TODO: This will probably break if we try and add two Camera controls <running> at the same time. Need to find a graceful way of deallocating previously started IXCameras.
+//TODO: Todo: requires a read only accessor for the image. Would properly require a function to add to IXImage to update image with UIImage
 
 
 #import "IXCamera.h"
@@ -24,7 +24,9 @@
 
 // Temp properties
 IX_STATIC_CONST_STRING kIXWidth = @"size.w";
+IX_STATIC_CONST_STRING kIXWidthX = @"size.width";
 IX_STATIC_CONST_STRING kIXHeight = @"size.h";
+IX_STATIC_CONST_STRING kIXSize = @"size";
 
 // Functions
 IX_STATIC_CONST_STRING kIXStart = @"start";
@@ -157,7 +159,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
     
     _captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
 
-    // Need to fix this; currently it takes the defined size - percentage size is not calculated based on parent size. Need it to grab contentView.bounds on viewDidLoad...?
+//TODO: Need to fix this; currently it takes the defined size - percentage size is not calculated based on parent size. Need it to grab contentView.bounds on viewDidLoad...?
     CGFloat width = [self.propertyContainer getSizeValue:kIXWidth maximumSize:[[IXDeviceInfo screenWidth] floatValue] defaultValue:320.0f];
     CGFloat height = [self.propertyContainer getSizeValue:kIXHeight maximumSize:[[IXDeviceInfo screenHeight] floatValue] defaultValue:320.0f];
     

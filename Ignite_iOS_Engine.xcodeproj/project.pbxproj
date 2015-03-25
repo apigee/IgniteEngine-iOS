@@ -155,6 +155,7 @@
 		CA51499A18E0CAC000FA58DF /* IXCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51499918E0CAC000FA58DF /* IXCamera.m */; };
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
 		CA7525C91A898028002C54CD /* UIFont+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */; };
+		CAE709B81AC355C900AFFF4D /* IXSize.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE709B71AC355C900AFFF4D /* IXSize.m */; };
 		CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEB7E0718D26437005E1A2F /* IXAttributedText.m */; };
 		F8B88554BE461ED555984CDF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 241ECECBCF76B3E53F59CD4D /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -433,6 +434,8 @@
 		CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceInfo.m; sourceTree = "<group>"; };
 		CA7525C71A898028002C54CD /* UIFont+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+IXAdditions.h"; sourceTree = "<group>"; };
 		CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+IXAdditions.m"; sourceTree = "<group>"; };
+		CAE709B61AC355C900AFFF4D /* IXSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSize.h; sourceTree = "<group>"; };
+		CAE709B71AC355C900AFFF4D /* IXSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSize.m; sourceTree = "<group>"; };
 		CAEB7E0618D26437005E1A2F /* IXAttributedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAttributedText.h; sourceTree = "<group>"; };
 		CAEB7E0718D26437005E1A2F /* IXAttributedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAttributedText.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -707,15 +710,17 @@
 				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
 				636949E819A3E0E80009AF81 /* IXFormatter.h */,
 				636949E919A3E0E80009AF81 /* IXFormatter.m */,
-				63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */,
 				63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */,
 				63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */,
 				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
 				63CC9ABE18BE8AB600ECCECB /* IXLogger.m */,
 				63CC9ABA18BD1D8700ECCECB /* IXPathHandler.h */,
 				63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */,
+				CAE709B61AC355C900AFFF4D /* IXSize.h */,
+				CAE709B71AC355C900AFFF4D /* IXSize.m */,
 				63CC9AAF18BD0BB000ECCECB /* IXWeakTimerTarget.h */,
 				63CC9AB018BD0BB000ECCECB /* IXWeakTimerTarget.m */,
+				63B0FE701A9D394B00B1DB99 /* LayoutEngine.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1175,6 +1180,7 @@
 				13033F9A183ED8F200C29157 /* IXActivityIndicator.m in Sources */,
 				63CC9AB918BD12C200ECCECB /* IXAudioRecorder.m in Sources */,
 				632B7286184E9E760077D603 /* IXRefreshAction.m in Sources */,
+				CAE709B81AC355C900AFFF4D /* IXSize.m in Sources */,
 				CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */,
 				CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */,
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,

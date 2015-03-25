@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "IXConstants.h"
+#import "IXSize.h"
 
 @class IXProperty;
 @class IXBaseObject;
@@ -40,6 +41,7 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName;
 
 -(NSString*)getStringPropertyValue:(NSString*)propertyName defaultValue:(NSString*)defaultValue;
+-(IXSize*)getSizePropertyValue;
 -(BOOL)getBoolPropertyValue:(NSString*)propertyName defaultValue:(BOOL)defaultValue;
 -(int)getIntPropertyValue:(NSString*)propertyName defaultValue:(int)defaultValue;
 -(float)getFloatPropertyValue:(NSString*)propertyName defaultValue:(float)defaultValue;

@@ -21,6 +21,12 @@
 #import "UIFont+IXAdditions.h"
 #import "IXLogger.h"
 
+IX_STATIC_CONST_STRING kIXWidth = @"size.w";
+IX_STATIC_CONST_STRING kIXWidthX = @"size.width";
+IX_STATIC_CONST_STRING kIXHeight = @"size.h";
+IX_STATIC_CONST_STRING kIXHeightX = @"size.height";
+IX_STATIC_CONST_STRING kIXSize = @"size";
+
 // NSCoding Key Constants
 static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 
@@ -402,6 +408,22 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyName];
     NSString* returnValue =  ( propertyToEvaluate != nil ) ? [propertyToEvaluate getPropertyValue] : defaultValue;
     return [returnValue copy];
+}
+
+-(IXSize*)getSizePropertyValue
+{
+    IXSize* returnSize = [[IXSize alloc] initWithDefaultSize];
+    NSArray* sizeArr = [self getCommaSeperatedArrayListValue:kIXSize defaultValue:nil];
+    if (sizeArr.count == 2) {
+        returnSize.width = sizeArr[0];
+        returnSize.height = sizeArr[1];
+    } else if (sizeArr.count == 1) {
+        returnSize.width = sizeArr[0];
+        returnSize.height = sizeArr[0];
+    }
+    returnSize.width = [self getStringPropertyValue:kIXWidth defaultValue:nil] ?: [self getStringPropertyValue:kIXWidthX defaultValue:returnSize.width];
+    returnSize.height = [self getStringPropertyValue:kIXHeight defaultValue:nil] ?: [self getStringPropertyValue:kIXHeightX defaultValue:returnSize.height];
+    return returnSize;
 }
 
 -(NSArray*)getCommaSeperatedArrayListValue:(NSString*)propertyName defaultValue:(NSArray*)defaultValue
