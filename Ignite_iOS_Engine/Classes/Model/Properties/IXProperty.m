@@ -59,17 +59,18 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     if( [jsonObject isKindOfClass:[NSString class]] )
     {
         NSString* stringValue = (NSString*)jsonObject;
-        if( [stringValue length] && [stringValue hasPrefix:@"if"])
+        if( [stringValue hasPrefix:kIX_IF] )
         {
             NSArray* conditionalComponents = [stringValue componentsSeparatedByString:kIX_DOUBLE_COLON_SEPERATOR];
             if (conditionalComponents.count > 1) {
                 NSString* conditionalStatement = [conditionalComponents[1] trimLeadingAndTrailingWhitespace];
                 NSString* valueIfTrue = [conditionalComponents[2] trimLeadingAndTrailingWhitespace];
                 NSString* valueIfFalse = (conditionalComponents.count == 4) ? [conditionalComponents[3] trimLeadingAndTrailingWhitespace] : nil;
+
                 conditionalProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:valueIfTrue];
                 [conditionalProperty setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:conditionalStatement]];
-                if (!conditionalProperty.isConditionalTrue && [valueIfFalse length]) {
-                    conditionalProperty = [IXProperty propertyWithPropertyName:propertyName rawValue:valueIfTrue];
+                if( [valueIfFalse length] > 0 ) {
+                    [conditionalProperty setElseProperty:[IXProperty propertyWithPropertyName:nil rawValue:valueIfFalse]];
                 }
             }
         }
@@ -296,6 +297,7 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     _propertyContainer = propertyContainer;
     
     [[self conditionalProperty] setPropertyContainer:_propertyContainer];
+    [[self elseProperty] setPropertyContainer:_propertyContainer];
     
     for( IXBaseShortCode *shortCode in [self shortCodes] )
     {

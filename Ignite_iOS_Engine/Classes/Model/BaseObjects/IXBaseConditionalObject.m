@@ -14,6 +14,7 @@
 
 // NSCoding Key Constants
 static NSString* const kIXConditionalPropertyNSCodingKey = @"conditionalProperty";
+static NSString* const kIXElsePropertyNSCodingKey = @"elseProperty";
 static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrientationMask";
 
 @implementation IXBaseConditionalObject
@@ -33,8 +34,10 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    return [[[self class] allocWithZone:zone] initWithInterfaceOrientationMask:[self interfaceOrientationMask]
-                                                           conditionalProperty:[[self conditionalProperty] copy]];
+    IXBaseConditionalObject* copiedObject = [[[self class] allocWithZone:zone] initWithInterfaceOrientationMask:[self interfaceOrientationMask]
+                                                                                            conditionalProperty:[[self conditionalProperty] copy]];
+    [copiedObject setElseProperty:[[self elseProperty] copy]];
+    return copiedObject;
 }
 
 -(instancetype)initWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
@@ -51,14 +54,17 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
-    return [self initWithInterfaceOrientationMask:[aDecoder decodeIntegerForKey:kIXInterfaceOrientationMaskNSCodingKey]
-                              conditionalProperty:[aDecoder decodeObjectForKey:kIXConditionalPropertyNSCodingKey]];
+    IXBaseConditionalObject* baseConditionalObject = [self initWithInterfaceOrientationMask:[aDecoder decodeIntegerForKey:kIXInterfaceOrientationMaskNSCodingKey]
+                                                                        conditionalProperty:[aDecoder decodeObjectForKey:kIXConditionalPropertyNSCodingKey]];
+    [baseConditionalObject setElseProperty:[aDecoder decodeObjectForKey:kIXElsePropertyNSCodingKey]];
+    return baseConditionalObject;
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeInteger:[self interfaceOrientationMask] forKey:kIXInterfaceOrientationMaskNSCodingKey];
     [aCoder encodeObject:[self conditionalProperty] forKey:kIXConditionalPropertyNSCodingKey];
+    [aCoder encodeObject:[self elseProperty] forKey:kIXElsePropertyNSCodingKey];
 }
 
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation

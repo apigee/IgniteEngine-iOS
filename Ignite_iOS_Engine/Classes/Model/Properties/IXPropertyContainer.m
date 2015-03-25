@@ -383,9 +383,13 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
         for( IXProperty* property in [propertyArray reverseObjectEnumerator] )
         {
-            if( [property areConditionalAndOrientationMaskValid:currentOrientation] )
-            {
+            if( [property areConditionalAndOrientationMaskValid:currentOrientation] ) {
                 propertyToEvaluate = property;
+            } else if( [property elseProperty] != nil && [property isOrientationMaskValidForOrientation:currentOrientation] ) {
+                propertyToEvaluate = [property elseProperty];
+            }
+
+            if( propertyToEvaluate != nil ) {
                 break;
             }
         }
