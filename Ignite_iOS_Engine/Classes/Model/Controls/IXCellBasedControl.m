@@ -34,8 +34,8 @@ IX_STATIC_CONST_STRING kIXSectionHeaderControls = @"sectionHeader.controls";
 IX_STATIC_CONST_STRING kIXSectionHeaderHeight = @"sectionHeader.size.h";
 IX_STATIC_CONST_STRING kIXSectionHeaderWidth = @"sectionHeader.size.w";
 IX_STATIC_CONST_STRING kIXDataproviderID = @"datasource.id";
-IX_STATIC_CONST_STRING kIXItemWidth = @"cell.size.w";
-IX_STATIC_CONST_STRING kIXItemHeight = @"cell.size.h";
+//IX_STATIC_CONST_STRING kIXItemWidth = @"cell.size.w";
+//IX_STATIC_CONST_STRING kIXItemHeight = @"cell.size.h";
 IX_STATIC_CONST_STRING kIXPagingEnabled = @"paging.enabled";
 IX_STATIC_CONST_STRING kIXScrollable = @"scrolling.enabled";
 IX_STATIC_CONST_STRING kIXPullToRefreshEnabled = @"pullToRefresh.enabled";
@@ -73,6 +73,8 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh";
 @end
 
 // The following properties MUST match their equivalent names specified in IXBaseControl
+IX_STATIC_CONST_STRING kIXCell = @"cell"; // used as a prefix for cell size
+IX_STATIC_CONST_STRING kIXCellSize = @"cell.size";
 IX_STATIC_CONST_STRING kIXSizeH = @"size.h";
 IX_STATIC_CONST_STRING kIXSizeW = @"size.w";
 IX_STATIC_CONST_STRING kIXMargin = @"margin";
@@ -233,9 +235,10 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 
 -(CGSize)itemSize
 {
+    IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:kIXCell];
     CGSize contentViewSize = [[self contentView] bounds].size;
-    CGSize returnSize = CGSizeMake([[self propertyContainer] getSizeValue:kIXItemWidth maximumSize:contentViewSize.width defaultValue:contentViewSize.width],
-                                   [[self propertyContainer] getSizeValue:kIXItemHeight maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
+    CGSize returnSize = CGSizeMake([[self propertyContainer] getSizeValue:size.width maximumSize:contentViewSize.width defaultValue:contentViewSize.width],
+                                   [[self propertyContainer] getSizeValue:size.height maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
     return returnSize;
 }
 
@@ -373,12 +376,12 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
 
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXItemHeight] )
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXCellSize] )
     {
-        NSString* itemHeight = [[self propertyContainer] getStringPropertyValue:kIXItemHeight defaultValue:nil];
-        if( [itemHeight length] > 0 )
+        IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:kIXCell];
+        if( [size.height length] > 0 )
         {
-            [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:kIXSizeH rawValue:itemHeight]];
+            [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:kIXSizeH rawValue:size.height]];
         }
     }
 

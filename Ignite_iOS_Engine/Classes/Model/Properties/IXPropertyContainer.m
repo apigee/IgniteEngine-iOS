@@ -410,10 +410,14 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return [returnValue copy];
 }
 
--(IXSize*)getSizePropertyValue
+-(IXSize*)getSizePropertyValueWithPrefix:(NSString*)prefix
 {
+    NSString* propertyName = kIXSize;
+    if (prefix != nil) {
+        propertyName = [NSString stringWithFormat:@"%@.%@", prefix, kIXSize];
+    }
     IXSize* returnSize = [[IXSize alloc] initWithDefaultSize];
-    NSArray* sizeArr = [self getCommaSeperatedArrayListValue:kIXSize defaultValue:nil];
+    NSArray* sizeArr = [self getCommaSeperatedArrayListValue:propertyName defaultValue:nil];
     if (sizeArr.count == 2) {
         returnSize.width = sizeArr[0];
         returnSize.height = sizeArr[1];

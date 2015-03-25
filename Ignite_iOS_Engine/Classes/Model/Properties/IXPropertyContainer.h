@@ -41,7 +41,7 @@ typedef void(^IXPropertyContainerImageFailedCompletedBlock)(NSError *error);
 -(BOOL)propertyExistsForPropertyNamed:(NSString*)propertyName;
 
 -(NSString*)getStringPropertyValue:(NSString*)propertyName defaultValue:(NSString*)defaultValue;
--(IXSize*)getSizePropertyValue;
+-(IXSize*)getSizePropertyValueWithPrefix:(NSString*)prefix;
 -(BOOL)getBoolPropertyValue:(NSString*)propertyName defaultValue:(BOOL)defaultValue;
 -(int)getIntPropertyValue:(NSString*)propertyName defaultValue:(int)defaultValue;
 -(float)getFloatPropertyValue:(NSString*)propertyName defaultValue:(float)defaultValue;

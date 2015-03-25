@@ -160,7 +160,7 @@ IX_STATIC_CONST_STRING kIXSize = @"size"; // used as prefix to determine if cont
     else if( [horizontalAlignmentString isEqualToString:kIXRight] )
         _horizontalAlignment = IXLayoutHorizontalAlignmentLeft;
     
-    IXSize* size = [[self propertyContainer] getSizePropertyValue];
+    IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:nil];
     _width = ixSizePercentageValueWithStringOrDefaultValue(size.width, 0.0f);
     _height = ixSizePercentageValueWithStringOrDefaultValue(size.height, 0.0f);
     _topPosition = ixSizePercentageValueWithStringOrDefaultValue([[self propertyContainer] getStringPropertyValue:kIXTopPosition defaultValue:nil], 0.0f);

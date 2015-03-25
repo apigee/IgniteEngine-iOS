@@ -52,27 +52,6 @@
 		<string>SourceSansPro-Semibold.otf</string>
 		<string>SourceSansPro-Light.otf</string>
 		<string>FontAwesome.ttf</string>
-		<string>SanFranciscoDisplay-Black.otf</string>
-		<string>SanFranciscoDisplay-Bold.otf</string>
-		<string>SanFranciscoDisplay-Heavy.otf</string>
-		<string>SanFranciscoDisplay-Light.otf</string>
-		<string>SanFranciscoDisplay-Medium.otf</string>
-		<string>SanFranciscoDisplay-Regular.otf</string>
-		<string>SanFranciscoDisplay-Semibold.otf</string>
-		<string>SanFranciscoDisplay-Thin</string>
-		<string>SanFranciscoDisplay-Ultralight.otf</string>
-		<string>SanFranciscoText-Bold.otf</string>
-		<string>SanFranciscoText-BoldItalic.otf</string>
-		<string>SanFranciscoText-Heavy.otf</string>
-		<string>SanFranciscoText-HeavyItalic.otf</string>
-		<string>SanFranciscoText-Light.otf</string>
-		<string>SanFranciscoText-LightItalic.otf</string>
-		<string>SanFranciscoText-Medium.otf</string>
-		<string>SanFranciscoText-MediumItalic.otf</string>
-		<string>SanFranciscoText-Regular.otf</string>
-		<string>SanFranciscoText-RegularItalic.otf</string>
-		<string>SanFranciscoText-Semibold.otf</string>
-		<string>SanFranciscoText-SemiboldItalic.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -93,8 +72,8 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
