@@ -75,6 +75,7 @@ IX_STATIC_CONST_STRING kIXPullToRefreshActivated = @"pullToRefresh";
 // The following properties MUST match their equivalent names specified in IXBaseControl
 IX_STATIC_CONST_STRING kIXCell = @"cell"; // used as a prefix for cell size
 IX_STATIC_CONST_STRING kIXCellSize = @"cell.size";
+IX_STATIC_CONST_STRING kIXCellSizeHeight = @"cell.size.height";
 IX_STATIC_CONST_STRING kIXSizeH = @"size.h";
 IX_STATIC_CONST_STRING kIXSizeW = @"size.w";
 IX_STATIC_CONST_STRING kIXMargin = @"margin";
@@ -376,7 +377,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
 
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXCellSize] )
+    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXCellSize] || [[self propertyContainer] propertyExistsForPropertyNamed:kIXCellSizeHeight] )
     {
         IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:kIXCell];
         if( [size.height length] > 0 )
