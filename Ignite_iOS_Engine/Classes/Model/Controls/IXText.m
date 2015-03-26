@@ -1,23 +1,10 @@
 //
 //  IXTextControl.m
-//  Ignite iOS Engine (IX)
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 10/15/13.
-//  Copyright (c) 2013 Apigee, Inc. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
-
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Words, letters & fonts.
-*/
 
 #import "IXText.h"
 
@@ -39,81 +26,6 @@ static NSString* const kIXSizeToFit = @"sizeToFit.enabled";
 @end
 
 @implementation IXText
-
-/*
-* Docs
-*
-*/
-
-/***************************************************************/
-
-/** This control has the following attributes:
-
-    @param text Text to display<br>*(string)*
-    @param text.alignment Alignment of the text *(default: left)*<br>*leftrightcenterjustifiednatural*
-    @param text.color Color of the text *(default: #000000)*<br>*(color)*
-    @param font The text font name and size (font:size) *(default: HelveticaNeue:20)*<br>*(string)*
-    @param size_to_fit Shall the size the text to fit dynamically? *(default: FALSE)*<br>*(bool)*
-
-*/
-
--(void)Attributes
-{
-}
-/***************************************************************/
-/***************************************************************/
-
-/** This control has the following attributes:
-*/
-
--(void)Returns
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control fires the following events:
-*/
-
--(void)Events
-{
-}
-
-
-/***************************************************************/
-/***************************************************************/
-
-/** This control supports the following functions:
-
-*/
-
--(void)Functions
-{
-}
-
-/***************************************************************/
-/***************************************************************/
-
-/** Go on, try it out!
-
-
- <pre class="brush: js; toolbar: false;">
- 
- </pre>
-
-*/
-
--(void)Example
-{
-}
-
-/***************************************************************/
-
-/*
-* /Docs
-*
-*/
 
 -(void)buildView
 {

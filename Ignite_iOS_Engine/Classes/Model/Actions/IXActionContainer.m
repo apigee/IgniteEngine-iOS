@@ -1,9 +1,9 @@
 //
 //  IXActionContainer.m
-//  Ignite iOS Engine (IX)
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 10/9/13.
-//  Copyright (c) 2013 Apigee, Inc. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
 #import "IXActionContainer.h"

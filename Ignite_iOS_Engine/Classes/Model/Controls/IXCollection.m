@@ -1,23 +1,10 @@
 //
 //  IXCollection.m
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 12/31/13.
-//  Copyright (c) 2013 Ignite. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
-
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** Have some data? Toss it in a Collection View!
-*/
 
 #import "IXCollection.h"
 

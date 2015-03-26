@@ -1,24 +1,10 @@
 //
 //  IXCustom.m
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 2/4/14.
-//  Copyright (c) 2014 Ignite. All rights reserved.
-//
-
-/*  -----------------------------  */
-//  [Documentation]
-//
-//  Author:     Jeremy Anticouni
-//  Date:       1/28/2015
-//
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
-/*  -----------------------------  */
- 
-/** Native iOS UI control that displays a menu from the bottom of the screen.
-*/
-
 
 #import "IXCustom.h"
 

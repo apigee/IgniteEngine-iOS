@@ -1,6 +1,6 @@
 //
 //  IXSize.m
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Brandon on 3/25/15.
 //  Copyright (c) 2015 Ignite. All rights reserved.

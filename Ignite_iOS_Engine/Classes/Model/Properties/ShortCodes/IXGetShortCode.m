@@ -1,6 +1,6 @@
 //
 //  IXGetShortCode.m
-//  Ignite iOS Engine (IX)
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 11/21/13.
 //  Copyright (c) 2013 Apigee Inc. All rights reserved.

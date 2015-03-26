@@ -1,6 +1,6 @@
 //
 //  IXLayoutControl.m
-//  Ignite iOS Engine (IX)
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 10/15.
 //  Copyright (c) 2013. All rights reserved.

@@ -1,9 +1,9 @@
 //
 //  IXShortCodeFunction.m
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 4/9/14.
-//  Copyright (c) 2014 Ignite. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
 #import "IXShortCodeFunction.h"
@@ -51,8 +51,8 @@ IX_STATIC_CONST_STRING kIXURLDecode = @"url.decode";                // [[?:url_d
 IX_STATIC_CONST_STRING kIXTimeFromSeconds = @"timeFromSeconds";     // [[?:timeFromSeconds]]                    -> Trucates the string to specified index
 IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
 
-IX_STATIC_CONST_STRING kIXRadiansToDegress = @"degreesToRadians";
-IX_STATIC_CONST_STRING kIXDegreesToRadians = @"radiansToDegress";
+IX_STATIC_CONST_STRING kIXRadiansToDegrees = @"degreesToRadians";
+IX_STATIC_CONST_STRING kIXDegreesToRadians = @"radiansToDegrees";
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define RADIANS_TO_DEGREES(radians) ((radians) * 180.0 / M_PI)
@@ -355,7 +355,7 @@ static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NS
                                     kIXTimeFromSeconds:   [kIXTimeFromSecondsFunction copy],
                                     kIXTruncate:          [kIXTruncateFunction copy],
                                     kIXDegreesToRadians:  [kIXDegreesToRadiansFunction copy],
-                                    kIXRadiansToDegress:  [kIXRadiansToDegreesFunction copy]};
+                                    kIXRadiansToDegrees:  [kIXRadiansToDegreesFunction copy]};
     });
     
     return [sIXFunctionDictionary[functionName] copy];

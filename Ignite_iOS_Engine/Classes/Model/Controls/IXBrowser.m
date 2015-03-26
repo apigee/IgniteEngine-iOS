@@ -1,24 +1,11 @@
 //
 //  IXBrowserControl.m
-//  Ignite iOS Engine (IX)
+//  Ignite Engine
 //
 //  Created by Jeremy Anticouni on 11/16/13.
-//  Copyright (c) 2013 Apigee, Inc. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
 //
-
-/*
- *      Docs
- *
- *      Author:     Jeremy Anticouni
- *      Date:     	1/28/2015
- *
- *
- *      Copyright (c) 2015 Apigee. All rights reserved.
-*/
-
-/** A basic UIWebView that allows you to render a HTML string or a URL.
-*/
 
 #import "IXBrowser.h"
 #import "IXAppManager.h"

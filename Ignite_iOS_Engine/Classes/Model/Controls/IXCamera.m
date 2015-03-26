@@ -1,9 +1,9 @@
 //
 //  IXCamera.m
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Brandon on 3/24/14.
-//  Copyright (c) 2014 Ignite. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 // 
 
 //TODO: This will probably break if we try and add two Camera controls <running> at the same time. Need to find a graceful way of deallocating previously started IXCameras.

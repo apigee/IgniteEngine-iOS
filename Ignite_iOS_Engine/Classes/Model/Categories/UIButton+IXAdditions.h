@@ -1,9 +1,9 @@
 //
 //  UIButton+IXAdditions.h
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Brandon on 3/15/14.
-//  Copyright (c) 2014 Ignite. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

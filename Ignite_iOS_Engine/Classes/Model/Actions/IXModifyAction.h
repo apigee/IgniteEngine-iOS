@@ -1,24 +1,10 @@
 //
 //  IXModifyAction.h
-//  Ignite iOS Engine (IX)
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 10/15/13.
-//  Copyright (c) 2013 Apigee, Inc. All rights reserved.
+//  Copyright (c) 2015 Apigee. All rights reserved.
 //
-
-/*
- 
- ACTION
- 
- - TYPE : "Modify"
- 
- - PROPERTIES
- 
- * name="id"            default=""        type="STRING"
- * name="duration"      default=""        type="STRING"
- * name="parameters"    default=""        type="ATTRIBUTE CONTAINER"
- 
- */
 
 #import "IXBaseAction.h"
 
