@@ -1,0 +1,51 @@
+{
+    "view": {
+        "attributes": {
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 70,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXMap"
+                }
+            },
+            {
+                "_id": "mapControl",
+                "_type": "Map",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "title": "You touched on [[$self.pin.title]]."
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "animatePinDrop.enabled": true,
+                    "pin": {
+                        "lat": "37.333916",
+                        "long": "-121.894076",
+                        "subtitle": "Subtitle",
+                        "title": "Title"
+                    },
+                    "size.h": "100%",
+                    "size.w": "100%",
+                    "userLocation.enabled": true,
+                    "zoomLevel": 12
+                }
+            }
+        ],
+        "datasources": []
+    }
+}

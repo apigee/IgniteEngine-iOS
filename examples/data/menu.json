@@ -1,0 +1,203 @@
+{
+  "entities": [
+    {
+      "name": "ActionSheet",
+      "name": "ActionSheet",
+      "type": "control"
+    },
+    {
+      "name": "ActivityIndicator",
+      "name": "ActivityIndicator",
+      "type": "control"
+    },
+    {
+      "name": "AddressBook",
+      "name": "AddressBook",
+      "type": "control"
+    },
+    {
+      "name": "AttributedText",
+      "name": "AttributedText",
+      "type": "control"
+    },
+    {
+      "name": "BaseControl",
+      "name": "BaseControl",
+      "type": "control"
+    },
+    {
+      "name": "Browser",
+      "name": "Browser",
+      "type": "control"
+    },
+    {
+      "name": "Button",
+      "name": "Button",
+      "type": "control"
+    },
+    {
+      "name": "Calendar",
+      "name": "Calendar",
+      "type": "control"
+    },
+    {
+      "name": "Camera",
+      "name": "Camera",
+      "type": "control"
+    },
+    {
+      "name": "CellBasedControl",
+      "name": "CellBasedControl",
+      "type": "control"
+    },
+    {
+      "name": "Circle",
+      "type": "control"
+    },
+    {
+      "name": "Collection",
+      "type": "control"
+    },
+    {
+      "name": "Image",
+      "type": "control"
+    },
+    {
+      "name": "Dial",
+      "type": "control"
+    },
+    {
+      "name": "Layout",
+      "type": "control"
+    },
+    {
+      "name": "Map",
+      "type": "control"
+    },
+    {
+      "name": "MapAnnotation",
+      "type": "control"
+    },
+    {
+      "name": "MediaPlayer",
+      "type": "control"
+    },
+    {
+      "name": "MediaSource",
+      "type": "control"
+    },
+    {
+      "name": "Message",
+      "type": "control"
+    },
+    {
+      "name": "Scanner",
+      "type": "control"
+    },
+    {
+      "name": "Signature",
+      "type": "control"
+    },
+    {
+      "name": "Slider",
+      "type": "control"
+    },
+    {
+      "name": "Social",
+      "type": "control"
+    },
+    {
+      "name": "AudioPlayer",
+      "type": "control"
+    },
+    {
+      "name": "SoundRecorder",
+      "type": "control"
+    },
+    {
+      "name": "Speech",
+      "type": "control"
+    },
+    {
+      "name": "TableView",
+      "type": "control"
+    },
+    {
+      "name": "Text",
+      "type": "control"
+    },
+    {
+      "name": "TextInput",
+      "type": "control"
+    },
+    {
+      "name": "Timer",
+      "type": "control"
+    },
+    {
+      "name": "Toggle",
+      "type": "control"
+    },
+    {
+      "name": "TouchID",
+      "type": "control"
+    },
+    {
+      "name": "AlertAction",
+      "type": "action"
+    },
+    {
+      "name": "ModifyAction",
+      "type": "action"
+    },
+    {
+      "name": "FunctionAction",
+      "type": "action"
+    },
+    {
+      "name": "LogAction",
+      "type": "action"
+    },
+    {
+      "name": "NavigateAction1",
+      "type": "action"
+    },
+    {
+      "name": "NavigateAction",
+      "type": "action"
+    },
+    {
+      "name": "RefreshAction",
+      "type": "action"
+    },
+    {
+      "name": "LoadAction",
+      "type": "action"
+    },
+    {
+      "name": "CreateAction",
+      "type": "action"
+    },
+    {
+      "name": "AnimateAction",
+      "type": "action"
+    },
+    {
+      "name": "EventAction",
+      "type": "action"
+    },
+    {
+      "name": "AnimateAction",
+      "type": "action"
+    },
+    {
+      "name": "viewPhotoSearch",
+      "path": "/tutorials/photoSearch/viewPhotoSearch.json",
+      "type": "tutorial"
+    },
+    {
+      "name": "weather",
+      "type": "tutorial"
+    }
+  ]
+}

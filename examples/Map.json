@@ -1,0 +1,80 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "Map Example"
+        }
+      },
+      {
+        "_id": "mapControl",
+        "_type": "Map",
+        "actions": [
+          {
+            "_type": "Modify",
+            "actions": [
+              {
+                "_type": "Navigate",
+                "attributes": {
+                  "to": "detail_employee.json",
+                  "nav_animation_duration": "[[app.animationDurationPush]]",
+                  "nav_animation_type": "move_in"
+                },
+                "on": "finished"
+              }
+            ],
+            "attributes": {
+              "_target": "session"
+            },
+            "on": "touchUp",
+            "set": {
+              "view_parent": "list_employees",
+              "search_email": "[[dataRow.email]]",
+              "employee_email": "[[dataRow.email]]",
+              "employee_firstname": "[[dataRow.firstname]]",
+              "employee_lastname": "[[dataRow.lastname]]",
+              "employee_title": "[[dataRow.title]]",
+              "employee_country": "[[dataRow.country]]",
+              "employee_department": "[[dataRow.department]]",
+              "employee_phone": "[[dataRow.phone]]",
+              "employee_mobilephone": "[[dataRow.mobilephone]]",
+              "employee_managername": "[[dataRow.managername]]",
+              "employee_manageremail": "[[dataRow.manageremail]]",
+              "employee_workingon": "[[dataRow.workingon]]",
+              "employee_skills": "[[dataRow.sills]]",
+              "employee_hobbies": "[[dataRow.hobbies]]"
+            }
+          }
+        ],
+        "attributes": {
+          "visible": true,
+          "fill_remaining_size.h": true,
+          "size.w": "100%",
+          "zoom_level": 12,
+          "shows_user_location": true,
+          "annotation": {
+            "pin.animates_drop": true,
+            "title": "Title",
+            "subtitle": "Subtitle",
+            "latitude": "37.333916",
+            "longitude": "-121.894076"
+          }
+        }
+      }
+    ],
+    "datasources": []
+  }
+}

@@ -3,6 +3,11 @@
 *~nib
 
 build/
+assets/
+assets*
+assets_*
+
+.ixconfig
 
 *.pbxuser
 *.perspective

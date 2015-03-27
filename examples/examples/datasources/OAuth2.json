@@ -1,0 +1,39 @@
+{
+    "view": {
+        "datasources": [
+            {
+                "_id": "dataAuth",
+                "_type": "OAuth2",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Please check your username and password and try again.",
+                            "title": "Whoops!"
+                        },
+                        "on": "auth.error"
+                    },
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Authenticated! [[dataAuth.token]]",
+                            "title": "Yay"
+                        },
+                        "on": "auth.success"
+                    }
+                ],
+                "attributes": {
+                    "autoLoad.enabled": true,
+                    "baseUrl": "http://etelco-test.apigee.net",
+                    "client.id": "CRsJGKO9n4AB0M3ghusIrZ7mFgcyhAMd",
+                    "headers.Content-Type": "application/json",
+                    "pathSuffix.auth": "/oauth/authorize",
+                    "pathSuffix.token": "/oauth/token",
+                    "redirectUri": "http://localhost",
+                    "responseType": "token",
+                    "storage.id": "token_time"
+                }
+            }
+        ]
+    }
+}

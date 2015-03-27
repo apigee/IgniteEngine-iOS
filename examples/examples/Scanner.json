@@ -1,0 +1,69 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 70,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXScanner"
+        }
+      },
+      {
+        "_id": "scannerTest",
+        "_type": "Scanner",
+        "actions": [
+          {
+            "on": "scanned",
+            "_type": "Alert",
+            "attributes": {
+              "title": "Scanned.",
+              "message":"[[$self.data]]"
+            }
+          }
+        ],
+        "attributes": {
+          "auto_close": true
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "_type": "Function",
+            "on": "touchUp",
+            "attributes": {
+              "_target": "scannerTest",
+              "functionName": "present_reader"
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 200,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "layoutType": "absolute",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "align.v": "middle",
+          "touch.bg.color": "cdcdcd",
+          "border.radius": 0,
+          "text": "Scan something.."
+        }
+      }
+    ],
+    "datasources": []
+  }
+}

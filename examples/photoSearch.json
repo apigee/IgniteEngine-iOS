@@ -1,0 +1,117 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "photoSearch",
+      "status_bar_style": "light",
+      "bg.color": "#fff000"
+    },
+    "controls": [
+      {
+        "_id": "layoutMain",
+        "_type": "Layout",
+        "attributes": {
+          "size.w": "100%",
+          "size.h": "100%",
+          "bg.color": "#000000",
+          "layoutType": "absolute"
+        },
+        "controls": [
+          {
+            "_id": "layoutHeader",
+            "_type": "Layout",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": 70,
+              "layoutType": "absolute"
+            },
+            "controls": [
+              {
+                "_id": "title",
+                "_type": "Text",
+                "attributes": {
+                  "size.w": "100%",
+                  "size.h": 50,
+                  "margin.top": 20,
+                  "color": "ffffff",
+                  "layoutType": "float",
+                  "align.h": "center",
+                  "align.v": "bottom",
+                  "text.align": "center",
+                  "font": "HelveticaNeue-Light:26",
+                  "text": "Search"
+                }
+              }
+            ]
+          },
+          {
+            "_id": "layoutSearch",
+            "_type": "Layout",
+            "attributes": {
+              "size.w": "100%",
+              "size.h": 42,
+              "margin.top": 70,
+              "bg.color": "ffffff50",
+              "layoutType": "absolute"
+            },
+            "controls": [
+              {
+                "_id": "textInputTest",
+                "_type": "TextInput",
+                "actions": [
+                  {
+                    "_type": "Modify",
+                    "on": "text_changed,got_focus",
+                    "attributes": {
+                      "_target": "session"
+                    },
+                    "set": {
+                      "text_to_speak": "[[$self.text]]"
+                    }
+                  }
+                ],
+                "attributes": {
+                  "font": "HelveticaNeue-Light:22",
+                  "is_multiline": false,
+                  "size.w": 257,
+                  "size.h": "100%",
+                  "border.size.w":4,
+                  "border.color":"ff00ff",
+                  "text.align": "center",
+                  "align.h": "left",
+                  "color": "#6c6c6c",
+                  "border.size.w": 1,
+                  "border.color": "cdcdcd",
+                  "initial_text": 0.75,
+                  "text.placeholder": "Duration"
+                }
+              },
+              {
+  "_id": "imageTest",
+  "_type": "Image",
+  "actions": [
+    {
+      "_type": "Alert",
+      "on": "touchUp",
+      "attributes": {
+        "title": "touchUp",
+        "message": "Sized to [[$self.actual.size.w]]pt x [[$self.actual.size.h]]pt."
+      }
+    }
+  ],
+  "attributes": {
+    "size.w":55,
+    "size.h":38,
+    "image": "/images/btn_search_55x38.png",
+    "layoutType": "absolute",
+    "align.v": "middle",
+    "align.h": "right"
+  }
+}
+            ]
+          }
+        ]
+      }
+    ],
+    "datasources": []
+  }
+}

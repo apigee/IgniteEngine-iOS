@@ -1,0 +1,64 @@
+{
+    "view": {
+        "attributes": {
+            "_id": "test",
+            "bg.color": "#ffffff",
+            "padding.top": 90,
+            "status_bar_style": "dark"
+        },
+        "controls": [
+            {
+                "_id": "customHeader",
+                "_type": "Custom",
+                "attributes": {
+                    "control_location": "../custom/header.json",
+                    "layoutType": "float",
+                    "margin.top": 20,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "title": "IXImage"
+                }
+            },
+            {
+                "_id": "imageTest",
+                "_type": "Image",
+                "actions": [
+                    {
+                        "_type": "Alert",
+                        "attributes": {
+                            "message": "Sized to [[$self.size.w.computed]]pt x [[$self.size.h.computed]]pt.",
+                            "title": "touchUp"
+                        },
+                        "on": "touchUp"
+                    }
+                ],
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "middle",
+                    "color": "6c6c6c",
+                    "image": "/images/bgs/storage_wars.jpg",
+                    "image.blur.radius": 20,
+                    "layoutType": "absolute",
+                    "max.w": "100%"
+                }
+            },
+            {
+                "_id": "title",
+                "_type": "Text",
+                "attributes": {
+                    "align.h": "center",
+                    "align.v": "bottom",
+                    "color": "6c6c6c",
+                    "font": "HelveticaNeue:15",
+                    "layoutType": "float",
+                    "margin.bottom": 15,
+                    "size.h": 50,
+                    "size.w": "100%",
+                    "text": "IXImage: blurred 20pt",
+                    "text.align": "center"
+                }
+            }
+        ],
+        "datasources": []
+    }
+}

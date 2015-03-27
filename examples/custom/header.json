@@ -1,0 +1,73 @@
+{
+  "view": {
+    "attributes": {
+      "size.h": "100%",
+      "layoutType": "float",
+      "bg.color":"#fafafa",
+      "size.w": "100%"
+    },
+    "actions": [],
+    "controls": [
+      {
+        "_id": "layoutHeader",
+        "_type": "Layout",
+        "attributes": {
+          "size.w": "100%",
+          "size.h": 50,
+          "layoutType": "float"
+        },
+        "controls": [
+          {
+            "_type": "Text",
+            "attributes": {
+              "color": "#6c6c6c",
+              "size.w": "100%",
+              "layoutType": "absolute",
+              "align.v": "middle",
+              "text.align": "center",
+              "text": "[[$custom.title]]"
+            }
+          },
+          {
+            "_id": "imageMenu",
+            "_type": "Image",
+            "actions": [
+              {
+                "_type": "Function",
+                "attributes": {
+                  "_target": "app",
+                  "functionName": "drawerController.l.toggle"
+                },
+                "on": "touchUp"
+              },
+              {
+                "_type": "Function",
+                "on": "touchUp",
+                "attributes": {
+                  "_target": "TextInput",
+                  "functionName": "dismissKeyboard"
+                }
+              }
+            ],
+            "attributes": {
+              "layoutType": "absolute",
+              "size.h": 50,
+              "size.w": 50,
+              "image": "../images/btn_menu_50x50.png"
+            }
+          }
+        ]
+      },
+      {
+        "_type": "Layout",
+        "attributes": {
+          "size.h": 1,
+          "margin.top": 49,
+          "layoutType": "float",
+          "size.w": "100%",
+          "bg.color": "#cdcdcd"
+        }
+      }
+    ]
+  }
+}

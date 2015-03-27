@@ -1,0 +1,25 @@
+{
+  "view": {
+    "attributes": {
+      "size.w":"100%",
+      "size.h":"100%"
+    },
+    "controls": [
+      {
+        "_id": "title",
+        "_type": "Text",
+        "attributes": {
+          "size.w": "100%",
+          "margin.bottom":15,
+          "color": "696969",
+          "layoutType": "float",
+          "align.h": "center",
+          "align.v": "middle",
+          "font":"HelveticaNeue:15",
+          "text.align": "center",
+          "text": "I was created, down here!"
+        }
+      }
+    ]
+  }
+}

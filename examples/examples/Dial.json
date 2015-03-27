@@ -1,0 +1,141 @@
+{
+  "view": {
+    "attributes": {
+      "_id": "test",
+      "padding.top": 90,
+      "bg.color":"#ffffff",
+      "status_bar_style": "dark"
+    },
+    "controls": [
+      {
+        "_id": "customHeader",
+        "_type": "Custom",
+        "attributes": {
+          "control_location": "../custom/header.json",
+          "layoutType": "float",
+          "size.h": 50,
+          "size.w": "100%",
+          "margin.top": 20,
+          "title": "IXDial"
+        }
+      },
+      {
+        "_id": "customDial",
+        "_type": "Dial",
+        "actions": [
+          {
+            "_type": "Refresh",
+            "attributes": {
+              "_target": "dialValue"
+            },
+            "enabled": true,
+            "on": "value_changed"
+          }
+        ],
+        "attributes": {
+          "color": {
+            "background": "#00000000"
+          },
+          "size.w": 250,
+          "size.h": 250,
+          "align.h": "center",
+          "layoutType": "relative",
+          "value.default": 0,
+          "value.min": 0,
+          "value.max": 100,
+          "animation.duration": 0.5,
+          "bg.image":"images/bg.png",
+          "pointer.image": "images/marker.png"
+        }
+      },
+      {
+        "_id": "dialValue",
+        "_type": "Button",
+        "actions": [
+          {
+            "on": "touchUp",
+            "_type": "Function",
+            "attributes": {
+              "_target": "customDial",
+              "functionName": "setValue"
+            },
+            "set": {
+              "value": 0,
+              "animated": true
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 280,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "touch.bg.color": "cdcdcd",
+          "margin.top": 10,
+          "text": "Dial Value: [[customDial.value]]"
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "on": "touchUp",
+            "_type": "Function",
+            "attributes": {
+              "_target": "customDial",
+              "functionName": "setValue"
+            },
+            "set": {
+              "value": 50,
+              "animated": true
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 280,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "touch.bg.color": "cdcdcd",
+          "margin.top": 10,
+          "text": "Change Dial Value: 50"
+        }
+      },
+      {
+        "_id": "button",
+        "_type": "Button",
+        "actions": [
+          {
+            "on": "touchUp",
+            "_type": "Function",
+            "attributes": {
+              "_target": "customDial",
+              "functionName": "setValue"
+            },
+            "set": {
+              "value": 100,
+              "animated": true
+            }
+          }
+        ],
+        "attributes": {
+          "size.w": 280,
+          "size.h": 50,
+          "color": "6c6c6c",
+          "bg.color": "cdcdcd",
+          "touch.color": "6c6c6c50",
+          "align.h": "center",
+          "touch.bg.color": "cdcdcd",
+          "margin.top": 10,
+          "text": "Change Dial Value: 100"
+        }
+      }
+    ],
+    "datasources": []
+  }
+}

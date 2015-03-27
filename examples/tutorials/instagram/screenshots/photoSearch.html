@@ -1,0 +1,57 @@
+<div class="page"> 
+  
+  <!-- Bullet -->
+  <section class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Bullet</div>
+    <div class="panel-body">
+      <div class="divider divider-lg"></div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="ui-bullet">
+            <div class="btn-icon btn-icon-round btn-icon-lg bg-primary"> <i class="ti-cut"></i> </div>
+            <div class="ui-bullet-content">
+              <h3>This Bullet Title</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, nesciunt, eius accusamus quam quaerat molestiae voluptas dignissimos tempora non veniam. Sint libero quia repellendus eveniet dolores distinctio amet consectetur suscipit.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="ui-bullet">
+            <div class="btn-icon btn-icon-round btn-icon-lg bg-info"> <i class="ti-stats-up"></i> </div>
+            <div class="ui-bullet-content">
+              <h3>Another Bullet Title</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, nesciunt, eius accusamus quam quaerat molestiae voluptas dignissimos tempora non veniam. Sint libero quia repellendus eveniet dolores distinctio amet consectetur suscipit.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="ui-bullet">
+            <div class="btn-icon btn-icon-round btn-icon-lg bg-danger"> <i class="ti-image"></i> </div>
+            <div class="ui-bullet-content">
+              <h3>Last Bullet Title</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, nesciunt, eius accusamus quam quaerat molestiae voluptas dignissimos tempora non veniam. Sint libero quia repellendus eveniet dolores distinctio amet consectetur suscipit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="ix://com.apigee.ix-project-template?_type=navigate&to=IXCircle.json">
+      	<button type="button" class="btn btn-default btn-lg">Open IXCircle</button>
+      </a>
+      <a href="ix://com.apigee.ix-project-template?_type=navigate&to=IXSocial.json">
+      	<button type="button" class="btn btn-default btn-lg">Open IXSocial</button>
+      </a>
+      <div class="divider divider-lg"></div>
+    </div>
+  </section>
+  <!-- end Bullet -->
+  
+  <div class="panel panel-default" data-ng-controller="flotChartCtrl">
+    <div class="panel-body">
+      <div data-flot-chart
+                 data-data="line1.data"
+                 data-options="line1.options"
+                 style="size.w: 100%; size.h: 380px;"
+                 ></div>
+    </div>
+  </div>
+</div>
