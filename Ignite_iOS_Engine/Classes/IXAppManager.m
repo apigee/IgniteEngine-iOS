@@ -48,11 +48,11 @@ IX_STATIC_CONST_STRING kIXSessionDefaults = @"$session.defaults";
 IX_STATIC_CONST_STRING kIXAppMode = @"mode";
 IX_STATIC_CONST_STRING kIXLogLevel = @"logging.level";
 IX_STATIC_CONST_STRING kIXDefaultView = @"view.index";
-IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawerController.l.url";
-IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawerController.l.max.w";
-IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawerController.r.url";
-IX_STATIC_CONST_STRING kIXDrawerViewRightMaxWidth = @"drawerController.r.max.w";
-IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawerController.toggleVelocity";
+IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawer.l.url";
+IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawer.l.max.w";
+IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawer.r.url";
+IX_STATIC_CONST_STRING kIXDrawerViewRightMaxWidth = @"drawer.r.max.w";
+IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.velocity";
 IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"debug.layout.enabled";
 IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"logging.datasource.enabled";
 IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"logging.remote.enabled";
@@ -65,13 +65,13 @@ IX_STATIC_CONST_STRING kIXApigeeAppID = @"apigee.app";
 IX_STATIC_CONST_STRING kIXApigeeBaseURL = @"apigee.baseUrl";
 IX_STATIC_CONST_STRING kIXApigeePushNotifier = @"apigee.notifier";
 
-IX_STATIC_CONST_STRING kIXDrawerViewShadow = @"drawerController.shadow.enabled";
-IX_STATIC_CONST_STRING kIXDrawerViewAnimation = @"drawerController.animation";
+IX_STATIC_CONST_STRING kIXDrawerViewShadow = @"drawer.shadow.enabled";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimation = @"drawer.animation";
 IX_STATIC_CONST_STRING kIXDrawerViewAnimationSlide = @"slide";
 IX_STATIC_CONST_STRING kIXDrawerViewAnimationSlideAndScale = @"slideAndScale";
 IX_STATIC_CONST_STRING kIXDrawerViewAnimationSwingingDoor = @"swingingDoor";
 IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallax = @"parallax";
-IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallaxFactor = @"drawerController.animation.parallaxFactor";
+IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallaxFactor = @"drawer.animation.parallaxFactor";
 
 IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"requestAccess.push.auto"; // Should app automatically request access to push. If NO must use app function kIXRequestAccessPush to request push
 IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"mic.autoRequest.enabled"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
@@ -88,12 +88,12 @@ IX_STATIC_CONST_STRING kIXLocationAccuracyThreeKilometers = @"threeKilometers";
 IX_STATIC_CONST_STRING kIXReset = @"reset";
 IX_STATIC_CONST_STRING kIXDestorySession = @"destroySession";
 
-IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawerController.l.toggle";
-IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawerController.r.toggle";
+IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawer.l.toggle";
+IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawer.r.toggle";
 
-// TODO: These should be cleaned up and adjusted to drawerController.open.enable and drawerController.close.disable and drawerController.all.enable etc.
-IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawerController.enabled"; // Function name must have one of the following suffixes.
-IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawerController.disable"; // Function name must have one of the following suffixes.
+// TODO: These should be cleaned up and adjusted to drawer.open.enable and drawer.close.disable and drawer.all.enable etc.
+IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawer.enabled"; // Function name must have one of the following suffixes.
+IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function name must have one of the following suffixes.
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
 IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".openClose";
