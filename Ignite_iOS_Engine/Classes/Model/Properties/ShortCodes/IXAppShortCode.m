@@ -15,7 +15,7 @@
 #import "ApigeeDataClient.h"
 
 IX_STATIC_CONST_STRING kIXPushToken = @"pushToken";
-IX_STATIC_CONST_STRING kIXApigeeDeviceUUID = @"apigeeDeviceUuid";
+IX_STATIC_CONST_STRING kIXApigeeDeviceUUID = @"apigee.deviceUuid";
 IX_STATIC_CONST_STRING kIXBundleVersion = @"bundleVersion";
 IX_STATIC_CONST_STRING kIXIsAllowedPush = @"isAllowed.push";
 IX_STATIC_CONST_STRING kIXIsAllowedLocation = @"isAllowed.location";
