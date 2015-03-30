@@ -20,8 +20,7 @@
 #import "NSString+IXAdditions.h"
 #import "ColorUtils.h"
 
-// NOTE: Please add function name here in alphabetical order as well as adding the function block below in the same order.
-// Also to enable use of the function, ensure you have also set the function in the shortCodeFunctionWithName in the load method.
+// NOTE: To enable use of the function, ensure you add the function block and set the function inside shortCodeFunctionWithName.
 
 //                      FUNCTION NAME                                   USAGE                                   RETURN VALUE/NOTES
 //                                                               (? means any attribute)
@@ -31,11 +30,6 @@ IX_STATIC_CONST_STRING kIXCurrency = @"currency";                   // [[?:curre
 IX_STATIC_CONST_STRING kIXDistance = @"distance";                   // [[app:distance(lat1:long1,lat2:long2)]]  -> Distance from lat1,long1 to lat2,long2.
 IX_STATIC_CONST_STRING kIXToBase64 = @"base64.encode";              // [[?:to_base64]]                          -> String to Base64 value
 IX_STATIC_CONST_STRING kIXFromBase64 = @"base64.decode";            // [[?:from_base64]]                        -> Base64 value to string
-IX_STATIC_CONST_STRING kIXIsEmpty = @"isEmpty";                     // [[?:is_empty]]                           -> True if the string is empty (aka "")
-IX_STATIC_CONST_STRING kIXIsNil = @"isNil";                         // [[?:is_nil]]                             -> True if the string is nil
-IX_STATIC_CONST_STRING kIXIsNilOrEmpty = @"isNilOrEmpty";           // [[?:is_nil_or_empty]]                    -> True if the string is empty or nil
-IX_STATIC_CONST_STRING kIXIsNotEmpty = @"isNotEmpty";               // [[?:is_not_empty]]                       -> True if the string is not empty
-IX_STATIC_CONST_STRING kIXIsNotNil = @"isNotNil";                   // [[?:is_not_nil]]                         -> True if the string is not nil
 IX_STATIC_CONST_STRING kIXLength = @"length";                       // [[?:length]]                             -> Length of the attributes string
 IX_STATIC_CONST_STRING kIXMoment = @"moment";                       // [[?:moment(toDateFormat)]]               -> String as date with the given format (can have 2 params)
 IX_STATIC_CONST_STRING kIXMonogram = @"monogram";                   // [[?:monogram]]                           -> String monogram value
@@ -53,6 +47,16 @@ IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:trunc
 
 IX_STATIC_CONST_STRING kIXRadiansToDegrees = @"degreesToRadians";
 IX_STATIC_CONST_STRING kIXDegreesToRadians = @"radiansToDegrees";
+
+// "is" operation constants
+IX_STATIC_CONST_STRING kIXIs = @"is";
+IX_STATIC_CONST_STRING kIXEmpty = @"empty";
+IX_STATIC_CONST_STRING kIXNil = @"nil";
+IX_STATIC_CONST_STRING kIXNotNil = @"notNil";
+IX_STATIC_CONST_STRING kIXNotEmpty = @"notEmpty";
+IX_STATIC_CONST_STRING kIXNegationOperator = @"!";
+IX_STATIC_CONST_STRING kIXAndOperator = @"&&";
+IX_STATIC_CONST_STRING kIXOrOperator = @"||";
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define RADIANS_TO_DEGREES(radians) ((radians) * 180.0 / M_PI)
@@ -147,24 +151,56 @@ static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString
     return [NSString ix_fromBase64String:stringToDecode];
 };
 
-static IXBaseShortCodeFunction const kIXIsEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:[stringToModify isEqualToString:kIX_EMPTY_STRING]];
-};
-
-static IXBaseShortCodeFunction const kIXIsNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:(stringToModify == nil)];
-};
-
-static IXBaseShortCodeFunction const kIXIsNilOrEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:([stringToModify length] <= 0)];
-};
-
-static IXBaseShortCodeFunction const kIXIsNotEmptyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:([stringToModify length] > 0)];
-};
-
-static IXBaseShortCodeFunction const kIXIsNotNilFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
-    return [NSString ix_stringFromBOOL:(stringToModify != nil)];
+static IXBaseShortCodeFunction const kIXIsFunction = ^NSString*(NSString* inputString,NSArray* parameters){
+    NSString* firstCondition = nil;
+    NSString* operator = nil;
+    NSString* secondCondition = nil;
+    BOOL returnFirstCondition;
+    BOOL returnSecondCondition;
+    
+    if (parameters.count == 1) {
+        NSString* conditionalString = [[parameters firstObject] originalString];
+        if ([conditionalString containsString:kIXAndOperator]) {
+            firstCondition = [[conditionalString componentsSeparatedByString:kIXAndOperator][0] trimLeadingAndTrailingWhitespace];
+            secondCondition = [[conditionalString componentsSeparatedByString:kIXAndOperator][1] trimLeadingAndTrailingWhitespace];
+            operator = kIXAndOperator;
+        } else if ([conditionalString containsString:kIXOrOperator]) {
+            firstCondition = [[conditionalString componentsSeparatedByString:kIXOrOperator][0] trimLeadingAndTrailingWhitespace];
+            secondCondition = [[conditionalString componentsSeparatedByString:kIXOrOperator][1] trimLeadingAndTrailingWhitespace];
+            operator = kIXOrOperator;
+        } else {
+            firstCondition = conditionalString;
+        }
+        
+        if ([firstCondition hasSuffix:kIXNil]) {
+            // first condition is nil or !nil
+            returnFirstCondition = ([firstCondition hasPrefix:kIXNegationOperator]) ? (inputString != nil) : (inputString == nil);
+        } else if ([firstCondition hasSuffix:kIXEmpty]) {
+            // first condition is empty or !empty
+            returnFirstCondition = ([firstCondition hasPrefix:kIXNegationOperator]) ? ![inputString isEqualToString:kIX_EMPTY_STRING] : [inputString isEqualToString:kIX_EMPTY_STRING];
+        }
+        
+        if (operator != nil && secondCondition != nil) {
+            if ([secondCondition hasSuffix:kIXNil]) {
+                // second condition is nil or !nil
+                returnSecondCondition = ([secondCondition hasPrefix:kIXNegationOperator]) ? (inputString != nil) : (inputString == nil);
+            } else if ([secondCondition hasSuffix:kIXEmpty]) {
+                // second condition is empty or !empty
+                returnSecondCondition = ([secondCondition hasPrefix:kIXNegationOperator]) ? ![inputString isEqualToString:kIX_EMPTY_STRING] : [inputString isEqualToString:kIX_EMPTY_STRING];
+            }
+            
+        }
+        
+        if ([operator isEqualToString:kIXAndOperator]) {
+            return [NSString ix_stringFromBOOL:(returnFirstCondition && returnSecondCondition)];
+        } else if ([operator isEqualToString:kIXOrOperator]) {
+            return [NSString ix_stringFromBOOL:(returnFirstCondition || returnSecondCondition)];
+        } else {
+            return [NSString ix_stringFromBOOL:returnFirstCondition];
+        }
+    } else {
+        return @"error";
+    }
 };
 
 static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
@@ -228,7 +264,7 @@ static IXBaseShortCodeFunction const kIXToHexFunction = ^NSString*(NSString* str
         {
             alpha = [[rgbArray lastObject] floatValue];
         }
-
+        
         UIColor* color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
         if (color.alpha < 1.0f)
         {
@@ -298,7 +334,7 @@ static IXBaseShortCodeFunction const kIXTimeFromSecondsFunction = ^NSString*(NSS
     }
     
     return returnString;
-
+    
 };
 
 static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
@@ -334,11 +370,7 @@ static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NS
                                     kIXCurrency:          [kIXCurrencyFunction copy],
                                     kIXDistance:          [kIXDistanceFunction copy],
                                     kIXFromBase64:        [kIXFromBase64Function copy],
-                                    kIXIsEmpty:           [kIXIsEmptyFunction copy],
-                                    kIXIsNil:             [kIXIsNilFunction copy],
-                                    kIXIsNilOrEmpty:      [kIXIsNilOrEmptyFunction copy],
-                                    kIXIsNotEmpty:        [kIXIsNotEmptyFunction copy],
-                                    kIXIsNotNil:          [kIXIsNotNilFunction copy],
+                                    kIXIs:                [kIXIsFunction copy],
                                     kIXLength:            [kIXLengthFunction copy],
                                     kIXMoment:            [kIXMomentFunction copy],
                                     kIXMonogram:          [kIXMonogramFunction copy],
