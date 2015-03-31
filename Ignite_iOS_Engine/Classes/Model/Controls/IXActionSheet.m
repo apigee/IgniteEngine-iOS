@@ -1,9 +1,9 @@
 //
 //  IXActionSheet.m
-//  Ignite Engine
+//  Ignite_iOS_Engine
 //
 //  Created by Robert Walsh on 7/18/14.
-//  Copyright (c) 2015 Apigee. All rights reserved.
+//  Copyright (c) 2014 Ignite. All rights reserved.
 //
 
 #import "IXActionSheet.h"
@@ -29,8 +29,8 @@ IX_STATIC_CONST_STRING kIXDefaultCancelButtonTitle = @"Cancel";
 // Returns
 
 // Events
+IX_STATIC_CONST_STRING kIXDestructivePressed = @"destructive";
 IX_STATIC_CONST_STRING kIXCancelPressed = @"cancelled";
-IX_STATIC_CONST_STRING kIXButtonPressedFormat = @"%@";
 
 // Functions
 IX_STATIC_CONST_STRING kIXShowSheet = @"present";
@@ -44,6 +44,7 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss";
 @property (nonatomic,strong) NSString* cancelButtonTitle;
 @property (nonatomic,strong) NSString* destructiveButtonTitle;
 @property (nonatomic,strong) NSArray* otherTitles;
+@property (nonatomic,strong) NSMutableDictionary* titlesMap;
 
 @end
 
@@ -96,10 +97,16 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss";
                                                         cancelButtonTitle:nil
                                                    destructiveButtonTitle:[self destructiveButtonTitle]
                                                         otherButtonTitles:nil];
-        
-        for( NSString* otherTitle in [self otherTitles] )
+        _titlesMap = [NSMutableDictionary new];
+        for( NSString* otherButton in [self otherTitles] )
         {
-            [actionSheet addButtonWithTitle:otherTitle];
+            NSArray* otherTitles = [otherButton componentsSeparatedByString:kIX_COLON_SEPERATOR];
+            _titlesMap[[otherTitles lastObject]] = [otherTitles firstObject];
+            [actionSheet addButtonWithTitle:[otherTitles lastObject]];
+        }
+        
+        if ([self destructiveButtonTitle] != nil) {
+            _titlesMap[[self destructiveButtonTitle]] = kIXDestructivePressed;
         }
         
         if( [self cancelButtonTitle] != nil )
@@ -134,7 +141,12 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss";
     else
     {
         NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-        NSString* eventName = [NSString stringWithFormat:kIXButtonPressedFormat,buttonTitle];
+        NSString* eventName;
+        if ([_titlesMap objectForKey:buttonTitle]) {
+            eventName = _titlesMap[buttonTitle];
+        } else {
+            eventName = buttonTitle;
+        }
         [[self actionContainer] executeActionsForEventNamed:eventName];
     }
 }
