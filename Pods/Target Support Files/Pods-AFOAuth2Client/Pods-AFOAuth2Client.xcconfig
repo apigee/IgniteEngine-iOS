@@ -1,1 +1,0 @@
-PODS_AFOAUTH_CLIENT_OTHER_LDFLAGS = -framework "Security"
