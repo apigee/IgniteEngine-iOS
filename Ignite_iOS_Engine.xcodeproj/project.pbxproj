@@ -104,7 +104,7 @@
 		6366D6E018A95A7A000AEEA5 /* IXSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6366D6DF18A95A7A000AEEA5 /* IXSlider.m */; };
 		636949EA19A3E0E80009AF81 /* IXFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 636949E919A3E0E80009AF81 /* IXFormatter.m */; };
 		638226BE18ADF48D00E856ED /* IXTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 638226BD18ADF48D00E856ED /* IXTimer.m */; };
-		638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */; };
+		638DE4761860C6CB00F2E36A /* IXRowShortCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE4751860C6CB00F2E36A /* IXRowShortCode.m */; };
 		638DE47F1860E80D00F2E36A /* UIView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */; };
 		6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6394F454193FD59A009EE1C4 /* IXCellBasedControl.m */; };
 		639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 639A53181A227ED800640C89 /* NSURL+IXAdditions.m */; };
@@ -336,8 +336,8 @@
 		636949E919A3E0E80009AF81 /* IXFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXFormatter.m; sourceTree = "<group>"; };
 		638226BC18ADF48D00E856ED /* IXTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTimer.h; sourceTree = "<group>"; };
 		638226BD18ADF48D00E856ED /* IXTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTimer.m; sourceTree = "<group>"; };
-		638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDatarowShortCode.h; sourceTree = "<group>"; };
-		638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDatarowShortCode.m; sourceTree = "<group>"; };
+		638DE4741860C6CB00F2E36A /* IXRowShortCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXRowShortCode.h; sourceTree = "<group>"; };
+		638DE4751860C6CB00F2E36A /* IXRowShortCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXRowShortCode.m; sourceTree = "<group>"; };
 		638DE47D1860E80D00F2E36A /* UIView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IXAdditions.h"; sourceTree = "<group>"; };
 		638DE47E1860E80D00F2E36A /* UIView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IXAdditions.m"; sourceTree = "<group>"; };
 		6394F453193FD59A009EE1C4 /* IXCellBasedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCellBasedControl.h; sourceTree = "<group>"; };
@@ -682,8 +682,8 @@
 				13033F7A183ED8F200C29157 /* IXBaseShortCode.m */,
 				13033F77183ED8F200C29157 /* IXAppShortCode.h */,
 				13033F78183ED8F200C29157 /* IXAppShortCode.m */,
-				638DE4741860C6CB00F2E36A /* IXDatarowShortCode.h */,
-				638DE4751860C6CB00F2E36A /* IXDatarowShortCode.m */,
+				638DE4741860C6CB00F2E36A /* IXRowShortCode.h */,
+				638DE4751860C6CB00F2E36A /* IXRowShortCode.m */,
 				63C0A7B218CFDB9600F72064 /* IXDeviceShortCode.h */,
 				63C0A7B318CFDB9600F72064 /* IXDeviceShortCode.m */,
 				6333614018934394004F3433 /* IXEvalShortCode.h */,
@@ -1136,7 +1136,7 @@
 				CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */,
 				634EE09E1982D95600C08FCD /* RMPhoneFormat.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
-				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
+				638DE4761860C6CB00F2E36A /* IXRowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
 				6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */,
 				63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */,
