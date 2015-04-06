@@ -118,6 +118,8 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 @property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
 @property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
+@property (nonatomic,copy) id responseObject;
+@property (nonatomic,copy) id responseSerializer;
 @property (nonatomic,copy) NSString* cacheID;
 @property (nonatomic,copy) NSString* acceptedContentType;
 @property (nonatomic,copy) NSString* method;
@@ -226,7 +228,9 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     if( ![self isPathLocal] )
     {
-        [self createRequest];
+        [self createHTTPRequest:^{
+            //
+        }];
         
 //        [self createRequest];
         
@@ -243,64 +247,84 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 }
 
 - (NSString*)acceptHeader {
-    NSString* acceptHeader = [[self propertyContainer] getStringPropertyValue:[NSString stringWithFormat:@"%@.Accept", kIXHeaders] defaultValue:nil];
+    NSString* acceptHeader = [[self propertyContainer] getStringPropertyValue:kIXBodyEncoding defaultValue:nil];
+    if (acceptHeader == nil) {
+        acceptHeader = [[self propertyContainer] getStringPropertyValue:[NSString stringWithFormat:@"%@.Accept", kIXHeaders] defaultValue:nil];
+    }
     if (acceptHeader == nil) {
         acceptHeader = [[self propertyContainer] getStringPropertyValue:[NSString stringWithFormat:@"%@.accept", kIXHeaders] defaultValue:nil];
     }
     return acceptHeader;
 }
 
-- (void)createRequest
+- (void)createHTTPRequest:(void(^)(void))completion
 {
     if (!_manager) {
         _manager = [AFHTTPRequestOperationManager manager];
     }
+
+    [self setEncoding];
+    [self setHeaders];
+    [self setBasicAuth];
     
     if ([_method isEqualToString:kIXMethodGET]) {
-        [self GET:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //
-        } failure:^(NSError *error) {
-            //
-        }];
-        
+        [_manager GET:_url parameters:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams]
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  _responseObject = responseObject;
+                  completion();
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  _responseErrorMessage = error.localizedDescription;
+                  completion();
+              }];
     } else if ([_method isEqualToString:kIXMethodPOST]) {
-        [self POST:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //
-        } failure:^(NSError *error) {
-            //
-        }];
-        
+        [_manager POST:_url parameters:[_requestBodyObject getAllPropertiesObjectValues:NO]
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  _responseObject = responseObject;
+                  completion();
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  _responseErrorMessage = error.localizedDescription;
+                  completion();
+              }];
     } else if ([_method isEqualToString:kIXMethodPUT]) {
-        [self PUT:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //
-        } failure:^(NSError *error) {
-            //
-        }];
+        [_manager PUT:_url parameters:[_requestBodyObject getAllPropertiesObjectValues:NO]
+               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                   _responseObject = responseObject;
+                   completion();
+               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                   _responseErrorMessage = error.localizedDescription;
+                   completion();
+               }];
     } else if ([_method isEqualToString:kIXMethodDELETE]) {
-        [self DELETE:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //
-        } failure:^(NSError *error) {
-            //
-        }];
+        [_manager DELETE:_url parameters:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams]
+               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                   _responseObject = responseObject;
+                   completion();
+               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                   _responseErrorMessage = error.localizedDescription;
+                   completion();
+               }];
     }
 }
 
-- (void)GET:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void(^)(NSError* error))failure {
-    
+- (void)setEncoding {
+    if ([_acceptedContentType isEqualToString:kIXBodyEncodingJSON] || [_acceptedContentType isEqualToString:kIXBodyEncodingJSONString]) {
+        _manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    } else if ([_acceptedContentType isEqualToString:kIXBodyEncodingForm]) {
+        _manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    }
 }
 
-- (void)POST:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void(^)(NSError* error))failure {
-    
+- (void)setHeaders {
+    [[_requestHeadersObject getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
+        [_manager.requestSerializer setValue:value forHTTPHeaderField:key];
+    }];
 }
 
-- (void)PUT:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void(^)(NSError* error))failure {
-    
+- (void)setBasicAuth {
+    NSString* username = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
+    NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];
+    [_manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
 }
-
-- (void)DELETE:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void(^)(NSError* error))failure {
-    
-}
-
 
 //-(void)createRequest
 //{

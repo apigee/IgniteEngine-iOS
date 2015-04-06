@@ -413,8 +413,17 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 -(IXSize*)getSizePropertyValueWithPrefix:(NSString*)prefix
 {
     NSString* propertyName = kIXSize;
+    NSString* width = kIXWidth;
+    NSString* height = kIXHeight;
+    NSString* widthX = kIXWidthX;
+    NSString* heightX = kIXHeightX;
+    
     if (prefix != nil) {
         propertyName = [NSString stringWithFormat:@"%@.%@", prefix, kIXSize];
+        width = [NSString stringWithFormat:@"%@.%@", prefix, width];
+        height = [NSString stringWithFormat:@"%@.%@", prefix, height];
+        widthX = [NSString stringWithFormat:@"%@.%@", prefix, widthX];
+        heightX = [NSString stringWithFormat:@"%@.%@", prefix, heightX];
     }
     IXSize* returnSize = [[IXSize alloc] initWithDefaultSize];
     NSArray* sizeArr = [self getCommaSeperatedArrayListValue:propertyName defaultValue:nil];
@@ -425,8 +434,8 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         returnSize.width = sizeArr[0];
         returnSize.height = sizeArr[0];
     }
-    returnSize.width = [self getStringPropertyValue:kIXWidth defaultValue:nil] ?: [self getStringPropertyValue:kIXWidthX defaultValue:returnSize.width];
-    returnSize.height = [self getStringPropertyValue:kIXHeight defaultValue:nil] ?: [self getStringPropertyValue:kIXHeightX defaultValue:returnSize.height];
+    returnSize.width = [self getStringPropertyValue:width defaultValue:nil] ?: [self getStringPropertyValue:widthX defaultValue:returnSize.width];
+    returnSize.height = [self getStringPropertyValue:height defaultValue:nil] ?: [self getStringPropertyValue:heightX defaultValue:returnSize.height];
     return returnSize;
 }
 

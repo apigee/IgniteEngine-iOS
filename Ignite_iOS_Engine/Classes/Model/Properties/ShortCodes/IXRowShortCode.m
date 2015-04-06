@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXDatarowShortCode.h"
+#import "IXRowShortCode.h"
 
 #import "IXProperty.h"
 #import "IXPropertyContainer.h"
@@ -14,7 +14,7 @@
 
 static NSString* const kIXIndex = @"index";
 
-@implementation IXDatarowShortCode
+@implementation IXRowShortCode
 
 -(NSString*)evaluate
 {

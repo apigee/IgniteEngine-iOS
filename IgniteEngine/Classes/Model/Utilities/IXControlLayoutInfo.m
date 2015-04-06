@@ -194,7 +194,7 @@ IX_STATIC_CONST_STRING kIXSize = @"size"; // used as prefix to determine if cont
 {
     if([propertyName isEqualToString:kIXVisible] ||
        [propertyName isEqualToString:kIXLayoutType] ||
-       [propertyName hasPrefix:kIXSize] ||
+       [propertyName containsString:kIXSize] ||
        [propertyName hasPrefix:kIXMargin] ||
        [propertyName hasPrefix:kIXPadding] ||
        [propertyName hasPrefix:kIXPosition] ||

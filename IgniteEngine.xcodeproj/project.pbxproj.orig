@@ -251,9 +251,9 @@
 		136928F01836108300E28BBC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1387A0C519CBA80600A85B04 /* IXTouchID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXTouchID.h; sourceTree = "<group>"; };
 		1387A0C619CBA80600A85B04 /* IXTouchID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTouchID.m; sourceTree = "<group>"; };
-		13BF0464183EBE7E00894760 /* IgniteEngine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IgniteEngine-Prefix.pch"; path = "assets/_project/IgniteEngine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		13BF0464183EBE7E00894760 /* IgniteEngine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IgniteEngine-Prefix.pch"; path = "../assets/_project/IgniteEngine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		241ECECBCF76B3E53F59CD4D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F66D2C31A7A34A700E8D288 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		3F66D2C31A7A34A700E8D288 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = SOURCE_ROOT; };
 		3F66D2C51A7A34C100E8D288 /* ARSMaquettePro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Light.otf"; path = "../assets/_project/fonts/ARSMaquettePro-Light.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2C61A7A34C100E8D288 /* ARSMaquettePro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ARSMaquettePro-Medium.otf"; path = "../assets/_project/fonts/ARSMaquettePro-Medium.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2C71A7A34C100E8D288 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = ../assets/_project/fonts/FontAwesome.ttf; sourceTree = SOURCE_ROOT; };
@@ -262,7 +262,7 @@
 		3F66D2CA1A7A34C100E8D288 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Light.otf"; path = "../assets/_project/fonts/SourceSansPro-Light.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2CB1A7A34C100E8D288 /* SourceSansPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Semibold.otf"; path = "../assets/_project/fonts/SourceSansPro-Semibold.otf"; sourceTree = SOURCE_ROOT; };
 		3F66D2D31A7A34D100E8D288 /* _Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = _Images.xcassets; path = ../assets/_project/_Images.xcassets; sourceTree = SOURCE_ROOT; };
-		3F66D2D51A7A34DC00E8D288 /* IgniteEngine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "IgniteEngine-Info.plist"; path = "assets/_project/IgniteEngine-Info.plist"; sourceTree = SOURCE_ROOT; };
+		3F66D2D51A7A34DC00E8D288 /* IgniteEngine-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "IgniteEngine-Info.plist"; path = "../assets/_project/IgniteEngine-Info.plist"; sourceTree = SOURCE_ROOT; };
 		618C8EBF28383F34FE27BB6C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6314B51B1846B7A700C14F96 /* IXNavigateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNavigateAction.h; sourceTree = "<group>"; };
 		6314B51C1846B7A700C14F96 /* IXNavigateAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXNavigateAction.m; sourceTree = "<group>"; };
@@ -1123,8 +1123,13 @@
 				CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */,
 				634EE09E1982D95600C08FCD /* RMPhoneFormat.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
-				638DE4761860C6CB00F2E36A /* IXRowShortCode.m in Sources */,
+<<<<<<< HEAD:IgniteEngine.xcodeproj/project.pbxproj
+				638DE4761860C6CB00F2E36A /* IXDatarowShortCode.m in Sources */,
 				63D23AB41845B3E400C93BC7 /* IXAFHTTPRequestOperation.m in Sources */,
+=======
+				638DE4761860C6CB00F2E36A /* IXRowShortCode.m in Sources */,
+				63D23AB41845B3E400C93BC7 /* IXAFJSONRequestOperation.m in Sources */,
+>>>>>>> 51c43286e76aecb5a606d7d49f70091857e1a591:Ignite_iOS_Engine.xcodeproj/project.pbxproj
 				6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */,
 				63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */,
 				63B0FE771A9D58D700B1DB99 /* IXColorPicker.m in Sources */,
@@ -1314,7 +1319,7 @@
 					"$(PROJECT_DIR)/Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.16/lib",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "assets/_project/IgniteEngine-Prefix.pch";
+				GCC_PREFIX_HEADER = "../assets/_project/IgniteEngine-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1351,7 +1356,7 @@
 					"$(PROJECT_DIR)/Pods/ApigeeiOSSDK/zip/apigee-ios-sdk-2.0.16/lib",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "assets/_project/IgniteEngine-Prefix.pch";
+				GCC_PREFIX_HEADER = "../assets/_project/IgniteEngine-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

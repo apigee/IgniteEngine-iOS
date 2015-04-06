@@ -8,6 +8,6 @@
 
 #import "IXBaseShortCode.h"
 
-@interface IXDatarowShortCode : IXBaseShortCode
+@interface IXRowShortCode : IXBaseShortCode
 
 @end
