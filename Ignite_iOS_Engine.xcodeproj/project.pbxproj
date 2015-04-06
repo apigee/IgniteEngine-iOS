@@ -1099,7 +1099,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\nassetsPath=$(cat .ixconfig | perl -ne 'print if s/^assets=(.*)/\\1/g')\nassetsPath=${assetsPath//'~'/$HOME}\n\nmv assets assets.bak\ncp -r $assetsPath assets";
+			shellScript = "#!/bin/bash\n#assetsPath=$(cat .ixconfig | perl -ne 'print if s/^assets=(.*)/\\1/g')\n#assetsPath=${assetsPath//'~'/$HOME}\n\n#mv assets assets.bak\n#cp -r $assetsPath assets";
 		};
 /* End PBXShellScriptBuildPhase section */
 

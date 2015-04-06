@@ -377,7 +377,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
     [layoutControl setPropertyContainer:layoutPropertyContainer];
 
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXCellSize] || [[self propertyContainer] propertyExistsForPropertyNamed:kIXCellSizeHeight] )
+    if( [[self propertyContainer] hasLayoutProperties] )
     {
         IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:kIXCell];
         if( [size.height length] > 0 )

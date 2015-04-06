@@ -28,7 +28,7 @@ IX_STATIC_CONST_STRING kIXCount = @"count_rows";
 
 // Non Attribute constants.
 //TODO:: We probably should rename dataRow to something more consistent. Maybe indexPath.row?
-IX_STATIC_CONST_STRING kIXDataRow = @"$row.";
+IX_STATIC_CONST_STRING kIXDataRow = @"dataRow.";
 IX_STATIC_CONST_STRING kIXTotal = @"total.";
 
 @interface IXDataRowDataProvider ()
