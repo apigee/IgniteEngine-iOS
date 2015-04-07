@@ -8,7 +8,6 @@
 
 #import "IXBaseDataProvider.h"
 
-#import "AFNetworking.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AFOAuth2Manager.h"
 #import "IXImage.h"
@@ -59,11 +58,6 @@ IX_STATIC_CONST_STRING kIXBodyEncodingJSON = @"json"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXBodyEncodingJSONString = @"jsonString"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXBodyEncodingMultipart = @"multipart"; // kIXBodyEncoding
 
-IX_STATIC_CONST_STRING kIXMethodGET = @"GET";
-IX_STATIC_CONST_STRING kIXMethodPOST = @"POST";
-IX_STATIC_CONST_STRING kIXMethodPUT = @"PUT";
-IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
-
 IX_STATIC_CONST_STRING kIXCachePolicyDefault = @"reloadIgnoringLocalCache"; // Accepted Value Default
 IX_STATIC_CONST_STRING kIXCachePolicyUseProtocolCachePolicy = @"useProtocolCachePolicy";
 IX_STATIC_CONST_STRING kIXCachePolicyReloadIgnoringLocalCacheData = @"reloadIgnoringLocalCache";
@@ -72,10 +66,14 @@ IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataElseLoad = @"useCacheElseLoa
 IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataDontLoad = @"useCacheDontLoad";
 IX_STATIC_CONST_STRING kIXCachePolicyReloadRevalidatingCacheData = @"reloadRevalidatingCache";
 
-
-
+// HTTP methods
+IX_STATIC_CONST_STRING kIXMethodGET = @"GET";
+IX_STATIC_CONST_STRING kIXMethodPOST = @"POST";
+IX_STATIC_CONST_STRING kIXMethodPUT = @"PUT";
+IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
 
 // IXBaseDataProvider Read-Only Properties
+IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
 IX_STATIC_CONST_STRING kIXResponseBodyParsed = @"response.body";
 IX_STATIC_CONST_STRING kIXResponseRaw = @"response.raw";
 IX_STATIC_CONST_STRING kIXResponseHeaders = @"response.headers";
@@ -118,8 +116,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 @property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
 @property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
-@property (nonatomic,copy) id responseObject;
-@property (nonatomic,copy) id responseSerializer;
 @property (nonatomic,copy) NSString* cacheID;
 @property (nonatomic,copy) NSString* acceptedContentType;
 @property (nonatomic,copy) NSString* method;
@@ -129,8 +125,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 @property (nonatomic,copy) NSString* url;
 //@property (nonatomic,copy) NSString* dataPath;
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
-@property (nonatomic,strong) AFHTTPRequestOperationManager *manager;
 
+@property (nonatomic) CGFloat responseTime;
+@property (nonatomic) CFAbsoluteTime requestStartTime; // = CFAbsoluteTimeGetCurrent();
+@property (nonatomic) CFAbsoluteTime requestEndTime;
 
 @end
 
@@ -218,19 +216,19 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setAutoLoad:[[self propertyContainer] getBoolPropertyValue:kIXAutoLoad defaultValue:NO]];
     [self setUrlEncodeParams:[[self propertyContainer] getBoolPropertyValue:kIXUrlEncodeParams defaultValue:YES]];
     [self setCacheID:[[self propertyContainer] getStringPropertyValue:kIXCacheID defaultValue:nil]];
-    [self setAcceptedContentType:[self acceptHeader]];
     //    [self setDataBaseURL:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
     //    [self setDataPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
     [self setCachePolicy:[self cachePolicyFromString:[[self propertyContainer] getStringPropertyValue:kIXCachePolicy defaultValue:kIXCachePolicyDefault]]];
     
-    NSString* url = [[self propertyContainer] getPathPropertyValue:_url basePath:nil defaultValue:nil];
+    NSString* url = [[self propertyContainer] getPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
     [self setUrl:url];
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     if( ![self isPathLocal] )
     {
-        [self createHTTPRequest:^{
-            //
-        }];
+        [self buildHTTPRequest];
+//        [self createHTTPRequest:^{
+//            //
+//        }];
         
 //        [self createRequest];
         
@@ -246,7 +244,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     }
 }
 
-- (NSString*)acceptHeader {
+- (NSString*)acceptedContentType {
     NSString* acceptHeader = [[self propertyContainer] getStringPropertyValue:kIXBodyEncoding defaultValue:nil];
     if (acceptHeader == nil) {
         acceptHeader = [[self propertyContainer] getStringPropertyValue:[NSString stringWithFormat:@"%@.Accept", kIXHeaders] defaultValue:nil];
@@ -257,59 +255,28 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     return acceptHeader;
 }
 
-- (void)createHTTPRequest:(void(^)(void))completion
+- (void)buildHTTPRequest
 {
     if (!_manager) {
         _manager = [AFHTTPRequestOperationManager manager];
     }
 
+    [self setContentType];
     [self setEncoding];
     [self setHeaders];
     [self setBasicAuth];
-    
-    if ([_method isEqualToString:kIXMethodGET]) {
-        [_manager GET:_url parameters:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams]
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  _responseObject = responseObject;
-                  completion();
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  _responseErrorMessage = error.localizedDescription;
-                  completion();
-              }];
-    } else if ([_method isEqualToString:kIXMethodPOST]) {
-        [_manager POST:_url parameters:[_requestBodyObject getAllPropertiesObjectValues:NO]
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  _responseObject = responseObject;
-                  completion();
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  _responseErrorMessage = error.localizedDescription;
-                  completion();
-              }];
-    } else if ([_method isEqualToString:kIXMethodPUT]) {
-        [_manager PUT:_url parameters:[_requestBodyObject getAllPropertiesObjectValues:NO]
-               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                   _responseObject = responseObject;
-                   completion();
-               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                   _responseErrorMessage = error.localizedDescription;
-                   completion();
-               }];
-    } else if ([_method isEqualToString:kIXMethodDELETE]) {
-        [_manager DELETE:_url parameters:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams]
-               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                   _responseObject = responseObject;
-                   completion();
-               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                   _responseErrorMessage = error.localizedDescription;
-                   completion();
-               }];
+}
+
+- (void)setContentType {
+    if ([self acceptedContentType] != nil) {
+        _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:[self acceptedContentType]];
     }
 }
 
 - (void)setEncoding {
-    if ([_acceptedContentType isEqualToString:kIXBodyEncodingJSON] || [_acceptedContentType isEqualToString:kIXBodyEncodingJSONString]) {
+    if ([[self acceptedContentType] isEqualToString:kIXBodyEncodingJSON] || [[self acceptedContentType] isEqualToString:kIXBodyEncodingJSONString]) {
         _manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    } else if ([_acceptedContentType isEqualToString:kIXBodyEncodingForm]) {
+    } else if ([[self acceptedContentType] isEqualToString:kIXBodyEncodingForm]) {
         _manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     }
 }
@@ -351,22 +318,23 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     NSString* returnValue = nil;
     if( [propertyName isEqualToString:kIXResponseRaw] )
     {
-        returnValue = [[self responseRawString] copy];
+        returnValue = [_responseString copy];
     }
-    // TODO: Remove this from JSON DP and implement here instead
-    /* This is removed from BaseData provider and only implmeented in JSONDP.
-     else if( [propertyName containsString:kIXResponseHeaders] )
-     {
-     @try {
-     NSString* responseHeader = [[[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR] lastObject] lowercaseString];
-     returnValue = [self responseHeaders][responseHeader];
-     
-     }
-     @catch (NSException *exception) {
-     DDLogDebug(@"Tried to reference a response header object that didn't exist: %@", returnValue);
-     }
-     }
-     */
+    else if ([propertyName hasPrefix:kIXResponseHeaders]) {
+        NSString* headerKey = [[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR] lastObject];
+        @try {
+            returnValue = _responseHeaders[headerKey];
+            if (!returnValue) {
+                returnValue = _responseHeaders[[headerKey lowercaseString]]; // try again with lowercase?
+            }
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"No header value named '%@' exists in response object", headerKey);
+        }
+    }
+    else if ([propertyName hasPrefix:kIXResponseTime]) {
+        returnValue = [NSString stringWithFormat: @"%0.f", _responseTime];
+    }
     else if( [propertyName isEqualToString:kIXStatusCode] )
     {
         returnValue = [NSString stringWithFormat:@"%li",(long)[self responseStatusCode]];
@@ -409,24 +377,122 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     }
 }
 
+- (void)loadDataFromCache:(NSString*)cachedResponse {
+    [self setResponseString:cachedResponse];
+    [self fireLoadFinishedEventsFromCachedResponse];
+}
+
+- (void)loadDataFromLocalPath {
+    
+}
+
 -(void)loadData:(BOOL)forceGet
 {
-    if( [self cacheID] != nil )
-    {
-        NSString* cachedResponse = [sIXDataProviderCache objectForKey:[self cacheID]];
+    [self loadData:forceGet completion:^(BOOL success, AFHTTPRequestOperation* operation, NSError *error) {
+        //
+    }];
+}
+
+-(void)loadData:(BOOL)forceGet completion:(LoadFinished)completion
+{
+    if (_url != nil) {
+        NSString* cachedResponse;
+        _requestStartTime = CFAbsoluteTimeGetCurrent();
+        if( [self cacheID] != nil )
+        {
+            cachedResponse = [sIXDataProviderCache objectForKey:[self cacheID]];
+        }
         if( [cachedResponse length] > 0 )
         {
-            [self setResponseRawString:cachedResponse];
-            [self fireLoadFinishedEventsFromCachedResponse];
+            [self loadDataFromCache:cachedResponse];
         }
+        else
+        {
+            if (forceGet == NO)
+            {
+                [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
+            }
+            else if ([self isPathLocal])
+            {
+                [self loadDataFromLocalPath];
+            }
+            else
+            {
+                [self setResponseObject:nil];
+                [self setResponseHeaders:nil];
+                [self setResponseString:nil];
+                [self setResponseStatusCode:0];
+                [self setResponseTime:0];
+                [self setResponseErrorMessage:nil];
+                
+                if ([_method isEqualToString:kIXMethodGET]) {
+                    [_manager GET:_url parameters:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams]
+                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                              _responseObject = responseObject;
+                              [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                              completion(YES, operation, nil);
+                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                              _responseErrorMessage = error.localizedDescription;
+                              [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                              completion(NO, operation, error);
+                          }];
+                } else if ([_method isEqualToString:kIXMethodPOST]) {
+                    [_manager POST:_url parameters:[_requestBodyObject getAllPropertiesObjectValues:NO]
+                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                               _responseObject = responseObject;
+                               completion(YES, operation, nil);
+                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                               _responseErrorMessage = error.localizedDescription;
+                               [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                               completion(NO, operation, error);
+                           }];
+                } else if ([[self method] isEqualToString:kIXMethodPUT]) {
+                    [_manager PUT:_url parameters:[_requestBodyObject getAllPropertiesObjectValues:NO]
+                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                              _responseObject = responseObject;
+                             [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                              completion(YES, operation, nil);
+                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                              _responseErrorMessage = error.localizedDescription;
+                             [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                              completion(NO, operation, error);
+                          }];
+                } else if ([[self method] isEqualToString:kIXMethodDELETE]) {
+                    [_manager DELETE:_url parameters:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams]
+                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                 _responseObject = responseObject;
+                                 [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                                 completion(YES, operation, nil);
+                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                 _responseErrorMessage = error.localizedDescription;
+                                 [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+                                 completion(NO, operation, error);
+                             }];
+                }
+            }
+        }
+        [[self actionContainer] executeActionsForEventNamed:kIXStarted];
     }
-    
-    [[self actionContainer] executeActionsForEventNamed:kIXStarted];
+    else
+    {
+        IX_LOG_ERROR(@"ERROR: 'url' [%@] is %@; is 'url' defined in your datasource?", self.ID, self.url);
+    }
+}
+
+-(void)setRequestEndTime:(CFAbsoluteTime)requestEndTime
+{
+    CFTimeInterval elapsedTime = (requestEndTime - _requestStartTime) * 1000;
+    _responseTime = elapsedTime;
 }
 
 -(void)fireLoadFinishedEventsFromCachedResponse
 {
     [self fireLoadFinishedEvents:YES shouldCacheResponse:NO isFromCache:YES];
+    
+    if ([self responseHeaders])
+    {
+        [self setResponseHeaders:[self responseHeaders]];
+    }
 }
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
@@ -465,10 +531,15 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 
 -(void)cacheResponse
 {
-    if ( [[self cacheID] length] > 0 && [[self responseRawString] length] > 0 )
+    if ( [[self cacheID] length] > 0 && [[self responseString] length] > 0 )
     {
-        [sIXDataProviderCache setObject:[self responseRawString]
+        [sIXDataProviderCache setObject:[self responseString]
                                  forKey:[self cacheID]];
+        
+        if ( [self responseHeaders] != nil )
+        {
+            [self setResponseHeaders:[self responseHeaders]];
+        }
     }
 }
 

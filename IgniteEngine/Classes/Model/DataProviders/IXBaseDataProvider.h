@@ -7,14 +7,16 @@
 //
 
 #import "IXBaseObject.h"
+#import "AFNetworking.h"
 
 extern NSString* IXBaseDataProviderDidUpdateNotification;
+typedef void(^LoadFinished)(BOOL success, AFHTTPRequestOperation* operation, NSError* error);
 
 @class AFHTTPRequestOperationManager;
 
 @interface IXBaseDataProvider : IXBaseObject
 
-@property (nonatomic,strong) AFHTTPRequestOperationManager* requestManager;
+@property (nonatomic,strong) AFHTTPRequestOperationManager *manager;
 @property (nonatomic,strong) IXPropertyContainer* requestQueryParamsObject;
 @property (nonatomic,strong) IXPropertyContainer* requestBodyObject;
 @property (nonatomic,strong) IXPropertyContainer* requestHeadersObject;
@@ -32,15 +34,21 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,copy,readonly) NSString* url;
 //@property (nonatomic,copy,readonly) NSString* dataPath;
 
+@property (nonatomic,copy) id responseObject;
+@property (nonatomic,copy) id responseSerializer;
+@property (nonatomic,copy) NSString* responseString;
 @property (nonatomic,assign) NSInteger responseStatusCode;
-@property (nonatomic,copy)   NSString* responseRawString;
-@property (nonatomic,copy)   NSDictionary* responseHeaders;
-@property (nonatomic,copy)   NSString* responseErrorMessage;
+@property (nonatomic,copy) NSDictionary* responseHeaders;
+@property (nonatomic,copy) NSString* responseErrorMessage;
 
 //-(void)createRequest;
 //-(NSURLRequest*)createURLRequest;
 
 -(void)loadData:(BOOL)forceGet;
+-(void)loadData:(BOOL)forceGet completion:(LoadFinished)completion;
+-(void)loadDataFromCache:(NSString*)cachedResponse;
+-(void)loadDataFromLocalPath;
+-(void)buildHTTPRequest;
 -(void)fireLoadFinishedEventsFromCachedResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache;

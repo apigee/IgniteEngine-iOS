@@ -5,7 +5,7 @@
 //  Created by Robert Walsh on 12/6/13.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
-/*
+
 #import "IXJSONDataProvider.h"
 
 #import "AFNetworking.h"
@@ -13,10 +13,11 @@
 
 #import "IXAFHTTPRequestOperation.h"
 #import "IXAppManager.h"
-#import "IXDataGrabber.h"
+#import "IXDataLoader.h"
 #import "IXLogger.h"
 #import "IXViewController.h"
 #import "IXSandbox.h"
+
 
 // TODO: Clean up naming and document
 IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
@@ -32,14 +33,9 @@ IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.
 IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
 IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
-// TODO: These should be migrated to base data provider
-IX_STATIC_CONST_STRING kIXResponseHeadersPrefix = @"response.headers.";
-IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
+
 
 @interface IXJSONDataProvider ()
-
-@property (nonatomic,strong) id lastResponseHeaders;
-@property (nonatomic) CGFloat responseTime;
 
 @end
 
@@ -66,8 +62,8 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
 
 -(void)fireLoadFinishedEventsFromCachedResponse
 {
-    NSString* rawResponseString = [self responseRawString];
-    NSData* rawResponseData = [rawResponseString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString* responseString = [self responseString];
+    NSData* rawResponseData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
     NSError* __autoreleasing error = nil;
     id jsonObject = [NSJSONSerialization JSONObjectWithData:rawResponseData options:0 error:&error];
     if( jsonObject )
@@ -75,37 +71,98 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
         [self setLastJSONResponse:jsonObject];
         [super fireLoadFinishedEventsFromCachedResponse];
     }
-    
-    if ([self responseHeaders])
-    {
-        [self setLastResponseHeaders:[self responseHeaders]];
-    }
 }
 
--(void)loadData:(BOOL)forceGet
+-(void)loadDataFromLocalPath {
+    __weak typeof(self) weakSelf = self;
+    [[IXDataLoader sharedDataLoader] loadJSONFromPath:self.url
+                                                async:YES
+                                          shouldCache:NO
+                                           completion:^(id jsonObject, NSString* stringValue, NSError *error) {
+                                               
+                                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                   
+                                                   if( [NSJSONSerialization isValidJSONObject:jsonObject] )
+                                                   {
+                                                       [weakSelf setResponseString:stringValue];
+                                                       [weakSelf setLastJSONResponse:jsonObject];
+                                                       IX_dispatch_main_sync_safe(^{
+                                                           [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
+                                                       });
+                                                   }
+                                                   else
+                                                   {
+                                                       [weakSelf setResponseErrorMessage:[error description]];
+                                                       IX_dispatch_main_sync_safe(^{
+                                                           [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
+                                                       });
+                                                   }
+                                               });
+                                           }];
+}
+
+//-(void)loadData:(BOOL)forceGet completion:(LoadFinished)completion
+//{
+//    [super loadData:forceGet completion:completion];
+//}
+
+-(void)loadData:(BOOL)forceGet completion:(LoadFinished)completion
 {
-    [super loadData:forceGet];
-    
-    if (forceGet == NO)
-    {
-        [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
-    }
-    else
-    {
-        [self setLastJSONResponse:nil];
-        [self setLastResponseHeaders:nil];
-        [self setResponseRawString:nil];
-        [self setResponseStatusCode:0];
-        [self setResponseErrorMessage:nil];
+    self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    __weak typeof(self) weakSelf = self;
+    [super loadData:forceGet completion:^(BOOL success, AFHTTPRequestOperation* operation, NSError* error) {
+        [weakSelf setResponseStatusCode:operation.response.statusCode];
+        [weakSelf setResponseHeaders:operation.response.allHeaderFields];
         
-        if ( [self url] != nil )
+        if( [NSJSONSerialization isValidJSONObject:self.responseObject] )
         {
-            if( ![self isPathLocal] )
-            {
+            [weakSelf setResponseString:operation.responseString];
+            [weakSelf setLastJSONResponse:self.responseObject];
+            [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:success];
+        }
+        else
+        {
+            [weakSelf setResponseErrorMessage:error.localizedDescription];
+            [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
+        }
+        if (!success) {
+            [weakSelf setResponseErrorMessage:error.localizedDescription];
+        }
+    }];
+}
+
+//-(void)loadData:(BOOL)forceGet completion:(void (^)(BOOL, NSError *))completion
+//{
+//    [super loadData:forceGet completion:^(BOOL success, NSError *error) {
+        //
+//    }];
+//    if ( [self url] != nil )
+//    {
+//        if( ![self isPathLocal] )
+//        {
+
+//    [super loadData:forceGet];
+//
+//    if (forceGet == NO)
+//    {
+//        [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
+//    }
+//    else
+//    {
+//        [self setLastJSONResponse:nil];
+//        [self setLastResponseHeaders:nil];
+//        [self setResponseRawString:nil];
+//        [self setResponseStatusCode:0];
+//        [self setResponseErrorMessage:nil];
+//        
+//        if ( [self url] != nil )
+//        {
+//            if( ![self isPathLocal] )
+//            {
         
-                __block CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
                 
-                __weak typeof(self) weakSelf = self;
+                
+                /*
                 IXAFJSONRequestOperation* jsonRequestOperation = [[IXAFJSONRequestOperation alloc] initWithRequest:[self createURLRequest]];
                 [jsonRequestOperation setJSONReadingOptions:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves];
                 [jsonRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -149,42 +206,18 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
                 
                 
                 [[self httpClient] enqueueHTTPRequestOperation:jsonRequestOperation];
-            }
-            else
-            {
-                __weak typeof(self) weakSelf = self;
-                [[IXDataGrabber sharedDataGrabber] grabJSONFromPath:[self fullDataLocation]
-                                                             asynch:YES
-                                                        shouldCache:NO
-                                                    completionBlock:^(id jsonObject, NSString* stringValue, NSError *error) {
-                                                        
-                                                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{                                                            
-                                                            
-                                                            if( [NSJSONSerialization isValidJSONObject:jsonObject] )
-                                                            {
-                                                                [weakSelf setResponseRawString:stringValue];
-                                                                [weakSelf setLastJSONResponse:jsonObject];
-                                                                IX_dispatch_main_sync_safe(^{
-                                                                    [weakSelf fireLoadFinishedEvents:YES shouldCacheResponse:YES];
-                                                                });
-                                                            }
-                                                            else
-                                                            {
-                                                                [weakSelf setResponseErrorMessage:[error description]];
-                                                                IX_dispatch_main_sync_safe(^{
-                                                                    [weakSelf fireLoadFinishedEvents:NO shouldCacheResponse:NO];
-                                                                });
-                                                            }
-                                                        });
-                }];
-            }
-        }
-        else
-        {
-            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataBaseURL);
-        }
-    }
-}
+                 */
+//            }
+//            else
+//            {
+//                
+//            }
+//        }
+//        else
+//        {
+//            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.url);
+//        }
+//}
 
 -(void)calculateAndStoreDataRowResultsForDataRowPath:(NSString*)dataRowPath
 {
@@ -303,7 +336,7 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
                                                                          error:&error];
                     if( [jsonData length] > 0 && error == nil )
                     {
-                        [self setResponseRawString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
+                        [self setResponseString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
                         [self cacheResponse];
                     }
                 }
@@ -327,13 +360,8 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
                                                              error:&error];
         if( [jsonData length] > 0 && error == nil )
         {
-            [self setResponseRawString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
+            [self setResponseString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
         }
-    }
-    
-    if ( [self lastResponseHeaders] != nil )
-    {
-        [self setResponseHeaders:[self lastResponseHeaders]];
     }
     
     [super cacheResponse];
@@ -344,22 +372,7 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
     NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
     if( returnValue == nil )
     {
-        if ([propertyName hasPrefix:kIXResponseHeadersPrefix]) {
-            NSString* headerKey = [[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR] lastObject];
-            @try {
-                returnValue = [self lastResponseHeaders][headerKey];
-                if (!returnValue) {
-                    returnValue = [self lastResponseHeaders][[headerKey lowercaseString]]; // try again with lowercase?
-                }
-            }
-            @catch (NSException *exception) {
-                DDLogDebug(@"No header value named '%@' exists in response object", headerKey);
-            }
-        }
-        else if ([propertyName hasPrefix:kIXResponseTime]) {
-            returnValue = [NSString stringWithFormat: @"%0.f", [self responseTime]];
-        }
-        else if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
+        if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
         {
             NSObject* jsonObject = [self objectForPath:propertyName container:[self lastJSONResponse]];
             if( jsonObject )
@@ -600,4 +613,3 @@ IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
 }
 
 @end
-*/
