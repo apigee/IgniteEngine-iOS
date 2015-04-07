@@ -141,6 +141,15 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
++ (NSString*)ix_stripHtml:(NSString*)string {
+    NSAttributedString *attr = [[NSAttributedString alloc] initWithData:[string dataUsingEncoding:NSUTF8StringEncoding]
+                                                                options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                                          NSCharacterEncodingDocumentAttribute:@(NSUTF8StringEncoding)}
+                                                     documentAttributes:nil
+                                                                  error:nil];
+    return [attr string];
+}
+
 - (NSString*)trimLeadingAndTrailingWhitespace {
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

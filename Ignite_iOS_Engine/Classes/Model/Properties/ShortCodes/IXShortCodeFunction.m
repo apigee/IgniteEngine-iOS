@@ -44,7 +44,7 @@ IX_STATIC_CONST_STRING kIXURLEncode = @"url.encode";                // [[?:url_e
 IX_STATIC_CONST_STRING kIXURLDecode = @"url.decode";                // [[?:url_decode]]                         -> URL decode string
 IX_STATIC_CONST_STRING kIXTimeFromSeconds = @"timeFromSeconds";     // [[?:timeFromSeconds]]                    -> Trucates the string to specified index
 IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
-
+IX_STATIC_CONST_STRING kIXStripHtml = @"stripHtml";
 IX_STATIC_CONST_STRING kIXRadiansToDegrees = @"degreesToRadians";
 IX_STATIC_CONST_STRING kIXDegreesToRadians = @"radiansToDegrees";
 
@@ -341,6 +341,10 @@ static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* 
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] getPropertyValue] intValue]] : stringToModify;
 };
 
+static IXBaseShortCodeFunction const kIXStripHtmlFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return (stringToModify) ? [NSString ix_stripHtml:stringToModify] : stringToModify;
+};
+
 static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     CGFloat radians = [stringToModify floatValue];
     if (radians > 0 || radians < 0) {
@@ -386,6 +390,7 @@ static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NS
                                     kIXURLDecode:         [kIXURLDecodeFunction copy],
                                     kIXTimeFromSeconds:   [kIXTimeFromSecondsFunction copy],
                                     kIXTruncate:          [kIXTruncateFunction copy],
+                                    kIXStripHtml:         [kIXStripHtmlFunction copy],
                                     kIXDegreesToRadians:  [kIXDegreesToRadiansFunction copy],
                                     kIXRadiansToDegrees:  [kIXRadiansToDegreesFunction copy]};
     });
