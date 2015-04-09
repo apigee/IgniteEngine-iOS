@@ -43,7 +43,7 @@
             [[[SDWebImageManager sharedManager] imageCache] clearDisk];
             
             [IXControlCacheContainer clearCache];
-            [IXBaseDataProvider clearCache];
+            [IXBaseDataProvider clearAllCachedResponses];
             [IXDataLoader clearCache];
             
             [[IXAppManager sharedAppManager] startApplication];

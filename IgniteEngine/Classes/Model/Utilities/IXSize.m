@@ -13,8 +13,8 @@
 - (instancetype)initWithDefaultSize {
     self = [super init];
     if (self) {
-        self.width = @"0";
         self.height = @"0";
+        self.width = @"0";
     }
     return self;
 }

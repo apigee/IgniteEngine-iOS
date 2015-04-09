@@ -10,8 +10,8 @@
 
 @interface IXSize : NSObject
 
-@property (nonatomic, strong) NSString* width;
 @property (nonatomic, strong) NSString* height;
+@property (nonatomic, strong) NSString* width;
 
 - (instancetype)initWithDefaultSize;
 

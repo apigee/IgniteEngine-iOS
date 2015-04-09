@@ -90,7 +90,7 @@
 		6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348950818637B4F008C3760 /* IXUITableViewCell.m */; };
 		634EE0981982D16F00C08FCD /* IXTextToSpeech.m in Sources */ = {isa = PBXBuildFile; fileRef = 634EE0971982D16F00C08FCD /* IXTextToSpeech.m */; };
 		634EE09E1982D95600C08FCD /* RMPhoneFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 634EE09D1982D95600C08FCD /* RMPhoneFormat.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */; };
+		635A2FE01852855800B97B36 /* IXHTTPDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FDF1852855800B97B36 /* IXHTTPDataProvider.m */; };
 		635A2FE3185285A000B97B36 /* IXCoreDataDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */; };
 		635F0E001979B695002C0DBA /* IXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0DFF1979B695002C0DBA /* IXAddressBook.m */; };
 		635F0E031979CA54002C0DBA /* IXCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 635F0E021979CA54002C0DBA /* IXCalendar.m */; };
@@ -310,8 +310,8 @@
 		634EE0971982D16F00C08FCD /* IXTextToSpeech.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXTextToSpeech.m; sourceTree = "<group>"; };
 		634EE09C1982D95600C08FCD /* RMPhoneFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPhoneFormat.h; sourceTree = "<group>"; };
 		634EE09D1982D95600C08FCD /* RMPhoneFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMPhoneFormat.m; sourceTree = "<group>"; };
-		635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONDataProvider.h; sourceTree = "<group>"; };
-		635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONDataProvider.m; sourceTree = "<group>"; };
+		635A2FDE1852855800B97B36 /* IXHTTPDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXHTTPDataProvider.h; sourceTree = "<group>"; };
+		635A2FDF1852855800B97B36 /* IXHTTPDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXHTTPDataProvider.m; sourceTree = "<group>"; };
 		635A2FE1185285A000B97B36 /* IXCoreDataDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCoreDataDataProvider.h; sourceTree = "<group>"; };
 		635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCoreDataDataProvider.m; sourceTree = "<group>"; };
 		635F0DFE1979B695002C0DBA /* IXAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAddressBook.h; sourceTree = "<group>"; };
@@ -646,8 +646,8 @@
 				13033F6C183ED8F200C29157 /* IXEntityContainer.m */,
 				63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */,
 				63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */,
-				635A2FDE1852855800B97B36 /* IXJSONDataProvider.h */,
-				635A2FDF1852855800B97B36 /* IXJSONDataProvider.m */,
+				635A2FDE1852855800B97B36 /* IXHTTPDataProvider.h */,
+				635A2FDF1852855800B97B36 /* IXHTTPDataProvider.m */,
 				63240E7E194A318300412927 /* IXOAuth2DataProvider.h */,
 				63240E7F194A318300412927 /* IXOAuth2DataProvider.m */,
 				63D8690B1A9CFF2800603602 /* IXSocketDataProvider.h */,
@@ -1166,7 +1166,7 @@
 				CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */,
 				CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */,
 				13033FBB183ED8F200C29157 /* IXViewController.m in Sources */,
-				635A2FE01852855800B97B36 /* IXJSONDataProvider.m in Sources */,
+				635A2FE01852855800B97B36 /* IXHTTPDataProvider.m in Sources */,
 				13033F92183ED8F200C29157 /* IXAlertAction.m in Sources */,
 				638226BE18ADF48D00E856ED /* IXTimer.m in Sources */,
 				6333614218934394004F3433 /* IXEvalShortCode.m in Sources */,

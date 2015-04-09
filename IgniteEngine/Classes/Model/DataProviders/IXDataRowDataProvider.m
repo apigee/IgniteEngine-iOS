@@ -53,9 +53,9 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
     [self setSortOrder:[[self propertyContainer] getStringPropertyValue:kIXSortOrder defaultValue:kIXSortOrderNone]];
 }
 
--(void)loadData:(BOOL)forceGet completion:(LoadFinished)completion
+-(void)loadData:(BOOL)forceGet
 {
-    [super loadData:forceGet completion:completion];
+    [super loadData:forceGet];
 }
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
