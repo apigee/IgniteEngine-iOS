@@ -132,7 +132,7 @@
 		63CC9ABC18BD1D8700ECCECB /* IXPathHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABB18BD1D8700ECCECB /* IXPathHandler.m */; };
 		63CC9ABF18BE8AB600ECCECB /* IXLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CC9ABE18BE8AB600ECCECB /* IXLogger.m */; };
 		63D23AAF1845B33D00C93BC7 /* IXDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AAD1845B33D00C93BC7 /* IXDataModel.xcdatamodeld */; };
-		63D23AB41845B3E400C93BC7 /* IXAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFHTTPRequestOperation.m */; };
+		63D23AB41845B3E400C93BC7 /* IXAFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D23AB31845B3E400C93BC7 /* IXAFHTTPSessionManager.m */; };
 		63D8690D1A9CFF2800603602 /* IXSocketDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D8690C1A9CFF2800603602 /* IXSocketDataProvider.m */; };
 		63DFD9E8188F1A3200C5941E /* IXUICollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DFD9E7188F1A3200C5941E /* IXUICollectionViewCell.m */; };
 		63EAB3F618BEC588001AC248 /* IXBaseDataProviderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAB3F518BEC588001AC248 /* IXBaseDataProviderConfig.m */; };
@@ -144,6 +144,7 @@
 		CA00FA3B18C666EB0090263D /* UIImage+ResizeMagick.m in Sources */ = {isa = PBXBuildFile; fileRef = CA00FA3A18C666EB0090263D /* UIImage+ResizeMagick.m */; };
 		CA1279E818D52B35007EEC5A /* UIButton+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1279E718D52B35007EEC5A /* UIButton+IXAdditions.m */; };
 		CA1279EB18D69618007EEC5A /* IXCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1279EA18D69618007EEC5A /* IXCircle.m */; };
+		CA21BC301AD70D0200EA401B /* NSDictionary+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA21BC2F1AD70D0200EA401B /* NSDictionary+IXAdditions.m */; };
 		CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA28B85A18C9052E0067686C /* IXLoadAction.m */; };
 		CA468E9D1ACCBC0D00013863 /* APIDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CA468E981ACCBC0D00013863 /* APIDataModel.xcdatamodeld */; };
 		CA468E9E1ACCBC0D00013863 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CA468E9B1ACCBC0D00013863 /* main.m */; };
@@ -216,8 +217,8 @@
 		13033F63183ED8F200C29157 /* IXToggle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXToggle.m; sourceTree = "<group>"; };
 		13033F69183ED8F200C29157 /* IXBaseDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXBaseDataProvider.h; sourceTree = "<group>"; };
 		13033F6A183ED8F200C29157 /* IXBaseDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXBaseDataProvider.m; sourceTree = "<group>"; };
-		13033F6B183ED8F200C29157 /* IXEntityContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEntityContainer.h; sourceTree = "<group>"; };
-		13033F6C183ED8F200C29157 /* IXEntityContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXEntityContainer.m; sourceTree = "<group>"; };
+		13033F6B183ED8F200C29157 /* IXEntityContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IXEntityContainer.h; path = ../DataProviders/IXEntityContainer.h; sourceTree = "<group>"; };
+		13033F6C183ED8F200C29157 /* IXEntityContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IXEntityContainer.m; path = ../DataProviders/IXEntityContainer.m; sourceTree = "<group>"; };
 		13033F6D183ED8F200C29157 /* IXSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSandbox.h; sourceTree = "<group>"; };
 		13033F6E183ED8F200C29157 /* IXSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSandbox.m; sourceTree = "<group>"; };
 		13033F70183ED8F200C29157 /* IXProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXProperty.h; sourceTree = "<group>"; };
@@ -390,8 +391,8 @@
 		63CC9ABD18BE8AB600ECCECB /* IXLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLogger.h; sourceTree = "<group>"; };
 		63CC9ABE18BE8AB600ECCECB /* IXLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLogger.m; sourceTree = "<group>"; };
 		63D23AAE1845B33D00C93BC7 /* IXDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IXDataModel.xcdatamodel; sourceTree = "<group>"; };
-		63D23AB21845B3E400C93BC7 /* IXAFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IXAFHTTPRequestOperation.h; path = ../Other/IXAFHTTPRequestOperation.h; sourceTree = "<group>"; };
-		63D23AB31845B3E400C93BC7 /* IXAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IXAFHTTPRequestOperation.m; path = ../Other/IXAFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		63D23AB21845B3E400C93BC7 /* IXAFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IXAFHTTPSessionManager.h; path = ../Other/IXAFHTTPSessionManager.h; sourceTree = "<group>"; };
+		63D23AB31845B3E400C93BC7 /* IXAFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IXAFHTTPSessionManager.m; path = ../Other/IXAFHTTPSessionManager.m; sourceTree = "<group>"; };
 		63D8690B1A9CFF2800603602 /* IXSocketDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSocketDataProvider.h; sourceTree = "<group>"; };
 		63D8690C1A9CFF2800603602 /* IXSocketDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXSocketDataProvider.m; sourceTree = "<group>"; };
 		63DFD9E6188F1A3200C5941E /* IXUICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXUICollectionViewCell.h; sourceTree = "<group>"; };
@@ -414,6 +415,8 @@
 		CA1279E718D52B35007EEC5A /* UIButton+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+IXAdditions.m"; sourceTree = "<group>"; };
 		CA1279E918D69618007EEC5A /* IXCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCircle.h; sourceTree = "<group>"; };
 		CA1279EA18D69618007EEC5A /* IXCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCircle.m; sourceTree = "<group>"; };
+		CA21BC2E1AD70D0200EA401B /* NSDictionary+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+IXAdditions.h"; sourceTree = "<group>"; };
+		CA21BC2F1AD70D0200EA401B /* NSDictionary+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+IXAdditions.m"; sourceTree = "<group>"; };
 		CA28B85918C9052E0067686C /* IXLoadAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXLoadAction.h; sourceTree = "<group>"; };
 		CA28B85A18C9052E0067686C /* IXLoadAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXLoadAction.m; sourceTree = "<group>"; };
 		CA468E991ACCBC0D00013863 /* APIDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = APIDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -642,8 +645,6 @@
 				635A2FE2185285A000B97B36 /* IXCoreDataDataProvider.m */,
 				63240E7B194A27F200412927 /* IXDataRowDataProvider.h */,
 				63240E7C194A27F200412927 /* IXDataRowDataProvider.m */,
-				13033F6B183ED8F200C29157 /* IXEntityContainer.h */,
-				13033F6C183ED8F200C29157 /* IXEntityContainer.m */,
 				63A69FCB19491BE600D5D712 /* IXFileDataProvider.h */,
 				63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */,
 				635A2FDE1852855800B97B36 /* IXHTTPDataProvider.h */,
@@ -661,6 +662,8 @@
 		13033F6F183ED8F200C29157 /* Properties */ = {
 			isa = PBXGroup;
 			children = (
+				13033F6B183ED8F200C29157 /* IXEntityContainer.h */,
+				13033F6C183ED8F200C29157 /* IXEntityContainer.m */,
 				13033F70183ED8F200C29157 /* IXProperty.h */,
 				13033F71183ED8F200C29157 /* IXProperty.m */,
 				13033F72183ED8F200C29157 /* IXPropertyContainer.h */,
@@ -697,10 +700,10 @@
 		13033F7B183ED8F200C29157 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				63D23AB21845B3E400C93BC7 /* IXAFHTTPSessionManager.h */,
+				63D23AB31845B3E400C93BC7 /* IXAFHTTPSessionManager.m */,
 				63F0B1CE19DB29DA0061D870 /* IXAFNetworkActivityLogger.h */,
 				63F0B1CF19DB29DA0061D870 /* IXAFNetworkActivityLogger.m */,
-				63D23AB21845B3E400C93BC7 /* IXAFHTTPRequestOperation.h */,
-				63D23AB31845B3E400C93BC7 /* IXAFHTTPRequestOperation.m */,
 				63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */,
 				63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */,
 				6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */,
@@ -825,6 +828,8 @@
 			children = (
 				63AEA732193F7D760088F480 /* MKMapView+IXAdditions.h */,
 				63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */,
+				CA21BC2E1AD70D0200EA401B /* NSDictionary+IXAdditions.h */,
+				CA21BC2F1AD70D0200EA401B /* NSDictionary+IXAdditions.m */,
 				63311BCF18444D600048C668 /* NSString+IXAdditions.h */,
 				63311BD018444D600048C668 /* NSString+IXAdditions.m */,
 				639A53171A227ED800640C89 /* NSURL+IXAdditions.h */,
@@ -1124,7 +1129,7 @@
 				634EE09E1982D95600C08FCD /* RMPhoneFormat.m in Sources */,
 				13033F97183ED8F200C29157 /* IXBaseObject.m in Sources */,
 				638DE4761860C6CB00F2E36A /* IXRowShortCode.m in Sources */,
-				63D23AB41845B3E400C93BC7 /* IXAFHTTPRequestOperation.m in Sources */,
+				63D23AB41845B3E400C93BC7 /* IXAFHTTPSessionManager.m in Sources */,
 				6320A057193FF9B000ABC932 /* IXCellBackgroundSwipeController.m in Sources */,
 				63C0A7B118CFDAB700F72064 /* IXNetworkShortCode.m in Sources */,
 				63B0FE771A9D58D700B1DB99 /* IXColorPicker.m in Sources */,
@@ -1153,6 +1158,7 @@
 				6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */,
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				CA1279E818D52B35007EEC5A /* UIButton+IXAdditions.m in Sources */,
+				CA21BC301AD70D0200EA401B /* NSDictionary+IXAdditions.m in Sources */,
 				636949EA19A3E0E80009AF81 /* IXFormatter.m in Sources */,
 				13033FB0183ED8F200C29157 /* IXProperty.m in Sources */,
 				CA28B85B18C9052E0067686C /* IXLoadAction.m in Sources */,

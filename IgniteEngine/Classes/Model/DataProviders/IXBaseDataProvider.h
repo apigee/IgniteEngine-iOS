@@ -7,7 +7,7 @@
 //
 
 #import "IXBaseObject.h"
-//#import "AFNetworking.h"
+#import "IXAFHTTPSessionManager.h"
 
 extern NSString* IXBaseDataProviderDidUpdateNotification;
 
@@ -20,9 +20,10 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,strong) IXPropertyContainer* requestHeadersObject;
 @property (nonatomic,strong) IXPropertyContainer* fileAttachmentObject;
 
-@property (nonatomic,assign,readonly,getter = shouldAutoLoad) BOOL autoLoad;
-@property (nonatomic,assign,readonly,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
-@property (nonatomic,assign,readonly,getter = isPathLocal)    BOOL pathIsLocal;
+@property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
+@property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
+@property (nonatomic,assign,getter = shouldDeriveValueTypes) BOOL deriveValueTypes;
+@property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
 @property (nonatomic,copy) NSString* method;
 @property (nonatomic,copy) NSString* body;

@@ -11,13 +11,14 @@
 #import "AFNetworking.h"
 #import "AFOAuth2Manager.h"
 
-#import "IXAFHTTPRequestOperation.h"
+#import "IXAFHTTPSessionManager.h"
 #import "IXAppManager.h"
 #import "IXDataLoader.h"
 #import "IXLogger.h"
 #import "IXViewController.h"
 #import "IXSandbox.h"
-
+#import "NSDictionary+IXAdditions.h"
+#import "IXProperty.h"
 
 // TODO: Clean up naming and document
 IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
@@ -31,51 +32,42 @@ IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.
 IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
 
 IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
-IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
+//IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
 /////////////////////////
 
-
+// IXHTTPDataProvider Attributes
 IX_STATIC_CONST_STRING kIXBody = @"body"; // main body object
+IX_STATIC_CONST_STRING kIXQueryParams = @"queryParams";
+IX_STATIC_CONST_STRING kIXHeaders = @"headers";
 IX_STATIC_CONST_STRING kIXRequestType = @"requestType"; // if not defined, predict from Accept header. If defined, adds Accept header.
 IX_STATIC_CONST_STRING kIXResponseType = @"responseType";
-IX_STATIC_CONST_STRING kIXHeaders = @"headers";
 IX_STATIC_CONST_STRING kIXMethod = @"method";
 //IX_STATIC_CONST_STRING kIXParseResponse = @"parseResponse.enabled"; // parses response or leaves it as a string
-IX_STATIC_CONST_STRING kIXQueryParams = @"queryParams";
+
 IX_STATIC_CONST_STRING kIXDebugRequestBinUrl = @"debug.requestBinUrl";
 
 IX_STATIC_CONST_STRING kIXBasicUserName = @"auth.basic.username";
 IX_STATIC_CONST_STRING kIXBasicPassword = @"auth.basic.password";
 
-//IX_STATIC_CONST_STRING kIXCacheID = @"cache.id";
 IX_STATIC_CONST_STRING kIXCacheEnabled = @"cache.enabled";
 IX_STATIC_CONST_STRING kIXCachePolicy = @"cache.policy";
-//IX_STATIC_CONST_STRING kIXParseParametsAsObject = @"parseParameters.enabled";
-//IX_STATIC_CONST_STRING kIXAcceptedContentType = @"http.headers.accept";
 
 // IXBaseDataProvider Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXMethodGET = @"GET"; // kIXMethod
+IX_STATIC_CONST_STRING kIXMethodPOST = @"POST"; // kIXMethod
+IX_STATIC_CONST_STRING kIXMethodPUT = @"PUT"; // kIXMethod
+IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE"; // kIXMethod
+
 IX_STATIC_CONST_STRING kIXSortOrderNone = @"none"; // kIXSortOrder
 IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending"; // kIXSortOrder
 IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // kIXSortOrder
-//IX_STATIC_CONST_STRING kIXParameterEncodingJSON = @"json"; // kIXParameterEncoding
-//IX_STATIC_CONST_STRING kIXParameterEncodingPList = @"plist"; // kIXParameterEncoding
-//IX_STATIC_CONST_STRING kIXParameterEncodingForm = @"form"; // kIXParameterEncoding
 
 IX_STATIC_CONST_STRING kIXRequestTypeForm = @"form"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeJSON = @"json"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeMultipart = @"multipart"; // kIXBodyEncoding
 // TODO: implement JSON to XML conversion for POST/PUTting XML
 IX_STATIC_CONST_STRING kIXRequestTypeXML = @"xml"; // kIXBodyEncoding - currently not supported as body type
-
-// Header properties
-IX_STATIC_CONST_STRING kIXContentTypeHeaderJSON = @"application/json; charset=utf-8"; // Content-Type header value
-IX_STATIC_CONST_STRING kIXContentTypeHeaderForm = @"application/x-www-form-urlencoded"; // Content-Type header value
-IX_STATIC_CONST_STRING kIXAcceptHeaderJSON = @"application/json"; // Accept header value
-IX_STATIC_CONST_STRING kIXAcceptHeaderXML = @"application/xml"; // Accept header value
-IX_STATIC_CONST_STRING kIXContentTypeHeaderKey = @"Content-Type";
-IX_STATIC_CONST_STRING kIXAcceptCharsetHeaderKey = @"Accept-Charset";
-IX_STATIC_CONST_STRING kIXAcceptCharsetHeaderValue = @"utf-8"; // Accept-Charset header type
 
 IX_STATIC_CONST_STRING kIXCachePolicyDefault = @"reloadIgnoringLocalCache"; // Accepted Value Default
 IX_STATIC_CONST_STRING kIXCachePolicyUseProtocolCachePolicy = @"useProtocolCachePolicy";
@@ -85,7 +77,7 @@ IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataElseLoad = @"useCacheElseLoa
 IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataDontLoad = @"useCacheDontLoad";
 IX_STATIC_CONST_STRING kIXCachePolicyReloadRevalidatingCacheData = @"reloadRevalidatingCache";
 
-// IXBaseDataProvider Read-Only Properties
+// IXHTTPDataProvider Read-Only Properties
 IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
 IX_STATIC_CONST_STRING kIXResponseBodyParsed = @"response.body";
 IX_STATIC_CONST_STRING kIXResponseRaw = @"response.raw";
@@ -94,9 +86,7 @@ IX_STATIC_CONST_STRING kIXStatusCode = @"response.code";
 IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 
 // IXBaseDataProvider Functions
-IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data providers kIXCacheID.
-IX_STATIC_CONST_STRING kIXDeleteCookies = @"deleteCookies"; // kIXCookieURL is the parameter for this function.
-IX_STATIC_CONST_STRING kIXCookieURL = @"cookie.url"; // Parameter on deleteCookies
+IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data provider's url.
 
 // Non Property constants.
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
@@ -104,13 +94,9 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 static NSCache* sIXDataProviderCache = nil;
 
-// HTTP methods
-IX_STATIC_CONST_STRING kIXMethodGET = @"GET";
-IX_STATIC_CONST_STRING kIXMethodPOST = @"POST";
-IX_STATIC_CONST_STRING kIXMethodPUT = @"PUT";
-IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
 
 @interface IXHTTPDataProvider ()
+
 @property (nonatomic,copy) NSString* requestBinUrl;
 
 @property (nonatomic,copy) NSString* acceptedContentType;
@@ -121,9 +107,24 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
 
 @end
 
+// Internal header properties
+IX_STATIC_CONST_STRING kIXContentTypeHeaderJSON = @"application/json; charset=utf-8"; // Content-Type header value
+IX_STATIC_CONST_STRING kIXContentTypeHeaderForm = @"application/x-www-form-urlencoded"; // Content-Type header value
+IX_STATIC_CONST_STRING kIXAcceptHeaderJSON = @"application/json"; // Accept header value
+IX_STATIC_CONST_STRING kIXAcceptHeaderXML = @"application/xml"; // Accept header value
+IX_STATIC_CONST_STRING kIXContentTypeHeaderKey = @"Content-Type";
+IX_STATIC_CONST_STRING kIXAcceptCharsetHeaderKey = @"Accept-Charset";
+IX_STATIC_CONST_STRING kIXAcceptCharsetHeaderValue = @"utf-8"; // Accept-Charset header type
+
+
 @implementation IXHTTPDataProvider
 @synthesize url = _url;
 @synthesize method = _method;
+@synthesize body = _body;
+@synthesize requestBinUrl = _requestBinUrl;
+@synthesize queryParams = _queryParams;
+@synthesize urlEncodeParams = _urlEncodeParams;
+@synthesize deriveValueTypes = _deriveValueTypes;
 @synthesize requestQueryParamsObject = _requestQueryParamsObject;
 @synthesize requestBodyObject = _requestBodyObject;
 @synthesize requestHeadersObject = _requestHeadersObject;
@@ -179,12 +180,8 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
 
 - (void)buildHTTPRequest
 {
-    if (!_manager) {
-        _manager = [AFHTTPRequestOperationManager manager];
-    }
-    
     [self setAcceptedContentType];
-    [self setRequestEncoding];
+    [self setRequestType];
     [self setHeaders];
     [self setBasicAuth];
     [self configureCache];
@@ -211,28 +208,32 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
         acceptedContentType = [[self propertyContainer] getStringPropertyValue:[NSString stringWithFormat:@"%@.accept", kIXHeaders] defaultValue:nil];
     }
     if (acceptedContentType != nil) {
-        _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:acceptedContentType];
+        [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = [NSSet setWithObject:acceptedContentType];
     }
     _acceptedContentType = acceptedContentType;
 }
 
-- (void)setRequestEncoding {
+- (void)setRequestType {
     if ([_requestType isEqualToString:kIXRequestTypeJSON]) {
-        _manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFJSONRequestSerializer serializer];
     } else if ([_requestType isEqualToString:kIXRequestTypeForm]) {
-        _manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFHTTPRequestSerializer serializer];
+    }
+    
+    if ([_method isEqualToString:kIXMethodGET] || [_method isEqualToString:kIXMethodDELETE]) {
+        [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFHTTPRequestSerializer serializer];
     }
 }
 
 - (void)setHeaders {
-    if ([_requestHeadersObject valueForKey:kIXAcceptCharsetHeaderKey] == nil) {
-        [_requestHeadersObject setValue:kIXAcceptCharsetHeaderValue forKey:kIXAcceptCharsetHeaderKey];
+    if ([_requestHeadersObject propertyExistsForPropertyNamed:kIXAcceptCharsetHeaderKey]) {
+        [_requestHeadersObject addProperty:[IXProperty propertyWithPropertyName:kIXAcceptCharsetHeaderKey rawValue:kIXAcceptCharsetHeaderValue]];
     }
-    if ([_requestHeadersObject valueForKey:kIXContentTypeHeaderKey] == nil) {
-        [_requestHeadersObject setValue:[self contentTypeForBodyEncoding] forKey:kIXContentTypeHeaderKey];
+    if ([_requestHeadersObject propertyExistsForPropertyNamed:kIXContentTypeHeaderKey]) {
+        [_requestHeadersObject addProperty:[IXProperty propertyWithPropertyName:kIXContentTypeHeaderKey rawValue:[self contentTypeForBodyEncoding]]];
     }
     [[_requestHeadersObject getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
-        [_manager.requestSerializer setValue:value forHTTPHeaderField:key];
+        [[IXAFHTTPSessionManager sharedManager].requestSerializer setValue:value forHTTPHeaderField:key];
     }];
 }
 
@@ -240,14 +241,12 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
     NSString* username = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
     NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];
     if (username != nil && password != nil) {
-        [_manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
+        [[IXAFHTTPSessionManager sharedManager].requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
     }
 }
 
 -(void)configureCache {
-    if (self.shouldCacheResponse) {
-        [_manager.requestSerializer setCachePolicy:_cachePolicy];
-    }
+    [[IXAFHTTPSessionManager sharedManager].requestSerializer setCachePolicy:(self.shouldCacheResponse) ? _cachePolicy : NSURLRequestReloadIgnoringCacheData];
 }
 
 - (NSString*)contentTypeForBodyEncoding {
@@ -303,35 +302,37 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
 {
     [super loadData:forceGet];
     
-    [self loadData:forceGet completion:^(BOOL success, AFHTTPRequestOperation *operation, NSError *error) {
+    [self loadData:forceGet completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
         
-        [self setResponseStatusCode:operation.response.statusCode];
-        [self setResponseHeaders:operation.response.allHeaderFields];
+        [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
         
-        if( [NSJSONSerialization isValidJSONObject:self.responseObject] )
+        NSHTTPURLResponse* response = (NSHTTPURLResponse*)task.response;
+//        NSError* __autoreleasing dataErr = nil;
+//        NSData* responseData = [NSJSONSerialization dataWithJSONObject:responseObject options:0 error:&dataErr];
+        [self setResponseObject:responseObject];
+//        [self setResponseString:[[NSString string] initWithData:responseData encoding:NSUTF8StringEncoding]];
+        
+        [self setResponseStatusCode:response.statusCode];
+
+        [self setResponseHeaders:response.allHeaderFields];
+        [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
+        
+        if (error)
         {
-            [self setResponseString:operation.responseString];
-            [self setResponseObject:self.responseObject];
-            [self fireLoadFinishedEvents:YES];
-//            [self fireLoadFinishedEvents:YES shouldCacheResponse:(self.cacheID != nil)];
+            [self setResponseObject:error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey]];
+            [self setResponseErrorMessage:error.localizedDescription];
         }
         else
         {
-            [self setResponseErrorMessage:error.localizedDescription];
-            [self fireLoadFinishedEvents:NO];
-//            [self fireLoadFinishedEvents:NO shouldCacheResponse:NO];
+            [self setResponseObject:responseObject];
+            [self fireLoadFinishedEvents:[NSJSONSerialization isValidJSONObject:self.responseObject]];
         }
     }];
 }
 
--(BOOL)requestIsPostOrPut
-{
-    return ([self.method isEqualToString:kIXMethodPOST] || [self.method isEqualToString:kIXMethodPUT]);
-}
-
 -(void)loadData:(BOOL)forceGet completion:(LoadFinished)completion
 {
-    self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFJSONResponseSerializer serializer];
     
     if (self.url != nil) {
         if (forceGet == NO)
@@ -351,70 +352,40 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
             [self setResponseTime:0];
             [self setResponseErrorMessage:nil];
             
-            NSDictionary* body;
-            if ([self requestIsPostOrPut]) {
-                @try {
-                    if (self.requestBodyObject) {
-                        body = [self.requestBodyObject getAllPropertiesObjectValues:NO];
-                    } else {
-                        NSError* __autoreleasing error = nil;
-                        body = [NSJSONSerialization JSONObjectWithData:[self.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
-                    }
-                }
-                @catch (NSException *exception) {
-                    IX_LOG_ERROR(@"Body included with request was not a valid JSON object or string: %@", body);
-                }
-            }
+            NSDictionary* body = [self resolveBody];
+            NSDictionary* queryParams = [self resolveQueryParams];
             
-            if ([self.method isEqualToString:kIXMethodGET]) {
-                [self.manager GET:self.url parameters:[self.requestQueryParamsObject getAllPropertiesObjectValues:self.urlEncodeParams]
-                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                              self.responseObject = responseObject;
-                              [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                              completion(YES, operation, nil);
-                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                              self.responseErrorMessage = error.localizedDescription;
-                              [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                              completion(NO, operation, error);
-                          }];
-            } else if ([self.method isEqualToString:kIXMethodPOST]) {
-                [self.manager POST:self.url parameters:body
-                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                               self.responseObject = responseObject;
-                               completion(YES, operation, nil);
-                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                               self.responseErrorMessage = error.localizedDescription;
-                               [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                               completion(NO, operation, error);
-                           }];
-                if (self.requestBinUrl != nil) {
-                    [self.manager POST:self.requestBinUrl parameters:body success:nil failure:nil];
+            if ([_method isEqualToString:kIXMethodGET]) {
+                
+                [[IXAFHTTPSessionManager sharedManager] GET:_url parameters:queryParams success:^(NSURLSessionDataTask *task, id responseObject) {
+                    completion(YES, task, responseObject, nil);
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    completion(NO, task, nil, error);
+                }];
+            } else if ([_method isEqualToString:kIXMethodPOST]) {
+                [[IXAFHTTPSessionManager sharedManager] POST:_url parameters:body success:^(NSURLSessionDataTask *task, id responseObject) {
+                    completion(YES, task, responseObject, nil);
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    completion(NO, task, nil, error);
+                }];
+                if (_requestBinUrl != nil) {
+                    [[IXAFHTTPSessionManager sharedManager] POST:_requestBinUrl parameters:body success:nil failure:nil];
                 }
-            } else if ([[self method] isEqualToString:kIXMethodPUT]) {
-                [self.manager PUT:self.url parameters:body
-                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                              self.responseObject = responseObject;
-                              [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                              completion(YES, operation, nil);
-                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                              self.responseErrorMessage = error.localizedDescription;
-                              [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                              completion(NO, operation, error);
-                          }];
-                if (self.requestBinUrl != nil) {
-                    [self.manager PUT:self.requestBinUrl parameters:body success:nil failure:nil];
+            } else if ([_method isEqualToString:kIXMethodPUT]) {
+                [[IXAFHTTPSessionManager sharedManager] PUT:_url parameters:body success:^(NSURLSessionDataTask *task, id responseObject) {
+                    completion(YES, task, responseObject, nil);
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    completion(NO, task, nil, error);
+                }];
+                if (_requestBinUrl != nil) {
+                    [[IXAFHTTPSessionManager sharedManager] PUT:_requestBinUrl parameters:body success:nil failure:nil];
                 }
-            } else if ([[self method] isEqualToString:kIXMethodDELETE]) {
-                [self.manager DELETE:self.url parameters:[self.requestQueryParamsObject getAllPropertiesObjectValues:self.urlEncodeParams]
-                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                 self.responseObject = responseObject;
-                                 [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                                 completion(YES, operation, nil);
-                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                 self.responseErrorMessage = error.localizedDescription;
-                                 [self setRequestEndTime:CFAbsoluteTimeGetCurrent()];
-                                 completion(NO, operation, error);
-                             }];
+            } else if ([_method isEqualToString:kIXMethodDELETE]) {
+                [[IXAFHTTPSessionManager sharedManager] DELETE:_url parameters:queryParams success:^(NSURLSessionDataTask *task, id responseObject) {
+                    completion(YES, task, responseObject, nil);
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    completion(NO, task, nil, error);
+                }];
             }
         }
     }
@@ -422,6 +393,58 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
     {
         IX_LOG_ERROR(@"ERROR: 'url' [%@] is %@; is 'url' defined in your datasource?", self.ID, self.url);
     }
+}
+
+
+
+-(BOOL)requestIsPostOrPut
+{
+    return ([self.method isEqualToString:kIXMethodPOST] || [self.method isEqualToString:kIXMethodPUT]);
+}
+
+-(BOOL)requestIsGetOrDelete
+{
+    return ([self.method isEqualToString:kIXMethodGET] || [self.method isEqualToString:kIXMethodDELETE]);
+}
+
+-(NSDictionary*)resolveBody
+{
+    NSDictionary* body;
+    if ([self requestIsPostOrPut]) {
+        @try {
+            if (_requestBodyObject) {
+                body = [_requestBodyObject getAllPropertiesObjectValues:NO];
+            } else if (_body) {
+                NSError* __autoreleasing error = nil;
+                body = [NSJSONSerialization JSONObjectWithData:[_body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
+            }
+            if (_deriveValueTypes) {
+                body = [NSDictionary ix_dictionaryWithParsedValuesFromDictionary:body];
+            }
+        }
+        @catch (NSException *exception) {
+            IX_LOG_ERROR(@"Body included with request was not a valid JSON object or string: %@", body);
+        }
+    }
+    return body;
+}
+
+-(NSDictionary*)resolveQueryParams
+{
+    NSDictionary* queryParams;
+    if ([self requestIsGetOrDelete]) {
+        @try {
+            if (_requestQueryParamsObject) {
+                queryParams = [_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams];
+            } else if (_queryParams) {
+                queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:_queryParams];
+            }
+        }
+        @catch (NSException *exception) {
+            IX_LOG_ERROR(@"Body included with request was not a valid form-encoded object or string: %@", queryParams);
+        }
+    }
+    return queryParams;
 }
 
 -(void)calculateAndStoreDataRowResultsForDataRowPath:(NSString*)dataRowPath
@@ -492,7 +515,6 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
-#warning TODO - JSON vs. xml vs. checking for properties based on JSON
     NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
     if( returnValue == nil )
     {
@@ -629,18 +651,6 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
     {
         [IXHTTPDataProvider clearCacheForURL:self.url];
     }
-    else if( [functionName isEqualToString:kIXDeleteCookies] )
-    {
-        NSString* urlToDeleteCookiesFor = [parameterContainer getStringPropertyValue:kIXCookieURL defaultValue:nil];
-        if( [urlToDeleteCookiesFor length] > 0 )
-        {
-            NSArray *cookiesToDelete = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlToDeleteCookiesFor]];
-            for (NSHTTPCookie *cookie in cookiesToDelete )
-            {
-                [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-            }
-        }
-    }
     else if( [functionName isEqualToString:kIXModifyResponse] )
     {
         NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
@@ -672,24 +682,24 @@ IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE";
                 else if( [modifyResponseType isEqualToString:kIXAppend] )
                 {
                     id jsonToAppendObject = nil;
-                    if( [parameterContainer getBoolPropertyValue:kIXParseJSONAsObject defaultValue:NO] )
-                    {
-                        jsonToAppendObject = [[parameterContainer getAllPropertiesObjectValues:NO] objectForKey:kIXJSONToAppend];
-                    }
-                    else
-                    {
-                        NSString* jsonToAppendString = [parameterContainer getStringPropertyValue:kIXJSONToAppend defaultValue:nil];
-                        jsonToAppendObject = [NSJSONSerialization JSONObjectWithData:[jsonToAppendString dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                options:NSJSONReadingMutableContainers|NSJSONReadingAllowFragments
-                                                                                    error:nil];
-                    }
-
-
-                    if( jsonToAppendObject != nil )
-                    {
-                        [topLevelArray addObject:jsonToAppendObject];
-//                        needsToRecacheResponse = YES;
-                    }
+//                    if( [parameterContainer getBoolPropertyValue:kIXParseJSONAsObject defaultValue:NO] )
+//                    {
+//                        jsonToAppendObject = [[parameterContainer getAllPropertiesObjectValues:NO] objectForKey:kIXJSONToAppend];
+//                    }
+//                    else
+//                    {
+//                        NSString* jsonToAppendString = [parameterContainer getStringPropertyValue:kIXJSONToAppend defaultValue:nil];
+//                        jsonToAppendObject = [NSJSONSerialization JSONObjectWithData:[jsonToAppendString dataUsingEncoding:NSUTF8StringEncoding]
+//                                                                                options:NSJSONReadingMutableContainers|NSJSONReadingAllowFragments
+//                                                                                    error:nil];
+//                    }
+//
+//
+//                    if( jsonToAppendObject != nil )
+//                    {
+//                        [topLevelArray addObject:jsonToAppendObject];
+////                        needsToRecacheResponse = YES;
+//                    }
                 }
 
 //                if( needsToRecacheResponse )

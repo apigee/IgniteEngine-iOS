@@ -150,6 +150,39 @@ static NSString* const kIXFloatFormat = @"%f";
     return [self rangeOfString:substring options:options].location != NSNotFound;
 }
 
+-(BOOL)stringIsNumber {
+    NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    return ([self rangeOfCharacterFromSet:notDigits].location == NSNotFound);
+}
+
+-(BOOL)stringIsBOOL {
+    if ([self caseInsensitiveCompare:@"yes"] == NSOrderedSame ||
+       [self caseInsensitiveCompare:@"true"] == NSOrderedSame ||
+       [self caseInsensitiveCompare:@"no"] == NSOrderedSame ||
+       [self caseInsensitiveCompare:@"false"] == NSOrderedSame ) {
+        return @YES;
+    } else {
+        return @NO;
+    }
+}
+
+-(NSDecimalNumber*)decimalNumberFromString {
+    return [NSDecimalNumber decimalNumberWithString:self];
+}
+
+-(NSNumber*)boolFromString {
+    if ([self caseInsensitiveCompare:@"yes"] == NSOrderedSame || [self caseInsensitiveCompare:@"true"] == NSOrderedSame) {
+        return @YES;
+    } else if ([self caseInsensitiveCompare:@"no"] == NSOrderedSame || [self caseInsensitiveCompare:@"false"] == NSOrderedSame) {
+        return @NO;
+    } else {
+        return nil;
+    }
+}
+
+
+
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
 
 + (void)load {
@@ -168,6 +201,11 @@ static NSString* const kIXFloatFormat = @"%f";
 // containsString: has been added in iOS 8. We dynamically add this if we run on iOS 7.
 - (BOOL)ix_containsString:(NSString *)aString {
     return [self rangeOfString:aString].location != NSNotFound;
+}
+
+- (BOOL)containsString:(NSString *)aString
+{
+    return [self ix_containsString:aString];
 }
 
 #endif

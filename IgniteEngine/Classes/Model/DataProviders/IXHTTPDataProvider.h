@@ -7,14 +7,14 @@
 //
 
 #import "IXDataRowDataProvider.h"
-#import "AFNetworking.h"
+//#import "AFNetworking.h"
 
-typedef void(^LoadFinished)(BOOL success, AFHTTPRequestOperation* operation, NSError* error);
+typedef void(^LoadFinished)(BOOL success, NSURLSessionDataTask* task, id responseObject, NSError* error);
 
 @interface IXHTTPDataProvider : IXDataRowDataProvider
 
 //@property (nonatomic,strong) id lastJSONResponse;
-@property (nonatomic,strong) AFHTTPRequestOperationManager *manager;
+//@property (nonatomic,strong) IXAFHTTPSessionManager *manager;
 @property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
 //@property (nonatomic,copy,readonly) NSString* cacheID;
 @property (nonatomic,copy,readonly) NSString* acceptedContentType;
@@ -37,7 +37,6 @@ typedef void(^LoadFinished)(BOOL success, AFHTTPRequestOperation* operation, NSE
 //-(void)cacheResponse;
 +(BOOL)cacheExistsForURL:(NSString*)url;
 +(void)clearCacheForURL:(NSString*)url;
-+(void)clearAllCachedResponses;
 //-(void)fireLoadFinishdEventsFromCache;
 //-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 //-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache;

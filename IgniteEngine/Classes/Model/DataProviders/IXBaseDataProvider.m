@@ -21,6 +21,7 @@
 #import "IXNavigationViewController.h"
 #import "IXAppManager.h"
 #import "UIViewController+IXAdditions.h"
+#import "NSDictionary+IXAdditions.h"
 
 //#import <RestKit/RestKit.h>
 
@@ -29,7 +30,12 @@ NSString* IXBaseDataProviderDidUpdateNotification = @"IXBaseDataProviderDidUpdat
 // IXBaseDataProvider Attributes
 IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled";
 IX_STATIC_CONST_STRING kIXUrl = @"url";
-IX_STATIC_CONST_STRING kIXUrlEncodeParams = @"urlEncodeParams.enabled";
+IX_STATIC_CONST_STRING kIXUrlEncodeParams = @"urlEncodeParams.enabled"; // When enabled, url-encodes query params
+IX_STATIC_CONST_STRING kIXDeriveValueTypes = @"deriveValueTypes.enabled"; // Default=true; parses POST/PUT body JSON number and bool values
+
+// IXBaseDataProvider Functions
+IX_STATIC_CONST_STRING kIXDeleteCookies = @"deleteCookies"; // kIXCookieURL is the parameter for this function.
+IX_STATIC_CONST_STRING kIXCookieURL = @"url"; // Function parameter for deleteCookies
 
 // IXBaseDataProvider Events
 IX_STATIC_CONST_STRING kIXStarted = @"began";
@@ -53,9 +59,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
 
-@property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
-@property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
-@property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
+//@property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
+//@property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
+//@property (nonatomic,assign,getter = shouldDeriveValueTypes) BOOL deriveValueTypes;
+//@property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
 //@property (nonatomic,copy) NSString* method;
 //@property (nonatomic,copy) NSString* body;
@@ -140,7 +147,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setUrl:url];
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     [self setUrlEncodeParams:[[self propertyContainer] getBoolPropertyValue:kIXUrlEncodeParams defaultValue:YES]];
-    
+    [self setDeriveValueTypes:[[self propertyContainer] getBoolPropertyValue:kIXDeriveValueTypes defaultValue:YES]];
 }
 
 //-(void)createRequest
@@ -170,32 +177,25 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 //    return returnValue;
 //}
 
-//-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
-//{
-//    if( [functionName isEqualToString:kIXClearCache] )
-//    {
-//        if( [[self cacheID] length] > 0 )
-//        {
-//            [sIXDataProviderCache removeObjectForKey:[self cacheID]];
-//        }
-//    }
-//    else if( [functionName isEqualToString:kIXDeleteCookies] )
-//    {
-//        NSString* urlToDeleteCookiesFor = [parameterContainer getStringPropertyValue:kIXCookieURL defaultValue:nil];
-//        if( [urlToDeleteCookiesFor length] > 0 )
-//        {
-//            NSArray *cookiesToDelete = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlToDeleteCookiesFor]];
-//            for (NSHTTPCookie *cookie in cookiesToDelete )
-//            {
-//                [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-//            }
-//        }
-//    }
-//    else
-//    {
-//        [super applyFunction:functionName withParameters:parameterContainer];
-//    }
-//}
+-(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+{
+    if( [functionName isEqualToString:kIXDeleteCookies] )
+    {
+        NSString* urlToDeleteCookiesFor = [parameterContainer getStringPropertyValue:kIXCookieURL defaultValue:nil];
+        if( [urlToDeleteCookiesFor length] > 0 )
+        {
+            NSArray *cookiesToDelete = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlToDeleteCookiesFor]];
+            for (NSHTTPCookie *cookie in cookiesToDelete )
+            {
+                [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+            }
+        }
+    }
+    else
+    {
+        [super applyFunction:functionName withParameters:parameterContainer];
+    }
+}
 
 
 

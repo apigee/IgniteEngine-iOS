@@ -18,6 +18,12 @@
 +(NSString*)ix_toBase64String:(NSString*)string;
 +(NSString*)ix_fromBase64String:(NSString*)string;
 +(NSString*)ix_toMD5String:(NSString *)string;
+
+-(BOOL)stringIsBOOL;
+-(BOOL)stringIsNumber;
+-(NSDecimalNumber*)decimalNumberFromString;
+-(NSNumber*)boolFromString;
+
 -(NSString*)trimLeadingAndTrailingWhitespace;
 -(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;
 
