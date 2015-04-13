@@ -21,8 +21,6 @@
 
 -(BOOL)stringIsBOOL;
 -(BOOL)stringIsNumber;
--(NSDecimalNumber*)decimalNumberFromString;
--(NSNumber*)boolFromString;
 
 -(NSString*)trimLeadingAndTrailingWhitespace;
 -(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;

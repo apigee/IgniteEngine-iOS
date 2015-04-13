@@ -35,32 +35,34 @@
 // internal helpers
 
 +(id)deriveValueTypesRecursivelyForObject:(id)object {
+    id returnObject = [object mutableCopy];
     if ([object isKindOfClass:[NSDictionary class]]) {
         [object enumerateKeysAndObjectsUsingBlock:^(id key, id child, BOOL *stop) {
-            NSLog(@"%@: %@", key, child);
-            [object setObject:[self deriveValueTypesRecursivelyForObject:child] forKey:key];
-            NSLog(@"Done");
+            [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] forKey:key];
         }];
+        NSLog(@"NSDictionary: %@", returnObject);
     } else if ([object isKindOfClass:[NSArray class]]) {
         [[object allKeys] enumerateObjectsUsingBlock:^(id child, NSUInteger idx, BOOL *stop) {
-            object[idx] = [self deriveValueTypesRecursivelyForObject:child];
+            [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] atIndex:idx];
         }];
+        NSLog(@"NSArray: %@", returnObject);
     } else {
         //This object is not a container you might be interested in it's value
         if ([object isKindOfClass:[NSString class]]) {
             @try {
                 if ([object stringIsNumber]) {
-                    object = [object decimalNumberFromString];
+                    returnObject = [NSDecimalNumber decimalNumberWithString:object];
                 } else if ([object stringIsBOOL]) {
-                    object = [object boolFromString];
+                    NSLog(@"%d", [object stringIsBOOL]);
+                    returnObject = [NSNumber numberWithBool:[object boolValue]];
                 }
             }
             @catch (NSException *exception) {
                 
             }
         }
+        NSLog(@"NSString: %@", returnObject);
     }
-    NSLog(@">>>>>>>>>>>>>>> %@", object);
-    return object;
+    return returnObject;
 }
 @end

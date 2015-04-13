@@ -151,36 +151,16 @@ static NSString* const kIXFloatFormat = @"%f";
 }
 
 -(BOOL)stringIsNumber {
-    NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
-    return ([self rangeOfCharacterFromSet:notDigits].location == NSNotFound);
+    NSScanner *scanner = [NSScanner scannerWithString:self];
+    return ([scanner scanDouble:NULL] && [scanner isAtEnd]);
 }
 
 -(BOOL)stringIsBOOL {
-    if ([self caseInsensitiveCompare:@"yes"] == NSOrderedSame ||
-       [self caseInsensitiveCompare:@"true"] == NSOrderedSame ||
-       [self caseInsensitiveCompare:@"no"] == NSOrderedSame ||
-       [self caseInsensitiveCompare:@"false"] == NSOrderedSame ) {
-        return @YES;
-    } else {
-        return @NO;
-    }
+    return ([self caseInsensitiveCompare:@"yes"] == NSOrderedSame ||
+            [self caseInsensitiveCompare:@"true"] == NSOrderedSame ||
+            [self caseInsensitiveCompare:@"no"] == NSOrderedSame ||
+            [self caseInsensitiveCompare:@"false"] == NSOrderedSame);
 }
-
--(NSDecimalNumber*)decimalNumberFromString {
-    return [NSDecimalNumber decimalNumberWithString:self];
-}
-
--(NSNumber*)boolFromString {
-    if ([self caseInsensitiveCompare:@"yes"] == NSOrderedSame || [self caseInsensitiveCompare:@"true"] == NSOrderedSame) {
-        return @YES;
-    } else if ([self caseInsensitiveCompare:@"no"] == NSOrderedSame || [self caseInsensitiveCompare:@"false"] == NSOrderedSame) {
-        return @NO;
-    } else {
-        return nil;
-    }
-}
-
-
 
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
