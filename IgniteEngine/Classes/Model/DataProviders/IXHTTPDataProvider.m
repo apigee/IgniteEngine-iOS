@@ -54,7 +54,7 @@ IX_STATIC_CONST_STRING kIXPaginationNextQueryParam = @"pagination.next.queryPara
 IX_STATIC_CONST_STRING kIXPaginationPrevQueryParam = @"pagination.prev.queryParam";// e.g. "cursor"; name of the query parameter to be appended to prev API call
 IX_STATIC_CONST_STRING kIXPaginationNextPath = @"pagination.next.path"; // e.g. "meta.nextPage"; dot-notated key path where the next page pagination value can be found
 IX_STATIC_CONST_STRING kIXPaginationPrevPath = @"pagination.prev.path"; // e.g. "meta.prevPage"; same as above, but for the previous page (optional)
-IX_STATIC_CONST_STRING kIXPaginationDataPath = @"pagination.data.path";
+IX_STATIC_CONST_STRING kIXPaginationAppendDataPath = @"pagination.appendData.path"; // dot-notated key path to data array
 IX_STATIC_CONST_STRING kIXPaginationAppendData = @"pagination.appendData.enabled"; // default=false; determines whether the pagination results are appended to the current data set or replace it. If enabled, disables the "paginatePrev" function.
 IX_STATIC_CONST_STRING kIXCacheEnabled = @"cache.enabled";
 IX_STATIC_CONST_STRING kIXCachePolicy = @"cache.policy";
