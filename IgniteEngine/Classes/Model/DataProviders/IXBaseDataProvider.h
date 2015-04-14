@@ -25,11 +25,11 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,assign,getter = shouldDeriveValueTypes) BOOL deriveValueTypes;
 @property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
-@property (nonatomic,copy) NSString* method;
-@property (nonatomic,copy) NSString* body;
-@property (nonatomic,copy) NSString* queryParams;
+@property (nonatomic,strong) NSString* method;
+@property (nonatomic,strong) NSDictionary* body;
+@property (nonatomic,strong) NSDictionary* queryParams;
 //@property (nonatomic,copy,readonly) NSString* fullDataLocation;
-@property (nonatomic,copy) NSString* url;
+@property (nonatomic,strong) NSString* url;
 //@property (nonatomic,copy,readonly) NSString* dataPath;
 
 //-(void)createRequest;

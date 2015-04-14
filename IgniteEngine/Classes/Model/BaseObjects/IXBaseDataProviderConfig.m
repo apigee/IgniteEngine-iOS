@@ -88,10 +88,10 @@
             }
             
             IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:dataProviderJSONDict[kIX_ACTIONS]];
-            IXPropertyContainer* requestQueryParams = (dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_QUERYPARAMS]) ? [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_QUERYPARAMS]] : nil;
-            IXPropertyContainer* requestBody = (dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_BODY]) ? [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_BODY]] : nil;
-            IXPropertyContainer* requestHeaders = (dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_HEADERS]) ? [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_HEADERS]] : nil;
-            IXPropertyContainer* fileAttachments = (dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_ATTACHMENTS]) ? [IXPropertyContainer propertyContainerWithJSONDict:dataProviderJSONDict[kIX_ATTRIBUTES][kIX_DP_ATTACHMENTS]] : nil;
+            IXPropertyContainer* requestQueryParams = (propertiesDict[kIX_DP_QUERYPARAMS]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_QUERYPARAMS]] : [IXPropertyContainer new];
+            IXPropertyContainer* requestBody = (propertiesDict[kIX_DP_BODY]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_BODY]] : [IXPropertyContainer new];
+            IXPropertyContainer* requestHeaders = (propertiesDict[kIX_DP_HEADERS]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_HEADERS]] : [IXPropertyContainer new];
+            IXPropertyContainer* fileAttachments = (propertiesDict[kIX_DP_ATTACHMENTS]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_ATTACHMENTS]] : nil;
             
             IXEntityContainer* entityContainer = nil;
             if( dataProviderClass == [IXCoreDataDataProvider class] )

@@ -150,12 +150,12 @@ static NSString* const kIXFloatFormat = @"%f";
     return [self rangeOfString:substring options:options].location != NSNotFound;
 }
 
--(BOOL)stringIsNumber {
+-(BOOL)isNumeric {
     NSScanner *scanner = [NSScanner scannerWithString:self];
     return ([scanner scanDouble:NULL] && [scanner isAtEnd]);
 }
 
--(BOOL)stringIsBOOL {
+-(BOOL)isBOOL {
     return ([self caseInsensitiveCompare:@"yes"] == NSOrderedSame ||
             [self caseInsensitiveCompare:@"true"] == NSOrderedSame ||
             [self caseInsensitiveCompare:@"no"] == NSOrderedSame ||

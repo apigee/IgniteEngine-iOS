@@ -19,8 +19,8 @@
 +(NSString*)ix_fromBase64String:(NSString*)string;
 +(NSString*)ix_toMD5String:(NSString *)string;
 
--(BOOL)stringIsBOOL;
--(BOOL)stringIsNumber;
+-(BOOL)isBOOL;
+-(BOOL)isNumeric;
 
 -(NSString*)trimLeadingAndTrailingWhitespace;
 -(BOOL)containsSubstring:(NSString*)substring options:(NSStringCompareOptions)options;

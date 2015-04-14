@@ -75,6 +75,8 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 @end
 
 @implementation IXBaseDataProvider
+@synthesize body = _body;
+@synthesize queryParams = _queryParams;
 
 +(void)initialize
 {
@@ -148,6 +150,45 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     [self setUrlEncodeParams:[[self propertyContainer] getBoolPropertyValue:kIXUrlEncodeParams defaultValue:YES]];
     [self setDeriveValueTypes:[[self propertyContainer] getBoolPropertyValue:kIXDeriveValueTypes defaultValue:YES]];
+    [self setBody:[_requestBodyObject getAllPropertiesObjectValues:NO] ?: @{}];
+    [self setQueryParams:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams] ?: @{}];
+}
+
+-(void)setBody:(NSDictionary *)body
+{
+    @try {
+        NSString* bodyString = [[self propertyContainer] getStringPropertyValue:kIX_DP_BODY defaultValue:nil];
+        if (body) {
+            _body = body;
+        } else if (bodyString) {
+            NSError* __autoreleasing error = nil;
+            _body = [NSJSONSerialization JSONObjectWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
+        }
+        if (_deriveValueTypes) {
+            _body = [NSDictionary ix_dictionaryWithParsedValuesFromDictionary:_body];
+        }
+    }
+    @catch (NSException *exception) {
+        IX_LOG_ERROR(@"body included with request was not a valid JSON object or string: %@", body);
+    }
+}
+
+-(void)setQueryParams:(NSDictionary *)queryParams
+{
+    @try {
+        NSString* queryParamsString = [[self propertyContainer] getStringPropertyValue:kIX_DP_QUERYPARAMS defaultValue:nil];
+        if (queryParams) {
+            _queryParams = queryParams;
+        } else if (queryParamsString) {
+            _queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:queryParamsString];
+        }
+//        else {
+//            _queryParams = @{};
+//        }
+    }
+    @catch (NSException *exception) {
+        IX_LOG_ERROR(@"queryParams included with request was not a valid JSON object or string: %@", queryParams);
+    }
 }
 
 //-(void)createRequest

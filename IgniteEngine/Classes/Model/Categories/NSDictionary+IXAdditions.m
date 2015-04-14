@@ -40,20 +40,17 @@
         [object enumerateKeysAndObjectsUsingBlock:^(id key, id child, BOOL *stop) {
             [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] forKey:key];
         }];
-        NSLog(@"NSDictionary: %@", returnObject);
     } else if ([object isKindOfClass:[NSArray class]]) {
         [[object allKeys] enumerateObjectsUsingBlock:^(id child, NSUInteger idx, BOOL *stop) {
             [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] atIndex:idx];
         }];
-        NSLog(@"NSArray: %@", returnObject);
     } else {
         //This object is not a container you might be interested in it's value
         if ([object isKindOfClass:[NSString class]]) {
             @try {
-                if ([object stringIsNumber]) {
+                if ([object isNumeric]) {
                     returnObject = [NSDecimalNumber decimalNumberWithString:object];
-                } else if ([object stringIsBOOL]) {
-                    NSLog(@"%d", [object stringIsBOOL]);
+                } else if ([object isBOOL]) {
                     returnObject = [NSNumber numberWithBool:[object boolValue]];
                 }
             }
@@ -61,7 +58,6 @@
                 
             }
         }
-        NSLog(@"NSString: %@", returnObject);
     }
     return returnObject;
 }

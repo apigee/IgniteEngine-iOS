@@ -155,6 +155,8 @@
 		CA5120C518DFCB6900C7D282 /* IXLogAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5120C418DFCB6900C7D282 /* IXLogAction.m */; };
 		CA51499A18E0CAC000FA58DF /* IXCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51499918E0CAC000FA58DF /* IXCamera.m */; };
 		CA604CE618C10CF000D027E1 /* IXDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */; };
+		CA68D7A51ADC343900BA55CC /* IXHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CA68D7A41ADC343900BA55CC /* IXHTTPResponse.m */; };
+		CA68D7A81ADC3DBD00BA55CC /* NSObject+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA68D7A71ADC3DBD00BA55CC /* NSObject+IXAdditions.m */; };
 		CA7525C91A898028002C54CD /* UIFont+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */; };
 		CAE709B81AC355C900AFFF4D /* IXSize.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE709B71AC355C900AFFF4D /* IXSize.m */; };
 		CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEB7E0718D26437005E1A2F /* IXAttributedText.m */; };
@@ -434,6 +436,10 @@
 		CA51499918E0CAC000FA58DF /* IXCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXCamera.m; sourceTree = "<group>"; };
 		CA604CE418C10CF000D027E1 /* IXDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXDeviceInfo.h; sourceTree = "<group>"; };
 		CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXDeviceInfo.m; sourceTree = "<group>"; };
+		CA68D7A31ADC343900BA55CC /* IXHTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXHTTPResponse.h; sourceTree = "<group>"; };
+		CA68D7A41ADC343900BA55CC /* IXHTTPResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXHTTPResponse.m; sourceTree = "<group>"; };
+		CA68D7A61ADC3DBD00BA55CC /* NSObject+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+IXAdditions.h"; sourceTree = "<group>"; };
+		CA68D7A71ADC3DBD00BA55CC /* NSObject+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+IXAdditions.m"; sourceTree = "<group>"; };
 		CA7525C71A898028002C54CD /* UIFont+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+IXAdditions.h"; sourceTree = "<group>"; };
 		CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+IXAdditions.m"; sourceTree = "<group>"; };
 		CAE709B61AC355C900AFFF4D /* IXSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSize.h; sourceTree = "<group>"; };
@@ -716,6 +722,8 @@
 				CA604CE518C10CF000D027E1 /* IXDeviceInfo.m */,
 				636949E819A3E0E80009AF81 /* IXFormatter.h */,
 				636949E919A3E0E80009AF81 /* IXFormatter.m */,
+				CA68D7A31ADC343900BA55CC /* IXHTTPResponse.h */,
+				CA68D7A41ADC343900BA55CC /* IXHTTPResponse.m */,
 				63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */,
 				63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */,
 				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
@@ -830,6 +838,8 @@
 				63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */,
 				CA21BC2E1AD70D0200EA401B /* NSDictionary+IXAdditions.h */,
 				CA21BC2F1AD70D0200EA401B /* NSDictionary+IXAdditions.m */,
+				CA68D7A61ADC3DBD00BA55CC /* NSObject+IXAdditions.h */,
+				CA68D7A71ADC3DBD00BA55CC /* NSObject+IXAdditions.m */,
 				63311BCF18444D600048C668 /* NSString+IXAdditions.h */,
 				63311BD018444D600048C668 /* NSString+IXAdditions.m */,
 				639A53171A227ED800640C89 /* NSURL+IXAdditions.h */,
@@ -1195,6 +1205,7 @@
 				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
 				63A10B2218AAD7E200130BEA /* IXDial.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
+				CA68D7A51ADC343900BA55CC /* IXHTTPResponse.m in Sources */,
 				639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */,
 				63D8690D1A9CFF2800603602 /* IXSocketDataProvider.m in Sources */,
 				CA468E9E1ACCBC0D00013863 /* main.m in Sources */,
@@ -1208,6 +1219,7 @@
 				6348950918637B4F008C3760 /* IXUITableViewCell.m in Sources */,
 				13033F8D183ED8F200C29157 /* IXAppDelegate.m in Sources */,
 				63B92C2719C0F4E5004C0A13 /* IXMMDrawerController.m in Sources */,
+				CA68D7A81ADC3DBD00BA55CC /* NSObject+IXAdditions.m in Sources */,
 				13033F96183ED8F200C29157 /* IXBaseConditionalObject.m in Sources */,
 				635F0E061979ED62002C0DBA /* IXActionSheet.m in Sources */,
 				63240E7D194A27F200412927 /* IXDataRowDataProvider.m in Sources */,
