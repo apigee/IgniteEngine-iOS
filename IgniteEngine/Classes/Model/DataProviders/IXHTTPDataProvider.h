@@ -17,7 +17,7 @@ typedef void(^LoadFinished)(BOOL success, NSURLSessionDataTask* task, id respons
 //@property (nonatomic,strong) IXAFHTTPSessionManager *manager;
 @property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
 //@property (nonatomic,copy,readonly) NSString* cacheID;
-@property (nonatomic,strong,readonly) NSString* acceptedContentType;
+//@property (nonatomic,strong,readonly) NSString* acceptedContentType;
 @property (nonatomic,strong) IXHTTPResponse* response;
 @property (nonatomic,strong) IXHTTPResponse* previousResponse;
 @property (nonatomic,strong) IXHTTPResponse* nextResponse;

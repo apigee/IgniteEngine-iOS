@@ -213,6 +213,12 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     }
 }
 
+-(void)removePropertyNamed:(NSString *)propertyName
+{
+    NSMutableArray* propertyArray = [self propertiesForPropertyNamed:propertyName];
+    [propertyArray removeAllObjects];
+}
+
 -(NSDictionary*)dictionaryWithKey:(NSString*)key subKeys:(NSMutableArray*)subKeys lastObjectValue:(NSString*)lastObjectValue
 {
     NSDictionary* dictionary = nil;

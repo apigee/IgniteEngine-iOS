@@ -19,6 +19,8 @@
 #import "IXSandbox.h"
 #import "NSDictionary+IXAdditions.h"
 #import "IXProperty.h"
+#import "IXAssetManager.h"
+#import "IXPathHandler.h"
 
 // TODO: Clean up naming and document
 IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
@@ -74,6 +76,16 @@ IX_STATIC_CONST_STRING kIXRequestTypeJSON = @"json"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeMultipart = @"multipart"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXResponseTypeJSON = @"json"; // kIXBodyEncoding
 
+//TODO: binary data for multipart uploads and manually defining mime type, file etc.
+//IX_STATIC_CONST_STRING kIXMultipartFilePath = @"attachment.path";
+//IX_STATIC_CONST_STRING kIXMultipartFileData = @"attachment.data"; // must choose path OR data not both
+//IX_STATIC_CONST_STRING kIXMultipartName = @"attachment.name";
+//IX_STATIC_CONST_STRING kIXMultipartFilename = @"attachment.fileName";
+//IX_STATIC_CONST_STRING kIXMultipartMimeType = @"attachment.mimeType";
+
+IX_STATIC_CONST_STRING kIXMimeTypeOctetStream = @"application/octet-stream";
+
+
 //TODO: NOT IMPLEMENTED
 IX_STATIC_CONST_STRING kIXResponseTypeJPEG = @"jpeg"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXResponseTypePNG = @"png"; // kIXBodyEncoding
@@ -98,13 +110,9 @@ IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 
 // IXBaseDataProvider Functions
 IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data provider's url.
-IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext";
-IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // Disabled if data appending is enabled *note* this is a beginsWith
+IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also an event
+IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also an event | Disabled if data appending is enabled *note* this is a beginsWith
 
-// Non Property constants.
-IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.ignite.DataProviderCache";
-IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
-IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 static NSCache* sIXDataProviderCache = nil;
 
 
@@ -116,6 +124,7 @@ static NSCache* sIXDataProviderCache = nil;
 @property (nonatomic,strong) NSString* requestType;
 @property (nonatomic,strong) NSString* responseType;
 //@property (nonatomic,copy) NSString* cacheID;
+@property (nonatomic,strong) NSDictionary* attachments;
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 
 @end
@@ -130,18 +139,13 @@ IX_STATIC_CONST_STRING kIXContentTypeValueJSON = @"application/json"; // Content
 IX_STATIC_CONST_STRING kIXContentTypeValueForm = @"application/x-www-form-urlencoded"; // Content-Type header value
 IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset header type
 
+// Non Property constants.
+IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.apigee.ignite.DataProviderCache";
+IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
+IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
+IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
+
 @implementation IXHTTPDataProvider
-//@synthesize url = self.url;
-//@synthesize method = self.method;
-//@synthesize body = self.body;
-//@synthesize queryParams = self.queryParams;
-//@synthesize requestBinUrl = _requestBinUrl;
-//@synthesize urlEncodeParams = self.urlEncodeParams;
-//@synthesize deriveValueTypes = _deriveValueTypes;
-//@synthesize requestQueryParamsObject = _requestQueryParamsObject;
-//@synthesize requestBodyObject = _requestBodyObject;
-//@synthesize requestHeadersObject = self.requestHeadersObject;
-//@synthesize fileAttachmentObject = _fileAttachmentObject;
 
 +(void)initialize
 {
@@ -164,48 +168,30 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
 
 -(void)applySettings
 {
+
     [super applySettings];
     
     [self setMethod:[[self propertyContainer] getStringPropertyValue:kIXMethod defaultValue:kIXMethodGET]];
-//    [self setBody:[[self propertyContainer] getStringPropertyValue:kIXBody defaultValue:nil]];
-//    [self setQueryParams:[[self propertyContainer] getStringPropertyValue:kIXQueryParams defaultValue:nil]];
     [self setRequestType:[[self propertyContainer] getStringPropertyValue:kIXRequestType defaultValue:kIXRequestTypeJSON]];
     [self setResponseType:[[self propertyContainer] getStringPropertyValue:kIXResponseType defaultValue:kIXRequestTypeJSON]];
-    
+
     [self setRequestBinUrl:[[self propertyContainer] getStringPropertyValue:kIXDebugRequestBinUrl defaultValue:nil]];
-    //    [self setDataBaseURL:[[self propertyContainer] getStringPropertyValue:kIXDataBaseUrl defaultValue:nil]];
-    //    [self setDataPath:[[self propertyContainer] getStringPropertyValue:kIXDataPath defaultValue:nil]];
     [self setCachePolicy:[self cachePolicyFromString:[[self propertyContainer] getStringPropertyValue:kIXCachePolicy defaultValue:kIXCachePolicyDefault]]];
     [self setCacheResponse:[[self propertyContainer] getBoolPropertyValue:kIXCacheEnabled defaultValue:YES]];
-    
+
     // Pagination
     [self setAppendDataOnPaginate:[[self propertyContainer] getBoolPropertyValue:kIXPaginationAppendData defaultValue:false]];
     [self setPaginationNextPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationNextPath defaultValue:nil]];
     [self setPaginationNextQueryParam:[[self propertyContainer] getStringPropertyValue:kIXPaginationNextQueryParam defaultValue:nil]];
     [self setPaginationPrevPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationPrevPath defaultValue:nil]];
     [self setPaginationPrevQueryParam:[[self propertyContainer] getStringPropertyValue:kIXPaginationPrevQueryParam defaultValue:nil]];
-    [self setPaginationDataPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationDataPath defaultValue:nil]];
+    [self setPaginationDataPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationAppendDataPath defaultValue:nil]];
     
     if( ![self isPathLocal] )
     {
         [self buildHTTPRequest];
     }
- 
-//    if( [self acceptedContentType] )
-//    {
-//        [IXAF addAcceptedContentType:[self acceptedContentType]];
-//    }
 }
-
-//- (void)setBody:(NSMutableDictionary *)body
-//{
-//    [super setBody:body];
-//}
-//
-//- (void)setQueryParams:(NSMutableDictionary *)queryParams
-//{
-//    [super setQueryParams:queryParams];
-//}
 
 - (void)buildHTTPRequest
 {
@@ -214,21 +200,13 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
     [self setHeaders];
     [self setBasicAuth];
     [self configureCache];
+    [self setAttachments:[NSMutableDictionary dictionaryWithDictionary:[self.fileAttachmentProperties getAllPropertiesURLValues]]];
 }
-
-//-(NSString*)cacheForCacheID:(NSString*)cacheID
-//{
-//    return [sIXDataProviderCache objectForKey:cacheID];
-//}
 
 - (void)setRequestType {
     if ([_requestType isEqualToString:kIXRequestTypeJSON]) {
         [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFJSONRequestSerializer serializer];
     } else if ([_requestType isEqualToString:kIXRequestTypeForm]) {
-        [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFHTTPRequestSerializer serializer];
-    }
-    
-    if ([self requestIsGetOrDelete]) {
         [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFHTTPRequestSerializer serializer];
     }
 }
@@ -240,39 +218,39 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
 
 - (void)setHeaders {
     
-    if ([self requestIsPostOrPut]) {
-        // Set Content-Type
-        if (![self.requestHeadersObject propertyExistsForPropertyNamed:kIXContentTypeHeaderKey] &&
-            ![self.requestHeadersObject propertyExistsForPropertyNamed:[kIXContentTypeHeaderKey lowercaseString]]) {
-            [self.requestHeadersObject addProperty:[IXProperty propertyWithPropertyName:kIXContentTypeHeaderKey rawValue:self.contentTypeForBodyEncoding]];
-        }
+    // Set Content-Type
+    if (![self.headersProperties propertyExistsForPropertyNamed:kIXContentTypeHeaderKey] &&
+        ![self.headersProperties propertyExistsForPropertyNamed:[kIXContentTypeHeaderKey lowercaseString]]) {
+        [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXContentTypeHeaderKey rawValue:[self contentTypeForRequestType]]];
+    } else if ([self.requestType isEqualToString:kIXRequestTypeMultipart]) {
+        [self.headersProperties removePropertyNamed:kIXContentTypeHeaderKey];
     }
     // Set Accept
     NSString* acceptContentType;
-    if (![self.requestHeadersObject propertyExistsForPropertyNamed:kIXAcceptHeaderKey] &&
-        ![self.requestHeadersObject propertyExistsForPropertyNamed:[kIXAcceptHeaderKey lowercaseString]]) {
+    if (![self.headersProperties propertyExistsForPropertyNamed:kIXAcceptHeaderKey] &&
+        ![self.headersProperties propertyExistsForPropertyNamed:[kIXAcceptHeaderKey lowercaseString]]) {
         
         if ([_responseType isEqualToString:kIXResponseTypeJSON]) {
             acceptContentType = kIXAcceptValueJSON;
         }
         // Add additional accept header options here
         
-        [self.requestHeadersObject addProperty:[IXProperty propertyWithPropertyName:kIXAcceptHeaderKey rawValue:acceptContentType]];
+        [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXAcceptHeaderKey rawValue:acceptContentType]];
     } else {
-        acceptContentType = [self.requestHeadersObject getStringPropertyValue:kIXAcceptHeaderKey defaultValue:nil] ?: [self.requestHeadersObject getStringPropertyValue:[kIXAcceptHeaderKey lowercaseString] defaultValue:nil];
+        acceptContentType = [self.headersProperties getStringPropertyValue:kIXAcceptHeaderKey defaultValue:nil] ?: [self.headersProperties getStringPropertyValue:[kIXAcceptHeaderKey lowercaseString] defaultValue:nil];
     }
     if (acceptContentType != nil) {
         [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = [NSSet setWithObject:acceptContentType];
     }
     
     // Set Accept-Encoding
-    if (![self.requestHeadersObject propertyExistsForPropertyNamed:kIXAcceptCharsetHeaderKey] &&
-        ![self.requestHeadersObject propertyExistsForPropertyNamed:[kIXAcceptCharsetHeaderKey lowercaseString]]) {
-        [self.requestHeadersObject addProperty:[IXProperty propertyWithPropertyName:kIXAcceptCharsetHeaderKey rawValue:kIXAcceptCharsetValue]];
+    if (![self.headersProperties propertyExistsForPropertyNamed:kIXAcceptCharsetHeaderKey] &&
+        ![self.headersProperties propertyExistsForPropertyNamed:[kIXAcceptCharsetHeaderKey lowercaseString]]) {
+        [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXAcceptCharsetHeaderKey rawValue:kIXAcceptCharsetValue]];
     }
     
     // Set other headers
-    [[self.requestHeadersObject getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
+    [[self.headersProperties getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
         [[IXAFHTTPSessionManager sharedManager].requestSerializer setValue:value forHTTPHeaderField:key];
     }];
 }
@@ -289,19 +267,134 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
     [[IXAFHTTPSessionManager sharedManager].requestSerializer setCachePolicy:(self.shouldCacheResponse) ? _cachePolicy : NSURLRequestReloadIgnoringCacheData];
 }
 
-- (NSString*)contentTypeForBodyEncoding {
-    if ([_requestType isEqualToString:kIXRequestTypeJSON]) {
+- (NSString*)contentTypeForRequestType {
+    if ([self requestIsGetOrDelete]) {
+        return kIXContentTypeValueForm;
+    } else if ([_requestType isEqualToString:kIXRequestTypeJSON]) {
         return kIXContentTypeValueJSON;
     } else if ([_requestType isEqualToString:kIXRequestTypeForm]) {
         return kIXContentTypeValueForm;
+    } else if ([_requestType isEqualToString:kIXRequestTypeMultipart]) {
+        return nil; // We need to let AFHTTPSessionManager set the Content-Type header with boundary
     } else
-        return kIXContentTypeValueJSON; // default
+        return kIXContentTypeValueJSON; // default for POST/PUT
 }
 
-//- (void)loadDataFromCache:(NSString*)cachedResponse {
-//    [self setResponseString:cachedResponse];
-//    [self fireLoadFinishedEventsFromCache];
-//}
+
+
+-(void)GET:(NSString*)url completion:(LoadFinished)completion {
+    [[IXAFHTTPSessionManager sharedManager] GET:url parameters:self.queryParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (completion) completion(YES, task, responseObject, nil);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        if (completion) completion(NO, task, nil, error);
+    }];
+}
+
+-(void)POST:(NSString*)url completion:(LoadFinished)completion {
+    if ([_requestType isEqualToString:kIXRequestTypeMultipart]) {
+
+        NSDictionary* attachmentsData = [IXAssetManager dataForAttachmentsDict:self.attachments];
+        
+        NSString* tmpFilename = [NSString stringWithFormat:@"%f", [NSDate timeIntervalSinceReferenceDate]];
+        NSURL* tmpFileUrl = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:tmpFilename]];
+        
+        // Create a multipart form request.
+        NSMutableURLRequest *multipartRequest = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:kIXMethodPOST
+                                                                                                           URLString:self.url
+                                                                                                          parameters:self.body constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
+                                                 {
+                                                     [_attachments enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                                                         if ([obj isKindOfClass:[NSURL class]])
+                                                         {
+                                                             NSURL* url = [(NSURL*)obj copy];
+                                                             // MIME type and file name are automatically detected here
+                                                             if ([url isFileURL]) {
+                                                                 [formData appendPartWithFileURL:url name:key error:nil];
+                                                             } else if ([IXPathHandler pathIsAssetsLibrary:[url absoluteString]]) {
+                                                                 NSString* queryString = [[[url absoluteString] componentsSeparatedByString:@"?"] lastObject];
+                                                                 NSDictionary* queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:queryString];
+                                                                 NSString* ext = [queryParams[@"ext"] lowercaseString];
+                                                                 NSString* fileName = [NSString stringWithFormat:@"%@.%@", key, ext];
+                                                                 //                            NSInputStream* stream = [[NSInputStream alloc] initWithData:data];
+                                                                 //                            [formData appendPartWithInputStream:stream name:key fileName:fileName length:[data length] mimeType:kIXMimeTypeOctetStream];
+                                                                 [formData appendPartWithFileData:[attachmentsData objectForKey:key] name:key fileName:fileName mimeType:kIXMimeTypeOctetStream];
+                                                             }
+                                                         }
+                                                     }];
+
+                                                     
+                                                 } error:nil];
+        
+        [[AFHTTPRequestSerializer serializer] requestWithMultipartFormRequest:multipartRequest
+                                                  writingStreamContentsToFile:tmpFileUrl
+                                                            completionHandler:^(NSError *error) {
+                                                                // Once the multipart form is serialized into a temporary file, we can initialize
+                                                                // the actual HTTP request using session manager.
+                                                                
+                                                                // Create default session manager.
+                                                                
+                                                                // Show progress.
+                                                                NSProgress *progress = nil;
+                                                                // Here note that we are submitting the initial multipart request. We are, however,
+                                                                // forcing the body stream to be read from the temporary file.
+                                                                NSURLSessionUploadTask *uploadTask = [[IXAFHTTPSessionManager sharedManager] uploadTaskWithRequest:multipartRequest
+                                                                                                                           fromFile:tmpFileUrl
+                                                                                                                           progress:&progress
+                                                                                                                  completionHandler:^(NSURLResponse *response, id responseObject, NSError *error)
+                                                                                                      {
+                                                                                                          // Cleanup: remove temporary file.
+                                                                                                          [[NSFileManager defaultManager] removeItemAtURL:tmpFileUrl error:nil];
+                                                                                                          
+                                                                                                          // Do something with the result.
+                                                                                                          if (error) {
+                                                                                                              NSLog(@"Error: %@", error);
+                                                                                                          } else {
+                                                                                                              NSLog(@"Success: %@", responseObject);
+                                                                                                          }
+                                                                                                      }];
+                                                                
+                                                                // Add the observer monitoring the upload progress.
+                                                                [progress addObserver:self
+                                                                           forKeyPath:kIXProgressKVOKey
+                                                                              options:NSKeyValueObservingOptionNew
+                                                                              context:NULL];
+                                                                
+                                                                // Start the file upload.
+                                                                [uploadTask resume];
+                                                            }];
+        
+        
+//        [[IXAFHTTPSessionManager sharedManager] POST:url parameters:self.body constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//            
+//        } success:^(NSURLSessionDataTask *task, id responseObject) {
+//            if (completion) completion(YES, task, responseObject, nil);
+//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//            if (completion) completion(NO, task, nil, error);
+//        }];
+    } else {
+        [[IXAFHTTPSessionManager sharedManager] POST:url parameters:self.body success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (completion) completion(YES, task, responseObject, nil);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            if (completion) completion(NO, task, nil, error);
+        }];
+    }
+}
+
+-(void)PUT:(NSString*)url completion:(LoadFinished)completion {
+    [[IXAFHTTPSessionManager sharedManager] PUT:self.url parameters:self.body success:^(NSURLSessionDataTask *task, id responseObject) {
+        completion(YES, task, responseObject, nil);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        completion(NO, task, nil, error);
+    }];
+}
+
+-(void)DELETE:(NSString*)url completion:(LoadFinished)completion {
+    [[IXAFHTTPSessionManager sharedManager] DELETE:self.url parameters:self.queryParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (completion) completion(YES, task, responseObject, nil);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        if (completion) completion(NO, task, nil, error);
+    }];
+}
 
 -(void)loadDataFromLocalPath {
     __weak typeof(IXHTTPResponse) *weakResponse = _response;
@@ -331,9 +424,9 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
                                            }];
 }
 
--(void)loadData:(BOOL)forceGet
+-(void)loadData:(BOOL)forceGet paginationKey:(NSString *)paginationKey
 {
-    [super loadData:forceGet];
+    [super loadData:forceGet paginationKey:paginationKey];
     
     [self loadData:forceGet completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
         
@@ -356,7 +449,7 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
             [_response setResponseObject:responseObject];
             [_response setResponseStringFromObject:responseObject];
             [self updatePaginationProperties];
-            [self fireLoadFinishedEvents:[NSJSONSerialization isValidJSONObject:_response.responseObject]];
+            [self fireLoadFinishedEvents:[NSJSONSerialization isValidJSONObject:_response.responseObject] paginationKey:paginationKey];
         }
     }];
 }
@@ -374,47 +467,28 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
         }
         else
         {
-
             _response = [IXHTTPResponse new];
-//            NSDictionary* body = [self bodyObject];
-//            NSDictionary* queryParams = [self queryParamsObject];
             
             if ([self.method isEqualToString:kIXMethodGET]) {
-                [[IXAFHTTPSessionManager sharedManager] GET:self.url parameters:self.queryParams success:^(NSURLSessionDataTask *task, id responseObject) {
-                    completion(YES, task, responseObject, nil);
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    completion(NO, task, nil, error);
+                [self GET:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
+                    completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl != nil) {
-                    [[IXAFHTTPSessionManager sharedManager] GET:_requestBinUrl parameters:self.queryParams success:nil failure:nil];
-                }
+                if (_requestBinUrl) [self GET:_requestBinUrl completion:nil];
             } else if ([self.method isEqualToString:kIXMethodPOST]) {
-                [[IXAFHTTPSessionManager sharedManager] POST:self.url parameters:self.body success:^(NSURLSessionDataTask *task, id responseObject) {
-                    completion(YES, task, responseObject, nil);
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    completion(NO, task, nil, error);
+                [self POST:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
+                    completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl != nil) {
-                    [[IXAFHTTPSessionManager sharedManager] POST:_requestBinUrl parameters:self.body success:nil failure:nil];
-                }
+                if (_requestBinUrl) [self POST:_requestBinUrl completion:nil];
             } else if ([self.method isEqualToString:kIXMethodPUT]) {
-                [[IXAFHTTPSessionManager sharedManager] PUT:self.url parameters:self.body success:^(NSURLSessionDataTask *task, id responseObject) {
-                    completion(YES, task, responseObject, nil);
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    completion(NO, task, nil, error);
+                [self PUT:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
+                    completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl != nil) {
-                    [[IXAFHTTPSessionManager sharedManager] PUT:_requestBinUrl parameters:self.body success:nil failure:nil];
-                }
+                if (_requestBinUrl) [self PUT:_requestBinUrl completion:nil];
             } else if ([self.method isEqualToString:kIXMethodDELETE]) {
-                [[IXAFHTTPSessionManager sharedManager] DELETE:self.url parameters:self.queryParams success:^(NSURLSessionDataTask *task, id responseObject) {
-                    completion(YES, task, responseObject, nil);
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    completion(NO, task, nil, error);
+                [self DELETE:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
+                    completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl != nil) {
-                    [[IXAFHTTPSessionManager sharedManager] DELETE:_requestBinUrl parameters:self.queryParams success:nil failure:nil];
-                }
+                if (_requestBinUrl) [self DELETE:_requestBinUrl completion:nil];
             }
         }
     }
@@ -423,6 +497,25 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
         IX_LOG_ERROR(@"ERROR: 'url' [%@] is %@; is 'url' defined in your datasource?", self.ID, self.url);
     }
 }
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if ([keyPath isEqualToString:kIXProgressKVOKey]) {
+        // Handle new fractionCompleted value
+        NSProgress* progress = (NSProgress*)object;
+        IX_LOG_DEBUG(@"Upload percent complete: %f", progress.fractionCompleted);
+        return;
+    }
+    
+    [super observeValueForKeyPath:keyPath
+                         ofObject:object
+                           change:change
+                          context:context];
+}
+
 
 -(void)updatePaginationProperties {
     NSDictionary* objectsStringValues = [[IXPropertyContainer propertyContainerWithJSONDict:_response.responseObject] getAllPropertiesStringValues:NO];
@@ -452,42 +545,6 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
     return ([self.method isEqualToString:kIXMethodGET] || [self.method isEqualToString:kIXMethodDELETE]);
 }
 
--(void)calculateAndStoreDataRowResultsForDataRowPath:(NSString*)dataRowPath
-{
-    NSObject* jsonObject = nil;
-    if( [dataRowPath length] <= 0 && [[_response responseObject] isKindOfClass:[NSArray class]] )
-    {
-        jsonObject = [_response responseObject];
-    }
-    else
-    {
-        jsonObject = [self objectForPath:dataRowPath container:[_response responseObject]];
-    }
-
-    NSArray* rowDataResults = nil;
-    if( [jsonObject isKindOfClass:[NSArray class]] )
-    {
-        rowDataResults = (NSArray*)jsonObject;
-    }
-    if( rowDataResults )
-    {
-        NSPredicate* predicate = [self predicate];
-        if( predicate )
-        {
-            rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
-        }
-        NSSortDescriptor* sortDescriptor = [self sortDescriptor];
-        if( sortDescriptor )
-        {
-            rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
-        }
-    }
-
-    if( [dataRowPath length] && rowDataResults != nil )
-    {
-        [[self rowDataResultsDict] setObject:rowDataResults forKey:dataRowPath];
-    }
-}
 
 +(BOOL)cacheExistsForURL:(NSString*)url {
     NSURLCache* cache =[NSURLCache sharedURLCache];
@@ -516,7 +573,6 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
         [NSURLCache setSharedURLCache:cache];
     }
 }
-
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
@@ -582,49 +638,7 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
     return returnValue;
 }
 
-//-(void)fireLoadFinishedEventsFromCache
-//{
-
-//    NSString* responseString = [self responseString];
-//    NSData* rawResponseData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
-//    NSError* __autoreleasing error = nil;
-//    id jsonObject = [NSJSONSerialization JSONObjectWithData:rawResponseData options:0 error:&error];
-//    if( jsonObject )
-//    {
-//        [self setResponseObject:jsonObject];
-//        [super fireLoadFinishedEventsFromCachedResponse];
-//    }
-//    if ([self responseHeaders])
-//    {
-//        [self setResponseHeaders:[self responseHeaders]];
-//    }
-//    [self fireLoadFinishedEvents:YES shouldCacheResponse:NO isFromCache:YES];
-//}
-
-//-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse
-//{
-//    [self fireLoadFinishedEvents:loadDidSucceed shouldCacheResponse:shouldCacheResponse isFromCache:NO];
-//}
-
-//-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache
-//{
-    //
-//    if( loadDidSucceed && shouldCacheResponse )
-//    {
-//        [self cacheResponse];
-//    }
-//}
-
-//-(void)cacheResponse
-//{
-//    if ( [[self cacheID] length] > 0 && [[self responseObject] != nil )
-//    {
-//        [sIXDataProviderCache setObject:[self responseObject]
-//                                 forKey:[self cacheID]];
-//    }
-//}
-
--(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString*)paginationKey
 {
     [super fireLoadFinishedEvents:loadDidSucceed];
     
@@ -646,12 +660,16 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
     
     [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED,locationSpecificEventSuffix]];
     [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_DONE,locationSpecificEventSuffix]];
+    if ([paginationKey isEqualToString:kIXPaginateNext]) {
+        [[self actionContainer] executeActionsForEventNamed:kIXPaginateNext];
+    } else if ([paginationKey isEqualToString:kIXPaginatePrev]) {
+        [[self actionContainer] executeActionsForEventNamed:kIXPaginatePrev];
+    }
 
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
-//    BOOL needsToRecacheResponse = NO;
     if( [functionName isEqualToString:kIXClearCache] )
     {
         [IXHTTPDataProvider clearCacheForURL:self.url];
@@ -661,7 +679,7 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
         [self.queryParams setValue:_paginationNextValue forKey:_paginationNextQueryParam];
         if (_paginationNextValue != nil && _paginationNextValue != kIX_EMPTY_STRING) {
             _previousResponse = _response;
-            [self loadData:YES];
+            [self loadData:YES paginationKey:kIXPaginateNext];
         } else {
             IX_LOG_DEBUG(@"Could not paginate next - either pagination is complete or path is invalid");
         }
@@ -699,47 +717,14 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
                         {
                             NSArray* filteredArray = [topLevelContainer filteredArrayUsingPredicate:predicate];
                             [topLevelArray removeObjectsInArray:filteredArray];
-//                            needsToRecacheResponse = YES;
                         }
                     }
                 }
                 else if( [modifyResponseType isEqualToString:kIXAppend] )
                 {
                     id jsonToAppendObject = nil;
-//                    if( [parameterContainer getBoolPropertyValue:kIXParseJSONAsObject defaultValue:NO] )
-//                    {
-//                        jsonToAppendObject = [[parameterContainer getAllPropertiesObjectValues:NO] objectForKey:kIXJSONToAppend];
-//                    }
-//                    else
-//                    {
-//                        NSString* jsonToAppendString = [parameterContainer getStringPropertyValue:kIXJSONToAppend defaultValue:nil];
-//                        jsonToAppendObject = [NSJSONSerialization JSONObjectWithData:[jsonToAppendString dataUsingEncoding:NSUTF8StringEncoding]
-//                                                                                options:NSJSONReadingMutableContainers|NSJSONReadingAllowFragments
-//                                                                                    error:nil];
-//                    }
-//
-//
-//                    if( jsonToAppendObject != nil )
-//                    {
-//                        [topLevelArray addObject:jsonToAppendObject];
-////                        needsToRecacheResponse = YES;
-//                    }
                 }
-
-//                if( needsToRecacheResponse )
-//                {
-//                    NSError* error;
-//                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self responseObject]
-//                                                                       options:0
-//                                                                         error:&error];
-//                    if( [jsonData length] > 0 && error == nil )
-//                    {
-//                        [self setResponseString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
-//                        [self cacheResponse];
-//                    }
-//                }
             }
-
         }
     }
     else
@@ -747,23 +732,6 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
         [super applyFunction:functionName withParameters:parameterContainer];
     }
 }
-
-//-(void)cacheResponse
-//{
-//    if( [self responseObject] != nil )
-//    {
-//        NSError* error;
-//        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:[self responseObject]
-//                                                           options:0
-//                                                             error:&error];
-//        if( [jsonData length] > 0 && error == nil )
-//        {
-//            [self setResponseString:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
-//        }
-//    }
-//    
-//    [super cacheResponse];
-//}
 
 - (NSURLRequestCachePolicy)cachePolicyFromString:(NSString*)policy {
     NSURLRequestCachePolicy returnPolicy;
@@ -794,6 +762,42 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
     return returnPolicy;
 }
 
+-(void)calculateAndStoreDataRowResultsForDataRowPath:(NSString*)dataRowPath
+{
+    NSObject* jsonObject = nil;
+    if( [dataRowPath length] <= 0 && [[_response responseObject] isKindOfClass:[NSArray class]] )
+    {
+        jsonObject = [_response responseObject];
+    }
+    else
+    {
+        jsonObject = [self objectForPath:dataRowPath container:[_response responseObject]];
+    }
+    
+    NSArray* rowDataResults = nil;
+    if( [jsonObject isKindOfClass:[NSArray class]] )
+    {
+        rowDataResults = (NSArray*)jsonObject;
+    }
+    if( rowDataResults )
+    {
+        NSPredicate* predicate = [self predicate];
+        if( predicate )
+        {
+            rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
+        }
+        NSSortDescriptor* sortDescriptor = [self sortDescriptor];
+        if( sortDescriptor )
+        {
+            rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
+        }
+    }
+    
+    if( [dataRowPath length] && rowDataResults != nil )
+    {
+        [[self rowDataResultsDict] setObject:rowDataResults forKey:dataRowPath];
+    }
+}
 
 -(NSString*)rowDataRawStringResponse
 {

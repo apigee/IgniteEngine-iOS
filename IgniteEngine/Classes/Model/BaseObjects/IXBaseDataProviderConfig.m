@@ -166,10 +166,10 @@
     {
         [dataProvider setStyleClass:[[self styleClass] copy]];
         [dataProvider setActionContainer:[[self actionContainer] copy]];
-        [dataProvider setRequestQueryParamsObject:[[self requestQueryParams] copy]];
-        [dataProvider setRequestBodyObject:[[self requestBody] copy]];
-        [dataProvider setRequestHeadersObject:[[self requestHeaders] copy]];
-        [dataProvider setFileAttachmentObject:[[self fileAttachments] copy]];
+        [dataProvider setQueryParamsProperties:[[self requestQueryParams] copy]];
+        [dataProvider setBodyProperties:[[self requestBody] copy]];
+        [dataProvider setHeadersProperties:[[self requestHeaders] copy]];
+        [dataProvider setFileAttachmentProperties:[[self fileAttachments] copy]];
         [dataProvider setPropertyContainer:[[self propertyContainer] copy]];
         
         if( [dataProvider propertyContainer] == nil )

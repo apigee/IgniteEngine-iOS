@@ -15,10 +15,10 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 @interface IXBaseDataProvider : IXBaseObject
 
-@property (nonatomic,strong) IXPropertyContainer* requestQueryParamsObject;
-@property (nonatomic,strong) IXPropertyContainer* requestBodyObject;
-@property (nonatomic,strong) IXPropertyContainer* requestHeadersObject;
-@property (nonatomic,strong) IXPropertyContainer* fileAttachmentObject;
+@property (nonatomic,strong) IXPropertyContainer* queryParamsProperties;
+@property (nonatomic,strong) IXPropertyContainer* bodyProperties;
+@property (nonatomic,strong) IXPropertyContainer* headersProperties;
+@property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
@@ -36,6 +36,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 //-(NSURLRequest*)createURLRequest;
 
 -(void)loadData:(BOOL)forceGet;
+-(void)loadData:(BOOL)forceGet paginationKey:(NSString*)paginationKey;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
 +(void)clearAllCachedResponses;
 

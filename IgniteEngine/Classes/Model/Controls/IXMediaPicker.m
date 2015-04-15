@@ -18,7 +18,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 // IXMediaSource Attributes
-IX_STATIC_CONST_STRING kIXCameraSource = @"cameraSource";
+IX_STATIC_CONST_STRING kIXCameraSource = @"camera";
 IX_STATIC_CONST_STRING kIXCameraControlsEnabled = @"cameraControls.enabled";
 IX_STATIC_CONST_STRING kIXSource = @"source";
 
@@ -27,9 +27,9 @@ IX_STATIC_CONST_STRING kIXSourceCamera = @"camera";
 IX_STATIC_CONST_STRING kIXSourceLibrary = @"library";
 IX_STATIC_CONST_STRING kIXCameraFront = @"front";
 IX_STATIC_CONST_STRING kIXCameraRear = @"rear";
+IX_STATIC_CONST_STRING kIXVideo = @"video";
 
 // IXMediaSource Events
-IX_STATIC_CONST_STRING kIXDidLoadMedia = @"didLoadMedia";
 IX_STATIC_CONST_STRING kIXError = @"error";
 IX_STATIC_CONST_STRING kIXSuccess = @"success";
 
@@ -118,7 +118,7 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
         if (self.showCameraControls == NO)
             self.imagePickerController.showsCameraControls = NO;
         
-        if( [[self sourceTypeString] isEqualToString:@"video"] )
+        if( [[self sourceTypeString] isEqualToString:kIXVideo] )
         {
             //deprecated in 3.1, why do we need this?
             //[[self imagePickerController] setAllowsEditing:NO];

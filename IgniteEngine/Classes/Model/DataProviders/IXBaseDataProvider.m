@@ -32,6 +32,10 @@ IX_STATIC_CONST_STRING kIXAutoLoad = @"autoLoad.enabled";
 IX_STATIC_CONST_STRING kIXUrl = @"url";
 IX_STATIC_CONST_STRING kIXUrlEncodeParams = @"urlEncodeParams.enabled"; // When enabled, url-encodes query params
 IX_STATIC_CONST_STRING kIXDeriveValueTypes = @"deriveValueTypes.enabled"; // Default=true; parses POST/PUT body JSON number and bool values
+IX_STATIC_CONST_STRING kIXRequestType = @"requestType"; // must match counterpart in HTTPDP
+
+// IXBaseDataProvider Attribute Accepted Values
+IX_STATIC_CONST_STRING kIXRequestTypeJSON = @"json"; // kIXBodyEncoding - must match counterpart in HTTPDP
 
 // IXBaseDataProvider Functions
 IX_STATIC_CONST_STRING kIXDeleteCookies = @"deleteCookies"; // kIXCookieURL is the parameter for this function.
@@ -86,10 +90,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 -(id)copyWithZone:(NSZone *)zone
 {
     IXBaseDataProvider *copiedDataProvider = [super copyWithZone:zone];
-    [copiedDataProvider setRequestQueryParamsObject:[[self requestQueryParamsObject] copy]];
-    [copiedDataProvider setRequestBodyObject:[[self requestBodyObject] copy]];
-    [copiedDataProvider setRequestHeadersObject:[[self requestHeadersObject] copy]];
-    [copiedDataProvider setFileAttachmentObject:[[self fileAttachmentObject] copy]];
+    [copiedDataProvider setQueryParamsProperties:[[self queryParamsProperties] copy]];
+    [copiedDataProvider setBodyProperties:[[self bodyProperties] copy]];
+    [copiedDataProvider setHeadersProperties:[[self headersProperties] copy]];
+    [copiedDataProvider setFileAttachmentProperties:[[self fileAttachmentProperties] copy]];
     return copiedDataProvider;
 }
 
@@ -97,10 +101,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 {
     [super encodeWithCoder:aCoder];
     
-    [aCoder encodeObject:[self requestQueryParamsObject] forKey:kIXRequestQueryParamsObjectNSCodingKey];
-    [aCoder encodeObject:[self requestBodyObject] forKey:kIXRequestBodyObjectNSCodingKey];
-    [aCoder encodeObject:[self requestHeadersObject] forKey:kIXRequestHeadersObjectNSCodingKey];
-    [aCoder encodeObject:[self fileAttachmentObject] forKey:kIXFileAttachmentObjectNSCodingKey];
+    [aCoder encodeObject:[self queryParamsProperties] forKey:kIXRequestQueryParamsObjectNSCodingKey];
+    [aCoder encodeObject:[self bodyProperties] forKey:kIXRequestBodyObjectNSCodingKey];
+    [aCoder encodeObject:[self headersProperties] forKey:kIXRequestHeadersObjectNSCodingKey];
+    [aCoder encodeObject:[self fileAttachmentProperties] forKey:kIXFileAttachmentObjectNSCodingKey];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -108,36 +112,36 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     self = [super initWithCoder:aDecoder];
     if( self != nil )
     {
-        [self setRequestQueryParamsObject:[aDecoder decodeObjectForKey:kIXRequestQueryParamsObjectNSCodingKey]];
-        [self setRequestBodyObject:[aDecoder decodeObjectForKey:kIXRequestBodyObjectNSCodingKey]];
-        [self setRequestHeadersObject:[aDecoder decodeObjectForKey:kIXRequestHeadersObjectNSCodingKey]];
-        [self setFileAttachmentObject:[aDecoder decodeObjectForKey:kIXFileAttachmentObjectNSCodingKey]];
+        [self setQueryParamsProperties:[aDecoder decodeObjectForKey:kIXRequestQueryParamsObjectNSCodingKey]];
+        [self setBodyProperties:[aDecoder decodeObjectForKey:kIXRequestBodyObjectNSCodingKey]];
+        [self setHeadersProperties:[aDecoder decodeObjectForKey:kIXRequestHeadersObjectNSCodingKey]];
+        [self setFileAttachmentProperties:[aDecoder decodeObjectForKey:kIXFileAttachmentObjectNSCodingKey]];
     }
     return self;
 }
 
--(void)setRequestHeadersObject:(IXPropertyContainer *)requestHeadersObject
+-(void)setHeadersProperties:(IXPropertyContainer *)headersProperties
 {
-    _requestHeadersObject = requestHeadersObject;
-    [_requestHeadersObject setOwnerObject:self];
+    _headersProperties = headersProperties;
+    [_headersProperties setOwnerObject:self];
 }
 
--(void)setRequestQueryParamsObject:(IXPropertyContainer *)requestQueryParamsObject
+-(void)setQueryParamsProperties:(IXPropertyContainer *)queryParamsProperties
 {
-    _requestQueryParamsObject = requestQueryParamsObject;
-    [requestQueryParamsObject setOwnerObject:self];
+    _queryParamsProperties = queryParamsProperties;
+    [_queryParamsProperties setOwnerObject:self];
 }
 
--(void)setRequestBodyObject:(IXPropertyContainer *)requestBodyObject
+-(void)setBodyProperties:(IXPropertyContainer *)bodyProperties
 {
-    _requestBodyObject = requestBodyObject;
-    [_requestBodyObject setOwnerObject:self];
+    _bodyProperties = bodyProperties;
+    [_bodyProperties setOwnerObject:self];
 }
 
--(void)setFileAttachmentObject:(IXPropertyContainer *)fileAttachmentObject
+-(void)setFileAttachmentProperties:(IXPropertyContainer *)fileAttachmentProperties
 {
-    _fileAttachmentObject = fileAttachmentObject;
-    [_fileAttachmentObject setOwnerObject:self];
+    _fileAttachmentProperties = fileAttachmentProperties;
+    [fileAttachmentProperties setOwnerObject:self];
 }
 
 -(void)applySettings
@@ -150,8 +154,8 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     [self setUrlEncodeParams:[[self propertyContainer] getBoolPropertyValue:kIXUrlEncodeParams defaultValue:YES]];
     [self setDeriveValueTypes:[[self propertyContainer] getBoolPropertyValue:kIXDeriveValueTypes defaultValue:YES]];
-    [self setBody:[_requestBodyObject getAllPropertiesObjectValues:NO] ?: @{}];
-    [self setQueryParams:[_requestQueryParamsObject getAllPropertiesObjectValues:_urlEncodeParams] ?: @{}];
+    [self setBody:[_bodyProperties getAllPropertiesObjectValues:NO] ?: @{}];
+    [self setQueryParams:[_queryParamsProperties getAllPropertiesObjectValues:_urlEncodeParams] ?: @{}];
 }
 
 -(void)setBody:(NSDictionary *)body
@@ -164,7 +168,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
             NSError* __autoreleasing error = nil;
             _body = [NSJSONSerialization JSONObjectWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
         }
-        if (_deriveValueTypes) {
+        if (_deriveValueTypes && [[[self propertyContainer] getStringPropertyValue:kIXRequestType defaultValue:nil] isEqualToString:kIXRequestTypeJSON]) {
             _body = [NSDictionary ix_dictionaryWithParsedValuesFromDictionary:_body];
         }
     }
@@ -246,12 +250,17 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 
 -(void)loadData:(BOOL)forceGet
 {
+    [self loadData:forceGet paginationKey:nil];
+}
+
+-(void)loadData:(BOOL)forceGet paginationKey:(NSString *)paginationKey
+{
     [[self actionContainer] executeActionsForEventNamed:kIXStarted];
 }
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
 {
-    [[self actionContainer] executeActionsForEventNamed:(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED];    [[self actionContainer] executeActionsForEventNamed:kIX_DONE];
+    [[self actionContainer] executeActionsForEventNamed:(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED];
     [[self actionContainer] executeActionsForEventNamed:kIX_DONE];
     
     dispatch_async(dispatch_get_main_queue(),^{
