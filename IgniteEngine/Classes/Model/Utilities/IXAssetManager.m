@@ -10,20 +10,22 @@
 #import "IXConstants.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "IXPathHandler.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @implementation IXAssetManager
 
-+(void)dataFromAssetLibraryAsset:(NSURL*)assetLibraryURL resultBlock:(void(^)(NSData* data))block {
++(void)dataFromAssetLibraryAsset:(NSURL*)assetLibraryURL resultBlock:(void(^)(NSData* data, NSString* mimeType))block {
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library assetForURL:assetLibraryURL resultBlock:^(ALAsset *asset) {
-//         UIImage  *copyOfOriginalImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:0.5 orientation:UIImageOrientationUp];
+//         UIImage  *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:0.5 orientation:UIImageOrientationUp];
         ALAssetRepresentation *rep = [asset defaultRepresentation];
         Byte *buffer = (Byte*)malloc(rep.size);
         NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
-        block([NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES]);
+        NSString* mimeType = (__bridge_transfer NSString*)UTTypeCopyPreferredTagWithClass ((__bridge CFStringRef)[rep UTI], kUTTagClassMIMEType) ?: @"application/octet-stream";
+        block([NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES], mimeType);
     } failureBlock:^(NSError *error) {
         IX_LOG_DEBUG(@"Error: %@", [error localizedDescription]);
-        block(nil);
+        block(nil, nil);
     }];
 }
 
@@ -38,19 +40,11 @@
         if ([obj isKindOfClass:[NSURL class]])
         {
             NSURL* url = [(NSURL*)obj copy];
-            // MIME type and file name are automatically detected here
             if ([IXPathHandler pathIsAssetsLibrary:[url absoluteString]]) {
                 dispatch_async(queue, ^{
-                    [self dataFromAssetLibraryAsset:url resultBlock:^(NSData *data) {
-                        [attachments setObject:data forKey:key];
+                    [self dataFromAssetLibraryAsset:url resultBlock:^(NSData *data, NSString* mimeType) {
+                        [attachments setObject:@{@"data": data, @"mimeType": mimeType} forKey:key];
                         dispatch_semaphore_signal(sema);
-                        //NSString* queryString = [[[url absoluteString] componentsSeparatedByString:@"?"] lastObject];
-                        //NSDictionary* queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:queryString];
-                        //NSString* ext = [queryParams[@"ext"] lowercaseString];
-                        //NSString* fileName = [NSString stringWithFormat:@"%@.%@", key, ext];
-                        //                            NSInputStream* stream = [[NSInputStream alloc] initWithData:data];
-                        //                            [formData appendPartWithInputStream:stream name:key fileName:fileName length:[data length] mimeType:kIXMimeTypeOctetStream];
-                        //[formData appendPartWithFileData:data name:key fileName:fileName mimeType:kIXMimeTypeOctetStream];
                     }];
                 });
                 dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);

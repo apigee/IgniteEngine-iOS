@@ -102,16 +102,19 @@ IX_STATIC_CONST_STRING kIXCachePolicyReloadRevalidatingCacheData = @"reloadReval
 
 // IXHTTPDataProvider Read-Only Properties
 IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
-IX_STATIC_CONST_STRING kIXResponseBodyParsed = @"response.body";
-IX_STATIC_CONST_STRING kIXResponseRaw = @"response.raw";
+IX_STATIC_CONST_STRING kIXResponseBodyPrefix = @"response.body";
+IX_STATIC_CONST_STRING kIXResponseString = @"response.string";
 IX_STATIC_CONST_STRING kIXResponseHeaders = @"response.headers";
 IX_STATIC_CONST_STRING kIXStatusCode = @"response.code";
 IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 
-// IXBaseDataProvider Functions
+// IXHTTPDataProvider Functions
 IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data provider's url.
-IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also an event
-IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also an event | Disabled if data appending is enabled *note* this is a beginsWith
+IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also an event!
+IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also an event! | Disabled if data appending is enabled *note* this is a beginsWith
+
+// IXHTTPDataProvider Events
+IX_STATIC_CONST_STRING kIXUploadProgress = @"uploadProgress";
 
 static NSCache* sIXDataProviderCache = nil;
 
@@ -126,6 +129,7 @@ static NSCache* sIXDataProviderCache = nil;
 //@property (nonatomic,copy) NSString* cacheID;
 @property (nonatomic,strong) NSDictionary* attachments;
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
+@property (nonatomic) double uploadProgress;
 
 @end
 
@@ -317,27 +321,19 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
                                                                  NSString* fileName = [NSString stringWithFormat:@"%@.%@", key, ext];
                                                                  //                            NSInputStream* stream = [[NSInputStream alloc] initWithData:data];
                                                                  //                            [formData appendPartWithInputStream:stream name:key fileName:fileName length:[data length] mimeType:kIXMimeTypeOctetStream];
-                                                                 [formData appendPartWithFileData:[attachmentsData objectForKey:key] name:key fileName:fileName mimeType:kIXMimeTypeOctetStream];
+                                                                 NSString* mimeType = [attachmentsData objectForKey:key][@"mimeType"];
+                                                                 [formData appendPartWithFileData:[attachmentsData objectForKey:key][@"data"] name:key fileName:fileName mimeType:mimeType];
                                                              }
                                                          }
                                                      }];
 
                                                      
                                                  } error:nil];
-        
         [[AFHTTPRequestSerializer serializer] requestWithMultipartFormRequest:multipartRequest
                                                   writingStreamContentsToFile:tmpFileUrl
                                                             completionHandler:^(NSError *error) {
-                                                                // Once the multipart form is serialized into a temporary file, we can initialize
-                                                                // the actual HTTP request using session manager.
-                                                                
-                                                                // Create default session manager.
-                                                                
-                                                                // Show progress.
                                                                 NSProgress *progress = nil;
-                                                                // Here note that we are submitting the initial multipart request. We are, however,
-                                                                // forcing the body stream to be read from the temporary file.
-                                                                NSURLSessionUploadTask *uploadTask = [[IXAFHTTPSessionManager sharedManager] uploadTaskWithRequest:multipartRequest
+                                                                __block NSURLSessionUploadTask *task = [[IXAFHTTPSessionManager sharedManager] uploadTaskWithRequest:multipartRequest
                                                                                                                            fromFile:tmpFileUrl
                                                                                                                            progress:&progress
                                                                                                                   completionHandler:^(NSURLResponse *response, id responseObject, NSError *error)
@@ -345,12 +341,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
                                                                                                           // Cleanup: remove temporary file.
                                                                                                           [[NSFileManager defaultManager] removeItemAtURL:tmpFileUrl error:nil];
                                                                                                           
-                                                                                                          // Do something with the result.
-                                                                                                          if (error) {
-                                                                                                              NSLog(@"Error: %@", error);
-                                                                                                          } else {
-                                                                                                              NSLog(@"Success: %@", responseObject);
-                                                                                                          }
+                                                                                                          if (completion) completion((error == nil), task, responseObject, error);
                                                                                                       }];
                                                                 
                                                                 // Add the observer monitoring the upload progress.
@@ -360,17 +351,8 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
                                                                               context:NULL];
                                                                 
                                                                 // Start the file upload.
-                                                                [uploadTask resume];
+                                                                [task resume];
                                                             }];
-        
-        
-//        [[IXAFHTTPSessionManager sharedManager] POST:url parameters:self.body constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//            
-//        } success:^(NSURLSessionDataTask *task, id responseObject) {
-//            if (completion) completion(YES, task, responseObject, nil);
-//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            if (completion) completion(NO, task, nil, error);
-//        }];
     } else {
         [[IXAFHTTPSessionManager sharedManager] POST:url parameters:self.body success:^(NSURLSessionDataTask *task, id responseObject) {
             if (completion) completion(YES, task, responseObject, nil);
@@ -449,8 +431,8 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
             [_response setResponseObject:responseObject];
             [_response setResponseStringFromObject:responseObject];
             [self updatePaginationProperties];
-            [self fireLoadFinishedEvents:[NSJSONSerialization isValidJSONObject:_response.responseObject] paginationKey:paginationKey];
         }
+        [self fireLoadFinishedEvents:[NSJSONSerialization isValidJSONObject:_response.responseObject] paginationKey:paginationKey];        
     }];
 }
 
@@ -506,6 +488,8 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     if ([keyPath isEqualToString:kIXProgressKVOKey]) {
         // Handle new fractionCompleted value
         NSProgress* progress = (NSProgress*)object;
+        _uploadProgress = progress.fractionCompleted;
+        [[self actionContainer] executeActionsForEventNamed:kIXUploadProgress];
         IX_LOG_DEBUG(@"Upload percent complete: %f", progress.fractionCompleted);
         return;
     }
@@ -576,35 +560,8 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
-    NSString* returnValue = [super getReadOnlyPropertyValue:propertyName];
-    if( returnValue == nil )
-    {
-        if( ![[self propertyContainer] propertyExistsForPropertyNamed:propertyName] )
-        {
-            NSObject* jsonObject = [self objectForPath:propertyName container:[_response responseObject]];
-            if( jsonObject )
-            {
-                if( [jsonObject isKindOfClass:[NSString class]] )
-                {
-                    returnValue = (NSString*)jsonObject;
-                }
-                else if( [jsonObject isKindOfClass:[NSNumber class]] )
-                {
-                    returnValue = [(NSNumber*)jsonObject stringValue];
-                }
-                else if( [NSJSONSerialization isValidJSONObject:jsonObject] )
-                {
-                    NSError* __autoreleasing jsonConvertError = nil;
-                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-                    if( jsonConvertError == nil && jsonData )
-                    {
-                        returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                    }
-                }
-            }
-        }
-    }
-    else if( [propertyName isEqualToString:kIXResponseRaw] )
+    NSString* returnValue;
+    if( [propertyName isEqualToString:kIXResponseString] )
     {
         returnValue = [_response.responseString copy];
     }
@@ -630,6 +587,43 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     else if( [propertyName isEqualToString:kIXErrorMessage] )
     {
         returnValue = [_response.errorMessage copy];
+    }
+    else if ( [propertyName isEqualToString:kIXUploadProgress])
+    {
+        returnValue = [NSString stringWithFormat:@"%lf", _uploadProgress];
+    }
+    else if ([propertyName hasPrefix:kIXResponseBodyPrefix]) {
+        NSString* prefix = [NSString stringWithFormat:@"%@%@", kIXResponseBodyPrefix, kIX_PERIOD_SEPERATOR];
+        propertyName = [propertyName stringByReplacingOccurrencesOfString:prefix withString:kIX_EMPTY_STRING];
+        @try {
+            NSObject* jsonObject = [self objectForPath:propertyName container:_response.responseObject];
+            if( jsonObject )
+            {
+                if( [jsonObject isKindOfClass:[NSString class]] )
+                {
+                    returnValue = (NSString*)jsonObject;
+                }
+                else if( [jsonObject isKindOfClass:[NSNumber class]] )
+                {
+                    returnValue = [(NSNumber*)jsonObject stringValue];
+                }
+                else if( [NSJSONSerialization isValidJSONObject:jsonObject] )
+                {
+                    NSError* __autoreleasing jsonConvertError = nil;
+                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
+                    if( jsonConvertError == nil && jsonData )
+                    {
+                        returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                    }
+                } else {
+                    DDLogDebug(@"No response body value named '%@' exists in response object", propertyName);
+                    returnValue = nil;
+                }
+            }
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"No response body value named '%@' exists in response object", propertyName);
+        }
     }
     else
     {

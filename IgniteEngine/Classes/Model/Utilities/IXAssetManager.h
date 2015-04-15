@@ -10,7 +10,7 @@
 
 @interface IXAssetManager : NSObject
 
-+(void)dataFromAssetLibraryAsset:(NSURL*)assetLibraryURL resultBlock:(void(^)(NSData* data))block;
++(void)dataFromAssetLibraryAsset:(NSURL*)assetLibraryURL resultBlock:(void(^)(NSData* data, NSString* mimeType))block;
 +(NSDictionary*)dataForAttachmentsDict:(NSDictionary*)dict;
 
 @end

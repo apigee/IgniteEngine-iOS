@@ -215,12 +215,12 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 //    }
 //}
 
-//-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
-//{
-//    NSString* returnValue = nil;
-//    returnValue = [super getReadOnlyPropertyValue:propertyName];
-//    return returnValue;
-//}
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue = nil;
+    returnValue = [super getReadOnlyPropertyValue:propertyName];
+    return returnValue;
+}
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
 {
