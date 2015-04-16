@@ -9,6 +9,9 @@
 #import "IXHTTPResponse.h"
 #import "IXConstants.h"
 #import "NSObject+IXAdditions.h"
+#import "IXPropertyContainer.h"
+#import "IXAppManager.h"
+#import "IXJSONUtils.h"
 
 @implementation IXHTTPResponse
 
@@ -33,7 +36,7 @@
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_DEBUG(@"Error stringifying response body. Is response object valid JSON or text? \n%@", [object description]);
+        IX_LOG_ERROR(@"Error stringifying response body. Is response object valid JSON or text? \n%@\nException: %@", [object description], exception);
     }
     _responseString = string;
 }
@@ -44,4 +47,7 @@
     CFTimeInterval elapsedTime = (_requestEndTime - _requestStartTime) * 1000;
     _responseTime = elapsedTime;
 }
+
+
+
 @end

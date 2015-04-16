@@ -21,6 +21,7 @@
 #import "IXProperty.h"
 #import "IXAssetManager.h"
 #import "IXPathHandler.h"
+#import "IXJSONUtils.h"
 
 // TODO: Clean up naming and document
 IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
@@ -115,6 +116,8 @@ IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also an event! | Di
 
 // IXHTTPDataProvider Events
 IX_STATIC_CONST_STRING kIXUploadProgress = @"uploadProgress";
+// IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also a function
+// IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also a function
 
 static NSCache* sIXDataProviderCache = nil;
 
@@ -143,7 +146,7 @@ IX_STATIC_CONST_STRING kIXContentTypeValueJSON = @"application/json"; // Content
 IX_STATIC_CONST_STRING kIXContentTypeValueForm = @"application/x-www-form-urlencoded"; // Content-Type header value
 IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset header type
 
-// Non Property constants.
+// Internal constants
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.apigee.ignite.DataProviderCache";
 IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
@@ -392,14 +395,14 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
                                                        [weakResponse setResponseString:stringValue];
                                                        [weakResponse setResponseObject:jsonObject];
                                                        IX_dispatch_main_sync_safe(^{
-                                                           [self fireLoadFinishedEvents:YES];
+                                                           [self fireLoadFinishedEvents:YES paginationKey:nil];
                                                        });
                                                    }
                                                    else
                                                    {
                                                        [weakResponse setErrorMessage:[error localizedDescription]];
                                                        IX_dispatch_main_sync_safe(^{
-                                                           [self fireLoadFinishedEvents:NO];
+                                                           [self fireLoadFinishedEvents:NO paginationKey:nil];
                                                        });
                                                    }
                                                });
@@ -418,6 +421,8 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         [_response setStatusCode:response.statusCode];
         [_response setHeaders:response.allHeaderFields];
         
+        BOOL isValidJSON = [NSJSONSerialization isValidJSONObject:responseObject];
+        
         if (error)
         {
             [_response setResponseObject:error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey]];
@@ -428,11 +433,18 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         }
         else
         {
+            if (_appendDataOnPaginate && isValidJSON && [paginationKey isEqualToString:kIXPaginateNext]) {
+                if (_paginationDataPath != nil) {
+                    responseObject = [IXJSONUtils appendNewResponseObject:responseObject toPreviousResponseObject:_previousResponse.responseObject forDataPath:_paginationDataPath sandox:self.sandbox baseObject:self];
+                } else {
+                    IX_LOG_ERROR(@"%@ attribute is not defined; cannot append pagination data", kIXPaginationAppendDataPath);
+                }
+            }
             [_response setResponseObject:responseObject];
             [_response setResponseStringFromObject:responseObject];
             [self updatePaginationProperties];
         }
-        [self fireLoadFinishedEvents:[NSJSONSerialization isValidJSONObject:_response.responseObject] paginationKey:paginationKey];        
+        [self fireLoadFinishedEvents:isValidJSON paginationKey:paginationKey];
     }];
 }
 
@@ -441,7 +453,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     if (self.url != nil) {
         if (forceGet == NO)
         {
-            [self fireLoadFinishedEvents:YES];
+            [self fireLoadFinishedEvents:YES paginationKey:nil];
         }
         else if ([self isPathLocal])
         {
@@ -595,35 +607,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     else if ([propertyName hasPrefix:kIXResponseBodyPrefix]) {
         NSString* prefix = [NSString stringWithFormat:@"%@%@", kIXResponseBodyPrefix, kIX_PERIOD_SEPERATOR];
         propertyName = [propertyName stringByReplacingOccurrencesOfString:prefix withString:kIX_EMPTY_STRING];
-        @try {
-            NSObject* jsonObject = [self objectForPath:propertyName container:_response.responseObject];
-            if( jsonObject )
-            {
-                if( [jsonObject isKindOfClass:[NSString class]] )
-                {
-                    returnValue = (NSString*)jsonObject;
-                }
-                else if( [jsonObject isKindOfClass:[NSNumber class]] )
-                {
-                    returnValue = [(NSNumber*)jsonObject stringValue];
-                }
-                else if( [NSJSONSerialization isValidJSONObject:jsonObject] )
-                {
-                    NSError* __autoreleasing jsonConvertError = nil;
-                    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:&jsonConvertError];
-                    if( jsonConvertError == nil && jsonData )
-                    {
-                        returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                    }
-                } else {
-                    DDLogDebug(@"No response body value named '%@' exists in response object", propertyName);
-                    returnValue = nil;
-                }
-            }
-        }
-        @catch (NSException *exception) {
-            DDLogDebug(@"No response body value named '%@' exists in response object", propertyName);
-        }
+        returnValue = [self stringForPath:propertyName container:_response.responseObject];
     }
     else
     {
@@ -634,7 +618,6 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString*)paginationKey
 {
-    [super fireLoadFinishedEvents:loadDidSucceed];
     
     NSString* locationSpecificEventSuffix = ([IXHTTPDataProvider cacheExistsForURL:self.url]) ? kIXLocationSuffixCache : kIXLocationSuffixRemote;
     
@@ -652,13 +635,16 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         }
     }
     
-    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED,locationSpecificEventSuffix]];
-    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_DONE,locationSpecificEventSuffix]];
     if ([paginationKey isEqualToString:kIXPaginateNext]) {
         [[self actionContainer] executeActionsForEventNamed:kIXPaginateNext];
     } else if ([paginationKey isEqualToString:kIXPaginatePrev]) {
         [[self actionContainer] executeActionsForEventNamed:kIXPaginatePrev];
     }
+    
+    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED,locationSpecificEventSuffix]];
+    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_DONE,locationSpecificEventSuffix]];
+    
+    [super fireLoadFinishedEvents:loadDidSucceed paginationKey:paginationKey];
 
 }
 
@@ -672,7 +658,9 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     {
         [self.queryParams setValue:_paginationNextValue forKey:_paginationNextQueryParam];
         if (_paginationNextValue != nil && _paginationNextValue != kIX_EMPTY_STRING) {
-            _previousResponse = _response;
+            if (_appendDataOnPaginate) {
+                _previousResponse = _response;
+            }
             [self loadData:YES paginationKey:kIXPaginateNext];
         } else {
             IX_LOG_DEBUG(@"Could not paginate next - either pagination is complete or path is invalid");
@@ -693,7 +681,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         if( [modifyResponseType length] > 0 )
         {
             NSString* topLevelContainerPath = [parameterContainer getStringPropertyValue:kIXTopLevelContainer defaultValue:nil];
-            id topLevelContainer = [self objectForPath:topLevelContainerPath container:_response.responseObject];
+            id topLevelContainer = [IXJSONUtils objectForPath:topLevelContainerPath container:_response.responseObject sandox:self.sandbox baseObject:self];
 
             if( [topLevelContainer isKindOfClass:[NSMutableArray class]] )
             {
@@ -765,7 +753,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     }
     else
     {
-        jsonObject = [self objectForPath:dataRowPath container:[_response responseObject]];
+        jsonObject = [IXJSONUtils objectForPath:dataRowPath container:_response.responseObject sandox:self.sandbox baseObject:self];
     }
     
     NSArray* rowDataResults = nil;
@@ -851,7 +839,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 -(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject*)container
 {
     NSString* returnValue = nil;
-    NSObject* jsonObject = [self objectForPath:jsonXPath container:container];
+    NSObject* jsonObject = [IXJSONUtils objectForPath:jsonXPath container:container sandox:self.sandbox baseObject:self];
     if( jsonObject )
     {
         if( [jsonObject isKindOfClass:[NSString class]] ) {
@@ -879,130 +867,130 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     return returnValue;
 }
 
--(NSString*)getQueryValueOutOfValue:(NSString*)value
-{
-    NSString* returnValue = value;
-    NSArray* seperatedValue = [value componentsSeparatedByString:@"?"];
-    if( [seperatedValue count] > 0 )
-    {
-        NSString* objectID = [seperatedValue firstObject];
-        NSString* propertyName = [seperatedValue lastObject];
-        if( [objectID isEqualToString:kIXSessionRef] )
-        {
-            returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
-        }
-        else if( [objectID isEqualToString:kIXAppRef] )
-        {
-            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
-        }
-        else if( [objectID isEqualToString:kIXViewControlRef] )
-        {
-            returnValue = [[[self sandbox] viewController] getViewPropertyNamed:propertyName];
-            if( returnValue == nil )
-            {
-                returnValue = value;
-            }
-        }
-        else
-        {
-            NSArray* objectWithIDArray = [[self sandbox] getAllControlsAndDataProvidersWithID:objectID withSelfObject:self];
-            IXBaseObject* baseObject = [objectWithIDArray firstObject];
+//-(NSString*)getQueryValueOutOfValue:(NSString*)value
+//{
+//    NSString* returnValue = value;
+//    NSArray* seperatedValue = [value componentsSeparatedByString:@"?"];
+//    if( [seperatedValue count] > 0 )
+//    {
+//        NSString* objectID = [seperatedValue firstObject];
+//        NSString* propertyName = [seperatedValue lastObject];
+//        if( [objectID isEqualToString:kIXSessionRef] )
+//        {
+//            returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
+//        }
+//        else if( [objectID isEqualToString:kIXAppRef] )
+//        {
+//            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
+//        }
+//        else if( [objectID isEqualToString:kIXViewControlRef] )
+//        {
+//            returnValue = [[[self sandbox] viewController] getViewPropertyNamed:propertyName];
+//            if( returnValue == nil )
+//            {
+//                returnValue = value;
+//            }
+//        }
+//        else
+//        {
+//            NSArray* objectWithIDArray = [[self sandbox] getAllControlsAndDataProvidersWithID:objectID withSelfObject:self];
+//            IXBaseObject* baseObject = [objectWithIDArray firstObject];
+//
+//            if( baseObject )
+//            {
+//                returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
+//                if( returnValue == nil )
+//                {
+//                    returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:value];
+//                }
+//            }
+//        }
+//    }
+//    return returnValue;
+//}
 
-            if( baseObject )
-            {
-                returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
-                if( returnValue == nil )
-                {
-                    returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:value];
-                }
-            }
-        }
-    }
-    return returnValue;
-}
-
-- (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode
-{
-    if (currentNode == nil) {
-        return nil;
-    }
-    
-    if(![currentNode isKindOfClass:[NSDictionary class]] && ![currentNode isKindOfClass:[NSArray class]]) {
-        return currentNode;
-    }
-    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPERATOR]) {
-        jsonXPath = [jsonXPath substringFromIndex:1];
-    }
-    
-    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPERATOR] firstObject];
-    NSObject *nextNode;
-    // if dict -> get value
-    if ([currentNode isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *currentDict = (NSDictionary *) currentNode;
-        nextNode = currentDict[jsonXPath];
-        if( nextNode != nil )
-        {
-            return nextNode;
-        }
-        else
-        {
-            nextNode = currentDict[currentKey];
-        }
-    }
-    
-    if ([currentNode isKindOfClass:[NSArray class]]) {
-        NSArray * currentArray = (NSArray *) currentNode;
-        @try {
-            if( [currentKey containsString:@"="] ) // current key is actually looking to filter array if theres an '=' character
-            {
-                NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
-                if( [currentKeySeperated count] > 1 ) {
-                    NSString* currentKeyValue = [currentKeySeperated lastObject];
-                    if( [currentKeyValue rangeOfString:@"?"].location != NSNotFound )
-                    {
-                        currentKeyValue = [self getQueryValueOutOfValue:currentKeyValue];
-                    }
-                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],currentKeyValue];
-                    NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
-                    if( [filteredArray count] >= 1 ) {
-                        if( [filteredArray count] == 1 ) {
-                            nextNode = [filteredArray firstObject];
-                        } else {
-                            nextNode = filteredArray;
-                        }
-                    }
-                }
-            }
-            else // current key must be an number
-            {
-                if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
-                {
-                    return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
-                }
-                else if ([currentArray count] > 0)
-                {
-                    nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
-                }
-                else
-                {
-                    @throw [NSException exceptionWithName:@"NSRangeException"
-                                                   reason:@"Specified array index is out of bounds"
-                                                 userInfo:nil];
-                }
-            }
-        }
-        @catch (NSException *exception) {
-            IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
-        }
-    }
-    
-    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
-    if( nextXPath.length <= 0 )
-    {
-        return nextNode;
-    }
-    // call recursively with the new xpath and the new Node
-    return [self objectForPath:nextXPath container: nextNode];
-}
+//- (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode
+//{
+//    if (currentNode == nil) {
+//        return nil;
+//    }
+//    
+//    if(![currentNode isKindOfClass:[NSDictionary class]] && ![currentNode isKindOfClass:[NSArray class]]) {
+//        return currentNode;
+//    }
+//    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPERATOR]) {
+//        jsonXPath = [jsonXPath substringFromIndex:1];
+//    }
+//    
+//    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPERATOR] firstObject];
+//    NSObject *nextNode;
+//    // if dict -> get value
+//    if ([currentNode isKindOfClass:[NSDictionary class]]) {
+//        NSDictionary *currentDict = (NSDictionary *) currentNode;
+//        nextNode = currentDict[jsonXPath];
+//        if( nextNode != nil )
+//        {
+//            return nextNode;
+//        }
+//        else
+//        {
+//            nextNode = currentDict[currentKey];
+//        }
+//    }
+//    
+//    if ([currentNode isKindOfClass:[NSArray class]]) {
+//        NSArray * currentArray = (NSArray *) currentNode;
+//        @try {
+//            if( [currentKey containsString:@"="] ) // current key is actually looking to filter array if theres an '=' character
+//            {
+//                NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
+//                if( [currentKeySeperated count] > 1 ) {
+//                    NSString* currentKeyValue = [currentKeySeperated lastObject];
+//                    if( [currentKeyValue rangeOfString:@"?"].location != NSNotFound )
+//                    {
+//                        currentKeyValue = [self getQueryValueOutOfValue:currentKeyValue];
+//                    }
+//                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],currentKeyValue];
+//                    NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
+//                    if( [filteredArray count] >= 1 ) {
+//                        if( [filteredArray count] == 1 ) {
+//                            nextNode = [filteredArray firstObject];
+//                        } else {
+//                            nextNode = filteredArray;
+//                        }
+//                    }
+//                }
+//            }
+//            else // current key must be an number
+//            {
+//                if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
+//                {
+//                    return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
+//                }
+//                else if ([currentArray count] > 0)
+//                {
+//                    nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
+//                }
+//                else
+//                {
+//                    @throw [NSException exceptionWithName:@"NSRangeException"
+//                                                   reason:@"Specified array index is out of bounds"
+//                                                 userInfo:nil];
+//                }
+//            }
+//        }
+//        @catch (NSException *exception) {
+//            IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
+//        }
+//    }
+//    
+//    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
+//    if( nextXPath.length <= 0 )
+//    {
+//        return nextNode;
+//    }
+//    // call recursively with the new xpath and the new Node
+//    return [self objectForPath:nextXPath container: nextNode];
+//}
 
 @end

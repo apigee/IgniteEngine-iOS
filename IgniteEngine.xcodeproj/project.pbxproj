@@ -158,6 +158,7 @@
 		CA68D7A51ADC343900BA55CC /* IXHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CA68D7A41ADC343900BA55CC /* IXHTTPResponse.m */; };
 		CA68D7A81ADC3DBD00BA55CC /* NSObject+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA68D7A71ADC3DBD00BA55CC /* NSObject+IXAdditions.m */; };
 		CA68D7AE1ADECF1700BA55CC /* IXAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CA68D7AD1ADECF1700BA55CC /* IXAssetManager.m */; };
+		CA68D7B11AE0355600BA55CC /* IXJSONUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CA68D7B01AE0355600BA55CC /* IXJSONUtils.m */; };
 		CA7525C91A898028002C54CD /* UIFont+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */; };
 		CAE709B81AC355C900AFFF4D /* IXSize.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE709B71AC355C900AFFF4D /* IXSize.m */; };
 		CAEB7E0818D26437005E1A2F /* IXAttributedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEB7E0718D26437005E1A2F /* IXAttributedText.m */; };
@@ -443,6 +444,8 @@
 		CA68D7A71ADC3DBD00BA55CC /* NSObject+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+IXAdditions.m"; sourceTree = "<group>"; };
 		CA68D7AC1ADECF1700BA55CC /* IXAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAssetManager.h; sourceTree = "<group>"; };
 		CA68D7AD1ADECF1700BA55CC /* IXAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAssetManager.m; sourceTree = "<group>"; };
+		CA68D7AF1AE0355600BA55CC /* IXJSONUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXJSONUtils.h; sourceTree = "<group>"; };
+		CA68D7B01AE0355600BA55CC /* IXJSONUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXJSONUtils.m; sourceTree = "<group>"; };
 		CA7525C71A898028002C54CD /* UIFont+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+IXAdditions.h"; sourceTree = "<group>"; };
 		CA7525C81A898028002C54CD /* UIFont+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+IXAdditions.m"; sourceTree = "<group>"; };
 		CAE709B61AC355C900AFFF4D /* IXSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXSize.h; sourceTree = "<group>"; };
@@ -729,6 +732,8 @@
 				636949E919A3E0E80009AF81 /* IXFormatter.m */,
 				CA68D7A31ADC343900BA55CC /* IXHTTPResponse.h */,
 				CA68D7A41ADC343900BA55CC /* IXHTTPResponse.m */,
+				CA68D7AF1AE0355600BA55CC /* IXJSONUtils.h */,
+				CA68D7B01AE0355600BA55CC /* IXJSONUtils.m */,
 				63C4ED5D1A8455EB005A13DE /* IXLocationManager.h */,
 				63C4ED5E1A8455EB005A13DE /* IXLocationManager.m */,
 				63CC9ABD18BE8AB600ECCECB /* IXLogger.h */,
@@ -1210,6 +1215,7 @@
 				CA68D7AE1ADECF1700BA55CC /* IXAssetManager.m in Sources */,
 				63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */,
 				63A10B2218AAD7E200130BEA /* IXDial.m in Sources */,
+				CA68D7B11AE0355600BA55CC /* IXJSONUtils.m in Sources */,
 				63C3FD23183FEEEB00D2BA1E /* IXGetShortCode.m in Sources */,
 				CA68D7A51ADC343900BA55CC /* IXHTTPResponse.m in Sources */,
 				639A53191A227ED800640C89 /* NSURL+IXAdditions.m in Sources */,

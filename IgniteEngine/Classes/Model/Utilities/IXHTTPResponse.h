@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IXBaseObject.h"
 
-@interface IXHTTPResponse : NSObject
+@interface IXHTTPResponse : IXBaseObject
 
 @property (nonatomic,strong) id responseObject;
 @property (nonatomic,strong) NSString* responseString;
