@@ -99,7 +99,7 @@ IX_STATIC_CONST_STRING kIXSnapshot = @"takeSnapshot";
 
 // Function Params
 IX_STATIC_CONST_STRING kIXDirection = @"direction"; // key value for "spin" animation param
-IX_STATIC_CONST_STRING kIXSaveToLocation = @"saveToLocation";
+IX_STATIC_CONST_STRING kIXSavePath = @"saveToLocation";
 
 
 // Animation Functions
@@ -717,7 +717,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
 
-            NSString* saveToLocation = [parameterContainer getPathPropertyValue:kIXSaveToLocation basePath:nil defaultValue:nil];
+            NSString* saveToLocation = [parameterContainer getPathPropertyValue:kIXSavePath basePath:nil defaultValue:nil];
             NSData* imageData = UIImagePNGRepresentation(image);
             if( [imageData length] > 0 && [saveToLocation length] > 0 )
             {

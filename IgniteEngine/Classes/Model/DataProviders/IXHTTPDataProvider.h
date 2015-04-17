@@ -11,6 +11,10 @@
 
 typedef void(^LoadFinished)(BOOL success, NSURLSessionDataTask* task, id responseObject, NSError* error);
 
+// Internal properties
+IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
+
+
 @interface IXHTTPDataProvider : IXDataRowDataProvider
 
 //@property (nonatomic,strong) id lastJSONResponse;
@@ -54,5 +58,9 @@ typedef void(^LoadFinished)(BOOL success, NSURLSessionDataTask* task, id respons
 //-(void)fireLoadFinishdEventsFromCache;
 //-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse;
 //-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed shouldCacheResponse:(BOOL)shouldCacheResponse isFromCache:(BOOL)isFromCache;
+-(void)GET:(NSString*)url completion:(LoadFinished)completion;
+-(void)POST:(NSString*)url completion:(LoadFinished)completion;
+-(void)PUT:(NSString*)url completion:(LoadFinished)completion;
+-(void)DELETE:(NSString*)url completion:(LoadFinished)completion;
 
 @end

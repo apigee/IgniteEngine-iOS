@@ -154,7 +154,6 @@ IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.apigee.ignite.DataProvid
 IX_STATIC_CONST_STRING kIXRequestBinUrlPrefix = @"http://requestb.in";
 IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
-IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 
 @implementation IXHTTPDataProvider
 
@@ -350,6 +349,8 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
                                                                                                       {
                                                                                                           // Cleanup: remove temporary file.
                                                                                                           [[NSFileManager defaultManager] removeItemAtURL:tmpFileUrl error:nil];
+                                                                                                          
+                                                                                                          [progress removeObserver:self forKeyPath:kIXProgressKVOKey context:NULL];
                                                                                                           
                                                                                                           if (completion) completion((error == nil), task, responseObject, error);
                                                                                                       }];

@@ -6,41 +6,53 @@
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-/*
+
 #import "IXFileDataProvider.h"
 
 #import "IXPathHandler.h"
 
-#import "IXDataGrabber.h"
-#import "AFHttpRequestOperation.h"
+#import "IXDataLoader.h"
 #import "ZipArchive.h"
 
 // IXFileDataProvider Attributes
-IX_STATIC_CONST_STRING kIXSaveToLocation = @"saveToLocation";
-IX_STATIC_CONST_STRING kIXUnzipToLocation = @"unzipToLocation";
+IX_STATIC_CONST_STRING kIXSavePath = @"savePath";
+IX_STATIC_CONST_STRING kIXUnzipPath = @"unzipPath";
 
 // IXFileDataProvider Events
 IX_STATIC_CONST_STRING kIXUnzipStarted = @"unzip.started";
 IX_STATIC_CONST_STRING kIXUnzipSuccess = @"unzip.success";
 IX_STATIC_CONST_STRING kIXUnzipFailed = @"unzip.failed";
+IX_STATIC_CONST_STRING kIXDownloadProgress = @"downloadProgress"; // also a property
+
+// IXFileDataProvider Read-only properties
+// IX_STATIC_CONST_STRING kIXDownloadProgress = @"downloadProgress"; // also an event
+
 
 @interface IXFileDataProvider ()
 
 @property (nonatomic,copy) NSString* savedFileLocation;
+@property (nonatomic,copy) NSURL* savedFileURL;
 @property (nonatomic,copy) NSString* unzipToFileLocation;
 @property (nonatomic,assign) BOOL isZipFile;
 @property (nonatomic,strong) ZipArchive* zipArchive;
+@property (nonatomic,strong) IXHTTPResponse* response;
+@property (nonatomic) double downloadProgress;
 
 @end
 
+// Internal properties
+IX_STATIC_CONST_STRING kIXAcceptValueZip = @"application/zip";
+
 @implementation IXFileDataProvider
+@dynamic response;
 
 -(void)applySettings
 {
     [super applySettings];
     
-    [self setSavedFileLocation:[[self propertyContainer] getPathPropertyValue:kIXSaveToLocation basePath:nil defaultValue:nil]];
-    [self setUnzipToFileLocation:[[self propertyContainer] getPathPropertyValue:kIXUnzipToLocation basePath:nil defaultValue:nil]];
+    [self setSavedFileURL:[[self propertyContainer] getURLPathPropertyValue:kIXSavePath basePath:nil defaultValue:nil]];
+    [self setSavedFileLocation:[[self propertyContainer] getPathPropertyValue:kIXSavePath basePath:nil defaultValue:nil]];
+    [self setUnzipToFileLocation:[[self propertyContainer] getPathPropertyValue:kIXUnzipPath basePath:nil defaultValue:nil]];
     
     [self setIsZipFile:[[self unzipToFileLocation] length] > 0];
     if( [self isZipFile] && [self zipArchive] == nil )
@@ -48,16 +60,90 @@ IX_STATIC_CONST_STRING kIXUnzipFailed = @"unzip.failed";
         [self setZipArchive:[[ZipArchive alloc] init]];
     }
     
-    if( [self acceptedContentType] )
-    {
-        [AFHTTPRequestOperation addAcceptableContentTypes:[NSSet setWithObject:[self acceptedContentType]]];
-    }
+    [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = [[IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes setByAddingObject:kIXAcceptValueZip];
 }
 
--(void)loadData:(BOOL)forceGet
+-(void)GET:(NSString *)url completion:(LoadFinished)completion {
+
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+    NSProgress *progress;
+    __block NSURLSessionDownloadTask *downloadTask = [[IXAFHTTPSessionManager sharedManager] downloadTaskWithRequest:request progress:&progress destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        return _savedFileURL;
+    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        if (completion) completion((error == nil), nil, response, error);
+    }];
+
+    [downloadTask resume];
+    [progress addObserver:self
+               forKeyPath:kIXProgressKVOKey
+                  options:NSKeyValueObservingOptionNew
+                  context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if ([keyPath isEqualToString:kIXProgressKVOKey]) {
+        // Handle new fractionCompleted value
+        NSProgress* progress = (NSProgress*)object;
+        _downloadProgress = progress.fractionCompleted;
+        [[self actionContainer] executeActionsForEventNamed:kIXDownloadProgress];
+        IX_LOG_DEBUG(@"Download percent complete: %f", progress.fractionCompleted);
+        return;
+    }
+    
+    [super observeValueForKeyPath:keyPath
+                         ofObject:object
+                           change:change
+                          context:context];
+}
+
+-(void)loadData:(BOOL)forceGet paginationKey:(NSString *)paginationKey
+{
+   // [super loadData:forceGet paginationKey:paginationKey];
+    [self loadData:forceGet completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
+        
+//        NSHTTPURLResponse* response = (NSHTTPURLResponse*)task.response;
+        
+        if (error)
+        {
+            [self fireLoadFinishedEvents:NO paginationKey:nil];
+        }
+        else
+        {
+            if( [self isZipFile] )
+            {
+                [[self actionContainer] executeActionsForEventNamed:kIXUnzipStarted];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    BOOL wasSuccessful = [[self zipArchive] UnzipOpenFile:[self savedFileLocation]];
+                    if( wasSuccessful )
+                    {
+                        wasSuccessful = [[self zipArchive] UnzipFileTo:[self unzipToFileLocation] overWrite:YES];
+                        [[self zipArchive] UnzipCloseFile];
+                    }
+                    IX_dispatch_main_sync_safe(^{
+                        if( wasSuccessful )
+                        {
+                            [[self actionContainer] executeActionsForEventNamed:kIXUnzipSuccess];
+                        }
+                        else
+                        {
+                            [[self actionContainer] executeActionsForEventNamed:kIXUnzipFailed];
+                        }
+                    });
+                });
+            }
+            [self fireLoadFinishedEvents:YES paginationKey:nil];
+        }
+    }];
+}
+
+/*-(void)loadData:(BOOL)forceGet
 {
     [super loadData:forceGet];
-    
+ 
     if (forceGet == NO)
     {
         [self fireLoadFinishedEvents:YES shouldCacheResponse:NO];
@@ -120,10 +206,9 @@ IX_STATIC_CONST_STRING kIXUnzipFailed = @"unzip.failed";
         }
         else
         {
-            IX_LOG_ERROR(@"ERROR: 'data.baseurl' of control [%@] is %@; is 'data.baseurl' defined correctly in your data_provider?", self.ID, self.dataBaseURL);
+            IX_LOG_ERROR(@"ERROR: 'url' of control [%@] is %@; is 'url' defined correctly in your datasource?", self.ID, self.url);
         }
     }
-}
+}*/
 
 @end
-*/
