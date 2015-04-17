@@ -76,6 +76,7 @@ IX_STATIC_CONST_STRING kIXRequestTypeForm = @"form"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeJSON = @"json"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeMultipart = @"multipart"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXResponseTypeJSON = @"json"; // kIXBodyEncoding
+IX_STATIC_CONST_STRING kIXResponseTypeHTML = @"html";
 
 //TODO: binary data for multipart uploads and manually defining mime type, file etc.
 //IX_STATIC_CONST_STRING kIXMultipartFilePath = @"attachment.path";
@@ -142,6 +143,7 @@ IX_STATIC_CONST_STRING kIXContentTypeHeaderKey = @"Content-Type";
 IX_STATIC_CONST_STRING kIXAcceptCharsetHeaderKey = @"Accept-Charset";
 
 IX_STATIC_CONST_STRING kIXAcceptValueJSON = @"application/json"; // Accept header value
+IX_STATIC_CONST_STRING kIXAcceptValueHTML = @"text/html"; // Accept header value
 IX_STATIC_CONST_STRING kIXContentTypeValueJSON = @"application/json"; // Content-Type header value
 IX_STATIC_CONST_STRING kIXContentTypeValueForm = @"application/x-www-form-urlencoded"; // Content-Type header value
 IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset header type
@@ -239,10 +241,12 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         
         if ([_responseType isEqualToString:kIXResponseTypeJSON]) {
             acceptContentType = kIXAcceptValueJSON;
+        } else if ([_responseType isEqualToString:kIXResponseTypeHTML]) {
+            acceptContentType = kIXAcceptValueHTML;
         }
         // Add additional accept header options here
-        
         [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXAcceptHeaderKey rawValue:acceptContentType]];
+        
     } else {
         acceptContentType = [self.headersProperties getStringPropertyValue:kIXAcceptHeaderKey defaultValue:nil] ?: [self.headersProperties getStringPropertyValue:[kIXAcceptHeaderKey lowercaseString] defaultValue:nil];
     }
@@ -670,9 +674,15 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
     {
         // if append data on paginate is enabled, we don't want to allow this function to fire otherwise data will be overwritten.
         if (!_appendDataOnPaginate) {
-            _nextResponse = _response;
-            _response = _previousResponse;
-            _previousResponse = nil;
+            // if append data on paginate is enabled, we don't want to allow this function to fire otherwise data will be overwritten.
+            [self.queryParams setValue:_paginationPrevValue forKey:_paginationPrevQueryParam];
+            if (_paginationPrevValue != nil && _paginationPrevValue != kIX_EMPTY_STRING) {
+                [self loadData:YES paginationKey:kIXPaginatePrev];
+            } else {
+                IX_LOG_DEBUG(@"Could not paginate previous - either pagination is complete or path is invalid");
+            }
+        } else {
+            IX_LOG_ERROR(@"Could not paginate previous - data appending is enabled via %@", kIXPaginationAppendData);
         }
     }
     else if( [functionName isEqualToString:kIXModifyResponse] )

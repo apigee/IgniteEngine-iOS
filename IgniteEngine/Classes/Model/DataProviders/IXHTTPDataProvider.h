@@ -20,7 +20,7 @@ typedef void(^LoadFinished)(BOOL success, NSURLSessionDataTask* task, id respons
 //@property (nonatomic,strong,readonly) NSString* acceptedContentType;
 @property (nonatomic,strong) IXHTTPResponse* response;
 @property (nonatomic,strong) IXHTTPResponse* previousResponse;
-@property (nonatomic,strong) IXHTTPResponse* nextResponse;
+//@property (nonatomic,strong) IXHTTPResponse* nextResponse;
 @property (nonatomic,strong) id responseSerializer;
 
 @property (nonatomic,strong) NSString* paginationNextQueryParam;
