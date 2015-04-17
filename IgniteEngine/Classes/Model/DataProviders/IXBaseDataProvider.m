@@ -173,7 +173,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"body included with request was not a valid JSON object or string: %@", body);
+        IX_LOG_ERROR(@"ERROR: 'body' included with request was not a valid JSON object or string: %@", body);
     }
 }
 
@@ -191,7 +191,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 //        }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"queryParams included with request was not a valid JSON object or string: %@", queryParams);
+        IX_LOG_ERROR(@"ERROR: 'queryParams' included with request was not a valid JSON object or string: %@", queryParams);
     }
 }
 

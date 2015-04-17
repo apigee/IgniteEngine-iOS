@@ -131,6 +131,7 @@ static NSCache* sIXDataProviderCache = nil;
 @property (nonatomic,strong) NSString* requestType;
 @property (nonatomic,strong) NSString* responseType;
 //@property (nonatomic,copy) NSString* cacheID;
+@property (nonatomic,strong) NSMutableSet* acceptedContentTypes;
 @property (nonatomic,strong) NSDictionary* attachments;
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
 @property (nonatomic) double uploadProgress;
@@ -150,6 +151,7 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
 
 // Internal constants
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.apigee.ignite.DataProviderCache";
+IX_STATIC_CONST_STRING kIXRequestBinUrlPrefix = @"http://requestb.in";
 IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
@@ -213,9 +215,9 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 }
 
 - (void)setRequestType {
-    if ([_requestType isEqualToString:kIXRequestTypeJSON]) {
+    if ([_requestType isEqualToString:kIXRequestTypeJSON] && [self requestIsPostOrPut]) {
         [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFJSONRequestSerializer serializer];
-    } else if ([_requestType isEqualToString:kIXRequestTypeForm]) {
+    } else {
         [IXAFHTTPSessionManager sharedManager].requestSerializer = [AFHTTPRequestSerializer serializer];
     }
 }
@@ -235,35 +237,36 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         [self.headersProperties removePropertyNamed:kIXContentTypeHeaderKey];
     }
     // Set Accept
-    NSString* acceptContentType;
+    /*
+    _acceptedContentTypes = [NSMutableSet new];
+    
     if (![self.headersProperties propertyExistsForPropertyNamed:kIXAcceptHeaderKey] &&
         ![self.headersProperties propertyExistsForPropertyNamed:[kIXAcceptHeaderKey lowercaseString]]) {
         
         if ([_responseType isEqualToString:kIXResponseTypeJSON]) {
-            acceptContentType = kIXAcceptValueJSON;
+            [_acceptedContentTypes addObject:kIXAcceptValueJSON];
         } else if ([_responseType isEqualToString:kIXResponseTypeHTML]) {
-            acceptContentType = kIXAcceptValueHTML;
+            [_acceptedContentTypes addObject:kIXAcceptValueHTML];
         }
-        // Add additional accept header options here
-        [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXAcceptHeaderKey rawValue:acceptContentType]];
-        
     } else {
-        acceptContentType = [self.headersProperties getStringPropertyValue:kIXAcceptHeaderKey defaultValue:nil] ?: [self.headersProperties getStringPropertyValue:[kIXAcceptHeaderKey lowercaseString] defaultValue:nil];
+        [_acceptedContentTypes addObject:[self.headersProperties getStringPropertyValue:kIXAcceptHeaderKey defaultValue:nil] ?: [self.headersProperties getStringPropertyValue:[kIXAcceptHeaderKey lowercaseString] defaultValue:nil]];
     }
-    if (acceptContentType != nil) {
-        [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = [NSSet setWithObject:acceptContentType];
-    }
-    
+    [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = _acceptedContentTypes;
+
     // Set Accept-Encoding
     if (![self.headersProperties propertyExistsForPropertyNamed:kIXAcceptCharsetHeaderKey] &&
         ![self.headersProperties propertyExistsForPropertyNamed:[kIXAcceptCharsetHeaderKey lowercaseString]]) {
         [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXAcceptCharsetHeaderKey rawValue:kIXAcceptCharsetValue]];
     }
-    
+    */
     // Set other headers
     [[self.headersProperties getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
         [[IXAFHTTPSessionManager sharedManager].requestSerializer setValue:value forHTTPHeaderField:key];
     }];
+    
+    if (_requestBinUrl != nil) {
+        [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = [[IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes setByAddingObject:kIXAcceptValueHTML];
+    }
 }
 
 - (void)setBasicAuth {
@@ -422,6 +425,7 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         [_response setRequestEndTime:CFAbsoluteTimeGetCurrent()];
         
         NSHTTPURLResponse* response = (NSHTTPURLResponse*)task.response;
+        
         [_response setStatusCode:response.statusCode];
         [_response setHeaders:response.allHeaderFields];
         
@@ -448,6 +452,10 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
             [_response setResponseStringFromObject:responseObject];
             [self updatePaginationProperties];
         }
+        
+        // Reset the response serializer for requestBin
+//        [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFJSONResponseSerializer serializer];
+        
         [self fireLoadFinishedEvents:isValidJSON paginationKey:paginationKey];
     }];
 }
@@ -466,27 +474,38 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
         else
         {
             _response = [IXHTTPResponse new];
-            
             if ([self.method isEqualToString:kIXMethodGET]) {
                 [self GET:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
                     completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl) [self GET:_requestBinUrl completion:nil];
+                if (_requestBinUrl) {
+                    [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFHTTPResponseSerializer serializer];
+                    [self GET:_requestBinUrl completion:nil];
+                }
             } else if ([self.method isEqualToString:kIXMethodPOST]) {
                 [self POST:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
                     completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl) [self POST:_requestBinUrl completion:nil];
+                if (_requestBinUrl) {
+                    [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFHTTPResponseSerializer serializer];
+                    [self POST:_requestBinUrl completion:nil];
+                }
             } else if ([self.method isEqualToString:kIXMethodPUT]) {
                 [self PUT:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
                     completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl) [self PUT:_requestBinUrl completion:nil];
+                if (_requestBinUrl) {
+                    [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFHTTPResponseSerializer serializer];
+                    [self PUT:_requestBinUrl completion:nil];
+                }
             } else if ([self.method isEqualToString:kIXMethodDELETE]) {
                 [self DELETE:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
                     completion(success, task, responseObject, error);
                 }];
-                if (_requestBinUrl) [self DELETE:_requestBinUrl completion:nil];
+                if (_requestBinUrl) {
+                    [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFHTTPResponseSerializer serializer];
+                    [self DELETE:_requestBinUrl completion:nil];
+                }
             }
         }
     }
