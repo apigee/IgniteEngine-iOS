@@ -140,6 +140,18 @@ IX_STATIC_CONST_STRING kIXAcceptValueZip = @"application/zip";
     }];
 }
 
+-(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
+{
+    NSString* returnValue;
+    if ( [propertyName isEqualToString:kIXDownloadProgress])
+    {
+        returnValue = [NSString stringWithFormat:@"%lf", _downloadProgress];
+    } else {
+        returnValue = [super getReadOnlyPropertyValue:propertyName];
+    }
+    return returnValue;
+}
+
 /*-(void)loadData:(BOOL)forceGet
 {
     [super loadData:forceGet];
