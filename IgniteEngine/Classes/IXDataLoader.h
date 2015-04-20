@@ -23,9 +23,4 @@ typedef void(^IXXMLGrabCompletedBlock)(RXMLElement* rXMLElement, NSString* strin
             shouldCache:(BOOL)shouldCache
         completion:(IXJSONGrabCompletedBlock)completion;
 
-//-(void)loadXMLFromPath:(NSString*)path
-//                async:(BOOL)async
-//           shouldCache:(BOOL)shouldCache
-//       completion:(IXXMLGrabCompletedBlock)completion;
-
 @end
