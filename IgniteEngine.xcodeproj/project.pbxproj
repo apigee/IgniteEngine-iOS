@@ -112,7 +112,6 @@
 		63A69FCD19491BE600D5D712 /* IXFileDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A69FCC19491BE600D5D712 /* IXFileDataProvider.m */; };
 		63A812631A16CFBE00311B10 /* IXPassKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A812621A16CFBE00311B10 /* IXPassKit.m */; };
 		63AEA72B193EA3DC0088F480 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AEA72A193EA3DC0088F480 /* libxml2.dylib */; };
-		63AEA72E193EA4080088F480 /* IXAFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */; };
 		63AEA734193F7D760088F480 /* MKMapView+IXAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */; };
 		63B05B8F19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B05B8E19144BAC00D0B4FC /* IXCustomNavPushPopTransition.m */; };
 		63B0E9AD19476D37002BF48E /* IXShortCodeFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0E9AC19476D37002BF48E /* IXShortCodeFunction.m */; };
@@ -356,8 +355,6 @@
 		63A812611A16CFBE00311B10 /* IXPassKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXPassKit.h; sourceTree = "<group>"; };
 		63A812621A16CFBE00311B10 /* IXPassKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXPassKit.m; sourceTree = "<group>"; };
 		63AEA72A193EA3DC0088F480 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IXAFXMLRequestOperation.h; path = ../Other/IXAFXMLRequestOperation.h; sourceTree = "<group>"; };
-		63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IXAFXMLRequestOperation.m; path = ../Other/IXAFXMLRequestOperation.m; sourceTree = "<group>"; };
 		63AEA732193F7D760088F480 /* MKMapView+IXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+IXAdditions.h"; sourceTree = "<group>"; };
 		63AEA733193F7D760088F480 /* MKMapView+IXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+IXAdditions.m"; sourceTree = "<group>"; };
 		63B05B8D19144BAC00D0B4FC /* IXCustomNavPushPopTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXCustomNavPushPopTransition.h; sourceTree = "<group>"; };
@@ -711,8 +708,6 @@
 				63D23AB31845B3E400C93BC7 /* IXAFHTTPSessionManager.m */,
 				63F0B1CE19DB29DA0061D870 /* IXAFNetworkActivityLogger.h */,
 				63F0B1CF19DB29DA0061D870 /* IXAFNetworkActivityLogger.m */,
-				63AEA72C193EA4080088F480 /* IXAFXMLRequestOperation.h */,
-				63AEA72D193EA4080088F480 /* IXAFXMLRequestOperation.m */,
 				CA68D7AC1ADECF1700BA55CC /* IXAssetManager.h */,
 				CA68D7AD1ADECF1700BA55CC /* IXAssetManager.m */,
 				6320A055193FF9B000ABC932 /* IXCellBackgroundSwipeController.h */,
@@ -1169,7 +1164,6 @@
 				63EAB3F618BEC588001AC248 /* IXBaseDataProviderConfig.m in Sources */,
 				13033FB5183ED8F200C29157 /* IXControlLayoutInfo.m in Sources */,
 				6314B51D1846B7A700C14F96 /* IXNavigateAction.m in Sources */,
-				63AEA72E193EA4080088F480 /* IXAFXMLRequestOperation.m in Sources */,
 				6394F455193FD59A009EE1C4 /* IXCellBasedControl.m in Sources */,
 				13033FAE183ED8F200C29157 /* IXEntityContainer.m in Sources */,
 				CA1279E818D52B35007EEC5A /* UIButton+IXAdditions.m in Sources */,
