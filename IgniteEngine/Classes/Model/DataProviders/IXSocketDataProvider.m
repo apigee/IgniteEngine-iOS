@@ -5,7 +5,7 @@
 //  Created by Robert Walsh on 2/24/15.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
-/*
+
 #import "IXSocketDataProvider.h"
 #import "JFRWebSocket.h"
 #import "IXBaseDataProvider.h"
@@ -70,12 +70,12 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
     [super applySettings];
 
     [self setMessageLimit:[[self propertyContainer] getIntPropertyValue:kIXLimit defaultValue:kIXDefaultLimit]];
-    if( [self webSocket] == nil || ![[[[self webSocket] url] absoluteString] isEqualToString:[self fullDataLocation] ])
+    if( [self webSocket] == nil || ![[[[self webSocket] url] absoluteString] isEqualToString:self.url ])
     {
         [[self webSocket] setDelegate:nil];
         [[self webSocket] disconnect];
 
-        [self setWebSocket:[[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[self fullDataLocation]] protocols:nil]];
+        [self setWebSocket:[[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:self.url] protocols:nil]];
         [[self webSocket] setDelegate:self];
     }
 
@@ -87,6 +87,9 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
 -(void)websocket:(JFRWebSocket *)socket didReceiveMessage:(NSString *)string
 {
+    self.response.responseObject = _messageDictionary;
+    [self setResponseString];
+    
     NSMutableArray* messageArray = [[self messageDictionary] objectForKey:kIXDataDictionaryKey];
     id JSONObject = [NSJSONSerialization JSONObjectWithData:[string dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     if( JSONObject != nil )
@@ -96,24 +99,19 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
         {
             [messageArray removeLastObject];
         }
-        [self fireLoadFinishedEvents:YES shouldCacheResponse:YES];
+        [self fireLoadFinishedEvents:YES];
     }
 }
 
--(NSString *)responseRawString
+ -(void)setResponseString
 {
-    NSString* returnString = nil;
+    NSString* responseString = nil;
     NSData* jsonStringData = [NSJSONSerialization dataWithJSONObject:[self messageDictionary] options:0 error:nil];
     if( [jsonStringData length] > 0 )
     {
-        returnString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
+        responseString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
     }
-    return returnString;
-}
-
--(id)lastJSONResponse
-{
-    return [self messageDictionary];
+    self.response.responseString = responseString;
 }
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -163,4 +161,3 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 }
 
 @end
-*/
