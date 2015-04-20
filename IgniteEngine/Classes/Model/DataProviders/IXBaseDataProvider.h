@@ -37,6 +37,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 -(void)loadData:(BOOL)forceGet;
 -(void)loadData:(BOOL)forceGet paginationKey:(NSString*)paginationKey;
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed;
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString*)paginationKey;
 +(void)clearAllCachedResponses;
 

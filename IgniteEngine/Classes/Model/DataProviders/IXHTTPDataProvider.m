@@ -403,14 +403,14 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
                                                        [weakResponse setResponseString:stringValue];
                                                        [weakResponse setResponseObject:jsonObject];
                                                        IX_dispatch_main_sync_safe(^{
-                                                           [self fireLoadFinishedEvents:YES paginationKey:nil];
+                                                           [self fireLoadFinishedEvents:YES];
                                                        });
                                                    }
                                                    else
                                                    {
                                                        [weakResponse setErrorMessage:[error localizedDescription]];
                                                        IX_dispatch_main_sync_safe(^{
-                                                           [self fireLoadFinishedEvents:NO paginationKey:nil];
+                                                           [self fireLoadFinishedEvents:NO];
                                                        });
                                                    }
                                                });
@@ -466,7 +466,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
     if (self.url != nil) {
         if (forceGet == NO)
         {
-            [self fireLoadFinishedEvents:YES paginationKey:nil];
+            [self fireLoadFinishedEvents:YES];
         }
         else if ([self isPathLocal])
         {

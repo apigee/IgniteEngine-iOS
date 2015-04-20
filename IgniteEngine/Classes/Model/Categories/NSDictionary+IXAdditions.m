@@ -10,6 +10,11 @@
 #import "NSDictionary+IXAdditions.h"
 #import "NSString+IXAdditions.h"
 
+static NSString *urlEncode(id object) {
+    NSString *string = [NSString stringWithFormat: @"%@", object];
+    return [string stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+}
+
 @implementation NSDictionary (IXAdditions)
 
 +(NSDictionary*)ix_dictionaryFromQueryParamsString:(NSString *)string
@@ -61,4 +66,15 @@
     }
     return returnObject;
 }
+
++(NSString*)ix_urlEncodedQueryParamsStringFromDictionary:(NSDictionary*)dictionary {
+    NSMutableArray *parts = [NSMutableArray array];
+    for (id key in self) {
+        id value = [dictionary objectForKey:key];
+        NSString *part = [NSString stringWithFormat: @"%@=%@", urlEncode(key), urlEncode(value)];
+        [parts addObject: part];
+    }
+    return [parts componentsJoinedByString: @"&"];
+}
+
 @end

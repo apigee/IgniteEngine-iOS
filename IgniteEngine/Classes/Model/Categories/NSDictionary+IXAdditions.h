@@ -12,5 +12,6 @@
 
 +(NSDictionary*)ix_dictionaryFromQueryParamsString:(NSString*)string;
 +(NSDictionary*)ix_dictionaryWithParsedValuesFromDictionary:(NSDictionary*)dictionary;
++(NSString*)ix_urlEncodedQueryParamsStringFromDictionary:(NSDictionary*)dictionary;
 
 @end

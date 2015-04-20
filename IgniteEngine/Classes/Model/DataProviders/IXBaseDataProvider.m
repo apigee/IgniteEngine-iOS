@@ -44,11 +44,6 @@ IX_STATIC_CONST_STRING kIXCookieURL = @"url"; // Function parameter for deleteCo
 // IXBaseDataProvider Events
 IX_STATIC_CONST_STRING kIXStarted = @"began";
 
-// TODO: These are not used?
-//IX_STATIC_CONST_STRING kIXAuthSuccess = @"auth.success";
-//IX_STATIC_CONST_STRING kIXAuthFail = @"auth.error";
-
-
 // NSCoding Key Constants
 IX_STATIC_CONST_STRING kIXRequestBodyObjectNSCodingKey = @"requestBodyObject";
 IX_STATIC_CONST_STRING kIXRequestQueryParamsObjectNSCodingKey = @"requestQueryParamsObject";
@@ -62,19 +57,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 @end
 
 @interface IXBaseDataProvider () <IXOAuthWebAuthViewControllerDelegate>
-
-//@property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
-//@property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;
-//@property (nonatomic,assign,getter = shouldDeriveValueTypes) BOOL deriveValueTypes;
-//@property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
-
-//@property (nonatomic,copy) NSString* method;
-//@property (nonatomic,copy) NSString* body;
-//@property (nonatomic,copy) NSString* queryParams;
-////@property (nonatomic,copy) NSString* fullDataLocation;
-//@property (nonatomic,copy) NSString* url;
-
-//@property (nonatomic,copy) NSString* dataPath;
 
 @end
 
@@ -186,34 +168,11 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
         } else if (queryParamsString) {
             _queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:queryParamsString];
         }
-//        else {
-//            _queryParams = @{};
-//        }
     }
     @catch (NSException *exception) {
         IX_LOG_ERROR(@"ERROR: 'queryParams' included with request was not a valid JSON object or string: %@", queryParams);
     }
 }
-
-//-(void)createRequest
-//{
-//    if( _requestManager == nil || ![_requestManager.baseURL.absoluteString isEqualToString:_url] )
-//    {
-//        NSURL* baseURL = [NSURL URLWithString:_url];
-//        AFHTTPClient* httpClient = [AFHTTPClient clientWithBaseURL:baseURL];
-//        [self setHttpClient:httpClient];
-//    }
-//    
-//    NSString* userName = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
-//    NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];
-//    
-//    [[self httpClient] clearAuthorizationHeader];
-//    
-//    if( [userName length] > 0 && [password length] > 0 )
-//    {
-//        [[self httpClient] setAuthorizationHeaderWithUsername:userName password:password];
-//    }
-//}
 
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
@@ -242,12 +201,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     }
 }
 
-
-
-//- (void)loadDataFromLocalPath {
-//    
-//}
-
 -(void)loadData:(BOOL)forceGet
 {
     [self loadData:forceGet paginationKey:nil];
@@ -257,6 +210,12 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 {
     [[self actionContainer] executeActionsForEventNamed:kIXStarted];
 }
+
+-(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
+{
+    [self fireLoadFinishedEvents:loadDidSucceed];
+}
+
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString *)paginationKey
 {
@@ -269,82 +228,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     });
 }
 
-
-
 +(void)clearAllCachedResponses
 {
     NSURLCache* cache =[NSURLCache sharedURLCache];
     [cache removeAllCachedResponses];
 }
-//-(NSURLRequest*)createURLRequest
-//{
-//    NSMutableURLRequest* request = nil;
-//    
-//    NSMutableDictionary* dictionaryOfFiles = [NSMutableDictionary dictionaryWithDictionary:[[self fileAttachmentObject] getAllPropertiesURLValues]];
-//    [dictionaryOfFiles removeObjectsForKeys:@[@"image.id",@"image.name",@"image.mimeType",@"image.jpegCompression"]];
-//    
-//    NSDictionary* queryParams = [[self requestQueryParamsObject] getAllPropertiesObjectValues:[self shouldUrlEncodeParams]];
-//    
-//    NSString* imageControlRef = [[self fileAttachmentObject] getStringPropertyValue:@"image.id" defaultValue:nil];
-//    IXImage* imageControl = [[[self sandbox] getAllControlsWithID:imageControlRef] firstObject];
-//    
-//    if( [[dictionaryOfFiles allKeys] count] > 0 || imageControl.defaultImage != nil )
-//    {
-//        request = [[self httpClient] multipartFormRequestWithMethod:_method path:_url parameters:queryParams constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//            
-//            if( [imageControl isKindOfClass:[IXImage class]] )
-//            {
-//                NSString* attachementImageName = [[self fileAttachmentObject] getStringPropertyValue:@"image.name"
-//                                                                                        defaultValue:nil];
-//                NSString* imageMimeType = [[self fileAttachmentObject] getStringPropertyValue:@"image.mimeType"
-//                                                                                 defaultValue:nil];
-//                
-//                NSString* imageType = [[imageMimeType componentsSeparatedByString:@"/"] lastObject];
-//                
-//                NSData* imageData = nil;
-//                if( [imageType isEqualToString:@"png"] )
-//                {
-//                    imageData = UIImagePNGRepresentation(imageControl.defaultImage);
-//                }
-//                else if( [imageType isEqualToString:@"jpeg"] )
-//                {
-//                    float imageJPEGCompression = [[self fileAttachmentObject] getFloatPropertyValue:@"image.jpegCompression" defaultValue:0.5f];
-//                    imageData = UIImageJPEGRepresentation(imageControl.defaultImage, imageJPEGCompression);
-//                }
-//                
-//                if( imageData && [attachementImageName length] > 0 && [imageMimeType length] > 0 && [imageType length] > 0 )
-//                {
-//                    [formData appendPartWithFileData:imageData
-//                                                name:attachementImageName
-//                                            fileName:[NSString stringWithFormat:@"%@.%@",attachementImageName,imageType]
-//                                            mimeType:imageMimeType];
-//                }
-//            }
-//            
-//            [dictionaryOfFiles enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-//                if( [obj isKindOfClass:[NSURL class]] && [obj isFileURL] )
-//                {
-//                    [formData appendPartWithFileURL:obj name:key error:nil];
-//                }
-//            }];
-//        }];
-//    }
-//    else
-//    {
-//        request = [[self httpClient] requestWithMethod:_method
-//                                                  path:_url
-//                                            parameters:queryParams];
-//    }
-//    
-//    if( [[self httpBody] length] > 0 ) {
-//        [request setHTTPBody:[[self httpBody] dataUsingEncoding:NSUTF8StringEncoding]];
-//    }
-//    
-//    [request setAllHTTPHeaderFields:[[self requestHeaderProperties] getAllPropertiesStringValues:NO]];
-//    return request;
-//}
-//
-
-
 
 @end

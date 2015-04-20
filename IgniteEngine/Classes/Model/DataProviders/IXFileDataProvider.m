@@ -109,7 +109,7 @@ IX_STATIC_CONST_STRING kIXAcceptValueZip = @"application/zip";
         
         if (error)
         {
-            [self fireLoadFinishedEvents:NO paginationKey:nil];
+            [self fireLoadFinishedEvents:NO];
         }
         else
         {
@@ -135,7 +135,7 @@ IX_STATIC_CONST_STRING kIXAcceptValueZip = @"application/zip";
                     });
                 });
             }
-            [self fireLoadFinishedEvents:YES paginationKey:nil];
+            [self fireLoadFinishedEvents:YES];
         }
     }];
 }
