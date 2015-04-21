@@ -38,8 +38,8 @@ PODS:
     - CocoaLumberjack/Default
   - Color-Picker-for-iOS (2.0)
   - ColorUtils (1.1.3)
-  - FontAwesome+iOS (0.0.1)
   - IQKeyboardManager (3.2.1.1)
+  - JAFontAwesome (4.3.0)
   - jetfire (0.1.2)
   - MMDrawerController (0.5.7):
     - MMDrawerController/Core (= 0.5.7)
@@ -60,7 +60,7 @@ PODS:
   - SDWebImage/Core (HEAD based on 3.7.2)
   - SVPulsingAnnotationView (0.3.0)
   - SVWebViewController (1.0)
-  - TTTAttributedLabel (1.8.0)
+  - TTTAttributedLabel (1.13.3)
   - YLMoment (0.2.0)
   - ZBarSDK (1.3.1)
   - ZipArchive (1.4.0)
@@ -75,8 +75,8 @@ DEPENDENCIES:
   - CocoaLumberjack (= 2.0.0-rc)
   - Color-Picker-for-iOS (~> 2.0)
   - ColorUtils (~> 1.1.1)
-  - FontAwesome+iOS (from `https://github.com/jeremyanticouni/ios-fontawesome.git`)
   - IQKeyboardManager
+  - JAFontAwesome
   - jetfire (~> 0.1)
   - MMDrawerController (~> 0.5.6)
   - RaptureXML (~> 1.0)
@@ -84,7 +84,7 @@ DEPENDENCIES:
   - SDWebImage (HEAD)
   - SVPulsingAnnotationView (~> 0.3.0)
   - SVWebViewController (~> 1.0)
-  - TTTAttributedLabel (from `https://github.com/r3mus/TTTAttributedLabel.git`)
+  - TTTAttributedLabel
   - YLMoment (~> 0.2.0)
   - ZBarSDK (~> 1.3.1)
   - ZipArchive (~> 1.2)
@@ -94,10 +94,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/apigee/apigee-ios-sdk.git
   APParallaxHeader:
     :git: https://github.com/r3mus/APParallaxHeader.git
-  FontAwesome+iOS:
-    :git: https://github.com/jeremyanticouni/ios-fontawesome.git
-  TTTAttributedLabel:
-    :git: https://github.com/r3mus/TTTAttributedLabel.git
 
 CHECKOUT OPTIONS:
   ApigeeiOSSDK:
@@ -106,12 +102,6 @@ CHECKOUT OPTIONS:
   APParallaxHeader:
     :commit: 2e54fbdebecfd136786b07398beb0d1eee53501c
     :git: https://github.com/r3mus/APParallaxHeader.git
-  FontAwesome+iOS:
-    :commit: 3290959b86e5ff96eb0b0ec62ec3c864d388e81c
-    :git: https://github.com/jeremyanticouni/ios-fontawesome.git
-  TTTAttributedLabel:
-    :commit: 3562a15fdbac1cc556a7fca065f13b25b913192c
-    :git: https://github.com/r3mus/TTTAttributedLabel.git
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
@@ -123,8 +113,8 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 04c5b9b7479dd4276a09700fcd6644423ea1751c
   Color-Picker-for-iOS: 4f02cd927f9b1d9292831bcdbd0ab55cd8ace4f6
   ColorUtils: f99c501f9caf5374b35480a281168565a24bdb6d
-  FontAwesome+iOS: 2aa702396e80d0f9a553a8110fc6de660ad2c8e3
   IQKeyboardManager: 6aeae6a2014d66461c48f6753dd693e92eaf6524
+  JAFontAwesome: a71786eb7be2e94df0c2bac3a923c6cd4589c291
   jetfire: 5e823aa9248d3de1fac2b7b6d9c6e31ab7d90f0c
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
   RaptureXML: b5c33c04c1a4adfd8ad0d5463329a31820596e82
@@ -132,7 +122,7 @@ SPEC CHECKSUMS:
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SVPulsingAnnotationView: f1a8dc7a57ebb5fa231d0ef8b0da59a250005511
   SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
-  TTTAttributedLabel: cc759a194a485c1fdf2446bf2ee7a55bada1f08d
+  TTTAttributedLabel: 6f3174aef8e738f44dff97c2eb7d8184f6ab6277
   YLMoment: af44d9d402790049e5490fa6eae9585b89b4090b
   ZBarSDK: 4c1b5daeb7d6cc67dc9355e690af0230a661f6ec
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966

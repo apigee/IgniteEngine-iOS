@@ -114,18 +114,18 @@
 #define COCOAPODS_VERSION_MINOR_ColorUtils 1
 #define COCOAPODS_VERSION_PATCH_ColorUtils 3
 
-// FontAwesome+iOS
-#define COCOAPODS_POD_AVAILABLE_FontAwesome_iOS
-#define COCOAPODS_VERSION_MAJOR_FontAwesome_iOS 0
-#define COCOAPODS_VERSION_MINOR_FontAwesome_iOS 0
-#define COCOAPODS_VERSION_PATCH_FontAwesome_iOS 1
-
 // IQKeyboardManager
 #define COCOAPODS_POD_AVAILABLE_IQKeyboardManager
 // This library does not follow semantic-versioning,
 // so we were not able to define version macros.
 // Please contact the author.
 // Version: 3.2.1.1.
+
+// JAFontAwesome
+#define COCOAPODS_POD_AVAILABLE_JAFontAwesome
+#define COCOAPODS_VERSION_MAJOR_JAFontAwesome 4
+#define COCOAPODS_VERSION_MINOR_JAFontAwesome 3
+#define COCOAPODS_VERSION_PATCH_JAFontAwesome 0
 
 // MMDrawerController
 #define COCOAPODS_POD_AVAILABLE_MMDrawerController
@@ -196,8 +196,8 @@
 // TTTAttributedLabel
 #define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
 #define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1
-#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 8
-#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 0
+#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 13
+#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 3
 
 // YLMoment
 #define COCOAPODS_POD_AVAILABLE_YLMoment

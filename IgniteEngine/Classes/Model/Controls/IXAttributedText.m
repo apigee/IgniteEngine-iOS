@@ -1,5 +1,5 @@
 //
-//  IXAText.m
+//  IXAttrubtedText.m
 //  Ignite Engine
 //
 //  Created by Brandon on 3/13/14.
@@ -70,16 +70,17 @@ IX_STATIC_CONST_STRING kIXTouchUpLink = @"touchUpLink";
 @property (nonatomic,strong) TTTAttributedLabel* label;
 @property (nonatomic,strong) NSMutableAttributedString* attributedString;
 
+@property (nonatomic,strong) NSString* currentTouchedMention;
+@property (nonatomic,strong) NSString* currentTouchedHashtag;
+@property (nonatomic,strong) NSURL* currentTouchedUrl;
+
+@property (nonatomic,strong) NSString* definedMentionScheme;
+@property (nonatomic,strong) NSString* definedHashtagScheme;
+
+@property (nonatomic,strong) UIColor* baseTextColor;
+
 @end
 
-NSString* kIXCurrentTouchedMention;
-NSString* kIXCurrentTouchedHashtag;
-NSURL* kIXCurrentTouchedUrl;
-
-NSString* kIXDefinedMentionScheme;
-NSString* kIXDefinedHashtagScheme;
-
-UIColor* kIXBaseTextColor;
 
 IX_STATIC_CONST_STRING kIXPrefixLongPress = @"longPress"; // prefixes the event
 IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
@@ -105,43 +106,39 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
 }
 
 //Event handler
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
+{
+    [self performActionsForSelector:kIXPrefixLongPress withUrl:url];
+    IX_LOG_DEBUG(@"Detected long press for url: %@", url);
+}
+
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    
-    // Note: https://github.com/mattt/TTTAttributedLabel/pull/302 re:
-    // potential crash if view is deallocated WHILE the long press is activated
-    if (self.label.selectionState == TTTAttributedLabelSelectionStateLongPress)
-    {
-        [self performActionsForSelector:kIXPrefixLongPress withUrl:url];
-        IX_LOG_DEBUG(@"Detected long press for url: %@", url);
-    }
-    else if (self.label.selectionState == TTTAttributedLabelSelectionStateTouchUp)
-    {
-        [self performActionsForSelector:kIXPrefixTouchUp withUrl:url];
-        IX_LOG_DEBUG(@"Detected touch up inside for url: %@", url);
-    }
+    [self performActionsForSelector:kIXPrefixTouchUp withUrl:url];
+    IX_LOG_DEBUG(@"Detected touch up inside for url: %@", url);
 }
 
 -(void)performActionsForSelector:(NSString *)selector withUrl:(NSURL *)url
 {
     //We need to nil out existing properties to prevent bad data
-    kIXCurrentTouchedMention = nil;
-    kIXCurrentTouchedHashtag = nil;
-    kIXCurrentTouchedUrl = nil;
+    _currentTouchedMention = nil;
+    _currentTouchedHashtag = nil;
+    _currentTouchedUrl = nil;
     
     //String is a mention @
-    if ([[NSString stringWithFormat:@"%@", url] hasPrefix:kIXDefinedMentionScheme])
+    if ([[NSString stringWithFormat:@"%@", url] hasPrefix:_definedMentionScheme])
     {
-        kIXCurrentTouchedMention = url.host;
+        _currentTouchedMention = url.host;
         if ([selector isEqualToString:kIXPrefixLongPress])
             [[self actionContainer] executeActionsForEventNamed:kIXLongPressMention];
         else if ([selector isEqualToString:kIXPrefixTouchUp])
             [[self actionContainer] executeActionsForEventNamed:kIXTouchUpMention];
     }
     //String is a hashtag #
-    else if ([[NSString stringWithFormat:@"%@", url] hasPrefix:kIXDefinedHashtagScheme])
+    else if ([[NSString stringWithFormat:@"%@", url] hasPrefix:_definedHashtagScheme])
     {
-        kIXCurrentTouchedHashtag = url.host;
+        _currentTouchedHashtag = url.host;
         if ([selector isEqualToString:kIXPrefixLongPress])
             [[self actionContainer] executeActionsForEventNamed:kIXLongPressHashtag];
         else if ([selector isEqualToString:kIXPrefixTouchUp])
@@ -150,7 +147,7 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
     //String is a url
     else if ([[NSString stringWithFormat:@"%@", url] hasPrefix:@"http"] || [[NSString stringWithFormat:@"%@", url] hasPrefix:@"ftp"])
     {
-        kIXCurrentTouchedUrl = url;
+        _currentTouchedUrl = url;
         if ([selector isEqualToString:kIXPrefixLongPress])
             [[self actionContainer] executeActionsForEventNamed:kIXLongPressLink];
         else if ([selector isEqualToString:kIXPrefixTouchUp])
@@ -162,17 +159,17 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = nil;
-    if( [propertyName isEqualToString:kIXSelectedMention] && kIXCurrentTouchedMention )
+    if( [propertyName isEqualToString:kIXSelectedMention] && _currentTouchedMention )
     {
-        returnValue = [NSString stringWithFormat:@"%@", kIXCurrentTouchedMention];
+        returnValue = [NSString stringWithFormat:@"%@", _currentTouchedMention];
     }
-    else if( [propertyName isEqualToString:kIXSelectedHashtag] && kIXCurrentTouchedHashtag )
+    else if( [propertyName isEqualToString:kIXSelectedHashtag] && _currentTouchedHashtag )
     {
-        returnValue = [NSString stringWithFormat:@"%@", kIXCurrentTouchedHashtag];
+        returnValue = [NSString stringWithFormat:@"%@", _currentTouchedHashtag];
     }
-    else if( [propertyName isEqualToString:kIXSelectedUrl] && kIXCurrentTouchedUrl )
+    else if( [propertyName isEqualToString:kIXSelectedUrl] && _currentTouchedUrl )
     {
-        returnValue = [NSString stringWithFormat:@"%@", kIXCurrentTouchedUrl];
+        returnValue = [NSString stringWithFormat:@"%@", _currentTouchedUrl];
     }
     else
     {
@@ -188,12 +185,12 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
     
     //Initial definitions
     NSString* text = [self.propertyContainer getStringPropertyValue:kIXText defaultValue:@""];
-    kIXDefinedMentionScheme = [self.propertyContainer getStringPropertyValue:kIXMentionScheme defaultValue:@"mention://"];
-    kIXDefinedHashtagScheme = [self.propertyContainer getStringPropertyValue:kIXHashtagScheme defaultValue:@"hashtag://"];
-    kIXBaseTextColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
+    _definedMentionScheme = [self.propertyContainer getStringPropertyValue:kIXMentionScheme defaultValue:@"mention://"];
+    _definedHashtagScheme = [self.propertyContainer getStringPropertyValue:kIXHashtagScheme defaultValue:@"hashtag://"];
+    _baseTextColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
     
     self.label.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-    self.label.textColor = kIXBaseTextColor;
+    self.label.textColor = _baseTextColor;
     self.label.lineBreakMode = NSLineBreakByWordWrapping;
     self.label.numberOfLines = 0;
     self.label.userInteractionEnabled = YES;
@@ -233,7 +230,7 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
         NSRange lengthOfAttributedString = NSMakeRange(0, self.attributedString.length);
         
         //Set default text styling (font, size, color, kerning)
-        [self.attributedString addAttribute:NSForegroundColorAttributeName value:kIXBaseTextColor range:lengthOfAttributedString];
+        [self.attributedString addAttribute:NSForegroundColorAttributeName value:_baseTextColor range:lengthOfAttributedString];
         [self.attributedString addAttribute:NSFontAttributeName value:defaultFont range:lengthOfAttributedString];
         [self.attributedString addAttribute:NSKernAttributeName value:[NSNumber numberWithFloat:textKerning] range:lengthOfAttributedString];
         
@@ -348,7 +345,7 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
             for (NSValue *rangeVal in mentionsArray)
             {
                 NSRange range = [rangeVal rangeValue];
-                NSString *mention = [NSString stringWithFormat:@"%@%@", kIXDefinedMentionScheme, [[[self.attributedString string] substringWithRange:range] substringFromIndex:2]];
+                NSString *mention = [NSString stringWithFormat:@"%@%@", _definedMentionScheme, [[[self.attributedString string] substringWithRange:range] substringFromIndex:2]];
                 if (range.location != NSNotFound) {
                     [self.attributedString addAttribute:NSFontAttributeName value:mentionFont range:range];
                     [self.attributedString addAttribute:NSForegroundColorAttributeName value:mentionColor range:range];
@@ -363,7 +360,7 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
             for (NSValue *rangeVal in hashtagsArray)
             {
                 NSRange range = [rangeVal rangeValue];
-                NSString *tag = [NSString stringWithFormat:@"%@%@", kIXDefinedHashtagScheme, [[[self.attributedString string] substringWithRange:range] substringFromIndex:2]];
+                NSString *tag = [NSString stringWithFormat:@"%@%@", _definedHashtagScheme, [[[self.attributedString string] substringWithRange:range] substringFromIndex:2]];
                 if (range.location != NSNotFound) {
                     [self.attributedString addAttribute:NSFontAttributeName value:hashtagFont range:range];
                     [self.attributedString addAttribute:NSForegroundColorAttributeName value:hashtagColor range:range];
@@ -457,7 +454,7 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
                 {
                     UIColor *foreColor;
                     if ([colorsArray[0] isEqualToString:@""])
-                        foreColor = kIXBaseTextColor;
+                        foreColor = _baseTextColor;
                     else
                         foreColor = [UIColor colorWithString:colorsArray[0]];
                     [self.attributedString addAttribute:NSForegroundColorAttributeName value:foreColor range:fullRange];

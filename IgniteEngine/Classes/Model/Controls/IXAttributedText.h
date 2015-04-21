@@ -1,5 +1,5 @@
 //
-//  IXAText.h
+//  IXAttributedText.h
 //  Ignite Engine
 //
 //  Created by Brandon on 3/13/14.
