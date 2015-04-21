@@ -969,7 +969,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6324BF781835931D00748F27 /* Build configuration list for PBXNativeTarget "IgniteEngine" */;
 			buildPhases = (
-				CAE709BC1AC5FE9000AFFF4D /* Copy External Assets */,
 				174B3967FD5446A9BFBB4B95 /* Check Pods Manifest.lock */,
 				6324BF481835931C00748F27 /* Sources */,
 				6366D6E118A966D4000AEEA5 /* Create Assets Folder If Not Exists */,
@@ -1089,20 +1088,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "touch -cm ${SRCROOT}/../assets";
-		};
-		CAE709BC1AC5FE9000AFFF4D /* Copy External Assets */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy External Assets";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\n#assetsPath=$(cat .ixconfig | perl -ne 'print if s/^assets=(.*)/\\1/g')\n#assetsPath=${assetsPath//'~'/$HOME}\n\n#mv assets assets.bak\n#cp -r $assetsPath assets";
 		};
 /* End PBXShellScriptBuildPhase section */
 
