@@ -28,3 +28,4 @@ pod 'FontAwesome+iOS', :git => 'https://github.com/jeremyanticouni/ios-fontaweso
 pod 'jetfire', '~> 0.1'
 pod 'Color-Picker-for-iOS', '~> 2.0'
 pod 'IQKeyboardManager'
+pod 'ActionSheetPicker-3.0', '~> 1.5.1'
