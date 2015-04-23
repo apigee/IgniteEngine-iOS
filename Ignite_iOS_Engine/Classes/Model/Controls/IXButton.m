@@ -97,7 +97,7 @@ NSArray* alphas;
     __block NSArray* titleColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultColor defaultValue:@[defaultColorForTitles]]];
     __block NSArray* titleFonts = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultFont defaultValue:@[defaultFontForTitles]]];
     __block NSArray* iconTintColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXIconDefaultTintColor defaultValue:nil]];
-    alphas = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]];
+    alphas = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:@[@"1"]]];
     backgroundColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]];
     
     [@[kIXNormal, kIXTouch, kIXDisabled] enumerateObjectsUsingBlock:^(NSString* titleState, NSUInteger idx, BOOL *stop) {
