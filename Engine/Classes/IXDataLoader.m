@@ -12,8 +12,6 @@
 #import "IXPathHandler.h"
 #import "IXLogger.h"
 
-#import "RXMLElement.h"
-
 @interface IXDataLoader ()
 
 @property (nonatomic,strong) NSCache* grabCache;

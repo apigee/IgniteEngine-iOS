@@ -5,7 +5,8 @@ inhibit_all_warnings!
 #pod 'APParallaxHeader', :head
 #pod 'PPSSignatureView', '~> 0.1'
 #pod 'RestKit', '~> 0.20.0'
-pod "AFNetworking", "~> 2.0"
+pod 'ActionSheetPicker-3.0'
+pod 'AFNetworking', '~> 2.0'
 pod 'AFNetworkActivityLogger', '~> 2.0'
 pod 'AFOAuth2Manager', '~> 2.0'
 pod 'ALMoviePlayerController', '~> 0.3.0'
@@ -14,7 +15,6 @@ pod 'APParallaxHeader', :git => 'https://github.com/r3mus/APParallaxHeader.git'
 pod 'CocoaLumberjack', '2.0.0-rc'
 pod 'Color-Picker-for-iOS', '~> 2.0'
 pod 'ColorUtils', '~> 1.1.1'
-#pod 'FontAwesome+iOS', :git => 'https://github.com/jeremyanticouni/ios-fontawesome.git'
 pod 'JAFontAwesome'
 pod 'IQKeyboardManager'
 pod 'jetfire', '~> 0.1'

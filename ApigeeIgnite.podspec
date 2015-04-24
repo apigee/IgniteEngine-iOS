@@ -37,6 +37,7 @@ Pod::Spec.new do |spec|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
+  spec.dependency 'ActionSheetPicker-3.0'
   spec.dependency 'AFNetworking'
   spec.dependency 'AFNetworkActivityLogger'
   spec.dependency 'AFOAuth2Manager'

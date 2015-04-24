@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Ignite_iOS_Engine.xcodeproj">
+      location = "self:IgniteEngine.xcodeproj">
    </FileRef>
 </Workspace>

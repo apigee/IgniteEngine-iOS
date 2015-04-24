@@ -1,4 +1,5 @@
 PODS:
+  - ActionSheetPicker-3.0 (1.6.1)
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
     - AFNetworking/NSURLSession (~> 2.0)
@@ -66,6 +67,7 @@ PODS:
   - ZipArchive (1.4.0)
 
 DEPENDENCIES:
+  - ActionSheetPicker-3.0
   - AFNetworkActivityLogger (~> 2.0)
   - AFNetworking (~> 2.0)
   - AFOAuth2Manager (~> 2.0)
@@ -104,12 +106,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/r3mus/APParallaxHeader.git
 
 SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: f8da36f51ba109882a7cfa5979a4856b4e26fa37
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   AFOAuth2Manager: 952eb62e8fd8022971e64c6e8fe28b9e999224af
   ALMoviePlayerController: caf8e2b455e576f704895882b7c1688686b40b0c
-  ApigeeiOSSDK: 8653fbd4330bbdd200da0ce672943c56489b19c3
-  APParallaxHeader: 5369815639059caa4e195a178c020f8e2b998336
+  ApigeeiOSSDK: 6e6cce5a6bdea21bac364cfc8c906c3b78d2fad0
+  APParallaxHeader: 854bc48a2487ca12c702f8a236fec0d89cdac5c3
   CocoaLumberjack: 04c5b9b7479dd4276a09700fcd6644423ea1751c
   Color-Picker-for-iOS: 4f02cd927f9b1d9292831bcdbd0ab55cd8ace4f6
   ColorUtils: f99c501f9caf5374b35480a281168565a24bdb6d
@@ -127,4 +130,4 @@ SPEC CHECKSUMS:
   ZBarSDK: 4c1b5daeb7d6cc67dc9355e690af0230a661f6ec
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.4
