@@ -1,0 +1,14 @@
+PODS:
+  - ApigeeIgnite (0.1.0)
+
+DEPENDENCIES:
+  - ApigeeIgnite (from `../`)
+
+EXTERNAL SOURCES:
+  ApigeeIgnite:
+    :path: ../
+
+SPEC CHECKSUMS:
+  ApigeeIgnite: a05a4a5777a63c7845d9a41f0e9a77c48cff734e
+
+COCOAPODS: 0.35.0

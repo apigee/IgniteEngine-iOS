@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'ApigeeIgnite', :exclusive => true do
+  pod "ApigeeIgnite", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "ApigeeIgnite", :path => "../"
+
+  
+end

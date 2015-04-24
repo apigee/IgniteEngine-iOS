@@ -1,24 +1,29 @@
-Apigee-Checkin
-===========
+# ApigeeIgnite
 
-####First time cloning:
+[![CI Status](http://img.shields.io/travis/brandon/ApigeeIgnite.svg?style=flat)](https://travis-ci.org/brandon/ApigeeIgnite)
+[![Version](https://img.shields.io/cocoapods/v/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
+[![License](https://img.shields.io/cocoapods/l/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
+[![Platform](https://img.shields.io/cocoapods/p/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
 
-If cloning this repo for the first time, if the submodules do not init correctly, run the following command *from* your local repository folder:
+## Usage
 
-`git submodule add git@github.com:ApigeeIgnite/ignite-iOS-engine.git _ignite-iOS-engine`
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-####Updating your local copy of the engine:
+## Requirements
 
-To update the submodule to the latest commit, enter the submodule directory:
+## Installation
 
-`cd <yourProjectRepoFolder>/_ignite-iOS-engine`
+ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
 
-Then pull from master to update the submodule:
+```ruby
+pod "ApigeeIgnite"
+```
 
-`git pull origin master`
+## Author
 
-####Committing changes made to the engine when working with submodules:
+brandon, brandon@behemoth.ca
 
-Run `git commit -a` and fill in the appropriate comments. If you hate **vi** and want to use **nano** instead, run `git config --global core.editor nano`
+## License
 
-Then commit your changes with `git push`
+ApigeeIgnite is available under the MIT license. See the LICENSE file for more info.

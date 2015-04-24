@@ -6,7 +6,8 @@ build/
 assets/
 assets*
 assets_*
-
+Engine/Pods/**
+Example/**
 .ixconfig
 
 *.pbxuser
