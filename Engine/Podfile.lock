@@ -28,7 +28,7 @@ PODS:
     - AFNetworking/NSURLConnection (~> 2.2)
   - ALMoviePlayerController (0.3.0)
   - ApigeeiOSSDK (2.0.16)
-  - APParallaxHeader (0.1.6)
+  - APParallaxHeader-Width (0.1.8)
   - CocoaLumberjack (2.0.0-rc):
     - CocoaLumberjack/Default (= 2.0.0-rc)
     - CocoaLumberjack/Extensions (= 2.0.0-rc)
@@ -73,7 +73,7 @@ DEPENDENCIES:
   - AFOAuth2Manager (~> 2.0)
   - ALMoviePlayerController (~> 0.3.0)
   - ApigeeiOSSDK (from `https://github.com/apigee/apigee-ios-sdk.git`)
-  - APParallaxHeader (from `https://github.com/r3mus/APParallaxHeader.git`)
+  - APParallaxHeader-Width
   - CocoaLumberjack (= 2.0.0-rc)
   - Color-Picker-for-iOS (~> 2.0)
   - ColorUtils (~> 1.1.1)
@@ -94,16 +94,11 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   ApigeeiOSSDK:
     :git: https://github.com/apigee/apigee-ios-sdk.git
-  APParallaxHeader:
-    :git: https://github.com/r3mus/APParallaxHeader.git
 
 CHECKOUT OPTIONS:
   ApigeeiOSSDK:
     :commit: 43798e479870fe0480579c33b3c0bf5e287e2d73
     :git: https://github.com/apigee/apigee-ios-sdk.git
-  APParallaxHeader:
-    :commit: 2e54fbdebecfd136786b07398beb0d1eee53501c
-    :git: https://github.com/r3mus/APParallaxHeader.git
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: f8da36f51ba109882a7cfa5979a4856b4e26fa37
@@ -112,7 +107,7 @@ SPEC CHECKSUMS:
   AFOAuth2Manager: 952eb62e8fd8022971e64c6e8fe28b9e999224af
   ALMoviePlayerController: caf8e2b455e576f704895882b7c1688686b40b0c
   ApigeeiOSSDK: 6e6cce5a6bdea21bac364cfc8c906c3b78d2fad0
-  APParallaxHeader: 854bc48a2487ca12c702f8a236fec0d89cdac5c3
+  APParallaxHeader-Width: a192449fc10b0a4075bef8555cdd410063f71b06
   CocoaLumberjack: 04c5b9b7479dd4276a09700fcd6644423ea1751c
   Color-Picker-for-iOS: 4f02cd927f9b1d9292831bcdbd0ab55cd8ace4f6
   ColorUtils: f99c501f9caf5374b35480a281168565a24bdb6d
