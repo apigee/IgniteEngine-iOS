@@ -213,7 +213,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed
 {
-    [self fireLoadFinishedEvents:loadDidSucceed];
+    [self fireLoadFinishedEvents:loadDidSucceed paginationKey:nil];
 }
 
 

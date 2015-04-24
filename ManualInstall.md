@@ -32,3 +32,9 @@
 	1. Comment out all methods in AppDelegate.m. If you need to override one, you must call `[super *methodname*]` before your own functions.
 
 10. Create a new folder in your project root called `assets`. Drag this folder into Xcode, *deselecting* **Copy items if needed** and *selecting* **Create folder references**.
+
+TODO:
+
+- Fonts (must be manually added to info.plist)
+- "iBeacon Monitoring" in info.plist?
+- Maybe add sample info.plist that user can download?
