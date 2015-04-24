@@ -13,9 +13,9 @@
 #import "ColorUtils.h"
 #import "IXControlLayoutInfo.h"
 #import "IXLogger.h"
+#import "IXLayoutEngine.h"
 
 #import "UIImage+ResizeMagick.h"
-#import "IgniteEngine-Swift.h"
 
 // TODO: Clean this up and organize it into Attributes/Returns/Events/Functions
 
@@ -99,7 +99,7 @@ IX_STATIC_CONST_STRING kIXSnapshot = @"takeSnapshot";
 
 // Function Params
 IX_STATIC_CONST_STRING kIXDirection = @"direction"; // key value for "spin" animation param
-IX_STATIC_CONST_STRING kIXSavePath = @"saveToLocation";
+IX_STATIC_CONST_STRING kIXSaveToLocation = @"saveToLocation";
 
 
 // Animation Functions
@@ -212,7 +212,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     }
     else
     {
-        CGRect internalLayoutRect = [LayoutEngine calculateInternalLayoutRect:self rect:[[self contentView] bounds]];
+        CGRect internalLayoutRect = [IXLayoutEngine getInternalLayoutRectForControl:self forOuterLayoutRect:[self contentView].bounds];
         [self layoutControlContentsInRect:internalLayoutRect];
     }
 }
@@ -717,7 +717,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
 
-            NSString* saveToLocation = [parameterContainer getPathPropertyValue:kIXSavePath basePath:nil defaultValue:nil];
+            NSString* saveToLocation = [parameterContainer getPathPropertyValue:kIXSaveToLocation basePath:nil defaultValue:nil];
             NSData* imageData = UIImagePNGRepresentation(image);
             if( [imageData length] > 0 && [saveToLocation length] > 0 )
             {

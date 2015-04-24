@@ -203,20 +203,16 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         {
             NSMutableArray* propertyArray = [[NSMutableArray alloc] initWithArray:[propertyContainer propertiesForPropertyNamed:propertyName]
                                                                         copyItems:YES];
-            for( IXProperty* property in propertyArray )
-            {
-                [property setPropertyContainer:self];
+            if( replaceOtherProperties ) {
+                for( IXProperty* property in propertyArray ) {
+                    [property setPropertyContainer:self];
+                }
+                self.propertiesDict[propertyName] = propertyArray;
+            } else {
+                [self addProperties:propertyArray replaceOtherPropertiesWithTheSameName:false];
             }
-            
-            [self propertiesDict][propertyName] = propertyArray;
         }
     }
-}
-
--(void)removePropertyNamed:(NSString *)propertyName
-{
-    NSMutableArray* propertyArray = [self propertiesForPropertyNamed:propertyName];
-    [propertyArray removeAllObjects];
 }
 
 -(NSDictionary*)dictionaryWithKey:(NSString*)key subKeys:(NSMutableArray*)subKeys lastObjectValue:(NSString*)lastObjectValue

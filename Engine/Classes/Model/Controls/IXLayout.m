@@ -12,7 +12,7 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
-#import "IgniteEngine-Swift.h"
+#import "IXLayoutEngine.h"
 
 // IXLayout Attributes
 IX_STATIC_CONST_STRING kIXLayoutFlow = @"layoutFlow";
@@ -175,7 +175,7 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
 {
     [super layoutControlContentsInRect:rect];
     
-    [LayoutEngine layout:self layoutRect:rect];
+    [IXLayoutEngine layoutControl:self inRect:rect];
     
     [self.overlayView removeFromSuperview];
     self.overlayView = nil;
@@ -228,7 +228,7 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    return [LayoutEngine getPreferredSize:self suggestedSize:size];
+    return [IXLayoutEngine getPreferredSizeForLayoutControl:self forSuggestedSize:size];
 }
 
 -(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer

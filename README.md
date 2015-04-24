@@ -20,10 +20,6 @@ it, simply add the following line to your Podfile:
 pod "ApigeeIgnite"
 ```
 
-## Author
-
-brandon, brandon@behemoth.ca
-
 ## License
 
 ApigeeIgnite is available under the MIT license. See the LICENSE file for more info.

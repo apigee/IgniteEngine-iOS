@@ -1,6 +1,0 @@
-[submodule "_ignite-iOS-engine"]
-	path = _ignite-iOS-engine
-	url = git@github.com:ApigeeIgnite/ignite-iOS-engine.git
-[submodule "Engine"]
-	path = Engine
-	url = git@github.com:ApigeeIgnite/ignite-iOS-engine.git

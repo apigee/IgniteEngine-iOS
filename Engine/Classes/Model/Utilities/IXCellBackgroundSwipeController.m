@@ -138,7 +138,7 @@
     if ([gestureRecognizer class] == [UIPanGestureRecognizer class])
     {
         CGPoint point = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:[self cellView]];
-        returnValue = ( fabsf(point.x) > fabsf(point.y) );
+        returnValue = ( fabs(point.x) > fabs(point.y) );
     }
     return returnValue;
 }
@@ -148,7 +148,7 @@
     if( [self adjustsBackgroundAlphaWithSwipe] )
     {
         CGPoint origin = [[_layoutControl contentView] frame].origin;
-        CGFloat originsXPosition = fabsf(origin.x);
+        CGFloat originsXPosition = fabs(origin.x);
         CGFloat percentage = originsXPosition/[self swipeWidth];
         
         [[[self backgroundLayoutControl] contentView] setAlpha:percentage];

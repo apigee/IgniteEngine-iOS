@@ -3,7 +3,7 @@
 //  Ignite Engine
 //
 //  Created by Brandon on 3/25/15.
-//  Copyright (c) 2015 Apigee. All rights reserved.
+//  Copyright (c) 2015 Ignite. All rights reserved.
 //
 
 #import "IXSize.h"
@@ -13,8 +13,8 @@
 - (instancetype)initWithDefaultSize {
     self = [super init];
     if (self) {
-        self.height = @"0";
-        self.width = @"0";
+        self.width = nil;
+        self.height = nil;
     }
     return self;
 }
