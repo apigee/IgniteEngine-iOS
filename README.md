@@ -49,6 +49,20 @@ ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually
 
 12. Create a new folder in your project root called `assets`. Drag this folder into Xcode, *deselecting* **Copy items if needed** and *selecting* **Create folder references**.
 
+13. Your IX config will reside in this assets folder. At minimum, you need an `app.json` file and that points to a single view, like so:
+
+	```
+	{
+	    "$app": {
+	        "attributes": {
+	            "view.index": "myView.json"
+	        }
+	    }
+	}
+	```
+
+14. Get up to speed by reading the [docs](https://ignite.apigee.com).
+
 TODO:
 
 - Fonts (must be manually added to info.plist)
