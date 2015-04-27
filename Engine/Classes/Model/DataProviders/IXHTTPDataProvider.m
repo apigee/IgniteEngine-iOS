@@ -155,7 +155,6 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.apigee.ignite.DataProviderCache";
 IX_STATIC_CONST_STRING kIXRequestBinUrlPrefix = @"http://requestb.in";
 IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
-IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 
 @implementation IXHTTPDataProvider
 
@@ -307,6 +306,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
                                                                  NSDictionary* queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:queryString];
                                                                  NSString* ext = [queryParams[@"ext"] lowercaseString];
                                                                  NSString* fileName = [NSString stringWithFormat:@"%@.%@", key, ext];
+                                                                 // May use this in the future? Leaving it here in case we need it.
                                                                  //                            NSInputStream* stream = [[NSInputStream alloc] initWithData:data];
                                                                  //                            [formData appendPartWithInputStream:stream name:key fileName:fileName length:[data length] mimeType:kIXMimeTypeOctetStream];
                                                                  NSString* mimeType = [attachmentsData objectForKey:key][@"mimeType"];
@@ -432,9 +432,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
             [_response setResponseStringFromObject:responseObject];
             [self updatePaginationProperties];
         }
-        
-        // Reset the response serializer for requestBin
-//        [IXAFHTTPSessionManager sharedManager].responseSerializer = [AFJSONResponseSerializer serializer];
         
         [self fireLoadFinishedEvents:isValidJSON paginationKey:paginationKey];
     }];
@@ -621,7 +618,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString*)paginationKey
 {
     
-    NSString* locationSpecificEventSuffix = ([IXHTTPDataProvider cacheExistsForURL:self.url]) ? kIXLocationSuffixCache : kIXLocationSuffixRemote;
+    NSString* locationSpecificEventSuffix = ([IXHTTPDataProvider cacheExistsForURL:self.url]) ? kIXLocationSuffixCache : @"";
     
     if( loadDidSucceed )
     {
