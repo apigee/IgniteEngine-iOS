@@ -23,7 +23,7 @@
 #import "IXPathHandler.h"
 #import "IXJSONUtils.h"
 
-// TODO: Clean up naming and document
+// TODO: These attributes are old and need to be cleaned up and re-implemented
 IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
 IX_STATIC_CONST_STRING kIXModifyType = @"modify.type";
 IX_STATIC_CONST_STRING kIXDelete = @"delete";
@@ -50,8 +50,8 @@ IX_STATIC_CONST_STRING kIXDebugRequestBinUrl = @"debug.requestBinUrl";
 
 IX_STATIC_CONST_STRING kIXBasicUserName = @"auth.basic.username";
 IX_STATIC_CONST_STRING kIXBasicPassword = @"auth.basic.password";
-IX_STATIC_CONST_STRING kIXOAuthToken = @"auth.oauth.accessToken";
-IX_STATIC_CONST_STRING kIXOAuthTokenKey = @"auth.oauth.refreshToken";
+//IX_STATIC_CONST_STRING kIXOAuthToken = @"auth.oauth.accessToken";
+//IX_STATIC_CONST_STRING kIXOAuthTokenKey = @"auth.oauth.refreshToken";
 
 IX_STATIC_CONST_STRING kIXPaginationNextQueryParam = @"pagination.next.queryParam";// e.g. "cursor"; name of the query parameter to be appended to next API call
 IX_STATIC_CONST_STRING kIXPaginationPrevQueryParam = @"pagination.prev.queryParam";// e.g. "cursor"; name of the query parameter to be appended to prev API call
@@ -68,9 +68,11 @@ IX_STATIC_CONST_STRING kIXMethodPOST = @"POST"; // kIXMethod
 IX_STATIC_CONST_STRING kIXMethodPUT = @"PUT"; // kIXMethod
 IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE"; // kIXMethod
 
+//TODO: NOT IMPLEMENTED
 IX_STATIC_CONST_STRING kIXSortOrderNone = @"none"; // kIXSortOrder
 IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending"; // kIXSortOrder
 IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // kIXSortOrder
+//END TODO
 
 IX_STATIC_CONST_STRING kIXRequestTypeForm = @"form"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeJSON = @"json"; // kIXBodyEncoding
@@ -235,29 +237,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
     } else if ([self.requestType isEqualToString:kIXRequestTypeMultipart]) {
         [self.headersProperties removePropertyNamed:kIXContentTypeHeaderKey];
     }
-    // Set Accept
-    /*
-    _acceptedContentTypes = [NSMutableSet new];
-    
-    if (![self.headersProperties propertyExistsForPropertyNamed:kIXAcceptHeaderKey] &&
-        ![self.headersProperties propertyExistsForPropertyNamed:[kIXAcceptHeaderKey lowercaseString]]) {
-        
-        if ([_responseType isEqualToString:kIXResponseTypeJSON]) {
-            [_acceptedContentTypes addObject:kIXAcceptValueJSON];
-        } else if ([_responseType isEqualToString:kIXResponseTypeHTML]) {
-            [_acceptedContentTypes addObject:kIXAcceptValueHTML];
-        }
-    } else {
-        [_acceptedContentTypes addObject:[self.headersProperties getStringPropertyValue:kIXAcceptHeaderKey defaultValue:nil] ?: [self.headersProperties getStringPropertyValue:[kIXAcceptHeaderKey lowercaseString] defaultValue:nil]];
-    }
-    [IXAFHTTPSessionManager sharedManager].responseSerializer.acceptableContentTypes = _acceptedContentTypes;
-
-    // Set Accept-Encoding
-    if (![self.headersProperties propertyExistsForPropertyNamed:kIXAcceptCharsetHeaderKey] &&
-        ![self.headersProperties propertyExistsForPropertyNamed:[kIXAcceptCharsetHeaderKey lowercaseString]]) {
-        [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXAcceptCharsetHeaderKey rawValue:kIXAcceptCharsetValue]];
-    }
-    */
     // Set other headers
     [[self.headersProperties getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
         [[IXAFHTTPSessionManager sharedManager].requestSerializer setValue:value forHTTPHeaderField:key];
@@ -579,7 +558,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
 
 +(void)clearCacheForURL:(NSString*)url
 {
-    //    [sIXDataProviderCache removeAllObjects];
     NSURLCache* cache =[NSURLCache sharedURLCache];
     
     // Choose a long cached URL.
@@ -705,6 +683,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
             IX_LOG_ERROR(@"Could not paginate previous - data appending is enabled via %@", kIXPaginationAppendData);
         }
     }
+// TODO: This needs to be re-implemented with predicate, append, and delete.
     else if( [functionName isEqualToString:kIXModifyResponse] )
     {
         NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
@@ -888,139 +867,13 @@ IX_STATIC_CONST_STRING kIXLocationSuffixRemote = @".remote";
             if( jsonConvertError == nil && jsonData ) {
                 returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
             } else {
-                IX_LOG_WARN(@"WARNING from %@ in %@ : Error Converting JSON object : %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
+                IX_LOG_WARN(@"WARNING from %@ in %@: Error Converting JSON object: %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
             }
         } else {
-            IX_LOG_WARN(@"WARNING from %@ in %@ : Invalid JSON Object : %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
+            IX_LOG_WARN(@"WARNING from %@ in %@: Invalid JSON Object: %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
         }
     }
     return returnValue;
 }
-
-//-(NSString*)getQueryValueOutOfValue:(NSString*)value
-//{
-//    NSString* returnValue = value;
-//    NSArray* seperatedValue = [value componentsSeparatedByString:@"?"];
-//    if( [seperatedValue count] > 0 )
-//    {
-//        NSString* objectID = [seperatedValue firstObject];
-//        NSString* propertyName = [seperatedValue lastObject];
-//        if( [objectID isEqualToString:kIXSessionRef] )
-//        {
-//            returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
-//        }
-//        else if( [objectID isEqualToString:kIXAppRef] )
-//        {
-//            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
-//        }
-//        else if( [objectID isEqualToString:kIXViewControlRef] )
-//        {
-//            returnValue = [[[self sandbox] viewController] getViewPropertyNamed:propertyName];
-//            if( returnValue == nil )
-//            {
-//                returnValue = value;
-//            }
-//        }
-//        else
-//        {
-//            NSArray* objectWithIDArray = [[self sandbox] getAllControlsAndDataProvidersWithID:objectID withSelfObject:self];
-//            IXBaseObject* baseObject = [objectWithIDArray firstObject];
-//
-//            if( baseObject )
-//            {
-//                returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
-//                if( returnValue == nil )
-//                {
-//                    returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:value];
-//                }
-//            }
-//        }
-//    }
-//    return returnValue;
-//}
-
-//- (NSObject*)objectForPath:(NSString *)jsonXPath container:(NSObject*) currentNode
-//{
-//    if (currentNode == nil) {
-//        return nil;
-//    }
-//    
-//    if(![currentNode isKindOfClass:[NSDictionary class]] && ![currentNode isKindOfClass:[NSArray class]]) {
-//        return currentNode;
-//    }
-//    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPERATOR]) {
-//        jsonXPath = [jsonXPath substringFromIndex:1];
-//    }
-//    
-//    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPERATOR] firstObject];
-//    NSObject *nextNode;
-//    // if dict -> get value
-//    if ([currentNode isKindOfClass:[NSDictionary class]]) {
-//        NSDictionary *currentDict = (NSDictionary *) currentNode;
-//        nextNode = currentDict[jsonXPath];
-//        if( nextNode != nil )
-//        {
-//            return nextNode;
-//        }
-//        else
-//        {
-//            nextNode = currentDict[currentKey];
-//        }
-//    }
-//    
-//    if ([currentNode isKindOfClass:[NSArray class]]) {
-//        NSArray * currentArray = (NSArray *) currentNode;
-//        @try {
-//            if( [currentKey containsString:@"="] ) // current key is actually looking to filter array if theres an '=' character
-//            {
-//                NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
-//                if( [currentKeySeperated count] > 1 ) {
-//                    NSString* currentKeyValue = [currentKeySeperated lastObject];
-//                    if( [currentKeyValue rangeOfString:@"?"].location != NSNotFound )
-//                    {
-//                        currentKeyValue = [self getQueryValueOutOfValue:currentKeyValue];
-//                    }
-//                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],currentKeyValue];
-//                    NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
-//                    if( [filteredArray count] >= 1 ) {
-//                        if( [filteredArray count] == 1 ) {
-//                            nextNode = [filteredArray firstObject];
-//                        } else {
-//                            nextNode = filteredArray;
-//                        }
-//                    }
-//                }
-//            }
-//            else // current key must be an number
-//            {
-//                if( [currentKey isEqualToString:@"$count"] || [currentKey isEqualToString:@".$count"] )
-//                {
-//                    return [NSString stringWithFormat:@"%lu",(unsigned long)[currentArray count]];
-//                }
-//                else if ([currentArray count] > 0)
-//                {
-//                    nextNode = [currentArray objectAtIndex:[currentKey integerValue]];
-//                }
-//                else
-//                {
-//                    @throw [NSException exceptionWithName:@"NSRangeException"
-//                                                   reason:@"Specified array index is out of bounds"
-//                                                 userInfo:nil];
-//                }
-//            }
-//        }
-//        @catch (NSException *exception) {
-//            IX_LOG_ERROR(@"ERROR : %@ Exception in %@ : %@; attempted to retrieve index %@ from %@",THIS_FILE,THIS_METHOD,exception,currentKey, jsonXPath);
-//        }
-//    }
-//    
-//    NSString * nextXPath = [jsonXPath stringByReplacingCharactersInRange:NSMakeRange(0, [currentKey length]) withString:kIX_EMPTY_STRING];
-//    if( nextXPath.length <= 0 )
-//    {
-//        return nextNode;
-//    }
-//    // call recursively with the new xpath and the new Node
-//    return [self objectForPath:nextXPath container: nextNode];
-//}
 
 @end
