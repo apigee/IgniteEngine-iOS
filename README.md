@@ -30,7 +30,7 @@ ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually
 
 7. From your project directory, run `pod install`
 
-8. Once the ApigeeIgnite pod and all dependencies have installed, open [MyProject].xcworkspace.
+8. Once the ApigeeIgnite pod and all dependencies have been installed, open [MyProject].xcworkspace.
 
 9. Find main.m
 
@@ -40,10 +40,7 @@ ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually
 10. Find AppDelegate.h 
 	
 	1. Add `#import IXAppDelegate.h`
-	2. Replace the `@interface` declaration with:
-	```
-	@interface AppDelegate : IXAppDelegate
-	```
+	2. Replace the `@interface` declaration with `@interface AppDelegate : IXAppDelegate`
 	3. Delete `@property (strong, nonatomic) UIWindow *window;`
 
 11. Find AppDelegate.m
