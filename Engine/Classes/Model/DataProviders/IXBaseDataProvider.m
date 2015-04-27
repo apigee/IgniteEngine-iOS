@@ -42,7 +42,7 @@ IX_STATIC_CONST_STRING kIXDeleteCookies = @"deleteCookies"; // kIXCookieURL is t
 IX_STATIC_CONST_STRING kIXCookieURL = @"url"; // Function parameter for deleteCookies
 
 // IXBaseDataProvider Events
-IX_STATIC_CONST_STRING kIXStarted = @"began";
+IX_STATIC_CONST_STRING kIXStarted = @"started";
 
 // NSCoding Key Constants
 IX_STATIC_CONST_STRING kIXRequestBodyObjectNSCodingKey = @"requestBodyObject";
