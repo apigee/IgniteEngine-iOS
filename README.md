@@ -63,6 +63,8 @@ ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually
 
 14. Get up to speed by reading the [docs](https://ignite.apigee.com).
 
+15. If you're creating a git repo for your `/assets`, you should add `Engine/**` to your `.gitignore` to avoid commiting the entire IX engine to your repo.
+
 TODO:
 
 - Fonts (must be manually added to info.plist)
