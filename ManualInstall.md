@@ -13,12 +13,14 @@
     pod 'ApigeeIgnite', :path => '/local/path/to/Engine'
     ```
 
-7. Find main.m
+7. run `pod install`
+
+8. Find main.m
 
     1. Add `#import IXAppDelegate.h`
     2. Change all references to `AppDelegate` class to `IXAppDelegate`
 
-8. Find AppDelegate.h 
+9. Find AppDelegate.h 
 	
 	1. Add `#import IXAppDelegate.h`
 	2. Replace the `@interface` declaration with:
@@ -27,11 +29,11 @@
 	```
 	3. Delete `@property (strong, nonatomic) UIWindow *window;`
 
-9. Find AppDelegate.m
+10. Find AppDelegate.m
 
 	1. Comment out all methods in AppDelegate.m. If you need to override one, you must call `[super *methodname*]` before your own functions.
 
-10. Create a new folder in your project root called `assets`. Drag this folder into Xcode, *deselecting* **Copy items if needed** and *selecting* **Create folder references**.
+11. Create a new folder in your project root called `assets`. Drag this folder into Xcode, *deselecting* **Copy items if needed** and *selecting* **Create folder references**.
 
 TODO:
 
