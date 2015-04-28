@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#define LOG_LEVEL_DEF ddLogLevel
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #import "IXConstants.h"
 
-extern int ddLogLevel;
+extern DDLogLevel ddLogLevel;
 extern BOOL ixShouldLogUsingApigeeLogging;
 
 @interface IXLogger : NSObject

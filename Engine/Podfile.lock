@@ -3,125 +3,116 @@ PODS:
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
     - AFNetworking/NSURLSession (~> 2.0)
-  - AFNetworking (2.5.2):
-    - AFNetworking/NSURLConnection (= 2.5.2)
-    - AFNetworking/NSURLSession (= 2.5.2)
-    - AFNetworking/Reachability (= 2.5.2)
-    - AFNetworking/Security (= 2.5.2)
-    - AFNetworking/Serialization (= 2.5.2)
-    - AFNetworking/UIKit (= 2.5.2)
-  - AFNetworking/NSURLConnection (2.5.2):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.2):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.2)
-  - AFNetworking/Security (2.5.2)
-  - AFNetworking/Serialization (2.5.2)
-  - AFNetworking/UIKit (2.5.2):
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AFOAuth2Manager (2.2.0):
     - AFNetworking/NSURLConnection (~> 2.2)
   - ALMoviePlayerController (0.3.0)
-  - ApigeeiOSSDK (2.0.16)
+  - ApigeeiOSSDK (2.0.17)
   - APParallaxHeader-Width (0.1.8)
-  - CocoaLumberjack (2.0.0-rc):
-    - CocoaLumberjack/Default (= 2.0.0-rc)
-    - CocoaLumberjack/Extensions (= 2.0.0-rc)
-  - CocoaLumberjack/Core (2.0.0-rc)
-  - CocoaLumberjack/Default (2.0.0-rc):
+  - CocoaLumberjack (2.0.0):
+    - CocoaLumberjack/Default (= 2.0.0)
+    - CocoaLumberjack/Extensions (= 2.0.0)
+  - CocoaLumberjack/Core (2.0.0)
+  - CocoaLumberjack/Default (2.0.0):
     - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.0.0-rc):
+  - CocoaLumberjack/Extensions (2.0.0):
     - CocoaLumberjack/Default
   - Color-Picker-for-iOS (2.0)
   - ColorUtils (1.1.3)
-  - IQKeyboardManager (3.2.1.1)
-  - JAFontAwesome (4.3.0)
+  - IQKeyboardManager (3.2.3)
+  - JAFontAwesome (4.3.1)
   - jetfire (0.1.2)
-  - MMDrawerController (0.5.7):
-    - MMDrawerController/Core (= 0.5.7)
-    - MMDrawerController/MMDrawerBarButtonItem (= 0.5.7)
-    - MMDrawerController/MMDrawerVisualStates (= 0.5.7)
-    - MMDrawerController/Subclass (= 0.5.7)
-  - MMDrawerController/Core (0.5.7)
-  - MMDrawerController/MMDrawerBarButtonItem (0.5.7):
+  - MMDrawerController (0.6.0):
+    - MMDrawerController/Core (= 0.6.0)
+    - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
+    - MMDrawerController/MMDrawerVisualStates (= 0.6.0)
+    - MMDrawerController/Subclass (= 0.6.0)
+  - MMDrawerController/Core (0.6.0)
+  - MMDrawerController/MMDrawerBarButtonItem (0.6.0):
     - MMDrawerController/Core
-  - MMDrawerController/MMDrawerVisualStates (0.5.7):
+  - MMDrawerController/MMDrawerVisualStates (0.6.0):
     - MMDrawerController/Core
-  - MMDrawerController/Subclass (0.5.7):
+  - MMDrawerController/Subclass (0.6.0):
     - MMDrawerController/Core
   - RaptureXML (1.0.1)
   - Reachability (3.2)
-  - SDWebImage (HEAD based on 3.7.2):
-    - SDWebImage/Core (= HEAD based on 3.7.2)
-  - SDWebImage/Core (HEAD based on 3.7.2)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
   - SVPulsingAnnotationView (0.3.0)
   - SVWebViewController (1.0)
   - TTTAttributedLabel (1.13.3)
-  - YLMoment (0.2.0)
+  - YLMoment (0.5.2)
   - ZBarSDK (1.3.1)
   - ZipArchive (1.4.0)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
-  - AFNetworkActivityLogger (~> 2.0)
-  - AFNetworking (~> 2.0)
-  - AFOAuth2Manager (~> 2.0)
-  - ALMoviePlayerController (~> 0.3.0)
-  - ApigeeiOSSDK (from `https://github.com/apigee/apigee-ios-sdk.git`)
+  - AFNetworkActivityLogger
+  - AFNetworking
+  - AFOAuth2Manager
+  - ALMoviePlayerController
+  - ApigeeiOSSDK
   - APParallaxHeader-Width
-  - CocoaLumberjack (= 2.0.0-rc)
-  - Color-Picker-for-iOS (~> 2.0)
-  - ColorUtils (~> 1.1.1)
+  - CocoaLumberjack
+  - Color-Picker-for-iOS
+  - ColorUtils
   - IQKeyboardManager
   - JAFontAwesome
-  - jetfire (~> 0.1)
-  - MMDrawerController (~> 0.5.6)
-  - RaptureXML (~> 1.0)
-  - Reachability (~> 3.1)
-  - SDWebImage (HEAD)
-  - SVPulsingAnnotationView (~> 0.3.0)
-  - SVWebViewController (~> 1.0)
+  - jetfire
+  - MMDrawerController
+  - RaptureXML
+  - Reachability
+  - SDWebImage
+  - SVPulsingAnnotationView
+  - SVWebViewController
   - TTTAttributedLabel
-  - YLMoment (~> 0.2.0)
-  - ZBarSDK (~> 1.3.1)
-  - ZipArchive (~> 1.2)
-
-EXTERNAL SOURCES:
-  ApigeeiOSSDK:
-    :git: https://github.com/apigee/apigee-ios-sdk.git
-
-CHECKOUT OPTIONS:
-  ApigeeiOSSDK:
-    :commit: 43798e479870fe0480579c33b3c0bf5e287e2d73
-    :git: https://github.com/apigee/apigee-ios-sdk.git
+  - YLMoment
+  - ZBarSDK
+  - ZipArchive
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: f8da36f51ba109882a7cfa5979a4856b4e26fa37
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
-  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   AFOAuth2Manager: 952eb62e8fd8022971e64c6e8fe28b9e999224af
   ALMoviePlayerController: caf8e2b455e576f704895882b7c1688686b40b0c
-  ApigeeiOSSDK: 6e6cce5a6bdea21bac364cfc8c906c3b78d2fad0
+  ApigeeiOSSDK: 30b5ea541a502a8049cfbb2ee7e3a36ab621e65e
   APParallaxHeader-Width: a192449fc10b0a4075bef8555cdd410063f71b06
-  CocoaLumberjack: 04c5b9b7479dd4276a09700fcd6644423ea1751c
+  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   Color-Picker-for-iOS: 4f02cd927f9b1d9292831bcdbd0ab55cd8ace4f6
   ColorUtils: f99c501f9caf5374b35480a281168565a24bdb6d
-  IQKeyboardManager: 6aeae6a2014d66461c48f6753dd693e92eaf6524
-  JAFontAwesome: a71786eb7be2e94df0c2bac3a923c6cd4589c291
+  IQKeyboardManager: 6ca5c54e3776eb54af4c7caf515833f3cd761d59
+  JAFontAwesome: c52bf2053ae17b0e2ae4cc14b66630a6a30ffe91
   jetfire: 5e823aa9248d3de1fac2b7b6d9c6e31ab7d90f0c
-  MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
+  MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   RaptureXML: b5c33c04c1a4adfd8ad0d5463329a31820596e82
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SVPulsingAnnotationView: f1a8dc7a57ebb5fa231d0ef8b0da59a250005511
   SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   TTTAttributedLabel: 6f3174aef8e738f44dff97c2eb7d8184f6ab6277
-  YLMoment: af44d9d402790049e5490fa6eae9585b89b4090b
+  YLMoment: 11348f13579ac6646309abafabb19057d5bd581b
   ZBarSDK: 4c1b5daeb7d6cc67dc9355e690af0230a661f6ec
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 

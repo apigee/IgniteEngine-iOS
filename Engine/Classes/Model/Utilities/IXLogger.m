@@ -8,8 +8,8 @@
 
 #import "IXLogger.h"
 
-#import "DDASLLogger.h"
-#import "DDTTYLogger.h"
+//#import "DDASLLogger.h"
+//#import "DDTTYLogger.h"
 #import "IXAFNetworkActivityLogger.h"
 
 #import "IXAppManager.h"
@@ -17,9 +17,9 @@
 BOOL ixShouldLogUsingApigeeLogging = NO;
 
 #ifdef DEBUG
-int ddLogLevel = LOG_LEVEL_VERBOSE;
+DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #else
-int ddLogLevel = LOG_LEVEL_ERROR;
+DDLogLevel ddLogLevel = DDLogLevelError;
 #endif
 
 static NSString* const kIXLogLevelVerbose = @"verbose";
@@ -94,19 +94,19 @@ static NSString* const kIXLogLevelRelease = @"release";
 {
     _appLogLevel = [appLogLevel copy];
     
-    int logLevelInt = ddLogLevel;
+    DDLogLevel logLevelInt = ddLogLevel;
     if( [appLogLevel isEqualToString:kIXLogLevelVerbose] ) {
-        logLevelInt = LOG_LEVEL_VERBOSE;
+        logLevelInt = DDLogLevelVerbose;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelDebug] ) {
-        logLevelInt = LOG_LEVEL_DEBUG;
+        logLevelInt = DDLogLevelDebug;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelInfo] ) {
-        logLevelInt = LOG_LEVEL_INFO;
+        logLevelInt = DDLogLevelInfo;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelWarn] ) {
-        logLevelInt = LOG_LEVEL_WARN;
+        logLevelInt = DDLogLevelWarning;
     } else if( [appLogLevel isEqualToString:kIXLogLevelOff] ) {
-        logLevelInt = LOG_LEVEL_OFF;
+        logLevelInt = DDLogLevelOff;
     } else if ( [appLogLevel isEqualToString:kIXLogLevelError] || [appLogLevel isEqualToString:kIXLogLevelRelease] ) {
-        logLevelInt = LOG_LEVEL_ERROR;
+        logLevelInt = DDLogLevelError;
     }
 
     ddLogLevel = logLevelInt;

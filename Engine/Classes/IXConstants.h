@@ -9,14 +9,11 @@
 #import <Foundation/Foundation.h>
 
 #import "IXLogger.h"
-#import "DDLog.h"
 #import "ApigeeLogger.h"
 
 #define IX_STATIC_CONST_STRING static NSString* const
-#define IX_STATIC_CONST_OBJECT static NSObject* const
-#define IX_STATIC_CONST_INTEGER static NSInteger const
 #define IX_STATIC_CONST_FLOAT static CGFloat const
-#define IX_STATIC_CONST_ARRAY static NSArray* const
+#define IX_STATIC_CONST_INTEGER static NSInteger const
 
 #define IX_dispatch_main_sync_safe(block)\
     if ([NSThread isMainThread])\
@@ -31,7 +28,7 @@
 #define IX_APIGEE_LOG_TAG @"IgniteEngine_Log"
 
 #define IX_LOG_VERBOSE(frmt, ...)   \
-    if( LOG_LEVEL_DEF & LOG_FLAG_VERBOSE ) { \
+    if( ddLogLevel & DDLogFlagVerbose ) { \
         if( ixShouldLogUsingApigeeLogging ) { \
             ApigeeLogVerbose(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
         } else { \
@@ -39,7 +36,7 @@
         } \
     }
 #define IX_LOG_DEBUG(frmt, ...) \
-    if( LOG_LEVEL_DEF & LOG_FLAG_DEBUG ) { \
+    if( ddLogLevel & DDLogFlagDebug ) { \
         if( ixShouldLogUsingApigeeLogging ) { \
             ApigeeLogDebug(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
         } else { \
@@ -47,7 +44,7 @@
         } \
     }
 #define IX_LOG_INFO(frmt, ...) \
-    if( LOG_LEVEL_DEF & LOG_FLAG_INFO ) { \
+    if( ddLogLevel & DDLogFlagInfo ) { \
         if( ixShouldLogUsingApigeeLogging ) { \
             ApigeeLogInfo(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
         } else { \
@@ -55,7 +52,7 @@
         } \
     }
 #define IX_LOG_WARN(frmt, ...) \
-    if( LOG_LEVEL_DEF & LOG_FLAG_WARN ) { \
+    if( ddLogLevel & DDLogFlagWarning ) { \
         if( ixShouldLogUsingApigeeLogging ) { \
             ApigeeLogWarn(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
         } else { \
@@ -63,7 +60,7 @@
         } \
     }
 #define IX_LOG_ERROR(frmt, ...) \
-    if( LOG_LEVEL_DEF & LOG_FLAG_ERROR ) { \
+    if( ddLogLevel & DDLogFlagError ) { \
         if( ixShouldLogUsingApigeeLogging ) { \
             ApigeeLogError(IX_APIGEE_LOG_TAG,frmt, ##__VA_ARGS__); \
         } else { \
