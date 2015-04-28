@@ -23,7 +23,7 @@ ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually
 
 5. Delete ViewController.h and ViewController.m
 
-6. Create an empty file named `podfile` in the root of your project folder with the following text:
+6. Create an empty file named `podfile` in the root of your project folder with the following text. Update the `:path` to point to your local Engine directory, which at its root, contains `ApigeeIgnite.podspec`.
     ```
     pod 'ApigeeIgnite', :path => '/local/path/to/Engine'
     ```
