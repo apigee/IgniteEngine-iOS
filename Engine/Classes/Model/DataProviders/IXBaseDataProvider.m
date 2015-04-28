@@ -219,6 +219,9 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString *)paginationKey
 {
+
+    IX_LOG_DEBUG(@"Datasource load %@: %@", (loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED, self.url);
+    
     [[self actionContainer] executeActionsForEventNamed:(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED];
     [[self actionContainer] executeActionsForEventNamed:kIX_DONE];
     

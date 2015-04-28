@@ -618,8 +618,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 -(void)fireLoadFinishedEvents:(BOOL)loadDidSucceed paginationKey:(NSString*)paginationKey
 {
     
-    NSString* locationSpecificEventSuffix = ([IXHTTPDataProvider cacheExistsForURL:self.url]) ? kIXLocationSuffixCache : @"";
-    
     if( loadDidSucceed )
     {
         NSString* dataRowBasePath = [self dataRowBasePath];
@@ -632,17 +630,17 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
                 [self calculateAndStoreDataRowResultsForDataRowPath:dataRowKey];
             }
         }
+        
+        if ([paginationKey isEqualToString:kIXPaginateNext]) {
+            [[self actionContainer] executeActionsForEventNamed:kIXPaginateNext];
+        } else if ([paginationKey isEqualToString:kIXPaginatePrev]) {
+            [[self actionContainer] executeActionsForEventNamed:kIXPaginatePrev];
+        }
     }
-    
-    if ([paginationKey isEqualToString:kIXPaginateNext]) {
-        [[self actionContainer] executeActionsForEventNamed:kIXPaginateNext];
-    } else if ([paginationKey isEqualToString:kIXPaginatePrev]) {
-        [[self actionContainer] executeActionsForEventNamed:kIXPaginatePrev];
+    if ([IXHTTPDataProvider cacheExistsForURL:self.url]) {
+        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED,kIXLocationSuffixCache]];
+        [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_DONE,kIXLocationSuffixCache]];
     }
-    
-    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",(loadDidSucceed) ? kIX_SUCCESS : kIX_FAILED,locationSpecificEventSuffix]];
-    [[self actionContainer] executeActionsForEventNamed:[NSString stringWithFormat:@"%@%@",kIX_DONE,locationSpecificEventSuffix]];
-    
     [super fireLoadFinishedEvents:loadDidSucceed paginationKey:paginationKey];
 
 }
