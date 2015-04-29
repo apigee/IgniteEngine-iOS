@@ -63,9 +63,14 @@ Before you start: clone this project and have the `/Engine` folder available on 
 	}
 	```
 
-14. Get up to speed by reading the [docs](https://ignite.apigee.com).
+14. Add the following keypairs to your `Info.plist`: 
 
-15. If you're creating a git repo for your `/assets`, you should add `Engine/**` to your `.gitignore` to avoid commiting the entire IX engine to your repo.
+	1. `IXAssets:assets`
+	2. `IXApp:assets/app.json`
+
+15. Get up to speed by reading the [docs](https://ignite.apigee.com).
+
+16. If you're creating a git repo for your `/assets`, you should add `Engine/**` to your `.gitignore` to avoid commiting the entire IX engine to your repo.
 
 TODO:
 

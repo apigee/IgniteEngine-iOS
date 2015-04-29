@@ -118,8 +118,9 @@ IX_STATIC_CONST_STRING kIXDeviceOSVersionInteger = @"os.version.integer";
 IX_STATIC_CONST_STRING kIXDeviceOSVersionMajor = @"os.version.major";
 
 // Non attribute constants
-IX_STATIC_CONST_STRING kIXAssetsBasePath = @"assets/";
-IX_STATIC_CONST_STRING kIXDefaultIndexPath = @"assets/app.json";
+IX_STATIC_CONST_STRING kIXAssetsBasePath = @"IXAssets";
+IX_STATIC_CONST_STRING kIXDefaultIndexPath = @"IXApp";
+
 // TODO: deprecate in future releases
 IX_STATIC_CONST_STRING kIXDefaultIndexPathOld = @"assets/_index.json";
 IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x";
@@ -162,7 +163,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     self = [super init];
     if( self )
     {
-        _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPath];
+        _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXDefaultIndexPath]];
 // TODO: deprecate in future releases
         if (!_appIndexFilePath) _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPathOld];
         
@@ -400,15 +401,15 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     
     if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
     {
-        [self setAppDefaultViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appDefaultViewPath]]]];
+        [self setAppDefaultViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXAssetsBasePath],[self appDefaultViewPath]]]];
     }
     if( [[self appLeftDrawerViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appLeftDrawerViewPath]] )
     {
-        [self setAppLeftDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appLeftDrawerViewPath]]]];
+        [self setAppLeftDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXAssetsBasePath],[self appLeftDrawerViewPath]]]];
     }
     if( [[self appRightDrawerViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appRightDrawerViewPath]] )
     {
-        [self setAppRightDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appRightDrawerViewPath]]]];
+        [self setAppRightDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXAssetsBasePath],[self appRightDrawerViewPath]]]];
     }
 
     if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessPushAuto defaultValue:YES] ) {
