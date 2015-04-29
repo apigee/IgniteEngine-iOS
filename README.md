@@ -11,7 +11,9 @@ TODO
 
 ## Installation
 
-ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually create a new project:
+ApigeeIgnite will soon be available through [CocoaPods](http://cocoapods.org). For the time being, to manually create a new project:
+
+Before you start: clone this project and have the `/Engine` folder available on your local workstation.
 
 1. Open Xcode 6
 
@@ -25,7 +27,7 @@ ApigeeIgnite is available through [CocoaPods](http://cocoapods.org). To manually
 
 6. Create an empty file named `podfile` in the root of your project folder with the following text. Update the `:path` to point to your local Engine directory, which at its root, contains `ApigeeIgnite.podspec`.
     ```
-    pod 'ApigeeIgnite', :path => '/local/path/to/Engine'
+    pod 'ApigeeIgnite', :path => '/local/path/where_you_cloned_the/Engine'
     ```
 
 7. From your project directory, run `pod install`
