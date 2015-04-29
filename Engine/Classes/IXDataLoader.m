@@ -81,8 +81,8 @@
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 
                 AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-                operation.responseSerializer = [AFXMLParserResponseSerializer serializer];
-                [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, RXMLElement* responseObject) {
+                operation.responseSerializer = [AFJSONResponseSerializer serializer];
+                [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                     responseString = operation.responseString;
                     if( [NSJSONSerialization isValidJSONObject:responseObject] )
                     {
