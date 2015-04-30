@@ -169,7 +169,9 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     self = [super init];
     if( self )
     {
-        _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXDefaultIndexPath]];
+        NSString* defaultIndexPath = [[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXAssetsBasePath] stringByAppendingPathComponent:[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXDefaultIndexPath]];
+        _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:defaultIndexPath];
+        if (!_appIndexFilePath) _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPathOld];
 // TODO: deprecate in future releases
         if (!_appIndexFilePath) _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPathOld];
         
@@ -432,11 +434,6 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
             [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
             [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
         }
-    }
-    
-    if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
-    {
-        [self setAppDefaultViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appDefaultViewPath]]]];
     }
 
     if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessPushAuto defaultValue:YES] ) {

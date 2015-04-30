@@ -65,8 +65,8 @@ Before you start: clone this project and have the `/Engine` folder available on 
 
 14. Add the following keypairs to your `Info.plist`: 
 
-	1. `IXAssets:assets`
-	2. `IXApp:assets/app.json`
+	1. `IXAssets => assets`
+	2. `IXApp => app.json`
 
 15. Get up to speed by reading the [docs](https://ignite.apigee.com).
 
