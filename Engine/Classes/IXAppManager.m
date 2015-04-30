@@ -53,6 +53,7 @@ IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawer.l.max.w";
 IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawer.r.url";
 IX_STATIC_CONST_STRING kIXDrawerViewRightMaxWidth = @"drawer.r.max.w";
 IX_STATIC_CONST_STRING kIXDrawerToggleVelocity = @"drawer.velocity";
+IX_STATIC_CONST_STRING kIXDrawerAllowedStates = @"drawer.allowedStates"; //open,close,all,none - must match same property in IXViewController
 IX_STATIC_CONST_STRING kIXEnableLayoutDebugging = @"debug.layout.enabled";
 IX_STATIC_CONST_STRING kIXEnableRequestLogging = @"logging.datasource.enabled";
 IX_STATIC_CONST_STRING kIXEnableRemoteLogging = @"logging.remote.enabled";
@@ -77,12 +78,17 @@ IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"requestAccess.push.auto"; //
 IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"mic.autoRequest.enabled"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
 IX_STATIC_CONST_STRING kIXRequestAccessLocationAuto = @"location.autoRequest.enabled"; // Should app automatically request access to location. If NO must use app function kIXRequestAccessLocation to track location.  This will begin tracking automatically as well when set to YES.
 
-IX_STATIC_CONST_STRING kIXLocationAccuracyBest = @"best";
-IX_STATIC_CONST_STRING kIXLocationAccuracyBestForNavigation = @"bestForNavigation";
-IX_STATIC_CONST_STRING kIXLocationAccuracyNearestTenMeters = @"nearestTenMeters";
-IX_STATIC_CONST_STRING kIXLocationAccuracyHundredMeters = @"hundredMeters";
-IX_STATIC_CONST_STRING kIXLocationAccuracyKilometer = @"kilometer";
-IX_STATIC_CONST_STRING kIXLocationAccuracyThreeKilometers = @"threeKilometers";
+// App Attribute Values
+IX_STATIC_CONST_STRING kIXLocationAccuracyBest = @"best"; // location services
+IX_STATIC_CONST_STRING kIXLocationAccuracyBestForNavigation = @"bestForNavigation"; // location services
+IX_STATIC_CONST_STRING kIXLocationAccuracyNearestTenMeters = @"nearestTenMeters"; // location services
+IX_STATIC_CONST_STRING kIXLocationAccuracyHundredMeters = @"hundredMeters"; // location services
+IX_STATIC_CONST_STRING kIXLocationAccuracyKilometer = @"kilometer"; // location services
+IX_STATIC_CONST_STRING kIXLocationAccuracyThreeKilometers = @"threeKilometers"; // location services
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateOpen = @"open"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateClosed = @"closed"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateAll = @"all"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateNone = @"none"; // drawer
 
 // App Functions
 IX_STATIC_CONST_STRING kIXReset = @"reset";
@@ -92,11 +98,11 @@ IX_STATIC_CONST_STRING kIXToggleDrawerLeft = @"drawer.l.toggle";
 IX_STATIC_CONST_STRING kIXToggleDrawerRight = @"drawer.r.toggle";
 
 // TODO: These should be cleaned up and adjusted to drawer.open.enable and drawer.close.disable and drawer.all.enable etc.
-IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawer.enabled"; // Function name must have one of the following suffixes.
-IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function name must have one of the following suffixes.
-IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
-IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
-IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".openClose";
+//IX_STATIC_CONST_STRING kIXEnableDrawerPrefix = @"drawer.enabled"; // Function name must have one of the following suffixes.
+//IX_STATIC_CONST_STRING kIXDisableDrawerPrefix = @"drawer.disable"; // Function name must have one of the following suffixes.
+//IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenSuffix = @".open";
+//IX_STATIC_CONST_STRING kIXEnableDisableDrawerCloseSuffix = @".close";
+//IX_STATIC_CONST_STRING kIXEnableDisableDrawerOpenAndCloseSuffix = @".openClose";
 
 IX_STATIC_CONST_STRING kIXRequestAccessPush = @"push.auth.request";
 IX_STATIC_CONST_STRING kIXRequestAccessMicrophone = @"mic.auth.request";
@@ -130,7 +136,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 @property (nonatomic,assign) BOOL layoutDebuggingEnabled;
 @property (nonatomic,strong) IXSandbox *applicationSandbox;
 
-@property (nonatomic,strong) MMDrawerController *drawerController;
+//@property (nonatomic,strong) MMDrawerController *drawerController;
 @property (nonatomic,strong) IXNavigationViewController *rootViewController;
 
 @property (nonatomic,copy) NSString *pushToken;
@@ -397,11 +403,6 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     [self setAppLeftDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXDrawerViewLeft defaultValue:nil]];
     [self setAppRightDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXDrawerViewRight defaultValue:nil]];
     [[self drawerController] setAnimationVelocity:[[self appProperties] getFloatPropertyValue:kIXDrawerToggleVelocity defaultValue:840.0f]];
-    
-    if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
-    {
-        [self setAppDefaultViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appDefaultViewPath]]]];
-    }
     if( [[self appLeftDrawerViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appLeftDrawerViewPath]] )
     {
         [self setAppLeftDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appLeftDrawerViewPath]]]];
@@ -409,6 +410,27 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     if( [[self appRightDrawerViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appRightDrawerViewPath]] )
     {
         [self setAppRightDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appRightDrawerViewPath]]]];
+    }
+    if (self.appLeftDrawerViewPath != nil || self.appRightDrawerViewPath != nil) {
+        NSString* drawerAllowedStates = [[self appProperties] getStringPropertyValue:kIXDrawerAllowedStates defaultValue:nil];
+        if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateOpen]) {
+            [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+            [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateClosed]) {
+            [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+            [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateAll]) {
+            [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+            [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateNone]) {
+            [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+            [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        }
+    }
+    
+    if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
+    {
+        [self setAppDefaultViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",kIXAssetsBasePath,[self appDefaultViewPath]]]];
     }
 
     if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessPushAuto defaultValue:YES] ) {
@@ -521,7 +543,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 
 +(UIInterfaceOrientation)currentInterfaceOrientation
 {
-    return [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] interfaceOrientation];
+    return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 -(NSString*)evaluateJavascript:(NSString*)javascript
@@ -570,28 +592,6 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         if( [[self drawerController] rightDrawerViewController] )
         {
             [[self drawerController] toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
-        }
-    }
-    else if( [functionName hasPrefix:kIXEnableDrawerPrefix] )
-    {
-        if( [functionName hasSuffix:kIXEnableDisableDrawerOpenSuffix] ) {
-            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
-        } else if( [functionName hasSuffix:kIXEnableDisableDrawerCloseSuffix] ) {
-            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
-        } else if( [functionName hasSuffix:kIXEnableDisableDrawerOpenAndCloseSuffix] ) {
-            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
-            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
-        }
-    }
-    else if( [functionName hasPrefix:kIXDisableDrawerPrefix] )
-    {
-        if( [functionName hasSuffix:kIXEnableDisableDrawerOpenSuffix] ) {
-            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
-        } else if( [functionName hasSuffix:kIXEnableDisableDrawerCloseSuffix] ) {
-            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
-        } else if( [functionName hasSuffix:kIXEnableDisableDrawerOpenAndCloseSuffix] ) {
-            [[self drawerController] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
-            [[self drawerController] setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
         }
     }
     else if( [functionName isEqualToString:kIXRequestAccessPush] )

@@ -28,7 +28,7 @@ typedef enum {
 @property (nonatomic,assign,readonly,getter = isLayoutDebuggingEnabled) BOOL layoutDebuggingEnabled;
 @property (nonatomic,strong,readonly) IXSandbox *applicationSandbox;
 
-@property (nonatomic,strong,readonly) MMDrawerController *drawerController;
+@property (nonatomic,strong) MMDrawerController *drawerController;
 @property (nonatomic,strong,readonly) IXNavigationViewController *rootViewController;
 @property (nonatomic,assign,readonly) IXViewController* currentIXViewController;
 

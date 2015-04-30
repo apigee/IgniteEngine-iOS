@@ -18,15 +18,21 @@
 #import "IXClickableScrollView.h"
 #import "IXPathHandler.h"
 #import "IXControlCacheContainer.h"
+#import "MMDrawerController.h"
 
 // Attributes
 IX_STATIC_CONST_STRING kIXStatusBarStyle = @"statusBar.style";
 IX_STATIC_CONST_STRING kIXBgColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXDrawerAllowedStates = @"drawer.allowedStates"; //open,close,all,none - must match same property in IXViewController
 
 // Attribute values
-IX_STATIC_CONST_STRING kIXStatusBarStyleDark = @"dark";
-IX_STATIC_CONST_STRING kIXStatusBarStyleLight = @"light";
-IX_STATIC_CONST_STRING kIXStatusBarStyleHidden = @"hidden";
+IX_STATIC_CONST_STRING kIXStatusBarStyleDark = @"dark"; // status bar
+IX_STATIC_CONST_STRING kIXStatusBarStyleLight = @"light"; // status bar
+IX_STATIC_CONST_STRING kIXStatusBarStyleHidden = @"hidden"; // status bar
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateOpen = @"open"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateClosed = @"closed"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateAll = @"all"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateNone = @"none"; // drawer
 
 // Events
 IX_STATIC_CONST_STRING kIXWillFirstAppear = @"willFirstAppear";
@@ -237,6 +243,23 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
     
     UIColor* backgroundColor = [propertyContainer getColorPropertyValue:kIXBgColor defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
+    NSLog([IXAppManager sharedAppManager].appDefaultViewPath);
+    if ([IXAppManager sharedAppManager].appLeftDrawerViewPath != nil || [IXAppManager sharedAppManager].appRightDrawerViewPath != nil) {
+        NSString* drawerAllowedStates = [propertyContainer getStringPropertyValue:kIXDrawerAllowedStates defaultValue:nil];
+        if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateOpen]) {
+            [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+            [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateClosed]) {
+            [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+            [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateAll]) {
+            [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
+            [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateNone]) {
+            [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+            [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+        }
+    }
 }
 
 -(void)applySettings
