@@ -248,9 +248,15 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             if( [jsonObject isKindOfClass:[NSDictionary class]] )
             {
                 NSDictionary* controlJSONDictionary = jsonObject[kIXViewControlRef];
-                if( controlJSONDictionary == nil )
+                NSDictionary* controlCustomJSONDictionary = jsonObject[kIXCustomContainerControlRef];
+                
+                if( controlJSONDictionary == nil && controlCustomJSONDictionary == nil)
                 {
                     controlJSONDictionary = jsonObject;
+                }
+                else if (controlJSONDictionary == nil && controlCustomJSONDictionary != nil)
+                {
+                    controlJSONDictionary = controlCustomJSONDictionary;
                 }
                 
                 NSMutableDictionary* propertiesDictionary = [NSMutableDictionary dictionaryWithDictionary:controlJSONDictionary[kIX_ATTRIBUTES]];
