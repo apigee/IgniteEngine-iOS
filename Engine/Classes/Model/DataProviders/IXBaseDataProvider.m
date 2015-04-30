@@ -136,8 +136,8 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     [self setUrlEncodeParams:[[self propertyContainer] getBoolPropertyValue:kIXUrlEncodeParams defaultValue:YES]];
     [self setDeriveValueTypes:[[self propertyContainer] getBoolPropertyValue:kIXDeriveValueTypes defaultValue:YES]];
-    [self setBody:[_bodyProperties getAllPropertiesObjectValues:NO] ?: @{}];
-    [self setQueryParams:[_queryParamsProperties getAllPropertiesObjectValues:_urlEncodeParams] ?: @{}];
+    [self setBody:[_bodyProperties getAllPropertiesObjectValuesURLEncoded:NO] ?: @{}];
+    [self setQueryParams:[_queryParamsProperties getAllPropertiesObjectValuesURLEncoded:_urlEncodeParams] ?: @{}];
 }
 
 -(void)setBody:(NSDictionary *)body

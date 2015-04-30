@@ -270,8 +270,11 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         
     }];
 }
+-(NSDictionary*)getAllPropertiesObjectValues {
+    return [self getAllPropertiesObjectValuesURLEncoded:NO];
+}
 
--(NSDictionary*)getAllPropertiesObjectValues:(BOOL)urlEncodeStringValues
+-(NSDictionary*)getAllPropertiesObjectValuesURLEncoded:(BOOL)urlEncodeStringValues
 {
     NSMutableDictionary* returnDictionary = nil;
     if( [[[self propertiesDict] allKeys] count] > 0 )

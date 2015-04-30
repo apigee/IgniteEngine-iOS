@@ -18,12 +18,12 @@
 
 @property (nonatomic,copy) NSString* eventName;
 @property (nonatomic,strong) IXPropertyContainer* actionProperties;
-@property (nonatomic,strong) IXPropertyContainer* parameterProperties;
+@property (nonatomic,strong) IXPropertyContainer* setProperties;
 @property (nonatomic,strong) IXActionContainer* subActionContainer;
 
 -(instancetype)initWithEventName:(NSString*)eventName
                 actionProperties:(IXPropertyContainer*)actionProperties
-             parameterProperties:(IXPropertyContainer*)parameterProperties
+                   setProperties:(IXPropertyContainer*)setProperties
               subActionContainer:(IXActionContainer*)subActionContainer;
 
 +(instancetype)actionWithEventName:(NSString*)eventName

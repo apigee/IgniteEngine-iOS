@@ -127,7 +127,7 @@ IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wai
         for( IXBaseAction* action in actionArray )
         {
             [[action actionProperties] setOwnerObject:ownerObject];
-            [[action parameterProperties] setOwnerObject:ownerObject];
+            [[action setProperties] setOwnerObject:ownerObject];
             [[action subActionContainer] setOwnerObject:ownerObject];
         }
     }
