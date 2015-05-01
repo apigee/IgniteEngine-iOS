@@ -22,6 +22,7 @@ typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* pa
 @property (nonatomic,copy) NSString* rawValue;
 @property (nonatomic,copy) NSString* objectID;
 @property (nonatomic,copy) NSString* methodName;
+@property (nonatomic,copy) NSString* rawString;
 @property (nonatomic,strong) NSArray* parameters;
 
 @property (nonatomic,copy) NSString* functionName;
@@ -30,6 +31,7 @@ typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* pa
 -(instancetype)initWithRawValue:(NSString*)rawValue
                        objectID:(NSString*)objectID
                      methodName:(NSString*)methodName
+                     rawString:(NSString*)rawString
                    functionName:(NSString*)functionName
                      parameters:(NSArray*)parameters
           rangeInPropertiesText:(NSRange)rangeInPropertiesText;
