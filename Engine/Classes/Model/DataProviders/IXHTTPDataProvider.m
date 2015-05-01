@@ -24,18 +24,8 @@
 #import "IXJSONUtils.h"
 
 // TODO: These attributes are old and need to be cleaned up and re-implemented
-IX_STATIC_CONST_STRING kIXModifyResponse = @"modify_response";
-IX_STATIC_CONST_STRING kIXModifyType = @"modify.type";
-IX_STATIC_CONST_STRING kIXDelete = @"delete";
-IX_STATIC_CONST_STRING kIXAppend = @"append";
-
-IX_STATIC_CONST_STRING kIXTopLevelContainer = @"top_level_container";
-
 IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.g. "%K CONTAINS[c] %@"
 IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
-
-IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
-//IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
 /////////////////////////
 
@@ -106,7 +96,7 @@ IX_STATIC_CONST_STRING kIXCachePolicyReloadRevalidatingCacheData = @"reloadReval
 
 // IXHTTPDataProvider Read-Only Properties
 IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
-IX_STATIC_CONST_STRING kIXResponseBodyPrefix = @"response.body";
+IX_STATIC_CONST_STRING kIXResponseBodyPrefix = @"response.body"; // Prefix for parsed response. Reference objects like dsId.response.body.entities.0.uuid
 IX_STATIC_CONST_STRING kIXResponseString = @"response.string";
 IX_STATIC_CONST_STRING kIXResponseHeaders = @"response.headers";
 IX_STATIC_CONST_STRING kIXStatusCode = @"response.code";
@@ -116,9 +106,19 @@ IX_STATIC_CONST_STRING kIXErrorMessage = @"response.error";
 IX_STATIC_CONST_STRING kIXClearCache = @"clearCache"; // Clears the cached data that is associated with this data provider's url.
 IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also an event!
 IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also an event! | Disabled if data appending is enabled *note* this is a beginsWith
+IX_STATIC_CONST_STRING kIXModifyDelete = @"delete"; // delete object at specified index. index is REQUIRED
+IX_STATIC_CONST_STRING kIXModifyPush = @"push"; // add object to end of array
+IX_STATIC_CONST_STRING kIXModifyPop = @"pop"; // remove last object (at end) of array
+IX_STATIC_CONST_STRING kIXModifyInsert = @"insert"; // insert object at specified index. default=0
+IX_STATIC_CONST_STRING kIXModifyData = @"data"; // push/insert data - automatically parsed as JSON object unless it is a single-level string/int/float/bool
+
+// IXHTTPDataProvider Function Parameters
+IX_STATIC_CONST_STRING kIXModifyIndex = @"index"; // index of object to be deleted or inserted
+IX_STATIC_CONST_STRING kIXModifyPath = @"path"; // dot notated basepath to data array that will be modified
 
 // IXHTTPDataProvider Events
 IX_STATIC_CONST_STRING kIXUploadProgress = @"uploadProgress";
+IX_STATIC_CONST_STRING kIXModifiedEvent = @"modified"; // response was modified with push, pop, insert or delete
 // IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also a function
 // IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also a function
 
@@ -182,6 +182,10 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
     [super applySettings];
     
+    if (!_response) {
+        _response = [IXHTTPResponse new];
+    }
+    
     [self setMethod:[[self propertyContainer] getStringPropertyValue:kIXMethod defaultValue:kIXMethodGET]];
     [self setRequestType:[[self propertyContainer] getStringPropertyValue:kIXRequestType defaultValue:kIXRequestTypeJSON]];
     [self setResponseType:[[self propertyContainer] getStringPropertyValue:kIXResponseType defaultValue:kIXRequestTypeJSON]];
@@ -237,7 +241,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         [self.headersProperties removePropertyNamed:kIXContentTypeHeaderKey];
     }
     // Set other headers
-    [[self.headersProperties getAllPropertiesObjectValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
+    [[self.headersProperties getAllPropertiesObjectValuesURLEncoded:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
         [[IXAFHTTPSessionManager sharedManager].requestSerializer setValue:value forHTTPHeaderField:key];
     }];
     
@@ -450,7 +454,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         }
         else
         {
-            _response = [IXHTTPResponse new];
             if ([self.method isEqualToString:kIXMethodGET]) {
                 [self GET:self.url completion:^(BOOL success, NSURLSessionDataTask *task, id responseObject, NSError *error) {
                     completion(success, task, responseObject, error);
@@ -678,45 +681,121 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
             IX_LOG_ERROR(@"Could not paginate previous - data appending is enabled via %@", kIXPaginationAppendData);
         }
     }
-// TODO: This needs to be re-implemented with predicate, append, and delete.
-    else if( [functionName isEqualToString:kIXModifyResponse] )
+    else if([functionName isEqualToString:kIXModifyPush] ||
+            [functionName isEqualToString:kIXModifyPop] ||
+            [functionName isEqualToString:kIXModifyDelete] ||
+            [functionName isEqualToString:kIXModifyInsert])
     {
-        NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
-        if( [modifyResponseType length] > 0 )
-        {
-            NSString* topLevelContainerPath = [parameterContainer getStringPropertyValue:kIXTopLevelContainer defaultValue:nil];
-            id topLevelContainer = [IXJSONUtils objectForPath:topLevelContainerPath container:_response.responseObject sandox:self.sandbox baseObject:self];
-
-            if( [topLevelContainer isKindOfClass:[NSMutableArray class]] )
-            {
-                NSMutableArray* topLevelArray = (NSMutableArray*) topLevelContainer;
-
-                if( [modifyResponseType isEqualToString:kIXDelete] )
-                {
-                    NSString* predicateFormat = [parameterContainer getStringPropertyValue:kIXPredicateFormat defaultValue:nil];
-                    NSArray* predicateArgumentsArray = [parameterContainer getCommaSeperatedArrayListValue:kIXPredicateArguments defaultValue:nil];
-
-                    if( [predicateFormat length] > 0 && [predicateArgumentsArray count] > 0 )
-                    {
-                        NSPredicate* predicate = [NSPredicate predicateWithFormat:predicateFormat argumentArray:predicateArgumentsArray];
-                        if( predicate != nil )
-                        {
-                            NSArray* filteredArray = [topLevelContainer filteredArrayUsingPredicate:predicate];
-                            [topLevelArray removeObjectsInArray:filteredArray];
-                        }
-                    }
-                }
-                else if( [modifyResponseType isEqualToString:kIXAppend] )
-                {
-                    id jsonToAppendObject = nil;
-                }
-            }
-        }
+        [self modifyResponseForFunctionNamed:functionName withParameters:parameterContainer];
     }
     else
     {
         [super applyFunction:functionName withParameters:parameterContainer];
     }
+}
+
+// TODO: This is a bit of a bastardized approach. We should have a separate class for handling offline data manipulation that HTTP can leverage.
+- (void)modifyResponseForFunctionNamed:(NSString*)functionName withParameters:(IXPropertyContainer *)parameterContainer {
+
+    BOOL wasModified = NO;
+    NSDictionary* paramsDict = [parameterContainer getAllPropertiesObjectValues];
+    id newData = ([paramsDict valueForKey:kIXModifyData]) ?: nil;
+    NSMutableDictionary* modifiedResponseObject = [NSMutableDictionary dictionary];
+    // Get existing data
+    NSString* existingDataPath = [parameterContainer getStringPropertyValue:kIXModifyPath defaultValue:nil];
+    NSString* index = [parameterContainer getStringPropertyValue:kIXModifyIndex defaultValue:nil];
+    id existingDataArray = [[IXJSONUtils objectForPath:existingDataPath container:_response.responseObject sandox:self.sandbox baseObject:self] mutableCopy];
+    
+    
+    if (newData != nil && ([functionName isEqualToString:kIXModifyPush] || [functionName isEqualToString:kIXModifyInsert])) {
+        // newData is legit. We can do push and insert.
+        if (existingDataArray == nil) {
+            existingDataArray = [NSMutableArray array];
+        }
+        if ([existingDataArray isKindOfClass:[NSMutableArray class]]) {
+            if ([functionName isEqualToString:kIXModifyPush]) {
+                // Currently only adding a single object at a time is supported.
+// TODO: support adding multiple objects at once from a JSON array
+                [existingDataArray addObject:newData];
+                [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                wasModified = YES;
+            } else if ([functionName isEqualToString:kIXModifyInsert]) {
+                // If index is defined, insert there, otherwise at position 0
+                NSInteger idx = (index) ? [index integerValue] : 0;
+                // Safeguard so we don't try and insert out of array bounds
+                idx = (idx > [existingDataArray count]) ? [existingDataArray count] : idx;
+                [existingDataArray insertObject:newData atIndex:idx];
+                [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                wasModified = YES;
+            }
+        }
+    }
+    if (newData == nil && ([functionName isEqualToString:kIXModifyPop] || [functionName isEqualToString:kIXModifyDelete])) {
+        if ([existingDataArray isKindOfClass:[NSMutableArray class]]) {
+            // newData is nil but existingDataArray is legit. We can do pop and delete.
+            if ([functionName isEqualToString:kIXModifyPop]) {
+                if ([existingDataArray count] > 0) {
+                    [existingDataArray removeLastObject];
+                    [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                    wasModified = YES;
+                } else {
+                    DDLogError(@"Could not %@ last object because the array length is 0", kIXModifyPop);
+                }
+            } else if ([functionName isEqualToString:kIXModifyDelete]) {
+                if (index != nil) {
+                    NSInteger idx = [index integerValue];
+                    if (idx > [existingDataArray count]) {
+                        DDLogError(@"Could not %@ object; '%@' function parameter is out of bounds", kIXModifyDelete, kIXModifyIndex);
+                    } else {
+                        [existingDataArray removeObjectAtIndex:idx];
+                        [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                        wasModified = YES;
+                    }
+                } else {
+                    DDLogError(@"The '%@' function parameter is required when using the '%@' function", kIXModifyIndex, kIXModifyDelete);
+                }
+            }
+        }
+    }
+    if (wasModified) {
+        [_response setResponseObject:modifiedResponseObject];
+        [_response setResponseStringFromObject:modifiedResponseObject];
+        [[self actionContainer] executeActionsForEventNamed:kIXModifiedEvent];
+    }
+
+// TODO: re-implement predicate filtering:
+    
+//        NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
+//        if( [modifyResponseType length] > 0 )
+//        {
+//            NSString* topLevelContainerPath = [parameterContainer getStringPropertyValue:kIXTopLevelContainer defaultValue:nil];
+//            id topLevelContainer = [IXJSONUtils objectForPath:topLevelContainerPath container:_response.responseObject sandox:self.sandbox baseObject:self];
+//
+//            if( [topLevelContainer isKindOfClass:[NSMutableArray class]] )
+//            {
+//                NSMutableArray* topLevelArray = (NSMutableArray*) topLevelContainer;
+//
+//                if( [modifyResponseType isEqualToString:kIXDelete] )
+//                {
+//                    NSString* predicateFormat = [parameterContainer getStringPropertyValue:kIXPredicateFormat defaultValue:nil];
+//                    NSArray* predicateArgumentsArray = [parameterContainer getCommaSeperatedArrayListValue:kIXPredicateArguments defaultValue:nil];
+//
+//                    if( [predicateFormat length] > 0 && [predicateArgumentsArray count] > 0 )
+//                    {
+//                        NSPredicate* predicate = [NSPredicate predicateWithFormat:predicateFormat argumentArray:predicateArgumentsArray];
+//                        if( predicate != nil )
+//                        {
+//                            NSArray* filteredArray = [topLevelContainer filteredArrayUsingPredicate:predicate];
+//                            [topLevelArray removeObjectsInArray:filteredArray];
+//                        }
+//                    }
+//                }
+//                else if( [modifyResponseType isEqualToString:kIXAppend] )
+//                {
+//                    id jsonToAppendObject = nil;
+//                }
+//            }
+//        }
 }
 
 - (NSURLRequestCachePolicy)cachePolicyFromString:(NSString*)policy {

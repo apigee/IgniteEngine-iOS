@@ -7,7 +7,7 @@
 //
 
 #import "IXFunctionAction.h"
-
+#import "IXProperty.h"
 #import "IXPropertyContainer.h"
 #import "IXSandbox.h"
 #import "IXBaseControl.h"
@@ -22,7 +22,10 @@
 #import "MMDrawerController.h"
 
 // IXFunctionAction Properties
-static NSString* const kIXFunctionName = @"functionName";
+static NSString* const kIXFunctionName = @"name";
+//TODO: deprecate in future release
+static NSString* const kIXFunctionNameOld = @"functionName";
+
 static NSString* const kIXDuration = @"duration";
 
 @implementation IXFunctionAction
@@ -30,14 +33,14 @@ static NSString* const kIXDuration = @"duration";
 -(void)execute
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    NSString* functionName = [[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil];
+    NSString* functionName = ([[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil]) ?: [[self actionProperties] getStringPropertyValue:kIXFunctionNameOld defaultValue:nil];
+
     CGFloat duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
-    
     if( [objectIDs count] && [functionName length] > 0 )
     {
         if ([[objectIDs firstObject] isEqualToString:kIXAppRef])
         {
-            [[IXAppManager sharedAppManager] applyFunction:functionName parameters:[self parameterProperties]];
+            [[IXAppManager sharedAppManager] applyFunction:functionName parameters:[self setProperties]];
         }
         else
         {
@@ -55,7 +58,7 @@ static NSString* const kIXDuration = @"duration";
                                      animations:^{
                                          for( IXBaseObject* baseObject in objectsWithID )
                                          {
-                                             [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+                                             [baseObject applyFunction:functionName withParameters:[self setProperties]];
                                          }
                                      }
                                      completion:nil];
@@ -64,7 +67,7 @@ static NSString* const kIXDuration = @"duration";
                 {
                     for( IXBaseObject* baseObject in objectsWithID )
                     {
-                        [baseObject applyFunction:functionName withParameters:[self parameterProperties]];
+                        [baseObject applyFunction:functionName withParameters:[self setProperties]];
                     }
                 }
             }

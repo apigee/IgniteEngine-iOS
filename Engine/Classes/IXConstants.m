@@ -83,6 +83,7 @@ NSString* const kIX_MODIFY = @"modify";
 NSString* const kIX_REFRESH = @"refresh";
 NSString* const kIX_LOAD = @"load";
 NSString* const kIX_SET = @"set";
+NSString* const kIX_FUNCTION_PARAMETERS = @"parameters";
 NSString* const kIX_FUNCTION = @"function";
 
 // RANDOMS

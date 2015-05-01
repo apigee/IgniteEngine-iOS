@@ -142,6 +142,7 @@ extern NSString* const kIX_MODIFY;
 extern NSString* const kIX_REFRESH;
 extern NSString* const kIX_LOAD;
 extern NSString* const kIX_SET;
+extern NSString* const kIX_FUNCTION_PARAMETERS;
 extern NSString* const kIX_FUNCTION;
 
 // RANDOMS

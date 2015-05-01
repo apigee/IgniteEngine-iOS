@@ -47,16 +47,16 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
 
 -(instancetype)initWithEventName:(NSString*)eventName
                 actionProperties:(IXPropertyContainer*)actionProperties
-             parameterProperties:(IXPropertyContainer*)parameterProperties
+             setProperties:(IXPropertyContainer*)parameterProperties
               subActionContainer:(IXActionContainer*)subActionContainer
 {
-    self = [super initWithEventName:eventName actionProperties:actionProperties parameterProperties:parameterProperties subActionContainer:subActionContainer];
+    self = [super initWithEventName:eventName actionProperties:actionProperties setProperties:parameterProperties subActionContainer:subActionContainer];
     if( self )
     {
         if( ![actionProperties propertyExistsForPropertyNamed:kIX_TARGET] )
         {
             _objectIDAndParameters = [NSMutableDictionary dictionary];
-            NSDictionary* parameters = [[self parameterProperties] propertiesDict];
+            NSDictionary* parameters = [[self setProperties] propertiesDict];
             [parameters enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSArray* propertyArray, BOOL *stop) {
                 for( IXProperty* property in propertyArray ) {
                     NSMutableArray* keySeperated = [[key componentsSeparatedByString:kIX_PERIOD_SEPERATOR] mutableCopy];
@@ -77,7 +77,7 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
                     }
                 }
             }];
-            [[self parameterProperties] removeAllProperties];
+            [[self setProperties] removeAllProperties];
         }
     }
     return self;
@@ -115,13 +115,13 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
     if( [objectID isEqualToString:kIXSessionRef] )
     {
         IXPropertyContainer* sessionProperties = [[IXAppManager sharedAppManager] sessionProperties];
-        [sessionProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
+        [sessionProperties addPropertiesFromPropertyContainer:[self setProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
         [[IXAppManager sharedAppManager] storeSessionProperties];
     }
     else if( [objectID isEqualToString:kIXAppRef] )
     {
         IXPropertyContainer* appProperties = [[IXAppManager sharedAppManager] appProperties];
-        [appProperties addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
+        [appProperties addPropertiesFromPropertyContainer:[self setProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
         [[IXAppManager sharedAppManager] applyAppProperties];
     }
     else
@@ -131,7 +131,7 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
                                                                               withSelfObject:ownerObject];
         for( IXBaseObject* baseObject in objectsWithID )
         {
-            [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self parameterProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
+            [[baseObject propertyContainer] addPropertiesFromPropertyContainer:[self setProperties] evaluateBeforeAdding:YES replaceOtherPropertiesWithTheSameName:YES];
             
             [baseObject applySettings];
             
@@ -147,13 +147,13 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
 {
     __block BOOL needsLayout = NO;
     [[self objectIDAndParameters] enumerateKeysAndObjectsUsingBlock:^(NSString* objectID, NSArray* parameters, BOOL *stop) {
-        [[self parameterProperties] addProperties:parameters replaceOtherPropertiesWithTheSameName:YES];
+        [[self setProperties] addProperties:parameters replaceOtherPropertiesWithTheSameName:YES];
         [self modifyObjectID:objectID];
         if( !needsLayout )
         {
-            needsLayout = [[self parameterProperties] hasLayoutProperties];
+            needsLayout = [[self setProperties] hasLayoutProperties];
         }
-        [[self parameterProperties] removeAllProperties];
+        [[self setProperties] removeAllProperties];
     }];
 
     if( needsLayout )
@@ -167,14 +167,14 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
 -(void)performModify
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    if( [objectIDs count] > 0 && [self parameterProperties] != nil )
+    if( [objectIDs count] > 0 && [self setProperties] != nil )
     {
         for( NSString* objectID in objectIDs )
         {
             [self modifyObjectID:objectID];
         }
 
-        if( [[self parameterProperties] hasLayoutProperties] )
+        if( [[self setProperties] hasLayoutProperties] )
         {
             [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
         }
@@ -192,7 +192,7 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
                          withStaggerDelay:(CGFloat)staggerDelay
 {
     NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    if( [objectIDs count] && [self parameterProperties] != nil )
+    if( [objectIDs count] && [self setProperties] != nil )
     {
         CGFloat delay = 0.0f;
         for( NSString* objectID in objectIDs )
@@ -207,7 +207,7 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
             delay += staggerDelay;
         }
         
-        if( [[self parameterProperties] hasLayoutProperties] )
+        if( [[self setProperties] hasLayoutProperties] )
         {
             [[[[IXAppManager sharedAppManager] currentIXViewController] containerControl] layoutControl];
         }
