@@ -24,14 +24,8 @@
 #import "IXJSONUtils.h"
 
 // TODO: These attributes are old and need to be cleaned up and re-implemented
-
-IX_STATIC_CONST_STRING kIXTopLevelContainer = @"top_level_container";
-
 IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.g. "%K CONTAINS[c] %@"
 IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
-
-IX_STATIC_CONST_STRING kIXJSONToAppend = @"json_to_append";
-//IX_STATIC_CONST_STRING kIXParseJSONAsObject = @"parse_json_as_object";
 
 /////////////////////////
 
@@ -124,6 +118,7 @@ IX_STATIC_CONST_STRING kIXModifyPath = @"path"; // dot notated basepath to data 
 
 // IXHTTPDataProvider Events
 IX_STATIC_CONST_STRING kIXUploadProgress = @"uploadProgress";
+IX_STATIC_CONST_STRING kIXModifiedEvent = @"modified"; // response was modified with push, pop, insert or delete
 // IX_STATIC_CONST_STRING kIXPaginateNext = @"paginateNext"; // also a function
 // IX_STATIC_CONST_STRING kIXPaginatePrev = @"paginatePrev"; // also a function
 
@@ -702,6 +697,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 // TODO: This is a bit of a bastardized approach. We should have a separate class for handling offline data manipulation that HTTP can leverage.
 - (void)modifyResponseForFunctionNamed:(NSString*)functionName withParameters:(IXPropertyContainer *)parameterContainer {
 
+    BOOL wasModified = NO;
     NSDictionary* paramsDict = [parameterContainer getAllPropertiesObjectValues];
     id newData = ([paramsDict valueForKey:kIXModifyData]) ?: nil;
     NSMutableDictionary* modifiedResponseObject = [NSMutableDictionary dictionary];
@@ -722,6 +718,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 // TODO: support adding multiple objects at once from a JSON array
                 [existingDataArray addObject:newData];
                 [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                wasModified = YES;
             } else if ([functionName isEqualToString:kIXModifyInsert]) {
                 // If index is defined, insert there, otherwise at position 0
                 NSInteger idx = (index) ? [index integerValue] : 0;
@@ -729,6 +726,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
                 idx = (idx > [existingDataArray count]) ? [existingDataArray count] : idx;
                 [existingDataArray insertObject:newData atIndex:idx];
                 [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                wasModified = YES;
             }
         }
     }
@@ -739,6 +737,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
                 if ([existingDataArray count] > 0) {
                     [existingDataArray removeLastObject];
                     [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                    wasModified = YES;
                 } else {
                     DDLogError(@"Could not %@ last object because the array length is 0", kIXModifyPop);
                 }
@@ -750,6 +749,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
                     } else {
                         [existingDataArray removeObjectAtIndex:idx];
                         [modifiedResponseObject setValue:existingDataArray forKeyPath:existingDataPath];
+                        wasModified = YES;
                     }
                 } else {
                     DDLogError(@"The '%@' function parameter is required when using the '%@' function", kIXModifyIndex, kIXModifyDelete);
@@ -757,8 +757,11 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
             }
         }
     }
-    [_response setResponseObject:modifiedResponseObject];
-    [_response setResponseStringFromObject:modifiedResponseObject];
+    if (wasModified) {
+        [_response setResponseObject:modifiedResponseObject];
+        [_response setResponseStringFromObject:modifiedResponseObject];
+        [[self actionContainer] executeActionsForEventNamed:kIXModifiedEvent];
+    }
 
 // TODO: re-implement predicate filtering:
     
