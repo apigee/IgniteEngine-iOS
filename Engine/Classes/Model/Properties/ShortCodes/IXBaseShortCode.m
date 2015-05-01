@@ -10,6 +10,7 @@
 #import "IXProperty.h"
 #import "IXEvalShortCode.h"
 #import "IXGetShortCode.h"
+#import "IXStringShortCode.h"
 #import "IXShortCodeFunction.h"
 #import "NSString+IXAdditions.h"
 #import "IXSandbox.h"
@@ -22,6 +23,7 @@ static NSString* const kIXObjectIDNSCodingKey = @"objectID";
 // TODO: Suggest "method" and "function"
 static NSString* const kIXMethodNameNSCodingKey = @"methodName";
 static NSString* const kIXFunctionNameNSCodingKey = @"functionName";
+static NSString* const kIXRawStringNSCodingKey = @"rawString";
 static NSString* const kIXParametersNSCodingKey = @"parameters";
 static NSString* const kIXRangeInPropertiesTextNSCodingKey = @"rangeInPropertiesText";
 
@@ -45,6 +47,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
 -(instancetype)initWithRawValue:(NSString*)rawValue
                        objectID:(NSString*)objectID
                      methodName:(NSString*)methodName
+                     rawString:(NSString*)rawString
                    functionName:(NSString*)functionName
                      parameters:(NSArray*)parameters
           rangeInPropertiesText:(NSRange)rangeInPropertiesText
@@ -55,6 +58,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
         _rawValue = [rawValue copy];
         _objectID = [objectID copy];
         _methodName = [methodName copy];
+        _rawString = [rawString copy];
         _parameters = parameters;
         _rangeInPropertiesText = rangeInPropertiesText;
         
@@ -63,11 +67,14 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
     return self;
 }
 
+
+
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     return [[[self class] allocWithZone:zone] initWithRawValue:[self rawValue]
                                                       objectID:[self objectID]
                                                     methodName:[self methodName]
+                                                    rawString:[self rawString]
                                                   functionName:[self functionName]
                                                     parameters:[[NSArray alloc] initWithArray:[self parameters] copyItems:YES]
                                          rangeInPropertiesText:[self rangeInPropertiesText]];
@@ -88,6 +95,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
     return [self initWithRawValue:[aDecoder decodeObjectForKey:kIXRawValueNSCodingKey]
                          objectID:[aDecoder decodeObjectForKey:kIXObjectIDNSCodingKey]
                        methodName:[aDecoder decodeObjectForKey:kIXMethodNameNSCodingKey]
+                       rawString:[aDecoder decodeObjectForKey:kIXRawStringNSCodingKey]
                      functionName:[aDecoder decodeObjectForKey:kIXFunctionNameNSCodingKey]
                        parameters:[aDecoder decodeObjectForKey:kIXParametersNSCodingKey]
             rangeInPropertiesText:[[aDecoder decodeObjectForKey:kIXRangeInPropertiesTextNSCodingKey] rangeValue]];
@@ -113,6 +121,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 returnShortCode = [[IXEvalShortCode alloc] initWithRawValue:nil
                                                                    objectID:nil
                                                                  methodName:nil
+                                                                 rawString:nil
                                                                functionName:nil
                                                                  parameters:@[evalPropertyValue]
                                                       rangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
@@ -123,6 +132,8 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 NSString* methodName = nil;
                 NSString* functionName = nil;
                 NSMutableArray* parameters = nil;
+                NSString* methodNameTest = nil;
+                NSString* stringObject = nil;
                 
                 NSMutableArray* objectIDWithMethodStringComponents = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_PERIOD_SEPERATOR]];
                 objectID = [objectIDWithMethodStringComponents firstObject];
@@ -131,6 +142,16 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 if( [objectIDWithMethodStringComponents count] )
                 {
                     methodName = [objectIDWithMethodStringComponents componentsJoinedByString:kIX_PERIOD_SEPERATOR];
+                }
+
+                if( !methodName )
+                {
+                    
+                    NSMutableArray* objectIDWithMethodStringComponentsTest = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_QUOTE_SEPERATOR]];
+                    
+                    methodNameTest = [objectIDWithMethodStringComponentsTest componentsJoinedByString:kIX_QUOTE_SEPERATOR];
+                    stringObject = [objectIDWithMethodStringComponentsTest objectAtIndex:1];
+
                 }
                 
                 if( validRangesCount >= 4 )
@@ -165,13 +186,19 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                     }
                 }
                 
-                Class shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
-                if( !shortCodeClass )
-                {
-                    // Try to find the class by removing the $. Basically used for app shortcodes but maybe even network and device if people mess up.
-                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[[objectID stringByReplacingOccurrencesOfString:@"$" withString:@""] capitalizedString]]);
+                Class shortCodeClass;
+                // Try to find the class by removing the $. Basically used for app shortcodes but maybe even network and device if people mess up.
+                if ([objectID hasPrefix:@"$"] && objectID.length > 1) {
+                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[[objectID substringFromIndex:1] capitalizedString]]);
+                } else {
+                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
                 }
-
+                
+                if( stringObject )
+                {
+                    shortCodeClass = [IXStringShortCode class];
+                }
+                
                 if( !shortCodeClass )
                 {
                     shortCodeClass = [IXGetShortCode class];
@@ -186,11 +213,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 {
                     returnShortCode = [[shortCodeClass alloc] initWithRawValue:rawValue
                                                                       objectID:objectID
-                                                                    methodName:methodName
+                                                                    methodName:methodName                                                                    rawString:stringObject
                                                                   functionName:functionName
                                                                     parameters:parameters
                                                          rangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
                 }
+                
             }
         }
     }
