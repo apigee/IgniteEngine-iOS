@@ -1,12 +1,12 @@
 //
-//  IXShortCodeFunction.m
+//  IXVariableFunction.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 4/9/14.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXShortCodeFunction.h"
+#import "IXVariableFunction.h"
 
 @import CoreLocation;
 @import MapKit;
@@ -20,7 +20,7 @@
 #import "NSString+IXAdditions.h"
 #import "ColorUtils.h"
 
-// NOTE: To enable use of the function, ensure you add the function block and set the function inside shortCodeFunctionWithName.
+// NOTE: To enable use of the function, ensure you add the function block and set the function inside variableFunctionWithName.
 
 //                      FUNCTION NAME                                   USAGE                                   RETURN VALUE/NOTES
 //                                                               (? means any attribute)
@@ -61,11 +61,11 @@ IX_STATIC_CONST_STRING kIXOrOperator = @"||";
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define RADIANS_TO_DEGREES(radians) ((radians) * 180.0 / M_PI)
 
-static IXBaseShortCodeFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXCapitalizeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify capitalizedString];
 };
 
-static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters)
+static IXBaseVariableFunction const kIXCurrencyFunction = ^NSString*(NSString* stringToModify,NSArray* parameters)
 {
     static NSNumberFormatter *currencyFormatter = nil;
     static dispatch_once_t onceToken;
@@ -124,7 +124,7 @@ static IXBaseShortCodeFunction const kIXCurrencyFunction = ^NSString*(NSString* 
     
 };
 
-static IXBaseShortCodeFunction const kIXDistanceFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
+static IXBaseVariableFunction const kIXDistanceFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     NSString* returnString = nil;
     if( [parameters count] > 1 )
     {
@@ -147,11 +147,11 @@ static IXBaseShortCodeFunction const kIXDistanceFunction = ^NSString*(NSString* 
     return returnString;
 };
 
-static IXBaseShortCodeFunction const kIXFromBase64Function = ^NSString*(NSString* stringToDecode,NSArray* parameters){
+static IXBaseVariableFunction const kIXFromBase64Function = ^NSString*(NSString* stringToDecode,NSArray* parameters){
     return [NSString ix_fromBase64String:stringToDecode];
 };
 
-static IXBaseShortCodeFunction const kIXIsFunction = ^NSString*(NSString* inputString,NSArray* parameters){
+static IXBaseVariableFunction const kIXIsFunction = ^NSString*(NSString* inputString,NSArray* parameters){
     NSString* firstCondition = nil;
     NSString* operator = nil;
     NSString* secondCondition = nil;
@@ -203,11 +203,11 @@ static IXBaseShortCodeFunction const kIXIsFunction = ^NSString*(NSString* inputS
     }
 };
 
-static IXBaseShortCodeFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
+static IXBaseVariableFunction const kIXLengthFunction = ^NSString*(NSString* stringToEvaluate,NSArray* parameters){
     return [NSString stringWithFormat:@"%lu", (unsigned long)[stringToEvaluate length]];
 };
 
-static IXBaseShortCodeFunction const kIXMomentFunction = ^NSString*(NSString* dateToFormat,NSArray* parameters)
+static IXBaseVariableFunction const kIXMomentFunction = ^NSString*(NSString* dateToFormat,NSArray* parameters)
 {
     if ([parameters count] > 1) {
         return [NSString ix_formatDateString:dateToFormat fromDateFormat:[[parameters firstObject] originalString] toDateFormat:[[parameters lastObject] originalString]];
@@ -218,11 +218,11 @@ static IXBaseShortCodeFunction const kIXMomentFunction = ^NSString*(NSString* da
     }
 };
 
-static IXBaseShortCodeFunction const kIXMonogramFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXMonogramFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return ([parameters firstObject] != nil) ? [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:[[parameters.firstObject getPropertyValue] intValue]] : [NSString ix_monogramString:stringToModify ifLengthIsGreaterThan:0];
 };
 
-static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
+static IXBaseVariableFunction const kIXNowFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     YLMoment* moment = [YLMoment now];
     if ([parameters count] == 1) {
         return [NSString ix_formatDateString:[moment format] fromDateFormat:nil toDateFormat:[[parameters firstObject] originalString]];
@@ -231,7 +231,7 @@ static IXBaseShortCodeFunction const kIXNowFunction = ^NSString*(NSString* unuse
     }
 };
 
-static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
+static IXBaseVariableFunction const kIXRandomNumberFunction = ^NSString*(NSString* unusedStringProperty,NSArray* parameters){
     if ([parameters count] > 1) {
         NSUInteger lowerBound = [[[parameters firstObject] getPropertyValue] integerValue];
         NSUInteger upperBound = [[[parameters lastObject] getPropertyValue] integerValue];
@@ -244,14 +244,14 @@ static IXBaseShortCodeFunction const kIXRandomNumberFunction = ^NSString*(NSStri
     }
 };
 
-static IXBaseShortCodeFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
+static IXBaseVariableFunction const kIXToBase64Function = ^NSString*(NSString* stringToEncode,NSArray* parameters){
     if (stringToEncode)
         return [NSString ix_toBase64String:stringToEncode];
     else
         return stringToEncode;
 };
 
-static IXBaseShortCodeFunction const kIXToHexFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXToHexFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     NSString* hexString = nil;
     NSArray* rgbArray = [stringToModify componentsSeparatedByString:kIX_COMMA_SEPERATOR];
     if( [rgbArray count] > 2 )
@@ -278,22 +278,22 @@ static IXBaseShortCodeFunction const kIXToHexFunction = ^NSString*(NSString* str
     return hexString;
 };
 
-static IXBaseShortCodeFunction const kIXToMD5Function = ^NSString*(NSString* stringToHash,NSArray* parameters){
+static IXBaseVariableFunction const kIXToMD5Function = ^NSString*(NSString* stringToHash,NSArray* parameters){
     if (stringToHash)
         return [NSString ix_toMD5String:stringToHash];
     else
         return stringToHash;
 };
 
-static IXBaseShortCodeFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXToLowerCaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify lowercaseString];
 };
 
-static IXBaseShortCodeFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXToUppercaseFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return [stringToModify uppercaseString];
 };
 
-static IXBaseShortCodeFunction const kIXToRGBFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXToRGBFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     NSString* rgbString = nil;
     if( [stringToModify length] > 0 )
     {
@@ -307,17 +307,17 @@ static IXBaseShortCodeFunction const kIXToRGBFunction = ^NSString*(NSString* str
     return rgbString;
 };
 
-static IXBaseShortCodeFunction const kIXURLEncodeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXURLEncodeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     //return [stringToModify uppercaseString];
     return [stringToModify stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 };
 
-static IXBaseShortCodeFunction const kIXURLDecodeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXURLDecodeFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     //TODO: URL Decoded;
     return [stringToModify stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 };
 
-static IXBaseShortCodeFunction const kIXTimeFromSecondsFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXTimeFromSecondsFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     int totalSeconds = [stringToModify intValue];;
     NSInteger seconds = totalSeconds % 60;
     NSInteger minutes = (totalSeconds / 60) % 60;
@@ -337,11 +337,11 @@ static IXBaseShortCodeFunction const kIXTimeFromSecondsFunction = ^NSString*(NSS
     
 };
 
-static IXBaseShortCodeFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXTruncateFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] getPropertyValue] intValue]] : stringToModify;
 };
 
-static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXRadiansToDegreesFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     CGFloat radians = [stringToModify floatValue];
     if (radians > 0 || radians < 0) {
         return [NSString stringWithFormat:@"%f", RADIANS_TO_DEGREES(radians)];
@@ -350,7 +350,7 @@ static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NS
     }
 };
 
-static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseVariableFunction const kIXDegreesToRadiansFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     CGFloat degrees = [stringToModify floatValue];
     if (degrees > 0 || degrees < 0) {
         return [NSString stringWithFormat:@"%f", DEGREES_TO_RADIANS(degrees)];
@@ -359,9 +359,9 @@ static IXBaseShortCodeFunction const kIXDegreesToRadiansFunction = ^NSString*(NS
     }
 };
 
-@implementation IXShortCodeFunction
+@implementation IXVariableFunction
 
-+(IXBaseShortCodeFunction)shortCodeFunctionWithName:(NSString*)functionName
++(IXBaseVariableFunction)variableFunctionWithName:(NSString*)functionName
 {
     static NSDictionary* sIXFunctionDictionary = nil;
     static dispatch_once_t onceToken;

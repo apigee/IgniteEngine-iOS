@@ -1,5 +1,5 @@
 //
-//  IXBaseShortCode.h
+//  IXBaseVariable.h
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 10/7/13.
@@ -12,9 +12,9 @@
 @class IXSandbox;
 @class IXBaseObject;
 
-typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* parameters);
+typedef NSString*(^IXBaseVariableFunction)(NSString* stringToModify,NSArray* parameters);
 
-@interface IXBaseShortCode : NSObject <NSCopying,NSCoding>
+@interface IXBaseVariable : NSObject <NSCopying,NSCoding>
 
 @property (nonatomic,weak) IXProperty* property;
 @property (nonatomic,assign) NSRange rangeInPropertiesText;
@@ -26,7 +26,7 @@ typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* pa
 @property (nonatomic,strong) NSArray* parameters;
 
 @property (nonatomic,copy) NSString* functionName;
-@property (nonatomic,copy) IXBaseShortCodeFunction shortCodeFunction;
+@property (nonatomic,copy) IXBaseVariableFunction variableFunction;
 
 -(instancetype)initWithRawValue:(NSString*)rawValue
                        objectID:(NSString*)objectID
@@ -36,7 +36,7 @@ typedef NSString*(^IXBaseShortCodeFunction)(NSString* stringToModify,NSArray* pa
                      parameters:(NSArray*)parameters
           rangeInPropertiesText:(NSRange)rangeInPropertiesText;
 
-+(instancetype)shortCodeFromString:(NSString*)checkedString
++(instancetype)variableFromString:(NSString*)checkedString
                 textCheckingResult:(NSTextCheckingResult*)textCheckingResult;
 
 -(NSString*)evaluate;

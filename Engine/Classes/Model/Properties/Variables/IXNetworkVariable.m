@@ -1,12 +1,12 @@
 //
-//  IXNetworkShortCode.m
+//  IXNetworkVariable.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 3/11/14.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXNetworkShortCode.h"
+#import "IXNetworkVariable.h"
 
 #import "IXAppManager.h"
 #import "IXConstants.h"
@@ -19,7 +19,7 @@ IX_STATIC_CONST_STRING kIXReachable = @"isReachable";
 IX_STATIC_CONST_STRING kIXReachableWifi = @"isReachable.wifi";
 IX_STATIC_CONST_STRING kIXReachableWwan = @"isReachable.wwan";
 
-@implementation IXNetworkShortCode
+@implementation IXNetworkVariable
 
 -(NSString*)evaluate
 {
