@@ -66,7 +66,7 @@
         NSString* dataProviderClassString = [NSString stringWithFormat:kIX_DATA_PROVIDER_CLASS_NAME_FORMAT,dataProviderType];
         
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
-        if( [dataProviderClass isSubclassOfClass:[IXBaseDataProvider class]]  )
+        if( [dataProviderClass isSubclassOfClass:[IXBaseDataProvider class]])
         {
             IXPropertyContainer* propertyContainer = nil;
             id propertiesDict = dataProviderJSONDict[kIX_ATTRIBUTES];

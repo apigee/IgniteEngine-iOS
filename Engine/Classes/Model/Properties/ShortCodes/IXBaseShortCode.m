@@ -165,11 +165,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                     }
                 }
                 
-                Class shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
-                if( !shortCodeClass )
-                {
-                    // Try to find the class by removing the $. Basically used for app shortcodes but maybe even network and device if people mess up.
-                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[[objectID stringByReplacingOccurrencesOfString:@"$" withString:@""] capitalizedString]]);
+                Class shortCodeClass;
+                // Try to find the class by removing the $. Basically used for app shortcodes but maybe even network and device if people mess up.
+                if ([objectID hasPrefix:@"$"] && objectID.length > 1) {
+                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[[objectID substringFromIndex:1] capitalizedString]]);
+                } else {
+                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
                 }
 
                 if( !shortCodeClass )

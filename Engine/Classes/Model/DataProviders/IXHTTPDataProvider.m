@@ -623,16 +623,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     
     if( loadDidSucceed )
     {
-        NSString* dataRowBasePath = [self dataRowBasePath];
-        [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
-        
-        for( NSString* dataRowKey in [[self rowDataResultsDict] allKeys] )
-        {
-            if( ![dataRowKey isEqualToString:dataRowBasePath] )
-            {
-                [self calculateAndStoreDataRowResultsForDataRowPath:dataRowKey];
-            }
-        }
+        [self updateDataRowData];
         
         if ([paginationKey isEqualToString:kIXPaginateNext]) {
             [[self actionContainer] executeActionsForEventNamed:kIXPaginateNext];
@@ -760,6 +751,14 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     if (wasModified) {
         [_response setResponseObject:modifiedResponseObject];
         [_response setResponseStringFromObject:modifiedResponseObject];
+        
+        
+        [self updateDataRowData];
+        
+        dispatch_async(dispatch_get_main_queue(),^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:IXBaseDataProviderDidUpdateNotification
+                                                                object:self];
+        });
         [[self actionContainer] executeActionsForEventNamed:kIXModifiedEvent];
     }
 
@@ -796,6 +795,19 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 //                }
 //            }
 //        }
+}
+
+- (void)updateDataRowData {
+    NSString* dataRowBasePath = [self dataRowBasePath];
+    [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
+    
+    for( NSString* dataRowKey in [[self rowDataResultsDict] allKeys] )
+    {
+        if( ![dataRowKey isEqualToString:dataRowBasePath] )
+        {
+            [self calculateAndStoreDataRowResultsForDataRowPath:dataRowKey];
+        }
+    }
 }
 
 - (NSURLRequestCachePolicy)cachePolicyFromString:(NSString*)policy {
