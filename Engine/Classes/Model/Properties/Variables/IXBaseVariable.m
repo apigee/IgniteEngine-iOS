@@ -212,12 +212,12 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 if( [variableClass isSubclassOfClass:[IXBaseVariable class]] )
                 {
                     returnVariable = [[variableClass alloc] initWithRawValue:rawValue
-                                                                      objectID:objectID
-                                                                    methodName:methodName                                                                    rawString:stringObject
-                                                                    methodName:methodName
-                                                                  functionName:functionName
-                                                                    parameters:parameters
-                                                         rangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
+                                                objectID:objectID
+                                                methodName:methodName
+                                                rawString:stringObject
+                                                functionName:functionName
+                                                parameters:parameters
+                                                rangeInPropertiesText:[textCheckingResult rangeAtIndex:0]];
                 }
                 
             }
