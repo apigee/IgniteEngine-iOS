@@ -1,12 +1,12 @@
 //
-//  IXAppShortCode.m
+//  IXAppVariable.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 10/7/13.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXAppShortCode.h"
+#import "IXAppVariable.h"
 
 #import "IXAppManager.h"
 #import "IXPropertyContainer.h"
@@ -21,7 +21,7 @@ IX_STATIC_CONST_STRING kIXIsAllowedPush = @"isAllowed.push";
 IX_STATIC_CONST_STRING kIXIsAllowedLocation = @"isAllowed.location";
 IX_STATIC_CONST_STRING kIXIsAllowedMicrophone = @"isAllowed.microphone";
 
-@implementation IXAppShortCode
+@implementation IXAppVariable
 
 -(NSString*)evaluate
 {

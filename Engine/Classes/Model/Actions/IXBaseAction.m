@@ -288,7 +288,7 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
     if( [self conditionalProperty] )
     {
         [description appendFormat:@"\n\nConditional: %@",[[self conditionalProperty] getPropertyValue]];
-        if( [[self conditionalProperty] shortCodes] )
+        if( [[self conditionalProperty] variables] )
         {
             [description appendFormat:@" (%@)",[[self conditionalProperty] originalString]];
         }

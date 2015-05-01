@@ -1,12 +1,12 @@
 //
-//  IXGetShortCode.m
+//  IXGetVariable.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 11/21/13.
 //  Copyright (c) 2013 Apigee Inc. All rights reserved.
 //
 
-#import "IXGetShortCode.h"
+#import "IXGetVariable.h"
 
 #import "IXBaseObject.h"
 #import "IXProperty.h"
@@ -16,7 +16,7 @@
 #import "IXAppManager.h"
 #import "IXLayout.h"
 
-@implementation IXGetShortCode
+@implementation IXGetVariable
 
 -(NSString*)evaluate
 {

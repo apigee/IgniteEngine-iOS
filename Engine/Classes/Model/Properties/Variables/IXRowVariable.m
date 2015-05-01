@@ -1,12 +1,12 @@
 //
-//  IXRowShortCode.m
+//  IXRowVariable.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 12/17/13.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXRowShortCode.h"
+#import "IXRowVariable.h"
 
 #import "IXProperty.h"
 #import "IXPropertyContainer.h"
@@ -14,7 +14,7 @@
 
 static NSString* const kIXIndex = @"index";
 
-@implementation IXRowShortCode
+@implementation IXRowVariable
 
 -(NSString*)evaluate
 {

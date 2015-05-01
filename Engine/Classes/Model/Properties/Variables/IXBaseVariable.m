@@ -1,21 +1,21 @@
 //
-//  IXBaseShortCode.m
+//  IXBaseVariable.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 10/7/13.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXBaseShortCode.h"
+#import "IXBaseVariable.h"
 #import "IXProperty.h"
-#import "IXEvalShortCode.h"
-#import "IXGetShortCode.h"
-#import "IXStringShortCode.h"
-#import "IXShortCodeFunction.h"
+#import "IXEvalVariable.h"
+#import "IXGetVariable.h"
+#import "IXStringVariable.h"
+#import "IXVariableFunction.h"
 #import "NSString+IXAdditions.h"
 #import "IXSandbox.h"
 #import "IXLogger.h"
-#import "IXAppShortCode.h"
+#import "IXAppVariable.h"
 
 // NSCoding Key Constants
 static NSString* const kIXRawValueNSCodingKey = @"rawValue";
@@ -42,7 +42,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
     return validRanges;
 }
 
-@implementation IXBaseShortCode
+@implementation IXBaseVariable
 
 -(instancetype)initWithRawValue:(NSString*)rawValue
                        objectID:(NSString*)objectID
@@ -101,10 +101,10 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             rangeInPropertiesText:[[aDecoder decodeObjectForKey:kIXRangeInPropertiesTextNSCodingKey] rangeValue]];
 }
 
-+(instancetype)shortCodeFromString:(NSString*)checkedString
++(instancetype)variableFromString:(NSString*)checkedString
                 textCheckingResult:(NSTextCheckingResult*)textCheckingResult
 {
-    IXBaseShortCode* returnShortCode = nil;
+    IXBaseVariable* returnVariable = nil;
     if( textCheckingResult )
     {
         NSArray* validRanges = ix_ValidRangesFromTextCheckingResult(textCheckingResult);
@@ -118,7 +118,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             if( [rawValue hasPrefix:kIX_EVAL_BRACKETS] )
             {
                 IXProperty* evalPropertyValue = [[IXProperty alloc] initWithPropertyName:nil rawValue:objectIDWithMethodString];
-                returnShortCode = [[IXEvalShortCode alloc] initWithRawValue:nil
+                returnVariable = [[IXEvalVariable alloc] initWithRawValue:nil
                                                                    objectID:nil
                                                                  methodName:nil
                                                                  rawString:nil
@@ -186,32 +186,32 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                     }
                 }
                 
-                Class shortCodeClass;
-                // Try to find the class by removing the $. Basically used for app shortcodes but maybe even network and device if people mess up.
+                Class variableClass;
+                // Try to find the class by removing the $. Basically used for app variables but maybe even network and device if people mess up.
                 if ([objectID hasPrefix:@"$"] && objectID.length > 1) {
-                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[[objectID substringFromIndex:1] capitalizedString]]);
+                    variableClass = NSClassFromString([NSString stringWithFormat:kIX_VARIABLE_CLASS_NAME_FORMAT,[[objectID substringFromIndex:1] capitalizedString]]);
                 } else {
-                    shortCodeClass = NSClassFromString([NSString stringWithFormat:kIX_SHORTCODE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
+                    variableClass = NSClassFromString([NSString stringWithFormat:kIX_VARIABLE_CLASS_NAME_FORMAT,[objectID capitalizedString]]);
                 }
                 
                 if( stringObject )
                 {
-                    shortCodeClass = [IXStringShortCode class];
+                    variableClass = [IXStringVariable class];
                 }
                 
-                if( !shortCodeClass )
+                if( !variableClass )
                 {
-                    shortCodeClass = [IXGetShortCode class];
+                    variableClass = [IXGetVariable class];
                 }
                 else
                 {
-                    // If the class did exist then the objectID was really just the class of the shortcode in which case the objectID is not needed anymore.
+                    // If the class did exist then the objectID was really just the class of the variable in which case the objectID is not needed anymore.
                     objectID = nil;
                 }
                 
-                if( [shortCodeClass isSubclassOfClass:[IXBaseShortCode class]] )
+                if( [variableClass isSubclassOfClass:[IXBaseVariable class]] )
                 {
-                    returnShortCode = [[shortCodeClass alloc] initWithRawValue:rawValue
+                    returnVariable = [[variableClass alloc] initWithRawValue:rawValue
                                                                       objectID:objectID
                                                                     methodName:methodName                                                                    rawString:stringObject
                                                                     methodName:methodName
@@ -223,16 +223,16 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
             }
         }
     }
-    return returnShortCode;
+    return returnVariable;
 }
 
 -(NSString*)evaluateAndApplyFunction
 {
     NSString* returnValue = [self evaluate];
-    IXBaseShortCodeFunction shortCodeFunction = [self shortCodeFunction];
-    if( shortCodeFunction )
+    IXBaseVariableFunction variableFunction = [self variableFunction];
+    if( variableFunction )
     {
-        returnValue = shortCodeFunction(returnValue,[self parameters]);
+        returnValue = variableFunction(returnValue,[self parameters]);
     }
     return returnValue;
 }
@@ -245,11 +245,11 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
 -(void)setFunctionName:(NSString *)functionName
 {
     _functionName = [functionName copy];
-    _shortCodeFunction = nil;
+    _variableFunction = nil;
     if( [_functionName length] > 0 ) {
         
-        _shortCodeFunction = [IXShortCodeFunction shortCodeFunctionWithName:_functionName];
-        if( _shortCodeFunction == nil ) {
+        _variableFunction = [IXVariableFunction variableFunctionWithName:_functionName];
+        if( _variableFunction == nil ) {
             IX_LOG_DEBUG(@"ERROR: Unknown short-code function with name: %@", _functionName);
         }
     }

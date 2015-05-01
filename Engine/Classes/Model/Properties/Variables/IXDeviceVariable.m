@@ -1,12 +1,12 @@
 //
-//  IXDeviceShortCode.m
+//  IXDeviceVariable.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 3/11/14.
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXDeviceShortCode.h"
+#import "IXDeviceVariable.h"
 #import "IXConstants.h"
 #import "IXDeviceInfo.h"
 #import "IXProperty.h"
@@ -31,7 +31,7 @@ IX_STATIC_CONST_STRING kIXLocation = @"location"; // Return format: lat:long
 IX_STATIC_CONST_STRING kIXLocationLat = @"location.lat";
 IX_STATIC_CONST_STRING kIXLocationLong = @"location.long";
 
-@implementation IXDeviceShortCode
+@implementation IXDeviceVariable
 
 -(NSString *)evaluate
 {

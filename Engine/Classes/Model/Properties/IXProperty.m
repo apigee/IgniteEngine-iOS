@@ -9,18 +9,18 @@
 #import "IXProperty.h"
 
 #import "IXPropertyContainer.h"
-#import "IXBaseShortCode.h"
+#import "IXBaseVariable.h"
 #import "IXLogger.h"
 #import "NSString+IXAdditions.h"
 
-static NSString* const kIXShortcodeRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
+static NSString* const kIXVariableRegexString = @"(\\[{2}(.+?)(?::(.+?)(?:\\((.+?)\\))?)?\\]{2}|\\{{2}([^\\}]+)\\}{2})";
 
 // NSCoding Key Constants
 static NSString* const kIXPropertyNameNSCodingKey = @"propertyName";
 static NSString* const kIXOriginalStringNSCodingKey = @"originalString";
 static NSString* const kIXStaticTextNSCodingKey = @"staticText";
 static NSString* const kIXWasAnArrayNSCodingKey = @"wasAnArray";
-static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
+static NSString* const kIXVariablesNSCodingKey = @"variables";
 
 @interface IXProperty ()
 
@@ -191,9 +191,9 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     [aCoder encodeObject:[self originalString] forKey:kIXOriginalStringNSCodingKey];
     [aCoder encodeObject:[self staticText] forKey:kIXStaticTextNSCodingKey];
     [aCoder encodeBool:[self wasAnArray] forKey:kIXWasAnArrayNSCodingKey];
-    if( [[self shortCodes] count] )
+    if( [[self variables] count] )
     {
-        [aCoder encodeObject:[self shortCodes] forKey:kIXShortCodesNSCodingKey];
+        [aCoder encodeObject:[self variables] forKey:kIXVariablesNSCodingKey];
     }
 }
 
@@ -207,10 +207,10 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
         [self setStaticText:[aDecoder decodeObjectForKey:kIXStaticTextNSCodingKey]];
         [self setWasAnArray:[aDecoder decodeBoolForKey:kIXWasAnArrayNSCodingKey]];
         
-        [self setShortCodes:[aDecoder decodeObjectForKey:kIXShortCodesNSCodingKey]];
-        for( IXBaseShortCode* shortcode in [self shortCodes] )
+        [self setVariables:[aDecoder decodeObjectForKey:kIXVariablesNSCodingKey]];
+        for( IXBaseVariable* variable in [self variables] )
         {
-            [shortcode setProperty:self];
+            [variable setProperty:self];
         }
     }
     return self;
@@ -223,12 +223,12 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     [copiedProperty setOriginalString:[self originalString]];
     [copiedProperty setStaticText:[self staticText]];
     [copiedProperty setWasAnArray:[self wasAnArray]];
-    if( [[self shortCodes] count] )
+    if( [[self variables] count] )
     {
-        [copiedProperty setShortCodes:[[NSMutableArray alloc] initWithArray:[self shortCodes] copyItems:YES]];
-        for( IXBaseShortCode* copiedShortCode in [copiedProperty shortCodes] )
+        [copiedProperty setVariables:[[NSMutableArray alloc] initWithArray:[self variables] copyItems:YES]];
+        for( IXBaseVariable* copiedVariable in [copiedProperty variables] )
         {
-            [copiedShortCode setProperty:copiedProperty];
+            [copiedVariable setProperty:copiedProperty];
         }
     }
     return copiedProperty;
@@ -239,55 +239,55 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     NSString* propertiesStaticText = [[self originalString] copy];
     if( [propertiesStaticText length] > 0 )
     {
-        static NSRegularExpression *shortCodeMainComponentsRegex = nil;
+        static NSRegularExpression *variableMainComponentsRegex = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             NSError* __autoreleasing error = nil;
-            shortCodeMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXShortcodeRegexString
+            variableMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXVariableRegexString
                                                                                 options:NSRegularExpressionDotMatchesLineSeparators
                                                                                   error:&error];
             if( error )
-                IX_LOG_ERROR(@"Critical Error!!! Shortcode regex invalid with error: %@.",[error description]);
+                IX_LOG_ERROR(@"Critical Error!!! Variable regex invalid with error: %@.",[error description]);
         });
         
-        NSArray* matchesInStaticText = [shortCodeMainComponentsRegex matchesInString:propertiesStaticText
+        NSArray* matchesInStaticText = [variableMainComponentsRegex matchesInString:propertiesStaticText
                                                                              options:0
                                                                                range:NSMakeRange(0, [propertiesStaticText length])];
         if( [matchesInStaticText count] )
         {
             __block NSUInteger numberOfCharactersRemoved = 0;
-            __block NSMutableArray* propertiesShortCodes = nil;
+            __block NSMutableArray* propertiesVariables = nil;
             __block NSMutableString* mutableStaticText = [[NSMutableString alloc] initWithString:propertiesStaticText];
             
-            for( NSTextCheckingResult* matchInShortCodeString in matchesInStaticText )
+            for( NSTextCheckingResult* matchInVariableString in matchesInStaticText )
             {
-                IXBaseShortCode* shortCode = [IXBaseShortCode shortCodeFromString:propertiesStaticText
-                                                               textCheckingResult:matchInShortCodeString];
-                if( shortCode )
+                IXBaseVariable* variable = [IXBaseVariable variableFromString:propertiesStaticText
+                                                               textCheckingResult:matchInVariableString];
+                if( variable )
                 {
-                    [shortCode setProperty:self];
+                    [variable setProperty:self];
                     
-                    if( !propertiesShortCodes )
+                    if( !propertiesVariables )
                     {
-                        propertiesShortCodes = [[NSMutableArray alloc] init];
+                        propertiesVariables = [[NSMutableArray alloc] init];
                     }
                     
-                    [propertiesShortCodes addObject:shortCode];
+                    [propertiesVariables addObject:variable];
                     
-                    NSRange shortCodeRange = [matchInShortCodeString rangeAtIndex:0];
-                    shortCodeRange.location = shortCodeRange.location - numberOfCharactersRemoved;
-                    [mutableStaticText replaceCharactersInRange:shortCodeRange withString:kIX_EMPTY_STRING];
-                    numberOfCharactersRemoved += shortCodeRange.length;
+                    NSRange variableRange = [matchInVariableString rangeAtIndex:0];
+                    variableRange.location = variableRange.location - numberOfCharactersRemoved;
+                    [mutableStaticText replaceCharactersInRange:variableRange withString:kIX_EMPTY_STRING];
+                    numberOfCharactersRemoved += variableRange.length;
                 }
             }
             
             [self setStaticText:mutableStaticText];
-            [self setShortCodes:propertiesShortCodes];
+            [self setVariables:propertiesVariables];
         }
         else
         {
             [self setStaticText:propertiesStaticText];
-            [self setShortCodes:nil];
+            [self setVariables:nil];
         }
     }
 }
@@ -299,9 +299,9 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     [[self conditionalProperty] setPropertyContainer:_propertyContainer];
     [[self elseProperty] setPropertyContainer:_propertyContainer];
     
-    for( IXBaseShortCode *shortCode in [self shortCodes] )
+    for( IXBaseVariable *variable in [self variables] )
     {
-        for( IXProperty *property in [shortCode parameters] )
+        for( IXProperty *property in [variable parameters] )
         {
             [property setPropertyContainer:_propertyContainer];
         }
@@ -315,24 +315,24 @@ static NSString* const kIXShortCodesNSCodingKey = @"shortCodes";
     
     NSString* returnString = ([self staticText] == nil) ? kIX_EMPTY_STRING : [self staticText];
     
-    if( [[self shortCodes] count] > 0 )
+    if( [[self variables] count] > 0 )
     {
         returnString = [[NSMutableString alloc] initWithString:returnString];
         
         __block NSInteger newCharsAdded = 0;
         __block NSMutableString* weakString = (NSMutableString*)returnString;
         
-        [[self shortCodes] enumerateObjectsUsingBlock:^(IXBaseShortCode *shortCode, NSUInteger idx, BOOL *stop) {
+        [[self variables] enumerateObjectsUsingBlock:^(IXBaseVariable *variable, NSUInteger idx, BOOL *stop) {
             
-            NSRange shortCodeRange = [shortCode rangeInPropertiesText];
+            NSRange variableRange = [variable rangeInPropertiesText];
             
-            NSString *shortCodesValue = [shortCode evaluateAndApplyFunction];
-            if( shortCodesValue == nil )
+            NSString *variablesValue = [variable evaluateAndApplyFunction];
+            if( variablesValue == nil )
             {
-                shortCodesValue = kIX_EMPTY_STRING;
+                variablesValue = kIX_EMPTY_STRING;
             }            
-            [weakString insertString:shortCodesValue atIndex:shortCodeRange.location + newCharsAdded];
-            newCharsAdded += [shortCodesValue length] - shortCodeRange.length;
+            [weakString insertString:variablesValue atIndex:variableRange.location + newCharsAdded];
+            newCharsAdded += [variablesValue length] - variableRange.length;
         }];
     }
     

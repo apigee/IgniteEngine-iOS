@@ -668,7 +668,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     {
         IXProperty* propertyToEvaluate = [self getPropertyToEvaluate:propertyKey];
         [description appendFormat:@"\t%@: %@",propertyKey, [propertyToEvaluate getPropertyValue]];
-        if( [propertyToEvaluate shortCodes] )
+        if( [propertyToEvaluate variables] )
         {
             [description appendFormat:@" (%@)",[propertyToEvaluate originalString]];
         }
