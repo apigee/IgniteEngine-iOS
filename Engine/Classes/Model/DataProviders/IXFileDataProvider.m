@@ -19,7 +19,7 @@ IX_STATIC_CONST_STRING kIXSavePath = @"savePath";
 IX_STATIC_CONST_STRING kIXUnzipPath = @"unzipPath";
 
 // IXFileDataProvider Events
-IX_STATIC_CONST_STRING kIXUnzipStarted = @"unzip.started";
+IX_STATIC_CONST_STRING kIXUnzipStarted = @"unzip.began";
 IX_STATIC_CONST_STRING kIXUnzipSuccess = @"unzip.success";
 IX_STATIC_CONST_STRING kIXUnzipFailed = @"unzip.failed";
 IX_STATIC_CONST_STRING kIXDownloadProgress = @"downloadProgress"; // also a property
