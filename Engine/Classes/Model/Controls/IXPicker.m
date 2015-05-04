@@ -15,6 +15,7 @@
 // Attributes
 IX_STATIC_CONST_STRING kIXPickerType = @"type";
 IX_STATIC_CONST_STRING kIXPickerTitle = @"title";
+IX_STATIC_CONST_STRING kIXPickerStringValues = @"stringValues";
 
 // Attribute Accepted Values
 IX_STATIC_CONST_STRING kIXPickerDate = @"date";
@@ -23,7 +24,6 @@ IX_STATIC_CONST_STRING kIXPickerTimeInterval = @"interval";
 IX_STATIC_CONST_STRING kIXPickerDateAndTime = @"dateAndTime";
 IX_STATIC_CONST_STRING kIXPickerCountdown = @"countdown";
 IX_STATIC_CONST_STRING kIXPickerString = @"string";
-IX_STATIC_CONST_STRING kIXPickerStringValues = @"stringValues";
 
 // Returns
 IX_STATIC_CONST_STRING kIXSelectedValue = @"selectedValue";
