@@ -37,6 +37,7 @@
 +(NSString*)ix_toBase64String:(NSString*)string;
 +(NSString*)ix_fromBase64String:(NSString*)string;
 +(NSString*)ix_toMD5String:(NSString *)string;
++(NSString*)ix_stripHtml:(NSString*)string;
 +(NSString*)ix_jsonStringWithPrettyPrint:(BOOL)prettyPrint fromObject:(NSObject *)object;
 
 -(BOOL)isBOOL;

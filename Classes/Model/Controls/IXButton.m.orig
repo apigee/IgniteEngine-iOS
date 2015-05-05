@@ -1,50 +1,65 @@
 //
 //  IXButton.m
-//  Ignite_iOS_Engine
+//  Ignite Engine
 //
 //  Created by Robert Walsh on 2/3/14.
-//  Copyright (c) 2014 Ignite. All rights reserved.
+//
+/****************************************************************************
+ The MIT License (MIT)
+ Copyright (c) 2015 Apigee Corporation
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ ****************************************************************************/
 //
 
 #import "IXButton.h"
 
 #import "UIImage+IXAdditions.h"
+#import "UIButton+IXAdditions.h"
+#import "UIFont+IXAdditions.h"
+#import "ColorUtils.h"
 
-<<<<<<< HEAD
+// Attributes
+IX_STATIC_CONST_STRING kIXTextDefault = @"text";
+IX_STATIC_CONST_STRING kIXTextDefaultFont = @"font";
+IX_STATIC_CONST_STRING kIXTextDefaultColor = @"color";
+IX_STATIC_CONST_STRING kIXBackgroundColor = @"bg.color";
+IX_STATIC_CONST_STRING kIXIconDefault = @"icon";
+IX_STATIC_CONST_STRING kIXIconDefaultTintColor = @"icon.tint";
+IX_STATIC_CONST_STRING kIXAlpha = @"alpha";
+IX_STATIC_CONST_STRING kIXDarkensImageOnTouch = @"darkenOnTouch.enabled";
+IX_STATIC_CONST_STRING kIXTouchDuration = @"touch.duration";
+IX_STATIC_CONST_STRING kIXTouchUpDuration = @"touchUp.duration";
+
 // IXButton states
-static NSString* const kIXNormal = @"normal";
-=======
-// IXImage Properties
->>>>>>> b1f0e1e31ad532b3fb41e2ec3db7b0adaa89aa16
-static NSString* const kIXTouch = @"touch";
-static NSString* const kIXDisabled = @"disabled";
-
-// IXButton properties
-static NSString* const kIXTextDefault = @"text";
-static NSString* const kIXTextDefaultFont = @"text.font";
-static NSString* const kIXTextDefaultColor = @"text.color";
-static NSString* const kIXIconDefault = @"icon";
-static NSString* const kIXIconDefaultTintColor = @"icon.tintcolor";
-
-static NSString* const kIXTextTouch = @"text.touch";
-static NSString* const kIXTextTouchFont = @"text.touch.font";
-static NSString* const kIXTextTouchColor = @"text.touch.color";
-static NSString* const kIXIconTouch = @"icon.touch";
-static NSString* const kIXIconTouchTintColor = @"icon.touch.tintcolor";
-
-static NSString* const kIXTextDisabled = @"text.disabled";
-static NSString* const kIXTextDisabledFont = @"text.disabled.font";
-static NSString* const kIXTextDisabledColor = @"text.disabled.color";
-static NSString* const kIXIconDisabled = @"icon.disabled";
-static NSString* const kIXIconDisabledTintColor = @"icon.disabled.tintcolor";
-
-static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
+IX_STATIC_CONST_STRING kIXNormal = @"normal";
+IX_STATIC_CONST_STRING kIXTouch = @"touch";
+IX_STATIC_CONST_STRING kIXDisabled = @"disabled";
 
 @interface IXButton ()
+
+
 
 @property (nonatomic,strong) UIButton* button;
 
 @end
+
+NSArray* backgroundColors;
+NSArray* alphas;
+
 
 @implementation IXButton
 
@@ -52,21 +67,21 @@ static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
 {
     [_button removeTarget:self action:@selector(buttonTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [_button removeTarget:self action:@selector(buttonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-    [_button removeTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-    [_button removeTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchCancel];
+    [_button removeTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
 }
+
 
 -(void)buildView
 {
+
     [super buildView];
     
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [_button addTarget:self action:@selector(buttonTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [_button addTarget:self action:@selector(buttonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-    [_button addTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-    [_button addTarget:self action:@selector(buttonTouchUpOutside:) forControlEvents:UIControlEventTouchCancel];
-
+    [_button addTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchCancel];
+    [_button addTarget:self action:@selector(buttonTouchCancelled:) forControlEvents:UIControlEventTouchUpOutside];
     [[self contentView] addSubview:_button];
 }
 
@@ -86,102 +101,170 @@ static NSString* const kIXDarkensImageOnTouch = @"darkens_image_on_touch";
     
     [[self button] setEnabled:[[self contentView] isEnabled]];
     
-    BOOL darkensImageOnTouch = [[self propertyContainer] getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:NO];
-    [[self button] setAdjustsImageWhenHighlighted:darkensImageOnTouch];
+    self.button.shouldHighlightImageOnTouch = [self.attributeContainer getBoolValueForAttribute:kIXDarkensImageOnTouch defaultValue:YES];
+    [[self button] setAdjustsImageWhenHighlighted:NO];
     
     [[self button] setAttributedTitle:nil forState:UIControlStateNormal];
     [[self button] setAttributedTitle:nil forState:UIControlStateHighlighted];
     [[self button] setAttributedTitle:nil forState:UIControlStateDisabled];
 
-    NSString* defaultTextForTitles = nil;
-    UIColor* defaultColorForTitles = [UIColor lightGrayColor];
-    UIFont* defaultFontForTitles = [UIFont fontWithName:@"HelveticaNeue" size:20.0f];
+    __block NSString* defaultColorForTitles = @"#606060";
+    __block NSString* defaultFontForTitles = @"HelveticaNeue:16.0f";
 
-    UIColor* defaultTintColorForImages = nil;
-    
-<<<<<<< HEAD
-    NSArray* differentTitleStates = @[kIXNormal,kIXTouch,kIXDisabled];
+    // Grab the title states - comma separated
+<<<<<<< HEAD:Classes/Model/Controls/IXButton.m
+    __block NSArray* titleTexts = [self getButtonStatesForArray:[[self attributeContainer] getPipeCommaPipeSeparatedArrayOfValuesForAttribute:kIXTextDefault defaultValue:nil]];
+    __block NSArray* titleColors = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXTextDefaultColor defaultValue:@[defaultColorForTitles]]];
+    __block NSArray* titleFonts = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXTextDefaultFont defaultValue:@[defaultFontForTitles]]];
+    __block NSArray* iconTintColors = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXIconDefaultTintColor defaultValue:nil]];
+    alphas = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:@[@"1"]]];
+    backgroundColors = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]];
 =======
-    NSArray* differentTitleStates = @[kIX_DEFAULT,kIXTouch,kIXDisabled];
->>>>>>> b1f0e1e31ad532b3fb41e2ec3db7b0adaa89aa16
-    for( NSString* titleState in differentTitleStates )
-    {
+    __block NSArray* titleTexts = [self getButtonStatesForArray:[[self propertyContainer] getPipeCommaPipeSeperatedArrayListValue:kIXTextDefault defaultValue:nil]];
+    __block NSArray* titleColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultColor defaultValue:@[defaultColorForTitles]]];
+    __block NSArray* titleFonts = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultFont defaultValue:@[defaultFontForTitles]]];
+    __block NSArray* iconTintColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXIconDefaultTintColor defaultValue:nil]];
+    alphas = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:@[@"1"]]];
+    backgroundColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]];
+>>>>>>> master:Ignite_iOS_Engine/Classes/Model/Controls/IXButton.m
+    
+    [@[kIXNormal, kIXTouch, kIXDisabled] enumerateObjectsUsingBlock:^(NSString* titleState, NSUInteger idx, BOOL *stop) {
+        
         UIControlState controlState = UIControlStateNormal;
-        NSString* titleTextPropertyName = kIXTextDefault;
-        NSString* titleColorPropertyName = kIXTextDefaultColor;
-        NSString* titleFontPropertyName = kIXTextDefaultFont;
-        NSString* imagePropertyName = kIXIconDefault;
-        NSString* imageTintColorPropertyName = kIXIconDefaultTintColor;
-        
-        if( [titleState isEqualToString:kIXTouch] )
-        {
+        if ([titleState isEqualToString:kIXNormal])
+            controlState = UIControlStateNormal;
+        else if ([titleState isEqualToString:kIXTouch])
             controlState = UIControlStateHighlighted;
-            titleTextPropertyName = kIXTextTouch;
-            titleColorPropertyName = kIXTextTouchColor;
-            titleFontPropertyName = kIXTextTouchFont;
-            imagePropertyName = kIXIconTouch;
-            imageTintColorPropertyName = kIXIconTouchTintColor;
-        }
-        else if( [titleState isEqualToString:kIXDisabled] )
-        {
+        else if ([titleState isEqualToString:kIXDisabled]) {
             controlState = UIControlStateDisabled;
-            titleTextPropertyName = kIXTextDisabled;
-            titleColorPropertyName = kIXTextDisabledColor;
-            titleFontPropertyName = kIXTextDisabledFont;
-            imagePropertyName = kIXIconDisabled;
-            imageTintColorPropertyName = kIXIconDisabledTintColor;
+            [[self button] setBackgroundColor:[UIColor colorWithString:backgroundColors[idx]]];
+            [[self button] setAlpha:[alphas[idx] floatValue]];
         }
         
-        NSString* titleText = [[self propertyContainer] getStringPropertyValue:titleTextPropertyName defaultValue:defaultTextForTitles];
+        NSString* titleText = titleTexts[idx];
+        
         if( [titleText length] )
         {
-            UIColor* titleTextColor = [[self propertyContainer] getColorPropertyValue:titleColorPropertyName defaultValue:defaultColorForTitles];
-            UIFont* titleTextFont = [[self propertyContainer] getFontPropertyValue:titleFontPropertyName defaultValue:defaultFontForTitles];
-            
-            NSAttributedString* attributedTitle = [[NSAttributedString alloc] initWithString:titleText
-                                                                                  attributes:@{NSForegroundColorAttributeName: titleTextColor,
-                                                                                               NSFontAttributeName:titleTextFont}];
-            if( controlState == UIControlStateNormal )
-            {
-                defaultTextForTitles = titleText;
-                defaultColorForTitles = titleTextColor;
-                defaultFontForTitles = titleTextFont;
+            UIColor* titleTextColor = [UIColor colorWithString:titleColors[idx]];
+            UIFont* titleTextFont = [UIFont ix_fontFromString:titleFonts[idx]];
+            NSAttributedString* attributedTitle;
+            if (titleTextColor && titleTextFont) {
+                attributedTitle = [[NSAttributedString alloc] initWithString:titleText
+                                                                  attributes:@{NSForegroundColorAttributeName: titleTextColor,
+                                                                               NSFontAttributeName:titleTextFont}];
             }
             
             [[self button] setAttributedTitle:attributedTitle forState:controlState];
         }
         
-        UIColor* imageTintColor = [[self propertyContainer] getColorPropertyValue:imageTintColorPropertyName defaultValue:defaultTintColorForImages];
-        if( controlState == UIControlStateNormal )
-        {
-            defaultTintColorForImages = imageTintColor;
-        }
+        __block UIColor* imageTintColorForState = [UIColor colorWithString:iconTintColors[idx]];
         
         __weak typeof(self) weakSelf = self;
-        [[self propertyContainer] getImageProperty:imagePropertyName
+        [[self attributeContainer] getImageAttribute:kIXIconDefault
                                       successBlock:^(UIImage *image) {
-                                          if( imageTintColor )
+                                          if( imageTintColorForState )
                                           {
-                                              image = [image tintedImageUsingColor:imageTintColor];
+                                              image = [image tintedImageUsingColor:imageTintColorForState];
                                           }
-                                          [[weakSelf button] setBackgroundImage:image forState:controlState];
+                                          [[weakSelf button] setImage:image forState:controlState];
                                       } failBlock:nil];
-    }
+    }];
 }
 
 -(void)buttonTouchedDown:(id)sender
 {
-    [self processBeginTouch:YES];
+    if (self.button.shouldHighlightImageOnTouch)
+    {
+        CGFloat duration = [self.attributeContainer getFloatValueForAttribute:kIXTouchDuration defaultValue:0.05];
+        CGFloat alpha = [alphas[1] floatValue] ?: [[self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:nil]][1] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[1] ?: [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]][1])];
+        
+        [UIView transitionWithView:self.button
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                         animations:^{
+                             if (alpha < 1)
+                             {
+                                 self.button.alpha = alpha;
+                             }
+                             if (backgroundColor)
+                             {
+                                 self.contentView.backgroundColor = backgroundColor;
+                             }
+                         }
+                         completion:^(BOOL finished){
+                             [self processBeginTouch:YES];
+                         }];
+    }
+    else
+        [self processBeginTouch:YES];
 }
 
 -(void)buttonTouchUpInside:(id)sender
 {
-    [self processEndTouch:YES];
+    if (self.button.shouldHighlightImageOnTouch)
+    {
+        CGFloat duration = [self.attributeContainer getFloatValueForAttribute:kIXTouchUpDuration defaultValue:0.15];
+        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:nil]][0] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]][0])];
+        
+        [UIView transitionWithView:self.button
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                        animations:^{
+                            self.button.alpha = alpha;
+                            if (backgroundColor)
+                            {
+                                self.contentView.backgroundColor = backgroundColor;
+                            }
+                        }
+                        completion:^(BOOL finished){
+                            [self processEndTouch:YES];
+                        }];
+    }
+    else
+        [self processEndTouch:YES];
 }
 
--(void)buttonTouchUpOutside:(id)sender
+-(void)buttonTouchCancelled:(id)sender
 {
-    [self processCancelTouch:YES];
+    if (self.button.shouldHighlightImageOnTouch)
+    {
+        CGFloat duration = [self.attributeContainer getFloatValueForAttribute:kIXTouchUpDuration defaultValue:0.15];
+        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:nil]][0] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]][0])];
+
+        [UIView transitionWithView:self.button
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                        animations:^{
+                            self.button.alpha = alpha;
+                            if (backgroundColor)
+                            {
+                                self.contentView.backgroundColor = backgroundColor;
+                            }
+                        }
+                        completion:^(BOOL finished){
+                            [self processCancelTouch:YES];
+                        }];
+    }
+    else
+        [self processCancelTouch:YES];
+}
+
+- (NSArray*)getButtonStatesForArray:(NSArray*)array {
+    if (array) {
+        if (array.count == 1)
+            return @[array[0], array[0], array[0]];
+        else if (array.count == 2)
+            return @[array[0], array[1], array[0]];
+        else if (array.count == 3)
+            return @[array[0], array[1], array[2]];
+        else
+            return @[array[0], array[0], array[0]];
+    } else {
+        return nil;
+    }
 }
 
 @end

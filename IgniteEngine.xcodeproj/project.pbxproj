@@ -161,7 +161,7 @@
 		13033F23183ED8F200C29157 /* IXAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAppDelegate.m; sourceTree = "<group>"; };
 		13033F24183ED8F200C29157 /* IXAppManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXAppManager.h; sourceTree = "<group>"; };
 		13033F25183ED8F200C29157 /* IXAppManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXAppManager.m; sourceTree = "<group>"; };
-		13033F26183ED8F200C29157 /* IXConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = IXConstants.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		13033F26183ED8F200C29157 /* IXConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = IXConstants.h; sourceTree = "<group>"; };
 		13033F27183ED8F200C29157 /* IXConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = IXConstants.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		13033F28183ED8F200C29157 /* IXEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXEnums.h; sourceTree = "<group>"; };
 		13033F2B183ED8F200C29157 /* IXStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXStructs.h; sourceTree = "<group>"; };

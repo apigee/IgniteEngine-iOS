@@ -360,11 +360,15 @@ static IXBaseEvaluationUtility const kIXTruncateUtility = ^NSString*(NSString* s
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] attributeStringValue] intValue]] : stringToModify;
 };
 
-static IXBaseEvaluationUtility const kIXStripHtmlUtility = ^NSString*(NSString* stringToModify,NSArray* parameters){
+<<<<<<< HEAD:Classes/Model/Attributes/Evaluations/IXEvaluationUtilities.m
+static IXBaseEvaluationUtility const kIXRadiansToDegreesUtility = ^NSString*(NSString* stringToModify,NSArray* parameters){
+=======
+static IXBaseShortCodeFunction const kIXStripHtmlFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return (stringToModify) ? [NSString ix_stripHtml:stringToModify] : stringToModify;
 };
 
-static IXBaseEvaluationUtility const kIXRadiansToDegreesUtility = ^NSString*(NSString* stringToModify,NSArray* parameters){
+static IXBaseShortCodeFunction const kIXRadiansToDegreesFunction = ^NSString*(NSString* stringToModify,NSArray* parameters){
+>>>>>>> master:Ignite_iOS_Engine/Classes/Model/Properties/ShortCodes/IXShortCodeFunction.m
     CGFloat radians = [stringToModify floatValue];
     if (radians > 0 || radians < 0) {
         return [NSString stringWithFormat:@"%f", RADIANS_TO_DEGREES(radians)];
@@ -389,6 +393,7 @@ static IXBaseEvaluationUtility const kIXDegreesToRadiansUtility = ^NSString*(NSS
     static NSDictionary* sIXUtilityDictionary = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+<<<<<<< HEAD:Classes/Model/Attributes/Evaluations/IXEvaluationUtilities.m
         sIXUtilityDictionary = @{  kIXCapitalize:        [kIXCapitalizeUtility copy],
                                     kIXCurrency:          [kIXCurrencyUtility copy],
                                     kIXDistance:          [kIXDistanceUtility copy],
@@ -409,9 +414,33 @@ static IXBaseEvaluationUtility const kIXDegreesToRadiansUtility = ^NSString*(NSS
                                     kIXURLDecode:         [kIXURLDecodeUtility copy],
                                     kIXTimeFromSeconds:   [kIXTimeFromSecondsUtility copy],
                                     kIXTruncate:          [kIXTruncateUtility copy],
-                                    kIXStripHtml:         [kIXStripHtmlUtility copy],
                                     kIXDegreesToRadians:  [kIXDegreesToRadiansUtility copy],
                                     kIXRadiansToDegrees:  [kIXRadiansToDegreesUtility copy]};
+=======
+        sIXFunctionDictionary = @{  kIXCapitalize:        [kIXCapitalizeFunction copy],
+                                    kIXCurrency:          [kIXCurrencyFunction copy],
+                                    kIXDistance:          [kIXDistanceFunction copy],
+                                    kIXFromBase64:        [kIXFromBase64Function copy],
+                                    kIXIs:                [kIXIsFunction copy],
+                                    kIXLength:            [kIXLengthFunction copy],
+                                    kIXMoment:            [kIXMomentFunction copy],
+                                    kIXMonogram:          [kIXMonogramFunction copy],
+                                    kIXNow:               [kIXNowFunction copy],
+                                    kIXRandomNumber:      [kIXRandomNumberFunction copy],
+                                    kIXToBase64:          [kIXToBase64Function copy],
+                                    kIXToHex:             [kIXToHexFunction copy],
+                                    kIXToMD5:             [kIXToMD5Function copy],
+                                    kIXToLowercase:       [kIXToLowerCaseFunction copy],
+                                    kIXToRGB:             [kIXToRGBFunction copy],
+                                    kIXToUppercase:       [kIXToUppercaseFunction copy],
+                                    kIXURLEncode:         [kIXURLEncodeFunction copy],
+                                    kIXURLDecode:         [kIXURLDecodeFunction copy],
+                                    kIXTimeFromSeconds:   [kIXTimeFromSecondsFunction copy],
+                                    kIXTruncate:          [kIXTruncateFunction copy],
+                                    kIXStripHtml:         [kIXStripHtmlFunction copy],
+                                    kIXDegreesToRadians:  [kIXDegreesToRadiansFunction copy],
+                                    kIXRadiansToDegrees:  [kIXRadiansToDegreesFunction copy]};
+>>>>>>> master:Ignite_iOS_Engine/Classes/Model/Properties/ShortCodes/IXShortCodeFunction.m
     });
     
     return [sIXUtilityDictionary[utilityName] copy];

@@ -161,10 +161,10 @@ static NSString* const kIXFloatFormat = @"%f";
         return string;
 }
 
+<<<<<<< HEAD:Classes/Model/Categories/NSString+IXAdditions.m
 +(NSString*)ix_jsonStringWithPrettyPrint:(BOOL)prettyPrint fromObject:(NSObject *)object {
     return [object jsonStringWithPrettyPrint:prettyPrint];
-}
-
+=======
 + (NSString*)ix_stripHtml:(NSString*)string {
     NSAttributedString *attr = [[NSAttributedString alloc] initWithData:[string dataUsingEncoding:NSUTF8StringEncoding]
                                                                 options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
@@ -172,6 +172,7 @@ static NSString* const kIXFloatFormat = @"%f";
                                                      documentAttributes:nil
                                                                   error:nil];
     return [attr string];
+>>>>>>> master:Ignite_iOS_Engine/Classes/Model/Categories/NSString+IXAdditions.m
 }
 
 - (NSString*)trimLeadingAndTrailingWhitespace {
@@ -194,6 +195,7 @@ static NSString* const kIXFloatFormat = @"%f";
             [self caseInsensitiveCompare:@"no"] == NSOrderedSame ||
             [self caseInsensitiveCompare:@"false"] == NSOrderedSame);
 }
+
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
 
