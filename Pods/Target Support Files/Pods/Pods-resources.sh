@@ -6,6 +6,14 @@ mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 RESOURCES_TO_COPY=${PODS_ROOT}/resources-to-copy-${TARGETNAME}.txt
 > "$RESOURCES_TO_COPY"
 
+XCASSET_FILES=()
+
+realpath() {
+  DIRECTORY=$(cd "${1%/*}" && pwd)
+  FILENAME="${1##*/}"
+  echo "$DIRECTORY/$FILENAME"
+}
+
 install_resource()
 {
   case $1 in
@@ -36,6 +44,8 @@ install_resource()
       xcrun mapc "${PODS_ROOT}/$1" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/`basename "$1" .xcmappingmodel`.cdm"
       ;;
     *.xcassets)
+      ABSOLUTE_XCASSET_FILE=$(realpath "${PODS_ROOT}/$1")
+      XCASSET_FILES+=("$ABSOLUTE_XCASSET_FILE")
       ;;
     /*)
       echo "$1"
@@ -47,52 +57,86 @@ install_resource()
       ;;
   esac
 }
-          install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackward.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackward@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackwardSelected.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackwardSelected@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieEndFullscreen.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieEndFullscreen@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForward.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForward@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForwardSelected.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForwardSelected@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieFullscreen.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieFullscreen@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause@2x.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay.png"
-                    install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay@2x.png"
-                    install_resource "FontAwesome+iOS/Resources/FontAwesome.ttf"
-                    install_resource "IQKeyboardManager/IQKeyBoardManager/Resources/IQKeyboardManager.bundle"
-                    install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack.png"
-                    install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack@2x.png"
-                    install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext.png"
-                    install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext@2x.png"
-                    install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome-iPad.png"
-                    install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome-iPad@2x.png"
-                    install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome@2x.png"
-                    install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari-iPad.png"
-                    install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari-iPad@2x.png"
-                    install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari@2x.png"
-                    install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle"
-                    install_resource "YLMoment/YLMoment/Localization/en.lproj"
-                    install_resource "YLMoment/YLMoment/Localization/es.lproj"
-                    install_resource "YLMoment/YLMoment/Localization/fr.lproj"
-                    install_resource "YLMoment/YLMoment/Localization/nl.lproj"
-                    install_resource "YLMoment/YLMoment/Localization/sq.lproj"
-                    install_resource "ZBarSDK/iphone/res/zbar-back.png"
-                    install_resource "ZBarSDK/iphone/res/zbar-help.html"
-                    install_resource "ZBarSDK/iphone/res/zbar-helpicons.png"
-                    install_resource "ZBarSDK/iphone/res/zbar-samples.png"
-          
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackward.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackward@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackwardSelected.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackwardSelected@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieEndFullscreen.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieEndFullscreen@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForward.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForward@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForwardSelected.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForwardSelected@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieFullscreen.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieFullscreen@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay@2x.png"
+  install_resource "IQKeyboardManager/IQKeyBoardManager/Resources/IQKeyboardManager.bundle"
+  install_resource "JAFontAwesome/Resources/FontAwesome.ttf"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome-iPad.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome-iPad@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari-iPad.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari-iPad@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle"
+  install_resource "ZBarSDK/iphone/res/zbar-back.png"
+  install_resource "ZBarSDK/iphone/res/zbar-help.html"
+  install_resource "ZBarSDK/iphone/res/zbar-helpicons.png"
+  install_resource "ZBarSDK/iphone/res/zbar-samples.png"
+  install_resource "${BUILT_PRODUCTS_DIR}/YLMoment-iOS.bundle"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackward.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackward@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackwardSelected.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieBackwardSelected@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieEndFullscreen.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieEndFullscreen@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForward.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForward@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForwardSelected.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieForwardSelected@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieFullscreen.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/movieFullscreen@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePause@2x.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay.png"
+  install_resource "ALMoviePlayerController/ALMoviePlayerController/Images/moviePlay@2x.png"
+  install_resource "IQKeyboardManager/IQKeyBoardManager/Resources/IQKeyboardManager.bundle"
+  install_resource "JAFontAwesome/Resources/FontAwesome.ttf"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome-iPad.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome-iPad@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Chrome/SVWebViewControllerActivityChrome@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari-iPad.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari-iPad@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/UIActivities/Safari/SVWebViewControllerActivitySafari@2x.png"
+  install_resource "SVWebViewController/SVWebViewController/SVWebViewController.bundle"
+  install_resource "ZBarSDK/iphone/res/zbar-back.png"
+  install_resource "ZBarSDK/iphone/res/zbar-help.html"
+  install_resource "ZBarSDK/iphone/res/zbar-helpicons.png"
+  install_resource "ZBarSDK/iphone/res/zbar-samples.png"
+  install_resource "${BUILT_PRODUCTS_DIR}/YLMoment-iOS.bundle"
+fi
+
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then
   rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${INSTALL_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 fi
 rm -f "$RESOURCES_TO_COPY"
 
-if [[ -n "${WRAPPER_EXTENSION}" ]] && [ "`xcrun --find actool`" ] && [ `find . -name '*.xcassets' | wc -l` -ne 0 ]
+if [[ -n "${WRAPPER_EXTENSION}" ]] && [ "`xcrun --find actool`" ] && [ -n "$XCASSET_FILES" ]
 then
   case "${TARGETED_DEVICE_FAMILY}" in
     1,2)
@@ -108,5 +152,14 @@ then
       TARGET_DEVICE_ARGS="--target-device mac"
       ;;
   esac
-  find "${PWD}" -name "*.xcassets" -print0 | xargs -0 actool --output-format human-readable-text --notices --warnings --platform "${PLATFORM_NAME}" --minimum-deployment-target "${IPHONEOS_DEPLOYMENT_TARGET}" ${TARGET_DEVICE_ARGS} --compress-pngs --compile "${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+
+  # Find all other xcassets (this unfortunately includes those of path pods and other targets).
+  OTHER_XCASSETS=$(find "$PWD" -iname "*.xcassets" -type d)
+  while read line; do
+    if [[ $line != "`realpath $PODS_ROOT`*" ]]; then
+      XCASSET_FILES+=("$line")
+    fi
+  done <<<"$OTHER_XCASSETS"
+
+  printf "%s\0" "${XCASSET_FILES[@]}" | xargs -0 xcrun actool --output-format human-readable-text --notices --warnings --platform "${PLATFORM_NAME}" --minimum-deployment-target "${IPHONEOS_DEPLOYMENT_TARGET}" ${TARGET_DEVICE_ARGS} --compress-pngs --compile "${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 fi

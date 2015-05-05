@@ -1,7 +1,7 @@
 /*
- * YLMoment.m
+ * YLMoment
  *
- * Copyright 2013 Yannick Loriot.
+ * Copyright 2013 - present Yannick Loriot.
  * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,12 +26,28 @@
 
 #import "YLMoment.h"
 
+/** The name of the bundle for the iOS plateform. */
+static NSString * const kYLMomentiOSBunbleName = @"YLMoment-iOS";
+/** The name of the bundle for the iOS plateform. */
+static NSString * const kYLMomentOSXBunbleName = @"YLMoment-OSX";
+/** The table name for the relative time strings. */
+static NSString * const kYLMomentRelativeTimeStringTable = @"YLMomentRelativeTimeLocalizable";
+
 @interface YLMoment ()
+/** The internal date once data computed */
 #pragma mark internal
-@property (nonatomic, strong) NSDate   *date;
+@property (nonatomic, strong) NSDate *date;
+
+/** Returns the specified field value of the moment. */
+- (NSUInteger)getCalendarUnit:(NSCalendarUnit)unit;
 
 #pragma mark langs
+/** Bundle the current language */
 @property (nonatomic, strong) NSBundle *langBundle;
+
+#pragma mark proxy
+/** Date detector used to convert strings to date */
+@property (nonatomic, strong) NSDataDetector *dateDetector;
 
 /** Init the proxy with the default values. */
 - (id)initProxy;
@@ -39,8 +55,8 @@
 /** Called when the moment is initiated. */
 - (void)momentInitiated;
 
-/** Update the lang bundle with the current locale preferred localizations. */
-- (void)updateLangBundle;
+/** Returns the YLMoment lang bundle corresponding to a given locale identifier. */
+- (NSBundle *)langBundleForLocaleWithIdentifier:(NSString *)localeIdentifier;
 
 @end
 
@@ -51,19 +67,28 @@
     [self removeObserver:self forKeyPath:@"locale"];
 }
 
-- (id)init
+#pragma mark - Creating and Initializing Moment Objects
+
+- (instancetype)init
 {
     return [self initWithDate:[NSDate date]];
 }
 
-+ (id)now
++ (instancetype)now
 {
     return [[self alloc] init];
 }
 
++ (instancetype)utc {
+    YLMoment *moment = [[self class] now];
+    moment.timeZone  = [NSTimeZone timeZoneWithName:@"UTC"];
+    
+    return moment;
+}
+
 #pragma mark -
 
-- (id)initWithDate:(NSDate *)date
+- (instancetype)initWithDate:(NSDate *)date
 {
     if ((self = [super init]))
     {
@@ -79,14 +104,14 @@
     return self;
 }
 
-+ (id)momentWithDate:(NSDate *)date
++ (instancetype)momentWithDate:(NSDate *)date
 {
     return [[self alloc] initWithDate:date];
 }
 
 #pragma mark -
 
-- (id)initWithArray:(NSArray *)dateAsArray
+- (instancetype)initWithArray:(NSArray *)dateAsArray
 {
     NSInteger componentCount = [dateAsArray count];
     
@@ -111,55 +136,71 @@
     return [self initWithDate:[calendar dateFromComponents:components]];
 }
 
-+ (id)momentWithArray:(NSArray *)dateAsArray
++ (instancetype)momentWithArray:(NSArray *)dateAsArray
 {
     return [[self alloc] initWithArray:dateAsArray];
 }
 
 #pragma mark -
 
-- (id)initWithDateAsString:(NSString *)dateAsString
+- (instancetype)initWithDateAsString:(NSString *)dateAsString
 {
-    NSDataDetector *detector    = [NSDataDetector dataDetectorWithTypes:(NSTextCheckingTypes)NSTextCheckingTypeDate error:nil];
-    NSTextCheckingResult *match = [detector firstMatchInString:dateAsString options:0 range:NSMakeRange(0, [dateAsString length])];
+    NSDataDetector *dateDetector = [[[self class] proxy] dateDetector];
+    NSTextCheckingResult *match  = [dateDetector firstMatchInString:dateAsString options:0 range:NSMakeRange(0, [dateAsString length])];
     
     return [self initWithDate:match.date];
 }
 
-+ (id)momentWithDateAsString:(NSString *)dateAsString
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString
 {
     return [[self alloc] initWithDateAsString:dateAsString];
 }
 
 #pragma mark -
 
-- (id)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat
+- (instancetype)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat
 {
-    NSLocale *locale = [[[self class] proxy] locale];
-    
-    return [self initWithDateAsString:dateAsString format:dateFormat localeIdentifier:[locale localeIdentifier]];
+    return [self initWithDateAsString:dateAsString format:dateFormat localeIdentifier:nil];
 }
 
-+ (id)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat
 {
     return [[self alloc] initWithDateAsString:dateAsString format:dateFormat];
 }
 
 #pragma mark -
 
-- (id)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier
+- (instancetype)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier
 {
-    NSDateFormatter *formatter  = [[NSDateFormatter alloc] init];
-    formatter.locale            = [[NSLocale alloc] initWithLocaleIdentifier:localeIdentifier];
-    formatter.timeZone          = [[[self class] proxy] timeZone];
-    formatter.dateFormat        = dateFormat;
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
     
-    return [self initWithDate:[formatter dateFromString:dateAsString]];
+    return [self initWithDateAsString:dateAsString format:dateFormat locale:locale timeZone:nil];
 }
 
-+ (id)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier
 {
     return [[self alloc] initWithDateAsString:dateAsString format:dateFormat localeIdentifier:localeIdentifier];
+}
+
+#pragma mark -
+
+- (instancetype)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat locale:(NSLocale *)locale timeZone:(NSTimeZone *)timeZone
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale           = locale ?: [[[self class] proxy] locale];
+    formatter.timeZone         = timeZone ?: [[[self class] proxy] timeZone];
+    formatter.dateFormat       = dateFormat;
+    
+    YLMoment *moment = [self initWithDate:[formatter dateFromString:dateAsString]];
+    moment.locale    = locale;
+    moment.timeZone  = timeZone;
+    
+    return moment;
+}
+
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat locale:(NSLocale *)locale timeZone:(NSTimeZone *)timeZone
+{
+    return [[self alloc] initWithDateAsString:dateAsString format:dateFormat locale:locale timeZone:timeZone];
 }
 
 #pragma mark - Properties
@@ -169,7 +210,7 @@
     return [self format];
 }
 
-#pragma mark - Configuring Moments
+#pragma mark - Proxy Method
 
 + (instancetype)proxy
 {
@@ -181,8 +222,6 @@
     return _sharedInstance;
 }
 
-#pragma mark - Public Methods
-
 #pragma mark Representing Moments as Strings
 
 - (NSString *)format
@@ -192,12 +231,17 @@
 
 - (NSString *)format:(NSString *)dateFormat
 {
-    NSDateFormatter *formatter  = [[NSDateFormatter alloc] init];
-    formatter.locale            = _locale ?: [[[self class] proxy] locale];
-    formatter.timeZone          = _timeZone ?: [[[self class] proxy] timeZone];
-    formatter.dateStyle         = (_dateStyle != -1) ? _dateStyle : [[[self class] proxy] dateStyle];
-    formatter.timeStyle         = (_timeStyle != -1) ? _timeStyle : [[[self class] proxy] timeStyle];
-    formatter.dateFormat        = dateFormat;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale           = _locale ?: [[[self class] proxy] locale];
+    formatter.timeZone         = _timeZone ?: [[[self class] proxy] timeZone];
+    if (!dateFormat)
+    {
+        formatter.dateStyle = ((NSUInteger)_dateStyle != -1) ? _dateStyle : [[[self class] proxy] dateStyle];
+        formatter.timeStyle = ((NSUInteger)_timeStyle != -1) ? _timeStyle : [[[self class] proxy] timeStyle];
+    } else
+    {
+        formatter.dateFormat = dateFormat;
+    }
     
     return [formatter stringFromDate:_date] ?: @"Invalid Date";
 }
@@ -251,7 +295,7 @@
 {
     // Get the lang bundle
     NSBundle *langBundle = _langBundle ?: [[[self class] proxy] langBundle] ?: [NSBundle mainBundle];
-    
+
     // Compute the time interval
     double referenceTime = [_date timeIntervalSinceDate:date];
     double seconds       = round(fabs(referenceTime));
@@ -265,42 +309,42 @@
     int unit                  = 0;
     if (seconds < 45)
     {
-        formattedString = [langBundle localizedStringForKey:@"s" value:@"a few seconds" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"s" value:@"a few seconds" table:kYLMomentRelativeTimeStringTable];
         unit            = seconds;
     } else if (minutes == 1)
     {
-        formattedString = [langBundle localizedStringForKey:@"m" value:@"a minute" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"m" value:@"a minute" table:kYLMomentRelativeTimeStringTable];
     } else if (minutes < 45)
     {
-        formattedString = [langBundle localizedStringForKey:@"mm" value:@"%d minutes" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"mm" value:@"%d minutes" table:kYLMomentRelativeTimeStringTable];
         unit            = minutes;
     } else if (hours == 1)
     {
-        formattedString = [langBundle localizedStringForKey:@"h" value:@"an hour" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"h" value:@"an hour" table:kYLMomentRelativeTimeStringTable];
     } else if (hours < 22)
     {
-        formattedString = [langBundle localizedStringForKey:@"hh" value:@"%d hours" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"hh" value:@"%d hours" table:kYLMomentRelativeTimeStringTable];
         unit            = hours;
     } else if (days == 1)
     {
-        formattedString = [langBundle localizedStringForKey:@"d" value:@"a day" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"d" value:@"a day" table:kYLMomentRelativeTimeStringTable];
     } else if (days <= 25)
     {
-        formattedString = [langBundle localizedStringForKey:@"dd" value:@"%d days" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"dd" value:@"%d days" table:kYLMomentRelativeTimeStringTable];
         unit            = days;
     } else if (days <= 45)
     {
-        formattedString = [langBundle localizedStringForKey:@"M" value:@"a month" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"M" value:@"a month" table:kYLMomentRelativeTimeStringTable];
     } else if (days < 345)
     {
-        formattedString = [langBundle localizedStringForKey:@"MM" value:@"%d months" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"MM" value:@"%d months" table:kYLMomentRelativeTimeStringTable];
         unit            = round(days / 30);
     } else if (years == 1)
     {
-        formattedString = [langBundle localizedStringForKey:@"y" value:@"a year" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"y" value:@"a year" table:kYLMomentRelativeTimeStringTable];
     } else
     {
-        formattedString = [langBundle localizedStringForKey:@"yy" value:@"%d years" table:nil];
+        formattedString = [langBundle localizedStringForKey:@"yy" value:@"%d years" table:kYLMomentRelativeTimeStringTable];
         unit            = years;
     }
     formattedString = [NSString stringWithFormat:formattedString, unit];
@@ -310,13 +354,13 @@
     {
         BOOL isFuture = (referenceTime > 0);
         
-        NSString *suffixedString = @"";
+        NSString *suffixedString = nil;
         if (isFuture)
         {
-            suffixedString = [langBundle localizedStringForKey:@"future" value:@"in %@" table:nil];
+            suffixedString = [langBundle localizedStringForKey:@"future" value:@"in %@" table:kYLMomentRelativeTimeStringTable];
         } else
         {
-            suffixedString = [langBundle localizedStringForKey:@"past" value:@"%@ ago" table:nil];
+            suffixedString = [langBundle localizedStringForKey:@"past" value:@"%@ ago" table:kYLMomentRelativeTimeStringTable];
         }
         
         formattedString = [NSString stringWithFormat:suffixedString, formattedString];
@@ -358,7 +402,7 @@
             components.month = amount;
             break;
         case kCFCalendarUnitWeekOfMonth:
-            components.week = amount;
+            components.weekOfMonth = amount;
             break;
         case kCFCalendarUnitDay:
             components.day = amount;
@@ -386,6 +430,21 @@
     _date = [_date dateByAddingTimeInterval:duration];
     
     return self;
+}
+
+- (YLMoment *)subtractAmountOfTime:(NSInteger)amount forUnitKey:(NSString *)key
+{
+    return [self addAmountOfTime:-amount forUnitKey:key];
+}
+
+- (YLMoment *)subtractAmountOfTime:(NSInteger)amount forCalendarUnit:(NSCalendarUnit)unit
+{
+    return [self addAmountOfTime:-amount forCalendarUnit:unit];
+}
+
+- (YLMoment *)subtractDuration:(NSTimeInterval)duration
+{
+    return [self addDuration:-duration];
 }
 
 - (YLMoment *)startOf:(NSString *)unitString
@@ -438,7 +497,7 @@
 
 - (NSUInteger)getCalendarUnit:(NSCalendarUnit)unit
 {
-    NSCalendar *currentCalendar = _calendar ?: [[[self class] proxy] calendar];
+    NSCalendar *currentCalendar  = _calendar ?: [[[self class] proxy] calendar];
     NSDateComponents *components = [currentCalendar components:unit fromDate:_date];
     
     switch (unit)
@@ -604,12 +663,16 @@
     if ((self = [super init]))
     {
         _calendar  = [NSCalendar currentCalendar];
-        _locale    = [NSLocale currentLocale];
+        _locale    = [NSLocale localeWithLocaleIdentifier:[[NSLocale preferredLanguages] objectAtIndex:0]];
         _timeZone  = [NSTimeZone defaultTimeZone];
         _dateStyle = NSDateFormatterLongStyle;
         _timeStyle = NSDateFormatterLongStyle;
         
-        [self updateLangBundle];
+        // Created at the proxy level to multiple instance (optimization)
+        _dateDetector = [NSDataDetector dataDetectorWithTypes:(NSTextCheckingTypes)NSTextCheckingTypeDate error:nil];
+        
+        _langBundle = [self langBundleForLocaleWithIdentifier:_locale.localeIdentifier];
+        
         [self momentInitiated];
     }
     return self;
@@ -620,43 +683,53 @@
     [self addObserver:self forKeyPath:@"locale" options:0 context:nil];
 }
 
-- (void)updateLangBundle
+- (NSBundle *)langBundleForLocaleWithIdentifier:(NSString *)localeIdentifier
 {
-    NSString *lang = [[_locale localeIdentifier] substringToIndex:2];
+    static NSBundle *classBundle  = nil;
+    static NSBundle *momentBundle = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        classBundle = [NSBundle bundleForClass:[self class]];
+        
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+        NSString *bundlePath = [classBundle pathForResource:kYLMomentiOSBunbleName ofType:@"bundle"];
+#else
+        NSString *bundlePath = [classBundle pathForResource:kYLMomentOSXBunbleName ofType:@"bundle"];
+#endif
+        momentBundle = [NSBundle bundleWithPath:bundlePath];
+    });
+
+    NSBundle *bundle   = momentBundle ?: classBundle;
+    NSString *lang     = [localeIdentifier substringToIndex:2];
+    NSString *langPath = [bundle pathForResource:lang ofType:@"lproj"];
     
-    NSBundle *classBundle = [NSBundle bundleForClass:[self class]];
-    NSURL *langURL        = [classBundle URLForResource:lang withExtension:@"lproj"];
-    
-    if (langURL)
+    if (langPath)
     {
-        _langBundle = [NSBundle bundleWithURL:langURL];
+       return [NSBundle bundleWithPath:langPath];
     } else
     {
-        NSArray *preferredLocalizations = [classBundle preferredLocalizations];
+        NSArray *preferredLocales = [NSLocale preferredLanguages];
         
-        for (NSString *preferredLocalization in preferredLocalizations)
+        for (NSString *preferredLocale in preferredLocales)
         {
-            langURL = [classBundle URLForResource:preferredLocalization withExtension:@"lproj"];
+            langPath = [bundle pathForResource:preferredLocale ofType:@"lproj"];
             
-            if (langURL)
+            if (langPath)
             {
-                _langBundle = [NSBundle bundleWithURL:langURL];
-                break;
+                return [NSBundle bundleWithPath:langPath];
             }
         }
     }
+    return nil;
 }
 
 #pragma mark - KVO Delegate Method
 
-- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"locale"])
     {
-        [self updateLangBundle];
-    } else
-    {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        _langBundle = [self langBundleForLocaleWithIdentifier:_locale.localeIdentifier];
     }
 }
 

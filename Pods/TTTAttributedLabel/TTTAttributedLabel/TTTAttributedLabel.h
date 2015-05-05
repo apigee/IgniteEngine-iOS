@@ -23,20 +23,16 @@
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 
+@class TTTAttributedLabelLink;
+
 /**
  Vertical alignment for text in a label whose bounds are larger than its text bounds
  */
-typedef enum {
+typedef NS_ENUM(NSInteger, TTTAttributedLabelVerticalAlignment) {
     TTTAttributedLabelVerticalAlignmentCenter   = 0,
     TTTAttributedLabelVerticalAlignmentTop      = 1,
     TTTAttributedLabelVerticalAlignmentBottom   = 2,
-} TTTAttributedLabelVerticalAlignment;
-
-
-typedef enum {
-    TTTAttributedLabelSelectionStateTouchUp      = 0,
-    TTTAttributedLabelSelectionStateLongPress    = 1,
-} TTTAttributedLabelSelectionState;
+};
 
 /**
  Determines whether the text to which this attribute applies has a strikeout drawn through itself.
@@ -75,16 +71,22 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 @property (nonatomic, copy) id text;
 @end
 
+IB_DESIGNABLE
+
 /**
  `TTTAttributedLabel` is a drop-in replacement for `UILabel` that supports `NSAttributedString`, as well as automatically-detected and manually-added links to URLs, addresses, phone numbers, and dates.
  
- # Differences Between `TTTAttributedLabel` and `UILabel`
+ ## Differences Between `TTTAttributedLabel` and `UILabel`
  
- For the most part, `TTTAttributedLabel` behaves just like `UILabel`. The following are notable exceptions, in which `TTTAttributedLabel` properties may act differently:
+ For the most part, `TTTAttributedLabel` behaves just like `UILabel`. The following are notable exceptions, in which `TTTAttributedLabel` may act differently:
  
  - `text` - This property now takes an `id` type argument, which can either be a kind of `NSString` or `NSAttributedString` (mutable or immutable in both cases)
+ - `attributedText` - Do not set this property directly. Instead, pass an `NSAttributedString` to `text`.
  - `lineBreakMode` - This property displays only the first line when the value is `UILineBreakModeHeadTruncation`, `UILineBreakModeTailTruncation`, or `UILineBreakModeMiddleTruncation`
  - `adjustsFontsizeToFitWidth` - Supported in iOS 5 and greater, this property is effective for any value of `numberOfLines` greater than zero. In iOS 4, setting `numberOfLines` to a value greater than 1 with `adjustsFontSizeToFitWidth` set to `YES` may cause `sizeToFit` to execute indefinitely.
+ - `baselineAdjustment` - This property has no affect.
+ - `textAlignment` - This property does not support justified alignment.
+ - `NSTextAttachment` - This string attribute is not supported.
  
  Any properties affecting text or paragraph styling, such as `firstLineIndent` will only apply when text is set with an `NSString`. If the text is set with an `NSAttributedString`, these properties will not apply.
  
@@ -93,6 +95,8 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  `TTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
  
  @warning Any properties changed on the label after setting the text will not be reflected until a subsequent call to `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`. This is to say, order of operations matters in this case. For example, if the label text color is originally black when the text is set, changing the text color to red will have no effect on the display of the label until the text is set once again.
+ 
+ @bug Setting `attributedText` directly is not recommended, as it may cause a crash when attempting to access any links previously set. Instead, call `setText:`, passing an `NSAttributedString`.
  */
 @interface TTTAttributedLabel : UILabel <TTTAttributedLabel, UIGestureRecognizerDelegate>
 
@@ -129,16 +133,33 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 @property (readonly, nonatomic, strong) NSArray *links;
 
 /**
- A dictionary containing the `NSAttributedString` attributes to be applied to links detected or manually added to the label text. The default link style is blue and underlined.
+ A dictionary containing the default `NSAttributedString` attributes to be applied to links detected or manually added to the label text. The default link style is blue and underlined.
  
  @warning You must specify `linkAttributes` before setting autodecting or manually-adding links for these attributes to be applied.
  */
 @property (nonatomic, strong) NSDictionary *linkAttributes;
 
 /**
- A dictionary containing the `NSAttributedString` attributes to be applied to links when they are in the active state. Supply `nil` or an empty dictionary to opt out of active link styling. The default active link style is red and underlined.
+ A dictionary containing the default `NSAttributedString` attributes to be applied to links when they are in the active state. If `nil` or an empty `NSDictionary`, active links will not be styled. The default active link style is red and underlined.
  */
 @property (nonatomic, strong) NSDictionary *activeLinkAttributes;
+
+/**
+ A dictionary containing the default `NSAttributedString` attributes to be applied to links when they are in the inactive state, which is triggered by a change in `tintColor` in iOS 7 and later. If `nil` or an empty `NSDictionary`, inactive links will not be styled. The default inactive link style is gray and unadorned.
+ */
+@property (nonatomic, strong) NSDictionary *inactiveLinkAttributes;
+
+/**
+ The edge inset for the background of a link. The default value is `{0, -1, 0, -1}`.
+ */
+@property (nonatomic, assign) UIEdgeInsets linkBackgroundEdgeInset;
+
+/**
+ Indicates if links will be detected within an extended area around the touch
+ to emulate the link detection behaviour of UIWebView. 
+ Default value is YES. Disable to to improve performance on long labels.
+ */
+@property (nonatomic, assign) BOOL extendsLinkTouchArea;
 
 ///---------------------------------------
 /// @name Acccessing Text Style Attributes
@@ -147,20 +168,25 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 /**
  The shadow blur radius for the label. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0. 
  */
-@property (nonatomic, assign) CGFloat shadowRadius;
+@property (nonatomic, assign) IBInspectable CGFloat shadowRadius;
 
 /** 
  The shadow blur radius for the label when the label's `highlighted` property is `YES`. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0.
  */
-@property (nonatomic, assign) CGFloat highlightedShadowRadius;
+@property (nonatomic, assign) IBInspectable CGFloat highlightedShadowRadius;
 /** 
  The shadow offset for the label when the label's `highlighted` property is `YES`. A size of {0, 0} indicates no offset, with positive values extending down and to the right. The default size is {0, 0}.
  */
-@property (nonatomic, assign) CGSize highlightedShadowOffset;
+@property (nonatomic, assign) IBInspectable CGSize highlightedShadowOffset;
 /** 
  The shadow color for the label when the label's `highlighted` property is `YES`. The default value is `nil` (no shadow color).
  */
-@property (nonatomic, strong) UIColor *highlightedShadowColor;
+@property (nonatomic, strong) IBInspectable UIColor *highlightedShadowColor;
+
+/**
+ The amount to kern the next character. Default is standard kerning. If this attribute is set to 0.0, no kerning is done at all.
+ */
+@property (nonatomic, assign) IBInspectable CGFloat kern;
 
 ///--------------------------------------------
 /// @name Acccessing Paragraph Style Attributes
@@ -169,17 +195,32 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 /**
  The distance, in points, from the leading margin of a frame to the beginning of the paragraph's first line. This value is always nonnegative, and is 0.0 by default. 
  */
-@property (nonatomic, assign) CGFloat firstLineIndent;
+@property (nonatomic, assign) IBInspectable CGFloat firstLineIndent;
 
 /**
- The space in points added between lines within the paragraph. This value is always nonnegative and is 0.0 by default. 
+ @deprecated Use `lineSpacing` instead.
  */
-@property (nonatomic, assign) CGFloat leading;
+@property (nonatomic, assign) IBInspectable CGFloat leading DEPRECATED_ATTRIBUTE;
+
+/**
+ The space in points added between lines within the paragraph. This value is always nonnegative and is 0.0 by default.
+ */
+@property (nonatomic, assign) IBInspectable CGFloat lineSpacing;
+
+/**
+ The minimum line height within the paragraph. If the value is 0.0, the minimum line height is set to the line height of the `font`. 0.0 by default.
+ */
+@property (nonatomic, assign) IBInspectable CGFloat minimumLineHeight;
+
+/**
+ The maximum line height within the paragraph. If the value is 0.0, the maximum line height is set to the line height of the `font`. 0.0 by default.
+ */
+@property (nonatomic, assign) IBInspectable CGFloat maximumLineHeight;
 
 /**
  The line height multiple. This value is 1.0 by default.
  */
-@property (nonatomic, assign) CGFloat lineHeightMultiple;
+@property (nonatomic, assign) IBInspectable CGFloat lineHeightMultiple;
 
 /**
  The distance, in points, from the margin to the text container. This value is `UIEdgeInsetsZero` by default.
@@ -194,7 +235,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  - `right`: `kCTParagraphStyleSpecifierTailIndent`
  
  */
-@property (nonatomic, assign) UIEdgeInsets textInsets;
+@property (nonatomic, assign) IBInspectable UIEdgeInsets textInsets;
 
 /**
  The vertical text alignment for the label, for when the frame size is greater than the text rect size. The vertical alignment is `TTTAttributedLabelVerticalAlignmentCenter` by default.
@@ -206,30 +247,28 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 ///--------------------------------------------
 
 /**
- The truncation token that appears at the end of the truncated line. `nil` by default.
-
- @discussion When truncation is enabled for the label, by setting `lineBreakMode` to either `UILineBreakModeHeadTruncation`, `UILineBreakModeTailTruncation`, or `UILineBreakModeMiddleTruncation`, the token used to terminate the truncated line will be `truncationTokenString` if defined, otherwise the Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026).
+ @deprecated Use `attributedTruncationToken` instead.
  */
-@property (nonatomic, strong) NSString *truncationTokenString;
+@property (nonatomic, strong) NSString *truncationTokenString DEPRECATED_ATTRIBUTE;
 
 /**
- The attributes to apply to the truncation token at the end of a truncated line. If unspecified, attributes will be inherited from the preceding character.
+ @deprecated Use `attributedTruncationToken` instead.
  */
-@property (nonatomic, strong) NSDictionary *truncationTokenStringAttributes;
-
-///---------------------------------
-/// @name Long Press Gesture support
-///---------------------------------
+@property (nonatomic, strong) NSDictionary *truncationTokenStringAttributes DEPRECATED_ATTRIBUTE;
 
 /**
- The interval that activates the long press gesture. `0.65` by default, set `0` to disable.
+ The attributed string to apply to the truncation token at the end of a truncated line. Overrides `truncationTokenStringAttributes` and `truncationTokenString`. If unspecified, attributes will fallback to `truncationTokenStringAttributes` and `truncationTokenString`.
  */
-@property (nonatomic, assign) NSTimeInterval longPressInterval;
+@property (nonatomic, strong) IBInspectable NSAttributedString *attributedTruncationToken;
+
+///--------------------------
+/// @name Long press gestures
+///--------------------------
 
 /**
- The selection state determines whether the user activates by tap/long press gesture.
+ *  The long-press gesture recognizer used internally by the label.
  */
-@property (nonatomic, readonly) TTTAttributedLabelSelectionState selectionState;
+@property (nonatomic, strong, readonly) UILongPressGestureRecognizer *longPressGestureRecognizer;
 
 ///--------------------------------------------
 /// @name Calculating Size of Attributed String
@@ -272,12 +311,14 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 - (void)setText:(id)text
 afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString *(^)(NSMutableAttributedString *mutableAttributedString))block;
 
-///----------------------------------
+///------------------------------------
 /// @name Accessing the Text Attributes
-///----------------------------------
+///------------------------------------
 
 /**
  A copy of the label's current attributedText. This returns `nil` if an attributed string has never been set on the label.
+ 
+ @warning Do not set this property directly. Instead, set @c text to an @c NSAttributedString.
  */
 @property (readwrite, nonatomic, copy) NSAttributedString *attributedText;
 
@@ -286,29 +327,44 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 ///-------------------
 
 /**
- Adds a link to an `NSTextCheckingResult`.
+ Adds a link. You can customize an individual link's appearance and accessibility value by creating your own @c TTTAttributedLabelLink and passing it to this method. The other methods for adding links will use the label's default attributes.
  
- @param result An `NSTextCheckingResult` representing the link's location and type.
+ @warning Modifying the link's attribute dictionaries must be done before calling this method.
+ 
+ @param link A @c TTTAttributedLabelLink object.
  */
-- (void)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
+- (void)addLink:(TTTAttributedLabelLink *)link;
 
 /**
- Adds a link to an `NSTextCheckingResult`.
+ Adds a link to an @c NSTextCheckingResult.
  
- @param result An `NSTextCheckingResult` representing the link's location and type.
- @param attributes The attributes to be added to the text in the range of the specified link. If `nil`, no attributes are added.
+ @param result An @c NSTextCheckingResult representing the link's location and type.
+ 
+ @return The newly added link object.
  */
-- (void)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
-                           attributes:(NSDictionary *)attributes;
+- (TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
+
+/**
+ Adds a link to an @c NSTextCheckingResult.
+ 
+ @param result An @c NSTextCheckingResult representing the link's location and type.
+ @param attributes The attributes to be added to the text in the range of the specified link. If set, the label's @c activeAttributes and @c inactiveAttributes will be applied to the link. If `nil`, no attributes are added to the link.
+ 
+ @return The newly added link object.
+ */
+- (TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
+                                               attributes:(NSDictionary *)attributes;
 
 /**
  Adds a link to a URL for a specified range in the label text.
  
  @param url The url to be linked to
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ 
+ @return The newly added link object.
  */
-- (void)addLinkToURL:(NSURL *)url
-           withRange:(NSRange)range;
+- (TTTAttributedLabelLink *)addLinkToURL:(NSURL *)url
+                               withRange:(NSRange)range;
 
 /**
  Adds a link to an address for a specified range in the label text.
@@ -317,27 +373,33 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  
  @discussion The address component dictionary keys are described in `NSTextCheckingResult`'s "Keys for Address Components." 
+ 
+ @return The newly added link object.
  */
-- (void)addLinkToAddress:(NSDictionary *)addressComponents
-               withRange:(NSRange)range;
+- (TTTAttributedLabelLink *)addLinkToAddress:(NSDictionary *)addressComponents
+                                   withRange:(NSRange)range;
 
 /**
  Adds a link to a phone number for a specified range in the label text.
  
  @param phoneNumber The phone number to be linked to.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ 
+ @return The newly added link object.
  */
-- (void)addLinkToPhoneNumber:(NSString *)phoneNumber
-                   withRange:(NSRange)range;
+- (TTTAttributedLabelLink *)addLinkToPhoneNumber:(NSString *)phoneNumber
+                                       withRange:(NSRange)range;
 
 /**
  Adds a link to a date for a specified range in the label text.
  
  @param date The date to be linked to.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ 
+ @return The newly added link object.
  */
-- (void)addLinkToDate:(NSDate *)date
-            withRange:(NSRange)range;
+- (TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
+                                withRange:(NSRange)range;
 
 /**
  Adds a link to a date with a particular time zone and duration for a specified range in the label text.
@@ -346,20 +408,33 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  @param timeZone The time zone of the specified date.
  @param duration The duration, in seconds from the specified date.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ 
+ @return The newly added link object.
  */
-- (void)addLinkToDate:(NSDate *)date
-             timeZone:(NSTimeZone *)timeZone
-             duration:(NSTimeInterval)duration
-            withRange:(NSRange)range;
+- (TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
+                                 timeZone:(NSTimeZone *)timeZone
+                                 duration:(NSTimeInterval)duration
+                                withRange:(NSRange)range;
 
 /**
  Adds a link to transit information for a specified range in the label text.
 
  @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ 
+ @return The newly added link object.
  */
-- (void)addLinkToTransitInformation:(NSDictionary *)components
-                          withRange:(NSRange)range;
+- (TTTAttributedLabelLink *)addLinkToTransitInformation:(NSDictionary *)components
+                                              withRange:(NSRange)range;
+
+/**
+ Returns whether an @c NSTextCheckingResult is found at the give point.
+ 
+ @discussion This can be used together with @c UITapGestureRecognizer to tap interactions with overlapping views.
+ 
+ @param point The point inside the label.
+ */
+- (BOOL)containslinkAtPoint:(CGPoint)point;
 
 @end
 
@@ -441,5 +516,171 @@ didSelectLinkWithTransitInformation:(NSDictionary *)components;
  */
 - (void)attributedLabel:(TTTAttributedLabel *)label
 didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
+
+///---------------------------------
+/// @name Responding to Long Presses
+///---------------------------------
+
+/**
+ *  Long-press delegate methods include the CGPoint tapped within the label's coordinate space.
+ *  This may be useful on iPad to present a popover from a specific origin point.
+ */
+
+/**
+ Tells the delegate that the user long-pressed a link to a URL.
+ 
+ @param label The label whose link was long pressed.
+ @param url The URL for the link.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithURL:(NSURL *)url
+                atPoint:(CGPoint)point;
+
+/**
+ Tells the delegate that the user long-pressed a link to an address.
+ 
+ @param label The label whose link was long pressed.
+ @param addressComponents The components of the address for the link.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithAddress:(NSDictionary *)addressComponents
+                atPoint:(CGPoint)point;
+
+/**
+ Tells the delegate that the user long-pressed a link to a phone number.
+ 
+ @param label The label whose link was long pressed.
+ @param phoneNumber The phone number for the link.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
+                atPoint:(CGPoint)point;
+
+
+/**
+ Tells the delegate that the user long-pressed a link to a date.
+ 
+ @param label The label whose link was long pressed.
+ @param date The date for the selected link.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithDate:(NSDate *)date
+                atPoint:(CGPoint)point;
+
+
+/**
+ Tells the delegate that the user long-pressed a link to a date with a time zone and duration.
+ 
+ @param label The label whose link was long pressed.
+ @param date The date for the link.
+ @param timeZone The time zone of the date for the link.
+ @param duration The duration, in seconds from the date for the link.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithDate:(NSDate *)date
+               timeZone:(NSTimeZone *)timeZone
+               duration:(NSTimeInterval)duration
+                atPoint:(CGPoint)point;
+
+
+/**
+ Tells the delegate that the user long-pressed a link to transit information.
+ 
+ @param label The label whose link was long pressed.
+ @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithTransitInformation:(NSDictionary *)components
+                atPoint:(CGPoint)point;
+
+/**
+ Tells the delegate that the user long-pressed a link to a text checking result.
+ 
+ @discussion Similar to `-attributedLabel:didSelectLinkWithTextCheckingResult:`, this method is called if a link is long pressed and the delegate does not implement the method corresponding to this type of link.
+ 
+ @param label The label whose link was long pressed.
+ @param result The custom text checking result.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithTextCheckingResult:(NSTextCheckingResult *)result
+                atPoint:(CGPoint)point;
+
+@end
+
+@interface TTTAttributedLabelLink : NSObject <NSCoding>
+
+typedef void (^TTTAttributedLabelLinkBlock) (TTTAttributedLabel *, TTTAttributedLabelLink *);
+
+/**
+ An `NSTextCheckingResult` representing the link's location and type.
+ */
+@property (readonly, nonatomic, strong) NSTextCheckingResult *result;
+
+/**
+ A dictionary containing the @c NSAttributedString attributes to be applied to the link.
+ */
+@property (readonly, nonatomic, copy) NSDictionary *attributes;
+
+/**
+ A dictionary containing the @c NSAttributedString attributes to be applied to the link when it is in the active state.
+ */
+@property (readonly, nonatomic, copy) NSDictionary *activeAttributes;
+
+/**
+ A dictionary containing the @c NSAttributedString attributes to be applied to the link when it is in the inactive state, which is triggered by a change in `tintColor` in iOS 7 and later.
+ */
+@property (readonly, nonatomic, copy) NSDictionary *inactiveAttributes;
+
+/**
+ Additional information about a link for VoiceOver users. Has default values if the link's @c result is @c NSTextCheckingTypeLink, @c NSTextCheckingTypePhoneNumber, or @c NSTextCheckingTypeDate.
+ */
+@property (nonatomic, copy) NSString *accessibilityValue;
+
+/**
+ A block called when this link is tapped.
+ If non-nil, tapping on this link will call this block instead of the 
+ @c TTTAttributedLabelDelegate tap methods, which will not be called for this link.
+ */
+@property (nonatomic, copy) TTTAttributedLabelLinkBlock linkTapBlock;
+
+/**
+ A block called when this link is long-pressed.
+ If non-nil, long pressing on this link will call this block instead of the
+ @c TTTAttributedLabelDelegate long press methods, which will not be called for this link.
+ */
+@property (nonatomic, copy) TTTAttributedLabelLinkBlock linkLongPressBlock;
+
+/**
+ Initializes a link using the attribute dictionaries specified.
+ 
+ @param attributes         The @c attributes property for the link.
+ @param activeAttributes   The @c activeAttributes property for the link.
+ @param inactiveAttributes The @c inactiveAttributes property for the link.
+ @param result             An @c NSTextCheckingResult representing the link's location and type.
+ 
+ @return The initialized link object.
+ */
+- (instancetype)initWithAttributes:(NSDictionary *)attributes
+                  activeAttributes:(NSDictionary *)activeAttributes
+                inactiveAttributes:(NSDictionary *)inactiveAttributes
+                textCheckingResult:(NSTextCheckingResult *)result;
+
+/**
+ Initializes a link using the attribute dictionaries set on a specified label.
+ 
+ @param label  The attributed label from which to inherit attribute dictionaries.
+ @param result An @c NSTextCheckingResult representing the link's location and type.
+ 
+ @return The initialized link object.
+ */
+- (instancetype)initWithAttributesFromLabel:(TTTAttributedLabel*)label
+                         textCheckingResult:(NSTextCheckingResult *)result;
 
 @end

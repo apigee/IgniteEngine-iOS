@@ -1,7 +1,7 @@
 //
 //  IQBarButtonItem.h
 // https://github.com/hackiftekhar/IQKeyboardManager
-// Copyright (c) 2013-14 Iftekhar Qurashi.
+// Copyright (c) 2013-15 Iftekhar Qurashi.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +24,9 @@
 
 #import <UIKit/UIBarButtonItem.h>
 
-/*!
-    @class IQBarButtonItem
- 
-	@abstract IQBarButtonItem used for IQToolbar.
+/**
+ IQBarButtonItem used for IQToolbar.
  */
 @interface IQBarButtonItem : UIBarButtonItem
-
 
 @end

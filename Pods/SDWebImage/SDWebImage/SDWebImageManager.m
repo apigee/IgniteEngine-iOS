@@ -21,7 +21,7 @@
 
 @property (strong, nonatomic, readwrite) SDImageCache *imageCache;
 @property (strong, nonatomic, readwrite) SDWebImageDownloader *imageDownloader;
-@property (strong, nonatomic) NSMutableSet *failedURLs;
+@property (strong, nonatomic) NSMutableArray *failedURLs;
 @property (strong, nonatomic) NSMutableArray *runningOperations;
 
 @end
@@ -41,7 +41,7 @@
     if ((self = [super init])) {
         _imageCache = [self createCache];
         _imageDownloader = [SDWebImageDownloader sharedDownloader];
-        _failedURLs = [NSMutableSet new];
+        _failedURLs = [NSMutableArray new];
         _runningOperations = [NSMutableArray new];
     }
     return self;
@@ -194,7 +194,9 @@
 
                     if (error.code != NSURLErrorNotConnectedToInternet && error.code != NSURLErrorCancelled && error.code != NSURLErrorTimedOut) {
                         @synchronized (self.failedURLs) {
-                            [self.failedURLs addObject:url];
+                            if (![self.failedURLs containsObject:url]) {
+                                [self.failedURLs addObject:url];
+                            }
                         }
                     }
                 }

@@ -7,7 +7,7 @@ Often while developing an app, We ran into an issues where the iPhone keyboard s
 
 ####Key Features
 
-1) **CODELESS**, Zero Line Of Code`
+1) `**CODELESS**, Zero Line Of Code`
 
 2) `Works Automatically`
 
@@ -20,6 +20,9 @@ Often while developing an app, We ran into an issues where the iPhone keyboard s
 6) `No More #imports`
 
 `IQKeyboardManager` works on all orientations, and with the toolbar. There are also nice optional features allowing you to customize the distance from the text field, add the next/previous done button as a keyboard UIToolbar, play sounds when the user navigations through the form and more.
+
+####Recent Blog about IQKeyboardManager
+http://www.theothertomelliott.com/node/1124
 
 ## Screenshot
 [![IQKeyboardManager](./KeyboardTextFieldDemo/Screenshot/IQKeyboardManagerScreenshot.png)](http://youtu.be/6nhLw6hju2A)
@@ -39,7 +42,7 @@ alt="IQKeyboardManager Demo Video" width="480" height="360" border="10" /></a>
 
 Minimum iOS Target: iOS 5.0
 
-Minimum Xcode Version: Xcode 5.0
+Minimum Xcode Version: Xcode 4.2
 
 #### Demo Project:-
 
@@ -80,11 +83,22 @@ If you set ***[[IQKeyboardManager sharedManager] setEnable:NO]*** and still auto
 
 ***@property enableAutoToolbar :*** It enable/disable automatic creation of toolbar, please set enableAutoToolbar to NO if you don't want to add automatic toolbar.
 
-####3) Swift version crashes in Release Mode ([#111](https://github.com/hackiftekhar/IQKeyboardManager/issues/111))
+
+## Known Issues (Swift):-
+
+####1) Crashes in Release Mode ([#111](https://github.com/hackiftekhar/IQKeyboardManager/issues/111))
 
 It may be compiler issue when compiler tries to optimize Code for best performance and compiler changes something in the middle which is not expected. Changing **Optimization Level** in Build Settings solve the problem.
 
 **Workdaround:** Goto ***Target->Build Settings->Code Generation->Optimization Level***, and set it to ***None[-O0]***.([StackOverflow](http://stackoverflow.com/questions/3327981/app-runs-as-debug-but-crashes-as-release))
+
+####2) Manually enable IQKeyboardManager Swift Version.
+
+From Swift 1.2, compiler no longer allows to override `class func load()` method, so you need to manually enable IQKeyboardManager using below line of code in AppDelegate.
+
+```
+    IQKeyboardManager.sharedManager().enable = true
+```
 
 
 Manual Management:-
@@ -107,29 +121,39 @@ Manual Management:-
  
 #### Disable for a ViewController:-
 
- If you would like to disable `IQKeyboardManager` for a particular ViewController then you should disable IQKeyboardManager on `ViewDidAppear` and again enable it on `ViewWillDisappear`.
+ If you would like to disable `IQKeyboardManager` for a particular ViewController then register ViewController with `-(void)disableInViewControllerClass:(Class)disabledClass` method in AppDelegate.([#117](https://github.com/hackiftekhar/IQKeyboardManager/issues/117),[#139](https://github.com/hackiftekhar/IQKeyboardManager/issues/139))
 
-    #import "IQKeyboardManager.h"
-    @implementation ExampleViewController
-    {
-        BOOL _wasKeyboardManagerEnabled;
-    }
-    
-    -(void)viewDidAppear:(BOOL)animated
-    {
-        [super viewDidAppear:animated];
-        _wasKeyboardManagerEnabled = [[IQKeyboardManager sharedManager] isEnabled];
-        [[IQKeyboardManager sharedManager] setEnable:NO];
-    }
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [[IQKeyboardManager sharedManager] disableInViewControllerClass:[ViewController class]];
+    return YES;
+}
+```
 
-    -(void)viewWillDisappear:(BOOL)animated
-    {
-        [super viewWillDisappear:animated];
-        [[IQKeyboardManager sharedManager] setEnable:_wasKeyboardManagerEnabled];
-    }
+#### Disable toolbar for a ViewController:-
 
-    @end
+If you would like to disable `Auto Toolbar` for a particular ViewController then register ViewController with `-(void)disableToolbarInViewControllerClass:(Class)disabledClass` method in AppDelegate.
 
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [[IQKeyboardManager sharedManager] disableToolbarInViewControllerClass:[ViewController class]];
+    return YES;
+}
+```
+
+#### Considering Previous/Next buttons for textField inside customViews:-
+
+If your textFields are on different customView and do not show previous/next to navigate between textField. Then you should create a SpecialView subclass of UIView, then put all customView inside SpecialView, then register SpecialView class using `-(void)considerToolbarPreviousNextInViewClass:(Class)toolbarPreviousNextConsideredClass` method in AppDelegate.([#154](https://github.com/hackiftekhar/IQKeyboardManager/issues/154), [#179](https://github.com/hackiftekhar/IQKeyboardManager/issues/179))
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [[IQKeyboardManager sharedManager] considerToolbarPreviousNextInViewClass:[SpecialView class]];
+    return YES;
+}
+```
 
 #### Keyboard Return Key Handling:-
   If you would like to implement keyboard **Return Key** as **Next/Done** button, then you can use **IQKeyboardReturnKeyHandler**.([#38](https://github.com/hackiftekhar/IQKeyboardManager/issues/38), [#63](https://github.com/hackiftekhar/IQKeyboardManager/issues/63))

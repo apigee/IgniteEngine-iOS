@@ -1,7 +1,7 @@
 /*
- * YLMoment.h
+ * YLMoment
  *
- * Copyright 2013 Yannick Loriot.
+ * Copyright 2013 - present Yannick Loriot.
  * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,10 +32,13 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * YLMoment is a library which provides an high abstraction level for parsing,
  * validating, manipulating, and formatting the dates in Objective-C.
  *
- * Its API is inspired by the well known [moment.js](http://momentjs.com/)
- * library, however unlike its father, its core is built upon the Foundation
- * Framework components (NSDate, NSDateFormatter,etc.) for a full 
- * interoperability with iOS.
+ * Its API is inspired by the well known moment.js library, however unlike its
+ * counterpart, its core is built upon the Foundation Framework components 
+ * (NSDate, NSCalendar, etc.) to enable the interoperability with them.
+ *
+ * This library is designed to facilitate the manipulation of times, dates, 
+ * calendars, and durations in Objective-C by providing a single, easy, and 
+ * unified approach to dealing with them.
  */
 @interface YLMoment : NSObject
 
@@ -44,33 +47,40 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
 
 /**
  * @abstract Creates and returns a moment which is set to the current date.
- * @version 0.1.0
+ * @since 0.1.0
  */
-+ (id)now;
++ (instancetype)now;
+
+/**
+ * @abstract Creates and returns a moment with the current datetime using 
+ * the Universal Coordinated Time (UTC).
+ * @since 0.4.0
+ */
++ (instancetype)utc;
 
 /**
  * @abstract Initializes a moment using a given date.
  * @param date a date.
- * @version 0.1.0
+ * @since 0.1.0
  */
-- (id)initWithDate:(NSDate *)date;
+- (instancetype)initWithDate:(NSDate *)date;
 
 /**
  * @abstract Creates and returns a moment using a given date.
  * @param date a date.
  * @see initWithDate:
- * @version 0.1.0
+ * @since 0.1.0
  */
-+ (id)momentWithDate:(NSDate *)date;
++ (instancetype)momentWithDate:(NSDate *)date;
 
 /**
  * @abstract Initializes a moment with an array of numbers that mirror the 
  * following components ['year', 'month', 'day', 'hour', 'minute', 'second'].
  * @param dateAsArray An array which represent the date components.
  * @discussion The moment will create a date in the current timezone.
- * @version 0.1.0
+ * @since 0.1.0
  */
-- (id)initWithArray:(NSArray *)dateAsArray;
+- (instancetype)initWithArray:(NSArray *)dateAsArray;
 
 /**
  * @abstract Creates and returns a moment with an array of numbers that mirror
@@ -78,9 +88,9 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param dateAsArray An array which represent the date components.
  * @discussion The moment will create a date in the current timezone.
  * @see initWithArray:
- * @version 0.1.0
+ * @since 0.1.0
  */
-+ (id)momentWithArray:(NSArray *)dateAsArray;
++ (instancetype)momentWithArray:(NSArray *)dateAsArray;
 
 /**
  * @abstract Initializes a moment using the date representation of a given
@@ -88,9 +98,9 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param dateAsString The date string to parse.
  * @discussion The initializer uses the `NSDataDetector` to interpret the date
  * format.
- * @version 0.1.0
+ * @since 0.1.0
  */
-- (id)initWithDateAsString:(NSString *)dateAsString;
+- (instancetype)initWithDateAsString:(NSString *)dateAsString;
 
 /**
  * @abstract Creates and returns a moment using the date representation of a 
@@ -99,18 +109,18 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @discussion The initializer uses the `NSDataDetector` to interpret the date
  * format.
  * @see initWithDateAsString:
- * @version 0.1.0
+ * @since 0.1.0
  */
-+ (id)momentWithDateAsString:(NSString *)dateAsString;
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString;
 
 /**
  * @abstract Initialize a moment using the date representation of a given string
  * interpreted and using a given date format.
  * @param dateAsString The date string to parse.
  * @param dateFormat The date format string used by the receiver.
- * @version 0.1.0
+ * @since 0.1.0
  */
-- (id)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat;
+- (instancetype)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat;
 
 /**
  * @abstract Creates and returns a moment using the date representation of a 
@@ -118,9 +128,9 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param dateAsString The date string to parse.
  * @param dateFormat The date format string used by the receiver.
  * @see initWithDateAsString:format:
- * @version 0.1.0
+ * @since 0.1.0
  */
-+ (id)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat;
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat;
 
 /**
  * @abstract Initialize a moment using the date representation of a given string
@@ -128,8 +138,9 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param dateAsString The date string to parse.
  * @param dateFormat The date format string used by the receiver.
  * @param localeIdentifier The identifier for the new locale for the receiver.
+ * @since 0.1.0
  */
-- (id)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier;
+- (instancetype)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier;
 
 /**
  * @abstract Creates and returns a moment using the date representation of a
@@ -138,32 +149,63 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param dateFormat The date format string used by the receiver.
  * @param localeIdentifier The identifier for the new locale for the receiver.
  * @see initWithDateAsString:format:localeIdentifier:
- * @version 0.1.0
+ * @since 0.1.0
  */
-+ (id)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier;
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat localeIdentifier:(NSString *)localeIdentifier;
 
-#pragma mark Configuring Moments
-/** @name Configuring Moments */
+/**
+ * @abstract Initialize a moment using the date representation of a given string
+ * interpreted, a given date format, a given locale, and a time zone.
+ * @param dateAsString The date string to parse.
+ * @param dateFormat The date format string used by the receiver.
+ * @param locale The locale object.
+ * @param timeZone The time zone object.
+ * @discussion The given `locale` and `timeZone` are set by default to the new
+ * moment. If you want you the global (proxy) value instead, set them to nil.
+ * @since 0.4.0
+ */
+- (instancetype)initWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat locale:(NSLocale *)locale timeZone:(NSTimeZone *)timeZone;
+
+/**
+ * @abstract Creates and returns a moment using the date representation of a
+ * given string interpreted, a given date format, a given locale, and a time
+ * zone.
+ * @param dateAsString The date string to parse.
+ * @param dateFormat The date format string used by the receiver.
+ * @param locale The locale object.
+ * @param timeZone The time zone object.
+ * @discussion The given `locale` and `timeZone` are set by default to the new
+ * moment. If you want you the global (proxy) value instead, set them to nil.
+ * @see initWithDateAsString:format:locale:timeZone:
+ * @since 0.4.0
+ */
++ (instancetype)momentWithDateAsString:(NSString *)dateAsString format:(NSString *)dateFormat locale:(NSLocale *)locale timeZone:(NSTimeZone *)timeZone;
+
+#pragma mark - Proxy Method
+/** @name Proxy Method */
 
 /**
  * @abstract Returns the proxy for the receiver.
  * @return The appearance proxy for the receiver.
  * @discussion The proxy is useful to configuring the `YLMoment` in a global way.
- * @version 0.1.0
+ * @since 0.1.0
  */
 + (instancetype)proxy;
+
+#pragma mark Configuring Moments
+/** @name Configuring Moments */
 
 /**
  * @abstract The calendar that will be used for the date calculations.
  * @discussion The default value is set to the current calendar.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (atomic, strong) NSCalendar *calendar;
 
 /**
  * @abstract The local that will be used to display the dates.
  * @discussion The default value is set to the current locale.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (atomic, strong) NSLocale *locale;
 
@@ -171,21 +213,21 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @abstract The time zone that will be used to display the dates.
  * @discussion The default value of the time zone is set to the default time 
  * zone of the user.
- * @version 0.2.0
+ * @since 0.2.0
  */
 @property (atomic, strong) NSTimeZone *timeZone;
 
 /**
  * @abstract The date style of the receiver.
  * @discussion By default the date style is set to `NSDateFormatterLongStyle`.
- * @version 0.2.0
+ * @since 0.2.0
  */
 @property (atomic, assign) NSDateFormatterStyle dateStyle;
 
 /**
  * @abstract The time style of the receiver.
  * @discussion By default the date style is set to `NSDateFormatterLongStyle`.
- * @version 0.2.0
+ * @since 0.2.0
  */
 @property (atomic, assign) NSDateFormatterStyle timeStyle;
 
@@ -197,7 +239,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * `ISO-8601` format.
  * @return A string representation of the moment formatted using the `ISO-8601`
  * format.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)format;
 
@@ -231,7 +273,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * h:mm a zzzz           | 8:09 PM Central Standard Time
  * yyyy-MM-dd HH:mm:ss Z | 2012-11-04 20:09:00 -0600
  *
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)format:(NSString *)dateFormat;
 
@@ -241,7 +283,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
 /**
  * @abstract Returns true whether the current moment is valid.
  * @return `true` whether the current moment is valid.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (BOOL)isValid;
 
@@ -251,7 +293,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
 /**
  * Returns the `NSDate` corresponding to the current moment.
  * @return the `NSDate` corresponding to the current moment.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSDate *)date;
 
@@ -264,7 +306,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param anotherMoment The moment to compare with the receiver.
  * @return YES if the anotherMoment is an `YLMoment` object and is exactly
  * equal to the receiver, otherwise NO.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (BOOL)isEqualToMoment:(YLMoment *)anotherMoment;
 
@@ -277,7 +319,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @return A suffixed string with the representing time using the locale of
  * the moment.
  * @see fromNowWithSuffix:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)fromNow;
 
@@ -300,7 +342,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @return A suffixed string representing the relative time from a given date
  * using the locale of the moment.
  * @see fromDate:withSuffix:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)fromDate:(NSDate *)date;
 
@@ -330,7 +372,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * 345 to 547 days (1.5 years) | y   | a year ago
  * 548 days+                   | yy  | 2 years ago ... 20 years ago
  *
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)fromDate:(NSDate *)date withSuffix:(BOOL)suffixed;
 
@@ -341,7 +383,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @return A suffixed string representing the relative time from a given
  * moment using the locale of the moment.
  * @see fromMoment:withSuffix:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)fromMoment:(YLMoment *)moment;
 
@@ -355,7 +397,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @return A suffixed string representing the relative time from a given moment
  * using the locale of the moment and suffixed if necessary.
  * @see fromDate:withSuffix:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (NSString *)fromMoment:(YLMoment *)moment withSuffix:(BOOL)suffixed;
 
@@ -363,26 +405,26 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
 /** @name Manipulating Moments */
 
 /**
- * @abstract Mutates and returns the original moment by adding time. To add 
- * time, pass the key of what time you want to add, and the amount you want to add.
+ * @abstract Mutates and returns the original moment by adding time. To add time,
+ * pass the key of what time you want to add, and the corresponding amount.
  * @param amount The amount of time you want to add.
  * @param key The key of what time you want to add.
  * @return The current moment with the amount of time added for a fluent interface
  * pattern.
  * @see calendarUnitForKey:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)addAmountOfTime:(NSInteger)amount forUnitKey:(NSString *)key;
 
 /**
  * @abstract Mutates and returns the original moment by adding time. To add
- * time, pass the calendar unit of what time you want to add, and the amount
- * you want to add.
+ * time, pass the calendar unit of what time you want to add, and the corresponding
+ * amount.
  * @param amount The amount of time you want to add.
  * @param unit The calendar unit of what time you want to add.
  * @return The current moment with the amount of time added for a fluent interface
  * pattern.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)addAmountOfTime:(NSInteger)amount forCalendarUnit:(NSCalendarUnit)unit;
 
@@ -391,9 +433,45 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param duration A time interval to add.
  * @return The current moment with the time duration added for a fluent interface
  * pattern.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)addDuration:(NSTimeInterval)duration;
+
+/**
+ * @abstract Mutates and returns the original moment by subtracting time. To subtract
+ * time, pass the key of what time you want to subtract, and the corresponding amount.
+ * @param amount The amount of time you want to subtract.
+ * @param key The key of what time you want to subtract.
+ * @return The current moment with the amount of time subtracted for a fluent interface
+ * pattern.
+ * @see calendarUnitForKey:
+ * @see addAmountOfTime:forUnitKey:
+ * @since 0.3.0
+ */
+- (YLMoment *)subtractAmountOfTime:(NSInteger)amount forUnitKey:(NSString *)key;
+
+/**
+ * @abstract Mutates and returns the original moment by subtracting time. To add
+ * time, pass the calendar unit of what time you want to subtract, and the corresponding
+ * amount.
+ * @param amount The amount of time you want to subtract.
+ * @param unit The calendar unit of what time you want to subtract.
+ * @return The current moment with the amount of time subtracted for a fluent interface
+ * pattern.
+ * @see addAmountOfTime:forCalendarUnit:
+ * @since 0.3.0
+ */
+- (YLMoment *)subtractAmountOfTime:(NSInteger)amount forCalendarUnit:(NSCalendarUnit)unit;
+
+/**
+ * @abstract Mutates and returns the original moment by subtracting a time duration.
+ * @param duration A time interval to subtract.
+ * @return The current moment with the time duration subtracted for a fluent interface
+ * pattern.
+ * @see addDuration:
+ * @since 0.3.0
+ */
+- (YLMoment *)subtractDuration:(NSTimeInterval)duration;
 
 /**
  * @abstract Mutates and returns the original moment by setting it to the start of
@@ -402,7 +480,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @return The original moment with the setting applied for a fluent interface
  * pattern.
  * @see startOfCalendarUnit:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)startOf:(NSString *)unitString;
 
@@ -412,7 +490,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param unit The key of what time you want to start.
  * @return The original moment with the setting applied for a fluent interface
  * pattern.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)startOfCalendarUnit:(NSCalendarUnit)unit;
 
@@ -424,7 +502,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @return The original moment with the setting applied for a fluent interface
  * pattern.
  * @see endOfCalendarUnit:
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)endOf:(NSString *)unitString;
 
@@ -435,7 +513,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @param unit The key of what time you want to end.
  * @return The original moment with the setting applied for a fluent interface
  * pattern.
- * @version 0.1.0
+ * @since 0.1.0
  */
 - (YLMoment *)endOfCalendarUnit:(NSCalendarUnit)unit;
 
@@ -446,7 +524,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @abstract Gets or sets the seconds.
  * @discussion Accepts numbers from 0 to 59. If the range is exceeded, it will bubble
  * up to the minutes.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (nonatomic, assign) NSUInteger second;
 
@@ -454,7 +532,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @abstract Gets or sets the minutes.
  * @discussion Accepts numbers from 0 to 59. If the range is exceeded, it will bubble
  * up to the hours.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (nonatomic, assign) NSUInteger minute;
 
@@ -462,7 +540,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @abstract Gets or sets the hour.
  * @discussion Accepts numbers from 0 to 23. If the range is exceeded, it will bubble 
  * up to the day.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (nonatomic, assign) NSUInteger hour;
 
@@ -470,7 +548,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @abstract Gets or sets the day of the month.
  * @discussion Accepts numbers from 1 to 31. If the range is exceeded, it will bubble
  * up to the months.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (nonatomic, assign) NSUInteger day;
 
@@ -478,13 +556,13 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * @abstract Gets or sets the month.
  * @discussion Accepts numbers from 1 to 12. If the range is exceeded, it will bubble
  * up to the year.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (nonatomic, assign) NSUInteger month;
 
 /**
  * @abstract Gets or sets the year.
- * @version 0.1.0
+ * @since 0.1.0
  */
 @property (nonatomic, assign) NSUInteger year;
 
@@ -510,7 +588,7 @@ static NSString * const YLMomentIso8601Format = @"yyyy-MM-dd'T'HH:mm:ssZ";
  * minute    | minutes   | m         | `NSCalendarUnitMinute`
  * second    | seconds   | s         | `NSCalendarUnitSecond`
  *
- * @version 0.1.0
+ * @since 0.1.0
  */
 + (NSCalendarUnit)calendarUnitForKey:(NSString *)key;
 

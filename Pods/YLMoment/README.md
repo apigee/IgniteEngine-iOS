@@ -1,36 +1,58 @@
-## YLMoment
-
-[![Build Status](https://travis-ci.org/YannickL/YLMoment.png?branch=master)](https://travis-ci.org/YannickL/YLMoment)
+## YLMoment [![Supported Plateforms](https://cocoapod-badges.herokuapp.com/p/YLMoment/badge.svg)](http://cocoadocs.org/docsets/YLMoment/) [![Version](https://cocoapod-badges.herokuapp.com/v/YLMoment/badge.svg)](http://cocoadocs.org/docsets/YLMoment/) [![Build Status](https://travis-ci.org/yannickl/YLMoment.png?branch=master)](https://travis-ci.org/YannickL/YLMoment) [![Coverage Status](https://coveralls.io/repos/YannickL/YLMoment/badge.png?branch=master)](https://coveralls.io/r/YannickL/YLMoment?branch=master)
 
 YLMoment is a library which provides an high abstraction level for parsing, validating, manipulating, and formatting the dates in Objective-C.
 
-Its API is inspired by the well known [moment.js](http://momentjs.com/) library, however unlike its father, its core is built upon the `Foundation Framework` components (`NSDate`, `NSDateFormatter`,etc.) for a full interoperability with iOS.
+Its API is inspired by the well known [moment.js](http://momentjs.com/) library, however unlike its counterpart, its core is built upon the `Foundation Framework` components (`NSDate`, `NSCalendar`, etc.) to enable the interoperability with them.
 
-## How To Get Started
+This library is designed to facilitate the manipulation of times, dates, calendars, and durations in Objective-C by providing a single, easy, and unified approach to dealing with them.
 
-- [Download YLMoment](https://github.com/YannickL/YLMoment/archive/master.zip) and give it a try
-- Read the [blog posts](http://yannickloriot.com/2013/11/handle-times-dates-calendars-and-durations-like-a-pro-in-objective-c-with-YLMoment/)
+## Getting Started
 
-## Installation
+If you want have a quick overview of the project take a look to this [blog post](http://yannickloriot.com/2013/11/handle-times-dates-calendars-and-durations-like-a-pro-in-objective-c-with-YLMoment/).
 
-### Manually
+### Installation
 
-Copy the YLMoment folder into your project and then simply import the "YLMoment" in the file(s) you would like to use it in.
+The recommended approach to use _YLMoment_ in your project is using the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation.
 
-### CocoaPods
+#### CocoaPods
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like YLMoment in your projects.
+Install CocoaPods if not already available:
 
-#### Podfile
-
-```ruby
-platform :ios, ‘5.0’
-pod "YLMoment", "~> 0.1.0"
+``` bash
+$ [sudo] gem install cocoapods
+$ pod setup
 ```
+Go to the directory of your Xcode project, and Create and Edit your Podfile and add YLMoment:
+
+``` bash
+$ cd /path/to/MyProject
+$ touch Podfile
+$ edit Podfile
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '5.0'
+# Or platform :osx, '10.8'
+pod 'YLMoment', '~> 0.2.0'
+```
+
+Install into your project:
+
+``` bash
+$ pod install
+```
+
+Open your project in Xcode from the .xcworkspace file (not the usual project file)
+
+``` bash
+$ open MyProject.xcworkspace
+```
+
+#### Manually
+
+[Download](https://github.com/YannickL/YLMoment/archive/master.zip) the project and copy the `YLMoment` folder into your project and then simply `#import "YLMoment.h"` in the file(s) you would like to use it in.
 
 ## Usage
 
-### Formatting dates
+### Formatting Dates
 ```objective-c
 YLMoment *moment = [YLMoment now];
 
@@ -53,29 +75,51 @@ NSLog(@"%@", [[[YLMoment now] endOf:@"day"] fromNow]);    // in 5 hours
 NSLog(@"%@", [[[YLMoment now] startOf:@"hour"] fromNow]); // 11 minutes ago
 ```
 
+### Time Zones
+```objective-c
+// Uses my current time zone: here the CET time (GMT+1)
+YLMoment *now = [YLMoment now];
+NSLog(@"%@", [now format]); // 2014-01-18T18:51:10+0100
+
+// Change the time zone of the moment
+now.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+NSLog(@"%@", [now format]); // 2014-01-18T17:51:10+0000
+
+// Convenient way to use get the UTC time
+YLMoment *utc = [YLMoment utc];
+NSLog(@"%@", [utc format]); // 2014-01-18T17:51:10+0000
+```
+
 ### Languages
 ```objective-c
 YLMoment *french = [[YLMoment now] addAmountOfTime:-3 forUnitKey:@"s"];
 [french setLocale:[NSLocale localeWithLocaleIdentifier:@"fr_FR"]];
 NSLog(@"%@", [french fromNow]); // il y a quelques secondes
-    
+
 YLMoment *albanian = [[YLMoment now] addAmountOfTime:-3 forUnitKey:@"s"];
 [albanian setLocale:[NSLocale localeWithLocaleIdentifier:@"sq_AL"]];
 NSLog(@"%@", [albanian fromNow]); // disa sekonda me parë
-    
-YLMoment *spanish = [[YLMoment now] addAmountOfTime:-3 forUnitKey:@"s"];
+
+YLMoment *spanish = [[YLMoment now] subtractAmountOfTime:3 forUnitKey:@"s"];
 [spanish setLocale:[NSLocale localeWithLocaleIdentifier:@"es_ES"]];
 NSLog(@"%@", [spanish fromNow]); // hace unos segundos
-    
+
 YLMoment *reference = [YLMoment momentWithArray:@[@2013]];
-YLMoment *english   = [[YLMoment now] addAmountOfTime:-3 forUnitKey:@"s"];
+YLMoment *english   = [[YLMoment now] subtractAmountOfTime:3 forUnitKey:@"s"];
 [english setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
 NSLog(@"%@", [english fromMoment:reference]); // in 11 months
 ```
 
+## Contact
+
+Yannick Loriot
+ - [https://twitter.com/yannickloriot](https://twitter.com/yannickloriot)
+ - [contact@yannickloriot.com](mailto:contact@yannickloriot.com)
+
+
 ## License (MIT)
 
-Copyright (c) 2013 - Yannick Loriot
+Copyright (c) 2013-present - Yannick Loriot
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
