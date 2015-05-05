@@ -1,4 +1,4 @@
-# ApigeeIgnite
+# IgniteEngine
 
 [![CI Status](http://img.shields.io/travis/brandon/ApigeeIgnite.svg?style=flat)](https://travis-ci.org/brandon/ApigeeIgnite)
 [![Version](https://img.shields.io/cocoapods/v/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
