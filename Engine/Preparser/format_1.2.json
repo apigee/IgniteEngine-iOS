@@ -1,0 +1,61 @@
+{
+    "view": {
+        "attributes": {
+            "*** ALERT ***": "Padding & margin need to be changed to use this format:",
+            "color": {
+                "background": "#cdcdcd"
+            },
+            "margin": {
+                "bottom": "0",
+                "left": "0",
+                "right": "0",
+                "top": "0"
+            },
+            "padding": {
+                "bottom": "0",
+                "left": "0",
+                "right": "0",
+                "top": 40
+            },
+            "top_padding": "40"
+        },
+        "controls": {
+            "mylayoutcontrol": {
+                "attributes": {
+                    "color": {
+                        "background": "#FFFFFF",
+                        "bottom": "0",
+                        "gradient.top": "#FF00FF",
+                        "left": "0"
+                    },
+                    "enable_scrolls_to_top": "YES",
+                    "gradient_visible": true,
+                    "height": "100%",
+                    "padding": {
+                        "bottom": "0",
+                        "left": "0",
+                        "right": "0",
+                        "top": 20
+                    },
+                    "width": "100%"
+                },
+                "controls": {
+                    "textInput": {
+                        "attributes": {
+                            "keyboard": {
+                                "return_key": "google",
+                                "style": "dark",
+                                "type": "email"
+                            },
+                            "layout_type": "relative",
+                            "placeholder_text": "text input as child of [mylayoutcontrol.set('color.gradient.top = value')] blue layout",
+                            "width": "100%"
+                        },
+                        "type": "TextInput"
+                    }
+                },
+                "type": "Layout"
+            }
+        }
+    }
+}
