@@ -38,6 +38,8 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 @property (nonatomic,strong) JFRWebSocket* webSocket;
 @property (nonatomic,assign) NSInteger messageLimit;
 @property (nonatomic,strong) NSMutableDictionary* messageDictionary;
+@property (nonatomic,strong) NSString* responseString;
+@property (nonatomic,strong) NSDictionary* responseObject;
 
 @end
 
@@ -69,7 +71,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 {
     [super applySettings];
 
-    [self setMessageLimit:[[self propertyContainer] getIntPropertyValue:kIXLimit defaultValue:kIXDefaultLimit]];
+    [self setMessageLimit:[[self attributeContainer] getIntAttributeValue:kIXLimit defaultValue:kIXDefaultLimit]];
     if( [self webSocket] == nil || ![[[[self webSocket] url] absoluteString] isEqualToString:self.url ])
     {
         [[self webSocket] setDelegate:nil];
@@ -87,7 +89,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
 -(void)websocket:(JFRWebSocket *)socket didReceiveMessage:(NSString *)string
 {
-    self.response.responseObject = _messageDictionary;
+    self.responseObject = _messageDictionary;
     [self setResponseString];
     
     NSMutableArray* messageArray = [[self messageDictionary] objectForKey:kIXDataDictionaryKey];
@@ -111,7 +113,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
     {
         responseString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
     }
-    self.response.responseString = responseString;
+    self.responseString = responseString;
 }
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -128,7 +130,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
     return returnValue;
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXOpen] )
     {

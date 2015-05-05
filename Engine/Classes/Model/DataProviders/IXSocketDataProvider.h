@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Apigee. All rights reserved.
 //
 
-#import "IXHTTPDataProvider.h"
+#import "IXBaseDataProvider.h"
 
-@interface IXSocketDataProvider : IXHTTPDataProvider
+@interface IXSocketDataProvider : IXBaseDataProvider
 
 @end
