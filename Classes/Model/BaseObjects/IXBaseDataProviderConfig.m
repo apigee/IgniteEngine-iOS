@@ -9,7 +9,6 @@
 #import "IXBaseDataProviderConfig.h"
 
 #import "IXBaseDataProvider.h"
-#import "IXCoreDataDataProvider.h"
 #import "IXEntityContainer.h"
 #import "IXActionContainer.h"
 #import "IXAttributeContainer.h"
@@ -94,10 +93,10 @@
             IXAttributeContainer* fileAttachments = (propertiesDict[kIX_DP_ATTACHMENTS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_ATTACHMENTS]] : nil;
             
             IXEntityContainer* entityContainer = nil;
-            if( dataProviderClass == [IXCoreDataDataProvider class] )
-            {
-                entityContainer = [IXEntityContainer entityContainerWithJSONEntityDict:dataProviderJSONDict[kIX_DP_ENTITY]];
-            }
+//            if( dataProviderClass == [IXCoreDataDataProvider class] )
+//            {
+//                entityContainer = [IXEntityContainer entityContainerWithJSONEntityDict:dataProviderJSONDict[kIX_DP_ENTITY]];
+//            }
             
             dataProviderConfig = [[IXBaseDataProviderConfig alloc] initWithDataProviderClass:dataProviderClass
                                                                                   styleClass:dataProviderStyleClass

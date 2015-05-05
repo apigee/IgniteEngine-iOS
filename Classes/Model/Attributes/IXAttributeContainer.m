@@ -17,6 +17,7 @@
 #import "IXBaseObject.h"
 #import "ColorUtils.h"
 #import "SDWebImageManager.h"
+#import "NSObject+IXAdditions.h"
 #import "UIImage+IXAdditions.h"
 #import "UIFont+IXAdditions.h"
 #import "IXLogger.h"
@@ -79,13 +80,17 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return self;
 }
 
-+(instancetype)attributeContainerWithJSONDict:(NSDictionary*)attributeJSONDictionary
++(instancetype)attributeContainerWithJSONDict:(id)attributeJSONDictionary
 {
     IXAttributeContainer* attributeContainer = nil;
     if( [attributeJSONDictionary isKindOfClass:[NSDictionary class]] && [[attributeJSONDictionary allValues] count] > 0 )
     {
         attributeContainer = [[[self class] alloc] init];
         [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:attributeJSONDictionary keyPrefix:nil];
+    } else if ([attributeJSONDictionary isKindOfClass:[NSString class]]) {
+        attributeContainer = [[[self class] alloc] init];
+        NSDictionary* dictionaryFromJSONString = (NSDictionary*)[NSObject ix_dictionaryFromJSONString:attributeJSONDictionary];
+        [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:dictionaryFromJSONString keyPrefix:nil];
     }
     return attributeContainer;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "IXBaseObject.h"
+#import "NSObject+IXAdditions.h"
 
 @interface IXJSONUtils : IXBaseObject
 

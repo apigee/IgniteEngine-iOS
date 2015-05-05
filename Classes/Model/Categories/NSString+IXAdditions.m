@@ -13,6 +13,7 @@
 #import "YLMoment+IXAdditions.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <objc/runtime.h>
+#import "NSObject+IXAdditions.h"
 
 static NSString* const kIXFloatFormat = @"%f";
 
@@ -139,6 +140,10 @@ static NSString* const kIXFloatFormat = @"%f";
     }
     else
         return string;
+}
+
++(NSString*)ix_jsonStringWithPrettyPrint:(BOOL)prettyPrint fromObject:(NSObject *)object {
+    return [object jsonStringWithPrettyPrint:prettyPrint];
 }
 
 - (NSString*)trimLeadingAndTrailingWhitespace {

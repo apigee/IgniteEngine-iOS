@@ -11,5 +11,6 @@
 @interface NSObject (IXAdditions)
 
 -(NSString*)jsonStringWithPrettyPrint:(BOOL)prettyPrint;
++(id)ix_dictionaryFromJSONString:(NSString*)string;
 
 @end

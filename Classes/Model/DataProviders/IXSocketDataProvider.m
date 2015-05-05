@@ -37,6 +37,8 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
 @property (nonatomic,strong) JFRWebSocket* webSocket;
 @property (nonatomic,assign) NSInteger messageLimit;
+@property (nonatomic,strong) NSDictionary* responseObject;
+@property (nonatomic,strong) NSString* responseString;
 @property (nonatomic,strong) NSMutableDictionary* messageDictionary;
 
 @end
@@ -87,7 +89,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
 -(void)websocket:(JFRWebSocket *)socket didReceiveMessage:(NSString *)string
 {
-    self.response.responseObject = _messageDictionary;
+    self.responseObject = _messageDictionary;
     [self setResponseString];
     
     NSMutableArray* messageArray = [[self messageDictionary] objectForKey:kIXDataDictionaryKey];
@@ -111,7 +113,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
     {
         responseString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
     }
-    self.response.responseString = responseString;
+    self.responseString = responseString;
 }
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
