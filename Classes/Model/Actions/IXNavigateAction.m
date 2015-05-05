@@ -290,7 +290,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
     }
     else
     {
-        NSString* navigateTo = [[self actionProperties] getPathForAttribute:kIXTo basePath:nil defaultValue:nil];
+        NSString* navigateTo = [[self actionProperties] getPathValueForAttribute:kIXTo basePath:nil defaultValue:nil];
         if( navigateTo )
         {
             [IXViewController createViewControllerWithPathToJSON:navigateTo

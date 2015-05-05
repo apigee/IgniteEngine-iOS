@@ -33,7 +33,7 @@ static NSString* const kIXCreated = @"created"; // Fires on the actual created c
     
     BOOL needsToSendFailed = YES;
     
-    NSString* controlJSONLocation = [[self actionProperties] getPathForAttribute:kIXControlLocation
+    NSString* controlJSONLocation = [[self actionProperties] getPathValueForAttribute:kIXControlLocation
                                                                          basePath:nil
                                                                      defaultValue:nil];
     

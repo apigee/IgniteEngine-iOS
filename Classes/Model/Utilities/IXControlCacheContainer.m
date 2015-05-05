@@ -19,6 +19,8 @@
 
 static NSCache* sControlCacheContainerCache;
 IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlCacheContainerCache";
+IX_STATIC_CONST_STRING kIXControlLocation = @"controlLocation";
+IX_STATIC_CONST_STRING kIXLoadAsync = @"loadAsync";
 
 @implementation IXControlCacheContainer
 
@@ -85,16 +87,16 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
         if( [childControl isKindOfClass:[IXCustom class]] )
         {
             IXCustom* customControl = (IXCustom*)childControl;
-            NSString* pathToJSON = [[customControl attributeContainer] getPathForAttribute:@"control_location" basePath:nil defaultValue:nil];
+            NSString* pathToJSON = [[customControl attributeContainer] getPathValueForAttribute:kIXControlLocation basePath:nil defaultValue:nil];
             if( pathToJSON == nil )
             {
-                IX_LOG_WARN(@"WARNING from %@ in %@ : Path to custom control is nil!!! \n Custom Control Description : %@",THIS_FILE,THIS_METHOD,[customControl description]);
-                [[customControl actionContainer] executeActionsForEventNamed:@"load_failed"];
+                IX_LOG_WARN(@"WARNING from %@ in %@: Path to custom control is nil.\nCustom Control Description: %@",THIS_FILE,THIS_METHOD,[customControl description]);
+                [[customControl actionContainer] executeActionsForEventNamed:kIX_FAILED];
             }
             else
             {
                 [customControl setPathToJSON:pathToJSON];
-                BOOL loadAsync = [[customControl attributeContainer] getBoolValueForAttribute:@"load_async" defaultValue:YES] && ![sControlCacheContainerCache objectForKey:pathToJSON];
+                BOOL loadAsync = [[customControl attributeContainer] getBoolValueForAttribute:kIXLoadAsync defaultValue:YES] && ![sControlCacheContainerCache objectForKey:pathToJSON];
                 [IXControlCacheContainer populateControl:customControl
                                           withJSONAtPath:pathToJSON
                                                loadAsync:loadAsync
@@ -110,11 +112,11 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
                                                       [populatedControl applySettings];
                                                       [populatedControl layoutControl];
                                                   }
-                                                  [[populatedControl actionContainer] executeActionsForEventNamed:@"did_load"];
+                                                  [[populatedControl actionContainer] executeActionsForEventNamed:kIX_SUCCESS];
                                               }
                                               else
                                               {
-                                                  [[populatedControl actionContainer] executeActionsForEventNamed:@"load_failed"];
+                                                  [[populatedControl actionContainer] executeActionsForEventNamed:kIX_FAILED];
                                               }
                                          }];
             }
@@ -297,7 +299,7 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             {
                 completionBlock(NO,nil,error);
                 
-                IX_LOG_ERROR(@"ERROR from %@ in %@ : Grabbing custom control JSON at path %@ with error : %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
+                IX_LOG_ERROR(@"ERROR from %@ in %@: Loading custom control JSON at path %@ with error: %@",THIS_FILE,THIS_METHOD,pathToJSON,[error description]);
             }
         }];
     }

@@ -149,7 +149,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"done";
     [[self webview] setOpaque:NO];
     [[self webview] setBackgroundColor:[[self contentView] backgroundColor]];
 
-    NSString* urlString = [[self attributeContainer] getPathForAttribute:kIXUrl basePath:nil defaultValue:nil];
+    NSString* urlString = [[self attributeContainer] getPathValueForAttribute:kIXUrl basePath:nil defaultValue:nil];
     NSString* htmlString = [[self attributeContainer] getStringValueForAttribute:kIXHTMLString defaultValue:nil];
 
     if( [urlString length] > 0 )

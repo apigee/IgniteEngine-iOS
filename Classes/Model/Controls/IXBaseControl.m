@@ -717,7 +717,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
 
-            NSString* saveToLocation = [parameterContainer getPathForAttribute:kIXSaveToLocation basePath:nil defaultValue:nil];
+            NSString* saveToLocation = [parameterContainer getPathValueForAttribute:kIXSaveToLocation basePath:nil defaultValue:nil];
             NSData* imageData = UIImagePNGRepresentation(image);
             if( [imageData length] > 0 && [saveToLocation length] > 0 )
             {

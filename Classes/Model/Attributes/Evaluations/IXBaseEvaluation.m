@@ -252,7 +252,7 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
         
         _evaluationUtility = [IXEvaluationUtilities evaluationUtilityWithName:_evaluationUtilityName];
         if( _evaluationUtility == nil ) {
-            IX_LOG_DEBUG(@"ERROR: Unknown short-code function with name: %@", _evaluationUtilityName);
+            IX_LOG_DEBUG(@"ERROR: Unknown eval utility function with name: %@", _evaluationUtilityName);
         }
     }
 }

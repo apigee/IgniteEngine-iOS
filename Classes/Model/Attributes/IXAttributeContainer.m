@@ -641,7 +641,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return returnURL;
 }
 
--(NSString*)getPathForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+-(NSString*)getPathValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
     NSString* returnPath = defaultValue;
     NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];

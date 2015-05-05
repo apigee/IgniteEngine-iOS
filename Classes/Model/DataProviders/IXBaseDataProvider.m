@@ -131,7 +131,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [super applySettings];
 
     [self setAutoLoad:[[self attributeContainer] getBoolValueForAttribute:kIXAutoLoad defaultValue:NO]];
-    NSString* url = [[self attributeContainer] getPathForAttribute:kIXUrl basePath:nil defaultValue:nil];
+    NSString* url = [[self attributeContainer] getPathValueForAttribute:kIXUrl basePath:nil defaultValue:nil];
     [self setUrl:url];
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     [self setUrlEncodeParams:[[self attributeContainer] getBoolValueForAttribute:kIXUrlEncodeParams defaultValue:YES]];

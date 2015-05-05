@@ -21,7 +21,6 @@ static NSString* const kIXIndex = @"index";
     NSString* returnValue = nil;
     
     IXSandbox* sandbox = [[[[self property] attributeContainer] ownerObject] sandbox];
-    
     IXDataRowDataProvider* baseDP = [sandbox dataProviderForRowData];
     NSString* dataRowBasePath = [sandbox dataRowBasePathForRowData];
     NSIndexPath* rowIndexPath = [sandbox indexPathForRowData];
