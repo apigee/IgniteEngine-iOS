@@ -26,7 +26,7 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   
 
-  spec.preserve_paths       = 'Classes/**'
+  spec.preserve_paths       = '/**'
   #spec.prepare_command      = './Scripts/configure.sh'
 
 
