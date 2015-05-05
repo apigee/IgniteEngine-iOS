@@ -10,27 +10,27 @@
 Pod::Spec.new do |spec|
   spec.name             = "IgniteEngine"
   spec.version          = "0.1.0"
-  spec.summary          = "Apigee Ignite is a framework for rapidly building native mobile applications using JSON."
+  spec.summary          = "The Ignite Engine is a native library that allows developers to use declarative JSON to rapidly build an app's views, controllers, and logic."
   spec.description      = <<-DESC
-                       Apigee Ignite is a framework for rapidly building native mobile applications using JSON templates to generate code. This architecture allows reusable code to be generated at the application layer, leaving the developer free to focus on form, function, and design.
+                       The Ignite Engine is a framework for rapidly building native mobile applications using declarative JSON to build an app's views, controllers, and logic. This approach ensures consistent, reliable, and reusable code is written at the engine layer, leaving the developer free to focus on form, function, and design.
                        DESC
   # s.homepage         = "https://github.com/apigee/IgniteEngine"
   spec.homepage          = "https://apigee-ignite-docs-api.herokuapp.com/model"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   spec.license          = "MIT"
   spec.author           = { "brandon" => "brandon@behemoth.ca" }
-  spec.source           = { :git => "https://github.com/apigee/IgniteEngine.git", :branch => 'master', :tag => spec.version.to_s }
+  spec.source           = { :git => "https://github.com/apigee/IgniteEngine-iOS.git", :branch => 'master', :tag => spec.version.to_s }
   # s.social_media_url = 'https://twitter.com/apigee'
 
   spec.platform     = :ios, '8.0'
   spec.requires_arc = true
   
 
-  spec.preserve_paths       = 'Engine/Classes/**'
+  spec.preserve_paths       = 'Classes/**'
   #spec.prepare_command      = './Scripts/configure.sh'
 
 
-  spec.source_files = 'Engine/Classes/**/*.{h,m}'
+  spec.source_files = 'Classes/**/*.{h,m}'
   #s.resource_bundles = {
   #  'IgniteEngine' => ['Pod/Assets/*.png']
   #}
@@ -51,7 +51,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'JAFontAwesome'
   spec.dependency 'jetfire'
   spec.dependency 'MMDrawerController'
-  #spec.dependency 'RaptureXML'
   spec.dependency 'Reachability'
   spec.dependency 'SDWebImage'
   spec.dependency 'SVPulsingAnnotationView'

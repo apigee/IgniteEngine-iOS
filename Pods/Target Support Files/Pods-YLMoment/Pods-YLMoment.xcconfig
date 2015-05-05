@@ -1,0 +1,1 @@
+PODS_YLMOMENT_OTHER_LDFLAGS = -framework "Foundation"
