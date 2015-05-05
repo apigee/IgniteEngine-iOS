@@ -48,14 +48,14 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
         _originalString = rawValue;
         _attributeName = attributeName;
         
-        [self parseAttribute];
+        [self parseProperty];
     }
     return self;
 }
 
-+(instancetype)conditionalAttributeWithAttributeName:(NSString*)attributeName jsonObject:(id)jsonObject
++(instancetype)conditionalPropertyWithPropertyName:(NSString*)propertyName jsonObject:(id)jsonObject
 {
-    IXAttribute* conditionalAttribute = nil;
+    IXAttribute* conditionalProperty = nil;
     if( [jsonObject isKindOfClass:[NSString class]] )
     {
         NSString* stringValue = (NSString*)jsonObject;
@@ -67,23 +67,23 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
                 NSString* valueIfTrue = [conditionalComponents[2] trimLeadingAndTrailingWhitespace];
                 NSString* valueIfFalse = (conditionalComponents.count == 4) ? [conditionalComponents[3] trimLeadingAndTrailingWhitespace] : nil;
 
-                conditionalAttribute = [IXAttribute attributeWithAttributeName:attributeName rawValue:valueIfTrue];
-                [conditionalAttribute setConditionalProperty:[IXAttribute attributeWithAttributeName:nil rawValue:conditionalStatement]];
+                conditionalProperty = [IXAttribute attributeWithAttributeName:propertyName rawValue:valueIfTrue];
+                [conditionalProperty setValueIfTrue:[IXAttribute attributeWithAttributeName:nil rawValue:conditionalStatement]];
                 if( [valueIfFalse length] > 0 ) {
-                    [conditionalAttribute setElseProperty:[IXAttribute attributeWithAttributeName:nil rawValue:valueIfFalse]];
+                    [conditionalProperty setValueIfFalse:[IXAttribute attributeWithAttributeName:nil rawValue:valueIfFalse]];
                 }
             }
         }
     }
     else if( [jsonObject isKindOfClass:[NSDictionary class]] && [[jsonObject allKeys] count] > 0 )
     {
-        NSDictionary* attibutesDict = (NSDictionary*)jsonObject;
-        conditionalAttribute = [IXAttribute attributeWithAttributeName:attributeName jsonObject:attibutesDict[kIX_VALUE]];
+        NSDictionary* propertyValueDict = (NSDictionary*)jsonObject;
+        conditionalProperty = [IXAttribute attributeWithAttributeName:propertyName jsonObject:propertyValueDict[kIX_VALUE]];
             
-        [conditionalAttribute setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:attibutesDict[kIX_ORIENTATION]]];
-        [conditionalAttribute setConditionalProperty:[IXAttribute attributeWithAttributeName:nil jsonObject:attibutesDict[kIX_IF]]];
+        [conditionalProperty setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:propertyValueDict[kIX_ORIENTATION]]];
+        [conditionalProperty setValueIfTrue:[IXAttribute attributeWithAttributeName:nil jsonObject:propertyValueDict[kIX_IF]]];
     }
-    return conditionalAttribute;
+    return conditionalProperty;
 }
 
 +(instancetype)attributeWithAttributeName:(NSString*)attributeName jsonObject:(id)jsonObject
@@ -100,7 +100,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
     }
     else if( [jsonObject isKindOfClass:[NSDictionary class]] )
     {
-        attribute = [IXAttribute conditionalAttributeWithAttributeName:attributeName jsonObject:jsonObject];
+        attribute = [IXAttribute conditionalPropertyWithPropertyName:attributeName jsonObject:jsonObject];
     }
     else if( jsonObject == nil || [jsonObject isKindOfClass:[NSNull class]] )
     {
@@ -108,79 +108,79 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
     }
     else
     {
-        IX_LOG_WARN(@"WARNING from %@ in %@ : Property value for %@ not a valid object %@",THIS_FILE,THIS_METHOD,attributeName,jsonObject);
+        IX_LOG_WARN(@"WARNING from %@ in %@: Property value for %@ is not a valid object:\n %@",THIS_FILE,THIS_METHOD,attributeName,jsonObject);
     }
     return attribute;
 }
 
-+(NSArray*)attributesWithAttributeName:(NSString*)attributeName attributeValueArray:(NSArray*)attributeValueArray
++(NSArray*)attributeWithAttributeName:(NSString*)attributeName attributeValueJSONArray:(NSArray*)attributeValueJSONArray
 {
-    NSMutableArray* attributeArray = nil;
-    NSMutableString* commaSeperatedStringValueList = nil;
-    for( id attributeValueObject in attributeValueArray )
+    NSMutableArray* propertyArray = nil;
+    NSMutableString* commaSeparatedStringValueList = nil;
+    for( id propertyValueObject in attributeValueJSONArray )
     {
-        if( [attributeValueObject isKindOfClass:[NSDictionary class]] )
+        if( [propertyValueObject isKindOfClass:[NSDictionary class]] )
         {
-            NSDictionary* attributeDict = (NSDictionary*) attributeValueObject;
-            IXAttribute* attribute = [IXAttribute attributeWithAttributeName:attributeName jsonObject:attributeDict];
-            if( attribute != nil )
+            NSDictionary* propertyValueDict = (NSDictionary*) propertyValueObject;
+            IXAttribute* property = [IXAttribute attributeWithAttributeName:attributeName jsonObject:propertyValueDict];
+            if( property != nil )
             {
-                if( attributeArray == nil )
+                if( propertyArray == nil )
                 {
-                    attributeArray = [NSMutableArray array];
+                    propertyArray = [NSMutableArray array];
                 }
-                [attributeArray addObject:attribute];
+                [propertyArray addObject:property];
             }
         }
-        else if( [attributeValueObject isKindOfClass:[NSString class]] )
+        else if( [propertyValueObject isKindOfClass:[NSString class]] )
         {
-            IXAttribute* conditionalProperty = [IXAttribute conditionalAttributeWithAttributeName:attributeName jsonObject:attributeValueObject];
+            IXAttribute* conditionalProperty = [IXAttribute conditionalPropertyWithPropertyName:attributeName jsonObject:propertyValueObject];
             if( conditionalProperty )
             {
-                if( attributeArray == nil )
+                if( propertyArray == nil )
                 {
-                    attributeArray = [NSMutableArray array];
+                    propertyArray = [NSMutableArray array];
                 }
-                [attributeArray addObject:conditionalProperty];
+                [propertyArray addObject:conditionalProperty];
             }
             else
             {
-                if( !commaSeperatedStringValueList ) {
-                    commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:attributeValueObject];
+                if( !commaSeparatedStringValueList ) {
+                    commaSeparatedStringValueList = [[NSMutableString alloc] initWithString:propertyValueObject];
                 } else {
-                    [commaSeperatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,attributeValueObject];
+                    [commaSeparatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,propertyValueObject];
                 }
             }
         }
-        else if( [attributeValueObject isKindOfClass:[NSNumber class]] )
+        else if( [propertyValueObject isKindOfClass:[NSNumber class]] )
         {
-            NSString* stringValue = [attributeValueObject stringValue];
-            if( !commaSeperatedStringValueList ) {
-                commaSeperatedStringValueList = [[NSMutableString alloc] initWithString:stringValue];
+            NSString* stringValue = [propertyValueObject stringValue];
+            if( !commaSeparatedStringValueList ) {
+                commaSeparatedStringValueList = [[NSMutableString alloc] initWithString:stringValue];
             } else {
-                [commaSeperatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,stringValue];
+                [commaSeparatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,stringValue];
             }
         }
         else
         {
-            IX_LOG_WARN(@"WARNING from %@ in %@ : Property value array for %@ does not have a dictionary objects",THIS_FILE,THIS_METHOD,attributeName);
+            IX_LOG_WARN(@"WARNING from %@ in %@: Property value array for %@ does not have a dictionary object",THIS_FILE,THIS_METHOD,attributeName);
         }
     }
     
-    if( [commaSeperatedStringValueList length] > 0 )
+    if( [commaSeparatedStringValueList length] > 0 )
     {
-        IXAttribute* commaSeperatedProperty = [IXAttribute attributeWithAttributeName:attributeName rawValue:commaSeperatedStringValueList];
-        [commaSeperatedProperty setWasAnArray:YES];
-        if( commaSeperatedProperty )
+        IXAttribute* commaSeparatedAttribute = [IXAttribute attributeWithAttributeName:attributeName rawValue:commaSeparatedStringValueList];
+        [commaSeparatedAttribute setWasAnArray:YES];
+        if( commaSeparatedAttribute )
         {
-            if( attributeArray == nil )
+            if( propertyArray == nil )
             {
-                attributeArray = [NSMutableArray array];
+                propertyArray = [NSMutableArray array];
             }
-            [attributeArray addObject:commaSeperatedProperty];
+            [propertyArray addObject:commaSeparatedAttribute];
         }
     }
-    return attributeArray;
+    return propertyArray;
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
@@ -210,7 +210,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
         [self setEvaluations:[aDecoder decodeObjectForKey:kIXEvaluationsNSCodingKey]];
         for( IXBaseEvaluation* eval in [self evaluations] )
         {
-            [eval setAttribute:self];
+            [eval setProperty:self];
         }
     }
     return self;
@@ -226,15 +226,15 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
     if( [[self evaluations] count] )
     {
         [copiedProperty setEvaluations:[[NSMutableArray alloc] initWithArray:[self evaluations] copyItems:YES]];
-        for( IXBaseEvaluation* copiedEvaluation in [copiedProperty evaluations] )
+        for( IXBaseEvaluation* copiedVariable in [copiedProperty evaluations] )
         {
-            [copiedEvaluation setAttribute:copiedProperty];
+            [copiedVariable setProperty:copiedProperty];
         }
     }
     return copiedProperty;
 }
 
--(void)parseAttribute
+-(void)parseProperty
 {
     NSString* propertiesStaticText = [[self originalString] copy];
     if( [propertiesStaticText length] > 0 )
@@ -246,9 +246,8 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
             evaluationMainComponentsRegex = [[NSRegularExpression alloc] initWithPattern:kIXEvaluationRegexString
                                                                                 options:NSRegularExpressionDotMatchesLineSeparators
                                                                                   error:&error];
-            if( error ) {
-                IX_LOG_ERROR(@"ERROR: Evaluation regex invalid with error: %@.",[error description]);
-            }
+            if( error )
+                IX_LOG_ERROR(@"Critical Error!!! Variable regex invalid with error: %@.",[error description]);
         });
         
         NSArray* matchesInStaticText = [evaluationMainComponentsRegex matchesInString:propertiesStaticText
@@ -257,25 +256,25 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
         if( [matchesInStaticText count] )
         {
             __block NSUInteger numberOfCharactersRemoved = 0;
-            __block NSMutableArray* propertiesEvaluations = nil;
+            __block NSMutableArray* propertiesVariables = nil;
             __block NSMutableString* mutableStaticText = [[NSMutableString alloc] initWithString:propertiesStaticText];
             
-            for( NSTextCheckingResult* matchInEvaluationString in matchesInStaticText )
+            for( NSTextCheckingResult* matchInVariableString in matchesInStaticText )
             {
                 IXBaseEvaluation* eval = [IXBaseEvaluation evaluationFromString:propertiesStaticText
-                                                               textCheckingResult:matchInEvaluationString];
+                                                               textCheckingResult:matchInVariableString];
                 if( eval )
                 {
-                    [eval setAttribute:self];
+                    [eval setProperty:self];
                     
-                    if( !propertiesEvaluations )
+                    if( !propertiesVariables )
                     {
-                        propertiesEvaluations = [[NSMutableArray alloc] init];
+                        propertiesVariables = [[NSMutableArray alloc] init];
                     }
                     
-                    [propertiesEvaluations addObject:eval];
+                    [propertiesVariables addObject:eval];
                     
-                    NSRange evalRange = [matchInEvaluationString rangeAtIndex:0];
+                    NSRange evalRange = [matchInVariableString rangeAtIndex:0];
                     evalRange.location = evalRange.location - numberOfCharactersRemoved;
                     [mutableStaticText replaceCharactersInRange:evalRange withString:kIX_EMPTY_STRING];
                     numberOfCharactersRemoved += evalRange.length;
@@ -283,7 +282,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
             }
             
             [self setStaticText:mutableStaticText];
-            [self setEvaluations:propertiesEvaluations];
+            [self setEvaluations:propertiesVariables];
         }
         else
         {
@@ -293,12 +292,12 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
     }
 }
 
--(void)setAttributeContainer:(IXAttributeContainer *)attributeContainer
+-(void)setAttributeContainer:(IXAttributeContainer *)propertyContainer
 {
-    _attributeContainer = attributeContainer;
+    _attributeContainer = propertyContainer;
     
-    [[self conditionalProperty] setAttributeContainer:_attributeContainer];
-    [[self elseProperty] setAttributeContainer:_attributeContainer];
+    [[self valueIfTrue] setAttributeContainer:_attributeContainer];
+    [[self valueIfFalse] setAttributeContainer:_attributeContainer];
     
     for( IXBaseEvaluation *eval in [self evaluations] )
     {
@@ -309,7 +308,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
     }
 }
 
--(NSString*)getAttributeValue
+-(NSString*)attributeStringValue
 {
     if( [self originalString] == nil || [[self originalString] length] == 0 )
         return kIX_EMPTY_STRING;
@@ -327,13 +326,13 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
             
             NSRange evalRange = [eval rangeInPropertiesText];
             
-            NSString *evaluationsValue = [eval evaluateAndApplyFunction];
-            if( evaluationsValue == nil )
+            NSString *evaluatedValue = [eval evaluateAndApplyUtility];
+            if( evaluatedValue == nil )
             {
-                evaluationsValue = kIX_EMPTY_STRING;
+                evaluatedValue = kIX_EMPTY_STRING;
             }            
-            [weakString insertString:evaluationsValue atIndex:evalRange.location + newCharsAdded];
-            newCharsAdded += [evaluationsValue length] - evalRange.length;
+            [weakString insertString:evaluatedValue atIndex:evalRange.location + newCharsAdded];
+            newCharsAdded += [evaluatedValue length] - evalRange.length;
         }];
     }
     

@@ -107,17 +107,17 @@ static NSString* const kIXValueNSCodingKey = @"value";
 {
     [super applySettings];
     
-    CGFloat maximumAngle = [[self propertyContainer] getFloatPropertyValue:kIXMaximumAngle defaultValue:145.0f];
+    CGFloat maximumAngle = [[self attributeContainer] getFloatValueForAttribute:kIXMaximumAngle defaultValue:145.0f];
     [[self knobControl] setMaximumAngle:maximumAngle];
     
-    CGFloat animationDuration = [[self propertyContainer] getFloatPropertyValue:kIXDialAnimationDuration defaultValue:0.2f];
+    CGFloat animationDuration = [[self attributeContainer] getFloatValueForAttribute:kIXDialAnimationDuration defaultValue:0.2f];
     [[self knobControl] setAnimationDuration:animationDuration];
     
-    [[self knobControl] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
-    [[self knobControl] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];
+    [[self knobControl] setMinimumValue:[[self attributeContainer] getFloatValueForAttribute:kIXMinimumValue defaultValue:0.0f]];
+    [[self knobControl] setMaximumValue:[[self attributeContainer] getFloatValueForAttribute:kIXMaximumValue defaultValue:1.0f]];
     
     __weak typeof(self) weakSelf = self;
-    [[self propertyContainer] getImageProperty:kIXImagesPointer
+    [[self attributeContainer] getImageAttribute:kIXImagesPointer
                                   successBlock:^(UIImage *image) {
                                       if(image)
                                       {
@@ -125,7 +125,7 @@ static NSString* const kIXValueNSCodingKey = @"value";
                                       }
                                   } failBlock:^(NSError *error) {
                                   }];
-    [[self propertyContainer] getImageProperty:kIXImagesBackground
+    [[self attributeContainer] getImageAttribute:kIXImagesBackground
                                   successBlock:^(UIImage *image) {
                                       if(image)
                                       {
@@ -143,7 +143,7 @@ static NSString* const kIXValueNSCodingKey = @"value";
         }
         else
         {
-            CGFloat initialSlideValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0.0f];
+            CGFloat initialSlideValue = [[self attributeContainer] getFloatValueForAttribute:kIXInitialValue defaultValue:0.0f];
             [self updateKnobValueWithValue:initialSlideValue animated:YES];
         }
     }
@@ -170,14 +170,14 @@ static NSString* const kIXValueNSCodingKey = @"value";
     [self knobValueChanged:[self knobControl]];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXUpdateKnobValue] )
     {
-        CGFloat knobValue = [parameterContainer getFloatPropertyValue:kIXValue defaultValue:[[self knobControl] value]];
+        CGFloat knobValue = [parameterContainer getFloatValueForAttribute:kIXValue defaultValue:[[self knobControl] value]];
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self updateKnobValueWithValue:knobValue animated:animated];
     }

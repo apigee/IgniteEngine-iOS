@@ -60,20 +60,20 @@ IX_STATIC_CONST_STRING kIXPresentSms = @"present.sms";
 {
     [super applySettings];
     
-    [self setMessageSubject:[[self propertyContainer] getStringPropertyValue:kIXSubject defaultValue:nil]];
-    [self setMessageBody:[[self propertyContainer] getStringPropertyValue:kIXBody defaultValue:nil]];
-    [self setMessageToRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTo defaultValue:nil]];
-    [self setMessageCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXCc defaultValue:nil]];
-    [self setMessageBCCRecipients:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBcc defaultValue:nil]];
+    [self setMessageSubject:[[self attributeContainer] getStringValueForAttribute:kIXSubject defaultValue:nil]];
+    [self setMessageBody:[[self attributeContainer] getStringValueForAttribute:kIXBody defaultValue:nil]];
+    [self setMessageToRecipients:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXTo defaultValue:nil]];
+    [self setMessageCCRecipients:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXCc defaultValue:nil]];
+    [self setMessageBCCRecipients:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBcc defaultValue:nil]];
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer
 {
     if( [functionName isEqualToString:kIXPresentEmail] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self presentEmailController:animated];
     }
@@ -81,7 +81,7 @@ IX_STATIC_CONST_STRING kIXPresentSms = @"present.sms";
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self presentTextMessageController:animated];
     }

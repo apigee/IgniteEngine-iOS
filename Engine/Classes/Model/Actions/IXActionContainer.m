@@ -15,7 +15,7 @@
 #import "IXNavigationViewController.h"
 #import "IXBaseControl.h"
 #import "IXLayout.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXAlertAction.h"
 #import "IXLogger.h"
 
@@ -217,13 +217,13 @@ IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wai
     UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
     for( IXBaseAction* action in actionsForEventName )
     {
-        BOOL enabled = [action actionProperties] ? [[action actionProperties] getBoolPropertyValue:kIX_ENABLED defaultValue:YES] : YES;
+        BOOL enabled = [action actionProperties] ? [[action actionProperties] getBoolValueForAttribute:kIX_ENABLED defaultValue:YES] : YES;
         if( enabled && [action areConditionalAndOrientationMaskValid:currentOrientation] )
         {
             BOOL shouldFireAction = (value == nil || propertyName == nil );
             if( !shouldFireAction )
             {
-                NSString* actionValue = [[action actionProperties] getStringPropertyValue:propertyName defaultValue:nil];
+                NSString* actionValue = [[action actionProperties] getStringValueForAttribute:propertyName defaultValue:nil];
                 if( actionValue )
                 {
                     shouldFireAction = [actionValue isEqualToString:value];
@@ -232,8 +232,8 @@ IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wai
             
             if( shouldFireAction )
             {
-                CGFloat delay = [[action actionProperties] getFloatPropertyValue:kIX_DELAY defaultValue:0.0f];
-                CGFloat repeatDelay = [[action actionProperties] getFloatPropertyValue:kIXRepeatDelay defaultValue:0.0f];
+                CGFloat delay = [[action actionProperties] getFloatValueForAttribute:kIX_DELAY defaultValue:0.0f];
+                CGFloat repeatDelay = [[action actionProperties] getFloatValueForAttribute:kIXRepeatDelay defaultValue:0.0f];
 
                 if (repeatDelay > 0.0f)
                 {

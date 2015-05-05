@@ -9,7 +9,7 @@
 #import "IXHTTPResponse.h"
 #import "IXConstants.h"
 #import "NSObject+IXAdditions.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXAppManager.h"
 #import "IXJSONUtils.h"
 

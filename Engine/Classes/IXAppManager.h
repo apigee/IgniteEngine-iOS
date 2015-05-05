@@ -14,7 +14,7 @@ typedef enum {
 } IXAppMode;
 
 @class IXNavigationViewController;
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 @class IXSandbox;
 @class IXViewController;
 
@@ -37,9 +37,9 @@ typedef enum {
 @property (nonatomic,copy,readonly) NSString *appLeftDrawerViewPath;
 @property (nonatomic,copy,readonly) NSString *appRightDrawerViewPath;
 
-@property (nonatomic,strong,readonly) IXPropertyContainer *deviceProperties;
-@property (nonatomic,strong,readonly) IXPropertyContainer *appProperties;
-@property (nonatomic,strong,readonly) IXPropertyContainer *sessionProperties;
+@property (nonatomic,strong,readonly) IXAttributeContainer *deviceProperties;
+@property (nonatomic,strong,readonly) IXAttributeContainer *appProperties;
+@property (nonatomic,strong,readonly) IXAttributeContainer *sessionProperties;
 
 @property (nonatomic,strong,readonly) Reachability *reachabilty;
 @property (nonatomic,strong,readonly) ApigeeClient *apigeeClient;
@@ -141,7 +141,7 @@ typedef enum {
  *  @param functionName The name of the function to apply.
  *  @param parameters   The parameters that the function will use. (can be nil if unneeded)
  */
--(void)applyFunction:(NSString*)functionName parameters:(IXPropertyContainer*)parameters;
+-(void)applyFunction:(NSString*)functionName parameters:(IXAttributeContainer*)parameters;
 
 /**
  *  Convenience method used to get the current interface orientation of the keyWindow's rootViewController.

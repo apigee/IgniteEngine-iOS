@@ -85,16 +85,16 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
 
 -(void)applySettings
 {
-    [self setOAuthBaseUrl:[[self propertyContainer] getStringPropertyValue:kIXOAuthBaseUrl defaultValue:nil]];
-    [self setOAuthClientID:[[self propertyContainer] getStringPropertyValue:kIXOAuthClientID defaultValue:nil]];
-    [self setOAuthClientSecret:[[self propertyContainer] getStringPropertyValue:kIXOAuthSecret defaultValue:nil]];
-    [self setOAuthTokenStorageID:[[self propertyContainer] getStringPropertyValue:kIXOAuthTokenStorageID defaultValue:nil]];
-    [self setOAuthGrantType:[[self propertyContainer] getStringPropertyValue:kIXOAuthGrantType defaultValue:kIXOAuthGrantTypeAuthorizationCode]];
-    [self setOAuthAuthorizePath:[[self propertyContainer] getStringPropertyValue:kIXOAuthAuthorizePath defaultValue:nil]];
-    [self setOAuthAccessTokenPath:[[self propertyContainer] getStringPropertyValue:kIXOAuthAccessTokenPath defaultValue:nil]];
-    [self setOAuthScope:[[self propertyContainer] getStringPropertyValue:kIXOAuthScope defaultValue:nil]];
-    [self setOAuthRedirectURI:[[self propertyContainer] getStringPropertyValue:kIXOAuthRedirectURI defaultValue:kIX_Default_RedirectURI]];
-    [self setOAuthResponseType:[[self propertyContainer] getStringPropertyValue:kIXOAuthResponseType defaultValue:kIXOAuthResponseTypeCode]];
+    [self setOAuthBaseUrl:[[self attributeContainer] getStringValueForAttribute:kIXOAuthBaseUrl defaultValue:nil]];
+    [self setOAuthClientID:[[self attributeContainer] getStringValueForAttribute:kIXOAuthClientID defaultValue:nil]];
+    [self setOAuthClientSecret:[[self attributeContainer] getStringValueForAttribute:kIXOAuthSecret defaultValue:nil]];
+    [self setOAuthTokenStorageID:[[self attributeContainer] getStringValueForAttribute:kIXOAuthTokenStorageID defaultValue:nil]];
+    [self setOAuthGrantType:[[self attributeContainer] getStringValueForAttribute:kIXOAuthGrantType defaultValue:kIXOAuthGrantTypeAuthorizationCode]];
+    [self setOAuthAuthorizePath:[[self attributeContainer] getStringValueForAttribute:kIXOAuthAuthorizePath defaultValue:nil]];
+    [self setOAuthAccessTokenPath:[[self attributeContainer] getStringValueForAttribute:kIXOAuthAccessTokenPath defaultValue:nil]];
+    [self setOAuthScope:[[self attributeContainer] getStringValueForAttribute:kIXOAuthScope defaultValue:nil]];
+    [self setOAuthRedirectURI:[[self attributeContainer] getStringValueForAttribute:kIXOAuthRedirectURI defaultValue:kIX_Default_RedirectURI]];
+    [self setOAuthResponseType:[[self attributeContainer] getStringValueForAttribute:kIXOAuthResponseType defaultValue:kIXOAuthResponseTypeCode]];
 
     [super applySettings];
 }
@@ -124,11 +124,11 @@ IX_STATIC_CONST_STRING kIX_Default_RedirectURI = @"ix://callback:oauth";
     return self.oAuthBaseUrl;
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXClearAccessToken] )
     {
-        NSString* tokenStorageID = [parameterContainer getStringPropertyValue:kIXOAuthTokenStorageID defaultValue:nil];
+        NSString* tokenStorageID = [parameterContainer getStringValueForAttribute:kIXOAuthTokenStorageID defaultValue:nil];
         if( [tokenStorageID length] > 0 )
         {
             [AFOAuthCredential deleteCredentialWithIdentifier:tokenStorageID];

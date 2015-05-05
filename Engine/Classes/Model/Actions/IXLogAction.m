@@ -10,7 +10,7 @@
 
 #import "IXAppManager.h"
 #import "IXActionContainer.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXLogger.h"
 
 static NSString* const kIXText = @"text";
@@ -22,9 +22,9 @@ static NSString* const kIXDelay = @"delay";
 {
     [super execute];
     
-    IXPropertyContainer* actionProperties = [self actionProperties];
+    IXAttributeContainer* actionProperties = [self actionProperties];
     
-    NSString* text = [actionProperties getStringPropertyValue:kIXText defaultValue:nil];
+    NSString* text = [actionProperties getStringValueForAttribute:kIXText defaultValue:nil];
     
     IX_LOG_DEBUG(@"Log action: %@", text);
 }

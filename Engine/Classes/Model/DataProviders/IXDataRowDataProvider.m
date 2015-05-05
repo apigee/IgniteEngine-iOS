@@ -46,11 +46,11 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
 {
     [super applySettings];
     
-    [self setDataRowBasePath:[[self propertyContainer] getStringPropertyValue:kIXDataRowBasePath defaultValue:nil]];
-    [self setPredicateFormat:[[self propertyContainer] getStringPropertyValue:kIXPredicateFormat defaultValue:nil]];
-    [self setPredicateArguments:[[self propertyContainer] getStringPropertyValue:kIXPredicateArguments defaultValue:nil]];
-    [self setSortDescriptorKey:[[self propertyContainer] getStringPropertyValue:kIXSortKey defaultValue:nil]];
-    [self setSortOrder:[[self propertyContainer] getStringPropertyValue:kIXSortOrder defaultValue:kIXSortOrderNone]];
+    [self setDataRowBasePath:[[self attributeContainer] getStringValueForAttribute:kIXDataRowBasePath defaultValue:nil]];
+    [self setPredicateFormat:[[self attributeContainer] getStringValueForAttribute:kIXPredicateFormat defaultValue:nil]];
+    [self setPredicateArguments:[[self attributeContainer] getStringValueForAttribute:kIXPredicateArguments defaultValue:nil]];
+    [self setSortDescriptorKey:[[self attributeContainer] getStringValueForAttribute:kIXSortKey defaultValue:nil]];
+    [self setSortOrder:[[self attributeContainer] getStringValueForAttribute:kIXSortOrder defaultValue:kIXSortOrderNone]];
 }
 
 -(void)loadData:(BOOL)forceGet paginationKey:(NSString *)paginationKey

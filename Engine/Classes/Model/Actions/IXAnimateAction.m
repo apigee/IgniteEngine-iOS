@@ -29,11 +29,11 @@ static NSString* const kIXDirection = @"direction";
 
 -(void)performAnimation
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    CGFloat duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
-    NSString* animation = [[self actionProperties] getStringPropertyValue:kIXAnimation defaultValue:nil];
-    NSInteger repeatCount = [[self actionProperties] getIntPropertyValue:kIXRepeatCount defaultValue:0];
-    NSString* direction = [[self actionProperties] getStringPropertyValue:kIXDirection defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeparatedArrayOfValuesForAttribute:kIX_TARGET defaultValue:nil];
+    CGFloat duration = [[self actionProperties] getFloatValueForAttribute:kIXDuration defaultValue:0.0f];
+    NSString* animation = [[self actionProperties] getStringValueForAttribute:kIXAnimation defaultValue:nil];
+    NSInteger repeatCount = [[self actionProperties] getIntValueForAttribute:kIXRepeatCount defaultValue:0];
+    NSString* direction = [[self actionProperties] getStringValueForAttribute:kIXDirection defaultValue:nil];
     
     NSDictionary* params;
     

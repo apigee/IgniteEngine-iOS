@@ -107,23 +107,23 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
 {
     [super applySettings];
     
-    UIColor* tint = [[self propertyContainer] getColorPropertyValue:kIXTint defaultValue:nil];
+    UIColor* tint = [[self attributeContainer] getColorValueForAttribute:kIXTint defaultValue:nil];
     if( tint != nil )
     {
         [[self slider] setTintColor:tint];
     }
 
-    UIImage* maxImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesMaximum defaultValue:nil]];
+    UIImage* maxImage = [UIImage imageNamed:[[self attributeContainer] getStringValueForAttribute:kIXImagesMaximum defaultValue:nil]];
     if( maxImage )
     {
-        NSString* maxInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMaximumCapInsets defaultValue:nil];
+        NSString* maxInsetsString = [[self attributeContainer] getStringValueForAttribute:kIXImagesMaximumCapInsets defaultValue:nil];
         if( maxInsetsString )
         {
             UIEdgeInsets maxEdgeInsets = UIEdgeInsetsFromString(maxInsetsString);
             maxImage = [maxImage resizableImageWithCapInsets:maxEdgeInsets];
         }
 
-        UIColor* maxImageTint = [[self propertyContainer] getColorPropertyValue:kIXImagesMaximumTint defaultValue:nil];
+        UIColor* maxImageTint = [[self attributeContainer] getColorValueForAttribute:kIXImagesMaximumTint defaultValue:nil];
         if( maxImageTint != nil )
         {
             maxImage = [maxImage applyTintEffectWithColor:maxImageTint];
@@ -132,17 +132,17 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
         [[self slider] setMaximumTrackImage:maxImage forState:UIControlStateNormal];
     }
     
-    UIImage* minImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesMinimum defaultValue:nil]];
+    UIImage* minImage = [UIImage imageNamed:[[self attributeContainer] getStringValueForAttribute:kIXImagesMinimum defaultValue:nil]];
     if( minImage )
     {
-        NSString* minInsetsString = [[self propertyContainer] getStringPropertyValue:kIXImagesMinimumCapInsets defaultValue:nil];
+        NSString* minInsetsString = [[self attributeContainer] getStringValueForAttribute:kIXImagesMinimumCapInsets defaultValue:nil];
         if( minInsetsString )
         {
             UIEdgeInsets minEdgeInsets = UIEdgeInsetsFromString(minInsetsString);
             minImage = [minImage resizableImageWithCapInsets:minEdgeInsets];
         }
         
-        UIColor* minImageTint = [[self propertyContainer] getColorPropertyValue:kIXImagesMinimumTint defaultValue:nil];
+        UIColor* minImageTint = [[self attributeContainer] getColorValueForAttribute:kIXImagesMinimumTint defaultValue:nil];
         if( minImageTint != nil )
         {
             minImage = [minImage applyTintEffectWithColor:minImageTint];
@@ -151,10 +151,10 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
         [[self slider] setMinimumTrackImage:minImage forState:UIControlStateNormal];
     }
     
-    UIImage* thumbImage = [UIImage imageNamed:[[self propertyContainer] getStringPropertyValue:kIXImagesThumb defaultValue:nil]];
+    UIImage* thumbImage = [UIImage imageNamed:[[self attributeContainer] getStringValueForAttribute:kIXImagesThumb defaultValue:nil]];
     if( thumbImage )
     {
-        UIColor* thumbImageTint = [[self propertyContainer] getColorPropertyValue:kIXImagesThumbTint defaultValue:nil];
+        UIColor* thumbImageTint = [[self attributeContainer] getColorValueForAttribute:kIXImagesThumbTint defaultValue:nil];
         if( thumbImageTint != nil )
         {
             thumbImage = [thumbImage applyTintEffectWithColor:thumbImageTint];
@@ -163,8 +163,8 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
         [[self slider] setThumbImage:thumbImage forState:UIControlStateNormal];
     }
     
-    [[self slider] setMinimumValue:[[self propertyContainer] getFloatPropertyValue:kIXMinimumValue defaultValue:0.0f]];
-    [[self slider] setMaximumValue:[[self propertyContainer] getFloatPropertyValue:kIXMaximumValue defaultValue:1.0f]];
+    [[self slider] setMinimumValue:[[self attributeContainer] getFloatValueForAttribute:kIXMinimumValue defaultValue:0.0f]];
+    [[self slider] setMaximumValue:[[self attributeContainer] getFloatValueForAttribute:kIXMaximumValue defaultValue:1.0f]];
 
     if( [self isFirstLoad] )
     {
@@ -175,7 +175,7 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
         }
         else
         {
-            CGFloat initialSlideValue = [[self propertyContainer] getFloatPropertyValue:kIXInitialValue defaultValue:0.0f];
+            CGFloat initialSlideValue = [[self attributeContainer] getFloatValueForAttribute:kIXInitialValue defaultValue:0.0f];
             [self updateSliderValueWithValue:initialSlideValue animated:YES];
         }
     }
@@ -202,14 +202,14 @@ IX_STATIC_CONST_STRING kIXValueNSCodingKey = @"value";
     [self sliderValueChanged:[self slider]];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXUpdateSliderValue] )
     {
-        CGFloat sliderValue = [parameterContainer getFloatPropertyValue:kIXValue defaultValue:[[self slider] value]];
+        CGFloat sliderValue = [parameterContainer getFloatValueForAttribute:kIXValue defaultValue:[[self slider] value]];
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self updateSliderValueWithValue:sliderValue animated:animated];
     }

@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 
 @interface IXEntityContainer : NSObject <NSCopying>
 
-@property (nonatomic,strong) IXPropertyContainer* entityProperties;
+@property (nonatomic,strong) IXAttributeContainer* entityAttributes;
 @property (nonatomic,strong) NSMutableArray* subEntities;
 
 +(instancetype)entityContainerWithJSONEntityDict:(NSDictionary*)entityDict;

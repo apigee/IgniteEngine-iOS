@@ -8,22 +8,22 @@
 
 #import "IXBaseConditionalObject.h"
 
-@class IXProperty;
+@class IXAttribute;
 @class IXActionContainer;
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 
 @interface IXBaseAction : IXBaseConditionalObject
 
 @property (nonatomic,weak) IXActionContainer* actionContainer;
 
 @property (nonatomic,copy) NSString* eventName;
-@property (nonatomic,strong) IXPropertyContainer* actionProperties;
-@property (nonatomic,strong) IXPropertyContainer* setProperties;
+@property (nonatomic,strong) IXAttributeContainer* actionProperties;
+@property (nonatomic,strong) IXAttributeContainer* setProperties;
 @property (nonatomic,strong) IXActionContainer* subActionContainer;
 
 -(instancetype)initWithEventName:(NSString*)eventName
-                actionProperties:(IXPropertyContainer*)actionProperties
-                   setProperties:(IXPropertyContainer*)setProperties
+                actionProperties:(IXAttributeContainer*)actionProperties
+                   setProperties:(IXAttributeContainer*)setProperties
               subActionContainer:(IXActionContainer*)subActionContainer;
 
 +(instancetype)actionWithEventName:(NSString*)eventName

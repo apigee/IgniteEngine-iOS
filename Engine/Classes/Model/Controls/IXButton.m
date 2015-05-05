@@ -82,7 +82,7 @@ NSArray* alphas;
     
     [[self button] setEnabled:[[self contentView] isEnabled]];
     
-    self.button.shouldHighlightImageOnTouch = [self.propertyContainer getBoolPropertyValue:kIXDarkensImageOnTouch defaultValue:YES];
+    self.button.shouldHighlightImageOnTouch = [self.attributeContainer getBoolValueForAttribute:kIXDarkensImageOnTouch defaultValue:YES];
     [[self button] setAdjustsImageWhenHighlighted:NO];
     
     [[self button] setAttributedTitle:nil forState:UIControlStateNormal];
@@ -93,12 +93,12 @@ NSArray* alphas;
     __block NSString* defaultFontForTitles = @"HelveticaNeue:16.0f";
 
     // Grab the title states - comma separated
-    __block NSArray* titleTexts = [self getButtonStatesForArray:[[self propertyContainer] getPipeCommaPipeSeperatedArrayListValue:kIXTextDefault defaultValue:nil]];
-    __block NSArray* titleColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultColor defaultValue:@[defaultColorForTitles]]];
-    __block NSArray* titleFonts = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXTextDefaultFont defaultValue:@[defaultFontForTitles]]];
-    __block NSArray* iconTintColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXIconDefaultTintColor defaultValue:nil]];
-    alphas = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:@[@"1"]]];
-    backgroundColors = [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]];
+    __block NSArray* titleTexts = [self getButtonStatesForArray:[[self attributeContainer] getPipeCommaPipeSeparatedArrayOfValuesForAttribute:kIXTextDefault defaultValue:nil]];
+    __block NSArray* titleColors = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXTextDefaultColor defaultValue:@[defaultColorForTitles]]];
+    __block NSArray* titleFonts = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXTextDefaultFont defaultValue:@[defaultFontForTitles]]];
+    __block NSArray* iconTintColors = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXIconDefaultTintColor defaultValue:nil]];
+    alphas = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:@[@"1"]]];
+    backgroundColors = [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]];
     
     [@[kIXNormal, kIXTouch, kIXDisabled] enumerateObjectsUsingBlock:^(NSString* titleState, NSUInteger idx, BOOL *stop) {
         
@@ -132,7 +132,7 @@ NSArray* alphas;
         __block UIColor* imageTintColorForState = [UIColor colorWithString:iconTintColors[idx]];
         
         __weak typeof(self) weakSelf = self;
-        [[self propertyContainer] getImageProperty:kIXIconDefault
+        [[self attributeContainer] getImageAttribute:kIXIconDefault
                                       successBlock:^(UIImage *image) {
                                           if( imageTintColorForState )
                                           {
@@ -147,9 +147,9 @@ NSArray* alphas;
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchDuration defaultValue:0.05];
-        CGFloat alpha = [alphas[1] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][1] floatValue];
-        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[1] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][1])];
+        CGFloat duration = [self.attributeContainer getFloatValueForAttribute:kIXTouchDuration defaultValue:0.05];
+        CGFloat alpha = [alphas[1] floatValue] ?: [[self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:nil]][1] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[1] ?: [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]][1])];
         
         [UIView transitionWithView:self.button
                           duration:duration
@@ -176,9 +176,9 @@ NSArray* alphas;
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.15];
-        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][0] floatValue];
-        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][0])];
+        CGFloat duration = [self.attributeContainer getFloatValueForAttribute:kIXTouchUpDuration defaultValue:0.15];
+        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:nil]][0] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]][0])];
         
         [UIView transitionWithView:self.button
                           duration:duration
@@ -202,9 +202,9 @@ NSArray* alphas;
 {
     if (self.button.shouldHighlightImageOnTouch)
     {
-        CGFloat duration = [self.propertyContainer getFloatPropertyValue:kIXTouchUpDuration defaultValue:0.15];
-        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXAlpha defaultValue:nil]][0] floatValue];
-        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXBackgroundColor defaultValue:nil]][0])];
+        CGFloat duration = [self.attributeContainer getFloatValueForAttribute:kIXTouchUpDuration defaultValue:0.15];
+        CGFloat alpha = [alphas[0] floatValue] ?: [[self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXAlpha defaultValue:nil]][0] floatValue];
+        UIColor* backgroundColor = [UIColor colorWithString:(backgroundColors[0] ?: [self getButtonStatesForArray:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXBackgroundColor defaultValue:nil]][0])];
 
         [UIView transitionWithView:self.button
                           duration:duration

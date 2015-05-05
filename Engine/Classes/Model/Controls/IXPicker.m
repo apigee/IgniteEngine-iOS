@@ -7,7 +7,7 @@
 //
 
 #import "IXPicker.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 
 #import "ActionSheetPicker.h"
 #import "IXAppManager.h"
@@ -69,7 +69,7 @@ IX_STATIC_CONST_STRING kIXDonePressed = @"done";
 {
     [super applySettings];
     
-    NSString* type = [[self propertyContainer] getStringPropertyValue:kIXPickerType defaultValue:@"date"];
+    NSString* type = [[self attributeContainer] getStringValueForAttribute:kIXPickerType defaultValue:@"date"];
     
     // Type: Date, Time, Date and Time, Countdown
     if( [type isEqualToString:kIXPickerDate] || [type isEqualToString:kIXPickerTime] || [type isEqualToString:kIXPickerDateAndTime] || [type isEqualToString:kIXPickerCountdown]) {
@@ -128,8 +128,8 @@ IX_STATIC_CONST_STRING kIXDonePressed = @"done";
                        doneBlock:doneDate
                        cancelBlock:cancelDate
                        origin:self.contentView];
-        _datePicker.minuteInterval = [[self propertyContainer] getIntPropertyValue:kIXPickerTimeInterval defaultValue:5];
-        _datePicker.title = [[self propertyContainer] getStringPropertyValue:kIXPickerTitle defaultValue:@""];
+        _datePicker.minuteInterval = [[self attributeContainer] getIntValueForAttribute:kIXPickerTimeInterval defaultValue:5];
+        _datePicker.title = [[self attributeContainer] getStringValueForAttribute:kIXPickerTitle defaultValue:@""];
 
         
     } else if( [type isEqualToString:kIXPickerString] )
@@ -156,7 +156,7 @@ IX_STATIC_CONST_STRING kIXDonePressed = @"done";
         // kIXPickerStringValues
         
         //NSArray *array = @[@"Red", @"Green", @"Blue", @"Orange"];
-        NSArray *array = [[self propertyContainer] getCommaSeperatedArrayListValue:kIXPickerStringValues defaultValue:nil];
+        NSArray *array = [[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXPickerStringValues defaultValue:nil];
         
         _stringPicker = [[ActionSheetStringPicker alloc]
                          initWithTitle:@"test"
@@ -166,19 +166,19 @@ IX_STATIC_CONST_STRING kIXDonePressed = @"done";
                          cancelBlock:cancel
                          origin:self.contentView
                          ];
-        _stringPicker.title = [[self propertyContainer] getStringPropertyValue:kIXPickerTitle defaultValue:@""];
+        _stringPicker.title = [[self attributeContainer] getStringValueForAttribute:kIXPickerTitle defaultValue:@""];
         
     }
 
 
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     
     if( [functionName isEqualToString:kIXPresentPicker] )
     {
-        NSString* type = [[self propertyContainer] getStringPropertyValue:kIXPickerType defaultValue:@"date"];
+        NSString* type = [[self attributeContainer] getStringValueForAttribute:kIXPickerType defaultValue:@"date"];
 
         if( [type isEqualToString:kIXPickerDate] || [type isEqualToString:kIXPickerTime] || [type isEqualToString:kIXPickerDateAndTime] || [type isEqualToString:kIXPickerCountdown]) {
             [_datePicker showActionSheetPicker];

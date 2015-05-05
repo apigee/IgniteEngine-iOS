@@ -78,23 +78,23 @@ IX_STATIC_CONST_STRING kIXAddEventFailed = @"error";
 {
     [super applySettings];
 
-    [self setAllDayEvent:[[self propertyContainer] getBoolPropertyValue:kIXEventAllDay defaultValue:NO]];
-    [self setEventTitle:[[self propertyContainer] getStringPropertyValue:kIXEventTitle defaultValue:nil]];
-    [self setEventLocation:[[self propertyContainer] getStringPropertyValue:kIXEventLocation defaultValue:nil]];
-    [self setEventURL:[[self propertyContainer] getURLPathPropertyValue:kIXEventURL basePath:nil defaultValue:nil]];
-    [self setEventNotes:[[self propertyContainer] getStringPropertyValue:kIXEventNotes defaultValue:nil]];
+    [self setAllDayEvent:[[self attributeContainer] getBoolValueForAttribute:kIXEventAllDay defaultValue:NO]];
+    [self setEventTitle:[[self attributeContainer] getStringValueForAttribute:kIXEventTitle defaultValue:nil]];
+    [self setEventLocation:[[self attributeContainer] getStringValueForAttribute:kIXEventLocation defaultValue:nil]];
+    [self setEventURL:[[self attributeContainer] getURLValueForAttribute:kIXEventURL basePath:nil defaultValue:nil]];
+    [self setEventNotes:[[self attributeContainer] getStringValueForAttribute:kIXEventNotes defaultValue:nil]];
 
-    NSString* eventDateFormat = [[self propertyContainer] getStringPropertyValue:kIXEventDateFormat defaultValue:nil];
+    NSString* eventDateFormat = [[self attributeContainer] getStringValueForAttribute:kIXEventDateFormat defaultValue:nil];
     [[self dateFormatter] setDateFormat:eventDateFormat];
 
-    NSString* eventStartDate = [[self propertyContainer] getStringPropertyValue:kIXEventDateStart defaultValue:nil];
-    NSString* eventEndDate = [[self propertyContainer] getStringPropertyValue:kIXEventDateEnd defaultValue:nil];
+    NSString* eventStartDate = [[self attributeContainer] getStringValueForAttribute:kIXEventDateStart defaultValue:nil];
+    NSString* eventEndDate = [[self attributeContainer] getStringValueForAttribute:kIXEventDateEnd defaultValue:nil];
 
     [self setEventStartDate:[[self dateFormatter] dateFromString:eventStartDate]];
     [self setEventEndDate:[[self dateFormatter] dateFromString:eventEndDate]];
 
-    [self setEventAlarmOffset:[[self propertyContainer] getFloatPropertyValue:kIXEventAlarmOffset defaultValue:CGFLOAT_MAX]];
-    [self setEventRecurrenceFrequency:[[self propertyContainer] getStringPropertyValue:kIXEventRecurrenceFrequency defaultValue:kIXEventRecurrenceFrequencyNone]];
+    [self setEventAlarmOffset:[[self attributeContainer] getFloatValueForAttribute:kIXEventAlarmOffset defaultValue:CGFLOAT_MAX]];
+    [self setEventRecurrenceFrequency:[[self attributeContainer] getStringValueForAttribute:kIXEventRecurrenceFrequency defaultValue:kIXEventRecurrenceFrequencyNone]];
 }
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -109,7 +109,7 @@ IX_STATIC_CONST_STRING kIXAddEventFailed = @"error";
     }
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXAddEvent] )
     {

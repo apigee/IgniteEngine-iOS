@@ -8,7 +8,7 @@
 
 #import "IXBaseObject.h"
 #import "IXBaseAction.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXActionContainer.h"
 #import "IXBaseControl.h"
 
@@ -19,13 +19,13 @@ static NSString* kIXDescription = @"description";
 static NSString* kIXIDNSCodingKey = @"ID";
 static NSString* kIXStyleClassNSCodingKey = @"styleClass";
 static NSString* kIXActionContainerNSCodingKey = @"actionContainer";
-static NSString* kIXPropertyContainerNSCodingKey = @"propertyContainer";
+static NSString* kIXPropertyContainerNSCodingKey = @"attributeContainer";
 static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
 
 @implementation IXBaseObject
 
 @synthesize sandbox = _sandbox;
-@synthesize propertyContainer = _propertyContainer;
+@synthesize attributeContainer = _attributeContainer;
 @synthesize actionContainer = _actionContainer;
 
 -(instancetype)copyWithZone:(NSZone *)zone
@@ -41,7 +41,7 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
             [baseObjectCopy addChildObjects:childObjectsCopy];
         }
         [baseObjectCopy setActionContainer:[[self actionContainer] copy]];
-        [baseObjectCopy setPropertyContainer:[[self propertyContainer] copy]];
+        [baseObjectCopy setAttributeContainer:[[self attributeContainer] copy]];
     }
     return baseObjectCopy;
 }
@@ -51,7 +51,7 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
     [aCoder encodeObject:[self ID] forKey:kIXIDNSCodingKey];
     [aCoder encodeObject:[self styleClass] forKey:kIXStyleClassNSCodingKey];
     [aCoder encodeObject:[self actionContainer] forKey:kIXActionContainerNSCodingKey];
-    [aCoder encodeObject:[self propertyContainer] forKey:kIXPropertyContainerNSCodingKey];
+    [aCoder encodeObject:[self attributeContainer] forKey:kIXPropertyContainerNSCodingKey];
     [aCoder encodeObject:[self childObjects] forKey:kIXChildObjectsNSCodingKey];
 }
 
@@ -63,7 +63,7 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
         [self setID:[aDecoder decodeObjectForKey:kIXIDNSCodingKey]];
         [self setStyleClass:[aDecoder decodeObjectForKey:kIXStyleClassNSCodingKey]];
         [self setActionContainer:[aDecoder decodeObjectForKey:kIXActionContainerNSCodingKey]];
-        [self setPropertyContainer:[aDecoder decodeObjectForKey:kIXPropertyContainerNSCodingKey]];
+        [self setAttributeContainer:[aDecoder decodeObjectForKey:kIXPropertyContainerNSCodingKey]];
         [self addChildObjects:[aDecoder decodeObjectForKey:kIXChildObjectsNSCodingKey]];
     }
     return self;
@@ -74,9 +74,9 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
     return _sandbox;
 }
 
--(IXPropertyContainer*)propertyContainer
+-(IXAttributeContainer*)attributeContainer
 {
-    return _propertyContainer;
+    return _attributeContainer;
 }
 
 -(IXActionContainer*)actionContainer
@@ -93,10 +93,10 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
     }
 }
 
--(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
+-(void)setAttributeContainer:(IXAttributeContainer *)propertyContainer
 {
-    _propertyContainer = propertyContainer;
-    [_propertyContainer setOwnerObject:self];
+    _attributeContainer = propertyContainer;
+    [_attributeContainer setOwnerObject:self];
 }
 
 -(void)setActionContainer:(IXActionContainer *)actionContainer
@@ -173,10 +173,10 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
 
 -(void)applySettings
 {
-    [self setID:[[self propertyContainer] getStringPropertyValue:kIX_ID defaultValue:[self ID]]];
+    [self setID:[[self attributeContainer] getStringValueForAttribute:kIX_ID defaultValue:[self ID]]];
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer
 {
     
 }
@@ -205,7 +205,7 @@ static NSString* kIXChildObjectsNSCodingKey = @"childObjects";
 -(NSString*)description
 {
     NSMutableString* description = [[NSMutableString alloc] initWithString:[super description]];
-    [description appendString:[NSMutableString stringWithFormat:@"\n%@ Description : \n\nProperties:\n\n%@",NSStringFromClass([self class]),[[self propertyContainer] description]]];    
+    [description appendString:[NSMutableString stringWithFormat:@"\n%@ Description : \n\nProperties:\n\n%@",NSStringFromClass([self class]),[[self attributeContainer] description]]];    
     if( [self actionContainer] )
     {
         [description appendFormat:@"\nActions:\n%@",[[self actionContainer] description]];

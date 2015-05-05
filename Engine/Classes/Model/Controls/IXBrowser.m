@@ -149,8 +149,8 @@ IX_STATIC_CONST_STRING kIXFinished = @"done";
     [[self webview] setOpaque:NO];
     [[self webview] setBackgroundColor:[[self contentView] backgroundColor]];
 
-    NSString* urlString = [[self propertyContainer] getPathPropertyValue:kIXUrl basePath:nil defaultValue:nil];
-    NSString* htmlString = [[self propertyContainer] getStringPropertyValue:kIXHTMLString defaultValue:nil];
+    NSString* urlString = [[self attributeContainer] getPathForAttribute:kIXUrl basePath:nil defaultValue:nil];
+    NSString* htmlString = [[self attributeContainer] getStringValueForAttribute:kIXHTMLString defaultValue:nil];
 
     if( [urlString length] > 0 )
     {
@@ -160,7 +160,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"done";
     }
     else if( [htmlString length] > 0 )
     {
-        NSString* htmlBaseURLString = [[self propertyContainer] getStringPropertyValue:kIXHTMLBaseURL defaultValue:nil];
+        NSString* htmlBaseURLString = [[self attributeContainer] getStringValueForAttribute:kIXHTMLBaseURL defaultValue:nil];
         NSURL* baseURL = nil;
         if( [htmlBaseURLString length] > 0 ) {
             baseURL = [NSURL URLWithString:htmlBaseURLString];
@@ -170,7 +170,7 @@ IX_STATIC_CONST_STRING kIXFinished = @"done";
     }
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer
 {
     
 

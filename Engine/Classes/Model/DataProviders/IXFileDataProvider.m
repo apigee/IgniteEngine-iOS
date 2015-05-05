@@ -50,9 +50,9 @@ IX_STATIC_CONST_STRING kIXAcceptValueZip = @"application/zip";
 {
     [super applySettings];
     
-    [self setSavedFileURL:[[self propertyContainer] getURLPathPropertyValue:kIXSavePath basePath:nil defaultValue:nil]];
-    [self setSavedFileLocation:[[self propertyContainer] getPathPropertyValue:kIXSavePath basePath:nil defaultValue:nil]];
-    [self setUnzipToFileLocation:[[self propertyContainer] getPathPropertyValue:kIXUnzipPath basePath:nil defaultValue:nil]];
+    [self setSavedFileURL:[[self attributeContainer] getURLValueForAttribute:kIXSavePath basePath:nil defaultValue:nil]];
+    [self setSavedFileLocation:[[self attributeContainer] getPathForAttribute:kIXSavePath basePath:nil defaultValue:nil]];
+    [self setUnzipToFileLocation:[[self attributeContainer] getPathForAttribute:kIXUnzipPath basePath:nil defaultValue:nil]];
     
     [self setIsZipFile:[[self unzipToFileLocation] length] > 0];
     if( [self isZipFile] && [self zipArchive] == nil )

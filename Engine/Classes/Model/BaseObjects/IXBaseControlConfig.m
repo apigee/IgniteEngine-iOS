@@ -10,7 +10,7 @@
 
 #import "IXBaseControl.h"
 #import "IXActionContainer.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXLogger.h"
 
 static NSString* const kIXControlsSuffix = @"controls";
@@ -28,7 +28,7 @@ static NSString* const kIXControlsSuffix = @"controls";
 
 -(instancetype)initWithControlClass:(Class)controlClass
                          styleClass:(NSString*)styleClass
-                  propertyContainer:(IXPropertyContainer*)propertyContainer
+                  propertyContainer:(IXAttributeContainer*)propertyContainer
                     actionContainer:(IXActionContainer*)actionContainer
             controlConfigDictionary:(NSDictionary*)controlConfigDictionary
 
@@ -63,7 +63,7 @@ static NSString* const kIXControlsSuffix = @"controls";
         Class controlClass = NSClassFromString([NSString stringWithFormat:kIX_CONTROL_CLASS_NAME_FORMAT,controlType]);
         if( [controlClass isSubclassOfClass:[IXBaseControl class]] )
         {
-            IXPropertyContainer* propertyContainer = nil;
+            IXAttributeContainer* propertyContainer = nil;
             id propertiesDict = controlJSONDict[kIX_ATTRIBUTES];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
@@ -73,7 +73,7 @@ static NSString* const kIXControlsSuffix = @"controls";
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     [propertiesDict setObject:controlID forKey:kIX_ID];
                 }
-                propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict];
+                propertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict];
             }
             
             NSString* controlStyleClass = controlJSONDict[kIX_STYLE];
@@ -143,12 +143,12 @@ static NSString* const kIXControlsSuffix = @"controls";
     {
         [control setStyleClass:[[self styleClass] copy]];
         [control setActionContainer:[[self actionContainer] copy]];
-        [control setPropertyContainer:[[self propertyContainer] copy]];
+        [control setAttributeContainer:[[self propertyContainer] copy]];
         
-        if( [control propertyContainer] == nil )
+        if( [control attributeContainer] == nil )
         {
             // We need to have a property container for the default values and modifies to work!
-            [control setPropertyContainer:[[IXPropertyContainer alloc] init]];
+            [control setAttributeContainer:[[IXAttributeContainer alloc] init]];
         }
         
         if( [[[self controlConfigDictionary] allValues] count] > 0 )

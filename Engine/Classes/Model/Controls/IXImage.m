@@ -88,11 +88,11 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
     {
         CGSize imageSize = [[[self imageView] image] size];
         
-        float maxWidth = fminf(imageSize.width,[[self propertyContainer] getSizeValue:kIXImagesWidthMax
+        float maxWidth = fminf(imageSize.width,[[self attributeContainer] getSizeValueForAttribute:kIXImagesWidthMax
                                                                           maximumSize:size.width
                                                                          defaultValue:CGFLOAT_MAX]);
         
-        float maxHeight = fminf(imageSize.height,[[self propertyContainer] getSizeValue:kIXImagesHeightMax
+        float maxHeight = fminf(imageSize.height,[[self attributeContainer] getSizeValueForAttribute:kIXImagesHeightMax
                                                                             maximumSize:size.height
                                                                            defaultValue:CGFLOAT_MAX]);
 
@@ -115,7 +115,7 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
 {
     [super applySettings];
     
-    NSURL* imageURL = [[self propertyContainer] getURLPathPropertyValue:kIXImagesDefault basePath:nil defaultValue:nil];
+    NSURL* imageURL = [[self attributeContainer] getURLValueForAttribute:kIXImagesDefault basePath:nil defaultValue:nil];
     [self setAnimatedGif:[[imageURL pathExtension] isEqualToString:kIX_GIF_EXTENSION]];
 
     if( [self isAnimatedGIF] )
@@ -124,7 +124,7 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
         {
             [self setAnimatedGIFURL:imageURL];
             
-            float gifDuration = [[self propertyContainer] getFloatPropertyValue:kIXGIFDuration defaultValue:0.0f];
+            float gifDuration = [[self attributeContainer] getFloatValueForAttribute:kIXGIFDuration defaultValue:0.0f];
             [[self imageView] setAnimatedGIFDuration:gifDuration];
             [[self imageView] setAnimatedGIFURL:[self animatedGIFURL]];
         }
@@ -135,11 +135,11 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
     {
         __weak typeof(self) weakSelf = self;
         
-        NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXImagesDefaultResize defaultValue:nil];
-        UIColor *defaultTintColor = [self.propertyContainer getColorPropertyValue:kIXImagesDefaultTintColor defaultValue:nil];
-        BOOL forceRefresh = [self.propertyContainer getBoolPropertyValue:kIXImagesDefaultForceRefresh defaultValue:NO];
+        NSString* resizeDefault = [self.attributeContainer getStringValueForAttribute:kIXImagesDefaultResize defaultValue:nil];
+        UIColor *defaultTintColor = [self.attributeContainer getColorValueForAttribute:kIXImagesDefaultTintColor defaultValue:nil];
+        BOOL forceRefresh = [self.attributeContainer getBoolValueForAttribute:kIXImagesDefaultForceRefresh defaultValue:NO];
 
-        [[self propertyContainer] getImageProperty:kIXImagesDefault
+        [[self attributeContainer] getImageAttribute:kIXImagesDefault
                                       successBlock:^(UIImage *image) {
                                           
                                           // if default image is to be resized, do that first
@@ -149,12 +149,12 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
                                           if (defaultTintColor)
                                               image = [image tintedImageUsingColor:defaultTintColor];
 
-                                          BOOL needsToApplyBlur = [[self propertyContainer] propertyExistsForPropertyNamed:kIXImagesDefaultBlurRadius];
+                                          BOOL needsToApplyBlur = [[self attributeContainer] attributeExistsForName:kIXImagesDefaultBlurRadius];
                                           if( needsToApplyBlur )
                                           {
-                                              CGFloat blurRadius = [[self propertyContainer] getFloatPropertyValue:kIXImagesDefaultBlurRadius defaultValue:20.0f];
-                                              UIColor* tintColor = [[self propertyContainer] getColorPropertyValue:kIXImagesDefaultBlurTintColor defaultValue:nil];
-                                              CGFloat saturation = [[self propertyContainer] getFloatPropertyValue:kIXImagesDefaultBlurSaturation defaultValue:1.8f];
+                                              CGFloat blurRadius = [[self attributeContainer] getFloatValueForAttribute:kIXImagesDefaultBlurRadius defaultValue:20.0f];
+                                              UIColor* tintColor = [[self attributeContainer] getColorValueForAttribute:kIXImagesDefaultBlurTintColor defaultValue:nil];
+                                              CGFloat saturation = [[self attributeContainer] getFloatValueForAttribute:kIXImagesDefaultBlurSaturation defaultValue:1.8f];
 
                                               image = [image applyBlurWithRadius:blurRadius tintColor:tintColor saturationDeltaFactor:saturation maskImage:nil];
                                           }
@@ -183,9 +183,9 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
                                           [[weakSelf actionContainer] executeActionsForEventNamed:kIXImagesDefaultFailed];
                                       } shouldRefreshCachedImage:forceRefresh];
 
-        BOOL flipHorizontal = [[self propertyContainer] getBoolPropertyValue:kIXFlipHorizontal defaultValue:NO];
-        BOOL flipVertical = [[self propertyContainer] getBoolPropertyValue:kIXFlipVertical defaultValue:NO];
-        CGFloat rotate = [[self propertyContainer] getFloatPropertyValue:kIXRotate defaultValue:0.0f];
+        BOOL flipHorizontal = [[self attributeContainer] getBoolValueForAttribute:kIXFlipHorizontal defaultValue:NO];
+        BOOL flipVertical = [[self attributeContainer] getBoolValueForAttribute:kIXFlipVertical defaultValue:NO];
+        CGFloat rotate = [[self attributeContainer] getFloatValueForAttribute:kIXRotate defaultValue:0.0f];
         
         if (flipHorizontal)
         {
@@ -278,7 +278,7 @@ IX_STATIC_CONST_STRING kIXLoadLastPhoto = @"loadLatestPhoto";
     
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStartAnimation] )
     {

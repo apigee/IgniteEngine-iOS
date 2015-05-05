@@ -23,7 +23,7 @@ static NSString* kIXShouldReloadData = @"reloadData.enabled";
 
 -(void)execute
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeparatedArrayOfValuesForAttribute:kIX_TARGET defaultValue:nil];
    
     if( [objectIDs count] )
     {
@@ -42,7 +42,7 @@ static NSString* kIXShouldReloadData = @"reloadData.enabled";
             }
             else if( [baseObject isKindOfClass:[IXBaseDataProvider class]] )
             {
-                BOOL reloadData = [self.actionProperties getBoolPropertyValue:kIXShouldReloadData defaultValue:YES];
+                BOOL reloadData = [self.actionProperties getBoolValueForAttribute:kIXShouldReloadData defaultValue:YES];
                 [((IXBaseDataProvider*)baseObject) loadData:reloadData];
             }
         }

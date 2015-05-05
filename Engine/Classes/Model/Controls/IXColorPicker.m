@@ -60,19 +60,19 @@ IX_STATIC_CONST_STRING kIXColorDefault = @"#FFFFFF"; // Note we can't change thi
 {
     [super applySettings];
 
-    float brightness = [[self propertyContainer] getFloatPropertyValue:kIXBrightness defaultValue:kIXBrightnessDefault];
+    float brightness = [[self attributeContainer] getFloatValueForAttribute:kIXBrightness defaultValue:kIXBrightnessDefault];
     if( [[self colorMapView] brightness] != brightness )
     {
         [[self colorMapView] setBrightness:brightness];
     }
 
-    float saturation = [[self propertyContainer] getFloatPropertyValue:kIXSaturation defaultValue:kIXSaturationDefault];
+    float saturation = [[self attributeContainer] getFloatValueForAttribute:kIXSaturation defaultValue:kIXSaturationDefault];
     if( [[[self colorMapView] saturationUpperLimit] floatValue] != saturation )
     {
         [[self colorMapView] setSaturationUpperLimit:[NSNumber numberWithFloat:saturation]];
     }
 
-    float tileSize = [[self propertyContainer] getFloatPropertyValue:kIXTileSize defaultValue:kIXTileSizeDefault];
+    float tileSize = [[self attributeContainer] getFloatValueForAttribute:kIXTileSize defaultValue:kIXTileSizeDefault];
     if( [[[self colorMapView] tileSize] floatValue] != tileSize )
     {
         [[self colorMapView] setTileSize:[NSNumber numberWithFloat:tileSize]];

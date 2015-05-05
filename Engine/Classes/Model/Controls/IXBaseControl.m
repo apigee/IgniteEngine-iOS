@@ -9,7 +9,7 @@
 #import "IXBaseControl.h"
 
 #import "IXAppManager.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "ColorUtils.h"
 #import "IXControlLayoutInfo.h"
 #import "IXLogger.h"
@@ -157,10 +157,10 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     return baseControl;
 }
 
--(void)setPropertyContainer:(IXPropertyContainer *)propertyContainer
+-(void)setAttributeContainer:(IXAttributeContainer *)attributeContainer
 {
-    [super setPropertyContainer:propertyContainer];
-    [[self layoutInfo] setPropertyContainer:propertyContainer];
+    [super setAttributeContainer:attributeContainer];
+    [[self layoutInfo] setAttributeContainer:attributeContainer];
 }
 
 //
@@ -194,7 +194,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)layoutControlContentsInRect:(CGRect)rect
 {
-    NSString* rotationProperty = [[self propertyContainer] getStringPropertyValue:kIXRotation defaultValue:nil];
+    NSString* rotationProperty = [[self attributeContainer] getStringValueForAttribute:kIXRotation defaultValue:nil];
     if (rotationProperty != nil) {
         CGFloat rotationInRadians = DEGREES_TO_RADIANS([rotationProperty floatValue]);
         _contentView.layer.anchorPoint = CGPointMake(0.5, 0.5);
@@ -225,11 +225,11 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     {
         if( _layoutInfo == nil )
         {
-            _layoutInfo = [[IXControlLayoutInfo alloc] initWithPropertyContainer:[self propertyContainer]];
+            _layoutInfo = [[IXControlLayoutInfo alloc] initWithAttributeContainer:[self attributeContainer]];
         }
         else
         {
-            [_layoutInfo setPropertyContainer:[self propertyContainer]];
+            [_layoutInfo setAttributeContainer:[self attributeContainer]];
             [_layoutInfo refreshLayoutInfo];
         }
         
@@ -249,11 +249,11 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)applyContentViewSettings
 {
-    NSString* backgroundImage = [[self propertyContainer] getStringPropertyValue:kIXBackgroundImage defaultValue:nil];
+    NSString* backgroundImage = [[self attributeContainer] getStringValueForAttribute:kIXBackgroundImage defaultValue:nil];
     if( backgroundImage )
     {
 
-        NSString* backgroundImageScale = [[self propertyContainer] getStringPropertyValue:kIXBackgroundImageScale
+        NSString* backgroundImageScale = [[self attributeContainer] getStringValueForAttribute:kIXBackgroundImageScale
                                                                              defaultValue:kIXBackgroundImageScaleCover];
         
         static NSDictionary *sIXBackgroundImageScaleFormatDictionary = nil;
@@ -271,7 +271,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
         if( backgroundImageScaleFormat != nil )
         {
             __weak typeof(self) weakSelf = self;
-            [[self propertyContainer] getImageProperty:kIXBackgroundImage successBlock:^(UIImage *image) {
+            [[self attributeContainer] getImageAttribute:kIXBackgroundImage successBlock:^(UIImage *image) {
                 
                 CGSize size = [[weakSelf contentView] bounds].size;
                 
@@ -295,27 +295,27 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
                 
             } failBlock:^(NSError *error) {
 
-                [[weakSelf contentView] setBackgroundColor:[[weakSelf propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+                [[weakSelf contentView] setBackgroundColor:[[weakSelf attributeContainer] getColorValueForAttribute:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
                 
                 IX_LOG_DEBUG(@"Background image failed to load at %@", kIXBackgroundImage);
             }];
         }
         else
         {
-            [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+            [[self contentView] setBackgroundColor:[[self attributeContainer] getColorValueForAttribute:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
         }
     }
     else
     {
-        [[self contentView] setBackgroundColor:[[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
+        [[self contentView] setBackgroundColor:[[self attributeContainer] getColorValueForAttribute:kIXBackgroundColor defaultValue:[UIColor clearColor]]];
     }
     
-    [[self contentView] setEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnabled defaultValue:YES]];
+    [[self contentView] setEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXEnabled defaultValue:YES]];
     [[self contentView] setHidden:[[self layoutInfo] isHidden]];
-    [[self contentView] setAlpha:[[self propertyContainer] getFloatPropertyValue:kIXAlpha defaultValue:1.0f]];
+    [[self contentView] setAlpha:[[self attributeContainer] getFloatValueForAttribute:kIXAlpha defaultValue:1.0f]];
     
-    float borderWidth = [[self propertyContainer] getFloatPropertyValue:kIXBorderWidth defaultValue:0.0f];
-    UIColor* borderColor = [[self propertyContainer] getColorPropertyValue:kIXBorderColor defaultValue:[UIColor blackColor]];
+    float borderWidth = [[self attributeContainer] getFloatValueForAttribute:kIXBorderWidth defaultValue:0.0f];
+    UIColor* borderColor = [[self attributeContainer] getColorValueForAttribute:kIXBorderColor defaultValue:[UIColor blackColor]];
     if( [[IXAppManager sharedAppManager] isLayoutDebuggingEnabled] )
     {
         if( borderWidth == 0.0f )
@@ -329,21 +329,21 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     }
     [[[self contentView] layer] setBorderWidth:borderWidth];
     [[[self contentView] layer] setBorderColor:borderColor.CGColor];
-    [[[self contentView] layer] setCornerRadius:[[self propertyContainer] getFloatPropertyValue:kIXBorderRadius defaultValue:0.0f]];
+    [[[self contentView] layer] setCornerRadius:[[self attributeContainer] getFloatValueForAttribute:kIXBorderRadius defaultValue:0.0f]];
     
-    BOOL enableShadow = [[self propertyContainer] getBoolPropertyValue:kIXEnableShadow defaultValue:NO];
+    BOOL enableShadow = [[self attributeContainer] getBoolValueForAttribute:kIXEnableShadow defaultValue:NO];
     if( enableShadow )
     {
         [[[self contentView] layer] setShouldRasterize:YES];
         [[[self contentView] layer] setRasterizationScale:[[UIScreen mainScreen] scale]];
-        [[[self contentView] layer] setShadowRadius:[[self propertyContainer] getFloatPropertyValue:kIXShadowBlur defaultValue:1.0f]];
-        [[[self contentView] layer] setShadowOpacity:[[self propertyContainer] getFloatPropertyValue:kIXShadowAlpha defaultValue:1.0f]];
+        [[[self contentView] layer] setShadowRadius:[[self attributeContainer] getFloatValueForAttribute:kIXShadowBlur defaultValue:1.0f]];
+        [[[self contentView] layer] setShadowOpacity:[[self attributeContainer] getFloatValueForAttribute:kIXShadowAlpha defaultValue:1.0f]];
         
-        UIColor* shadowColor = [[self propertyContainer] getColorPropertyValue:kIXShadowColor defaultValue:[UIColor blackColor]];
+        UIColor* shadowColor = [[self attributeContainer] getColorValueForAttribute:kIXShadowColor defaultValue:[UIColor blackColor]];
         [[[self contentView] layer] setShadowColor:shadowColor.CGColor];
         
-        float shadowOffsetRight = [[self propertyContainer] getFloatPropertyValue:kIXShadowOffsetRight defaultValue:2.0f];
-        float shadowOffsetDown = [[self propertyContainer] getFloatPropertyValue:kIXShadowOffsetDown defaultValue:2.0f];
+        float shadowOffsetRight = [[self attributeContainer] getFloatValueForAttribute:kIXShadowOffsetRight defaultValue:2.0f];
+        float shadowOffsetDown = [[self attributeContainer] getFloatValueForAttribute:kIXShadowOffsetDown defaultValue:2.0f];
         [[[self contentView] layer] setShadowOffset:CGSizeMake(shadowOffsetRight, shadowOffsetDown)];
     }
     else
@@ -355,31 +355,31 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)applyGestureRecognizerSettings
 {
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableTap defaultValue:NO] ) {
+    if( [[self attributeContainer] getBoolValueForAttribute:kIXEnableTap defaultValue:NO] ) {
         [[self contentView] beginListeningForTapGestures];
     } else {
         [[self contentView] stopListeningForTapGestures];
     }
     
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableSwipe defaultValue:NO] ) {
+    if( [[self attributeContainer] getBoolValueForAttribute:kIXEnableSwipe defaultValue:NO] ) {
         [[self contentView] beginListeningForSwipeGestures];
     } else {
         [[self contentView] stopListeningForSwipeGestures];
     }
     
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePinch defaultValue:NO] ){
+    if( [[self attributeContainer] getBoolValueForAttribute:kIXEnablePinch defaultValue:NO] ){
         [[self contentView] beginListeningForPinchGestures];
     } else {
         [[self contentView] stopListeningForPinchGestures];
     }
     
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnablePan defaultValue:NO] ) {
+    if( [[self attributeContainer] getBoolValueForAttribute:kIXEnablePan defaultValue:NO] ) {
         [[self contentView] beginListeningForPanGestures];
     } else {
         [[self contentView] stopListeningForPanGestures];
     }
 
-    if( [[self propertyContainer] getBoolPropertyValue:kIXEnableLongPress defaultValue:NO] ) {
+    if( [[self attributeContainer] getBoolValueForAttribute:kIXEnableLongPress defaultValue:NO] ) {
         [[self contentView] beginListeningForLongPress];
     } else {
         [[self contentView] stopListeningForLongPress];
@@ -455,15 +455,15 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)controlViewPinchGestureRecognized:(UIPinchGestureRecognizer *)pinchGestureRecognizer
 {
-    NSString* zoomDirection = [[self propertyContainer] getStringPropertyValue:kIXPinchZoom defaultValue:nil];
+    NSString* zoomDirection = [[self attributeContainer] getStringValueForAttribute:kIXPinchZoom defaultValue:nil];
     
     if( zoomDirection != nil )
     {
         
-        BOOL shouldResetPinchZoomOnTouchUp = [self.propertyContainer getBoolPropertyValue:kIXPinchReset defaultValue:YES];
-        const CGFloat kMinScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMin defaultValue:1.0];
-        const CGFloat kMaxScale = [self.propertyContainer getFloatPropertyValue:kIXPinchMax defaultValue:2.0];
-        const CGFloat kElastic = [self.propertyContainer getFloatPropertyValue:kIXPinchElastic defaultValue:0.5];
+        BOOL shouldResetPinchZoomOnTouchUp = [self.attributeContainer getBoolValueForAttribute:kIXPinchReset defaultValue:YES];
+        const CGFloat kMinScale = [self.attributeContainer getFloatValueForAttribute:kIXPinchMin defaultValue:1.0];
+        const CGFloat kMaxScale = [self.attributeContainer getFloatValueForAttribute:kIXPinchMax defaultValue:2.0];
+        const CGFloat kElastic = [self.attributeContainer getFloatValueForAttribute:kIXPinchElastic defaultValue:0.5];
         
         CGFloat previousScale = 1;
         
@@ -555,8 +555,8 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 
 -(void)controlViewPanGestureRecognized:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-    BOOL shouldResetPanPosition = [self.propertyContainer getBoolPropertyValue:kIXPanReset defaultValue:NO];
-    BOOL panShouldSnapToBounds = [self.propertyContainer getBoolPropertyValue:kIXPanSnap defaultValue:YES];
+    BOOL shouldResetPanPosition = [self.attributeContainer getBoolValueForAttribute:kIXPanReset defaultValue:NO];
+    BOOL panShouldSnapToBounds = [self.attributeContainer getBoolValueForAttribute:kIXPanSnap defaultValue:YES];
     static CGPoint originalCenter;
     UIView *draggedView = panGestureRecognizer.view;
     CGPoint offset = [panGestureRecognizer translationInView:draggedView.superview];
@@ -650,7 +650,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName
 {
     NSString* returnValue = nil;
-    if ([[self propertyContainer] hasLayoutProperties]) {
+    if ([[self attributeContainer] hasLayoutAttributes]) {
         if ( [propertyName hasPrefix:kIXLocation] )
         {
             UIView* rootView = [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] view];
@@ -689,7 +689,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     return returnValue;
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXToggle] )
     {
@@ -700,7 +700,7 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
         }
         else
         {
-            CGFloat originalAlpha = [[self propertyContainer] getFloatPropertyValue:kIXAlpha defaultValue:1.0f];
+            CGFloat originalAlpha = [[self attributeContainer] getFloatValueForAttribute:kIXAlpha defaultValue:1.0f];
             if (originalAlpha <= 0)
                 originalAlpha = 1;
             self.contentView.alpha = originalAlpha;
@@ -711,13 +711,13 @@ static BOOL kIXDidDetermineOriginalCenter = false; // used for pan gesture
     {
         if( [self contentView] )
         {
-            CGFloat ciResolution = [[self propertyContainer] getFloatPropertyValue:kIXCIContextResolution defaultValue:0];
+            CGFloat ciResolution = [[self attributeContainer] getFloatValueForAttribute:kIXCIContextResolution defaultValue:0];
             UIGraphicsBeginImageContextWithOptions([self contentView].bounds.size, YES, ciResolution);
             [[self contentView] drawViewHierarchyInRect:[self contentView].bounds afterScreenUpdates:YES];
             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
 
-            NSString* saveToLocation = [parameterContainer getPathPropertyValue:kIXSaveToLocation basePath:nil defaultValue:nil];
+            NSString* saveToLocation = [parameterContainer getPathForAttribute:kIXSaveToLocation basePath:nil defaultValue:nil];
             NSData* imageData = UIImagePNGRepresentation(image);
             if( [imageData length] > 0 && [saveToLocation length] > 0 )
             {

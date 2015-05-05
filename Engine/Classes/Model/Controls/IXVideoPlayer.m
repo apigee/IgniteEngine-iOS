@@ -96,7 +96,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     [super applySettings];
     
     ALMoviePlayerControls* movieControls = [[self moviePlayer] controls];
-    NSString* controlsStyle = [[self propertyContainer] getStringPropertyValue:kIXPlayerControls defaultValue:kIX_DEFAULT];
+    NSString* controlsStyle = [[self attributeContainer] getStringValueForAttribute:kIXPlayerControls defaultValue:kIX_DEFAULT];
     if( [controlsStyle isEqualToString:kIXEmbedded] )
     {
         [movieControls setStyle:ALMoviePlayerControlsStyleEmbedded];
@@ -115,8 +115,8 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     }
     
     //[movieControls setAdjustsFullscreenImage:NO];
-    [movieControls setBarColor:[[self propertyContainer] getColorPropertyValue:kIXBarColor defaultValue:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]]];
-    [movieControls setBarHeight:[[self propertyContainer] getFloatPropertyValue:kIXBarSize defaultValue:30.0f]];
+    [movieControls setBarColor:[[self attributeContainer] getColorValueForAttribute:kIXBarColor defaultValue:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]]];
+    [movieControls setBarHeight:[[self attributeContainer] getFloatValueForAttribute:kIXBarSize defaultValue:30.0f]];
     [movieControls setTimeRemainingDecrements:YES];
     //[movieControls setFadeDelay:2.0];
     //[movieControls setBarHeight:100.f];
@@ -136,14 +136,14 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     });
     
     //THEN set contentURL
-    [self setMovieURL:[[self propertyContainer] getURLPathPropertyValue:kIXVideoUrl basePath:nil defaultValue:nil]];
+    [self setMovieURL:[[self attributeContainer] getURLValueForAttribute:kIXVideoUrl basePath:nil defaultValue:nil]];
     
     if( ![[[[self moviePlayer] contentURL] absoluteString] isEqualToString:[[self movieURL] absoluteString]] )
     {
         [[self moviePlayer] setContentURL:[self movieURL]];
     }
     
-    BOOL autoPlay = [[self propertyContainer] getBoolPropertyValue:kIXAutoPlayEnabled defaultValue:YES];
+    BOOL autoPlay = [[self attributeContainer] getBoolValueForAttribute:kIXAutoPlayEnabled defaultValue:YES];
     if( autoPlay )
     {
         if( [[self moviePlayer] playbackState] != MPMoviePlaybackStatePlaying )
@@ -192,7 +192,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     }
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer
 {
     if( [functionName compare:kIXPlay] == NSOrderedSame )
     {
@@ -212,7 +212,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     }
     else if( [functionName compare:kIXGoTo] == NSOrderedSame )
     {
-        float seconds = [parameterContainer getFloatPropertyValue:kIXGoToSeconds defaultValue:[[self moviePlayer] currentPlaybackTime]];
+        float seconds = [parameterContainer getFloatValueForAttribute:kIXGoToSeconds defaultValue:[[self moviePlayer] currentPlaybackTime]];
         if( [[self moviePlayer] playbackState] != MPMoviePlaybackStatePlaying )
         {
             [[self moviePlayer] setInitialPlaybackTime:seconds];

@@ -11,7 +11,7 @@
 #import "IXDataRowDataProvider.h"
 #import "IXCollection.h"
 #import "IXCustom.h"
-#import "IXProperty.h"
+#import "IXAttribute.h"
 #import "IXTable.h"
 
 #import "IXUICollectionViewCell.h"
@@ -133,7 +133,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 {
     [super applySettings];
     
-    NSString* dataProviderID = [[self propertyContainer] getStringPropertyValue:kIXDataproviderID defaultValue:nil];
+    NSString* dataProviderID = [[self attributeContainer] getStringValueForAttribute:kIXDataproviderID defaultValue:nil];
     IXDataRowDataProvider* dataProvider = [[self sandbox] getDataRowDataProviderWithID:dataProviderID];
     
     if( [self dataProvider] != dataProvider )
@@ -155,19 +155,19 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         }
     }
 
-    [self setDataRowBasePathForDataProvider:[[self propertyContainer] getStringPropertyValue:kIXDataRowBasePath defaultValue:nil]];
-    [self setBackgroundViewSwipeWidth:[[self propertyContainer] getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:100.0f]];
-    [self setBackgroundSwipeAdjustsBackgroundAlpha:[[self propertyContainer] getBoolPropertyValue:kIXBackgroundSwipeAdjustsBackgroundAlpha defaultValue:NO]];
-    [self setBackgroundSlidesInFromSide:[[self propertyContainer] getBoolPropertyValue:kIXBackgroundSlidesInFromSide defaultValue:NO]];
-    [self setAnimateReload:[[self propertyContainer] getBoolPropertyValue:kIXAnimateReload defaultValue:NO]];
-    [self setAnimateReloadDuration:[[self propertyContainer] getFloatPropertyValue:kIXAnimateReloadDuration defaultValue:0.2f]];
-    [self setScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXScrollable defaultValue:YES]];
-    [self setPagingEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPagingEnabled defaultValue:NO]];
-    [self setPullToRefreshEnabled:[[self propertyContainer] getBoolPropertyValue:kIXPullToRefreshEnabled defaultValue:NO]];
+    [self setDataRowBasePathForDataProvider:[[self attributeContainer] getStringValueForAttribute:kIXDataRowBasePath defaultValue:nil]];
+    [self setBackgroundViewSwipeWidth:[[self attributeContainer] getFloatValueForAttribute:kIXBackgroundSwipeWidth defaultValue:100.0f]];
+    [self setBackgroundSwipeAdjustsBackgroundAlpha:[[self attributeContainer] getBoolValueForAttribute:kIXBackgroundSwipeAdjustsBackgroundAlpha defaultValue:NO]];
+    [self setBackgroundSlidesInFromSide:[[self attributeContainer] getBoolValueForAttribute:kIXBackgroundSlidesInFromSide defaultValue:NO]];
+    [self setAnimateReload:[[self attributeContainer] getBoolValueForAttribute:kIXAnimateReload defaultValue:NO]];
+    [self setAnimateReloadDuration:[[self attributeContainer] getFloatValueForAttribute:kIXAnimateReloadDuration defaultValue:0.2f]];
+    [self setScrollEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXScrollable defaultValue:YES]];
+    [self setPagingEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXPagingEnabled defaultValue:NO]];
+    [self setPullToRefreshEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXPullToRefreshEnabled defaultValue:NO]];
 
-    BOOL showsScrollIndicators = [[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES];
-    [self setShowsHorizScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsHScrollIndicators defaultValue:showsScrollIndicators]];
-    [self setShowsVertScrollIndicators:[[self propertyContainer] getBoolPropertyValue:kIXShowsVScrollIndicators defaultValue:showsScrollIndicators]];
+    BOOL showsScrollIndicators = [[self attributeContainer] getBoolValueForAttribute:kIXShowsScrollIndicators defaultValue:YES];
+    [self setShowsHorizScrollIndicators:[[self attributeContainer] getBoolValueForAttribute:kIXShowsHScrollIndicators defaultValue:showsScrollIndicators]];
+    [self setShowsVertScrollIndicators:[[self attributeContainer] getBoolValueForAttribute:kIXShowsVScrollIndicators defaultValue:showsScrollIndicators]];
 
     if( [self pullToRefreshEnabled] )
     {
@@ -181,14 +181,14 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
             });
         }
 
-        [[self refreshControl] setTintColor:[[self propertyContainer] getColorPropertyValue:kIXPullToRefreshTintColor defaultValue:nil]];
+        [[self refreshControl] setTintColor:[[self attributeContainer] getColorValueForAttribute:kIXPullToRefreshTintColor defaultValue:nil]];
         
-        NSString* refreshText = [[self propertyContainer] getStringPropertyValue:kIXPullToRefreshText defaultValue:nil];
+        NSString* refreshText = [[self attributeContainer] getStringValueForAttribute:kIXPullToRefreshText defaultValue:nil];
         if( [refreshText length] > 0 )
         {
             UIFont* defaultFont = [UIFont fontWithName:@"HelveticaNeue" size:20.0f];
-            UIColor* refreshTextColor = [[self propertyContainer] getColorPropertyValue:kIXPullToRefreshTextColor defaultValue:[UIColor darkGrayColor]];
-            UIFont* refreshTextFont = [[self propertyContainer] getFontPropertyValue:kIXPullToRefreshTextFont defaultValue:defaultFont];
+            UIColor* refreshTextColor = [[self attributeContainer] getColorValueForAttribute:kIXPullToRefreshTextColor defaultValue:[UIColor darkGrayColor]];
+            UIFont* refreshTextFont = [[self attributeContainer] getFontValueForAttribute:kIXPullToRefreshTextFont defaultValue:defaultFont];
             
             NSAttributedString* attributedTitle = [[NSAttributedString alloc] initWithString:refreshText
                                                                                   attributes:@{NSForegroundColorAttributeName: refreshTextColor,
@@ -206,7 +206,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [self setRefreshControl:nil];
     }
     
-    NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIXScrollIndicatorStyleDefault];
+    NSString* scrollIndicatorStyle = [[self attributeContainer] getStringValueForAttribute:kIXScrollIndicatorStyle defaultValue:kIXScrollIndicatorStyleDefault];
     if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleBlack] ) {
         [self setScrollIndicatorStyle:UIScrollViewIndicatorStyleBlack];
     } else if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleWhite] ) {
@@ -215,10 +215,10 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [self setScrollIndicatorStyle:UIScrollViewIndicatorStyleDefault];
     }
 
-    [self setSectionHeaderXPath:[[self propertyContainer] getStringPropertyValue:kIXSectionHeaderXPath defaultValue:nil]];
+    [self setSectionHeaderXPath:[[self attributeContainer] getStringValueForAttribute:kIXSectionHeaderXPath defaultValue:nil]];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXPullToRefreshEnd] )
     {
@@ -236,10 +236,10 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 
 -(CGSize)itemSize
 {
-    IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:kIXCell];
+    IXSize* size = [[self attributeContainer] getSizeValueForAttributeWithPrefix:kIXCell];
     CGSize contentViewSize = [[self contentView] bounds].size;
-    CGSize returnSize = CGSizeMake([[self propertyContainer] getSizeValue:size.width maximumSize:contentViewSize.width defaultValue:contentViewSize.width],
-                                   [[self propertyContainer] getSizeValue:size.height maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
+    CGSize returnSize = CGSizeMake([[self attributeContainer] getSizeValueForAttribute:size.width maximumSize:contentViewSize.width defaultValue:contentViewSize.width],
+                                   [[self attributeContainer] getSizeValueForAttribute:size.height maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
     return returnSize;
 }
 
@@ -354,15 +354,15 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     return [[[[self cellToCalculateSize] layoutControl] contentView] bounds].size;
 }
 
-+(IXPropertyContainer*)layoutPropertyContainerForCells
++(IXAttributeContainer*)layoutPropertyContainerForCells
 {
-    IXPropertyContainer* layoutPropertyContainer = [[IXPropertyContainer alloc] init];
-    [layoutPropertyContainer addProperties:@[[IXProperty propertyWithPropertyName:kIXMargin rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:kIXPadding rawValue:@"0"],
-                                             [IXProperty propertyWithPropertyName:kIXSizeW rawValue:@"100%"],
-                                             [IXProperty propertyWithPropertyName:kIXLayoutType rawValue:kIXLayoutTypeDefault],
-                                             [IXProperty propertyWithPropertyName:kIXVerticalScrollEnabled rawValue:@"NO"],
-                                             [IXProperty propertyWithPropertyName:kIXHorizontalScrollEnabled rawValue:@"NO"]]];
+    IXAttributeContainer* layoutPropertyContainer = [[IXAttributeContainer alloc] init];
+    [layoutPropertyContainer addAttributes:@[[IXAttribute attributeWithAttributeName:kIXMargin rawValue:@"0"],
+                                             [IXAttribute attributeWithAttributeName:kIXPadding rawValue:@"0"],
+                                             [IXAttribute attributeWithAttributeName:kIXSizeW rawValue:@"100%"],
+                                             [IXAttribute attributeWithAttributeName:kIXLayoutType rawValue:kIXLayoutTypeDefault],
+                                             [IXAttribute attributeWithAttributeName:kIXVerticalScrollEnabled rawValue:@"NO"],
+                                             [IXAttribute attributeWithAttributeName:kIXHorizontalScrollEnabled rawValue:@"NO"]]];
     return layoutPropertyContainer;
 }
 
@@ -374,22 +374,22 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     [layoutControl setActionContainer:[[self actionContainer] copy]];
     
-    IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
-    [layoutControl setPropertyContainer:layoutPropertyContainer];
+    IXAttributeContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
+    [layoutControl setAttributeContainer:layoutPropertyContainer];
 
-    if( [[self propertyContainer] hasLayoutProperties] )
+    if( [[self attributeContainer] hasLayoutAttributes] )
     {
-        IXSize* size = [[self propertyContainer] getSizePropertyValueWithPrefix:kIXCell];
+        IXSize* size = [[self attributeContainer] getSizeValueForAttributeWithPrefix:kIXCell];
         if( [size.height length] > 0 )
         {
-            [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:kIXSizeH rawValue:size.height]];
+            [layoutPropertyContainer addAttribute:[IXAttribute attributeWithAttributeName:kIXSizeH rawValue:size.height]];
         }
     }
 
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXBackgroundColor] )
+    if( [[self attributeContainer] attributeExistsForName:kIXBackgroundColor] )
     {
-        NSString* backgroundColor = [[self propertyContainer] getStringPropertyValue:kIXBackgroundColor defaultValue:kIX_EMPTY_STRING];
-        [layoutPropertyContainer addProperty:[IXProperty propertyWithPropertyName:kIXBackgroundColor rawValue:backgroundColor]];
+        NSString* backgroundColor = [[self attributeContainer] getStringValueForAttribute:kIXBackgroundColor defaultValue:kIX_EMPTY_STRING];
+        [layoutPropertyContainer addAttribute:[IXAttribute attributeWithAttributeName:kIXBackgroundColor rawValue:backgroundColor]];
     }
     
     IXSandbox* tableViewSandbox = [self sandbox];
@@ -414,8 +414,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     [layoutControl setParentObject:self];
     [layoutControl setNotifyParentOfLayoutUpdates:NO];
     
-    IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
-    [layoutControl setPropertyContainer:layoutPropertyContainer];
+    IXAttributeContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
+    [layoutControl setAttributeContainer:layoutPropertyContainer];
     [layoutControl setActionContainer:[[self actionContainer] copy]];
     
     [layoutControl setSandbox:rowSandbox];
@@ -467,17 +467,17 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [layoutControl setParentObject:self];
         [layoutControl setNotifyParentOfLayoutUpdates:NO];
 
-        IXPropertyContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
-        [layoutControl setPropertyContainer:layoutPropertyContainer];
+        IXAttributeContainer* layoutPropertyContainer = [IXCellBasedControl layoutPropertyContainerForCells];
+        [layoutControl setAttributeContainer:layoutPropertyContainer];
         [layoutControl setActionContainer:[[self actionContainer] copy]];
         [layoutControl setSandbox:sectionHeaderSandbox];
         [layoutControl addChildObjects:[[NSArray alloc] initWithArray:[self subControlsDictionary][kIXSectionHeaderControls] copyItems:YES]];
 
-        float height = [[self propertyContainer] getSizeValue:kIXSectionHeaderHeight
+        float height = [[self attributeContainer] getSizeValueForAttribute:kIXSectionHeaderHeight
                                                   maximumSize:self.contentView.frame.size.height
                                                  defaultValue:[self itemSize].height];
 
-        float width = [[self propertyContainer] getSizeValue:kIXSectionHeaderWidth
+        float width = [[self attributeContainer] getSizeValueForAttribute:kIXSectionHeaderWidth
                                                  maximumSize:self.contentView.frame.size.width
                                                 defaultValue:[self itemSize].width];
 

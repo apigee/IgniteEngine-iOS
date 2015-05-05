@@ -8,20 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@class IXProperty;
+@class IXAttribute;
 @class IXBaseObject;
 
 @interface IXBaseConditionalObject : NSObject <NSCopying,NSCoding>
 
 @property (nonatomic,assign) UIInterfaceOrientationMask interfaceOrientationMask;
-@property (nonatomic,strong) IXProperty* conditionalProperty;
-@property (nonatomic,strong) IXProperty* elseProperty;
+@property (nonatomic,strong) IXAttribute* valueIfTrue;
+@property (nonatomic,strong) IXAttribute* valueIfFalse;
 
 -(instancetype)initWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
-                            conditionalProperty:(IXProperty*)conditionalProperty;
+                            conditionalProperty:(IXAttribute*)conditionalProperty;
 
 +(instancetype)baseConditionalObjectWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
-                                             conditionalProperty:(IXProperty*)conditionalProperty;
+                                             conditionalProperty:(IXAttribute*)conditionalProperty;
 
 -(BOOL)isConditionalTrue;
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation;

@@ -50,12 +50,12 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
 {
     [super applySettings];
     
-    _utteranceSentences = [[[self propertyContainer] getCommaSeperatedArrayListValue:kIXUtteranceSentences defaultValue:nil] mutableCopy];
+    _utteranceSentences = [[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXUtteranceSentences defaultValue:nil] mutableCopy];
     
     [self speakUtteranceForSentencesArray];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStartUtterance] )
     {
@@ -65,7 +65,7 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
     }
     else if( [functionName isEqualToString:kIXQueueUtterance] )
     {
-        [_utteranceSentences addObjectsFromArray:[parameterContainer getCommaSeperatedArrayListValue:kIXUtteranceSentences defaultValue:nil]];
+        [_utteranceSentences addObjectsFromArray:[parameterContainer getCommaSeparatedArrayOfValuesForAttribute:kIXUtteranceSentences defaultValue:nil]];
     }
     else if( [functionName isEqualToString:kIXContinue] )
     {
@@ -74,7 +74,7 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
     else if( [functionName isEqualToString:kIXPause] || [functionName isEqualToString:kIXStop] )
     {
         AVSpeechBoundary speechBoundary = AVSpeechBoundaryImmediate;
-        NSString* boundaryString = [parameterContainer getStringPropertyValue:kIXBoundary defaultValue:nil];
+        NSString* boundaryString = [parameterContainer getStringValueForAttribute:kIXBoundary defaultValue:nil];
         if( [boundaryString isEqualToString:kIXBoundaryWord] ) {
             speechBoundary = AVSpeechBoundaryWord;
         }
@@ -104,11 +104,11 @@ IX_STATIC_CONST_STRING kIXBoundaryWord = @"word";
         if( [utteranceToSpeak length] > 0 )
         {
             _utterance = [[AVSpeechUtterance alloc] initWithString:utteranceToSpeak];
-            [_utterance setRate:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceRate defaultValue:AVSpeechUtteranceDefaultSpeechRate]];
-            [_utterance setPitchMultiplier:[[self propertyContainer] getFloatPropertyValue:kIXUtterancePitch defaultValue:1.0f]];
-            [_utterance setVolume:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceVolume defaultValue:1.0f]];
-            [_utterance setPreUtteranceDelay:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceDelayStart defaultValue:0.0f]];
-            [_utterance setPostUtteranceDelay:[[self propertyContainer] getFloatPropertyValue:kIXUtteranceDelayEnd defaultValue:0.0f]];
+            [_utterance setRate:[[self attributeContainer] getFloatValueForAttribute:kIXUtteranceRate defaultValue:AVSpeechUtteranceDefaultSpeechRate]];
+            [_utterance setPitchMultiplier:[[self attributeContainer] getFloatValueForAttribute:kIXUtterancePitch defaultValue:1.0f]];
+            [_utterance setVolume:[[self attributeContainer] getFloatValueForAttribute:kIXUtteranceVolume defaultValue:1.0f]];
+            [_utterance setPreUtteranceDelay:[[self attributeContainer] getFloatValueForAttribute:kIXUtteranceDelayStart defaultValue:0.0f]];
+            [_utterance setPostUtteranceDelay:[[self attributeContainer] getFloatValueForAttribute:kIXUtteranceDelayEnd defaultValue:0.0f]];
         }
         [_utteranceSentences removeObjectAtIndex:idx];
     }];

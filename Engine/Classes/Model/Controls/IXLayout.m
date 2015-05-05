@@ -103,14 +103,14 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
 {
     [super applySettings];
     
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXVertical];
+    NSString* layoutFlow = [[self attributeContainer] getStringValueForAttribute:kIXLayoutFlow defaultValue:kIXVertical];
     [self setLayoutFlowVertical:(![layoutFlow isEqualToString:kIXHorizontal])];
     
-    [self setVerticalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXVerticalScrollEnabled defaultValue:YES]];
-    [self setHorizontalScrollEnabled:[[self propertyContainer] getBoolPropertyValue:kIXHorizontalScrollEnabled defaultValue:YES]];
-    [[self scrollView] setScrollsToTop:[[self propertyContainer] getBoolPropertyValue:kIXEnableScrollsToTop defaultValue:NO]];
+    [self setVerticalScrollEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXVerticalScrollEnabled defaultValue:YES]];
+    [self setHorizontalScrollEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXHorizontalScrollEnabled defaultValue:YES]];
+    [[self scrollView] setScrollsToTop:[[self attributeContainer] getBoolValueForAttribute:kIXEnableScrollsToTop defaultValue:NO]];
     
-    NSString* scrollIndicatorStyle = [[self propertyContainer] getStringPropertyValue:kIXScrollIndicatorStyle defaultValue:kIX_DEFAULT];
+    NSString* scrollIndicatorStyle = [[self attributeContainer] getStringValueForAttribute:kIXScrollIndicatorStyle defaultValue:kIX_DEFAULT];
     if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleBlack] ) {
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
     } else if( [scrollIndicatorStyle isEqualToString:kIXScrollIndicatorStyleWhite] ) {
@@ -119,16 +119,16 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
         [[self scrollView] setIndicatorStyle:UIScrollViewIndicatorStyleDefault];
     }
     
-    BOOL showScrollIndicators = [[self propertyContainer] getBoolPropertyValue:kIXShowsScrollIndicators defaultValue:YES];
-    [[self scrollView] setShowsHorizontalScrollIndicator:[[self propertyContainer] getBoolPropertyValue:kIXShowsHorizontalScrollIndicator defaultValue:showScrollIndicators]];
-    [[self scrollView] setShowsVerticalScrollIndicator:[[self propertyContainer] getBoolPropertyValue:kIXShowsVerticalScrollIndicator defaultValue:showScrollIndicators]];
+    BOOL showScrollIndicators = [[self attributeContainer] getBoolValueForAttribute:kIXShowsScrollIndicators defaultValue:YES];
+    [[self scrollView] setShowsHorizontalScrollIndicator:[[self attributeContainer] getBoolValueForAttribute:kIXShowsHorizontalScrollIndicator defaultValue:showScrollIndicators]];
+    [[self scrollView] setShowsVerticalScrollIndicator:[[self attributeContainer] getBoolValueForAttribute:kIXShowsVerticalScrollIndicator defaultValue:showScrollIndicators]];
     
-    [self setZoomEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnableZoom defaultValue:NO]];
+    [self setZoomEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXEnableZoom defaultValue:NO]];
     if( [self isZoomEnabled] )
     {
-        [[self scrollView] setZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXZoomScale defaultValue:1.0f]];
-        [[self scrollView] setMaximumZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXMaxZoomScale defaultValue:2.0f]];
-        [[self scrollView] setMinimumZoomScale:[[self propertyContainer] getFloatPropertyValue:kIXMinZoomScale defaultValue:0.5f]];
+        [[self scrollView] setZoomScale:[[self attributeContainer] getFloatValueForAttribute:kIXZoomScale defaultValue:1.0f]];
+        [[self scrollView] setMaximumZoomScale:[[self attributeContainer] getFloatValueForAttribute:kIXMaxZoomScale defaultValue:2.0f]];
+        [[self scrollView] setMinimumZoomScale:[[self attributeContainer] getFloatValueForAttribute:kIXMinZoomScale defaultValue:0.5f]];
         if( [self doubleTapZoomRecognizer] == nil )
         {
             UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:[self contentView]
@@ -150,10 +150,10 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
         [[self scrollView] setZoomScale:1.0f animated:YES];
     }
     
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
+    if( [[self attributeContainer] attributeExistsForName:kIXColorGradientTop] )
     {
-        UIColor* topUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientTop defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
-        UIColor* bottomUIColor = [[self propertyContainer] getColorPropertyValue:kIXColorGradientBottom defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
+        UIColor* topUIColor = [[self attributeContainer] getColorValueForAttribute:kIXColorGradientTop defaultValue:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.6]];
+        UIColor* bottomUIColor = [[self attributeContainer] getColorValueForAttribute:kIXColorGradientBottom defaultValue:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.6]];
         [[self gradientLayer] setColors:[NSArray arrayWithObjects:(id)CFBridgingRelease([topUIColor CGColor]), (id)CFBridgingRelease([bottomUIColor CGColor]), nil]];
     }
 }
@@ -182,9 +182,9 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
     [self.visualEffectView removeFromSuperview];
     self.visualEffectView = nil;
     
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXBlurBackground] )
+    if( [[self attributeContainer] attributeExistsForName:kIXBlurBackground] )
     {
-        NSString* blurStyle = [[self propertyContainer] getStringPropertyValue:kIXBlurBackground defaultValue:kIX_DEFAULT];
+        NSString* blurStyle = [[self attributeContainer] getStringValueForAttribute:kIXBlurBackground defaultValue:kIX_DEFAULT];
         
         UIBlurEffect *blurEffect;
         
@@ -201,14 +201,14 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
         self.visualEffectView.frame = _scrollViewContentView.bounds;
         
         [self setOverlayView:[[UIView alloc] initWithFrame:_scrollViewContentView.bounds]];
-        self.overlayView.alpha = [[self propertyContainer] getFloatPropertyValue:kIXBlurTintAlpha defaultValue:0.0f];
-        self.overlayView.backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBlurTintColor defaultValue:[UIColor clearColor]];
+        self.overlayView.alpha = [[self attributeContainer] getFloatValueForAttribute:kIXBlurTintAlpha defaultValue:0.0f];
+        self.overlayView.backgroundColor = [[self attributeContainer] getColorValueForAttribute:kIXBlurTintColor defaultValue:[UIColor clearColor]];
         
         [_scrollViewContentView insertSubview:[self overlayView] atIndex:0];
         [_scrollViewContentView insertSubview:[self visualEffectView] atIndex:0];
     }
     
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXColorGradientTop] )
+    if( [[self attributeContainer] attributeExistsForName:kIXColorGradientTop] )
     {
         if( [[self gradientLayer] superlayer] != [[self scrollView] layer] )
         {
@@ -231,7 +231,7 @@ IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
     return [IXLayoutEngine getPreferredSizeForLayoutControl:self forSuggestedSize:size];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [self isTopLevelViewControllerLayout] )
     {

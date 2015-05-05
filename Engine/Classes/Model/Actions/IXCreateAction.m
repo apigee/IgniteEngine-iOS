@@ -11,7 +11,7 @@
 #import "IXAppManager.h"
 #import "IXLogger.h"
 
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXBaseControlConfig.h"
 #import "IXControlCacheContainer.h"
 #import "IXCustom.h"
@@ -33,13 +33,13 @@ static NSString* const kIXCreated = @"created"; // Fires on the actual created c
     
     BOOL needsToSendFailed = YES;
     
-    NSString* controlJSONLocation = [[self actionProperties] getPathPropertyValue:kIXControlLocation
+    NSString* controlJSONLocation = [[self actionProperties] getPathForAttribute:kIXControlLocation
                                                                          basePath:nil
                                                                      defaultValue:nil];
     
     if( controlJSONLocation )
     {
-        NSString* parentControlID = [[self actionProperties] getStringPropertyValue:kIXParentID
+        NSString* parentControlID = [[self actionProperties] getStringValueForAttribute:kIXParentID
                                                                        defaultValue:nil];
 
         IXBaseControl* parentControl = nil;

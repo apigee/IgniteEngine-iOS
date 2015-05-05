@@ -62,7 +62,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
                           subtitle:(NSString*)subTitle
                   dataRowIndexPath:(NSIndexPath*)dataRowIndexPath;
 
-+(instancetype)mapAnnotationWithPropertyContainer:(IXPropertyContainer*)propertyContainer
++(instancetype)mapAnnotationWithPropertyContainer:(IXAttributeContainer*)propertyContainer
                                      rowIndexPath:(NSIndexPath*)rowIndexPath;
 
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
@@ -90,16 +90,16 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     return self;
 }
 
-+(instancetype)mapAnnotationWithPropertyContainer:(IXPropertyContainer*)propertyContainer
++(instancetype)mapAnnotationWithPropertyContainer:(IXAttributeContainer*)propertyContainer
                                      rowIndexPath:(NSIndexPath*)rowIndexPath
 {
-    CGFloat annotationLatitude = [propertyContainer getFloatPropertyValue:kIXAnnotationLatitude defaultValue:0.0f];
-    CGFloat annotationLongitude = [propertyContainer getFloatPropertyValue:kIXAnnotationLongitude defaultValue:0.0f];
+    CGFloat annotationLatitude = [propertyContainer getFloatValueForAttribute:kIXAnnotationLatitude defaultValue:0.0f];
+    CGFloat annotationLongitude = [propertyContainer getFloatValueForAttribute:kIXAnnotationLongitude defaultValue:0.0f];
     
     IXMapAnnotation *annotation = [[[self class] alloc] initWithCoordinate:CLLocationCoordinate2DMake(annotationLatitude, annotationLongitude)
-                                                                     title:[propertyContainer getStringPropertyValue:kIXAnnotationTitle
+                                                                     title:[propertyContainer getStringValueForAttribute:kIXAnnotationTitle
                                                                                                                   defaultValue:nil]
-                                                                  subtitle:[propertyContainer getStringPropertyValue:kIXAnnotationSubTitle
+                                                                  subtitle:[propertyContainer getStringValueForAttribute:kIXAnnotationSubTitle
                                                                                                                   defaultValue:nil]
                                                           dataRowIndexPath:rowIndexPath];
     
@@ -155,15 +155,15 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 {
     [super applySettings];
 
-    float centerOffsetX = [[self propertyContainer] getFloatPropertyValue:kIXAnnotationImageCenterOffsetX defaultValue:0.0f];
-    float centerOffsetY = [[self propertyContainer] getFloatPropertyValue:kIXAnnotationImageCenterOffsetY defaultValue:0.0f];
+    float centerOffsetX = [[self attributeContainer] getFloatValueForAttribute:kIXAnnotationImageCenterOffsetX defaultValue:0.0f];
+    float centerOffsetY = [[self attributeContainer] getFloatValueForAttribute:kIXAnnotationImageCenterOffsetY defaultValue:0.0f];
     [self setImageCenterOffset:CGPointMake(centerOffsetX, centerOffsetY)];
 
-    [[self mapView] setShowsUserLocation:[[self propertyContainer] getBoolPropertyValue:kIXShowsUserLocation defaultValue:NO]];
-    [[self mapView] setShowsPointsOfInterest:[[self propertyContainer] getBoolPropertyValue:kIXShowsPointsOfInterest defaultValue:YES]];
-    [[self mapView] setShowsBuildings:[[self propertyContainer] getBoolPropertyValue:kIXShowsBuildings defaultValue:YES]];
+    [[self mapView] setShowsUserLocation:[[self attributeContainer] getBoolValueForAttribute:kIXShowsUserLocation defaultValue:NO]];
+    [[self mapView] setShowsPointsOfInterest:[[self attributeContainer] getBoolValueForAttribute:kIXShowsPointsOfInterest defaultValue:YES]];
+    [[self mapView] setShowsBuildings:[[self attributeContainer] getBoolValueForAttribute:kIXShowsBuildings defaultValue:YES]];
 
-    NSString* mapType = [[self propertyContainer] getStringPropertyValue:kIXMapType defaultValue:kIXMapTypeStandard];
+    NSString* mapType = [[self attributeContainer] getStringValueForAttribute:kIXMapType defaultValue:kIXMapTypeStandard];
     if( [mapType isEqualToString:kIXMapTypeSatellite] ) {
         [[self mapView] setMapType:MKMapTypeSatellite];
     } else if( [mapType isEqualToString:kIXMapTypeHybrid] ) {
@@ -176,7 +176,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
                                                     name:IXBaseDataProviderDidUpdateNotification
                                                   object:[self dataProvider]];
     
-    NSString* dataProviderID = [[self propertyContainer] getStringPropertyValue:kIXDataProviderID defaultValue:nil];
+    NSString* dataProviderID = [[self attributeContainer] getStringValueForAttribute:kIXDataProviderID defaultValue:nil];
     [self setUsesDataProviderForAnnotationData:([dataProviderID length] > 0)];
     
     if( [self usesDataProviderForAnnotationData] )
@@ -217,7 +217,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             NSIndexPath* rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
             [[self sandbox] setIndexPathForRowData:rowIndexPath];
             
-            IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self propertyContainer]
+            IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self attributeContainer]
                                                                                  rowIndexPath:rowIndexPath];
             if( annotation )
             {
@@ -231,7 +231,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     }
     else if( [self dataProvider] == nil )
     {
-        IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self propertyContainer]
+        IXMapAnnotation* annotation = [IXMapAnnotation mapAnnotationWithPropertyContainer:[self attributeContainer]
                                                                              rowIndexPath:nil];
         if( annotation )
         {
@@ -249,15 +249,15 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 {
     [[self mapView] showAnnotations:[self annotations] animated:NO];
 
-    int zoomLevel = [[self propertyContainer] getIntPropertyValue:kIXZoomLevel
+    int zoomLevel = [[self attributeContainer] getIntValueForAttribute:kIXZoomLevel
                                                      defaultValue:(int)[[self mapView] ix_zoomLevel]];
 
     CLLocationCoordinate2D centerCoord = [[self mapView] centerCoordinate];
 
-    CGFloat centerCoordinateLat = [[self propertyContainer] getFloatPropertyValue:kIXCenterLatitude
+    CGFloat centerCoordinateLat = [[self attributeContainer] getFloatValueForAttribute:kIXCenterLatitude
                                                                      defaultValue:centerCoord.latitude];
 
-    CGFloat centerCoordinateLong = [[self propertyContainer] getFloatPropertyValue:kIXCenterLongitude
+    CGFloat centerCoordinateLong = [[self attributeContainer] getFloatValueForAttribute:kIXCenterLongitude
                                                                       defaultValue:centerCoord.longitude];
 
     [[self mapView] ix_setCenterCoordinate:CLLocationCoordinate2DMake(centerCoordinateLat, centerCoordinateLong)
@@ -283,7 +283,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             [[self sandbox] setDataProviderForRowData:[self dataProvider]];
         }
         
-        NSString* imageLocation = [[self propertyContainer] getStringPropertyValue:kIXAnnotationImage defaultValue:nil];
+        NSString* imageLocation = [[self attributeContainer] getStringValueForAttribute:kIXAnnotationImage defaultValue:nil];
         if( [imageLocation length] > 0 )
         {
             annotationView = [[self mapView] dequeueReusableAnnotationViewWithIdentifier:kIXMapImageAnnotationIdentifier];
@@ -296,7 +296,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             
             if( annotationView )
             {
-                [[self propertyContainer] getImageProperty:kIXAnnotationImage
+                [[self attributeContainer] getImageAttribute:kIXAnnotationImage
                                               successBlock:^(UIImage *image) {
                                                   [annotationView setImage:image];
                                               } failBlock:^(NSError *error) {
@@ -313,10 +313,10 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
                 annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kIXMapPinAnnotationIdentifier];
                 [annotationView setCanShowCallout:YES];
                 
-                BOOL animatesDrop = [[self propertyContainer] getBoolPropertyValue:kIXAnnoationPinAnimatesDrop defaultValue:YES];
+                BOOL animatesDrop = [[self attributeContainer] getBoolValueForAttribute:kIXAnnoationPinAnimatesDrop defaultValue:YES];
                 [(MKPinAnnotationView*)annotationView setAnimatesDrop:animatesDrop];
                 
-                NSString* pinColor = [[self propertyContainer] getStringPropertyValue:kIXAnnoationPinColor defaultValue:kIXAnnoationPinColorRed];
+                NSString* pinColor = [[self attributeContainer] getStringValueForAttribute:kIXAnnoationPinColor defaultValue:kIXAnnoationPinColorRed];
                 if( [pinColor isEqualToString:kIXAnnoationPinColorGreen] ) {
                     [(MKPinAnnotationView*)annotationView setPinColor:MKPinAnnotationColorGreen];
                 } else if( [pinColor isEqualToString:kIXAnnoationPinColorPurple] ) {
@@ -336,12 +336,12 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             [annotationView setRightCalloutAccessoryView:nil];
         }
 
-        NSString* leftAccessoryImage = [[self propertyContainer] getStringPropertyValue:kIXAnnoationAccessoryLeftImage defaultValue:nil];
+        NSString* leftAccessoryImage = [[self attributeContainer] getStringValueForAttribute:kIXAnnoationAccessoryLeftImage defaultValue:nil];
         if( [leftAccessoryImage length] > 0 )
         {
             UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 31, 31)];
             [annotationView setLeftCalloutAccessoryView:imageView];
-            [[self propertyContainer] getImageProperty:kIXAnnoationAccessoryLeftImage
+            [[self attributeContainer] getImageAttribute:kIXAnnoationAccessoryLeftImage
                                           successBlock:^(UIImage *image) {
                                               [imageView setImage:image];
                                           } failBlock:^(NSError *error) {
@@ -399,7 +399,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     }
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXReloadAnnotations] )
     {
@@ -407,7 +407,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
     }
     else if( [functionName isEqualToString:kIXShowAllAnnotations] )
     {
-        BOOL animated = (parameterContainer == nil) ? YES : [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:YES];
+        BOOL animated = (parameterContainer == nil) ? YES : [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:YES];
         [[self mapView] showAnnotations:[self annotations]
                                animated:animated];
     }

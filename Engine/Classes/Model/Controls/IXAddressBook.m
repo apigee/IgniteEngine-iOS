@@ -84,23 +84,23 @@ IX_STATIC_CONST_STRING kIXAddContact = @"addContact";
 {
     [super applySettings];
 
-    [self setFirstName:[[self propertyContainer] getStringPropertyValue:kIXNameFirst defaultValue:nil]];
-    [self setLastName:[[self propertyContainer] getStringPropertyValue:kIXNameLast defaultValue:nil]];
-    [self setCompanyName:[[self propertyContainer] getStringPropertyValue:kIXCompanyName defaultValue:nil]];
-    [self setCompanyTitle:[[self propertyContainer] getStringPropertyValue:kIXCompanyTitle defaultValue:nil]];
-    [self setMobilePhone:[[self propertyContainer] getStringPropertyValue:kIXPhoneMobile defaultValue:nil]];
-    [self setMainPhone:[[self propertyContainer] getStringPropertyValue:kIXPhoneMain defaultValue:nil]];
-    [self setHomeEmail:[[self propertyContainer] getStringPropertyValue:kIXEmailHome defaultValue:nil]];
-    [self setWorkEmail:[[self propertyContainer] getStringPropertyValue:kIXEmailWork defaultValue:nil]];
-    [self setTwitterUsername:[[self propertyContainer] getStringPropertyValue:kIXUsernameTwitter defaultValue:nil]];
-    [self setLinkedInUsername:[[self propertyContainer] getStringPropertyValue:kIXUsernameLinkedIn defaultValue:nil]];
-    [self setFacebookUsername:[[self propertyContainer] getStringPropertyValue:kIXUsernameFacebook defaultValue:nil]];
-    [self setHomeURL:[[self propertyContainer] getStringPropertyValue:kIXURLHome defaultValue:nil]];
-    [self setHomePageURL:[[self propertyContainer] getStringPropertyValue:kIXURLHomePage defaultValue:nil]];
-    [self setWorkURL:[[self propertyContainer] getStringPropertyValue:kIXURLWork defaultValue:nil]];
-    [self setLinkedInURL:[[self propertyContainer] getStringPropertyValue:kIXURLLinkedIn defaultValue:nil]];
-    [self setFacebookURL:[[self propertyContainer] getStringPropertyValue:kIXURLFacebook defaultValue:nil]];
-    [self setNotes:[[self propertyContainer] getStringPropertyValue:kIXNotes defaultValue:nil]];
+    [self setFirstName:[[self attributeContainer] getStringValueForAttribute:kIXNameFirst defaultValue:nil]];
+    [self setLastName:[[self attributeContainer] getStringValueForAttribute:kIXNameLast defaultValue:nil]];
+    [self setCompanyName:[[self attributeContainer] getStringValueForAttribute:kIXCompanyName defaultValue:nil]];
+    [self setCompanyTitle:[[self attributeContainer] getStringValueForAttribute:kIXCompanyTitle defaultValue:nil]];
+    [self setMobilePhone:[[self attributeContainer] getStringValueForAttribute:kIXPhoneMobile defaultValue:nil]];
+    [self setMainPhone:[[self attributeContainer] getStringValueForAttribute:kIXPhoneMain defaultValue:nil]];
+    [self setHomeEmail:[[self attributeContainer] getStringValueForAttribute:kIXEmailHome defaultValue:nil]];
+    [self setWorkEmail:[[self attributeContainer] getStringValueForAttribute:kIXEmailWork defaultValue:nil]];
+    [self setTwitterUsername:[[self attributeContainer] getStringValueForAttribute:kIXUsernameTwitter defaultValue:nil]];
+    [self setLinkedInUsername:[[self attributeContainer] getStringValueForAttribute:kIXUsernameLinkedIn defaultValue:nil]];
+    [self setFacebookUsername:[[self attributeContainer] getStringValueForAttribute:kIXUsernameFacebook defaultValue:nil]];
+    [self setHomeURL:[[self attributeContainer] getStringValueForAttribute:kIXURLHome defaultValue:nil]];
+    [self setHomePageURL:[[self attributeContainer] getStringValueForAttribute:kIXURLHomePage defaultValue:nil]];
+    [self setWorkURL:[[self attributeContainer] getStringValueForAttribute:kIXURLWork defaultValue:nil]];
+    [self setLinkedInURL:[[self attributeContainer] getStringValueForAttribute:kIXURLLinkedIn defaultValue:nil]];
+    [self setFacebookURL:[[self attributeContainer] getStringValueForAttribute:kIXURLFacebook defaultValue:nil]];
+    [self setNotes:[[self attributeContainer] getStringValueForAttribute:kIXNotes defaultValue:nil]];
 }
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
@@ -124,7 +124,7 @@ IX_STATIC_CONST_STRING kIXAddContact = @"addContact";
     return dictionary;
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [self accessWasGranted] && [functionName isEqualToString:kIXAddContact] )
     {

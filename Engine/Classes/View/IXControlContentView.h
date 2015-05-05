@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class IXBaseControl;
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 
 @protocol IXControlContentViewTouchDelegate <NSObject>
 

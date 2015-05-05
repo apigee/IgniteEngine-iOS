@@ -61,14 +61,14 @@
         @try {
             if( [currentKey containsString:@"="] ) // current key is actually looking to filter array if theres an '=' character
             {
-                NSArray* currentKeySeperated = [currentKey componentsSeparatedByString:@"="];
-                if( [currentKeySeperated count] > 1 ) {
-                    NSString* currentKeyValue = [currentKeySeperated lastObject];
+                NSArray* currentKeyseparated = [currentKey componentsSeparatedByString:@"="];
+                if( [currentKeyseparated count] > 1 ) {
+                    NSString* currentKeyValue = [currentKeyseparated lastObject];
                     if( [currentKeyValue rangeOfString:@"?"].location != NSNotFound )
                     {
                         currentKeyValue = [self getQueryValueOutOfValue:currentKeyValue sandbox:sandbox baseObject:baseObject];
                     }
-                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeySeperated firstObject],currentKeyValue];
+                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(%K == %@)",[currentKeyseparated firstObject],currentKeyValue];
                     NSArray* filteredArray = [currentArray filteredArrayUsingPredicate:predicate];
                     if( [filteredArray count] >= 1 ) {
                         if( [filteredArray count] == 1 ) {
@@ -114,18 +114,18 @@
 +(NSString*)getQueryValueOutOfValue:(NSString*)value sandbox:(IXSandbox*)sandbox baseObject:(IXBaseObject*)baseObject
 {
     NSString* returnValue = value;
-    NSArray* seperatedValue = [value componentsSeparatedByString:@"?"];
-    if( [seperatedValue count] > 0 )
+    NSArray* separatedValue = [value componentsSeparatedByString:@"?"];
+    if( [separatedValue count] > 0 )
     {
-        NSString* objectID = [seperatedValue firstObject];
-        NSString* propertyName = [seperatedValue lastObject];
+        NSString* objectID = [separatedValue firstObject];
+        NSString* propertyName = [separatedValue lastObject];
         if( [objectID isEqualToString:kIXSessionRef] )
         {
-            returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringPropertyValue:propertyName defaultValue:value];
+            returnValue = [[[IXAppManager sharedAppManager] sessionProperties] getStringValueForAttribute:propertyName defaultValue:value];
         }
         else if( [objectID isEqualToString:kIXAppRef] )
         {
-            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringPropertyValue:propertyName defaultValue:value];
+            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringValueForAttribute:propertyName defaultValue:value];
         }
         else if( [objectID isEqualToString:kIXViewControlRef] )
         {
@@ -145,7 +145,7 @@
                 returnValue = [baseObject getReadOnlyPropertyValue:propertyName];
                 if( returnValue == nil )
                 {
-                    returnValue = [[baseObject propertyContainer] getStringPropertyValue:propertyName defaultValue:value];
+                    returnValue = [[baseObject attributeContainer] getStringValueForAttribute:propertyName defaultValue:value];
                 }
             }
         }

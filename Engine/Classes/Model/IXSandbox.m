@@ -103,7 +103,7 @@ static NSString* const kIXDataProvidersNSCodingKey = @"dataProviders";
 {
     BOOL didAddDataProvider = NO;
     
-    NSString* dataProviderID = [[dataProvider propertyContainer] getStringPropertyValue:kIX_ID defaultValue:nil];
+    NSString* dataProviderID = [[dataProvider attributeContainer] getStringValueForAttribute:kIX_ID defaultValue:nil];
     if( dataProviderID.length > 0 )
     {
         if( [self dataProviders][dataProviderID] != nil )

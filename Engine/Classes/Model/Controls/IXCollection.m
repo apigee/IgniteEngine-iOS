@@ -87,10 +87,10 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
     [[self collectionView] setIndicatorStyle:[self scrollIndicatorStyle]];
     [[self collectionView] setPagingEnabled:[self pagingEnabled]];
 
-    [[self collectionViewLayout] setMinimumLineSpacing:[[self propertyContainer] getFloatPropertyValue:kIXMinimumLineSpacing defaultValue:0.0f]];
-    [[self collectionViewLayout] setMinimumInteritemSpacing:[[self propertyContainer] getFloatPropertyValue:kIXMinimumInteritemSpacing defaultValue:0.0f]];
+    [[self collectionViewLayout] setMinimumLineSpacing:[[self attributeContainer] getFloatValueForAttribute:kIXMinimumLineSpacing defaultValue:0.0f]];
+    [[self collectionViewLayout] setMinimumInteritemSpacing:[[self attributeContainer] getFloatValueForAttribute:kIXMinimumInteritemSpacing defaultValue:0.0f]];
 
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
+    NSString* layoutFlow = [[self attributeContainer] getStringValueForAttribute:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
     if( [layoutFlow isEqualToString:kIXLayoutFlowHorizontal] )
     {
         [[self collectionViewLayout] setScrollDirection:UICollectionViewScrollDirectionHorizontal];
@@ -105,7 +105,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
     });
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXResetAllBackgroundControls] )
     {
@@ -116,7 +116,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUICollectionViewCell";
     }
     else if( [functionName isEqualToString:kIXSetBackgroundSwipeWidth] )
     {
-        [self setBackgroundViewSwipeWidth:[parameterContainer getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:0.0f]];
+        [self setBackgroundViewSwipeWidth:[parameterContainer getFloatValueForAttribute:kIXBackgroundSwipeWidth defaultValue:0.0f]];
         for( IXUICollectionViewCell* cell in [[self collectionView] visibleCells] )
         {
             [[cell cellBackgroundSwipeController] setSwipeWidth:[self backgroundViewSwipeWidth]];

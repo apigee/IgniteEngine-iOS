@@ -46,13 +46,13 @@ static NSString* const kIXAuthenticationUnavailable = @"unavailable";
 
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXAuthenticate] )
     {
         //LAContext *myContext = [[LAContext alloc] init];
         NSError *authError = nil;
-        NSString* title = [[self propertyContainer] getStringPropertyValue:kIXTitle defaultValue:@"Please authenticate."];
+        NSString* title = [[self attributeContainer] getStringValueForAttribute:kIXTitle defaultValue:@"Please authenticate."];
         if ([_context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&authError]) {
             
             [_context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics

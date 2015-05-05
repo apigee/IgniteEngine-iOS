@@ -58,10 +58,10 @@ static NSString* const kIXSizeToFit = @"sizeToFit.enabled";
     [super applySettings];
     
     [[self label] setUserInteractionEnabled:[[self contentView] isEnabled]];
-    [[self label] setTextColor:[[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]]];
-    [[self label] setFont:[[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
+    [[self label] setTextColor:[[self attributeContainer] getColorValueForAttribute:kIXTextColor defaultValue:[UIColor blackColor]]];
+    [[self label] setFont:[[self attributeContainer] getFontValueForAttribute:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
 
-    NSString* text = [[self propertyContainer] getStringPropertyValue:kIXText defaultValue:nil];
+    NSString* text = [[self attributeContainer] getStringValueForAttribute:kIXText defaultValue:nil];
     if( [[[[self label] font] familyName] isEqualToString:kFontAwesomeFamilyName] )
     {
         [[self label] setText:[NSString fontAwesomeIconStringForIconIdentifier:text]];
@@ -70,12 +70,12 @@ static NSString* const kIXSizeToFit = @"sizeToFit.enabled";
     {
         [[self label] setText:text];
     }
-    [[self label] setTextAlignment:[UILabel ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]]];
+    [[self label] setTextAlignment:[UILabel ix_textAlignmentFromString:[[self attributeContainer] getStringValueForAttribute:kIXTextAlignment defaultValue:nil]]];
     [[self label] setNumberOfLines:0];
     [[self label] setLineBreakMode:NSLineBreakByWordWrapping];
     
     BOOL sizeLabelToFitDefaultValue = ([[self label] textAlignment] == NSTextAlignmentLeft);
-    [self setSizeLabelToFit:[[self propertyContainer] getBoolPropertyValue:kIXSizeToFit defaultValue:sizeLabelToFitDefaultValue]];
+    [self setSizeLabelToFit:[[self attributeContainer] getBoolValueForAttribute:kIXSizeToFit defaultValue:sizeLabelToFitDefaultValue]];
 }
 
 @end

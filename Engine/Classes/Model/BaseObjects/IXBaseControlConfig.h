@@ -10,19 +10,19 @@
 
 @class IXBaseControl;
 @class IXActionContainer;
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 
 @interface IXBaseControlConfig : NSObject <NSCopying>
 
 @property (nonatomic,assign) Class controlClass;
 @property (nonatomic,copy)   NSString* styleClass;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
-@property (nonatomic,strong) IXPropertyContainer* propertyContainer;
+@property (nonatomic,strong) IXAttributeContainer* propertyContainer;
 @property (nonatomic,strong) NSDictionary* controlConfigDictionary;
 
 -(instancetype)initWithControlClass:(Class)controlClass
                          styleClass:(NSString*)styleClass
-                  propertyContainer:(IXPropertyContainer*)propertyContainer
+                  propertyContainer:(IXAttributeContainer*)propertyContainer
                     actionContainer:(IXActionContainer*)actionContainer
             controlConfigDictionary:(NSDictionary*)controlConfigDictionary;
 

@@ -62,7 +62,7 @@ IX_STATIC_CONST_STRING kIXDefaultActivityIndicatorStyle = @"large";
   
     UIColor* activityIndicatorColor = [UIColor whiteColor];
     UIActivityIndicatorViewStyle activityIndicatorStyle = UIActivityIndicatorViewStyleWhite;
-    NSString* spinnerStyleString = [[self propertyContainer] getStringPropertyValue:kIXActivityIndicatorStyle defaultValue:kIXDefaultActivityIndicatorStyle];
+    NSString* spinnerStyleString = [[self attributeContainer] getStringValueForAttribute:kIXActivityIndicatorStyle defaultValue:kIXDefaultActivityIndicatorStyle];
     if( [spinnerStyleString isEqualToString:kIXActivityIndicatorStyleGray] ) {
         activityIndicatorColor = [UIColor grayColor];
         activityIndicatorStyle = UIActivityIndicatorViewStyleGray;
@@ -71,7 +71,7 @@ IX_STATIC_CONST_STRING kIXDefaultActivityIndicatorStyle = @"large";
     }
     
     [[self activityIndicator] setActivityIndicatorViewStyle:activityIndicatorStyle];
-    [[self activityIndicator] setColor:[[self propertyContainer] getColorPropertyValue:kIXActivityIndicatorColor defaultValue:activityIndicatorColor]];
+    [[self activityIndicator] setColor:[[self attributeContainer] getColorValueForAttribute:kIXActivityIndicatorColor defaultValue:activityIndicatorColor]];
     [self centerActivityIndicator];
 }
 

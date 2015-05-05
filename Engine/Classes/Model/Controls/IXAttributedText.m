@@ -184,10 +184,10 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
     [super applySettings];
     
     //Initial definitions
-    NSString* text = [self.propertyContainer getStringPropertyValue:kIXText defaultValue:@""];
-    _definedMentionScheme = [self.propertyContainer getStringPropertyValue:kIXMentionScheme defaultValue:@"mention://"];
-    _definedHashtagScheme = [self.propertyContainer getStringPropertyValue:kIXHashtagScheme defaultValue:@"hashtag://"];
-    _baseTextColor = [self.propertyContainer getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
+    NSString* text = [self.attributeContainer getStringValueForAttribute:kIXText defaultValue:@""];
+    _definedMentionScheme = [self.attributeContainer getStringValueForAttribute:kIXMentionScheme defaultValue:@"mention://"];
+    _definedHashtagScheme = [self.attributeContainer getStringValueForAttribute:kIXHashtagScheme defaultValue:@"hashtag://"];
+    _baseTextColor = [self.attributeContainer getColorValueForAttribute:kIXTextColor defaultValue:[UIColor blackColor]];
     
     self.label.enabledTextCheckingTypes = NSTextCheckingTypeLink;
     self.label.textColor = _baseTextColor;
@@ -196,34 +196,34 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
     self.label.userInteractionEnabled = YES;
     self.label.delegate = self;
     
-    self.label.backgroundColor = [self.propertyContainer getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor clearColor]];
+    self.label.backgroundColor = [self.attributeContainer getColorValueForAttribute:kIXBackgroundColor defaultValue:[UIColor clearColor]];
     
     //Set alignment
-    NSString* textAlignmentString = [self.propertyContainer getStringPropertyValue:kIXTextAlign defaultValue:kIXDefaultTextAlign];
+    NSString* textAlignmentString = [self.attributeContainer getStringValueForAttribute:kIXTextAlign defaultValue:kIXDefaultTextAlign];
     NSTextAlignment textAlignment = [self getTextAlignmentFromPropertyValue:textAlignmentString];
     
     //Double check that the label supports attributed text
     if ([self.label respondsToSelector:@selector(setAttributedText:)])
     {
-        BOOL highlightMentions = [self.propertyContainer getBoolPropertyValue:kIXShouldHighlightMentions defaultValue:true];
-        BOOL highlightHashtags = [self.propertyContainer getBoolPropertyValue:kIXShouldHighlightHashtags defaultValue:true];
-        BOOL highlightHyperlinks = [self.propertyContainer getBoolPropertyValue:kIXShouldHighlightHyperlinks defaultValue:true];
-        BOOL shouldParseMarkdown = [self.propertyContainer getBoolPropertyValue:kIXShouldParseMarkdown defaultValue:false];
+        BOOL highlightMentions = [self.attributeContainer getBoolValueForAttribute:kIXShouldHighlightMentions defaultValue:true];
+        BOOL highlightHashtags = [self.attributeContainer getBoolValueForAttribute:kIXShouldHighlightHashtags defaultValue:true];
+        BOOL highlightHyperlinks = [self.attributeContainer getBoolValueForAttribute:kIXShouldHighlightHyperlinks defaultValue:true];
+        BOOL shouldParseMarkdown = [self.attributeContainer getBoolValueForAttribute:kIXShouldParseMarkdown defaultValue:false];
         
         
-        UIColor *mentionColor = [self.propertyContainer getColorPropertyValue:kIXMentionColor defaultValue:[UIColor blackColor]];
-        UIColor *hashtagColor = [self.propertyContainer getColorPropertyValue:kIXHashtagColor defaultValue:[UIColor blackColor]];
-        UIColor *hyperlinkColor = [self.propertyContainer getColorPropertyValue:kIXHyperlinkColor defaultValue:[UIColor blackColor]];
+        UIColor *mentionColor = [self.attributeContainer getColorValueForAttribute:kIXMentionColor defaultValue:[UIColor blackColor]];
+        UIColor *hashtagColor = [self.attributeContainer getColorValueForAttribute:kIXHashtagColor defaultValue:[UIColor blackColor]];
+        UIColor *hyperlinkColor = [self.attributeContainer getColorValueForAttribute:kIXHyperlinkColor defaultValue:[UIColor blackColor]];
         
-        UIFont *defaultFont = [self.propertyContainer getFontPropertyValue:kIXFont defaultValue:[UIFont systemFontOfSize:16.0f]];
-        UIFont *mentionFont = [self.propertyContainer getFontPropertyValue:kIXMentionFont defaultValue:defaultFont];
-        UIFont *hashtagFont = [self.propertyContainer getFontPropertyValue:kIXHashtagFont defaultValue:defaultFont];
-        UIFont *hyperlinkFont = [self.propertyContainer getFontPropertyValue:kIXHyperlinkFont defaultValue:defaultFont];
+        UIFont *defaultFont = [self.attributeContainer getFontValueForAttribute:kIXFont defaultValue:[UIFont systemFontOfSize:16.0f]];
+        UIFont *mentionFont = [self.attributeContainer getFontValueForAttribute:kIXMentionFont defaultValue:defaultFont];
+        UIFont *hashtagFont = [self.attributeContainer getFontValueForAttribute:kIXHashtagFont defaultValue:defaultFont];
+        UIFont *hyperlinkFont = [self.attributeContainer getFontValueForAttribute:kIXHyperlinkFont defaultValue:defaultFont];
         
-        CGFloat textKerning = [self.propertyContainer getFloatPropertyValue:kIXTextKerning defaultValue:0];
-        CGFloat lineSpacing = [self.propertyContainer getFloatPropertyValue:kIXLineSpacing defaultValue:-0.01];
-        CGFloat minLineHeight = [self.propertyContainer getFloatPropertyValue:kIXLineHeightMin defaultValue:-0.01];
-        CGFloat maxLineHeight = [self.propertyContainer getFloatPropertyValue:kIXLineHeightMax defaultValue:-0.01];
+        CGFloat textKerning = [self.attributeContainer getFloatValueForAttribute:kIXTextKerning defaultValue:0];
+        CGFloat lineSpacing = [self.attributeContainer getFloatValueForAttribute:kIXLineSpacing defaultValue:-0.01];
+        CGFloat minLineHeight = [self.attributeContainer getFloatValueForAttribute:kIXLineHeightMin defaultValue:-0.01];
+        CGFloat maxLineHeight = [self.attributeContainer getFloatValueForAttribute:kIXLineHeightMax defaultValue:-0.01];
         
         //Define attributedString
         self.attributedString = [[NSMutableAttributedString alloc] initWithString:text];
@@ -247,12 +247,12 @@ IX_STATIC_CONST_STRING kIXPrefixTouchUp = @"touchUp"; // prefixes the event
         if (shouldParseMarkdown)
         {
             //Define markdown-specific properties
-            UIFont *codeFont = [self.propertyContainer getFontPropertyValue:kIXCodeFont defaultValue:[UIFont fontWithName:@"Menlo-Regular" size:defaultFont.pointSize - 2]];
-            UIColor *codeColor = [self.propertyContainer getColorPropertyValue:kIXCodeColor defaultValue:[UIColor blackColor]];
-            UIColor *codeBackgroundColor = [self.propertyContainer getColorPropertyValue:kIXCodeBackgroundColor defaultValue:[[UIColor alloc] initWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
-            UIColor *codeBorderColor = [self.propertyContainer getColorPropertyValue:kIXCodeBorderColor defaultValue:[[UIColor alloc] initWithRed:1.0 green:1.0 blue:1.0 alpha:0.7]];
+            UIFont *codeFont = [self.attributeContainer getFontValueForAttribute:kIXCodeFont defaultValue:[UIFont fontWithName:@"Menlo-Regular" size:defaultFont.pointSize - 2]];
+            UIColor *codeColor = [self.attributeContainer getColorValueForAttribute:kIXCodeColor defaultValue:[UIColor blackColor]];
+            UIColor *codeBackgroundColor = [self.attributeContainer getColorValueForAttribute:kIXCodeBackgroundColor defaultValue:[[UIColor alloc] initWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
+            UIColor *codeBorderColor = [self.attributeContainer getColorValueForAttribute:kIXCodeBorderColor defaultValue:[[UIColor alloc] initWithRed:1.0 green:1.0 blue:1.0 alpha:0.7]];
             
-            NSNumber *codeBorderRadius = [NSNumber numberWithInteger:[self.propertyContainer getIntPropertyValue:kIXCodeBorderRadius defaultValue:3]];
+            NSNumber *codeBorderRadius = [NSNumber numberWithInteger:[self.attributeContainer getIntValueForAttribute:kIXCodeBorderRadius defaultValue:3]];
             
             //Format bold **bold**
             [self formatMarkdownBlockMatchingRegex:@"\\*{2}(?!\\s).+?(?<!\\s)\\*{2}"

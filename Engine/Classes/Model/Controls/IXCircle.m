@@ -34,8 +34,8 @@ static NSString* const kIXColor = @"color";
 {
     [super applySettings];
     
-    NSInteger size = [self.propertyContainer getIntPropertyValue:kIXSize defaultValue:100];
-    UIColor *color = [self.propertyContainer getColorPropertyValue:kIXColor defaultValue:[UIColor blackColor]];
+    NSInteger size = [self.attributeContainer getIntValueForAttribute:kIXSize defaultValue:100];
+    UIColor *color = [self.attributeContainer getColorValueForAttribute:kIXColor defaultValue:[UIColor blackColor]];
     
     self.circleView.frame = CGRectMake(0,0,size,size);
     self.circleView.layer.cornerRadius = size / 2;

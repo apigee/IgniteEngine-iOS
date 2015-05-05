@@ -9,7 +9,7 @@
 #import "IXCoreDataDataProvider.h"
 
 #import "IXAppManager.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXEntityContainer.h"
 #import "IXLogger.h"
 
@@ -128,12 +128,12 @@
         [entity setName:[[entityContainer entityProperties] getStringPropertyValue:@"entity_name" defaultValue:nil]];
         
         NSString* entityAttributesString = [[entityContainer entityProperties] getStringPropertyValue:@"entity_attributes" defaultValue:nil];
-        NSArray* entityAttributesCommaSeperatedArray = [entityAttributesString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+        NSArray* entityAttributesCommaseparatedArray = [entityAttributesString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
         NSString* entityIdentificationAttributesString = [[entityContainer entityProperties] getStringPropertyValue:@"entity_identification_attributes" defaultValue:nil];
-        NSArray* entityIdentificationAttributesCommaSeperatedArray = [entityIdentificationAttributesString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+        NSArray* entityIdentificationAttributesCommaseparatedArray = [entityIdentificationAttributesString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
         
-        NSMutableArray* entityProperties = [[NSMutableArray alloc] initWithCapacity:[entityAttributesCommaSeperatedArray count]];
-        for( NSString* attributeName in entityAttributesCommaSeperatedArray )
+        NSMutableArray* entityProperties = [[NSMutableArray alloc] initWithCapacity:[entityAttributesCommaseparatedArray count]];
+        for( NSString* attributeName in entityAttributesCommaseparatedArray )
         {
             NSAttributeDescription *attributeDescription = [[NSAttributeDescription alloc] init];
             [attributeDescription setName:attributeName];
@@ -144,8 +144,8 @@
         [entity setProperties:entityProperties];
         
         RKEntityMapping *mapping = [[RKEntityMapping alloc] initWithEntity:entity];
-        [mapping setIdentificationAttributes:entityIdentificationAttributesCommaSeperatedArray];
-        [mapping addAttributeMappingsFromArray:entityAttributesCommaSeperatedArray];
+        [mapping setIdentificationAttributes:entityIdentificationAttributesCommaseparatedArray];
+        [mapping addAttributeMappingsFromArray:entityAttributesCommaseparatedArray];
         
         // If entityMapping is nil then this is the first entity
         if( entityMapping == nil )
@@ -170,8 +170,8 @@
                 NSInteger childMinCount = 0;
                 NSInteger childMaxCount = 1;
                 
-                NSArray* parentToChildRelationshipCounts = [[subEntityContainer entityProperties] getCommaSeperatedArrayListValue:@"parent_relationship_count" defaultValue:nil];
-                NSArray* childToParentRelationshipCounts = [[entityContainer entityProperties] getCommaSeperatedArrayListValue:@"child_relationship_count" defaultValue:nil];
+                NSArray* parentToChildRelationshipCounts = [[subEntityContainer entityProperties] getCommaSeparatedArrayListValue:@"parent_relationship_count" defaultValue:nil];
+                NSArray* childToParentRelationshipCounts = [[entityContainer entityProperties] getCommaSeparatedArrayListValue:@"child_relationship_count" defaultValue:nil];
                 
                 if( [parentToChildRelationshipCounts count] == 2 )
                 {

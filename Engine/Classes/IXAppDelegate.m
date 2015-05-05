@@ -12,7 +12,7 @@
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
 #import "IXLogger.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 
 #import "ApigeeClient.h"
 #import "ApigeeDataClient.h"

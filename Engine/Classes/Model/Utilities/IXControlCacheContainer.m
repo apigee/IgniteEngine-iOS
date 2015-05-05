@@ -9,7 +9,7 @@
 #import "IXControlCacheContainer.h"
 
 #import "IXDataLoader.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXActionContainer.h"
 #import "IXBaseControl.h"
 #import "IXCustom.h"
@@ -38,7 +38,7 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
 
 -(instancetype)initWithControlType:(NSString*)controlType
                         styleClass:(NSString*)styleClass
-                 propertyContainer:(IXPropertyContainer*)propertyContainer
+                 propertyContainer:(IXAttributeContainer*)propertyContainer
                    actionContainer:(IXActionContainer*)actionContainer
                childConfigControls:(NSArray*)childConfigControls
                dataProviderConfigs:(NSArray*)dataProviderConfigs;
@@ -85,7 +85,7 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
         if( [childControl isKindOfClass:[IXCustom class]] )
         {
             IXCustom* customControl = (IXCustom*)childControl;
-            NSString* pathToJSON = [[customControl propertyContainer] getPathPropertyValue:@"control_location" basePath:nil defaultValue:nil];
+            NSString* pathToJSON = [[customControl attributeContainer] getPathForAttribute:@"control_location" basePath:nil defaultValue:nil];
             if( pathToJSON == nil )
             {
                 IX_LOG_WARN(@"WARNING from %@ in %@ : Path to custom control is nil!!! \n Custom Control Description : %@",THIS_FILE,THIS_METHOD,[customControl description]);
@@ -94,7 +94,7 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             else
             {
                 [customControl setPathToJSON:pathToJSON];
-                BOOL loadAsync = [[customControl propertyContainer] getBoolPropertyValue:@"load_async" defaultValue:YES] && ![sControlCacheContainerCache objectForKey:pathToJSON];
+                BOOL loadAsync = [[customControl attributeContainer] getBoolValueForAttribute:@"load_async" defaultValue:YES] && ![sControlCacheContainerCache objectForKey:pathToJSON];
                 [IXControlCacheContainer populateControl:customControl
                                           withJSONAtPath:pathToJSON
                                                loadAsync:loadAsync
@@ -133,11 +133,11 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
             [control setStyleClass:[controlCacheContainer styleClass]];
         }
         
-        IXPropertyContainer* controlPropertyContainer = [control propertyContainer];
+        IXAttributeContainer* controlPropertyContainer = [control attributeContainer];
         if( [controlCacheContainer propertyContainer] )
         {
-            [control setPropertyContainer:[[controlCacheContainer propertyContainer] copy]];
-            [[control propertyContainer] addPropertiesFromPropertyContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+            [control setAttributeContainer:[[controlCacheContainer propertyContainer] copy]];
+            [[control attributeContainer] addAttributesFromContainer:controlPropertyContainer evaluateBeforeAdding:NO replaceOtherAttributesWithSameName:YES];
         }
         if( [control actionContainer] )
         {
@@ -274,7 +274,7 @@ IX_STATIC_CONST_STRING kIXControlCacheContainerCacheName = @"com.ignite.ControlC
                     [propertiesDictionary setObject:controlID forKey:kIX_ID];
                 }
                 
-                IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDictionary];
+                IXAttributeContainer* propertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:propertiesDictionary];
                 
                 IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:controlJSONDictionary[kIX_ACTIONS]];
                 NSArray* childConfigControls = [IXBaseControlConfig controlConfigsWithJSONControlArray:controlJSONDictionary[kIX_CONTROLS]];

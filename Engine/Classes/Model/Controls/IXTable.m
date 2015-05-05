@@ -85,12 +85,12 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     
     [[self tableView] setFrame:rect];
     
-    if( [[self propertyContainer] propertyExistsForPropertyNamed:kIXImageParallax] )
+    if( [[self attributeContainer] attributeExistsForName:kIXImageParallax] )
     {
         
         CGSize contentViewSize = [[self contentView] bounds].size;
-        CGFloat parallaxHeight = [[self propertyContainer] getSizeValue:kIXImageParallaxHeight maximumSize:contentViewSize.height defaultValue:0.0f];
-        CGFloat parallaxWidth = [[self propertyContainer] getSizeValue:kIXImageParallaxWidth maximumSize:contentViewSize.width defaultValue:0.0f];
+        CGFloat parallaxHeight = [[self attributeContainer] getSizeValueForAttribute:kIXImageParallaxHeight maximumSize:contentViewSize.height defaultValue:0.0f];
+        CGFloat parallaxWidth = [[self attributeContainer] getSizeValueForAttribute:kIXImageParallaxWidth maximumSize:contentViewSize.width defaultValue:0.0f];
         [[self tableView] addParallaxWithImage:_tableView.parallaxView.imageView.image withWidth:parallaxWidth andHeight:parallaxHeight];
     }
 }
@@ -107,17 +107,17 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     [[self tableView] sendSubviewToBack:[self refreshControl]];
     
     __weak typeof(self) weakSelf = self;
-    [[self propertyContainer] getImageProperty:kIXImageParallax
+    [[self attributeContainer] getImageAttribute:kIXImageParallax
                                   successBlock:^(UIImage *image) {
                                       
-                                      NSString* resizeDefault = [self.propertyContainer getStringPropertyValue:kIXParallaxImageResizeMask defaultValue:nil];
+                                      NSString* resizeDefault = [self.attributeContainer getStringValueForAttribute:kIXParallaxImageResizeMask defaultValue:nil];
                                       
                                       if (resizeDefault)
                                           image = [image resizedImageByMagick:resizeDefault];
                                       
                                       CGSize contentViewSize = [[self contentView] bounds].size;
-                                      CGFloat parallaxHeight = [[self propertyContainer] getSizeValue:kIXImageParallaxHeight maximumSize:contentViewSize.height defaultValue:0.0f];
-                                      CGFloat parallaxWidth = [[self propertyContainer] getSizeValue:kIXImageParallaxWidth maximumSize:contentViewSize.width defaultValue:0.0f];
+                                      CGFloat parallaxHeight = [[self attributeContainer] getSizeValueForAttribute:kIXImageParallaxHeight maximumSize:contentViewSize.height defaultValue:0.0f];
+                                      CGFloat parallaxWidth = [[self attributeContainer] getSizeValueForAttribute:kIXImageParallaxWidth maximumSize:contentViewSize.width defaultValue:0.0f];
                                       
                                       [[weakSelf tableView] addParallaxWithImage:image withWidth:parallaxWidth andHeight:parallaxHeight];
                                       [[[weakSelf tableView] parallaxView] layoutIfNeeded];
@@ -131,18 +131,18 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     [[self tableView] setShowsHorizontalScrollIndicator:[self showsHorizScrollIndicators]];
     [[self tableView] setShowsVerticalScrollIndicator:[self showsVertScrollIndicators]];
     [[self tableView] setIndicatorStyle:[self scrollIndicatorStyle]];
-    [[self tableView] setAllowsSelection:[[self propertyContainer] getBoolPropertyValue:kIXRowSelectEnabled defaultValue:YES]];
-    [self setKeepRowHighlightedOnSelect:[[self propertyContainer] getBoolPropertyValue:kIXKeepRowHighlightedOnSelect defaultValue:NO]];
+    [[self tableView] setAllowsSelection:[[self attributeContainer] getBoolValueForAttribute:kIXRowSelectEnabled defaultValue:YES]];
+    [self setKeepRowHighlightedOnSelect:[[self attributeContainer] getBoolValueForAttribute:kIXKeepRowHighlightedOnSelect defaultValue:NO]];
 
-    NSString* seperatorStyle = [[self propertyContainer] getStringPropertyValue:kIXSeperatorStyle defaultValue:kIXSeperatorStyleDefault];
+    NSString* seperatorStyle = [[self attributeContainer] getStringValueForAttribute:kIXSeperatorStyle defaultValue:kIXSeperatorStyleDefault];
     if( [seperatorStyle isEqualToString:kIXSeperatorStyleNone] ) {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-        [[self tableView] setSeparatorColor:[[self propertyContainer] getColorPropertyValue:kIXSeperatorColor defaultValue:[UIColor grayColor]]];
+        [[self tableView] setSeparatorColor:[[self attributeContainer] getColorValueForAttribute:kIXSeperatorColor defaultValue:[UIColor grayColor]]];
     }
     
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
+    NSString* layoutFlow = [[self attributeContainer] getStringValueForAttribute:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
     if ([layoutFlow isEqualToString:kIXLayoutFlowHorizontal])
     {
         [[self tableView] setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
@@ -153,7 +153,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     });
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXResetAllBackgroundControls] )
     {
@@ -164,7 +164,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     }
     else if( [functionName isEqualToString:kIXSetBackgroundSwipeWidth] )
     {
-        [self setBackgroundViewSwipeWidth:[parameterContainer getFloatPropertyValue:kIXBackgroundSwipeWidth defaultValue:0.0f]];
+        [self setBackgroundViewSwipeWidth:[parameterContainer getFloatValueForAttribute:kIXBackgroundSwipeWidth defaultValue:0.0f]];
         for( IXUITableViewCell* cell in [[self tableView] visibleCells] )
         {
             [[cell cellBackgroundSwipeController] setSwipeWidth:[self backgroundViewSwipeWidth]];
@@ -267,7 +267,7 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     [[cell contentView] setBackgroundColor:[[self tableView] backgroundColor]];
     [self configureCell:cell withIndexPath:indexPath];
     
-    NSString* layoutFlow = [[self propertyContainer] getStringPropertyValue:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
+    NSString* layoutFlow = [[self attributeContainer] getStringValueForAttribute:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];
     if ([layoutFlow isEqualToString:kIXLayoutFlowHorizontal])
     {
         [cell setTransform:CGAffineTransformMakeRotation(M_PI_2)];

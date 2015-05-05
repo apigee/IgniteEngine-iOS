@@ -10,7 +10,7 @@
 
 #import "IXCellBackgroundSwipeController.h"
 #import "IXLayout.h"
-#import "IXProperty.h"
+#import "IXAttribute.h"
 #import "UIView+IXAdditions.h"
 
 @interface IXUITableViewCell ()

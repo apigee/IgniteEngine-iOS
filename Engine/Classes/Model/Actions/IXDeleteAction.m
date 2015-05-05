@@ -10,7 +10,7 @@
 
 #import "IXSandbox.h"
 #import "IXBaseControl.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 
 // IXDeleteAction Events: kIX_SUCCESS and kIX_FAILED
 
@@ -22,7 +22,7 @@
     
     BOOL didSucceed = NO;
 
-    NSString* deleteControlID = [[self actionProperties] getStringPropertyValue:kIX_TARGET defaultValue:nil];
+    NSString* deleteControlID = [[self actionProperties] getStringValueForAttribute:kIX_TARGET defaultValue:nil];
     if( deleteControlID )
     {
         NSMutableArray* parentsNeedingLayout = [NSMutableArray array];

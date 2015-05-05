@@ -18,7 +18,7 @@
 #import "IXViewController.h"
 #import "IXSandbox.h"
 #import "NSDictionary+IXAdditions.h"
-#import "IXProperty.h"
+#import "IXAttribute.h"
 #import "IXAssetManager.h"
 #import "IXPathHandler.h"
 #import "IXJSONUtils.h"
@@ -186,21 +186,21 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         _response = [IXHTTPResponse new];
     }
     
-    [self setMethod:[[self propertyContainer] getStringPropertyValue:kIXMethod defaultValue:kIXMethodGET]];
-    [self setRequestType:[[self propertyContainer] getStringPropertyValue:kIXRequestType defaultValue:kIXRequestTypeJSON]];
-    [self setResponseType:[[self propertyContainer] getStringPropertyValue:kIXResponseType defaultValue:kIXRequestTypeJSON]];
+    [self setMethod:[[self attributeContainer] getStringValueForAttribute:kIXMethod defaultValue:kIXMethodGET]];
+    [self setRequestType:[[self attributeContainer] getStringValueForAttribute:kIXRequestType defaultValue:kIXRequestTypeJSON]];
+    [self setResponseType:[[self attributeContainer] getStringValueForAttribute:kIXResponseType defaultValue:kIXRequestTypeJSON]];
 
-    [self setRequestBinUrl:[[self propertyContainer] getStringPropertyValue:kIXDebugRequestBinUrl defaultValue:nil]];
-    [self setCachePolicy:[self cachePolicyFromString:[[self propertyContainer] getStringPropertyValue:kIXCachePolicy defaultValue:kIXCachePolicyDefault]]];
-    [self setCacheResponse:[[self propertyContainer] getBoolPropertyValue:kIXCacheEnabled defaultValue:YES]];
+    [self setRequestBinUrl:[[self attributeContainer] getStringValueForAttribute:kIXDebugRequestBinUrl defaultValue:nil]];
+    [self setCachePolicy:[self cachePolicyFromString:[[self attributeContainer] getStringValueForAttribute:kIXCachePolicy defaultValue:kIXCachePolicyDefault]]];
+    [self setCacheResponse:[[self attributeContainer] getBoolValueForAttribute:kIXCacheEnabled defaultValue:YES]];
 
     // Pagination
-    [self setAppendDataOnPaginate:[[self propertyContainer] getBoolPropertyValue:kIXPaginationAppendData defaultValue:false]];
-    [self setPaginationNextPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationNextPath defaultValue:nil]];
-    [self setPaginationNextQueryParam:[[self propertyContainer] getStringPropertyValue:kIXPaginationNextQueryParam defaultValue:nil]];
-    [self setPaginationPrevPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationPrevPath defaultValue:nil]];
-    [self setPaginationPrevQueryParam:[[self propertyContainer] getStringPropertyValue:kIXPaginationPrevQueryParam defaultValue:nil]];
-    [self setPaginationDataPath:[[self propertyContainer] getStringPropertyValue:kIXPaginationAppendDataPath defaultValue:nil]];
+    [self setAppendDataOnPaginate:[[self attributeContainer] getBoolValueForAttribute:kIXPaginationAppendData defaultValue:false]];
+    [self setPaginationNextPath:[[self attributeContainer] getStringValueForAttribute:kIXPaginationNextPath defaultValue:nil]];
+    [self setPaginationNextQueryParam:[[self attributeContainer] getStringValueForAttribute:kIXPaginationNextQueryParam defaultValue:nil]];
+    [self setPaginationPrevPath:[[self attributeContainer] getStringValueForAttribute:kIXPaginationPrevPath defaultValue:nil]];
+    [self setPaginationPrevQueryParam:[[self attributeContainer] getStringValueForAttribute:kIXPaginationPrevQueryParam defaultValue:nil]];
+    [self setPaginationDataPath:[[self attributeContainer] getStringValueForAttribute:kIXPaginationAppendDataPath defaultValue:nil]];
     
     if( ![self isPathLocal] )
     {
@@ -215,7 +215,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     [self setHeaders];
     [self setBasicAuth];
     [self configureCache];
-    [self setAttachments:[NSMutableDictionary dictionaryWithDictionary:[self.fileAttachmentProperties getAllPropertiesURLValues]]];
+    [self setAttachments:[NSMutableDictionary dictionaryWithDictionary:[self.fileAttachmentProperties getAllAttributesURLValues]]];
 }
 
 - (void)setRequestType {
@@ -234,14 +234,14 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 - (void)setHeaders {
     
     // Set Content-Type
-    if (![self.headersProperties propertyExistsForPropertyNamed:kIXContentTypeHeaderKey] &&
-        ![self.headersProperties propertyExistsForPropertyNamed:[kIXContentTypeHeaderKey lowercaseString]]) {
-        [self.headersProperties addProperty:[IXProperty propertyWithPropertyName:kIXContentTypeHeaderKey rawValue:[self contentTypeForRequestType]]];
+    if (![self.headersProperties attributeExistsForName:kIXContentTypeHeaderKey] &&
+        ![self.headersProperties attributeExistsForName:[kIXContentTypeHeaderKey lowercaseString]]) {
+        [self.headersProperties addAttribute:[IXAttribute attributeWithAttributeName:kIXContentTypeHeaderKey rawValue:[self contentTypeForRequestType]]];
     } else if ([self.requestType isEqualToString:kIXRequestTypeMultipart]) {
-        [self.headersProperties removePropertyNamed:kIXContentTypeHeaderKey];
+        [self.headersProperties removeAttributeNamed:kIXContentTypeHeaderKey];
     }
     // Set other headers
-    [[self.headersProperties getAllPropertiesObjectValuesURLEncoded:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
+    [[self.headersProperties getAllAttributesAsDictionaryWithURLEncodedValues:NO] enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* value, BOOL *stop) {
         [[IXAFHTTPSessionManager sharedManager].requestSerializer setValue:value forHTTPHeaderField:key];
     }];
     
@@ -251,8 +251,8 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 }
 
 - (void)setBasicAuth {
-    NSString* username = [[self propertyContainer] getStringPropertyValue:kIXBasicUserName defaultValue:nil];
-    NSString* password = [[self propertyContainer] getStringPropertyValue:kIXBasicPassword defaultValue:nil];
+    NSString* username = [[self attributeContainer] getStringValueForAttribute:kIXBasicUserName defaultValue:nil];
+    NSString* password = [[self attributeContainer] getStringValueForAttribute:kIXBasicPassword defaultValue:nil];
     if (username != nil && password != nil) {
         [[IXAFHTTPSessionManager sharedManager].requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
     }
@@ -517,7 +517,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 
 -(void)updatePaginationProperties {
-    NSDictionary* objectsStringValues = [[IXPropertyContainer propertyContainerWithJSONDict:_response.responseObject] getAllPropertiesStringValues:NO];
+    NSDictionary* objectsStringValues = [[IXAttributeContainer attributeContainerWithJSONDict:_response.responseObject] getAllAttributesAsDictionaryWithDotNotationAndURLEncodedValues:NO];
     _paginationNextValue = nil;
     _paginationPrevValue = nil;
     if (_paginationNextPath && _paginationNextQueryParam && [objectsStringValues objectForKey:_paginationNextPath]) {
@@ -639,7 +639,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXClearCache] )
     {
@@ -686,15 +686,15 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 }
 
 // TODO: This is a bit of a bastardized approach. We should have a separate class for handling offline data manipulation that HTTP can leverage.
-- (void)modifyResponseForFunctionNamed:(NSString*)functionName withParameters:(IXPropertyContainer *)parameterContainer {
+- (void)modifyResponseForFunctionNamed:(NSString*)functionName withParameters:(IXAttributeContainer *)parameterContainer {
 
     BOOL wasModified = NO;
-    NSDictionary* paramsDict = [parameterContainer getAllPropertiesObjectValues];
+    NSDictionary* paramsDict = [parameterContainer getAllAttributesAsDictionary];
     id newData = ([paramsDict valueForKey:kIXModifyData]) ?: nil;
     NSMutableDictionary* modifiedResponseObject = [NSMutableDictionary dictionary];
     // Get existing data
-    NSString* existingDataPath = [parameterContainer getStringPropertyValue:kIXModifyPath defaultValue:nil];
-    NSString* index = [parameterContainer getStringPropertyValue:kIXModifyIndex defaultValue:nil];
+    NSString* existingDataPath = [parameterContainer getStringValueForAttribute:kIXModifyPath defaultValue:nil];
+    NSString* index = [parameterContainer getStringValueForAttribute:kIXModifyIndex defaultValue:nil];
     id existingDataArray = [[IXJSONUtils objectForPath:existingDataPath container:_response.responseObject sandox:self.sandbox baseObject:self] mutableCopy];
     
     
@@ -777,7 +777,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 //                if( [modifyResponseType isEqualToString:kIXDelete] )
 //                {
 //                    NSString* predicateFormat = [parameterContainer getStringPropertyValue:kIXPredicateFormat defaultValue:nil];
-//                    NSArray* predicateArgumentsArray = [parameterContainer getCommaSeperatedArrayListValue:kIXPredicateArguments defaultValue:nil];
+//                    NSArray* predicateArgumentsArray = [parameterContainer getCommaSeparatedArrayListValue:kIXPredicateArguments defaultValue:nil];
 //
 //                    if( [predicateFormat length] > 0 && [predicateArgumentsArray count] > 0 )
 //                    {

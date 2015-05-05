@@ -102,7 +102,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
     [self createCameraView];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStart] )
     {
@@ -120,7 +120,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
     }
     else if( [functionName isEqualToString:kIXCaptureImage] )
     {
-        CGFloat captureDelay = [self.propertyContainer getFloatPropertyValue:kIXCaptureDelay defaultValue:0.0f];
+        CGFloat captureDelay = [self.attributeContainer getFloatValueForAttribute:kIXCaptureDelay defaultValue:0.0f];
         if (captureDelay > 0)
         {
             [self performSelector:@selector(captureStillImage) withObject:self afterDelay:captureDelay ];
@@ -160,8 +160,8 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
     _captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
 
 //TODO: Need to fix this; currently it takes the defined size - percentage size is not calculated based on parent size. Need it to grab contentView.bounds on viewDidLoad...?
-    CGFloat width = [self.propertyContainer getSizeValue:kIXWidth maximumSize:[[IXDeviceInfo screenWidth] floatValue] defaultValue:320.0f];
-    CGFloat height = [self.propertyContainer getSizeValue:kIXHeight maximumSize:[[IXDeviceInfo screenHeight] floatValue] defaultValue:320.0f];
+    CGFloat width = [self.attributeContainer getSizeValueForAttribute:kIXWidth maximumSize:[[IXDeviceInfo screenWidth] floatValue] defaultValue:320.0f];
+    CGFloat height = [self.attributeContainer getSizeValueForAttribute:kIXHeight maximumSize:[[IXDeviceInfo screenHeight] floatValue] defaultValue:320.0f];
     
     //this sets the video preview to crop to bounds
     CGRect bounds = CGRectMake(0, 0, width, height);
@@ -175,7 +175,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
     
     [_cameraView.layer addSublayer:_captureVideoPreviewLayer];
     
-    NSString* camera = [self.propertyContainer getStringPropertyValue:kIXCamera defaultValue:kIXRear];
+    NSString* camera = [self.attributeContainer getStringValueForAttribute:kIXCamera defaultValue:kIXRear];
     if ([camera isEqualToString:kIXFront])
     {
          _device = [self frontCamera];
@@ -213,7 +213,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
             
             
             
-            BOOL autoStart = [self.propertyContainer getBoolPropertyValue:kIXAutoStart defaultValue:NO];
+            BOOL autoStart = [self.attributeContainer getBoolValueForAttribute:kIXAutoStart defaultValue:NO];
             if (autoStart)
             {
                 [_session startRunning];
@@ -310,7 +310,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
                                                                  // This is here for when we need to implement Exif stuff. 
                                                                  //CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
                                                                  
-                                                                 NSString* resizeMask = [[self propertyContainer] getStringPropertyValue:kIXCaptureResize defaultValue:nil];
+                                                                 NSString* resizeMask = [[self attributeContainer] getStringValueForAttribute:kIXCaptureResize defaultValue:nil];
                                                                  NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
 
                                                                  // Create a UIImage from the sample buffer data
@@ -322,7 +322,7 @@ IX_STATIC_CONST_STRING kIXDidFinishSavingCapture = @"didSaveImage";
                                                                  [self.actionContainer executeActionsForEventNamed:kIXDidCaptureImage];
                                                                  
                                                                  // Hack for storing image in photo library. We need to fix this later on to be more robust and either cache it or have the image accessible to IXImage.
-                                                                 BOOL autoSave = [[self propertyContainer] getBoolPropertyValue:kIXAutoSaveToCameraRoll defaultValue:YES];
+                                                                 BOOL autoSave = [[self attributeContainer] getBoolValueForAttribute:kIXAutoSaveToCameraRoll defaultValue:YES];
                                                                  if (autoSave)
                                                                  {
                                                                      UIImageWriteToSavedPhotosAlbum(_capturedImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);

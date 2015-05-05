@@ -50,9 +50,9 @@ static NSString* const kIXStop = @"stop";
 {
     [super applySettings];
     
-    [self setEnabled:[[self propertyContainer] getBoolPropertyValue:kIXEnabled defaultValue:YES]];
-    [self setRepeat:[[self propertyContainer] getBoolPropertyValue:kIXRepeats defaultValue:NO]];
-    [self setTimeInterval:[[self propertyContainer] getFloatPropertyValue:kIXTimeInterval defaultValue:0.5f]];
+    [self setEnabled:[[self attributeContainer] getBoolValueForAttribute:kIXEnabled defaultValue:YES]];
+    [self setRepeat:[[self attributeContainer] getBoolValueForAttribute:kIXRepeats defaultValue:NO]];
+    [self setTimeInterval:[[self attributeContainer] getFloatValueForAttribute:kIXTimeInterval defaultValue:0.5f]];
     
     [self startTimer];
 }
@@ -81,7 +81,7 @@ static NSString* const kIXStop = @"stop";
                                           waitUntilDone:YES];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStart] )
     {

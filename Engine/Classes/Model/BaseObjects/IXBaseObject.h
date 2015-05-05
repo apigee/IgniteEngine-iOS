@@ -11,7 +11,7 @@
 #import "IXConstants.h"
 #import "IXSandbox.h"
 #import "IXActionContainer.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 
 
 @class IXBaseAction;
@@ -26,7 +26,7 @@
 
 @property (nonatomic,strong) NSMutableArray* childObjects;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
-@property (nonatomic,strong) IXPropertyContainer* propertyContainer;
+@property (nonatomic,strong) IXAttributeContainer* attributeContainer;
 
 -(void)addChildObject:(IXBaseObject*)childObject;
 -(void)removeChildObject:(IXBaseObject*)childObject;
@@ -35,7 +35,7 @@
 -(NSArray*)childrenThatAreKindOfClass:(Class)baseObjectClass;
 
 -(void)applySettings;
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer;
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer;
 -(void)beginAnimation:(NSString*)animation duration:(CGFloat)duration repeatCount:(NSInteger)repeatCount params:(NSDictionary*)params;
 -(void)endAnimation:(NSString*)animation;
 -(NSString*)getReadOnlyPropertyValue:(NSString*)propertyName;

@@ -86,7 +86,7 @@ extern NSString* const kIXMicrophoneAuthChanged;
 extern NSString* const kIX_CONTROL_CLASS_NAME_FORMAT;
 extern NSString* const kIX_DATA_PROVIDER_CLASS_NAME_FORMAT;
 extern NSString* const kIX_ACTION_CLASS_NAME_FORMAT;
-extern NSString* const kIX_VARIABLE_CLASS_NAME_FORMAT;
+extern NSString* const kIX_EVALUATION_CLASS_NAME_FORMAT;
 extern NSString* const kIX_DUMMY_DATA_MODEL_ENTITY_NAME;
 extern NSString* const kIX_STORED_SESSION_ATTRIBUTES_KEY;
 extern NSString* const kIX_DEBUG;

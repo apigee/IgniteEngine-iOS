@@ -12,7 +12,7 @@
 #import "IXLayout.h"
 #import "SDWebImageManager.h"
 #import "IXDataLoader.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXControlCacheContainer.h"
 
 @interface IXNavigationViewController () <UINavigationControllerDelegate>

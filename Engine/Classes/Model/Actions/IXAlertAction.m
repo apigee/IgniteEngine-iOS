@@ -10,7 +10,7 @@
 
 #import "IXAppManager.h"
 #import "IXActionContainer.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 
 // IXAlertAction Attributes
 static NSString* const kIXTitle = @"title";
@@ -42,12 +42,12 @@ static NSString* const kIXButtonIndexPressed = @"button.%lu.pressed"; //0-based 
 {
     [super execute];
     
-    IXPropertyContainer* actionProperties = [self actionProperties];
+    IXAttributeContainer* actionProperties = [self actionProperties];
     
-    NSString* title = [actionProperties getStringPropertyValue:kIXTitle defaultValue:nil];
-    NSString* message = [actionProperties getStringPropertyValue:kIXMessage defaultValue:nil];
+    NSString* title = [actionProperties getStringValueForAttribute:kIXTitle defaultValue:nil];
+    NSString* message = [actionProperties getStringValueForAttribute:kIXMessage defaultValue:nil];
     
-    NSArray* buttonTitles = [actionProperties getCommaSeperatedArrayListValue:kIXButtonTitles defaultValue:@[kIX_OK]];
+    NSArray* buttonTitles = [actionProperties getCommaSeparatedArrayOfValuesForAttribute:kIXButtonTitles defaultValue:@[kIX_OK]];
     
     [[self alertView] setDelegate:nil];
     [[self alertView] dismissWithClickedButtonIndex:[[self alertView] cancelButtonIndex] animated:YES];

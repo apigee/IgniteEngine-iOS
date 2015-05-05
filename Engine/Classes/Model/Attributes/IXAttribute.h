@@ -23,8 +23,8 @@
 -(instancetype)initWithAttributeName:(NSString*)attributeName rawValue:(NSString*)rawValue;
 +(instancetype)attributeWithAttributeName:(NSString*)attributeName rawValue:(NSString*)rawValue;
 +(instancetype)attributeWithAttributeName:(NSString*)attributeName jsonObject:(id)jsonObject;
-+(NSArray*)attributesWithAttributeName:(NSString*)attributeName attributeValueArray:(NSArray*)attributeValueArray;
++(NSArray*)attributeWithAttributeName:(NSString*)attributeName attributeValueJSONArray:(NSArray*)attributeValueJSONArray;
 
--(NSString*)getAttributeValue;
+-(NSString*)attributeStringValue;
 
 @end

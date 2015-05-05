@@ -13,7 +13,7 @@
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 #import "IXClickableScrollView.h"
-#import "IXProperty.h"
+#import "IXAttribute.h"
 #import "IXNavigateAction.h"
 #import "IXFormatter.h"
 #import "UITextField+IXAdditions.h"
@@ -164,12 +164,12 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
         [self setBackgroundImage:[[UIImageView alloc] initWithFrame:CGRectZero]];
         [[self contentView] addSubview:[self backgroundImage]];
         
-        BOOL shouldShowKeyboardToolbar = [[self propertyContainer] getBoolPropertyValue:kIXKeyboardToolbar defaultValue:NO];
+        BOOL shouldShowKeyboardToolbar = [[self attributeContainer] getBoolValueForAttribute:kIXKeyboardToolbar defaultValue:NO];
         [IQKeyboardManager sharedManager].enableAutoToolbar = shouldShowKeyboardToolbar;
         
-        NSString* initialText = [[self propertyContainer] getStringPropertyValue:kIXInitialText defaultValue:nil];
+        NSString* initialText = [[self attributeContainer] getStringValueForAttribute:kIXInitialText defaultValue:nil];
         
-        [self setUsingUITextView:[[self propertyContainer] getBoolPropertyValue:kIXIsMultiLine defaultValue:NO]];
+        [self setUsingUITextView:[[self attributeContainer] getBoolValueForAttribute:kIXIsMultiLine defaultValue:NO]];
         
         if( [self isUsingUITextView] )
         {
@@ -240,28 +240,28 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     
     [self createTextInputView];
     
-    UIFont* font = [[self propertyContainer] getFontPropertyValue:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
-    UIColor* textColor = [[self propertyContainer] getColorPropertyValue:kIXTextColor defaultValue:[UIColor blackColor]];
-    UIColor* tintColor = [[self propertyContainer] getColorPropertyValue:kIXCursorColor defaultValue:[self defaultTextInputTintColor]];
-    UIColor* backgroundColor = [[self propertyContainer] getColorPropertyValue:kIXBackgroundColor defaultValue:[UIColor whiteColor]];
-    NSTextAlignment textAlignment = [UITextField ix_textAlignmentFromString:[[self propertyContainer] getStringPropertyValue:kIXTextAlignment defaultValue:nil]];
-    UITextAutocorrectionType autoCorrectionType = [UITextField ix_booleanToTextAutocorrectionType:[[self propertyContainer] getBoolPropertyValue:kIXAutoCorrect defaultValue:YES]];
+    UIFont* font = [[self attributeContainer] getFontValueForAttribute:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    UIColor* textColor = [[self attributeContainer] getColorValueForAttribute:kIXTextColor defaultValue:[UIColor blackColor]];
+    UIColor* tintColor = [[self attributeContainer] getColorValueForAttribute:kIXCursorColor defaultValue:[self defaultTextInputTintColor]];
+    UIColor* backgroundColor = [[self attributeContainer] getColorValueForAttribute:kIXBackgroundColor defaultValue:[UIColor whiteColor]];
+    NSTextAlignment textAlignment = [UITextField ix_textAlignmentFromString:[[self attributeContainer] getStringValueForAttribute:kIXTextAlignment defaultValue:nil]];
+    UITextAutocorrectionType autoCorrectionType = [UITextField ix_booleanToTextAutocorrectionType:[[self attributeContainer] getBoolValueForAttribute:kIXAutoCorrect defaultValue:YES]];
     
-    UIKeyboardAppearance keyboardAppearance = [UITextField ix_stringToKeyboardAppearance:[[self propertyContainer] getStringPropertyValue:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]];
-    UIKeyboardType keyboardType = [UITextField ix_stringToKeyboardType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardType defaultValue:kIX_DEFAULT]];
-    UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self propertyContainer] getStringPropertyValue:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
+    UIKeyboardAppearance keyboardAppearance = [UITextField ix_stringToKeyboardAppearance:[[self attributeContainer] getStringValueForAttribute:kIXKeyboardAppearance defaultValue:kIX_DEFAULT]];
+    UIKeyboardType keyboardType = [UITextField ix_stringToKeyboardType:[[self attributeContainer] getStringValueForAttribute:kIXKeyboardType defaultValue:kIX_DEFAULT]];
+    UIReturnKeyType returnKeyType = [UITextField ix_stringToReturnKeyType:[[self attributeContainer] getStringValueForAttribute:kIXKeyboardReturnKey defaultValue:kIX_DEFAULT]];
     
-    [self setHideImagesWhenEmpty:[[self propertyContainer] getBoolPropertyValue:kIXHidesImagesWhenEmpty defaultValue:NO]];
-    [self setInputFormat:[[self propertyContainer] getStringPropertyValue:kIXFormat defaultValue:nil]];
+    [self setHideImagesWhenEmpty:[[self attributeContainer] getBoolValueForAttribute:kIXHidesImagesWhenEmpty defaultValue:NO]];
+    [self setInputFormat:[[self attributeContainer] getStringValueForAttribute:kIXFormat defaultValue:nil]];
 
     if( ![self isUsingUITextView] )
     {
         [[self textField] setEnabled:[[self contentView] isEnabled]];
         
-        NSString* placeHolderText = [[self propertyContainer] getStringPropertyValue:kIXTextPlaceholder defaultValue:nil];
+        NSString* placeHolderText = [[self attributeContainer] getStringValueForAttribute:kIXTextPlaceholder defaultValue:nil];
         if( [placeHolderText length] > 0 )
         {
-            UIColor* placeHolderTextColor = [[self propertyContainer] getColorPropertyValue:kIXTextPlaceholderColor defaultValue:[UIColor lightGrayColor]];
+            UIColor* placeHolderTextColor = [[self attributeContainer] getColorValueForAttribute:kIXTextPlaceholderColor defaultValue:[UIColor lightGrayColor]];
             NSAttributedString* attributedPlaceHolder = [[NSAttributedString alloc] initWithString:placeHolderText
                                                                                         attributes:@{NSForegroundColorAttributeName: placeHolderTextColor}];
             [[self textField] setAttributedPlaceholder:attributedPlaceHolder];
@@ -280,7 +280,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
             [[self textField] setSecureTextEntry:YES];
         }
 
-        [[self textField] setClearsOnBeginEditing:[[self propertyContainer] getBoolPropertyValue:kIXClearsOnBeginEditing defaultValue:NO]];
+        [[self textField] setClearsOnBeginEditing:[[self attributeContainer] getBoolValueForAttribute:kIXClearsOnBeginEditing defaultValue:NO]];
         
         [[self textField] setRightViewMode:UITextFieldViewModeAlways];
         [[self textField] setLeftViewMode:UITextFieldViewModeAlways];
@@ -290,7 +290,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
 
         for( NSString* imagePropertyName in @[kIXRightImage,kIXLeftImage] )
         {
-            NSString* imageLocationString = [[self propertyContainer] getStringPropertyValue:imagePropertyName defaultValue:nil];
+            NSString* imageLocationString = [[self attributeContainer] getStringValueForAttribute:imagePropertyName defaultValue:nil];
             if( [imageLocationString length] > 0 )
             {
                 UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageLocationString]];
@@ -338,20 +338,20 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     }
 
     __weak typeof(self) weakSelf = self;
-    [[self propertyContainer] getImageProperty:kIXBackgroundImage
+    [[self attributeContainer] getImageAttribute:kIXBackgroundImage
                                   successBlock:^(UIImage *image) {
                                       [[weakSelf backgroundImage] setImage:image];
                                   } failBlock:^(NSError *error) {
                                       [[weakSelf backgroundImage] setImage:nil];
                                   }];
     
-    [self setDismissOnReturn:[[self propertyContainer] getBoolPropertyValue:kIXDismissOnReturn defaultValue:YES]];
-    [self setInputMaxAllowedCharacters:[[self propertyContainer] getIntPropertyValue:kIXInputMax defaultValue:0]];
-    [self setInputTransform:[[self propertyContainer] getStringPropertyValue:kIXInputTransform defaultValue:nil]];
-    [self setInputDisallowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexDisAllowed defaultValue:nil]];
-    [self setFilterDatasource:[[self propertyContainer] getCommaSeperatedArrayListValue:kIXFilterDatasource defaultValue:nil]];
+    [self setDismissOnReturn:[[self attributeContainer] getBoolValueForAttribute:kIXDismissOnReturn defaultValue:YES]];
+    [self setInputMaxAllowedCharacters:[[self attributeContainer] getIntValueForAttribute:kIXInputMax defaultValue:0]];
+    [self setInputTransform:[[self attributeContainer] getStringValueForAttribute:kIXInputTransform defaultValue:nil]];
+    [self setInputDisallowedRegexString:[[self attributeContainer] getStringValueForAttribute:kIXInputRegexDisAllowed defaultValue:nil]];
+    [self setFilterDatasource:[[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXFilterDatasource defaultValue:nil]];
 
-    [self setInputAllowedRegexString:[[self propertyContainer] getStringPropertyValue:kIXInputRegexAllowed defaultValue:nil]];
+    [self setInputAllowedRegexString:[[self attributeContainer] getStringValueForAttribute:kIXInputRegexAllowed defaultValue:nil]];
     if( [[self inputAllowedRegexString] length] > 1 )
     {
         NSMutableString *positiveAssertion = [[self inputAllowedRegexString] mutableCopy];
@@ -359,7 +359,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
         [self setInputAllowedRegexString:positiveAssertion];
     }
     
-    [self setKeyboardPadding:[[self propertyContainer] getFloatPropertyValue:kIXKeyboardPadding defaultValue:0.0f]];
+    [self setKeyboardPadding:[[self attributeContainer] getFloatValueForAttribute:kIXKeyboardPadding defaultValue:0.0f]];
 }
 
 -(void)rightViewTapDetected:(UITapGestureRecognizer*)tapRecognizer
@@ -393,7 +393,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     return readOnlyPropertyValue;
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer
 {
     if( [functionName isEqualToString:kIXKeyboardHide] )
     {
@@ -419,8 +419,8 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
     }
     else if( [functionName isEqualToString:kIXSetText] )
     {
-        NSString* text = [parameterContainer getStringPropertyValue:kIXText defaultValue:nil];
-        NSString* placeholderText = [parameterContainer getStringPropertyValue:kIXTextPlaceholder defaultValue:nil];
+        NSString* text = [parameterContainer getStringValueForAttribute:kIXText defaultValue:nil];
+        NSString* placeholderText = [parameterContainer getStringValueForAttribute:kIXTextPlaceholder defaultValue:nil];
         
         if( [self isUsingUITextView] )
         {
@@ -437,7 +437,7 @@ IX_STATIC_CONST_STRING kIXNewLineString = @"\n";
             }
             if( placeholderText != nil )
             {
-                [[self propertyContainer] addProperty:[IXProperty propertyWithPropertyName:kIXTextPlaceholder rawValue:placeholderText] replaceOtherPropertiesWithTheSameName:YES];
+                [[self attributeContainer] addAttribute:[IXAttribute attributeWithAttributeName:kIXTextPlaceholder rawValue:placeholderText] replaceOtherAttributesWithSameName:YES];
                 [[self textField] setPlaceholder:placeholderText];
             }
             

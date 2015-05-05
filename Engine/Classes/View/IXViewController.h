@@ -10,7 +10,7 @@
 
 @class IXSandbox;
 @class IXLayout;
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 @class IXActionContainer;
 @class IXTextInput;
 @class IXViewController;
@@ -44,6 +44,6 @@ typedef void(^IXViewControllerCreationCompletionBlock)(BOOL didSucceed, IXViewCo
 
 -(void)fireViewEventNamed:(NSString*)eventName;
 -(NSString*)getViewPropertyNamed:(NSString*)propertyName;
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer;
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer;
 
 @end

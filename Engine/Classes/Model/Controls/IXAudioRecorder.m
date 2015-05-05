@@ -74,11 +74,11 @@ static NSString* const kIXStopRecording = @"stop";
     {
         [self setRecordToLocationURL:nil];
         
-        NSURL* recordToLocation = [[self propertyContainer] getURLPathPropertyValue:kIXRecordToLocation basePath:nil defaultValue:nil];
+        NSURL* recordToLocation = [[self attributeContainer] getURLValueForAttribute:kIXRecordToLocation basePath:nil defaultValue:nil];
         if( [IXPathHandler pathIsLocal:[recordToLocation absoluteString]] )
         {
             [self setRecordToLocationURL:recordToLocation];
-            [self setRecordingDuration:[[self propertyContainer] getFloatPropertyValue:kIXDuration defaultValue:-1.0f]];
+            [self setRecordingDuration:[[self attributeContainer] getFloatValueForAttribute:kIXDuration defaultValue:-1.0f]];
         }
         else
         {
@@ -93,7 +93,7 @@ static NSString* const kIXStopRecording = @"stop";
     }
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStartRecording] )
     {

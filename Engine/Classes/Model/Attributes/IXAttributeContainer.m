@@ -1,5 +1,5 @@
 //
-//  IXPropertyBag.m
+//  IXAttributeBag.m
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 10/7/13.
@@ -28,7 +28,7 @@ IX_STATIC_CONST_STRING kIXHeightX = @"size.height";
 IX_STATIC_CONST_STRING kIXSize = @"size";
 
 // NSCoding Key Constants
-static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
+static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
 
 @interface IXAttributeContainer ()
 
@@ -62,7 +62,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:[self attributesDict] forKey:kIXPropertiesDictNSCodingKey];
+    [aCoder encodeObject:[self attributesDict] forKey:kIXAttributesDictNSCodingKey];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -70,68 +70,68 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     self = [self init];
     if( self )
     {        
-        NSDictionary* encodedPropertiesDictionary = [aDecoder decodeObjectForKey:kIXPropertiesDictNSCodingKey];
-        for( NSArray* propertiesArray in [encodedPropertiesDictionary allValues] )
+        NSDictionary* encodedAttributesDictionary = [aDecoder decodeObjectForKey:kIXAttributesDictNSCodingKey];
+        for( NSArray* attributesArray in [encodedAttributesDictionary allValues] )
         {
-            [self addProperties:propertiesArray replaceOtherPropertiesWithTheSameName:NO];
+            [self addAttributes:attributesArray replaceOtherAttributesWithSameName:NO];
         }
     }
     return self;
 }
 
-+(instancetype)attributeContainerFromJSONDict:(NSDictionary*)attributeDictionary
++(instancetype)attributeContainerWithJSONDict:(NSDictionary*)attributeJSONDictionary
 {
     IXAttributeContainer* attributeContainer = nil;
-    if( [attributeDictionary isKindOfClass:[NSDictionary class]] && [[attributeDictionary allValues] count] > 0 )
+    if( [attributeJSONDictionary isKindOfClass:[NSDictionary class]] && [[attributeJSONDictionary allValues] count] > 0 )
     {
         attributeContainer = [[[self class] alloc] init];
-        [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:attributeDictionary keyPrefix:nil];
+        [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:attributeJSONDictionary keyPrefix:nil];
     }
     return attributeContainer;
 }
 
-+(void)populateAttributeContainer:(IXAttributeContainer*)attributeContainer withAttributeJSONDict:(NSDictionary*)attributeDict keyPrefix:(NSString*)keyPrefix
++(void)populateAttributeContainer:(IXAttributeContainer*)attributeContainer withAttributeJSONDict:(NSDictionary*)attributeJSONDictionary keyPrefix:(NSString*)keyPrefix
 {
-    [attributeDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [attributeJSONDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         
-        NSString* propertiesKey = key;
+        NSString* attributesKey = key;
         if( [keyPrefix length] > 0 )
         {
-            propertiesKey = [NSString stringWithFormat:@"%@%@%@",keyPrefix,kIX_PERIOD_SEPERATOR,key];
+            attributesKey = [NSString stringWithFormat:@"%@%@%@",keyPrefix,kIX_PERIOD_SEPERATOR,key];
         }
         
         if( [obj isKindOfClass:[NSArray class]] ) {
-            [attributeContainer addAttributes:[IXAttribute attributesWithAttributeName:propertiesKey attributeValueArray:obj]];
+            [attributeContainer addAttributes:[IXAttribute attributeWithAttributeName:attributesKey attributeValueJSONArray:obj]];
         }
         else if( [obj isKindOfClass:[NSDictionary class]] ) {
-            [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:obj keyPrefix:propertiesKey];
+            [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:obj keyPrefix:attributesKey];
         }
         else {
-            [attributeContainer addAttribute:[IXAttribute attributeWithAttributeName:propertiesKey jsonObject:obj]];
+            [attributeContainer addAttribute:[IXAttribute attributeWithAttributeName:attributesKey jsonObject:obj]];
         }
     }];
 }
 
--(NSMutableArray*)propertiesForPropertyNamed:(NSString*)attributeName
+-(NSMutableArray*)attributesForAttributeNamed:(NSString*)attributeName
 {
     return [self attributesDict][attributeName];
 }
 
--(BOOL)attributeExistsWithName:(NSString*)attributeName
+-(BOOL)attributeExistsForName:(NSString*)attributeName
 {
     return ([self getAttributeToEvaluate:attributeName] != nil);
 }
 
--(BOOL)hasLayoutProperties
+-(BOOL)hasLayoutAttributes
 {
-    BOOL hasLayoutProperties = NO;
+    BOOL hasLayoutAttributes = NO;
     for( NSString* attributeName in [[self attributesDict] allKeys] )
     {
-        hasLayoutProperties = [IXControlLayoutInfo doesAttributeTriggerLayout:attributeName];
-        if( hasLayoutProperties )
+        hasLayoutAttributes = [IXControlLayoutInfo doesAttributeTriggerLayout:attributeName];
+        if( hasLayoutAttributes )
             break;
     }
-    return hasLayoutProperties;
+    return hasLayoutAttributes;
 }
 
 -(void)removeAllAttributes
@@ -141,34 +141,34 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 
 -(void)addAttributes:(NSArray*)attributes
 {
-    [self addProperties:attributes replaceOtherPropertiesWithTheSameName:NO];
+    [self addAttributes:attributes replaceOtherAttributesWithSameName:NO];
 }
 
--(void)addProperties:(NSArray*)attributes replaceOtherPropertiesWithTheSameName:(BOOL)replaceOtherProperties
+-(void)addAttributes:(NSArray*)attributes replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes
 {
     for( IXAttribute* attribute in attributes )
     {
-        [self addAttribute:attribute replaceOtherAttributesWithTheSameName:replaceOtherProperties];
+        [self addAttribute:attribute replaceOtherAttributesWithSameName:replaceOtherAttributes];
     }
 }
 
--(void)addAttribute:(IXAttribute*)attribute
+-(void)addAttribute:(IXAttribute*)property
 {
-    [self addAttribute:attribute replaceOtherAttributesWithTheSameName:NO];
+    [self addAttribute:property replaceOtherAttributesWithSameName:NO];
 }
 
--(void)addAttribute:(IXAttribute*)attribute replaceOtherAttributesWithTheSameName:(BOOL)replaceOtherAttributes
+-(void)addAttribute:(IXAttribute*)attribute replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes
 {
     NSString* attributeName = [attribute attributeName];
     if( attribute == nil || attributeName == nil )
     {
-        IX_LOG_ERROR(@"ERROR from %@ in %@ : TRYING TO ADD PROPERTY THAT IS NIL OR PROPERTIES NAME IS NIL",THIS_FILE,THIS_METHOD);
+        IX_LOG_ERROR(@"ERROR from %@ in %@: Tried to add an undefined attribute or attribute's name is nil",THIS_FILE,THIS_METHOD);
         return;
     }
     
     [attribute setAttributeContainer:self];
     
-    NSMutableArray* attributeArray = [self propertiesForPropertyNamed:attributeName];
+    NSMutableArray* attributeArray = [self attributesForAttributeNamed:attributeName];
     if( attributeArray == nil )
     {
         attributeArray = [[NSMutableArray alloc] initWithObjects:attribute, nil];
@@ -185,23 +185,23 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     }
 }
 
--(void)addAttributesFromAttributeContainer:(IXAttributeContainer*)attributeContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherAttributesWithTheSameName:(BOOL)replaceOtherAttributes
+-(void)addAttributesFromContainer:(IXAttributeContainer*)attributeContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes
 {
     NSArray* attributeNames = [[attributeContainer attributesDict] allKeys];
     for( NSString* attributeName in attributeNames )
     {
         if( evaluateBeforeAdding )
         {
-            NSString* attributeValue = [attributeContainer getStringAttributeValue:attributeName defaultValue:nil];
+            NSString* attributeValue = [attributeContainer getStringValueForAttribute:attributeName defaultValue:nil];
             if( attributeValue )
             {
                 IXAttribute* attribute = [[IXAttribute alloc] initWithAttributeName:attributeName rawValue:attributeValue];
-                [self addAttribute:attribute replaceOtherAttributesWithTheSameName:replaceOtherAttributes];
+                [self addAttribute:attribute replaceOtherAttributesWithSameName:replaceOtherAttributes];
             }
         }
         else
         {
-            NSMutableArray* attributeArray = [[NSMutableArray alloc] initWithArray:[attributeContainer propertiesForPropertyNamed:attributeName]
+            NSMutableArray* attributeArray = [[NSMutableArray alloc] initWithArray:[attributeContainer attributesForAttributeNamed:attributeName]
                                                                         copyItems:YES];
             if( replaceOtherAttributes ) {
                 for( IXAttribute* attribute in attributeArray ) {
@@ -209,7 +209,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
                 }
                 self.attributesDict[attributeName] = attributeArray;
             } else {
-                [self addProperties:attributeArray replaceOtherPropertiesWithTheSameName:false];
+                [self addAttributes:attributeArray replaceOtherAttributesWithSameName:false];
             }
         }
     }
@@ -217,7 +217,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 
 -(void)removeAttributeNamed:(NSString *)attributeName
 {
-    NSMutableArray* attributeArray = [self propertiesForPropertyNamed:attributeName];
+    NSMutableArray* attributeArray = [self attributesForAttributeNamed:attributeName];
     [attributeArray removeAllObjects];
 }
 
@@ -270,11 +270,11 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         
     }];
 }
--(NSDictionary*)getAllAttributesObjectValues {
-    return [self getAllAttributesObjectValuesURLEncoded:NO];
+-(NSDictionary*)getAllAttributesAsDictionary {
+    return [self getAllAttributesAsDictionaryWithURLEncodedValues:NO];
 }
 
--(NSDictionary*)getAllAttributesObjectValuesURLEncoded:(BOOL)urlEncodeStringValues
+-(NSDictionary*)getAllAttributesAsDictionaryWithURLEncodedValues:(BOOL)urlEncodeValues
 {
     NSMutableDictionary* returnDictionary = nil;
     if( [[[self attributesDict] allKeys] count] > 0 )
@@ -283,8 +283,8 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         
         for( NSString* attributeName in [[self attributesDict] allKeys] )
         {
-            NSString* attributeValue = [self getStringAttributeValue:attributeName defaultValue:kIX_EMPTY_STRING];
-            if( urlEncodeStringValues ) {
+            NSString* attributeValue = [self getStringValueForAttribute:attributeName defaultValue:kIX_EMPTY_STRING];
+            if( urlEncodeValues ) {
                 attributeValue = [attributeValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             }
 
@@ -357,7 +357,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         NSArray* attributeNames = [[self attributesDict] allKeys];
         for( NSString* attributeName in attributeNames )
         {
-            NSURL* attributeURL = [self getURLPathAttributeValue:attributeName basePath:nil defaultValue:nil];
+            NSURL* attributeURL = [self getURLValueForAttribute:attributeName basePath:nil defaultValue:nil];
             if( [[attributeURL absoluteString] length] > 0 )
             {
                 [returnDictionary setObject:attributeURL forKey:attributeName];
@@ -367,7 +367,11 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnDictionary;
 }
 
--(NSDictionary*)getAllAttributesStringValues:(BOOL)urlEncodeValues
+-(NSDictionary*)getAllAttributesAsDictionaryWithDotNotation {
+    return [self getAllAttributesAsDictionaryWithDotNotationAndURLEncodedValues:NO];
+}
+
+-(NSDictionary*)getAllAttributesAsDictionaryWithDotNotationAndURLEncodedValues:(BOOL)urlEncodeValues
 {
     NSMutableDictionary* returnDictionary = nil;
     if( [[[self attributesDict] allKeys] count] > 0 )
@@ -377,7 +381,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         NSArray* attributeNames = [[self attributesDict] allKeys];
         for( NSString* attributeName in attributeNames )
         {
-            NSString* attributeValue = [self getStringAttributeValue:attributeName defaultValue:kIX_EMPTY_STRING];
+            NSString* attributeValue = [self getStringValueForAttribute:attributeName defaultValue:kIX_EMPTY_STRING];
             if( urlEncodeValues ) {
                 attributeValue = [attributeValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             }
@@ -389,13 +393,13 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnDictionary;
 }
 
--(IXAttribute*)getAttributeToEvaluate:(NSString*)attribute
+-(IXAttribute*)getAttributeToEvaluate:(NSString*)attributeName
 {
-    if( attribute == nil )
+    if( attributeName == nil )
         return nil;
     
     IXAttribute* attributeToEvaluate = nil;
-    NSArray* attributeArray = [self propertiesForPropertyNamed:attribute];
+    NSArray* attributeArray = [self attributesForAttributeNamed:attributeName];
     if( [attributeArray count] > 0 )
     {
         UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
@@ -403,8 +407,8 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         {
             if( [attribute areConditionalAndOrientationMaskValid:currentOrientation] ) {
                 attributeToEvaluate = attribute;
-            } else if( [attribute elseProperty] != nil && [attribute isOrientationMaskValidForOrientation:currentOrientation] ) {
-                attributeToEvaluate = [attribute elseProperty];
+            } else if( [attribute valueIfFalse] != nil && [attribute isOrientationMaskValidForOrientation:currentOrientation] ) {
+                attributeToEvaluate = [attribute valueIfFalse];
             }
 
             if( attributeToEvaluate != nil ) {
@@ -415,30 +419,30 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return attributeToEvaluate;
 }
 
--(NSString*)getStringAttributeValue:(NSString*)attributeName defaultValue:(NSString*)defaultValue
+-(NSString*)getStringValueForAttribute:(NSString*)attributeName defaultValue:(NSString*)defaultValue
 {
     IXAttribute* attributeToEvaluate = [self getAttributeToEvaluate:attributeName];
-    NSString* returnValue =  ( attributeToEvaluate != nil ) ? [attributeToEvaluate getAttributeValue] : defaultValue;
+    NSString* returnValue =  ( attributeToEvaluate != nil ) ? [attributeToEvaluate attributeStringValue] : defaultValue;
     return [returnValue copy];
 }
 
--(IXSize*)getSizeAttributeValueWithPrefix:(NSString*)prefix
+-(IXSize*)getSizeValueForAttributeWithPrefix:(NSString*)prefix
 {
-    NSString* attribute = kIXSize;
+    NSString* attributeName = kIXSize;
     NSString* width = kIXWidth;
     NSString* height = kIXHeight;
     NSString* widthX = kIXWidthX;
     NSString* heightX = kIXHeightX;
     
     if (prefix != nil) {
-        attribute = [NSString stringWithFormat:@"%@.%@", prefix, kIXSize];
+        attributeName = [NSString stringWithFormat:@"%@.%@", prefix, kIXSize];
         width = [NSString stringWithFormat:@"%@.%@", prefix, width];
         height = [NSString stringWithFormat:@"%@.%@", prefix, height];
         widthX = [NSString stringWithFormat:@"%@.%@", prefix, widthX];
         heightX = [NSString stringWithFormat:@"%@.%@", prefix, heightX];
     }
     IXSize* returnSize = [[IXSize alloc] initWithDefaultSize];
-    NSArray* sizeArr = [self getCommaSeperatedArrayListValue:attribute defaultValue:nil];
+    NSArray* sizeArr = [self getCommaSeparatedArrayOfValuesForAttribute:attributeName defaultValue:nil];
     if (sizeArr.count == 2) {
         returnSize.width = sizeArr[0];
         returnSize.height = sizeArr[1];
@@ -446,15 +450,15 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
         returnSize.width = sizeArr[0];
         returnSize.height = sizeArr[0];
     }
-    returnSize.width = [self getStringAttributeValue:width defaultValue:nil] ?: [self getStringAttributeValue:widthX defaultValue:returnSize.width];
-    returnSize.height = [self getStringAttributeValue:height defaultValue:nil] ?: [self getStringAttributeValue:heightX defaultValue:returnSize.height];
+    returnSize.width = [self getStringValueForAttribute:width defaultValue:nil] ?: [self getStringValueForAttribute:widthX defaultValue:returnSize.width];
+    returnSize.height = [self getStringValueForAttribute:height defaultValue:nil] ?: [self getStringValueForAttribute:heightX defaultValue:returnSize.height];
     return returnSize;
 }
 
--(NSArray*)getCommaSeperatedArrayListValue:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
+-(NSArray*)getCommaSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
     NSArray* returnArray = defaultValue;
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     if( stringValue != nil )
     {
         returnArray = [stringValue componentsSeparatedByString:kIX_COMMA_SEPERATOR];
@@ -462,10 +466,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnArray;
 }
 
--(NSArray*)getPipeCommaPipeSeperatedArrayListValue:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
+-(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
     NSArray* returnArray = defaultValue;
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     if( stringValue != nil )
     {
         returnArray = [stringValue componentsSeparatedByString:kIX_PIPECOMMAPIPE_SEPERATOR];
@@ -473,10 +477,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnArray;
 }
 
--(NSArray*)getPipeSeperatedArrayListValue:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
+-(NSArray*)getPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
     NSArray* returnArray = defaultValue;
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     if( stringValue != nil )
     {
         returnArray = [stringValue componentsSeparatedByString:kIX_PIPE_SEPERATOR];
@@ -484,37 +488,37 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnArray;
 }
 
--(BOOL)getBoolPropertyValue:(NSString*)attributeName defaultValue:(BOOL)defaultValue
+-(BOOL)getBoolValueForAttribute:(NSString*)attributeName defaultValue:(BOOL)defaultValue
 {
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     BOOL returnValue =  ( stringValue != nil ) ? [stringValue boolValue] : defaultValue;
     return returnValue;
 }
 
--(int)getIntAttributeValue:(NSString*)attributeName defaultValue:(int)defaultValue
+-(int)getIntValueForAttribute:(NSString*)attributeName defaultValue:(int)defaultValue
 {
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     int returnValue =  ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
     return returnValue;
 }
 
--(float)getFloatAttributeValue:(NSString*)attributeName defaultValue:(float)defaultValue
+-(float)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(float)defaultValue
 {
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     float returnValue =  ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
     return returnValue;
 }
 
--(float)getSizeValue:(NSString*)attributeName maximumSize:(float)maxSize defaultValue:(float)defaultValue
+-(float)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(float)maxSize defaultValue:(float)defaultValue
 {
-    IXSizeValuePercentage sizeValuePercentage = ixSizePercentageValueWithStringOrDefaultValue([self getStringAttributeValue:attributeName defaultValue:nil], defaultValue);
+    IXSizeValuePercentage sizeValuePercentage = ixSizePercentageValueWithStringOrDefaultValue([self getStringValueForAttribute:attributeName defaultValue:nil], defaultValue);
     float returnValue = ixEvaluateSizeValuePercentageForMaxValue(sizeValuePercentage, maxSize);
     return returnValue;
 }
 
--(UIColor*)getColorAttributeValue:(NSString*)attributeName defaultValue:(UIColor*)defaultValue
+-(UIColor*)getColorValueForAttribute:(NSString*)attributeName defaultValue:(UIColor*)defaultValue
 {
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     UIColor* returnValue =  ( stringValue != nil ) ? [UIColor colorWithString:stringValue] : defaultValue;
     return returnValue;
 }
@@ -534,7 +538,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
 
 -(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage
 {
-    NSURL* imageURL = [self getURLPathAttributeValue:attributeName basePath:nil defaultValue:nil];
+    NSURL* imageURL = [self getURLValueForAttribute:attributeName basePath:nil defaultValue:nil];
     /*
      Added in a fallback so that if images.touch (etc.) don't exist, it tries again with "images.default".
      This way we don't have to specify several of the same image in the JSON.
@@ -543,9 +547,9 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     if( imageURL == nil )
     {
         if ([attributeName hasSuffix:@"icon"])
-            imageURL = [self getURLPathAttributeValue:@"icon" basePath:nil defaultValue:nil];
+            imageURL = [self getURLValueForAttribute:@"icon" basePath:nil defaultValue:nil];
         if ([attributeName hasPrefix:@"images"])
-            imageURL = [self getURLPathAttributeValue:@"images.default" basePath:nil defaultValue:nil];
+            imageURL = [self getURLValueForAttribute:@"images.default" basePath:nil defaultValue:nil];
     }
     
     if( imageURL != nil )
@@ -619,10 +623,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     }
 }
 
--(NSURL*)getURLPathAttributeValue:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
+-(NSURL*)getURLValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
 {
     NSURL* returnURL = defaultValue;
-    NSString* stringSettingValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     if( stringSettingValue != nil )
     {
         returnURL = [IXPathHandler normalizedURLPath:stringSettingValue
@@ -632,10 +636,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnURL;
 }
 
--(NSString*)getPathAttributeValue:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+-(NSString*)getPathForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
     NSString* returnPath = defaultValue;
-    NSString* stringSettingValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     if( stringSettingValue != nil )
     {
         returnPath = [IXPathHandler normalizedPath:stringSettingValue
@@ -645,10 +649,10 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     return returnPath;
 }
 
--(UIFont*)getFontAttributeValue:(NSString*)attributeName defaultValue:(UIFont*)defaultValue
+-(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue
 {
     UIFont* returnFont = defaultValue;
-    NSString* stringValue = [self getStringAttributeValue:attributeName defaultValue:nil];
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
     if( stringValue )
     {
         returnFont = [UIFont ix_fontFromString:stringValue];
@@ -667,7 +671,7 @@ static NSString* const kIXPropertiesDictNSCodingKey = @"propertiesDict";
     for( NSString* attributeKey in attributes )
     {
         IXAttribute* attributeToEvaluate = [self getAttributeToEvaluate:attributeKey];
-        [description appendFormat:@"\t%@: %@",attributeKey, [attributeToEvaluate getAttributeValue]];
+        [description appendFormat:@"\t%@: %@",attributeKey, [attributeToEvaluate attributeStringValue]];
         if( [attributeToEvaluate evaluations] )
         {
             [description appendFormat:@" (%@)",[attributeToEvaluate originalString]];

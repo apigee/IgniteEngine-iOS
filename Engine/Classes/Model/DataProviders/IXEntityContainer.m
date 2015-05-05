@@ -8,8 +8,8 @@
 
 #import "IXEntityContainer.h"
 
-#import "IXProperty.h"
-#import "IXPropertyContainer.h"
+#import "IXAttribute.h"
+#import "IXAttributeContainer.h"
 
 @implementation IXEntityContainer
 
@@ -18,7 +18,7 @@
     self = [super init];
     if( self )
     {
-        _entityProperties = [[IXPropertyContainer alloc] init];
+        _entityAttributes = [[IXAttributeContainer alloc] init];
         _subEntities = [[NSMutableArray alloc] init];
     }
     return self;
@@ -27,7 +27,7 @@
 -(instancetype)copyWithZone:(NSZone *)zone
 {
     IXEntityContainer* copiedEntityContainer = [[[self class] allocWithZone:zone] init];
-    [copiedEntityContainer setEntityProperties:[[self entityProperties] copy]];
+    [copiedEntityContainer setEntityAttributes:[[self entityAttributes] copy]];
     [copiedEntityContainer setSubEntities:[[NSMutableArray alloc] initWithArray:[self subEntities] copyItems:YES]];
     return copiedEntityContainer;
 }
@@ -51,7 +51,7 @@
             }
             else if( [obj isKindOfClass:[NSString class]] || [obj isKindOfClass:[NSNumber class]] )
             {
-                [[entity entityProperties] addProperty:[IXProperty propertyWithPropertyName:key jsonObject:obj]];
+                [[entity entityAttributes] addAttribute:[IXAttribute attributeWithAttributeName:key jsonObject:obj]];
             }
         }];
     }

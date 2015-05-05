@@ -9,7 +9,7 @@
 #import "IXBaseConditionalObject.h"
 
 #import "IXAppManager.h"
-#import "IXProperty.h"
+#import "IXAttribute.h"
 #import "IXBaseObject.h"
 
 // NSCoding Key Constants
@@ -26,7 +26,7 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
 }
 
 +(instancetype)baseConditionalObjectWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
-                                             conditionalProperty:(IXProperty*)conditionalProperty
+                                             conditionalProperty:(IXAttribute*)conditionalProperty
 {
     return [[[self class] alloc] initWithInterfaceOrientationMask:interfaceOrientationMask
                                               conditionalProperty:conditionalProperty];
@@ -35,19 +35,19 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
 -(id)copyWithZone:(NSZone *)zone
 {
     IXBaseConditionalObject* copiedObject = [[[self class] allocWithZone:zone] initWithInterfaceOrientationMask:[self interfaceOrientationMask]
-                                                                                            conditionalProperty:[[self conditionalProperty] copy]];
-    [copiedObject setElseProperty:[[self elseProperty] copy]];
+                                                                                            conditionalProperty:[[self valueIfTrue] copy]];
+    [copiedObject setValueIfFalse:[[self valueIfFalse] copy]];
     return copiedObject;
 }
 
 -(instancetype)initWithInterfaceOrientationMask:(UIInterfaceOrientationMask)interfaceOrientationMask
-                            conditionalProperty:(IXProperty*)conditionalProperty
+                            conditionalProperty:(IXAttribute*)conditionalProperty
 {
     self = [super init];
     if( self )
     {
         _interfaceOrientationMask = interfaceOrientationMask;
-        _conditionalProperty = conditionalProperty;
+        _valueIfTrue = conditionalProperty;
     }
     return self;
 }
@@ -56,15 +56,15 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
 {
     IXBaseConditionalObject* baseConditionalObject = [self initWithInterfaceOrientationMask:[aDecoder decodeIntegerForKey:kIXInterfaceOrientationMaskNSCodingKey]
                                                                         conditionalProperty:[aDecoder decodeObjectForKey:kIXConditionalPropertyNSCodingKey]];
-    [baseConditionalObject setElseProperty:[aDecoder decodeObjectForKey:kIXElsePropertyNSCodingKey]];
+    [baseConditionalObject setValueIfFalse:[aDecoder decodeObjectForKey:kIXElsePropertyNSCodingKey]];
     return baseConditionalObject;
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeInteger:[self interfaceOrientationMask] forKey:kIXInterfaceOrientationMaskNSCodingKey];
-    [aCoder encodeObject:[self conditionalProperty] forKey:kIXConditionalPropertyNSCodingKey];
-    [aCoder encodeObject:[self elseProperty] forKey:kIXElsePropertyNSCodingKey];
+    [aCoder encodeObject:[self valueIfTrue] forKey:kIXConditionalPropertyNSCodingKey];
+    [aCoder encodeObject:[self valueIfFalse] forKey:kIXElsePropertyNSCodingKey];
 }
 
 -(BOOL)isOrientationMaskValidForOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -89,9 +89,9 @@ static NSString* const kIXInterfaceOrientationMaskNSCodingKey = @"interfaceOrien
 -(BOOL)isConditionalTrue
 {
     BOOL conditionalPropertyEvaluatesTrue = YES;
-    if( [self conditionalProperty] != nil )
+    if( [self valueIfTrue] != nil )
     {
-        NSString* conditionalPropertyValue = [[self conditionalProperty] getPropertyValue];
+        NSString* conditionalPropertyValue = [[self valueIfTrue] attributeStringValue];
         if( conditionalPropertyValue && [conditionalPropertyValue length] > 0 )
         {
             NSString* evaluationResult = [[IXAppManager sharedAppManager] evaluateJavascript:conditionalPropertyValue];

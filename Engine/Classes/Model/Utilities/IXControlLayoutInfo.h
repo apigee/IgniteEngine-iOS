@@ -10,11 +10,11 @@
 
 #import "IXStructs.h"
 
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 
 @interface IXControlLayoutInfo : NSObject <NSCopying>
 
-@property (nonatomic,weak) IXPropertyContainer* propertyContainer;
+@property (nonatomic,weak) IXAttributeContainer* attributeContainer;
 @property (nonatomic,assign) CGRect layoutRect;
 
 @property (nonatomic,assign,readonly) BOOL isHidden;
@@ -41,11 +41,11 @@
 @property (nonatomic,assign,readonly) IXEdgeInsets marginInsets;
 @property (nonatomic,assign,readonly) IXEdgeInsets paddingInsets;
 
--(instancetype)initWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
-+(instancetype)controlLayoutInfoWithPropertyContainer:(IXPropertyContainer*)propertyContainer;
+-(instancetype)initWithAttributeContainer:(IXAttributeContainer*)attributeContainer;
++(instancetype)controlLayoutInfoWithPropertyContainer:(IXAttributeContainer*)attributeContainer;
 
 -(void)refreshLayoutInfo;
-+(BOOL)doesPropertyNameTriggerLayout:(NSString*)propertyName;
++(BOOL)doesAttributeTriggerLayout:(NSString*)propertyName;
 
 IXEdgeInsets IXEdgeInsetsZero();
 UIEdgeInsets ixEvaluateEdgeInsets(IXEdgeInsets edgeInsets, CGSize maxSize);

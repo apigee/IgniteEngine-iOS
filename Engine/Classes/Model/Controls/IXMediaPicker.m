@@ -70,15 +70,15 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
 {
     [super applySettings];
     
-    [self setSourceTypeString:[[self propertyContainer] getStringPropertyValue:kIXSource defaultValue:kIXSourceCamera]];
-    [self setCameraDeviceString:[[self propertyContainer] getStringPropertyValue:kIXSource defaultValue:kIXCameraRear]];
-    [self setShowCameraControls:[[self propertyContainer] getBoolPropertyValue:kIXCameraControlsEnabled defaultValue:YES]];
+    [self setSourceTypeString:[[self attributeContainer] getStringValueForAttribute:kIXSource defaultValue:kIXSourceCamera]];
+    [self setCameraDeviceString:[[self attributeContainer] getStringValueForAttribute:kIXSource defaultValue:kIXCameraRear]];
+    [self setShowCameraControls:[[self attributeContainer] getBoolValueForAttribute:kIXCameraControlsEnabled defaultValue:YES]];
     
     [self setPickerSourceType:[UIImagePickerController stringToSourceType:[self sourceTypeString]]];
     [self setPickerDevice:[UIImagePickerController stringToCameraDevice:[self cameraDeviceString]]];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXPresent] )
     {
@@ -88,7 +88,7 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
             
             BOOL animated = YES;
             if( parameterContainer ) {
-                animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+                animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
             }
             
             [self presentPickerController:animated];
@@ -98,7 +98,7 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         
         [self dismissPickerController:animated];

@@ -55,16 +55,16 @@ static ZBarReaderViewController* sReaderViewController = nil;
 {
     [super applySettings];
     
-    [self setAutoClose:[[self propertyContainer] getBoolPropertyValue:kIXAutoClose defaultValue:YES]];
+    [self setAutoClose:[[self attributeContainer] getBoolValueForAttribute:kIXAutoClose defaultValue:YES]];
 }
 
--(void)applyFunction:(NSString*)functionName withParameters:(IXPropertyContainer*)parameterContainer
+-(void)applyFunction:(NSString*)functionName withParameters:(IXAttributeContainer*)parameterContainer
 {
     if( [functionName isEqualToString:kIXPresent] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self presentReader:animated];
     }
@@ -72,7 +72,7 @@ static ZBarReaderViewController* sReaderViewController = nil;
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self closeReader:animated];
     }

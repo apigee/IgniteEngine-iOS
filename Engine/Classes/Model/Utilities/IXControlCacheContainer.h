@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class IXBaseControl;
-@class IXPropertyContainer;
+@class IXAttributeContainer;
 @class IXActionContainer;
 @class IXControlCacheContainer;
 
@@ -22,14 +22,14 @@ typedef void(^IXPopulateControlCompletionBlock)(BOOL didSucceed, IXBaseControl* 
 @property (nonatomic,readonly) Class controlClass;
 @property (nonatomic,copy) NSString* controlType;
 @property (nonatomic,copy) NSString* styleClass;
-@property (nonatomic,strong) IXPropertyContainer* propertyContainer;
+@property (nonatomic,strong) IXAttributeContainer* propertyContainer;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) NSArray* childConfigControls;
 @property (nonatomic,strong) NSArray* dataProviderConfigs;
 
 -(instancetype)initWithControlType:(NSString*)controlType
                         styleClass:(NSString*)styleClass
-                 propertyContainer:(IXPropertyContainer*)propertyContainer
+                 propertyContainer:(IXAttributeContainer*)propertyContainer
                    actionContainer:(IXActionContainer*)actionContainer
                childConfigControls:(NSArray*)childConfigControls
                dataProviderConfigs:(NSArray*)dataProviderConfigs;

@@ -1,5 +1,5 @@
 //
-//  IXPropertyBag.h
+//  IXAttributeBag.h
 //  Ignite Engine
 //
 //  Created by Robert Walsh on 10/7/13.
@@ -23,40 +23,42 @@ typedef void(^IXAttributeContainerImageFailedCompletedBlock)(NSError *error);
 
 @property (nonatomic,weak) IXBaseObject* ownerObject;
 
-+(instancetype)attributeContainerFromJSONDict:(NSDictionary*)attributeDictionary;
++(instancetype)attributeContainerWithJSONDict:(NSDictionary*)propertyDictionary;
 
--(BOOL)hasLayoutProperties;
+-(BOOL)hasLayoutAttributes;
 
 -(void)removeAllAttributes;
 
--(void)addAttribute:(IXAttribute*)attribute;
--(void)addAttribute:(IXAttribute*)attribute replaceOtherAttributesWithTheSameName:(BOOL)replaceOtherAttributes;
--(void)addAttributes:(NSArray*)attributes;
--(void)addAttributes:(NSArray*)attributes replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes;
--(void)addAttributesFromAttributeContainer:(IXAttributeContainer*)attributeContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherAttributesWithTheSameName:(BOOL)replaceOtherAttributes;
+-(void)addAttribute:(IXAttribute*)property;
+-(void)addAttribute:(IXAttribute*)property replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes;
+-(void)addAttributes:(NSArray*)Attributes;
+-(void)addAttributes:(NSArray*)Attributes replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes;
+-(void)addAttributesFromContainer:(IXAttributeContainer*)propertyContainer evaluateBeforeAdding:(BOOL)evaluateBeforeAdding replaceOtherAttributesWithSameName:(BOOL)replaceOtherAttributes;
 -(void)removeAttributeNamed:(NSString*)attributeName;
 
 -(NSDictionary*)getAllAttributesURLValues;
--(NSDictionary*)getAllAttributesObjectValues;
--(NSDictionary*)getAllAttributesObjectValuesURLEncoded:(BOOL)urlEncodeStringValues;
--(NSDictionary*)getAllAttributesStringValues:(BOOL)urlEncodeValues;
--(BOOL)attributeExistsWithName:(NSString*)attributeName;
+-(NSDictionary*)getAllAttributesAsDictionary;
+-(NSDictionary*)getAllAttributesAsDictionaryWithURLEncodedValues:(BOOL)urlEncodeValues;
+-(NSDictionary*)getAllAttributesAsDictionaryWithDotNotation;
+-(NSDictionary*)getAllAttributesAsDictionaryWithDotNotationAndURLEncodedValues:(BOOL)urlEncodeValues;
+-(BOOL)attributeExistsForName:(NSString*)attributeName;
 
--(NSString*)getStringAttributeValue:(NSString*)attributeName defaultValue:(NSString*)defaultValue;
--(IXSize*)getSizeAttributeValueWithPrefix:(NSString*)prefix;
--(BOOL)getBoolPropertyValue:(NSString*)attributeName defaultValue:(BOOL)defaultValue;
--(int)getIntAttributeValue:(NSString*)attributeName defaultValue:(int)defaultValue;
--(float)getFloatAttributeValue:(NSString*)attributeName defaultValue:(float)defaultValue;
--(float)getSizeValue:(NSString*)attributeName maximumSize:(float)maxSize defaultValue:(float)defaultValue;
--(UIColor*)getColorAttributeValue:(NSString*)attributeName defaultValue:(UIColor*)defaultValue;
--(NSArray*)getCommaSeperatedArrayListValue:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
--(NSArray*)getPipeSeperatedArrayListValue:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
--(NSArray*)getPipeCommaPipeSeperatedArrayListValue:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
+-(NSString*)getStringValueForAttribute:(NSString*)attributeName defaultValue:(NSString*)defaultValue;
+-(IXSize*)getSizeValueForAttributeWithPrefix:(NSString*)prefix;
+-(BOOL)getBoolValueForAttribute:(NSString*)attributeName defaultValue:(BOOL)defaultValue;
+-(int)getIntValueForAttribute:(NSString*)attributeName defaultValue:(int)defaultValue;
+-(float)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(float)defaultValue;
+// TODO: Should this be deprecated in favor of the IXSize method above?
+-(float)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(float)maxSize defaultValue:(float)defaultValue;
+-(UIColor*)getColorValueForAttribute:(NSString*)attributeName defaultValue:(UIColor*)defaultValue;
+-(NSArray*)getCommaSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
+-(NSArray*)getPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
+-(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
 -(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock;
 -(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage;
--(UIFont*)getFontAttributeValue:(NSString*)attributeName defaultValue:(UIFont*)defaultValue;
--(NSURL*)getURLPathAttributeValue:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue;
--(NSString*)getPathAttributeValue:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
+-(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue;
+-(NSURL*)getURLValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue;
+-(NSString*)getPathForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
 
 +(void)storeImageInCache:(UIImage*)image withImageURL:(NSURL*)imageURL toDisk:(BOOL)toDisk;
 

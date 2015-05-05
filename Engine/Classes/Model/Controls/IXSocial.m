@@ -98,26 +98,26 @@ IX_STATIC_CONST_STRING kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "a
 {
     [super applySettings];
     
-    [self setShareServiceType:[IXSocial getServiceType:[[self propertyContainer] getStringPropertyValue:kIX_SharePlatform defaultValue:nil]]];
-    [self setShareInitialText:[[self propertyContainer] getStringPropertyValue:kIX_ShareText defaultValue:nil]];
+    [self setShareServiceType:[IXSocial getServiceType:[[self attributeContainer] getStringValueForAttribute:kIX_SharePlatform defaultValue:nil]]];
+    [self setShareInitialText:[[self attributeContainer] getStringValueForAttribute:kIX_ShareText defaultValue:nil]];
 
-    [self setShareUrl:[NSURL URLWithString:[[self propertyContainer] getStringPropertyValue:kIX_ShareUrl defaultValue:nil]]];
+    [self setShareUrl:[NSURL URLWithString:[[self attributeContainer] getStringValueForAttribute:kIX_ShareUrl defaultValue:nil]]];
 
     __weak IXSocial* weakSelf = self;
-    [[self propertyContainer] getImageProperty:kIX_ShareImage
+    [[self attributeContainer] getImageAttribute:kIX_ShareImage
                                   successBlock:^(UIImage *image) {
                                       [weakSelf setShareImage:image];
                                   } failBlock:^(NSError *error) {
                                   }];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIX_Present_Share_Controller] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self presentComposeViewController:animated];
     }
@@ -125,7 +125,7 @@ IX_STATIC_CONST_STRING kIX_Dismiss_Share_Controller = @"dismiss"; // Params : "a
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [self dismissComposeViewController:animated];
     }

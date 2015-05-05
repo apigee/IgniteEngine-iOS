@@ -56,7 +56,7 @@ IX_STATIC_CONST_STRING kIIsOn = @"isOn";
     if( ![self hasAppliedSettings] )
     {
         [self setHasAppliedSettings:YES];
-        [[self toggleSwitch] setOn:[[self propertyContainer] getBoolPropertyValue:kIDefaultOn defaultValue:NO] animated:NO];
+        [[self toggleSwitch] setOn:[[self attributeContainer] getBoolValueForAttribute:kIDefaultOn defaultValue:NO] animated:NO];
     }
 }
 
@@ -74,13 +74,13 @@ IX_STATIC_CONST_STRING kIIsOn = @"isOn";
     }
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXToggle] )
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:![[self toggleSwitch] isOn] animated:animated];
         [[self actionContainer] executeActionsForEventNamed:kIXToggle];
@@ -90,7 +90,7 @@ IX_STATIC_CONST_STRING kIIsOn = @"isOn";
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:YES animated:animated];
         [[self actionContainer] executeActionsForEventNamed:kIXToggleOn];
@@ -100,7 +100,7 @@ IX_STATIC_CONST_STRING kIIsOn = @"isOn";
     {
         BOOL animated = YES;
         if( parameterContainer ) {
-            animated = [parameterContainer getBoolPropertyValue:kIX_ANIMATED defaultValue:animated];
+            animated = [parameterContainer getBoolValueForAttribute:kIX_ANIMATED defaultValue:animated];
         }
         [[self toggleSwitch] setOn:NO animated:animated];
         [[self actionContainer] executeActionsForEventNamed:kIXToggleOff];

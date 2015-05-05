@@ -8,7 +8,7 @@
 
 #import "IXNavigateAction.h"
 
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXNavigationViewController.h"
 #import "IXViewController.h"
 #import "IXAppManager.h"
@@ -130,9 +130,9 @@ typedef void(^IXNavAnimationCompletionBlock)();
 
         sIXIsAttemptingNavigation = YES;
 
-        NSString* navigateStackType = [[self actionProperties] getStringPropertyValue:kIXNavStackType defaultValue:kIXNavStackTypePush];
+        NSString* navigateStackType = [[self actionProperties] getStringValueForAttribute:kIXNavStackType defaultValue:kIXNavStackTypePush];
         
-        NSString* navAnimationTransitionType = [[self actionProperties] getStringPropertyValue:kIXNavAnimationType defaultValue:kIX_DEFAULT];
+        NSString* navAnimationTransitionType = [[self actionProperties] getStringValueForAttribute:kIXNavAnimationType defaultValue:kIX_DEFAULT];
         
         if( [navAnimationTransitionType isEqualToString:kIXNavAnimationTypeMoveIn] )
         {
@@ -145,8 +145,8 @@ typedef void(^IXNavAnimationCompletionBlock)();
             [self setUsesCustomPushAndPopNavigationTransition:NO];
         }
         
-        [self setNavAnimationDelay:[[self actionProperties] getFloatPropertyValue:kIXNavAnimationDelay defaultValue:0.0f]];
-        [self setNavAnimationDuration:[[self actionProperties] getFloatPropertyValue:kIXNavAnimationDuration defaultValue:0.75f]];
+        [self setNavAnimationDelay:[[self actionProperties] getFloatValueForAttribute:kIXNavAnimationDelay defaultValue:0.0f]];
+        [self setNavAnimationDuration:[[self actionProperties] getFloatValueForAttribute:kIXNavAnimationDuration defaultValue:0.75f]];
         
         if( [navigateStackType isEqualToString:kIXNavStackTypePop] )
         {
@@ -188,7 +188,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
     IXNavigationViewController* navController = [[IXAppManager sharedAppManager] rootViewController];
     if( [[navController viewControllers] count] > 1 )
     {
-        NSString* popToViewID = [[self actionProperties] getStringPropertyValue:kIXNavPopToViewID defaultValue:nil];
+        NSString* popToViewID = [[self actionProperties] getStringValueForAttribute:kIXNavPopToViewID defaultValue:nil];
         UIViewController* viewControllerToPopTo = [navController viewControllerWithID:popToViewID];
         if( viewControllerToPopTo == nil )
         {
@@ -269,7 +269,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
 
 -(void)performPushNavigation
 {
-    NSString* archivedViewControllerID = [[self actionProperties] getStringPropertyValue:@"cache_id" defaultValue:nil];
+    NSString* archivedViewControllerID = [[self actionProperties] getStringValueForAttribute:@"cache_id" defaultValue:nil];
     IXViewController* archivedViewController = nil;
     if( [archivedViewControllerID length] > 0 )
     {        
@@ -290,7 +290,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
     }
     else
     {
-        NSString* navigateTo = [[self actionProperties] getPathPropertyValue:kIXTo basePath:nil defaultValue:nil];
+        NSString* navigateTo = [[self actionProperties] getPathForAttribute:kIXTo basePath:nil defaultValue:nil];
         if( navigateTo )
         {
             [IXViewController createViewControllerWithPathToJSON:navigateTo
@@ -383,7 +383,7 @@ typedef void(^IXNavAnimationCompletionBlock)();
 -(void)performExternalNavigation
 {
     BOOL didSucceed = NO;
-    NSString* navigateTo = [[self actionProperties] getStringPropertyValue:kIXTo defaultValue:nil];
+    NSString* navigateTo = [[self actionProperties] getStringValueForAttribute:kIXTo defaultValue:nil];
     if( [navigateTo length] > 0 )
     {
         NSURL* externalURL = [NSURL URLWithString:navigateTo];

@@ -61,7 +61,7 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"error";
 {
     [super applySettings];
     
-    NSURL* passURL = [self.propertyContainer getURLPathPropertyValue:kIXPassLocation basePath:nil defaultValue:nil];
+    NSURL* passURL = [self.attributeContainer getURLValueForAttribute:kIXPassLocation basePath:nil defaultValue:nil];
     if( [self passURL] == nil || ![[self passURL] isEqual:passURL] || [self pass] == nil ) {
         
         [self setPassURL:passURL];
@@ -118,7 +118,7 @@ IX_STATIC_CONST_STRING kIXPassCreationFailed = @"error";
     return returnValue;
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXPassControllerPresent] )
     {

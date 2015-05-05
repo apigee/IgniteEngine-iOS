@@ -8,8 +8,8 @@
 
 #import "IXBaseAction.h"
 
-#import "IXPropertyContainer.h"
-#import "IXProperty.h"
+#import "IXAttributeContainer.h"
+#import "IXAttribute.h"
 #import "IXActionContainer.h"
 #import "IXBaseObject.h"
 #import "IXAppManager.h"
@@ -37,8 +37,8 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
 }
 
 -(instancetype)initWithEventName:(NSString*)eventName
-                actionProperties:(IXPropertyContainer*)actionProperties
-                   setProperties:(IXPropertyContainer*)setProperties
+                actionProperties:(IXAttributeContainer*)actionProperties
+                   setProperties:(IXAttributeContainer*)setProperties
               subActionContainer:(IXActionContainer*)subActionContainer
 {
     self = [super init];
@@ -110,8 +110,8 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
             id attributesTopLevelDict = [actionArray objectAtIndex:1];
             if( [attributesTopLevelDict isKindOfClass:[NSDictionary class]] )
             {
-                IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:attributesTopLevelDict[kIX_ATTRIBUTES]];
-                IXPropertyContainer* setContainer = ([IXPropertyContainer propertyContainerWithJSONDict:attributesTopLevelDict[kIX_SET]]) ?: [IXPropertyContainer propertyContainerWithJSONDict:attributesTopLevelDict[kIX_FUNCTION_PARAMETERS]];
+                IXAttributeContainer* propertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:attributesTopLevelDict[kIX_ATTRIBUTES]];
+                IXAttributeContainer* setContainer = ([IXAttributeContainer attributeContainerWithJSONDict:attributesTopLevelDict[kIX_SET]]) ?: [IXAttributeContainer attributeContainerWithJSONDict:attributesTopLevelDict[kIX_FUNCTION_PARAMETERS]];
                 IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:attributesTopLevelDict[kIX_ACTIONS]];
                 
                 action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:kIXPushRecievedEvent
@@ -120,7 +120,7 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
                                                               subActionContainer:subActionContainer];
                 
                 [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:attributesTopLevelDict[kIX_ORIENTATION]]];
-                [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:attributesTopLevelDict[kIX_IF]]];
+                [action setValueIfTrue:[IXAttribute attributeWithAttributeName:nil rawValue:attributesTopLevelDict[kIX_IF]]];
             }
         }
     }
@@ -149,7 +149,7 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
         [mutableQueryParams removeObjectForKey:kIX_IF];
         [mutableQueryParams removeObjectForKey:kIX_ORIENTATION];
 
-        IXPropertyContainer* paramsAsPropertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:mutableQueryParams];
+        IXAttributeContainer* paramsAsPropertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:mutableQueryParams];
         action = [(IXBaseAction*)[actionClass alloc] initWithEventName:kIXCustomURLSchemeOpened
                                                       actionProperties:paramsAsPropertyContainer
                                                          setProperties:paramsAsPropertyContainer
@@ -159,7 +159,7 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
             [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:orientationValue]];
         }
         if( [ifValue length] > 0 ) {
-            [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:ifValue]];
+            [action setValueIfTrue:[IXAttribute attributeWithAttributeName:nil rawValue:ifValue]];
         }
     }
     return action;
@@ -195,8 +195,8 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
                 [propertiesDict setObject:enabled forKey:kIX_ENABLED];
             }
             
-            IXPropertyContainer* propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict];
-            IXPropertyContainer* setContainer = ([IXPropertyContainer propertyContainerWithJSONDict:actionJSONDict[kIX_SET]]) ?: [IXPropertyContainer propertyContainerWithJSONDict:actionJSONDict[kIX_FUNCTION_PARAMETERS]];
+            IXAttributeContainer* propertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict];
+            IXAttributeContainer* setContainer = ([IXAttributeContainer attributeContainerWithJSONDict:actionJSONDict[kIX_SET]]) ?: [IXAttributeContainer attributeContainerWithJSONDict:actionJSONDict[kIX_FUNCTION_PARAMETERS]];
             IXActionContainer* subActionContainer = [IXActionContainer actionContainerWithJSONActionsArray:actionJSONDict[kIX_ACTIONS]];
             
             action = [((IXBaseAction*)[actionClass alloc]) initWithEventName:eventName
@@ -205,7 +205,7 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
                                                           subActionContainer:subActionContainer];
             
             [action setInterfaceOrientationMask:[IXBaseConditionalObject orientationMaskForValue:actionJSONDict[kIX_ORIENTATION]]];
-            [action setConditionalProperty:[IXProperty propertyWithPropertyName:nil rawValue:actionJSONDict[kIX_IF]]];
+            [action setValueIfTrue:[IXAttribute attributeWithAttributeName:nil rawValue:actionJSONDict[kIX_IF]]];
         }
     }
     return action;
@@ -257,10 +257,10 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
     // Base action does nothing.
 }
 
--(void)setActionProperties:(IXPropertyContainer *)actionProperties
+-(void)setActionProperties:(IXAttributeContainer *)actionProperties
 {
     _actionProperties = actionProperties;
-    [[self conditionalProperty] setPropertyContainer:actionProperties];
+    [[self valueIfTrue] setAttributeContainer:actionProperties];
 }
     
 -(void)setActionContainer:(IXActionContainer *)actionContainer
@@ -285,12 +285,12 @@ static NSString* const kIXSubActionContainerNSCodingKey = @"subActionContainer";
 -(NSString*)description
 {
     NSMutableString* description = [NSMutableString stringWithFormat:@"\n%@ on %@:",NSStringFromClass([self class]),[self eventName]];
-    if( [self conditionalProperty] )
+    if( [self valueIfTrue] )
     {
-        [description appendFormat:@"\n\nConditional: %@",[[self conditionalProperty] getPropertyValue]];
-        if( [[self conditionalProperty] variables] )
+        [description appendFormat:@"\n\nConditional: %@",[[self valueIfTrue] attributeStringValue]];
+        if( [[self valueIfTrue] evaluations] )
         {
-            [description appendFormat:@" (%@)",[[self conditionalProperty] originalString]];
+            [description appendFormat:@" (%@)",[[self valueIfTrue] originalString]];
         }
     }
     [description appendFormat:@"\n\nProperties:\n%@ ",[[self actionProperties] description]];

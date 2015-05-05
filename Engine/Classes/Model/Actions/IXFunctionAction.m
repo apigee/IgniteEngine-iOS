@@ -7,8 +7,8 @@
 //
 
 #import "IXFunctionAction.h"
-#import "IXProperty.h"
-#import "IXPropertyContainer.h"
+#import "IXAttribute.h"
+#import "IXAttributeContainer.h"
 #import "IXSandbox.h"
 #import "IXBaseControl.h"
 #import "IXActionContainer.h"
@@ -32,10 +32,10 @@ static NSString* const kIXDuration = @"duration";
 
 -(void)execute
 {
-    NSArray* objectIDs = [[self actionProperties] getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    NSString* functionName = ([[self actionProperties] getStringPropertyValue:kIXFunctionName defaultValue:nil]) ?: [[self actionProperties] getStringPropertyValue:kIXFunctionNameOld defaultValue:nil];
+    NSArray* objectIDs = [[self actionProperties] getCommaSeparatedArrayOfValuesForAttribute:kIX_TARGET defaultValue:nil];
+    NSString* functionName = ([[self actionProperties] getStringValueForAttribute:kIXFunctionName defaultValue:nil]) ?: [[self actionProperties] getStringValueForAttribute:kIXFunctionNameOld defaultValue:nil];
 
-    CGFloat duration = [[self actionProperties] getFloatPropertyValue:kIXDuration defaultValue:0.0f];
+    CGFloat duration = [[self actionProperties] getFloatValueForAttribute:kIXDuration defaultValue:0.0f];
     if( [objectIDs count] && [functionName length] > 0 )
     {
         if ([[objectIDs firstObject] isEqualToString:kIXAppRef])

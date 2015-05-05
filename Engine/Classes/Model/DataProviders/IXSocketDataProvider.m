@@ -69,7 +69,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 {
     [super applySettings];
 
-    [self setMessageLimit:[[self propertyContainer] getIntPropertyValue:kIXLimit defaultValue:kIXDefaultLimit]];
+    [self setMessageLimit:[[self attributeContainer] getIntValueForAttribute:kIXLimit defaultValue:kIXDefaultLimit]];
     if( [self webSocket] == nil || ![[[[self webSocket] url] absoluteString] isEqualToString:self.url ])
     {
         [[self webSocket] setDelegate:nil];
@@ -128,7 +128,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
     return returnValue;
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXOpen] )
     {

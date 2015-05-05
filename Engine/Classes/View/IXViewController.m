@@ -11,7 +11,7 @@
 #import "IXSandbox.h"
 #import "IXAppManager.h"
 #import "IXNavigationViewController.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXActionContainer.h"
 #import "IXLayout.h"
 #import "IXTextInput.h"
@@ -226,26 +226,26 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
     NSString* viewPropertyValue = [[self containerControl] getReadOnlyPropertyValue:propertyName];
     if( viewPropertyValue == nil )
     {
-        viewPropertyValue = [[[self containerControl] propertyContainer] getStringPropertyValue:propertyName defaultValue:nil];
+        viewPropertyValue = [[[self containerControl] attributeContainer] getStringValueForAttribute:propertyName defaultValue:nil];
     }
     return viewPropertyValue;
 }
 
 -(void)applyViewControllerSpecificSettings
 {
-    IXPropertyContainer* propertyContainer = [[self containerControl] propertyContainer];
-    NSString* statusBarStyle = [propertyContainer getStringPropertyValue:kIXStatusBarStyle defaultValue:kIXStatusBarStyleDark];
+    IXAttributeContainer* propertyContainer = [[self containerControl] attributeContainer];
+    NSString* statusBarStyle = [propertyContainer getStringValueForAttribute:kIXStatusBarStyle defaultValue:kIXStatusBarStyleDark];
     if( ![[self statusBarPreferredStyleString] isEqualToString:statusBarStyle] )
     {
         [self setStatusBarPreferredStyleString:statusBarStyle];
         [self setNeedsStatusBarAppearanceUpdate];
     }
     
-    UIColor* backgroundColor = [propertyContainer getColorPropertyValue:kIXBgColor defaultValue:[UIColor clearColor]];
+    UIColor* backgroundColor = [propertyContainer getColorValueForAttribute:kIXBgColor defaultValue:[UIColor clearColor]];
     [[self view] setBackgroundColor:backgroundColor];
-    NSLog([IXAppManager sharedAppManager].appDefaultViewPath);
+
     if ([IXAppManager sharedAppManager].appLeftDrawerViewPath != nil || [IXAppManager sharedAppManager].appRightDrawerViewPath != nil) {
-        NSString* drawerAllowedStates = [propertyContainer getStringPropertyValue:kIXDrawerAllowedStates defaultValue:nil];
+        NSString* drawerAllowedStates = [propertyContainer getStringValueForAttribute:kIXDrawerAllowedStates defaultValue:nil];
         if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateOpen]) {
             [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
             [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
@@ -268,7 +268,7 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
     [[self containerControl] applySettings];
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXStateSave] )
     {
@@ -285,7 +285,7 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
     }
     else if( [functionName isEqualToString:kIXStateClear] )
     {
-        NSString* viewID = [parameterContainer getStringPropertyValue:kIXCacheId defaultValue:nil];
+        NSString* viewID = [parameterContainer getStringValueForAttribute:kIXCacheId defaultValue:nil];
         if( viewID != nil )
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:viewID];

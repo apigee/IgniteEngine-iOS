@@ -23,7 +23,7 @@
 #import "IXLogger.h"
 #import "IXNavigationViewController.h"
 #import "IXPathHandler.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXSandbox.h"
 #import "IXViewController.h"
 #import "NSURL+IXAdditions.h"
@@ -146,9 +146,9 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 @property (nonatomic,copy) NSString *appLeftDrawerViewPath;
 @property (nonatomic,copy) NSString *appRightDrawerViewPath;
 
-@property (nonatomic,strong) IXPropertyContainer *deviceProperties;
-@property (nonatomic,strong) IXPropertyContainer *appProperties;
-@property (nonatomic,strong) IXPropertyContainer *sessionProperties;
+@property (nonatomic,strong) IXAttributeContainer *deviceProperties;
+@property (nonatomic,strong) IXAttributeContainer *appProperties;
+@property (nonatomic,strong) IXAttributeContainer *sessionProperties;
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 
 @property (nonatomic,strong) Reachability *reachabilty;
@@ -175,8 +175,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 // TODO: deprecate in future releases
         if (!_appIndexFilePath) _appIndexFilePath = [IXPathHandler localPathWithRelativeFilePath:kIXDefaultIndexPathOld];
         
-        _appProperties = [[IXPropertyContainer alloc] init];
-        _deviceProperties = [[IXPropertyContainer alloc] init];
+        _appProperties = [[IXAttributeContainer alloc] init];
+        _deviceProperties = [[IXAttributeContainer alloc] init];
         
         _rootViewController = [[IXNavigationViewController alloc] initWithNibName:nil bundle:nil];
         _drawerController = [[IXMMDrawerController alloc] initWithCenterViewController:_rootViewController
@@ -221,8 +221,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     ApigeeDataClient* apigeeDataClient = [[self apigeeClient] dataClient];
     if( apigeeDataClient != nil )
     {
-        IXPropertyContainer* appProperties = [self appProperties];
-        NSString* apigeePushNotifier = [appProperties getStringPropertyValue:kIXApigeePushNotifier
+        IXAttributeContainer* appProperties = [self appProperties];
+        NSString* apigeePushNotifier = [appProperties getStringValueForAttribute:kIXApigeePushNotifier
                                                                 defaultValue:nil];
         
         ApigeeClientResponse *response = [apigeeDataClient setDevicePushToken:deviceToken
@@ -293,7 +293,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     [self setAppLeftDrawerViewPath:nil];
     [self setAppRightDrawerViewPath:nil];
 
-    [self setSessionProperties:[[IXPropertyContainer alloc] init]];
+    [self setSessionProperties:[[IXAttributeContainer alloc] init]];
 
     [self setWebViewForJS:[[UIWebView alloc] initWithFrame:CGRectZero]];
     [self setApplicationSandbox:[[IXSandbox alloc] initWithBasePath:nil rootPath:[[self appIndexFilePath] stringByDeletingLastPathComponent]]];
@@ -318,10 +318,10 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 
                                                 
                                                 NSDictionary* appConfigPropertiesJSONDict = [jsonObject valueForKeyPath:kIXAppAttributes];
-                                                [[self appProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:appConfigPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+                                                [[self appProperties] addAttributesFromContainer:[IXAttributeContainer attributeContainerWithJSONDict:appConfigPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherAttributesWithSameName:YES];
                                                 
                                                 NSDictionary* sessionDefaultsPropertiesJSONDict = [jsonObject valueForKeyPath:kIXSessionDefaults];
-                                                [[self sessionProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+                                                [[self sessionProperties] addAttributesFromContainer:[IXAttributeContainer attributeContainerWithJSONDict:sessionDefaultsPropertiesJSONDict] evaluateBeforeAdding:NO replaceOtherAttributesWithSameName:YES];
                                                 [self loadStoredSessionProperties];
 
                                                 NSDictionary* deviceInfoPropertiesDict = @{
@@ -338,7 +338,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                                                                            kIXDeviceOSVersionMajor: [IXDeviceInfo osMajorVersion]
                                                                                            };
                                                 
-                                                [[self deviceProperties] addPropertiesFromPropertyContainer:[IXPropertyContainer propertyContainerWithJSONDict:deviceInfoPropertiesDict] evaluateBeforeAdding:NO replaceOtherPropertiesWithTheSameName:YES];
+                                                [[self deviceProperties] addAttributesFromContainer:[IXAttributeContainer attributeContainerWithJSONDict:deviceInfoPropertiesDict] evaluateBeforeAdding:NO replaceOtherAttributesWithSameName:YES];
 
                                                 [self applyAppProperties];
                                                 [self preloadImages];
@@ -350,7 +350,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 
 -(void)preloadImages
 {
-    NSArray* imagesToPreload = [[self appProperties] getCommaSeperatedArrayListValue:kIXPreloadImages defaultValue:nil];
+    NSArray* imagesToPreload = [[self appProperties] getCommaSeparatedArrayOfValuesForAttribute:kIXPreloadImages defaultValue:nil];
     for( NSString* imagePath in imagesToPreload )
     {
         UIImage* image = [UIImage imageNamed:imagePath];
@@ -364,7 +364,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 
 -(void)applyAppProperties
 {
-    if( [[[self appProperties] getStringPropertyValue:kIXAppMode defaultValue:kIX_RELEASE] isEqualToString:kIX_DEBUG] ) {
+    if( [[[self appProperties] getStringValueForAttribute:kIXAppMode defaultValue:kIX_RELEASE] isEqualToString:kIX_DEBUG] ) {
         [self setAppMode:IXDebugMode];
 //        RKLogConfigureByName("*", RKLogLevelOff);
     } else {
@@ -372,20 +372,20 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
 //        RKLogConfigureByName("*", RKLogLevelOff);
     }
     
-    [[IXLogger sharedLogger] setRequestLoggingEnabled:[[self appProperties] getBoolPropertyValue:kIXEnableRequestLogging defaultValue:NO]];
-    [[IXLogger sharedLogger] setRemoteLoggingEnabled:[[self appProperties] getBoolPropertyValue:kIXEnableRemoteLogging defaultValue:NO]];
-    [[IXLogger sharedLogger] setAppLogLevel:[[self appProperties] getStringPropertyValue:kIXLogLevel defaultValue:kIX_DEBUG]];
-    [self setLayoutDebuggingEnabled:[[self appProperties] getBoolPropertyValue:kIXEnableLayoutDebugging defaultValue:NO]];
+    [[IXLogger sharedLogger] setRequestLoggingEnabled:[[self appProperties] getBoolValueForAttribute:kIXEnableRequestLogging defaultValue:NO]];
+    [[IXLogger sharedLogger] setRemoteLoggingEnabled:[[self appProperties] getBoolValueForAttribute:kIXEnableRemoteLogging defaultValue:NO]];
+    [[IXLogger sharedLogger] setAppLogLevel:[[self appProperties] getStringValueForAttribute:kIXLogLevel defaultValue:kIX_DEBUG]];
+    [self setLayoutDebuggingEnabled:[[self appProperties] getBoolValueForAttribute:kIXEnableLayoutDebugging defaultValue:NO]];
 
-    [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolPropertyValue:kIXShowsNavigationBar defaultValue:YES] animated:YES];
+    [[self rootViewController] setNavigationBarHidden:![[self appProperties] getBoolValueForAttribute:kIXShowsNavigationBar defaultValue:YES] animated:YES];
     if( [[self rootViewController] isNavigationBarHidden] )
     {
         [[[self rootViewController] interactivePopGestureRecognizer] setDelegate:nil];
     }
     
-    NSString* apigeeOrgName = [[self appProperties] getStringPropertyValue:kIXApigeeOrgID defaultValue:nil];
-    NSString* apigeeApplicationID = [[self appProperties] getStringPropertyValue:kIXApigeeAppID defaultValue:nil];
-    NSString* apigeeBaseURL = [[self appProperties] getStringPropertyValue:kIXApigeeBaseURL defaultValue:nil];
+    NSString* apigeeOrgName = [[self appProperties] getStringValueForAttribute:kIXApigeeOrgID defaultValue:nil];
+    NSString* apigeeApplicationID = [[self appProperties] getStringValueForAttribute:kIXApigeeAppID defaultValue:nil];
+    NSString* apigeeBaseURL = [[self appProperties] getStringValueForAttribute:kIXApigeeBaseURL defaultValue:nil];
     
     BOOL apigeeOrgNameAndAppIDAreValid = ( [apigeeOrgName length] > 0 && [apigeeApplicationID length] > 0 );
     [[IXLogger sharedLogger] setApigeeClientAvailable:apigeeOrgNameAndAppIDAreValid];
@@ -402,10 +402,10 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [[[self apigeeClient] dataClient] setLogging:YES];
     }
     
-    [self setAppDefaultViewPath:[[self appProperties] getStringPropertyValue:kIXDefaultView defaultValue:nil]];
-    [self setAppLeftDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXDrawerViewLeft defaultValue:nil]];
-    [self setAppRightDrawerViewPath:[[self appProperties] getStringPropertyValue:kIXDrawerViewRight defaultValue:nil]];
-    [[self drawerController] setAnimationVelocity:[[self appProperties] getFloatPropertyValue:kIXDrawerToggleVelocity defaultValue:840.0f]];
+    [self setAppDefaultViewPath:[[self appProperties] getStringValueForAttribute:kIXDefaultView defaultValue:nil]];
+    [self setAppLeftDrawerViewPath:[[self appProperties] getStringValueForAttribute:kIXDrawerViewLeft defaultValue:nil]];
+    [self setAppRightDrawerViewPath:[[self appProperties] getStringValueForAttribute:kIXDrawerViewRight defaultValue:nil]];
+    [[self drawerController] setAnimationVelocity:[[self appProperties] getFloatValueForAttribute:kIXDrawerToggleVelocity defaultValue:840.0f]];
     
     if( [[self appDefaultViewPath] length] > 0 && [IXPathHandler pathIsLocal:[self appDefaultViewPath]] )
     {
@@ -420,7 +420,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         [self setAppRightDrawerViewPath:[IXPathHandler localPathWithRelativeFilePath:[NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:kIXAssetsBasePath],[self appRightDrawerViewPath]]]];
     }
     if (self.appLeftDrawerViewPath != nil || self.appRightDrawerViewPath != nil) {
-        NSString* drawerAllowedStates = [[self appProperties] getStringPropertyValue:kIXDrawerAllowedStates defaultValue:nil];
+        NSString* drawerAllowedStates = [[self appProperties] getStringValueForAttribute:kIXDrawerAllowedStates defaultValue:nil];
         if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateOpen]) {
             [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
             [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
@@ -436,24 +436,24 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         }
     }
 
-    if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessPushAuto defaultValue:YES] ) {
+    if( [[self appProperties] getBoolValueForAttribute:kIXRequestAccessPushAuto defaultValue:YES] ) {
         [self applyFunction:kIXRequestAccessPush parameters:nil];
     }
 
-    if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessMicrophoneAuto defaultValue:NO] ) {
+    if( [[self appProperties] getBoolValueForAttribute:kIXRequestAccessMicrophoneAuto defaultValue:NO] ) {
         [self applyFunction:kIXRequestAccessMicrophone parameters:nil];
     }
 
-    if( [[self appProperties] getBoolPropertyValue:kIXRequestAccessLocationAuto defaultValue:YES] ) {
+    if( [[self appProperties] getBoolValueForAttribute:kIXRequestAccessLocationAuto defaultValue:YES] ) {
         [self applyFunction:kIXRequestAccessLocation parameters:nil];
         [self applyFunction:kIXStartLocationTracking parameters:nil];
     }
     
-    [[self drawerController] setShowsShadow:[[self appProperties] getBoolPropertyValue:kIXDrawerViewShadow defaultValue:YES] ];
+    [[self drawerController] setShowsShadow:[[self appProperties] getBoolValueForAttribute:kIXDrawerViewShadow defaultValue:YES] ];
     
     
     
-    NSString* animation = [[self appProperties] getStringPropertyValue:kIXDrawerViewAnimation defaultValue:nil];
+    NSString* animation = [[self appProperties] getStringValueForAttribute:kIXDrawerViewAnimation defaultValue:nil];
     if( [animation length] ) {
         
         if ([animation isEqualToString:kIXDrawerViewAnimationSlide])
@@ -470,7 +470,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         }
         else if ([animation isEqualToString:kIXDrawerViewAnimationParallax])
         {
-            [[self drawerController] setDrawerVisualStateBlock: [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:[[self appProperties] getFloatPropertyValue:kIXDrawerViewAnimationParallaxFactor defaultValue:2] ]];
+            [[self drawerController] setDrawerVisualStateBlock: [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:[[self appProperties] getFloatValueForAttribute:kIXDrawerViewAnimationParallaxFactor defaultValue:2] ]];
         }
     }
     
@@ -496,7 +496,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                              }
                                          }];
 
-    BOOL preloadDrawers = [[self appProperties] getBoolPropertyValue:kIXPreloadDrawers defaultValue:NO];
+    BOOL preloadDrawers = [[self appProperties] getBoolValueForAttribute:kIXPreloadDrawers defaultValue:NO];
     if( [[self appLeftDrawerViewPath] length] > 0 ) {
         [IXViewController createViewControllerWithPathToJSON:[self appLeftDrawerViewPath]
                                                    loadAsync:NO
@@ -504,7 +504,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                            
                                                  if( didSucceed && viewController && error == nil )
                                                  {
-                                                     [[self drawerController] setMaximumLeftDrawerWidth:[[self appProperties] getFloatPropertyValue:kIXDrawerViewLeftMaxWidth defaultValue:280.0f]];
+                                                     [[self drawerController] setMaximumLeftDrawerWidth:[[self appProperties] getFloatValueForAttribute:kIXDrawerViewLeftMaxWidth defaultValue:280.0f]];
                                                      [[self drawerController] setLeftDrawerViewController:viewController];
                                                      [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                      [[[self rootViewController] leftScreenPanGestureRecognizer] setEnabled:NO];
@@ -527,7 +527,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                                            
                                                  if( didSucceed && viewController && error == nil )
                                                  {
-                                                     [[self drawerController] setMaximumRightDrawerWidth:[[self appProperties] getFloatPropertyValue:kIXDrawerViewRightMaxWidth defaultValue:280.0f]];
+                                                     [[self drawerController] setMaximumRightDrawerWidth:[[self appProperties] getFloatValueForAttribute:kIXDrawerViewRightMaxWidth defaultValue:280.0f]];
                                                      [[self drawerController] setRightDrawerViewController:viewController];
                                                      [[[self rootViewController] interactivePopGestureRecognizer] setEnabled:NO];
                                                      [[[self rootViewController] rightScreenPanGestureRecognizer] setEnabled:NO];
@@ -566,7 +566,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
                       otherButtonTitles:nil] show];
 }
 
--(void)applyFunction:(NSString*)functionName parameters:(IXPropertyContainer*)parameters
+-(void)applyFunction:(NSString*)functionName parameters:(IXAttributeContainer*)parameters
 {
     if ([functionName isEqualToString:kIXReset])
     {
@@ -580,7 +580,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     }
     else if ([functionName isEqualToString:kIXDestorySession])
     {
-        [[self sessionProperties] removeAllProperties];
+        [[self sessionProperties] removeAllAttributes];
         [self storeSessionProperties];
     }
     else if([functionName isEqualToString:kIXToggleDrawerLeft] )
@@ -618,8 +618,8 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     }
     else if( [functionName isEqualToString:kIXStartLocationTracking] )
     {
-        NSString* parameterLocationAccuracy = [parameters getStringPropertyValue:kIXLocationAccuracy defaultValue:kIXLocationAccuracyBest];
-        NSString* locationAccuracy = [[self appProperties] getStringPropertyValue:kIXLocationAccuracy defaultValue:parameterLocationAccuracy];
+        NSString* parameterLocationAccuracy = [parameters getStringValueForAttribute:kIXLocationAccuracy defaultValue:kIXLocationAccuracyBest];
+        NSString* locationAccuracy = [[self appProperties] getStringValueForAttribute:kIXLocationAccuracy defaultValue:parameterLocationAccuracy];
         if( [locationAccuracy isEqualToString:kIXLocationAccuracyBest] || locationAccuracy == nil ) {
             [[IXLocationManager sharedLocationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
         } else if( [locationAccuracy isEqualToString:kIXLocationAccuracyBestForNavigation] ) {
@@ -697,12 +697,12 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
     NSData* sessionPropertiesData = [[NSUserDefaults standardUserDefaults] dataForKey:kIX_STORED_SESSION_ATTRIBUTES_KEY];
     if( sessionPropertiesData )
     {
-        IXPropertyContainer* storedSessionPropertyContainer = [NSKeyedUnarchiver unarchiveObjectWithData:sessionPropertiesData];
-        if( [storedSessionPropertyContainer isKindOfClass:[IXPropertyContainer class]] )
+        IXAttributeContainer* storedSessionPropertyContainer = [NSKeyedUnarchiver unarchiveObjectWithData:sessionPropertiesData];
+        if( [storedSessionPropertyContainer isKindOfClass:[IXAttributeContainer class]] )
         {
-            [[self sessionProperties] addPropertiesFromPropertyContainer:storedSessionPropertyContainer
+            [[self sessionProperties] addAttributesFromContainer:storedSessionPropertyContainer
                                                     evaluateBeforeAdding:NO
-                                   replaceOtherPropertiesWithTheSameName:YES];
+                                   replaceOtherAttributesWithSameName:YES];
         }
         else
         {

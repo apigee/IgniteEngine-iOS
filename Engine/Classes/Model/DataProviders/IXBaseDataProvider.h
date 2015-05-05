@@ -15,10 +15,10 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 
 @interface IXBaseDataProvider : IXBaseObject
 
-@property (nonatomic,strong) IXPropertyContainer* queryParamsProperties;
-@property (nonatomic,strong) IXPropertyContainer* bodyProperties;
-@property (nonatomic,strong) IXPropertyContainer* headersProperties;
-@property (nonatomic,strong) IXPropertyContainer* fileAttachmentProperties;
+@property (nonatomic,strong) IXAttributeContainer* queryParamsProperties;
+@property (nonatomic,strong) IXAttributeContainer* bodyProperties;
+@property (nonatomic,strong) IXAttributeContainer* headersProperties;
+@property (nonatomic,strong) IXAttributeContainer* fileAttachmentProperties;
 
 @property (nonatomic,assign,getter = shouldAutoLoad) BOOL autoLoad;
 @property (nonatomic,assign,getter = shouldUrlEncodeParams) BOOL urlEncodeParams;

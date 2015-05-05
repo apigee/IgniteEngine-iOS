@@ -138,19 +138,19 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
 {
     [super applySettings];
 
-    [self setVolume:[[self propertyContainer] getFloatPropertyValue:kIXVolume defaultValue:1.0f]];
-    [self setForceSoundReload:[[self propertyContainer] getBoolPropertyValue:kIXForceSoundReload defaultValue:NO]];
-    [self setUseMetaData:[[self propertyContainer] getBoolPropertyValue:kIXUseMetaData defaultValue:NO]];
+    [self setVolume:[[self attributeContainer] getFloatValueForAttribute:kIXVolume defaultValue:1.0f]];
+    [self setForceSoundReload:[[self attributeContainer] getBoolValueForAttribute:kIXForceSoundReload defaultValue:NO]];
+    [self setUseMetaData:[[self attributeContainer] getBoolValueForAttribute:kIXUseMetaData defaultValue:NO]];
     if( [self player] ) {
         [[self player] setVolume:[self volume]];
     }
 
-    NSURL* soundURL = [[self propertyContainer] getURLPathPropertyValue:kIXSoundLocation basePath:nil defaultValue:nil];
+    NSURL* soundURL = [[self attributeContainer] getURLValueForAttribute:kIXSoundLocation basePath:nil defaultValue:nil];
     if( ![[self lastSoundURL] isEqual:soundURL] || [self player] == nil || [self forceSoundReload] )
     {
         [self setLastSoundURL:soundURL];
-        [self setShouldAutoPlay:[[self propertyContainer] getBoolPropertyValue:kIXAutoPlay defaultValue:YES]];
-        [self setNumberOfLoops:[[self propertyContainer] getIntPropertyValue:kIXNumberOfLoops defaultValue:0]];
+        [self setShouldAutoPlay:[[self attributeContainer] getBoolValueForAttribute:kIXAutoPlay defaultValue:YES]];
+        [self setNumberOfLoops:[[self attributeContainer] getIntValueForAttribute:kIXNumberOfLoops defaultValue:0]];
         [self setLastCreationErrorMessage:nil];
 
         [self createAudioPlayer];
@@ -212,7 +212,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     }
 }
 
--(void)applyFunction:(NSString *)functionName withParameters:(IXPropertyContainer *)parameterContainer
+-(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXPlay] )
     {
@@ -239,7 +239,7 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
     }
     else if( [functionName compare:kIXGoTo] == NSOrderedSame )
     {
-        [self seekToTime:[parameterContainer getFloatPropertyValue:kIXGoToSeconds defaultValue:CMTimeGetSeconds(_player.currentTime)]];
+        [self seekToTime:[parameterContainer getFloatValueForAttribute:kIXGoToSeconds defaultValue:CMTimeGetSeconds(_player.currentTime)]];
     }
     else
     {
@@ -369,13 +369,13 @@ IX_STATIC_CONST_STRING kIXGoToSeconds = @"seconds";
             }
             else
             {
-                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXTitle defaultValue:@""]
+                [[self songInfo] setObject:[[self attributeContainer] getStringValueForAttribute:kIXTitle defaultValue:@""]
                                     forKey:MPMediaItemPropertyTitle];
-                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXArtist defaultValue:@""]
+                [[self songInfo] setObject:[[self attributeContainer] getStringValueForAttribute:kIXArtist defaultValue:@""]
                                     forKey:MPMediaItemPropertyArtist];
-                [[self songInfo] setObject:[[self propertyContainer] getStringPropertyValue:kIXAlbum defaultValue:@""]
+                [[self songInfo] setObject:[[self attributeContainer] getStringValueForAttribute:kIXAlbum defaultValue:@""]
                                     forKey:MPMediaItemPropertyAlbumTitle];
-                [[self propertyContainer] getImageProperty:kIXArtwork
+                [[self attributeContainer] getImageAttribute:kIXArtwork
                                               successBlock:^(UIImage *image) {
                                                   if( image )
                                                   {

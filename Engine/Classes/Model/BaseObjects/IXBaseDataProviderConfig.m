@@ -12,7 +12,7 @@
 #import "IXCoreDataDataProvider.h"
 #import "IXEntityContainer.h"
 #import "IXActionContainer.h"
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXLogger.h"
 #import "IXEntityContainer.h"
 
@@ -20,12 +20,12 @@
 
 -(instancetype)initWithDataProviderClass:(Class)dataProviderClass
                               styleClass:(NSString*)styleClass
-                       propertyContainer:(IXPropertyContainer*)propertyContainer
+                       propertyContainer:(IXAttributeContainer*)propertyContainer
                          actionContainer:(IXActionContainer*)actionContainer
-                      requestQueryParams:(IXPropertyContainer*)requestQueryParams
-                             requestBody:(IXPropertyContainer*)requestBody
-                          requestHeaders:(IXPropertyContainer*)requestHeaders
-                         fileAttachments:(IXPropertyContainer*)fileAttachments
+                      requestQueryParams:(IXAttributeContainer*)requestQueryParams
+                             requestBody:(IXAttributeContainer*)requestBody
+                          requestHeaders:(IXAttributeContainer*)requestHeaders
+                         fileAttachments:(IXAttributeContainer*)fileAttachments
                          entityContainer:(IXEntityContainer*)entityContainer
 {
     self = [super init];
@@ -68,7 +68,7 @@
         Class dataProviderClass = NSClassFromString(dataProviderClassString);
         if( [dataProviderClass isSubclassOfClass:[IXBaseDataProvider class]])
         {
-            IXPropertyContainer* propertyContainer = nil;
+            IXAttributeContainer* propertyContainer = nil;
             id propertiesDict = dataProviderJSONDict[kIX_ATTRIBUTES];
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
@@ -78,7 +78,7 @@
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     [propertiesDict setObject:dataProviderID forKey:kIX_ID];
                 }
-                propertyContainer = [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict];
+                propertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict];
             }
             
             NSString* dataProviderStyleClass = dataProviderJSONDict[kIX_STYLE];
@@ -88,10 +88,10 @@
             }
             
             IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:dataProviderJSONDict[kIX_ACTIONS]];
-            IXPropertyContainer* requestQueryParams = (propertiesDict[kIX_DP_QUERYPARAMS]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_QUERYPARAMS]] : [IXPropertyContainer new];
-            IXPropertyContainer* requestBody = (propertiesDict[kIX_DP_BODY]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_BODY]] : [IXPropertyContainer new];
-            IXPropertyContainer* requestHeaders = (propertiesDict[kIX_DP_HEADERS]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_HEADERS]] : [IXPropertyContainer new];
-            IXPropertyContainer* fileAttachments = (propertiesDict[kIX_DP_ATTACHMENTS]) ? [IXPropertyContainer propertyContainerWithJSONDict:propertiesDict[kIX_DP_ATTACHMENTS]] : nil;
+            IXAttributeContainer* requestQueryParams = (propertiesDict[kIX_DP_QUERYPARAMS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_QUERYPARAMS]] : [IXAttributeContainer new];
+            IXAttributeContainer* requestBody = (propertiesDict[kIX_DP_BODY]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_BODY]] : [IXAttributeContainer new];
+            IXAttributeContainer* requestHeaders = (propertiesDict[kIX_DP_HEADERS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_HEADERS]] : [IXAttributeContainer new];
+            IXAttributeContainer* fileAttachments = (propertiesDict[kIX_DP_ATTACHMENTS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_ATTACHMENTS]] : nil;
             
             IXEntityContainer* entityContainer = nil;
             if( dataProviderClass == [IXCoreDataDataProvider class] )
@@ -170,12 +170,12 @@
         [dataProvider setBodyProperties:[[self requestBody] copy]];
         [dataProvider setHeadersProperties:[[self requestHeaders] copy]];
         [dataProvider setFileAttachmentProperties:[[self fileAttachments] copy]];
-        [dataProvider setPropertyContainer:[[self propertyContainer] copy]];
+        [dataProvider setAttributeContainer:[[self propertyContainer] copy]];
         
-        if( [dataProvider propertyContainer] == nil )
+        if( [dataProvider attributeContainer] == nil )
         {
             // We need to have a property container for the default values and modifies to work!
-            [dataProvider setPropertyContainer:[[IXPropertyContainer alloc] init]];
+            [dataProvider setAttributeContainer:[[IXAttributeContainer alloc] init]];
         }
         
 //        if( [dataProvider isKindOfClass:[IXCoreDataDataProvider class]] )

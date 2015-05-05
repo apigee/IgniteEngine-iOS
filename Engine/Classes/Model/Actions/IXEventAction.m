@@ -10,7 +10,7 @@
 
 #import "IXSandbox.h"
 
-#import "IXPropertyContainer.h"
+#import "IXAttributeContainer.h"
 #import "IXActionContainer.h"
 
 #import "IXBaseObject.h"
@@ -22,10 +22,10 @@ static NSString* const kIXEventName = @"eventName";
 
 -(void)execute
 {
-    IXPropertyContainer* actionProperties = [self actionProperties];
+    IXAttributeContainer* actionProperties = [self actionProperties];
     
-    NSArray* objectIDs = [actionProperties getCommaSeperatedArrayListValue:kIX_TARGET defaultValue:nil];
-    NSString* eventName = [actionProperties getStringPropertyValue:kIXEventName defaultValue:nil];
+    NSArray* objectIDs = [actionProperties getCommaSeparatedArrayOfValuesForAttribute:kIX_TARGET defaultValue:nil];
+    NSString* eventName = [actionProperties getStringValueForAttribute:kIXEventName defaultValue:nil];
     
     if( objectIDs && eventName )
     {
