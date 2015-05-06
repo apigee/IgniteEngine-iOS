@@ -37,7 +37,13 @@ The easiest way to get started with the Ignite Engine is through [CocoaPods](htt
 
 3. Remove Main.storyboard  (select it, right-click, and choose "Move to Trash")
 
-4. Remove "Main storyboard file base name" entry from Info.plist file.
+4. Open Supporting Files/Info.plist
+
+    1. Remove the property named `Main storyboard file base name`.
+    
+    2. Add a new property named `IXApp` with the value `app.json` (modify this property's value if required).
+    
+    3. Add a new property named `IXAssets` with the value `assets` (modify this property's value if required).
 
 5. Delete ViewController.h and ViewController.m
 
@@ -51,18 +57,18 @@ The easiest way to get started with the Ignite Engine is through [CocoaPods](htt
 
 8. Once the IgniteEngine pod and all its dependencies have been installed, open [MyProject].xcworkspace from the root of your Xcode project folder. And yes, that's `.xcworkspace`. The `.xcodeproj` file will **not** work.
 
-9. Find main.m
+9. Open main.m
 
     1. Add `#import IXAppDelegate.h`
     2. Change all references to `AppDelegate` class to `IXAppDelegate`
 
-10. Find AppDelegate.h 
+10. Open AppDelegate.h 
 	
 	1. Add `#import IXAppDelegate.h`
 	2. Replace the `@interface` declaration with `@interface AppDelegate : IXAppDelegate`
 	3. Delete `@property (strong, nonatomic) UIWindow *window;`
 
-11. Find AppDelegate.m
+11. Open AppDelegate.m
 
 	1. Comment out all methods in AppDelegate.m. If you need to override one, you must call `[super *methodname*]` before your own functions.
 
