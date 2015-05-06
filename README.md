@@ -13,11 +13,11 @@ The easiest way to get started with the Ignite Engine is through [CocoaPods](htt
 
 > This is the best way to start learning the Ignite Engine. It doesn't require fiddling around with setting up a new Xcode project.
 
-1. Download the [Ignite Engine starter kit](https://ignite.apigee.com/StarterKit.zip).
+1. Download the [Ignite Engine starter kit](https://ignite.apigee.com/IgniteEngineStarterKit.zip).
 
 2. Unzip the downloaded folder and move it into a place you'll remember (like `~/Development`!).
 
-3. Open Terminal and `cd` to the new folder (like `cd ~/Development/IgniteEngine`).
+3. Open Terminal and `cd` to the new folder (like `cd ~/Development/IgniteEngineStarterKit`).
 
 4. Type `pod install` to magically download and install all the dependencies.
 
