@@ -1,19 +1,33 @@
 # IgniteEngine
 
-[![CI Status](http://img.shields.io/travis/brandon/ApigeeIgnite.svg?style=flat)](https://travis-ci.org/brandon/ApigeeIgnite)
-[![Version](https://img.shields.io/cocoapods/v/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
-[![License](https://img.shields.io/cocoapods/l/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
-[![Platform](https://img.shields.io/cocoapods/p/ApigeeIgnite.svg?style=flat)](http://cocoapods.org/pods/ApigeeIgnite)
+[![Version](https://img.shields.io/cocoapods/v/IgniteEngine.svg?style=flat)](http://cocoapods.org/pods/IgniteEngine)
+[![License](https://img.shields.io/cocoapods/l/IgniteEngine.svg?style=flat)](http://cocoapods.org/pods/IgniteEngine)
+[![Platform](https://img.shields.io/cocoapods/p/IgniteEngine.svg?style=flat)](http://cocoapods.org/pods/IgniteEngine)
 
-## Usage
+## Before You Start
 
-TODO
+The easiest way to get started with the Ignite Engine is through [CocoaPods](http://cocoapods.org). Before you start, run `[sudo] gem install cocoapods` to install the CocoaPods CLI.
 
-## Installation
 
-ApigeeIgnite will soon be available through [CocoaPods](http://cocoapods.org). For the time being, to manually create a new project:
+## Installation (In 30 Seconds or Less)
 
-Before you start: clone this project and have the `/Engine` folder available on your local workstation.
+> This is the best way to start learning the Ignite Engine. It doesn't require fiddling around with setting up a new Xcode project.
+
+1. Download the [Ignite Engine starter kit](https://igntie.apigee.com/StarterKit.zip).
+
+2. Unzip the downloaded folder and move it into a place you'll remember (like `~/Development`!).
+
+3. Open Terminal and `cd` to the new folder (like `cd ~/Development/IgniteEngine`).
+
+4. Type `pod install` to magically download and install all the dependencies.
+
+5. Open the `IgniteEngineApp.xcworkspace` file and run the app in the iOS simulator.
+
+6. Get up to speed by reading the [docs](https://ignite.apigee.com).
+
+## Installation (The Hard Way™)
+
+> If you want to learn how to build your own project from scratch and integrate the Ignite Engine, then these steps are for you!
 
 1. Open Xcode 6
 
@@ -25,14 +39,15 @@ Before you start: clone this project and have the `/Engine` folder available on 
 
 5. Delete ViewController.h and ViewController.m
 
-6. Create an empty file named `podfile` in the root of your project folder with the following text. Update the `:path` to point to your local Engine directory, which at its root, contains `ApigeeIgnite.podspec`.
+6. Create an empty file named `podfile` in the root of your project folder with the following text. *(If you're feeling adventurous and know what you're doing, you can also point directly to the GitHub project).*
+
     ```
-    pod 'ApigeeIgnite', :path => '/local/path/where_you_cloned_the/Engine'
+    pod 'IgniteEngine'
     ```
 
-7. From your project directory, run `pod install`
+7. Open Terminal, and from your project directory, run `pod install`
 
-8. Once the ApigeeIgnite pod and all dependencies have been installed, open [MyProject].xcworkspace.
+8. Once the IgniteEngine pod and all its dependencies have been installed, open [MyProject].xcworkspace from the root of your Xcode project folder. And yes, that's `.xcworkspace`. The `.xcodeproj` file will **not** work.
 
 9. Find main.m
 
@@ -66,12 +81,6 @@ Before you start: clone this project and have the `/Engine` folder available on 
 14. Get up to speed by reading the [docs](https://ignite.apigee.com).
 
 15. If you're creating a git repo for your `/assets`, you should add `Engine/**` to your `.gitignore` to avoid commiting the entire IX engine to your repo.
-
-TODO:
-
-- Fonts (must be manually added to info.plist)
-- "iBeacon Monitoring" in info.plist?
-- Maybe add sample info.plist that user can download?
 
 ## Dependencies
 
