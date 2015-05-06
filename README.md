@@ -9,7 +9,7 @@
 The easiest way to get started with the Ignite Engine is through [CocoaPods](http://cocoapods.org). Before you start, run `[sudo] gem install cocoapods` to install the CocoaPods CLI.
 
 
-## Installation (In 30 Seconds or Less)
+## Installation (In 60 Seconds or Less*)
 
 > This is the best way to start learning the Ignite Engine. It doesn't require fiddling around with setting up a new Xcode project.
 
@@ -24,6 +24,8 @@ The easiest way to get started with the Ignite Engine is through [CocoaPods](htt
 5. Open the `IgniteEngineApp.xcworkspace` file and run the app in the iOS simulator.
 
 6. Get up to speed by reading the [docs](https://ignite.apigee.com).
+ 
+<sub>* If you have a super awesome internet connection. Otherwise it might take a couple minutes ;)</sub>
 
 ## Installation (The Hard Way™)
 
