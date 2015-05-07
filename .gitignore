@@ -3,8 +3,12 @@
 *~nib
 
 build/
+assets/
 assets*
-Pods/**
+assets_*
+Engine/Pods/**
+Example/**
+.ixconfig
 
 *.pbxuser
 *.perspective
