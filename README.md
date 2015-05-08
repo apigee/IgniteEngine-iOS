@@ -21,7 +21,7 @@ The easiest way to get started with the Ignite Engine is through [CocoaPods](htt
 
 4. Type `pod install` to magically download and install all the dependencies.
 
-5. Open the `IgniteEngineApp.xcworkspace` file and run the app in the iOS simulator.
+5. Open the `IgniteEngineStarterKit.xcworkspace` file and run the app in the iOS simulator.
 
 6. Get up to speed by reading the [docs](https://ignite.apigee.com).
  
