@@ -29,7 +29,7 @@ You can start building apps for iOS today; we're working hard to bring the platf
 
 2. Unzip the downloaded folder and move it into a place you'll remember (like `~/Development`!).
 
-3. Open Terminal and `cd` to the new folder (like `$ cd ~/Development/IgniteEngineStarterKit`).
+3. Open Terminal and `$ cd` to the new folder (like `$ cd ~/Development/IgniteEngineStarterKit`).
 
 4. Run `$ pod install` to magically download and install all the dependencies.
 
