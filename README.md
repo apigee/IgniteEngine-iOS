@@ -4,73 +4,86 @@
 [![License](https://img.shields.io/cocoapods/l/IgniteEngine.svg?style=flat)](http://cocoapods.org/pods/IgniteEngine)
 [![Platform](https://img.shields.io/cocoapods/p/IgniteEngine.svg?style=flat)](http://cocoapods.org/pods/IgniteEngine)
 
-## Before You Start
+## Introduction
 
-The easiest way to get started with the Ignite Engine is through [CocoaPods](http://cocoapods.org). Before you start, run `[sudo] gem install cocoapods` to install the CocoaPods CLI.
+#### What is the Ignite Engine?
 
+The Ignite Engine is a platform for rapidly building native mobile apps using declarative JSON to build views, controllers, and logic. The stability and robustness of the engine frees you to focus on the functionality and design of your app.
+
+#### What platforms are supported?
+
+You can start building apps for iOS today; we're working hard to bring the platform to Android very soon.
+
+## Prerequisites
+
+- A Mac, running Mavericks (v10.9+) or Yosemite (v10.10+).
+- [Xcode](https://itunes.apple.com/us/app/xcode/id497799835) (v6.2+).
+- If you want to run your apps on iOS devices, you'll need an [iOS Developer](http://developer.apple.com) account.
+- The Ignite Engine uses [CocoaPods](http://cocoapods.org) to manage its dependencies. Before you start, open Terminal and run `$ sudo gem install cocoapods` to install the CocoaPods CLI.
 
 ## Installation (In 60 Seconds or Less*)
 
-> This is the best way to start learning the Ignite Engine. It doesn't require fiddling around with setting up a new Xcode project.
+*This is the best way to start learning the Ignite Engine: it doesn't require fiddling around with setting up a new Xcode project.*
 
 1. Download the [Ignite Engine starter kit](https://ignite.apigee.com/IgniteEngineStarterKit.zip).
 
 2. Unzip the downloaded folder and move it into a place you'll remember (like `~/Development`!).
 
-3. Open Terminal and `cd` to the new folder (like `cd ~/Development/IgniteEngineStarterKit`).
+3. Open Terminal and `cd` to the new folder (like `$ cd ~/Development/IgniteEngineStarterKit`).
 
-4. Type `pod install` to magically download and install all the dependencies.
+4. Run `$ pod install` to magically download and install all the dependencies.
 
-5. Open the `IgniteEngineApp.xcworkspace` file and run the app in the iOS simulator.
+5. Open the `IgniteEngineStarterKit.xcworkspace` file and run the app in the iOS simulator.
 
 6. Get up to speed by reading the [docs](https://ignite.apigee.com).
  
-<sub>* If you have a super awesome internet connection. Otherwise it might take a couple minutes ;)</sub>
+<sub>* If you have a super awesome Internet connection. Otherwise it might take a couple minutes ;)</sub>
 
 ## Installation (The Hard Way™)
 
-> If you want to learn how to build your own project from scratch and integrate the Ignite Engine, then these steps are for you!
+*If you want to learn how to build your own project from scratch and integrate the Ignite Engine, then these steps are for you!*
 
-1. Open Xcode 6
+1. Open Xcode 6.
 
-2. Create an Single View Application
+2. Create a new Single View Application.
 
-3. Remove Main.storyboard  (select it, right-click, and choose "Move to Trash")
+3. Delete `Main.storyboard`  (select it, right-click, and choose "Move to Trash").
 
-4. Open Supporting Files/Info.plist
+4. Open `Supporting Files/Info.plist`:
 
-    1. Remove the property named `Main storyboard file base name`.
+    - Remove the property named `Main storyboard file base name`.
     
-    2. Add a new property named `IXApp` with the value `app.json` (modify this property's value if required).
+    - Add a new property named `IXApp` with the value `app.json` (modify this property's value if required).
     
-    3. Add a new property named `IXAssets` with the value `assets` (modify this property's value if required).
+    - Add a new property named `IXAssets` with the value `assets` (modify this property's value if required).
 
-5. Delete ViewController.h and ViewController.m
+5. Delete `ViewController.h` and `ViewController.m`.
 
-6. Create an empty file named `podfile` in the root of your project folder with the following text. *(If you're feeling adventurous and know what you're doing, you can also point directly to the GitHub project).*
+6. Create an empty file named `podfile` in the root of your project folder with the following text:
 
     ```
     pod 'IgniteEngine'
     ```
+    *(If you're feeling adventurous and know what you're doing, you can also point this pod directly to the GitHub repo).*
 
-7. Open Terminal, and from your project directory, run `pod install`
+7. Open Terminal, and from your project directory, run `$ pod install`
 
-8. Once the IgniteEngine pod and all its dependencies have been installed, open [MyProject].xcworkspace from the root of your Xcode project folder. And yes, that's `.xcworkspace`. The `.xcodeproj` file will **not** work.
+8. Once the IgniteEngine pod and all its dependencies have been installed, open `{MyProject}.xcworkspace` from the root of your Xcode project folder. And yes, that's `.xcworkspace`. The `.xcodeproj` file will **not** work.
 
-9. Open main.m
+9. Open `main.m`:
 
-    1. Add `#import IXAppDelegate.h`
-    2. Change all references to `AppDelegate` class to `IXAppDelegate`
+    - Add `#import IXAppDelegate.h` at the top.
+    - Change all references to `AppDelegate` class to be `IXAppDelegate` instead.
 
-10. Open AppDelegate.h 
+10. Open `AppDelegate.h`:
 	
-	1. Add `#import IXAppDelegate.h`
-	2. Replace the `@interface` declaration with `@interface AppDelegate : IXAppDelegate`
-	3. Delete `@property (strong, nonatomic) UIWindow *window;`
+	- Add `#import IXAppDelegate.h` at the top.
+	- Replace the `@interface` declaration with: `@interface AppDelegate : IXAppDelegate`.
+	- Delete `@property (strong, nonatomic) UIWindow *window;`.
 
-11. Open AppDelegate.m
+11. Open `AppDelegate.m`:
 
-	1. Comment out all methods in AppDelegate.m. If you need to override one, you must call `[super *methodname*]` before your own functions.
+	- Comment out all methods in AppDelegate.m. If you need to override one, you must call `[super *methodname*]` before your own functions.
 
 12. Create a new folder in your project root called `assets`. Drag this folder into Xcode, *deselecting* **Copy items if needed** and *selecting* **Create folder references**.
 
@@ -120,6 +133,8 @@ The Ignite Engine uses the following CocoaPods:
 - ZBarSDK
 - ZipArchive
 
+*Note: additional licenses may apply for these dependencies*
+
 ## License
 
  The MIT License (MIT)
@@ -143,3 +158,4 @@ The Ignite Engine uses the following CocoaPods:
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
+
