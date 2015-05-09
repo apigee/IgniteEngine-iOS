@@ -105,7 +105,7 @@ IX_STATIC_CONST_STRING kIXLocationAccuracyHundredMeters = @"hundredMeters"; // l
 IX_STATIC_CONST_STRING kIXLocationAccuracyKilometer = @"kilometer"; // location services
 IX_STATIC_CONST_STRING kIXLocationAccuracyThreeKilometers = @"threeKilometers"; // location services
 IX_STATIC_CONST_STRING KIXDrawerAllowedStateOpen = @"open"; // drawer
-IX_STATIC_CONST_STRING KIXDrawerAllowedStateClosed = @"closed"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateClose = @"close"; // drawer
 IX_STATIC_CONST_STRING KIXDrawerAllowedStateAll = @"all"; // drawer
 IX_STATIC_CONST_STRING KIXDrawerAllowedStateNone = @"none"; // drawer
 
@@ -443,7 +443,7 @@ IX_STATIC_CONST_STRING kIXTokenStringFormat = @"%08x%08x%08x%08x%08x%08x%08x%08x
         if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateOpen]) {
             [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
             [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
-        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateClosed]) {
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateClose]) {
             [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
             [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
         } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateAll]) {

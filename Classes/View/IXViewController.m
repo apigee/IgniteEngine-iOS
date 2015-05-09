@@ -49,7 +49,7 @@ IX_STATIC_CONST_STRING kIXStatusBarStyleDark = @"dark"; // status bar
 IX_STATIC_CONST_STRING kIXStatusBarStyleLight = @"light"; // status bar
 IX_STATIC_CONST_STRING kIXStatusBarStyleHidden = @"hidden"; // status bar
 IX_STATIC_CONST_STRING KIXDrawerAllowedStateOpen = @"open"; // drawer
-IX_STATIC_CONST_STRING KIXDrawerAllowedStateClosed = @"closed"; // drawer
+IX_STATIC_CONST_STRING KIXDrawerAllowedStateClose = @"close"; // drawer
 IX_STATIC_CONST_STRING KIXDrawerAllowedStateAll = @"all"; // drawer
 IX_STATIC_CONST_STRING KIXDrawerAllowedStateNone = @"none"; // drawer
 
@@ -268,7 +268,7 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
         if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateOpen]) {
             [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningCenterView];
             [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
-        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateClosed]) {
+        } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateClose]) {
             [[IXAppManager sharedAppManager].drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
             [[IXAppManager sharedAppManager].drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModePanningCenterView|MMCloseDrawerGestureModeTapCenterView];
         } else if ([drawerAllowedStates isEqualToString:KIXDrawerAllowedStateAll]) {
