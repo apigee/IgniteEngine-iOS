@@ -27,6 +27,6 @@
 
 #import "IXHTTPDataProvider.h"
 
-@interface IXSocketDataProvider : IXBaseDataProvider
+@interface IXSocketDataProvider : IXHTTPDataProvider
 
 @end

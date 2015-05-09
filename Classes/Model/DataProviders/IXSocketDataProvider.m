@@ -30,6 +30,7 @@
 #import "IXBaseDataProvider.h"
 #import "IXDataRowDataProvider.h"
 #import "NSString+IXAdditions.h"
+#import "IXHTTPResponse.h"
 
 // IXSocketDataProvider Attributes
 IX_STATIC_CONST_STRING kIXLimit = @"limit";
@@ -45,6 +46,7 @@ IX_STATIC_CONST_STRING kIXClose = @"close";
 // IXSocketDataProvider Events
 IX_STATIC_CONST_STRING kIXOpened = @"opened";
 IX_STATIC_CONST_STRING KIXClosed = @"closed";
+IX_STATIC_CONST_STRING KIXMessageReceived = @"messageReceived";
 
 IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
@@ -56,7 +58,6 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 
 @property (nonatomic,strong) JFRWebSocket* webSocket;
 @property (nonatomic,assign) NSInteger messageLimit;
-@property (nonatomic,strong) NSDictionary* responseObject;
 @property (nonatomic,strong) NSString* responseString;
 @property (nonatomic,strong) NSMutableDictionary* messageDictionary;
 
@@ -86,31 +87,35 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 {
 }
 
+-(BOOL)isValidWebSocketsURL {
+    return (self.url.length > 0 && [self.url hasPrefix:@"ws://"]);
+}
 -(void)applySettings
 {
     [super applySettings];
+    if ([self isValidWebSocketsURL]) {
+        [self setMessageLimit:[[self attributeContainer] getIntValueForAttribute:kIXLimit defaultValue:kIXDefaultLimit]];
+        if( [self webSocket] == nil || ![[[[self webSocket] url] absoluteString] isEqualToString:self.url ])
+        {
+            [[self webSocket] setDelegate:nil];
+            [[self webSocket] disconnect];
 
-    [self setMessageLimit:[[self attributeContainer] getIntValueForAttribute:kIXLimit defaultValue:kIXDefaultLimit]];
-    if( [self webSocket] == nil || ![[[[self webSocket] url] absoluteString] isEqualToString:self.url ])
-    {
-        [[self webSocket] setDelegate:nil];
-        [[self webSocket] disconnect];
+            [self setWebSocket:[[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:self.url] protocols:nil]];
+            [[self webSocket] setDelegate:self];
+        }
 
-        [self setWebSocket:[[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:self.url] protocols:nil]];
-        [[self webSocket] setDelegate:self];
-    }
-
-    if( [self shouldAutoLoad] )
-    {
-        [self.webSocket connect];
+        if( [self shouldAutoLoad] )
+        {
+            [self.webSocket connect];
+        }
+    } else {
+        [[self actionContainer] executeActionsForEventNamed:kIX_FAILED];
+        IX_LOG_ERROR(@"The 'url' attribute must be defined and be a valid websocket url beginning with ws://");
     }
 }
 
 -(void)websocket:(JFRWebSocket *)socket didReceiveMessage:(NSString *)string
 {
-    self.responseObject = _messageDictionary;
-    [self setResponseString];
-    
     NSMutableArray* messageArray = [[self messageDictionary] objectForKey:kIXDataDictionaryKey];
     id JSONObject = [NSJSONSerialization JSONObjectWithData:[string dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     if( JSONObject != nil )
@@ -120,20 +125,39 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
         {
             [messageArray removeLastObject];
         }
-        [self fireLoadFinishedEvents:YES];
+        [_messageDictionary setObject:messageArray forKey:kIXDataDictionaryKey];
+        
+        [self.response setResponseObject:_messageDictionary];
+        [self.response setResponseStringFromObject:_messageDictionary];
+        [[self actionContainer] executeActionsForEventNamed:KIXMessageReceived];
     }
 }
 
- -(void)setResponseString
-{
-    NSString* responseString = nil;
-    NSData* jsonStringData = [NSJSONSerialization dataWithJSONObject:[self messageDictionary] options:0 error:nil];
-    if( [jsonStringData length] > 0 )
-    {
-        responseString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
-    }
-    self.responseString = responseString;
+-(void)websocketDidWriteError:(JFRWebSocket *)socket error:(NSError *)error {
+    [[self actionContainer] executeActionsForEventNamed:kIX_FAILED];
+    IX_LOG_ERROR(@"ERROR: WebSocket failed to connect\n%@", [error localizedDescription]);
 }
+
+-(void)websocketDidConnect:(JFRWebSocket *)socket
+{
+    [[self actionContainer] executeActionsForEventNamed:kIXOpened];
+}
+
+-(void)websocketDidDisconnect:(JFRWebSocket *)socket error:(NSError *)error
+{
+    [[self actionContainer] executeActionsForEventNamed:KIXClosed];
+}
+
+// -(void)setResponseString
+//{
+//    NSString* responseString = nil;
+//    NSData* jsonStringData = [NSJSONSerialization dataWithJSONObject:[self messageDictionary] options:0 error:nil];
+//    if( [jsonStringData length] > 0 )
+//    {
+//        responseString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
+//    }
+//    self.responseString = responseString;
+//}
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
 {
@@ -153,9 +177,14 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 {
     if( [functionName isEqualToString:kIXOpen] )
     {
-        if( [self webSocket] && ![[self webSocket] isConnected] )
+        if( [self webSocket] && ![[self webSocket] isConnected])
         {
-            [[self webSocket] connect];
+            if ([self isValidWebSocketsURL]) {
+                [[self webSocket] connect];
+            } else {
+                [[self actionContainer] executeActionsForEventNamed:kIX_FAILED];
+                IX_LOG_ERROR(@"The 'url' attribute must be defined and be a valid websocket url beginning with ws://");
+            }
         }
     }
     else if( [functionName isEqualToString:kIXClose] )
@@ -169,16 +198,6 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
     {
         [super applyFunction:functionName withParameters:parameterContainer];
     }
-}
-
--(void)websocketDidConnect:(JFRWebSocket *)socket
-{
-    [[self actionContainer] executeActionsForEventNamed:kIXOpened];
-}
-
--(void)websocketDidDisconnect:(JFRWebSocket *)socket error:(NSError *)error
-{
-    [[self actionContainer] executeActionsForEventNamed:KIXClosed];
 }
 
 @end

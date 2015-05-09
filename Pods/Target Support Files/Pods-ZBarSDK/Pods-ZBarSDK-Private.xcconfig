@@ -1,8 +1,0 @@
-#include "Pods-ZBarSDK.xcconfig"
-EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*][arch=*] = ${PODS_ZBARSDK_EXCLUDED_SOURCE_FILE_NAMES}
-EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*][arch=*] = ${PODS_ZBARSDK_EXCLUDED_SOURCE_FILE_NAMES}
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 ${PODS_ZBARSDK_GCC_PREPROCESSOR_DEFINITIONS}
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ZBarSDK" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworkActivityLogger" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/AFOAuth2Manager" "${PODS_ROOT}/Headers/Public/ALMoviePlayerController" "${PODS_ROOT}/Headers/Public/APParallaxHeader-Width" "${PODS_ROOT}/Headers/Public/ActionSheetPicker-3.0" "${PODS_ROOT}/Headers/Public/ApigeeiOSSDK" "${PODS_ROOT}/Headers/Public/CocoaLumberjack" "${PODS_ROOT}/Headers/Public/Color-Picker-for-iOS" "${PODS_ROOT}/Headers/Public/ColorUtils" "${PODS_ROOT}/Headers/Public/IQKeyboardManager" "${PODS_ROOT}/Headers/Public/JAFontAwesome" "${PODS_ROOT}/Headers/Public/MMDrawerController" "${PODS_ROOT}/Headers/Public/RaptureXML" "${PODS_ROOT}/Headers/Public/Reachability" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/SVPulsingAnnotationView" "${PODS_ROOT}/Headers/Public/SVWebViewController" "${PODS_ROOT}/Headers/Public/TTTAttributedLabel" "${PODS_ROOT}/Headers/Public/YLMoment" "${PODS_ROOT}/Headers/Public/ZBarSDK" "${PODS_ROOT}/Headers/Public/ZipArchive" "${PODS_ROOT}/Headers/Public/jetfire"
-OTHER_LDFLAGS = ${PODS_ZBARSDK_OTHER_LDFLAGS} -ObjC
-PODS_ROOT = ${SRCROOT}
-SKIP_INSTALL = YES

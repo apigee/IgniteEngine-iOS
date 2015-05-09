@@ -1,1 +1,0 @@
-../../../APParallaxHeader-Width/APParallaxHeader/UIScrollView+APParallaxHeader.h

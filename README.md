@@ -25,11 +25,11 @@ You can start building apps for iOS today; we're working hard to bring the platf
 
 *This is the best way to start learning the Ignite Engine: it doesn't require fiddling around with setting up a new Xcode project.*
 
-1. Download the [Ignite Engine starter kit](https://ignite.apigee.com/IgniteEngineStarterKit.zip).
+1. Download the [Ignite Engine starter kit](https://ignite.apigee.com/starterkit).
 
 2. Unzip the downloaded folder and move it into a place you'll remember (like `~/Development`!).
 
-3. Open Terminal and `cd` to the new folder (like `$ cd ~/Development/IgniteEngineStarterKit`).
+3. Open Terminal and `$ cd` to the new folder (like `$ cd ~/Development/IgniteEngineStarterKit`).
 
 4. Run `$ pod install` to magically download and install all the dependencies.
 
@@ -104,6 +104,29 @@ You can start building apps for iOS today; we're working hard to bring the platf
 ## Tips
 
 - If you're creating a git repo for your `/assets`, you should add `Pods/**` to your `.gitignore` to avoid commiting your dynamic dependencies to your repo.
+
+## Contributing
+
+*We didn't make the Ignite Engine open source for nothing! Dig in, get your hands dirty, and submit a pull request.*
+
+
+1. Clone this repo into somewhere sensible like `~/Development/IgniteEngine-iOS`.
+
+2. Make a copy of the `/Example` project folder and put it somewhere sensible like `~/Development/MyIgniteDevProject` (or make a new one following the steps above).
+
+3. Edit the `podfile` inside `/MyIgniteDevProject` to use a local `:path` declaration:
+    
+    ```
+    pod 'IgniteEngine', :path => '~/Development/IgniteEngine-iOS'
+    ```
+
+4. Open `{MyApp}.xcworkspace` from inside your new `/MyigniteDevProject` folder.
+
+5. From the project navigator, expand the `Pods` project and expand `Development Pods > IgniteEngine`.
+
+6. Here you'll find everything you need to get started developing. Because this folder is a symbolic link to your project clone, modifications made inside the `Development Pods` folder will automagically update your git repo.
+
+7. We use the 'fork-and-pull' methodology, so please commit your changes to a branch on your personal fork and submit a pull request.
 
 ## Dependencies
 
