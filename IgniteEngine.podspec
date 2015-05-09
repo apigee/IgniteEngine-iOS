@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |spec|
     spec.name                  = 'IgniteEngine'
-    spec.version               = '0.1.0'
+    spec.version               = '0.1.1'
     spec.summary               = 'A platform for rapidly building native mobile applications using declarative JSON.'
     spec.description           = <<-DESC
                                   The Ignite Engine is a platform for rapidly building native mobile apps using declarative JSON to build views, controllers, and logic. The stability and robustness of the engine frees you to focus on the functionality and design of your app.
@@ -26,6 +26,8 @@ Pod::Spec.new do |spec|
     spec.requires_arc          = true  
     spec.preserve_paths        = 'Classes/**'
     spec.source_files          = 'Classes/**/*.{h,m}'
+    spec.exclude_files         = 'Example'
+
     spec.ios.deployment_target = '8.0'
     spec.documentation_url     = 'https://ignite.apigee.com'
 
