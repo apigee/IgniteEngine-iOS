@@ -1,0 +1,14 @@
+{
+  "$app": {
+    "actions": [],
+    "attributes": {
+      "view.index": "/view.json",
+      "debug.layout.enabled": false,
+      "logging.datasource.enabled": true,
+      "logging.level": "verbose",
+      "mode": "verbose",
+      "navigationBar.enabled": false
+    },
+    "datasources": []
+  }
+}

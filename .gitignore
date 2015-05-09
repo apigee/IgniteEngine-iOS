@@ -2,10 +2,8 @@
 *.swp
 *~nib
 
-build/
-assets*
-Pods/**
-Podfile.lock
+Example/Pods/**
+Example/Podfile.lock
 
 *.pbxuser
 *.perspective
