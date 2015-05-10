@@ -119,7 +119,7 @@ IX_STATIC_CONST_STRING kIXDismissSheet = @"dismiss";
         _titlesMap = [NSMutableDictionary new];
         for( NSString* otherButton in [self otherTitles] )
         {
-            NSArray* otherTitles = [otherButton componentsSeparatedByString:kIX_COLON_SEPERATOR];
+            NSArray* otherTitles = [otherButton componentsSeparatedByString:kIX_COLON_SEPARATOR];
             _titlesMap[[otherTitles lastObject]] = [otherTitles firstObject];
             [actionSheet addButtonWithTitle:[otherTitles lastObject]];
         }

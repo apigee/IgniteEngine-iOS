@@ -29,13 +29,4 @@
 
 @implementation IXSize
 
-- (instancetype)initWithDefaultSize {
-    self = [super init];
-    if (self) {
-        self.width = nil;
-        self.height = nil;
-    }
-    return self;
-}
-
 @end

@@ -121,7 +121,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
         NSString* attributesKey = key;
         if( [keyPrefix length] > 0 )
         {
-            attributesKey = [NSString stringWithFormat:@"%@%@%@",keyPrefix,kIX_PERIOD_SEPERATOR,key];
+            attributesKey = [NSString stringWithFormat:@"%@%@%@",keyPrefix,kIX_PERIOD_SEPARATOR,key];
         }
         
         if( [obj isKindOfClass:[NSArray class]] ) {
@@ -294,6 +294,9 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
         
     }];
 }
+
+#pragma mark Object attributes (JSON dictionaries, etc.)
+
 -(NSDictionary*)getAllAttributesAsDictionary {
     return [self getAllAttributesAsDictionaryWithURLEncodedValues:NO];
 }
@@ -312,7 +315,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
                 attributeValue = [attributeValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             }
 
-            NSMutableArray* attributeNameComponents = [NSMutableArray arrayWithArray:[attributeName componentsSeparatedByString:kIX_PERIOD_SEPERATOR]];
+            NSMutableArray* attributeNameComponents = [NSMutableArray arrayWithArray:[attributeName componentsSeparatedByString:kIX_PERIOD_SEPARATOR]];
             if( [attributeNameComponents count] > 1 )
             {
                 NSString* firstKey = [attributeNameComponents firstObject];
@@ -346,7 +349,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
                 IXAttribute* attribute = [self getAttributeToEvaluate:attributeName];
                 if( [attribute wasAnArray] )
                 {
-                    [returnDictionary setObject:[attributeValue componentsSeparatedByString:kIX_COMMA_SEPERATOR] forKey:attributeName];
+                    [returnDictionary setObject:[attributeValue componentsSeparatedByString:kIX_COMMA_SEPARATOR] forKey:attributeName];
                 }
                 else
                 {
@@ -376,7 +379,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     NSMutableDictionary* returnDictionary = nil;
     if( [[[self attributesDict] allKeys] count] > 0 )
     {
-        returnDictionary = [[NSMutableDictionary alloc] init];
+        returnDictionary = [NSMutableDictionary dictionary];
         
         NSArray* attributeNames = [[self attributesDict] allKeys];
         for( NSString* attributeName in attributeNames )
@@ -422,33 +425,42 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     if( attributeName == nil )
         return nil;
     
-    IXAttribute* attributeToEvaluate = nil;
+    __block IXAttribute* attributeToEvaluate = nil;
     NSArray* attributeArray = [self attributesForAttributeNamed:attributeName];
     if( [attributeArray count] > 0 )
     {
         UIInterfaceOrientation currentOrientation = [IXAppManager currentInterfaceOrientation];
-        for( IXAttribute* attribute in [attributeArray reverseObjectEnumerator] )
-        {
+        [attributeArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(IXAttribute *attribute, NSUInteger idx, BOOL *stop) {
             if( [attribute areConditionalAndOrientationMaskValid:currentOrientation] ) {
                 attributeToEvaluate = attribute;
             } else if( [attribute valueIfFalse] != nil && [attribute isOrientationMaskValidForOrientation:currentOrientation] ) {
                 attributeToEvaluate = [attribute valueIfFalse];
             }
-
-            if( attributeToEvaluate != nil ) {
-                break;
-            }
-        }
+            *stop = (attributeToEvaluate != nil);
+        }];
     }
     return attributeToEvaluate;
 }
 
+#pragma mark String attributes
+
 -(NSString*)getStringValueForAttribute:(NSString*)attributeName defaultValue:(NSString*)defaultValue
 {
     IXAttribute* attributeToEvaluate = [self getAttributeToEvaluate:attributeName];
-    NSString* returnValue =  ( attributeToEvaluate != nil ) ? [attributeToEvaluate attributeStringValue] : defaultValue;
-    return [returnValue copy];
+    return ( attributeToEvaluate != nil ) ? [[attributeToEvaluate attributeStringValue] copy] : defaultValue;
 }
+
+-(NSString*)getStringValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSString*)defaultValue
+{
+    __block NSString* returnValue = nil;
+    [legacyAttributes enumerateObjectsUsingBlock:^(NSString* attributeName, NSUInteger idx, BOOL *stop) {
+        returnValue = [self getStringValueForAttribute:attributeName defaultValue:defaultValue];
+        *stop = (returnValue != nil);
+    }];
+    return returnValue;
+}
+
+#pragma mark Size attributes
 
 -(IXSize*)getSizeValueForAttributeWithPrefix:(NSString*)prefix
 {
@@ -465,7 +477,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
         widthX = [NSString stringWithFormat:@"%@.%@", prefix, widthX];
         heightX = [NSString stringWithFormat:@"%@.%@", prefix, heightX];
     }
-    IXSize* returnSize = [[IXSize alloc] initWithDefaultSize];
+    IXSize* returnSize = [IXSize new];
     NSArray* sizeArr = [self getCommaSeparatedArrayOfValuesForAttribute:attributeName defaultValue:nil];
     if (sizeArr.count == 2) {
         returnSize.width = sizeArr[0];
@@ -479,80 +491,154 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return returnSize;
 }
 
+-(CGFloat)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(CGFloat)maxSize defaultValue:(CGFloat)defaultValue
+{
+    IXSizeValuePercentage sizeValuePercentage = ixSizePercentageValueWithStringOrDefaultValue([self getStringValueForAttribute:attributeName defaultValue:nil], defaultValue);
+    return ixEvaluateSizeValuePercentageForMaxValue(sizeValuePercentage, maxSize);
+}
+
+#pragma mark Array attributes
+
+// Comma separator: ,
 -(NSArray*)getCommaSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
-    NSArray* returnArray = defaultValue;
-    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    if( stringValue != nil )
-    {
-        returnArray = [stringValue componentsSeparatedByString:kIX_COMMA_SEPERATOR];
-    }
-    return returnArray;
+    return [self componentSeparatedArrayForAttribute:attributeName separator:kIX_COMMA_SEPARATOR defaultValue:defaultValue];
 }
 
+-(NSArray*)getCommaSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue
+{
+    return [self componentSeparatedArrayForLegacyAttributes:legacyAttributes separator:kIX_COMMA_SEPARATOR defaultValue:defaultValue];
+}
+
+// Pipe-comma-pipe separator: |,|
 -(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
-    NSArray* returnArray = defaultValue;
-    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    if( stringValue != nil )
-    {
-        returnArray = [stringValue componentsSeparatedByString:kIX_PIPECOMMAPIPE_SEPERATOR];
-    }
-    return returnArray;
+    return [self componentSeparatedArrayForAttribute:attributeName separator:kIX_PIPECOMMAPIPE_SEPARATOR defaultValue:defaultValue];
 }
 
+-(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue
+{
+    return [self componentSeparatedArrayForLegacyAttributes:legacyAttributes separator:kIX_PIPECOMMAPIPE_SEPARATOR defaultValue:defaultValue];
+}
+
+// Pipe separator: |
 -(NSArray*)getPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
-    NSArray* returnArray = defaultValue;
-    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    if( stringValue != nil )
-    {
-        returnArray = [stringValue componentsSeparatedByString:kIX_PIPE_SEPERATOR];
-    }
-    return returnArray;
+    return [self componentSeparatedArrayForAttribute:attributeName separator:kIX_PIPE_SEPARATOR defaultValue:defaultValue];
 }
+
+-(NSArray*)getPipeSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue
+{
+    return [self componentSeparatedArrayForLegacyAttributes:legacyAttributes separator:kIX_PIPE_SEPARATOR defaultValue:defaultValue];
+}
+
+// Main separator methods
+-(NSArray*)componentSeparatedArrayForAttribute:(NSString*)attributeName separator:(NSString*)separator defaultValue:(NSArray*)defaultValue
+{
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
+    return ( stringValue != nil ) ? [stringValue componentsSeparatedByString:separator] : defaultValue;
+}
+
+-(NSArray*)componentSeparatedArrayForLegacyAttributes:(NSArray*)legacyAttributes separator:(NSString*)separator defaultValue:(NSArray*)defaultValue
+{
+    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return ( stringValue != nil ) ? [stringValue componentsSeparatedByString:separator] : defaultValue;
+}
+
+#pragma mark BOOL attributes
 
 -(BOOL)getBoolValueForAttribute:(NSString*)attributeName defaultValue:(BOOL)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    BOOL returnValue =  ( stringValue != nil ) ? [stringValue boolValue] : defaultValue;
-    return returnValue;
+    return ( stringValue != nil ) ? [stringValue boolValue] : defaultValue;
 }
+
+-(BOOL)getBoolValueforLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(BOOL)defaultValue
+{
+    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return (stringValue != nil) ? [stringValue boolValue] : defaultValue;
+}
+
+#pragma mark Int attributes
 
 -(int)getIntValueForAttribute:(NSString*)attributeName defaultValue:(int)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    int returnValue =  ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
-    return returnValue;
+    return ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
 }
 
--(float)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(float)defaultValue
+-(int)getIntValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(int)defaultValue
+{
+    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
+}
+
+#pragma mark Float attributes
+
+-(CGFloat)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(CGFloat)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    float returnValue =  ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
-    return returnValue;
+    return ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
 }
 
--(float)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(float)maxSize defaultValue:(float)defaultValue
+-(CGFloat)getFloatValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(CGFloat)defaultValue
 {
-    IXSizeValuePercentage sizeValuePercentage = ixSizePercentageValueWithStringOrDefaultValue([self getStringValueForAttribute:attributeName defaultValue:nil], defaultValue);
-    float returnValue = ixEvaluateSizeValuePercentageForMaxValue(sizeValuePercentage, maxSize);
-    return returnValue;
+    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
 }
+
+#pragma mark Color attributes
 
 -(UIColor*)getColorValueForAttribute:(NSString*)attributeName defaultValue:(UIColor*)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    UIColor* returnValue =  ( stringValue != nil ) ? [UIColor colorWithString:stringValue] : defaultValue;
-    return returnValue;
+    return ( stringValue != nil ) ? [UIColor colorWithString:stringValue] : defaultValue;
 }
 
-+(void)storeImageInCache:(UIImage*)image withImageURL:(NSURL*)imageURL toDisk:(BOOL)toDisk
+-(UIColor*)getColorValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(UIColor*)defaultValue
 {
-    if( image && [imageURL absoluteString].length > 0 )
-    {
-        [[[SDWebImageManager sharedManager] imageCache] storeImage:image forKey:[imageURL absoluteString] toDisk:toDisk];
-    }
+    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return ( stringValue != nil ) ? [UIColor colorWithString:stringValue] : defaultValue;
+}
+
+#pragma mark Font attributes
+
+-(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue
+{
+    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
+    return [UIFont ix_fontFromString:stringValue] ?: defaultValue;
+}
+
+-(UIFont*)getFontValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(UIFont*)defaultValue
+{
+    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return [UIFont ix_fontFromString:stringValue] ?: defaultValue;
+}
+
+#pragma mark URL/path attributes
+
+-(NSURL*)getURLValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
+{
+    NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
+    return ( stringSettingValue != nil ) ? [IXPathHandler normalizedURLPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
+}
+
+-(NSURL*)getURLValueForLegacyAttributes:(NSArray*)legacyAttributes basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
+{
+    NSString* stringSettingValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return ( stringSettingValue != nil ) ? [IXPathHandler normalizedURLPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
+}
+
+-(NSString*)getPathValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+{
+    NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
+    return ( stringSettingValue != nil ) ? [IXPathHandler normalizedPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
+}
+
+-(NSString*)getPathValueForLegacyAttributes:(NSArray*)legacyAttributes basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
+{
+    NSString* stringSettingValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
+    return ( stringSettingValue != nil ) ? [IXPathHandler normalizedPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
 }
 
 -(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock
@@ -560,22 +646,11 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     [self getImageAttribute:attributeName successBlock:successBlock failBlock:failBlock shouldRefreshCachedImage:NO];
 }
 
+#pragma mark Image/icon attributes
+
 -(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage
 {
     NSURL* imageURL = [self getURLValueForAttribute:attributeName basePath:nil defaultValue:nil];
-    /*
-     Added in a fallback so that if images.touch (etc.) don't exist, it tries again with "images.default".
-     This way we don't have to specify several of the same image in the JSON.
-     - B
-    */
-    if( imageURL == nil )
-    {
-        if ([attributeName hasSuffix:@"icon"])
-            imageURL = [self getURLValueForAttribute:@"icon" basePath:nil defaultValue:nil];
-        if ([attributeName hasPrefix:@"images"])
-            imageURL = [self getURLValueForAttribute:@"images.default" basePath:nil defaultValue:nil];
-    }
-    
     if( imageURL != nil )
     {
         NSString* imageURLPath = [imageURL absoluteString];
@@ -647,46 +722,15 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     }
 }
 
--(NSURL*)getURLValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
++(void)storeImageInCache:(UIImage*)image withImageURL:(NSURL*)imageURL toDisk:(BOOL)toDisk
 {
-    NSURL* returnURL = defaultValue;
-    NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    if( stringSettingValue != nil )
+    if( image && [imageURL absoluteString].length > 0 )
     {
-        returnURL = [IXPathHandler normalizedURLPath:stringSettingValue
-                                            basePath:basePath
-                                            rootPath:[[[self ownerObject] sandbox] rootPath]];
+        [[[SDWebImageManager sharedManager] imageCache] storeImage:image forKey:[imageURL absoluteString] toDisk:toDisk];
     }
-    return returnURL;
 }
 
--(NSString*)getPathValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
-{
-    NSString* returnPath = defaultValue;
-    NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    if( stringSettingValue != nil )
-    {
-        returnPath = [IXPathHandler normalizedPath:stringSettingValue
-                                          basePath:basePath
-                                          rootPath:[[[self ownerObject] sandbox] rootPath]];
-    }
-    return returnPath;
-}
-
--(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue
-{
-    UIFont* returnFont = defaultValue;
-    NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    if( stringValue )
-    {
-        returnFont = [UIFont ix_fontFromString:stringValue];
-        if( returnFont == nil )
-        {
-            returnFont = defaultValue;
-        }
-    }
-    return returnFont;
-}
+#pragma mark Internal
 
 -(NSString*)description
 {

@@ -80,7 +80,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
         NSString* stringValue = (NSString*)jsonObject;
         if( [stringValue hasPrefix:kIX_IF] )
         {
-            NSArray* conditionalComponents = [stringValue componentsSeparatedByString:kIX_DOUBLE_COLON_SEPERATOR];
+            NSArray* conditionalComponents = [stringValue componentsSeparatedByString:kIX_DOUBLE_COLON_SEPARATOR];
             if (conditionalComponents.count > 1) {
                 NSString* conditionalStatement = [conditionalComponents[1] trimLeadingAndTrailingWhitespace];
                 NSString* valueIfTrue = [conditionalComponents[2] trimLeadingAndTrailingWhitespace];
@@ -167,7 +167,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
                 if( !commaSeparatedStringValueList ) {
                     commaSeparatedStringValueList = [[NSMutableString alloc] initWithString:propertyValueObject];
                 } else {
-                    [commaSeparatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,propertyValueObject];
+                    [commaSeparatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPARATOR,propertyValueObject];
                 }
             }
         }
@@ -177,7 +177,7 @@ static NSString* const kIXEvaluationsNSCodingKey = @"evaluations";
             if( !commaSeparatedStringValueList ) {
                 commaSeparatedStringValueList = [[NSMutableString alloc] initWithString:stringValue];
             } else {
-                [commaSeparatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPERATOR,stringValue];
+                [commaSeparatedStringValueList appendFormat:@"%@%@",kIX_COMMA_SEPARATOR,stringValue];
             }
         }
         else

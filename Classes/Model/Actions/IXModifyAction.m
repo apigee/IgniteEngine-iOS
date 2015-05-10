@@ -78,11 +78,11 @@ static NSString* const kIXObjectIDAndParameters = @"objectIDAndParameters";
             NSDictionary* parameters = [[self setProperties] attributesDict];
             [parameters enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSArray* propertyArray, BOOL *stop) {
                 for( IXAttribute* property in propertyArray ) {
-                    NSMutableArray* keyseparated = [[key componentsSeparatedByString:kIX_PERIOD_SEPERATOR] mutableCopy];
+                    NSMutableArray* keyseparated = [[key componentsSeparatedByString:kIX_PERIOD_SEPARATOR] mutableCopy];
                     if( [keyseparated count] > 1 ) {
                         NSString* objectID = [keyseparated firstObject];
                         [keyseparated removeObject:objectID];
-                        NSString* propertyName = [keyseparated componentsJoinedByString:kIX_PERIOD_SEPERATOR];
+                        NSString* propertyName = [keyseparated componentsJoinedByString:kIX_PERIOD_SEPARATOR];
                         if( [propertyName length] > 0 ) {
                             [property setAttributeName:propertyName];
                             NSMutableArray* parametersForObjectID = _objectIDAndParameters[objectID];

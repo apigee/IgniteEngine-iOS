@@ -133,7 +133,7 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
 {
     NSPredicate* predicate = nil;
     @try {
-        NSArray* predicateArgumentsArray = [[self predicateArguments] componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+        NSArray* predicateArgumentsArray = [[self predicateArguments] componentsSeparatedByString:kIX_COMMA_SEPARATOR];
         if( [[self predicateFormat] length] > 0 && [predicateArgumentsArray count] > 0 )
         {
             predicate = [NSPredicate predicateWithFormat:[self predicateFormat] argumentArray:predicateArgumentsArray];

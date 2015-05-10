@@ -599,7 +599,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         returnValue = [_response.responseString copy];
     }
     else if ([propertyName hasPrefix:kIXResponseHeaders]) {
-        NSString* headerKey = [[propertyName componentsSeparatedByString:kIX_PERIOD_SEPERATOR] lastObject];
+        NSString* headerKey = [[propertyName componentsSeparatedByString:kIX_PERIOD_SEPARATOR] lastObject];
         @try {
             returnValue = _response.headers[headerKey];
             if (!returnValue) {
@@ -626,7 +626,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         returnValue = [NSString stringWithFormat:@"%lf", _uploadProgress];
     }
     else if ([propertyName hasPrefix:kIXResponseBodyPrefix]) {
-        NSString* prefix = [NSString stringWithFormat:@"%@%@", kIXResponseBodyPrefix, kIX_PERIOD_SEPERATOR];
+        NSString* prefix = [NSString stringWithFormat:@"%@%@", kIXResponseBodyPrefix, kIX_PERIOD_SEPARATOR];
         propertyName = [propertyName stringByReplacingOccurrencesOfString:prefix withString:kIX_EMPTY_STRING];
         returnValue = [self stringForPath:propertyName container:_response.responseObject];
     }

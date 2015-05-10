@@ -32,6 +32,4 @@
 @property (nonatomic, strong) NSString* width;
 @property (nonatomic, strong) NSString* height;
 
-- (instancetype)initWithDefaultSize;
-
 @end

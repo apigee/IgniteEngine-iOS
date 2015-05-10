@@ -50,10 +50,10 @@ IX_STATIC_CONST_STRING kIXLayoutFlow = @"layoutFlow";
 IX_STATIC_CONST_STRING kIXLayoutFlowVertical = @"vertical";
 IX_STATIC_CONST_STRING kIXLayoutFlowHorizontal = @"horizontal";
 
-IX_STATIC_CONST_STRING kIXSeperatorColor = @"separator.color";
-IX_STATIC_CONST_STRING kIXSeperatorStyle = @"separator.style";
-IX_STATIC_CONST_STRING kIXSeperatorStyleNone = @"none";
-IX_STATIC_CONST_STRING kIXSeperatorStyleDefault = @"default";
+IX_STATIC_CONST_STRING kIXSEPARATORColor = @"separator.color";
+IX_STATIC_CONST_STRING kIXSEPARATORStyle = @"separator.style";
+IX_STATIC_CONST_STRING kIXSEPARATORStyleNone = @"none";
+IX_STATIC_CONST_STRING kIXSEPARATORStyleDefault = @"default";
 
 // IXTableView Events
 IX_STATIC_CONST_STRING kIXStartedScrolling = @"didBeginScrolling";
@@ -153,12 +153,12 @@ IX_STATIC_CONST_STRING kIXCellIdentifier = @"IXUITableViewCell";
     [[self tableView] setAllowsSelection:[[self attributeContainer] getBoolValueForAttribute:kIXRowSelectEnabled defaultValue:YES]];
     [self setKeepRowHighlightedOnSelect:[[self attributeContainer] getBoolValueForAttribute:kIXKeepRowHighlightedOnSelect defaultValue:NO]];
 
-    NSString* seperatorStyle = [[self attributeContainer] getStringValueForAttribute:kIXSeperatorStyle defaultValue:kIXSeperatorStyleDefault];
-    if( [seperatorStyle isEqualToString:kIXSeperatorStyleNone] ) {
+    NSString* SEPARATORStyle = [[self attributeContainer] getStringValueForAttribute:kIXSEPARATORStyle defaultValue:kIXSEPARATORStyleDefault];
+    if( [SEPARATORStyle isEqualToString:kIXSEPARATORStyleNone] ) {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-        [[self tableView] setSeparatorColor:[[self attributeContainer] getColorValueForAttribute:kIXSeperatorColor defaultValue:[UIColor grayColor]]];
+        [[self tableView] setSeparatorColor:[[self attributeContainer] getColorValueForAttribute:kIXSEPARATORColor defaultValue:[UIColor grayColor]]];
     }
     
     NSString* layoutFlow = [[self attributeContainer] getStringValueForAttribute:kIXLayoutFlow defaultValue:kIXLayoutFlowVertical];

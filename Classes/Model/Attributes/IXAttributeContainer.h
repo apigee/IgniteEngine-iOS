@@ -66,19 +66,39 @@ typedef void(^IXAttributeContainerImageFailedCompletedBlock)(NSError *error);
 -(IXSize*)getSizeValueForAttributeWithPrefix:(NSString*)prefix;
 -(BOOL)getBoolValueForAttribute:(NSString*)attributeName defaultValue:(BOOL)defaultValue;
 -(int)getIntValueForAttribute:(NSString*)attributeName defaultValue:(int)defaultValue;
--(float)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(float)defaultValue;
-// TODO: Should this be deprecated in favor of the IXSize method above?
--(float)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(float)maxSize defaultValue:(float)defaultValue;
+-(CGFloat)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(CGFloat)defaultValue;
+// TODO: Upgrade this and merge into IXSize
+-(CGFloat)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(CGFloat)maxSize defaultValue:(CGFloat)defaultValue;
 -(UIColor*)getColorValueForAttribute:(NSString*)attributeName defaultValue:(UIColor*)defaultValue;
+-(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue;
 -(NSArray*)getCommaSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
 -(NSArray*)getPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
 -(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;
--(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock;
--(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage;
--(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue;
 -(NSURL*)getURLValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue;
 -(NSString*)getPathValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
 
+/*
+ A note on attribute retrieval: in 0.1.2, methods have been added to allow
+ for retriving an attribute value by defining an array of possible attribute
+ names. As these are obviously more process intensive, only use them when
+ deprecating an attribute is required. Expect to remove your deprecation in
+ future versions and revert back to the standard attribute retrieval methods.
+ */
+
+-(NSString*)getStringValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSString*)defaultValue;
+-(BOOL)getBoolValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(BOOL)defaultValue;
+-(int)getIntValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(int)defaultValue;
+-(CGFloat)getFloatValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(CGFloat)defaultValue;
+-(UIColor*)getColorValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(UIColor*)defaultValue;
+-(UIFont*)getFontValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(UIFont*)defaultValue;
+-(NSArray*)getCommaSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue;
+-(NSArray*)getPipeSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue;
+-(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue;
+-(NSURL*)getURLValueForLegacyAttributes:(NSArray*)legacyAttributes basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue;
+-(NSString*)getPathValueForLegacyAttributes:(NSArray*)legacyAttributes basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue;
+
+-(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock;
+-(void)getImageAttribute:(NSString*)attributeName successBlock:(IXAttributeContainerImageSuccessCompletedBlock)successBlock failBlock:(IXAttributeContainerImageFailedCompletedBlock)failBlock shouldRefreshCachedImage:(BOOL)refreshCachedImage;
 +(void)storeImageInCache:(UIImage*)image withImageURL:(NSURL*)imageURL toDisk:(BOOL)toDisk;
 
 @end

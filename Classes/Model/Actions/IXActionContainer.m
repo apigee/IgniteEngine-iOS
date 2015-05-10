@@ -111,7 +111,7 @@ IX_STATIC_CONST_STRING kIXRepeatDelay = @"repeatDelay"; // amount of time to wai
                 {
                     if( [eventNameValue isKindOfClass:[NSString class]] )
                     {
-                        eventNameStrings = [eventNameValue componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+                        eventNameStrings = [eventNameValue componentsSeparatedByString:kIX_COMMA_SEPARATOR];
                     }
                     else if( [eventNameValue isKindOfClass:[NSArray class]] )
                     {

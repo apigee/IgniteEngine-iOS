@@ -31,19 +31,16 @@
 @implementation UIFont (IXAdditions)
 
 + (UIFont*)ix_fontFromString:(NSString*)string {
-    NSArray* fontComponents = [string componentsSeparatedByString:kIX_COLON_SEPERATOR];
+    
+    if (string == nil)
+        return nil;
+    
+    NSArray* fontComponents = [string componentsSeparatedByString:kIX_COLON_SEPARATOR];
     
     NSString* fontName = [fontComponents firstObject];
     CGFloat fontSize = [[fontComponents lastObject] floatValue] ?: 12.0;
     
-    if( fontName )
-    {
-        return [UIFont fontWithName:fontName size:fontSize];
-    }
-    else
-    {
-        return nil;
-    }
+    return ( fontName ) ? [UIFont fontWithName:fontName size:fontSize] : nil;
 }
 
 @end

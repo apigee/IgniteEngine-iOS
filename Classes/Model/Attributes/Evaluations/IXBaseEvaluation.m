@@ -154,21 +154,21 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                 NSString* methodNameTest = nil;
                 NSString* stringObject = nil;
                 
-                NSMutableArray* objectIDWithMethodStringComponents = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_PERIOD_SEPERATOR]];
+                NSMutableArray* objectIDWithMethodStringComponents = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_PERIOD_SEPARATOR]];
                 objectID = [objectIDWithMethodStringComponents firstObject];
                 
                 [objectIDWithMethodStringComponents removeObject:objectID];
                 if( [objectIDWithMethodStringComponents count] )
                 {
-                    methodName = [objectIDWithMethodStringComponents componentsJoinedByString:kIX_PERIOD_SEPERATOR];
+                    methodName = [objectIDWithMethodStringComponents componentsJoinedByString:kIX_PERIOD_SEPARATOR];
                 }
 
                 if( !methodName )
                 {
                     
-                    NSMutableArray* objectIDWithMethodStringComponentsTest = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_QUOTE_SEPERATOR]];
+                    NSMutableArray* objectIDWithMethodStringComponentsTest = [NSMutableArray arrayWithArray:[objectIDWithMethodString componentsSeparatedByString:kIX_QUOTE_SEPARATOR]];
                     
-                    methodNameTest = [objectIDWithMethodStringComponentsTest componentsJoinedByString:kIX_QUOTE_SEPERATOR];
+                    methodNameTest = [objectIDWithMethodStringComponentsTest componentsJoinedByString:kIX_QUOTE_SEPARATOR];
                     if (objectIDWithMethodStringComponentsTest.count == 3) {
                         stringObject = [objectIDWithMethodStringComponentsTest objectAtIndex:1];
                     }
@@ -183,13 +183,13 @@ NSArray* ix_ValidRangesFromTextCheckingResult(NSTextCheckingResult* textChecking
                         NSString* rawParameterString = [checkedString substringWithRange:[[validRanges objectAtIndex:4] rangeValue]];
                         NSArray* parameterStrings;
                         // Checks for pipe first, if no pipe, falls back to comma (need this for date formatting for example)
-                        if ([rawParameterString containsSubstring:kIX_PIPE_SEPERATOR options:NO])
+                        if ([rawParameterString containsSubstring:kIX_PIPE_SEPARATOR options:NO])
                         {
-                            parameterStrings = [rawParameterString componentsSeparatedByString:kIX_PIPE_SEPERATOR];
+                            parameterStrings = [rawParameterString componentsSeparatedByString:kIX_PIPE_SEPARATOR];
                         }
                         else
                         {
-                            parameterStrings = [rawParameterString componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+                            parameterStrings = [rawParameterString componentsSeparatedByString:kIX_COMMA_SEPARATOR];
                         }
                         
                         for( NSString* parameter in parameterStrings )

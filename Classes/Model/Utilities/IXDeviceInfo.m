@@ -141,7 +141,7 @@
 +(NSString *)osVersionAsInteger
 {
     NSString *ver = [[IXDeviceInfo osVersion]
-            stringByReplacingOccurrencesOfString:kIX_PERIOD_SEPERATOR
+            stringByReplacingOccurrencesOfString:kIX_PERIOD_SEPARATOR
             withString:kIX_EMPTY_STRING];
         
     if ([ver intValue] > 0 && [ver intValue] < 10)

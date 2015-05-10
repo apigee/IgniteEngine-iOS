@@ -272,7 +272,7 @@ static IXBaseEvaluationUtility const kIXToBase64Utility = ^NSString*(NSString* s
 
 static IXBaseEvaluationUtility const kIXToHexUtility = ^NSString*(NSString* stringToModify,NSArray* parameters){
     NSString* hexString = nil;
-    NSArray* rgbArray = [stringToModify componentsSeparatedByString:kIX_COMMA_SEPERATOR];
+    NSArray* rgbArray = [stringToModify componentsSeparatedByString:kIX_COMMA_SEPARATOR];
     if( [rgbArray count] > 2 )
     {
         float red = [[rgbArray firstObject] floatValue] / 255;

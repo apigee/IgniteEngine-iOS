@@ -55,11 +55,11 @@
     if(![currentNode isKindOfClass:[NSDictionary class]] && ![currentNode isKindOfClass:[NSArray class]]) {
         return currentNode;
     }
-    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPERATOR]) {
+    if ([jsonXPath hasPrefix:kIX_PERIOD_SEPARATOR]) {
         jsonXPath = [jsonXPath substringFromIndex:1];
     }
     
-    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPERATOR] firstObject];
+    NSString *currentKey = [[jsonXPath componentsSeparatedByString:kIX_PERIOD_SEPARATOR] firstObject];
     NSObject *nextNode;
     // if dict -> get value
     if ([currentNode isKindOfClass:[NSDictionary class]]) {
