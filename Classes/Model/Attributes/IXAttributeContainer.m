@@ -450,16 +450,6 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return ( attributeToEvaluate != nil ) ? [[attributeToEvaluate attributeStringValue] copy] : defaultValue;
 }
 
--(NSString*)getStringValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSString*)defaultValue
-{
-    __block NSString* returnValue = nil;
-    [legacyAttributes enumerateObjectsUsingBlock:^(NSString* attributeName, NSUInteger idx, BOOL *stop) {
-        returnValue = [self getStringValueForAttribute:attributeName defaultValue:defaultValue];
-        *stop = (returnValue != nil);
-    }];
-    return returnValue;
-}
-
 #pragma mark Size attributes
 
 -(IXSize*)getSizeValueForAttributeWithPrefix:(NSString*)prefix
@@ -505,20 +495,10 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return [self componentSeparatedArrayForAttribute:attributeName separator:kIX_COMMA_SEPARATOR defaultValue:defaultValue];
 }
 
--(NSArray*)getCommaSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue
-{
-    return [self componentSeparatedArrayForLegacyAttributes:legacyAttributes separator:kIX_COMMA_SEPARATOR defaultValue:defaultValue];
-}
-
 // Pipe-comma-pipe separator: |,|
 -(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue
 {
     return [self componentSeparatedArrayForAttribute:attributeName separator:kIX_PIPECOMMAPIPE_SEPARATOR defaultValue:defaultValue];
-}
-
--(NSArray*)getPipeCommaPipeSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue
-{
-    return [self componentSeparatedArrayForLegacyAttributes:legacyAttributes separator:kIX_PIPECOMMAPIPE_SEPARATOR defaultValue:defaultValue];
 }
 
 // Pipe separator: |
@@ -527,21 +507,10 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return [self componentSeparatedArrayForAttribute:attributeName separator:kIX_PIPE_SEPARATOR defaultValue:defaultValue];
 }
 
--(NSArray*)getPipeSeparatedArrayOfValuesForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(NSArray*)defaultValue
-{
-    return [self componentSeparatedArrayForLegacyAttributes:legacyAttributes separator:kIX_PIPE_SEPARATOR defaultValue:defaultValue];
-}
-
 // Main separator methods
 -(NSArray*)componentSeparatedArrayForAttribute:(NSString*)attributeName separator:(NSString*)separator defaultValue:(NSArray*)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    return ( stringValue != nil ) ? [stringValue componentsSeparatedByString:separator] : defaultValue;
-}
-
--(NSArray*)componentSeparatedArrayForLegacyAttributes:(NSArray*)legacyAttributes separator:(NSString*)separator defaultValue:(NSArray*)defaultValue
-{
-    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
     return ( stringValue != nil ) ? [stringValue componentsSeparatedByString:separator] : defaultValue;
 }
 
@@ -553,23 +522,11 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return ( stringValue != nil ) ? [stringValue boolValue] : defaultValue;
 }
 
--(BOOL)getBoolValueforLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(BOOL)defaultValue
-{
-    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
-    return (stringValue != nil) ? [stringValue boolValue] : defaultValue;
-}
-
 #pragma mark Int attributes
 
 -(int)getIntValueForAttribute:(NSString*)attributeName defaultValue:(int)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    return ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
-}
-
--(int)getIntValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(int)defaultValue
-{
-    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
     return ( stringValue != nil ) ? (int) [stringValue integerValue] : defaultValue;
 }
 
@@ -581,23 +538,11 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
 }
 
--(CGFloat)getFloatValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(CGFloat)defaultValue
-{
-    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
-    return ( stringValue != nil ) ? [stringValue floatValue] : defaultValue;
-}
-
 #pragma mark Color attributes
 
 -(UIColor*)getColorValueForAttribute:(NSString*)attributeName defaultValue:(UIColor*)defaultValue
 {
     NSString* stringValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    return ( stringValue != nil ) ? [UIColor colorWithString:stringValue] : defaultValue;
-}
-
--(UIColor*)getColorValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(UIColor*)defaultValue
-{
-    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
     return ( stringValue != nil ) ? [UIColor colorWithString:stringValue] : defaultValue;
 }
 
@@ -609,12 +554,6 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return [UIFont ix_fontFromString:stringValue] ?: defaultValue;
 }
 
--(UIFont*)getFontValueForLegacyAttributes:(NSArray*)legacyAttributes defaultValue:(UIFont*)defaultValue
-{
-    NSString* stringValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
-    return [UIFont ix_fontFromString:stringValue] ?: defaultValue;
-}
-
 #pragma mark URL/path attributes
 
 -(NSURL*)getURLValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
@@ -623,21 +562,9 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return ( stringSettingValue != nil ) ? [IXPathHandler normalizedURLPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
 }
 
--(NSURL*)getURLValueForLegacyAttributes:(NSArray*)legacyAttributes basePath:(NSString*)basePath defaultValue:(NSURL*)defaultValue
-{
-    NSString* stringSettingValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
-    return ( stringSettingValue != nil ) ? [IXPathHandler normalizedURLPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
-}
-
 -(NSString*)getPathValueForAttribute:(NSString*)attributeName basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
 {
     NSString* stringSettingValue = [self getStringValueForAttribute:attributeName defaultValue:nil];
-    return ( stringSettingValue != nil ) ? [IXPathHandler normalizedPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
-}
-
--(NSString*)getPathValueForLegacyAttributes:(NSArray*)legacyAttributes basePath:(NSString*)basePath defaultValue:(NSString*)defaultValue
-{
-    NSString* stringSettingValue = [self getStringValueForLegacyAttributes:legacyAttributes defaultValue:nil];
     return ( stringSettingValue != nil ) ? [IXPathHandler normalizedPath:stringSettingValue basePath:basePath rootPath:self.ownerObject.sandbox.rootPath] : defaultValue;
 }
 
