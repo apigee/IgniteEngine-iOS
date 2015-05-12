@@ -173,6 +173,7 @@ IX_STATIC_CONST_STRING kIXAcceptCharsetValue = @"utf-8"; // Accept-Charset heade
 IX_STATIC_CONST_STRING KIXDataProviderCacheName = @"com.apigee.ignite.DataProviderCache";
 IX_STATIC_CONST_STRING kIXRequestBinUrlPrefix = @"http://requestb.in";
 IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
+IX_STATIC_CONST_STRING kIXRowDataEmptyBasepathKey = @"kIXDataRowEmptyBasepathKey";
 
 @implementation IXHTTPDataProvider
 
@@ -184,6 +185,15 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         sIXDataProviderCache = [[NSCache alloc] init];
         [sIXDataProviderCache setName:KIXDataProviderCacheName];
     });
+}
+
+-(instancetype)init
+{
+    self = [super init];
+    if ( self ) {
+        _rowDataResultsDict = [[NSMutableDictionary alloc] init];
+    }
+    return self;
 }
 
 -(void)applySettings
@@ -828,15 +838,24 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 -(NSMutableArray*)rowDataArrayForDataRowBasePath:(NSString*)dataRowBasePath {
     NSMutableArray* rowDataResultsArray = [NSMutableArray array];
-    if( (dataRowBasePath == nil || dataRowBasePath.length <= 0) && [[_response responseObject] isKindOfClass:[NSArray class]] ) {
-        rowDataResultsArray = [_response responseObject];
-    }
-    else if (dataRowBasePath) {
-        id jsonObject = [IXJSONUtils objectForPath:dataRowBasePath container:_response.responseObject sandox:self.sandbox baseObject:self];
-        if ([jsonObject isKindOfClass:[NSArray class]]) {
-            rowDataResultsArray = jsonObject;
+    if (dataRowBasePath.length > 0 && _rowDataResultsDict[dataRowBasePath]) {
+        rowDataResultsArray = _rowDataResultsDict[dataRowBasePath];
+    } else if (dataRowBasePath.length && _rowDataResultsDict[kIXRowDataEmptyBasepathKey]) {
+        rowDataResultsArray = _rowDataResultsDict[kIXRowDataEmptyBasepathKey];
+    } else {
+        if( (dataRowBasePath.length <= 0) && [_response.responseObject isKindOfClass:[NSArray class]] ) {
+            rowDataResultsArray = [_response responseObject];
         }
+        else if (dataRowBasePath) {
+            id jsonObject = [IXJSONUtils objectForPath:dataRowBasePath container:_response.responseObject sandox:self.sandbox baseObject:self];
+            if ([jsonObject isKindOfClass:[NSArray class]]) {
+                rowDataResultsArray = jsonObject;
+            }
+        }
+        _rowDataResultsDict[(dataRowBasePath.length > 0) ? dataRowBasePath : kIXRowDataEmptyBasepathKey] = rowDataResultsArray;
     }
+// TODO: re-implement predicate filtering
+    /* predicate filtering has been disabled as of AFNetworking 2.0 implementation
     if( rowDataResultsArray.count > 0 && self.predicate != nil )
     {
         NSPredicate* predicate = [self predicate];
@@ -849,8 +868,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         {
             rowDataResultsArray = [[rowDataResultsArray sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
         }
-    }
-
+    }*/
     return rowDataResultsArray;
 }
 
