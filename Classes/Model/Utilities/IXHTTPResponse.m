@@ -44,16 +44,11 @@
     return self;
 }
 
--(void)setResponseObject:(id)responseObject {
-    _responseObject = responseObject;
-    [self setResponseStringFromObject:responseObject];
-}
-
 -(void)setResponseStringFromObject:(NSObject*)object
 {
     NSString* string = nil;
     @try {
-        if ([object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSArray class]]) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
             string = [object jsonStringWithPrettyPrint:YES];
         } else if ([object isKindOfClass:[NSData class]]) {
             string = [[NSString alloc] initWithData:(NSData*)object encoding:NSUTF8StringEncoding];

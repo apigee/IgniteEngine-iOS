@@ -128,6 +128,7 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
         [_messageDictionary setObject:messageArray forKey:kIXDataDictionaryKey];
         
         [self.response setResponseObject:_messageDictionary];
+        [self.response setResponseStringFromObject:_messageDictionary];
         [[self actionContainer] executeActionsForEventNamed:KIXMessageReceived];
     }
 }
@@ -146,6 +147,17 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
 {
     [[self actionContainer] executeActionsForEventNamed:KIXClosed];
 }
+
+// -(void)setResponseString
+//{
+//    NSString* responseString = nil;
+//    NSData* jsonStringData = [NSJSONSerialization dataWithJSONObject:[self messageDictionary] options:0 error:nil];
+//    if( [jsonStringData length] > 0 )
+//    {
+//        responseString = [[NSString alloc] initWithData:jsonStringData encoding:NSUTF8StringEncoding];
+//    }
+//    self.responseString = responseString;
+//}
 
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
 {

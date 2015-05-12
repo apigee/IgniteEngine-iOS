@@ -36,9 +36,9 @@ IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 
 @interface IXHTTPDataProvider : IXDataRowDataProvider
 
+@property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
 @property (nonatomic,strong) IXHTTPResponse* response;
 @property (nonatomic,strong) IXHTTPResponse* previousResponse;
-@property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;
 @property (nonatomic,strong) id responseSerializer;
 
 @property (nonatomic,strong) NSString* paginationNextQueryParam;
