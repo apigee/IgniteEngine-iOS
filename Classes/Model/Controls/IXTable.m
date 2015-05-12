@@ -59,7 +59,7 @@ IX_STATIC_CONST_STRING kIXSEPARATORStyleDefault = @"default";
 IX_STATIC_CONST_STRING kIXStartedScrolling = @"didBeginScrolling";
 IX_STATIC_CONST_STRING kIXEndedScrolling = @"didEndScrolling";
 
-// These Events fired on the actual cells. (aka dataRow will work)
+// These Events fired on the actual cells - calling a $row eval will work
 IX_STATIC_CONST_STRING kIXWillDisplayCell = @"willDisplayCell";
 IX_STATIC_CONST_STRING kIXDidHideCell = @"didHideCell";
 IX_STATIC_CONST_STRING kIXDidSelectCell = @"didSelectCell";

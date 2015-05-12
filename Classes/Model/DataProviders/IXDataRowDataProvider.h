@@ -39,7 +39,7 @@
 @property (nonatomic,readonly) NSSortDescriptor* sortDescriptor;
 
 -(NSUInteger)rowCount:(NSString*)dataRowBasePath;
--(NSString*)rowDataRawStringResponse;
+//-(NSString*)rowDataRawStringResponse;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath;
 -(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath;
 
