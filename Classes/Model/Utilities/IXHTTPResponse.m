@@ -44,20 +44,10 @@
     return self;
 }
 
--(void)setResponseStringFromObject:(NSObject*)object
+-(void)setResponseObject:(id)responseObject
 {
-    NSString* string = nil;
-    @try {
-        if ([object isKindOfClass:[NSDictionary class]]) {
-            string = [object jsonStringWithPrettyPrint:YES];
-        } else if ([object isKindOfClass:[NSData class]]) {
-            string = [[NSString alloc] initWithData:(NSData*)object encoding:NSUTF8StringEncoding];
-        }
-    }
-    @catch (NSException *exception) {
-        IX_LOG_ERROR(@"Error stringifying response body. Is response object valid JSON or text? \n%@\nException: %@", [object description], exception);
-    }
-    _responseString = string;
+    _responseObject = responseObject;
+    [self setResponseString:[IXJSONUtils responseStringFromObject:responseObject]];
 }
 
 -(void)setResponseTime

@@ -47,12 +47,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,strong) NSString* method;
 @property (nonatomic,strong) NSDictionary* body;
 @property (nonatomic,strong) NSDictionary* queryParams;
-//@property (nonatomic,copy,readonly) NSString* fullDataLocation;
 @property (nonatomic,strong) NSString* url;
-//@property (nonatomic,copy,readonly) NSString* dataPath;
-
-//-(void)createRequest;
-//-(NSURLRequest*)createURLRequest;
 
 -(void)loadData:(BOOL)forceGet;
 -(void)loadData:(BOOL)forceGet paginationKey:(NSString*)paginationKey;

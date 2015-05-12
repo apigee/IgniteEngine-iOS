@@ -168,7 +168,7 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
     NSDecimalNumber* rowTotal = [NSDecimalNumber zero];
     for( int i = 0; i < rowCount; i++ )
     {
-        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath dataRowBasePath:[self dataRowBasePath]];
+        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath dataRowBasePath:self.dataRowBasePath];
         if( rowDataForIndex )
         {
             NSDecimalNumber* decimalNumber = [NSDecimalNumber decimalNumberWithString:rowDataForIndex];

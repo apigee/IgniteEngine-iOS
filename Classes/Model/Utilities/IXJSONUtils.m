@@ -130,6 +130,37 @@
     return [self objectForPath:nextXPath container:nextNode sandox:sandbox baseObject:(IXBaseObject*)baseObject];
 }
 
++(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject *)currentNode sandox:(IXSandbox *)sandbox baseObject:(IXBaseObject *)baseObject
+{
+    NSString* returnValue = nil;
+    NSObject* jsonObject = [self objectForPath:jsonXPath container:currentNode sandox:sandbox baseObject:baseObject];
+    if( jsonObject )
+    {
+        if( [jsonObject isKindOfClass:[NSString class]] ) {
+            returnValue = (NSString*)jsonObject;
+        } else if( [jsonObject isKindOfClass:[NSNumber class]] ) {
+            returnValue = [((NSNumber*)jsonObject) stringValue];
+        } else if( [jsonObject isKindOfClass:[NSNull class]] ) {
+            returnValue = nil;
+        } else if( [NSJSONSerialization isValidJSONObject:jsonObject] ) {
+            
+            NSError* __autoreleasing jsonConvertError = nil;
+            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+                                                               options:NSJSONWritingPrettyPrinted
+                                                                 error:&jsonConvertError];
+            
+            if( jsonConvertError == nil && jsonData ) {
+                returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            } else {
+                IX_LOG_WARN(@"WARNING from %@ in %@: Error Converting JSON object: %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
+            }
+        } else {
+            IX_LOG_WARN(@"WARNING from %@ in %@: Invalid JSON Object: %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
+        }
+    }
+    return returnValue;
+}
+
 +(NSString*)getQueryValueOutOfValue:(NSString*)value sandbox:(IXSandbox*)sandbox baseObject:(IXBaseObject*)baseObject
 {
     NSString* returnValue = value;
@@ -193,6 +224,22 @@
         IX_LOG_ERROR(@"ERROR: %@ Exception when appending array %@ to %@", exception, previousObject, newObject);
         return nil;
     }
+}
+
++(NSString*)responseStringFromObject:(NSObject *)object
+{
+    NSString* string;
+    @try {
+        if ([object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSArray class]]) {
+            string = [object jsonStringWithPrettyPrint:YES];
+        } else if ([object isKindOfClass:[NSData class]]) {
+            string = [[NSString alloc] initWithData:(NSData*)object encoding:NSUTF8StringEncoding];
+        }
+    }
+    @catch (NSException *exception) {
+        IX_LOG_ERROR(@"Error stringifying response body. Is response object valid JSON or text? \n%@\nException: %@", [object description], exception);
+    }
+    return string;
 }
 
 @end

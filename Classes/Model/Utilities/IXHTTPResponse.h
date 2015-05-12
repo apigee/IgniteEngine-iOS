@@ -41,6 +41,4 @@
 @property (nonatomic) CFAbsoluteTime requestStartTime; // = CFAbsoluteTimeGetCurrent();
 @property (nonatomic) CFAbsoluteTime requestEndTime;
 
--(void)setResponseStringFromObject:(NSObject*)object;
-
 @end

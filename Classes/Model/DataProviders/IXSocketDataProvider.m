@@ -128,7 +128,6 @@ IX_STATIC_CONST_STRING kIXDataDictionaryKey = @"data";
         [_messageDictionary setObject:messageArray forKey:kIXDataDictionaryKey];
         
         [self.response setResponseObject:_messageDictionary];
-        [self.response setResponseStringFromObject:_messageDictionary];
         [[self actionContainer] executeActionsForEventNamed:KIXMessageReceived];
     }
 }

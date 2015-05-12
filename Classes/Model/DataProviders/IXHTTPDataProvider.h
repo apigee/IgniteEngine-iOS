@@ -33,7 +33,6 @@ typedef void(^LoadFinished)(BOOL success, NSURLSessionDataTask* task, id respons
 // Internal properties
 IX_STATIC_CONST_STRING kIXProgressKVOKey = @"fractionCompleted";
 
-
 @interface IXHTTPDataProvider : IXDataRowDataProvider
 
 @property (nonatomic,strong) NSMutableDictionary* rowDataResultsDict;

@@ -151,7 +151,6 @@ static NSCache* sIXDataProviderCache = nil;
 @property (nonatomic,strong) NSString* acceptedContentType;
 @property (nonatomic,strong) NSString* requestType;
 @property (nonatomic,strong) NSString* responseType;
-//@property (nonatomic,copy) NSString* cacheID;
 @property (nonatomic,strong) NSMutableSet* acceptedContentTypes;
 @property (nonatomic,strong) NSDictionary* attachments;
 @property (nonatomic) NSURLRequestCachePolicy cachePolicy;
@@ -437,7 +436,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         if (error)
         {
             [_response setResponseObject:error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey]];
-            [_response setResponseStringFromObject:error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey]];
             [_response setErrorMessage:error.localizedDescription];
             _paginationNextValue = nil;
             _paginationPrevValue = nil;
@@ -452,7 +450,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
                 }
             }
             [_response setResponseObject:responseObject];
-            [_response setResponseStringFromObject:responseObject];
             [self updatePaginationProperties];
         }
         
@@ -628,7 +625,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     else if ([propertyName hasPrefix:kIXResponseBodyPrefix]) {
         NSString* prefix = [NSString stringWithFormat:@"%@%@", kIXResponseBodyPrefix, kIX_PERIOD_SEPARATOR];
         propertyName = [propertyName stringByReplacingOccurrencesOfString:prefix withString:kIX_EMPTY_STRING];
-        returnValue = [self stringForPath:propertyName container:_response.responseObject];
+        returnValue = [IXJSONUtils stringForPath:propertyName container:_response.responseObject sandox:self.sandbox baseObject:self];
     }
     else
     {
@@ -769,7 +766,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     }
     if (wasModified) {
         [_response setResponseObject:modifiedResponseObject];
-        [_response setResponseStringFromObject:modifiedResponseObject];
         
         
         [self updateDataRowData];
@@ -782,6 +778,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     }
 
 // TODO: re-implement predicate filtering:
+// Recommend we perform predicate filtering on the retrieval of data, not constantly update the rowDataResultsDict saved copy.
     
 //        NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
 //        if( [modifyResponseType length] > 0 )
@@ -820,13 +817,12 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     NSString* dataRowBasePath = [self dataRowBasePath];
     [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
     
-    for( NSString* dataRowKey in [[self rowDataResultsDict] allKeys] )
-    {
+    [[[self rowDataResultsDict] allKeys] enumerateObjectsUsingBlock:^(NSString* dataRowKey, NSUInteger idx, BOOL *stop) {
         if( ![dataRowKey isEqualToString:dataRowBasePath] )
         {
             [self calculateAndStoreDataRowResultsForDataRowPath:dataRowKey];
         }
-    }
+    }];
 }
 
 - (NSURLRequestCachePolicy)cachePolicyFromString:(NSString*)policy {
@@ -870,57 +866,40 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         jsonObject = [IXJSONUtils objectForPath:dataRowPath container:_response.responseObject sandox:self.sandbox baseObject:self];
     }
     
-    NSArray* rowDataResults = nil;
+    NSMutableArray* rowDataResults = nil;
     if( [jsonObject isKindOfClass:[NSArray class]] )
     {
-        rowDataResults = (NSArray*)jsonObject;
+        rowDataResults = [(NSMutableArray*)jsonObject mutableCopy];
+        [[self rowDataResultsDict] setObject:rowDataResults forKey:(dataRowPath.length > 0) ? dataRowPath : kIXRowDataEmptyBasepathKey];
     }
-    if( rowDataResults )
+    
+// TODO: re-implement predicate filtering
+// Recommend we perform predicate filtering on the retrieval of data, not constantly update the rowDataResultsDict saved copy.
+    
+    /* predicate filtering has been disabled as of AFNetworking 2.0 implementation
+    if( rowDataResults.count > 0 && self.predicate != nil )
     {
         NSPredicate* predicate = [self predicate];
         if( predicate )
         {
-            rowDataResults = [rowDataResults filteredArrayUsingPredicate:predicate];
+            rowDataResults = [[rowDataResultsArray filteredArrayUsingPredicate:predicate] mutableCopy];
         }
         NSSortDescriptor* sortDescriptor = [self sortDescriptor];
         if( sortDescriptor )
         {
-            rowDataResults = [rowDataResults sortedArrayUsingDescriptors:@[sortDescriptor]];
+            rowDataResults = [[rowDataResultsArray sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
         }
-    }
-    
-    if( [dataRowPath length] && rowDataResults != nil )
-    {
-        [[self rowDataResultsDict] setObject:rowDataResults forKey:dataRowPath];
-    }
-}
-
--(NSString*)rowDataRawStringResponse
-{
-    NSString* returnValue = nil;
-    NSArray* results = [self rowDataResultsDict][[self dataRowBasePath]];
-    if( [results count] > 0 )
-    {
-        NSError *error;
-        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:results
-                                                           options:0
-                                                             error:&error];
-        if( [jsonData length] > 0 && error == nil )
-        {
-            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            returnValue = jsonString;
-        }
-    }
-    return returnValue;
+    }*/
 }
 
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath
 {
-    if( [dataRowBasePath length] <= 0 )
+    if( dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0)
     {
-        dataRowBasePath = [self dataRowBasePath];
+        dataRowBasePath = kIXRowDataEmptyBasepathKey;
+    } else {
+        dataRowBasePath = self.dataRowBasePath;
     }
-
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
     if( keyPath && rowIndexPath )
     {
@@ -929,7 +908,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         if( dataRowContainer != nil )
         {
             NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
-            returnValue = [self stringForPath:jsonKeyPath container:dataRowContainer];
+            returnValue = [IXJSONUtils stringForPath:jsonKeyPath container:dataRowContainer sandox:self.sandbox baseObject:self];
         }
     }
     return returnValue;
@@ -937,48 +916,18 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 -(NSUInteger)rowCount:(NSString *)dataRowBasePath
 {
-    if( [dataRowBasePath length] <= 0 )
+    if( dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0)
     {
-        dataRowBasePath = [self dataRowBasePath];
+        dataRowBasePath = kIXRowDataEmptyBasepathKey;
+    } else {
+        dataRowBasePath = self.dataRowBasePath;
     }
-
     if( [self rowDataResultsDict][dataRowBasePath] == nil )
     {
         [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
     }
 
     return [[self rowDataResultsDict][dataRowBasePath] count];
-}
-
--(NSString*)stringForPath:(NSString*)jsonXPath container:(NSObject*)container
-{
-    NSString* returnValue = nil;
-    NSObject* jsonObject = [IXJSONUtils objectForPath:jsonXPath container:container sandox:self.sandbox baseObject:self];
-    if( jsonObject )
-    {
-        if( [jsonObject isKindOfClass:[NSString class]] ) {
-            returnValue = (NSString*)jsonObject;
-        } else if( [jsonObject isKindOfClass:[NSNumber class]] ) {
-            returnValue = [((NSNumber*)jsonObject) stringValue];
-        } else if( [jsonObject isKindOfClass:[NSNull class]] ) {
-            returnValue = nil;
-        } else if( [NSJSONSerialization isValidJSONObject:jsonObject] ) {
-            
-            NSError* __autoreleasing jsonConvertError = nil;
-            NSData* jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                               options:NSJSONWritingPrettyPrinted
-                                                                 error:&jsonConvertError];
-            
-            if( jsonConvertError == nil && jsonData ) {
-                returnValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            } else {
-                IX_LOG_WARN(@"WARNING from %@ in %@: Error Converting JSON object: %@",THIS_FILE,THIS_METHOD,[jsonConvertError description]);
-            }
-        } else {
-            IX_LOG_WARN(@"WARNING from %@ in %@: Invalid JSON Object: %@",THIS_FILE,THIS_METHOD,[jsonObject description]);
-        }
-    }
-    return returnValue;
 }
 
 @end

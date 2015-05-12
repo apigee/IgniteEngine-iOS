@@ -27,6 +27,9 @@
 
 #import "IXBaseDataProvider.h"
 
+// Internal Properties
+IX_STATIC_CONST_STRING kIXRowDataEmptyBasepathKey = @"kIXDataRowEmptyBasepathKey";
+
 @interface IXDataRowDataProvider : IXBaseDataProvider
 
 @property (nonatomic,copy,readonly) NSString* dataRowBasePath;
@@ -39,7 +42,6 @@
 @property (nonatomic,readonly) NSSortDescriptor* sortDescriptor;
 
 -(NSUInteger)rowCount:(NSString*)dataRowBasePath;
--(NSString*)rowDataRawStringResponse;
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath;
 -(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath;
 
