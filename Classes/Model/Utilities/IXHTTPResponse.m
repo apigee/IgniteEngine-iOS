@@ -50,9 +50,14 @@
     [self setResponseString:[IXJSONUtils responseStringFromObject:responseObject]];
 }
 
+-(void)setRequestEndTime:(CFAbsoluteTime)requestEndTime
+{
+    _requestEndTime = requestEndTime;
+    [self setResponseTime];
+}
+
 -(void)setResponseTime
 {
-    
     CFTimeInterval elapsedTime = (_requestEndTime - _requestStartTime) * 1000;
     _responseTime = elapsedTime;
 }

@@ -894,12 +894,12 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath
 {
-    if( dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0)
-    {
+    if( dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0) {
         dataRowBasePath = kIXRowDataEmptyBasepathKey;
     } else {
         dataRowBasePath = self.dataRowBasePath;
     }
+    
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
     if( keyPath && rowIndexPath )
     {

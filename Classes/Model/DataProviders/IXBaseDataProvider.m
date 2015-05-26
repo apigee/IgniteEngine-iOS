@@ -155,17 +155,17 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [self setPathIsLocal:[IXPathHandler pathIsLocal:url]];
     [self setUrlEncodeParams:[[self attributeContainer] getBoolValueForAttribute:kIXUrlEncodeParams defaultValue:YES]];
     [self setDeriveValueTypes:[[self attributeContainer] getBoolValueForAttribute:kIXDeriveValueTypes defaultValue:YES]];
-    [self setBody:[_bodyProperties getAllAttributesAsDictionaryWithURLEncodedValues:NO] ?: @{}];
-    [self setQueryParams:[_queryParamsProperties getAllAttributesAsDictionaryWithURLEncodedValues:_urlEncodeParams] ?: @{}];
+    [self buildBody];
+    [self buildQueryParams];
 }
 
--(void)setBody:(NSDictionary *)body
-{
+-(void)buildBody {
+    NSDictionary* bodyDict = [_bodyProperties getAllAttributesAsDictionaryWithURLEncodedValues:NO];
+    NSString* bodyString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_BODY defaultValue:nil];
     @try {
-        NSString* bodyString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_BODY defaultValue:nil];
-        if (body) {
-            _body = body;
-        } else if (bodyString) {
+        if (bodyDict) {
+            _body = bodyDict;
+        } else if (bodyString.length > 0) {
             NSError* __autoreleasing error = nil;
             _body = [NSJSONSerialization JSONObjectWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
         }
@@ -174,22 +174,23 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR: 'body' included with request was not a valid JSON object or string: %@", body);
+        IX_LOG_ERROR(@"ERROR: 'body' included with request was not a valid JSON object or string: %@", bodyDict);
     }
 }
 
--(void)setQueryParams:(NSDictionary *)queryParams
+-(void)buildQueryParams
 {
+    NSDictionary* queryParmasDict = [_queryParamsProperties getAllAttributesAsDictionaryWithURLEncodedValues:_urlEncodeParams];
+    NSString* queryParamsString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_QUERYPARAMS defaultValue:nil];
     @try {
-        NSString* queryParamsString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_QUERYPARAMS defaultValue:nil];
-        if (queryParams) {
-            _queryParams = queryParams;
-        } else if (queryParamsString) {
+        if (queryParmasDict) {
+            _queryParams = queryParmasDict;
+        } else if (queryParamsString.length > 0) {
             _queryParams = [NSDictionary ix_dictionaryFromQueryParamsString:queryParamsString];
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR: 'queryParams' included with request was not a valid JSON object or string: %@", queryParams);
+        IX_LOG_ERROR(@"ERROR: 'queryParams' included with request was not a valid JSON object or string: %@", queryParmasDict);
     }
 }
 
