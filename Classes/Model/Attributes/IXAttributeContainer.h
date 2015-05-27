@@ -64,11 +64,11 @@ typedef void(^IXAttributeContainerImageFailedCompletedBlock)(NSError *error);
 
 -(NSString*)getStringValueForAttribute:(NSString*)attributeName defaultValue:(NSString*)defaultValue;
 -(IXSize*)getSizeValueForAttributeWithPrefix:(NSString*)prefix;
+-(CGFloat)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(CGFloat)maxSize defaultValue:(CGFloat)defaultValue;
+-(CGSize)getSizeValueForIXSize:(IXSize*)size maximumSize:(CGSize)maxSize defaultValue:(CGSize)defaultValue;
 -(BOOL)getBoolValueForAttribute:(NSString*)attributeName defaultValue:(BOOL)defaultValue;
 -(int)getIntValueForAttribute:(NSString*)attributeName defaultValue:(int)defaultValue;
 -(CGFloat)getFloatValueForAttribute:(NSString*)attributeName defaultValue:(CGFloat)defaultValue;
-// TODO: Upgrade this and merge into IXSize
--(CGFloat)getSizeValueForAttribute:(NSString*)attributeName maximumSize:(CGFloat)maxSize defaultValue:(CGFloat)defaultValue;
 -(UIColor*)getColorValueForAttribute:(NSString*)attributeName defaultValue:(UIColor*)defaultValue;
 -(UIFont*)getFontValueForAttribute:(NSString*)attributeName defaultValue:(UIFont*)defaultValue;
 -(NSArray*)getCommaSeparatedArrayOfValuesForAttribute:(NSString*)attributeName defaultValue:(NSArray*)defaultValue;

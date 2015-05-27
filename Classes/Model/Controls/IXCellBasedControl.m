@@ -257,8 +257,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 {
     IXSize* size = [[self attributeContainer] getSizeValueForAttributeWithPrefix:kIXCell];
     CGSize contentViewSize = [[self contentView] bounds].size;
-    CGSize returnSize = CGSizeMake([[self attributeContainer] getSizeValueForAttribute:size.width maximumSize:contentViewSize.width defaultValue:contentViewSize.width],
-                                   [[self attributeContainer] getSizeValueForAttribute:size.height maximumSize:contentViewSize.height defaultValue:contentViewSize.height]);
+    CGSize returnSize = [[self attributeContainer] getSizeValueForIXSize:size maximumSize:contentViewSize defaultValue:contentViewSize];
+    
     return returnSize;
 }
 

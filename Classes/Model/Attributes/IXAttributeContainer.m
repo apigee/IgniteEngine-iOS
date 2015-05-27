@@ -487,6 +487,14 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
     return ixEvaluateSizeValuePercentageForMaxValue(sizeValuePercentage, maxSize);
 }
 
+-(CGSize)getSizeValueForIXSize:(IXSize*)size maximumSize:(CGSize)maxSize defaultValue:(CGSize)defaultValue
+{
+    IXSizeValuePercentage width = ixSizePercentageValueWithStringOrDefaultValue(size.width, defaultValue.width);
+    IXSizeValuePercentage height = ixSizePercentageValueWithStringOrDefaultValue(size.height, defaultValue.height);
+    return CGSizeMake(ixEvaluateSizeValuePercentageForMaxValue(width, maxSize.width), ixEvaluateSizeValuePercentageForMaxValue(height, maxSize.height));
+}
+
+
 #pragma mark Array attributes
 
 // Comma separator: ,
