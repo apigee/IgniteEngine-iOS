@@ -894,11 +894,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 -(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath
 {
-    if( dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0) {
-        dataRowBasePath = kIXRowDataEmptyBasepathKey;
-    } else {
-        dataRowBasePath = self.dataRowBasePath;
-    }
+    dataRowBasePath = [self determineCorrectDataRowBasePathForInstance:dataRowBasePath];
     
     NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
     if( keyPath && rowIndexPath )
@@ -916,18 +912,26 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 
 -(NSUInteger)rowCount:(NSString *)dataRowBasePath
 {
-    if( dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0)
-    {
-        dataRowBasePath = kIXRowDataEmptyBasepathKey;
-    } else {
-        dataRowBasePath = self.dataRowBasePath;
-    }
+    dataRowBasePath = [self determineCorrectDataRowBasePathForInstance:dataRowBasePath];
+    
     if( [self rowDataResultsDict][dataRowBasePath] == nil )
     {
         [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
     }
 
     return [[self rowDataResultsDict][dataRowBasePath] count];
+}
+
+-(NSString*)determineCorrectDataRowBasePathForInstance:(NSString*)dataRowBasePath {
+    if (dataRowBasePath.length <= 0 && self.dataRowBasePath.length <= 0)
+    {
+        dataRowBasePath = kIXRowDataEmptyBasepathKey;
+    }
+    else if (dataRowBasePath.length <= 0)
+    {
+        dataRowBasePath = self.dataRowBasePath;
+    }
+    return dataRowBasePath;
 }
 
 @end
