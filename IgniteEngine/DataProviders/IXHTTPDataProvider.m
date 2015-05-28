@@ -114,6 +114,7 @@ IX_STATIC_CONST_STRING kIXCachePolicyReturnCacheDataDontLoad = @"useCacheDontLoa
 IX_STATIC_CONST_STRING kIXCachePolicyReloadRevalidatingCacheData = @"reloadRevalidatingCache";
 
 // IXHTTPDataProvider Read-Only Properties
+IX_STATIC_CONST_STRING kIXCountPrefix = @"count.";
 IX_STATIC_CONST_STRING kIXResponseTime = @"response.time";
 IX_STATIC_CONST_STRING kIXResponseBodyPrefix = @"response.body"; // Prefix for parsed response. Reference objects like dsId.response.body.entities.0.uuid
 IX_STATIC_CONST_STRING kIXResponseString = @"response.string";
@@ -591,9 +592,19 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
 -(NSString*)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue;
-    if( [propertyName isEqualToString:kIXResponseString] )
-    {
+    if ([propertyName isEqualToString:kIXResponseString]) {
         returnValue = [_response.responseString copy];
+    }
+    else if ([propertyName hasPrefix:kIXCountPrefix]) {
+        NSString* basePath = [[propertyName componentsSeparatedByString:kIXCountPrefix] lastObject];
+        NSObject* data = [IXJSONUtils objectForPath:basePath container:_response.responseObject sandox:self.sandbox baseObject:self];
+        if ([data isKindOfClass:[NSArray class]]) {
+            NSArray* arr = (NSArray*)data;
+            returnValue = [NSString stringWithFormat:@"%ld", arr.count];
+        } else {
+            IX_LOG_DEBUG(@"Specified data basepath does not exist or is not an array, and therefore cannot be counted.");
+            returnValue = @"-1";
+        }
     }
     else if ([propertyName hasPrefix:kIXResponseHeaders]) {
         NSString* headerKey = [[propertyName componentsSeparatedByString:kIX_PERIOD_SEPARATOR] lastObject];

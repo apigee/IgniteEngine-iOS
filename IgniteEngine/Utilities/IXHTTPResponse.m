@@ -62,6 +62,4 @@
     _responseTime = elapsedTime;
 }
 
-
-
 @end
