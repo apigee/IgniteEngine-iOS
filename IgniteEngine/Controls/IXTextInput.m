@@ -78,7 +78,7 @@ IX_STATIC_CONST_STRING kIXInputTransformUppercase = @"uppercase"; // kIXInputTra
 IX_STATIC_CONST_STRING kIXInputTransformUppercaseFirst = @"ucfirst"; // kIXInputTransform
 IX_STATIC_CONST_STRING kIXInputFormatPassword = @"password"; // kIXFormat
 IX_STATIC_CONST_STRING kIXInputFormatCurrency = @"currency"; // kIXFormat
-IX_STATIC_CONST_STRING kIXInputFormatCC = @"creditcard"; // kIXFormat
+IX_STATIC_CONST_STRING kIXInputFormatCC = @"creditCard"; // kIXFormat
 
 // IXTextInput Returns
 IX_STATIC_CONST_STRING kIXText = @"text"; // To set the text use the kIXSetText function.
