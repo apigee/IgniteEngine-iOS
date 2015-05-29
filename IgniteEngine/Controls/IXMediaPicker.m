@@ -214,8 +214,8 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
                     }
                     else {
                         IX_LOG_DEBUG(@"Successfully saved camera image to photos album");
+                        self.selectedMedia = assetURL;
                         [self.actionContainer executeActionsForEventNamed:kIXSuccess];
-
                     }
                 }];
             }
