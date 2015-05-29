@@ -33,13 +33,15 @@
 
 #import "UIImagePickerController+IXAdditions.h"
 #import "UIViewController+IXAdditions.h"
-
+#import "UIImage+IXAdditions.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <CoreLocation/CoreLocation.h>
 
 // IXMediaSource Attributes
 IX_STATIC_CONST_STRING kIXCameraSource = @"camera";
 IX_STATIC_CONST_STRING kIXCameraControlsEnabled = @"cameraControls.enabled";
 IX_STATIC_CONST_STRING kIXSource = @"source";
+IX_STATIC_CONST_STRING kIXAutoSaveToCameraRoll = @"autoSave.enabled";
 
 // IXMediaSource Attribute Options
 IX_STATIC_CONST_STRING kIXSourceCamera = @"camera";
@@ -67,6 +69,9 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
 @property (nonatomic,assign) UIImagePickerControllerCameraDevice pickerDevice;
 @property (nonatomic,strong) UIImagePickerController* imagePickerController;
 @property (nonatomic,strong) NSURL* selectedMedia;
+@property (nonatomic,strong) UIImage* capturedImage;
+@property (strong, nonatomic) NSMutableDictionary* imageMetadata;
+@property (strong, nonatomic) NSDictionary* locationData;
 @property (nonatomic) BOOL showCameraControls;
 
 @end
@@ -184,19 +189,60 @@ IX_STATIC_CONST_STRING kIXSelectedMedia = @"selectedMedia";
 - (void)imagePickerController:(UIImagePickerController *)picker
         didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    self.selectedMedia = info[UIImagePickerControllerReferenceURL];
-    
-    [[[IXAppManager sharedAppManager] rootViewController] dismissViewControllerAnimated:YES completion:nil];
-    IX_LOG_VERBOSE(@"Successfully loaded media at %@", info[UIImagePickerControllerReferenceURL]);
-    
-    if(info != nil)
-    {
-        [self.actionContainer executeActionsForEventNamed:kIXSuccess];
+    @try {
+        
+        ALAssetsLibrary* library = [ALAssetsLibrary new];
+        UIImage* selectedImage = [(UIImage*)info[UIImagePickerControllerOriginalImage] fixRotation];
+        
+        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+        {
+            _imageMetadata = [[info objectForKey:@"UIImagePickerControllerMediaMetadata"] mutableCopy];
+            _imageMetadata[@"Orientation"] = @1;
+            
+            // for use later when implementing geo data
+//                if (_locationData != nil) {
+//                    [_imageMetadata setObject:_locationData forKey:(NSString *)kCGImagePropertyGPSDictionary];
+//                }
+            
+//                [_locationManager stopUpdatingLocation];
+            
+            if ([[self attributeContainer] getBoolValueForAttribute:kIXAutoSaveToCameraRoll defaultValue:YES]) {
+                [library writeImageToSavedPhotosAlbum:selectedImage.CGImage metadata:_imageMetadata completionBlock:^(NSURL *assetURL, NSError *error) {
+                    if (error) {
+                        IX_LOG_ERROR(@"Error saving camera image to camera roll: %@", error);
+                        [self.actionContainer executeActionsForEventNamed:kIXError];
+                    }
+                    else {
+                        IX_LOG_DEBUG(@"Successfully saved camera image to photos album");
+                        [self.actionContainer executeActionsForEventNamed:kIXSuccess];
+
+                    }
+                }];
+            }
+        }
+        else if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
+        {
+            self.selectedMedia = info[UIImagePickerControllerReferenceURL];
+            [self.actionContainer executeActionsForEventNamed:kIXSuccess];
+
+            // for use later
+//                NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+//                [_library assetForURL:assetURL
+//                          resultBlock:^(ALAsset *asset) {
+//                              _imageMetadata = [asset.defaultRepresentation.metadata mutableCopy];
+//                              _imageMetadata[@"Orientation"] = @1;
+//                              [defaults setObject:_imageMetadata forKey:kImageMetadata];
+//                              [defaults setInteger:[_imageMetadata[@"Orientation"] intValue] forKey:kImageOrientation];
+//                              [defaults synchronize];
+//                          }
+//                         failureBlock:nil];
+            
+        }
     }
-    else
-    {
+    @catch (NSException* e) {
+        IX_LOG_ERROR(@"ERROR loading image from picker controller: %@", e);
         [self.actionContainer executeActionsForEventNamed:kIXError];
-    }
+    };
 }
 
 
