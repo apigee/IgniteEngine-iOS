@@ -31,7 +31,7 @@
 #import "IXAttributeContainer.h"
 #import "IXDataRowDataProvider.h"
 
-static NSString* const kIXIndex = @"index";
+static NSString* const kIXIndex = @"$index";
 
 @implementation IXRowEvaluation
 

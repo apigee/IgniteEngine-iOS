@@ -42,12 +42,9 @@ IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending";
 IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending";
 
 // IXDataRowDataProvider Read-Only Attributes
-IX_STATIC_CONST_STRING kIXRawDataResponse = @"raw_data_response";
-IX_STATIC_CONST_STRING kIXCount = @"count_rows";
 
 // Non Attribute constants.
 IX_STATIC_CONST_STRING kIXDataRow = @"$row.";
-IX_STATIC_CONST_STRING kIXTotal = @"total.";
 
 @interface IXDataRowDataProvider ()
 
@@ -80,32 +77,9 @@ IX_STATIC_CONST_STRING kIXTotal = @"total.";
 -(NSString *)getReadOnlyPropertyValue:(NSString *)propertyName
 {
     NSString* returnValue = nil;
-    if( [propertyName isEqualToString:kIXCount] )
+    if( [propertyName hasPrefix:kIXDataRow] )
     {
-        returnValue = [NSString stringWithFormat:@"%li",(long)[self rowCount:nil]];
-    }
-    else if( [propertyName isEqualToString:kIXTotal] )
-    {
-        returnValue = [self rowDataTotalForKeyPath:propertyName];
-    }
-    else if( [propertyName hasPrefix:kIXDataRow] )
-    {
-        NSString* remainingKeyPathString = [propertyName stringByReplacingOccurrencesOfString:kIXDataRow withString:kIX_EMPTY_STRING];
-        if( [remainingKeyPathString length] > 0 )
-        {
-            if( [remainingKeyPathString isEqualToString:kIXRawDataResponse] )
-            {
-                returnValue = [self rowDataRawStringResponse];
-            }
-            else if( [remainingKeyPathString hasPrefix:kIXTotal] )
-            {
-                remainingKeyPathString = [remainingKeyPathString stringByReplacingOccurrencesOfString:kIXTotal withString:kIX_EMPTY_STRING];
-                if( [remainingKeyPathString length] > 0 )
-                {
-                    returnValue = [self rowDataTotalForKeyPath:remainingKeyPathString];
-                }
-            }
-        }
+        //
     }
     else
     {
