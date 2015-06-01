@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>iBeacon Monitoring</string>
+	<string>Edit this description in your Info.plist</string>
 	<key>NSLocationUsageDescription</key>
 	<string>BackgroundLocation</string>
 	<key>UIAppFonts</key>
