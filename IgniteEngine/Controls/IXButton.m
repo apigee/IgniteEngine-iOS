@@ -31,6 +31,7 @@
 #import "UIButton+IXAdditions.h"
 #import "UIFont+IXAdditions.h"
 #import "ColorUtils.h"
+#import "NSString+FontAwesome.h"
 
 // Attributes
 IX_STATIC_CONST_STRING kIXTextDefault = @"text";
@@ -138,7 +139,13 @@ NSArray* alphas;
         {
             UIColor* titleTextColor = [UIColor colorWithString:titleColors[idx]];
             UIFont* titleTextFont = [UIFont ix_fontFromString:titleFonts[idx]];
+            
+            if([titleTextFont.familyName isEqualToString:kFontAwesomeFamilyName]) {
+                titleText = [NSString fontAwesomeIconStringForIconIdentifier:titleText];
+            }
+            
             NSAttributedString* attributedTitle;
+            
             if (titleTextColor && titleTextFont) {
                 attributedTitle = [[NSAttributedString alloc] initWithString:titleText
                                                                   attributes:@{NSForegroundColorAttributeName: titleTextColor,

@@ -30,5 +30,5 @@
 @interface UIFont (IXAdditions)
 
 + (UIFont*)ix_fontFromString:(NSString*)string;
-    
++ (UIFont*)ix_fontForString:(NSString*)string toFitInRect:(CGRect)rect seedFont:(UIFont*)seedFont;
 @end

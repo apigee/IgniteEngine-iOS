@@ -27,6 +27,7 @@
 
 #import "IXText.h"
 
+#import "UIFont+IXAdditions.h"
 #import "UILabel+IXAdditions.h"
 #import "NSString+FontAwesome.h"
 
@@ -68,20 +69,27 @@ static NSString* const kIXSizeToFit = @"sizeToFit.enabled";
     [[self label] setFrame:rect];
     if( [self shouldSizeLabelToFit] )
     {
-        [[self label] sizeToFit];
+        UIFont* autoSizedFont = [UIFont ix_fontForString:self.label.text toFitInRect:rect seedFont:self.label.font];
+        [self.label setFont:autoSizedFont];
     }
 }
 
 -(void)applySettings
 {
     [super applySettings];
-    
+
+    [self setSizeLabelToFit:[[self attributeContainer] getBoolValueForAttribute:kIXSizeToFit defaultValue:NO]];
+
+    [[self label] setNumberOfLines:0];
+    [[self label] setLineBreakMode:NSLineBreakByWordWrapping];
+    [[self label] setTextAlignment:[UILabel ix_textAlignmentFromString:[[self attributeContainer] getStringValueForAttribute:kIXTextAlignment defaultValue:nil]]];
     [[self label] setUserInteractionEnabled:[[self contentView] isEnabled]];
     [[self label] setTextColor:[[self attributeContainer] getColorValueForAttribute:kIXTextColor defaultValue:[UIColor blackColor]]];
     [[self label] setFont:[[self attributeContainer] getFontValueForAttribute:kIXFont defaultValue:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]]];
 
     NSString* text = [[self attributeContainer] getStringValueForAttribute:kIXText defaultValue:nil];
-    if( [[[[self label] font] familyName] isEqualToString:kFontAwesomeFamilyName] )
+
+    if( [self.label.font.familyName isEqualToString:kFontAwesomeFamilyName] )
     {
         [[self label] setText:[NSString fontAwesomeIconStringForIconIdentifier:text]];
     }
@@ -89,12 +97,6 @@ static NSString* const kIXSizeToFit = @"sizeToFit.enabled";
     {
         [[self label] setText:text];
     }
-    [[self label] setTextAlignment:[UILabel ix_textAlignmentFromString:[[self attributeContainer] getStringValueForAttribute:kIXTextAlignment defaultValue:nil]]];
-    [[self label] setNumberOfLines:0];
-    [[self label] setLineBreakMode:NSLineBreakByWordWrapping];
-    
-    BOOL sizeLabelToFitDefaultValue = ([[self label] textAlignment] == NSTextAlignmentLeft);
-    [self setSizeLabelToFit:[[self attributeContainer] getBoolValueForAttribute:kIXSizeToFit defaultValue:sizeLabelToFitDefaultValue]];
 }
 
 @end

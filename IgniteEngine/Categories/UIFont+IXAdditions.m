@@ -43,4 +43,16 @@
     return ( fontName ) ? [UIFont fontWithName:fontName size:fontSize] : nil;
 }
 
++ (UIFont*)ix_fontForString:(NSString*)string toFitInRect:(CGRect)rect seedFont:(UIFont*)seedFont {
+    UIFont* returnFont = seedFont;
+    CGSize stringSize = [string sizeWithAttributes:@{NSFontAttributeName : seedFont}];
+    
+    while (stringSize.width > rect.size.width) {
+        returnFont = [UIFont systemFontOfSize:returnFont.pointSize - 1];
+        stringSize = [string sizeWithAttributes:@{NSFontAttributeName : returnFont}];
+    }
+        
+    return returnFont;
+}
+
 @end
