@@ -66,7 +66,7 @@ IX_STATIC_CONST_STRING kIXSessionDefaults = @"$session.defaults";
 // App Attributes
 IX_STATIC_CONST_STRING kIXAppMode = @"mode";
 IX_STATIC_CONST_STRING kIXLogLevel = @"logging.level";
-IX_STATIC_CONST_STRING kIXDefaultView = @"view.index";
+IX_STATIC_CONST_STRING kIXDefaultView = @"defaultView";
 IX_STATIC_CONST_STRING kIXDrawerViewLeft = @"drawer.l.url";
 IX_STATIC_CONST_STRING kIXDrawerViewLeftMaxWidth = @"drawer.l.max.w";
 IX_STATIC_CONST_STRING kIXDrawerViewRight = @"drawer.r.url";
