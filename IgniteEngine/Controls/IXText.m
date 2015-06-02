@@ -36,7 +36,7 @@ static NSString* const kIXText = @"text";
 static NSString* const kIXTextAlignment = @"text.align";
 static NSString* const kIXTextColor = @"color";
 static NSString* const kIXFont = @"font";
-static NSString* const kIXSizeToFit = @"sizeToFit.enabled";
+static NSString* const kIXSizeToFit = @"fitTextToWidth.enabled";
 
 @interface IXText ()
 

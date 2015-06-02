@@ -47,11 +47,24 @@
     UIFont* returnFont = seedFont;
     CGSize stringSize = [string sizeWithAttributes:@{NSFontAttributeName : seedFont}];
     
-    while (stringSize.width > rect.size.width) {
-        returnFont = [UIFont systemFontOfSize:returnFont.pointSize - 1];
-        stringSize = [string sizeWithAttributes:@{NSFontAttributeName : returnFont}];
+    if (stringSize.width > rect.size.width) {
+        while ([string sizeWithAttributes:@{NSFontAttributeName: returnFont}].width > rect.size.width)
+        {
+            returnFont = [UIFont fontWithName:seedFont.fontName size:returnFont.pointSize - 0.25];
+            stringSize = [string sizeWithAttributes:@{NSFontAttributeName: returnFont}];
+        }
     }
-        
+    else if (stringSize.width < rect.size.width) {
+        while ([string sizeWithAttributes:@{NSFontAttributeName: returnFont}].width < rect.size.width)
+        {
+            returnFont = [UIFont fontWithName:seedFont.fontName size:returnFont.pointSize + 0.25];
+            stringSize = [string sizeWithAttributes:@{NSFontAttributeName: returnFont}];
+            if (stringSize.width >= rect.size.width) {
+                returnFont = [UIFont fontWithName:seedFont.fontName size:returnFont.pointSize - 0.25];
+                break;
+            }
+        }
+    }
     return returnFont;
 }
 
