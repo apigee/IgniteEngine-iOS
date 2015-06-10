@@ -39,7 +39,6 @@
 @property (nonatomic,strong) IXActionContainer* actionContainer;
 @property (nonatomic,strong) IXAttributeContainer* propertyContainer;
 @property (nonatomic,strong) IXAttributeContainer* requestQueryParams;
-@property (nonatomic,strong) IXAttributeContainer* requestBody;
 @property (nonatomic,strong) IXAttributeContainer* requestHeaders;
 @property (nonatomic,strong) IXAttributeContainer* fileAttachments;
 @property (nonatomic,strong) IXEntityContainer* entityContainer;
@@ -49,7 +48,6 @@
                        propertyContainer:(IXAttributeContainer*)propertyContainer
                          actionContainer:(IXActionContainer*)actionContainer
                       requestQueryParams:(IXAttributeContainer*)requestQueryParams
-                             requestBody:(IXAttributeContainer*)requestBody
                           requestHeaders:(IXAttributeContainer*)requestHeaders
                          fileAttachments:(IXAttributeContainer*)fileAttachments
                          entityContainer:(IXEntityContainer*)entityContainer;

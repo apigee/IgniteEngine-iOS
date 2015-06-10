@@ -49,7 +49,6 @@ IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.
 /////////////////////////
 
 // IXHTTPDataProvider Attributes
-IX_STATIC_CONST_STRING kIXBody = @"body"; // main body object
 IX_STATIC_CONST_STRING kIXQueryParams = @"queryParams";
 IX_STATIC_CONST_STRING kIXHeaders = @"headers";
 IX_STATIC_CONST_STRING kIXRequestType = @"requestType"; // if not defined, predict from Accept header. If defined, adds Accept header.

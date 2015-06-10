@@ -27,6 +27,7 @@
 
 #import "IXBaseObject.h"
 #import "NSObject+IXAdditions.h"
+#import "NSString+IXAdditions.h"
 
 @interface IXJSONUtils : IXBaseObject
 

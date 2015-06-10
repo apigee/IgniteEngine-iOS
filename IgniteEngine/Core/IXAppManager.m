@@ -93,7 +93,7 @@ IX_STATIC_CONST_STRING kIXDrawerViewAnimationSwingingDoor = @"swingingDoor";
 IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallax = @"parallax";
 IX_STATIC_CONST_STRING kIXDrawerViewAnimationParallaxFactor = @"drawer.animation.parallaxFactor";
 
-IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"requestAccess.push.auto"; // Should app automatically request access to push. If NO must use app function kIXRequestAccessPush to request push
+IX_STATIC_CONST_STRING kIXRequestAccessPushAuto = @"push.autoRequest.enabled"; // Should app automatically request access to push. If NO must use app function kIXRequestAccessPush to request push
 IX_STATIC_CONST_STRING kIXRequestAccessMicrophoneAuto = @"mic.autoRequest.enabled"; // Should app automatically request access to microphone. If NO must use app function kIXRequestAccessPush to request push
 IX_STATIC_CONST_STRING kIXRequestAccessLocationAuto = @"location.autoRequest.enabled"; // Should app automatically request access to location. If NO must use app function kIXRequestAccessLocation to track location.  This will begin tracking automatically as well when set to YES.
 

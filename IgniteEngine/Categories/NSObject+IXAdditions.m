@@ -33,12 +33,16 @@
 -(NSString*)jsonStringWithPrettyPrint:(BOOL)prettyPrint
 {
     NSError* __autoreleasing error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self
-                                                       options:(NSJSONWritingOptions) (prettyPrint ? NSJSONWritingPrettyPrinted : 0)
-                                                         error:&error];
-    
-    if( [jsonData length] > 0 && error == nil ) {
-        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    if( self && [NSJSONSerialization isValidJSONObject:self] ) {
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self
+                                                           options:(NSJSONWritingOptions) (prettyPrint ? NSJSONWritingPrettyPrinted : 0)
+                                                             error:&error];
+        if( [jsonData length] > 0 && error == nil ) {
+            return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        } else {
+            IX_LOG_ERROR(@"Error serializing JSON from NSObject:\n%@", error.localizedDescription);
+            return [NSString stringWithFormat:@"{\n%*serror: %@\n};", 4, "", error.localizedDescription];
+        }
     } else {
         IX_LOG_ERROR(@"Error serializing JSON from NSObject:\n%@", error.localizedDescription);
         return [NSString stringWithFormat:@"{\n%*serror: %@\n};", 4, "", error.localizedDescription];

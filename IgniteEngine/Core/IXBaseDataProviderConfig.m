@@ -33,6 +33,7 @@
 #import "IXAttributeContainer.h"
 #import "IXLogger.h"
 #import "IXEntityContainer.h"
+#import "IXJSONUtils.h"
 
 @implementation IXBaseDataProviderConfig
 
@@ -41,7 +42,6 @@
                        propertyContainer:(IXAttributeContainer*)propertyContainer
                          actionContainer:(IXActionContainer*)actionContainer
                       requestQueryParams:(IXAttributeContainer*)requestQueryParams
-                             requestBody:(IXAttributeContainer*)requestBody
                           requestHeaders:(IXAttributeContainer*)requestHeaders
                          fileAttachments:(IXAttributeContainer*)fileAttachments
                          entityContainer:(IXEntityContainer*)entityContainer
@@ -54,7 +54,6 @@
         _propertyContainer = propertyContainer;
         _actionContainer = actionContainer;
         _requestQueryParams = requestQueryParams;
-        _requestBody = requestBody;
         _requestHeaders = requestHeaders;
         _fileAttachments = fileAttachments;
         _entityContainer = entityContainer;
@@ -69,7 +68,6 @@
                                                       propertyContainer:[[self propertyContainer] copy]
                                                         actionContainer:[[self actionContainer] copy]
                                                      requestQueryParams:[[self requestQueryParams] copy]
-                                                            requestBody:[[self requestBody] copy]
                                                          requestHeaders:[[self requestHeaders] copy]
                                                         fileAttachments:[[self fileAttachments] copy]
                                                         entityContainer:[[self entityContainer] copy]];
@@ -96,6 +94,20 @@
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     [propertiesDict setObject:dataProviderID forKey:kIX_ID];
                 }
+                id bodyObject = propertiesDict[kIX_DP_BODY];
+                if( bodyObject )
+                {
+                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
+                    if( dataProviderID ) {
+                        [propertiesDict setObject:dataProviderID forKey:kIX_ID];
+                    }
+                    if( bodyObject && [NSJSONSerialization isValidJSONObject:bodyObject] ) {
+                        NSString* jsonBodyString = [bodyObject jsonStringWithPrettyPrint:NO];
+                        if( jsonBodyString ) {
+                            propertiesDict[kIX_DP_BODY] = jsonBodyString;
+                        }
+                    }
+                }
                 propertyContainer = [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict];
             }
             
@@ -107,7 +119,6 @@
             
             IXActionContainer* actionContainer = [IXActionContainer actionContainerWithJSONActionsArray:dataProviderJSONDict[kIX_ACTIONS]];
             IXAttributeContainer* requestQueryParams = (propertiesDict[kIX_DP_QUERYPARAMS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_QUERYPARAMS]] : [IXAttributeContainer new];
-            IXAttributeContainer* requestBody = (propertiesDict[kIX_DP_BODY]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_BODY]] : [IXAttributeContainer new];
             IXAttributeContainer* requestHeaders = (propertiesDict[kIX_DP_HEADERS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_HEADERS]] : [IXAttributeContainer new];
             IXAttributeContainer* fileAttachments = (propertiesDict[kIX_DP_ATTACHMENTS]) ? [IXAttributeContainer attributeContainerWithJSONDict:propertiesDict[kIX_DP_ATTACHMENTS]] : nil;
             
@@ -122,7 +133,6 @@
                                                                            propertyContainer:propertyContainer
                                                                              actionContainer:actionContainer
                                                                           requestQueryParams:requestQueryParams
-                                                                                 requestBody:requestBody
                                                                               requestHeaders:requestHeaders
                                                                              fileAttachments:fileAttachments
                                                                              entityContainer:entityContainer];
@@ -185,7 +195,6 @@
         [dataProvider setStyleClass:[[self styleClass] copy]];
         [dataProvider setActionContainer:[[self actionContainer] copy]];
         [dataProvider setQueryParamsProperties:[[self requestQueryParams] copy]];
-        [dataProvider setBodyProperties:[[self requestBody] copy]];
         [dataProvider setHeadersProperties:[[self requestHeaders] copy]];
         [dataProvider setFileAttachmentProperties:[[self fileAttachments] copy]];
         [dataProvider setAttributeContainer:[[self propertyContainer] copy]];

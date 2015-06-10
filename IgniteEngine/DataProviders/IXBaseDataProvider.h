@@ -35,7 +35,6 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @interface IXBaseDataProvider : IXBaseObject
 
 @property (nonatomic,strong) IXAttributeContainer* queryParamsProperties;
-@property (nonatomic,strong) IXAttributeContainer* bodyProperties;
 @property (nonatomic,strong) IXAttributeContainer* headersProperties;
 @property (nonatomic,strong) IXAttributeContainer* fileAttachmentProperties;
 

@@ -64,7 +64,6 @@ IX_STATIC_CONST_STRING kIXCookieURL = @"url"; // Function parameter for deleteCo
 IX_STATIC_CONST_STRING kIXStarted = @"started";
 
 // NSCoding Key Constants
-IX_STATIC_CONST_STRING kIXRequestBodyObjectNSCodingKey = @"requestBodyObject";
 IX_STATIC_CONST_STRING kIXRequestQueryParamsObjectNSCodingKey = @"requestQueryParamsObject";
 IX_STATIC_CONST_STRING kIXRequestHeadersObjectNSCodingKey = @"requestHeadersObject";
 IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObject";
@@ -92,7 +91,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 {
     IXBaseDataProvider *copiedDataProvider = [super copyWithZone:zone];
     [copiedDataProvider setQueryParamsProperties:[[self queryParamsProperties] copy]];
-    [copiedDataProvider setBodyProperties:[[self bodyProperties] copy]];
     [copiedDataProvider setHeadersProperties:[[self headersProperties] copy]];
     [copiedDataProvider setFileAttachmentProperties:[[self fileAttachmentProperties] copy]];
     return copiedDataProvider;
@@ -103,7 +101,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     [super encodeWithCoder:aCoder];
     
     [aCoder encodeObject:[self queryParamsProperties] forKey:kIXRequestQueryParamsObjectNSCodingKey];
-    [aCoder encodeObject:[self bodyProperties] forKey:kIXRequestBodyObjectNSCodingKey];
     [aCoder encodeObject:[self headersProperties] forKey:kIXRequestHeadersObjectNSCodingKey];
     [aCoder encodeObject:[self fileAttachmentProperties] forKey:kIXFileAttachmentObjectNSCodingKey];
 }
@@ -114,7 +111,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     if( self != nil )
     {
         [self setQueryParamsProperties:[aDecoder decodeObjectForKey:kIXRequestQueryParamsObjectNSCodingKey]];
-        [self setBodyProperties:[aDecoder decodeObjectForKey:kIXRequestBodyObjectNSCodingKey]];
         [self setHeadersProperties:[aDecoder decodeObjectForKey:kIXRequestHeadersObjectNSCodingKey]];
         [self setFileAttachmentProperties:[aDecoder decodeObjectForKey:kIXFileAttachmentObjectNSCodingKey]];
     }
@@ -131,12 +127,6 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 {
     _queryParamsProperties = queryParamsProperties;
     [_queryParamsProperties setOwnerObject:self];
-}
-
--(void)setBodyProperties:(IXAttributeContainer *)bodyProperties
-{
-    _bodyProperties = bodyProperties;
-    [_bodyProperties setOwnerObject:self];
 }
 
 -(void)setFileAttachmentProperties:(IXAttributeContainer *)fileAttachmentProperties
@@ -160,12 +150,9 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 }
 
 -(void)buildBody {
-    NSDictionary* bodyDict = [_bodyProperties getAllAttributesAsDictionaryWithURLEncodedValues:NO];
     NSString* bodyString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_BODY defaultValue:nil];
     @try {
-        if (bodyDict) {
-            _body = bodyDict;
-        } else if (bodyString.length > 0) {
+        if (bodyString.length > 0) {
             NSError* __autoreleasing error = nil;
             _body = [NSJSONSerialization JSONObjectWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
         }
@@ -174,7 +161,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR: 'body' included with request was not a valid JSON object or string: %@", bodyDict);
+        IX_LOG_ERROR(@"ERROR: 'body' included with request was not a valid JSON object or string: %@", bodyString);
     }
 }
 
