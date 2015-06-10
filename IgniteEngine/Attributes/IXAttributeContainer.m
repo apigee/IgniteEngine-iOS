@@ -108,7 +108,7 @@ static NSString* const kIXAttributesDictNSCodingKey = @"attributesDict";
         [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:attributeJSONDictionary keyPrefix:nil];
     } else if ([attributeJSONDictionary isKindOfClass:[NSString class]]) {
         attributeContainer = [[[self class] alloc] init];
-        NSDictionary* dictionaryFromJSONString = (NSDictionary*)[NSObject ix_dictionaryFromJSONString:attributeJSONDictionary];
+        NSDictionary* dictionaryFromJSONString = (NSDictionary*)[NSObject ix_objectFromJSONString:attributeJSONDictionary];
         [IXAttributeContainer populateAttributeContainer:attributeContainer withAttributeJSONDict:dictionaryFromJSONString keyPrefix:nil];
     }
     return attributeContainer;

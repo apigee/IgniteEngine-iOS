@@ -30,6 +30,7 @@
 @interface NSObject (IXAdditions)
 
 -(NSString*)jsonStringWithPrettyPrint:(BOOL)prettyPrint;
-+(id)ix_dictionaryFromJSONString:(NSString*)string;
++(id)ix_objectFromJSONString:(NSString*)string;
++(id)ix_objectWithParsedValuesFromObject:(id)object;
 
 @end

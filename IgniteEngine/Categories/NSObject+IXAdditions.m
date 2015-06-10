@@ -27,6 +27,7 @@
 
 #import "NSObject+IXAdditions.h"
 #import "IXConstants.h"
+#import "NSString+IXAdditions.h"
 
 @implementation NSObject (IXAdditions)
 
@@ -49,16 +50,51 @@
     }
 }
 
-+(id)ix_dictionaryFromJSONString:(NSString*)string {
++(id)ix_objectFromJSONString:(NSString*)string {
     NSError* __autoreleasing error;
     NSData *jsonData = [string dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-    if( jsonDict != nil && error == nil ) {
-        return jsonDict;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
+    if( jsonObject != nil && error == nil ) {
+        return jsonObject;
     } else {
         IX_LOG_ERROR(@"Error decoding NSObject from JSON string:\n%@\nString: %@", error.localizedDescription, string);
         return nil;
     }
 }
+
++(id)ix_objectWithParsedValuesFromObject:(id)object {
+    return [self deriveValueTypesRecursivelyForObject:(id)[object mutableCopy]];
+}
+
+// internal helpers
+
++(id)deriveValueTypesRecursivelyForObject:(id)object {
+    id returnObject = [object mutableCopy];
+    if ([object isKindOfClass:[NSDictionary class]]) {
+        [object enumerateKeysAndObjectsUsingBlock:^(id key, id child, BOOL *stop) {
+            [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] forKey:key];
+        }];
+    } else if ([object isKindOfClass:[NSArray class]]) {
+        [[object allKeys] enumerateObjectsUsingBlock:^(id child, NSUInteger idx, BOOL *stop) {
+            [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] atIndex:idx];
+        }];
+    } else {
+        //This object is not a container you might be interested in it's value
+        if ([object isKindOfClass:[NSString class]]) {
+            @try {
+                if ([object isNumeric]) {
+                    returnObject = [NSDecimalNumber decimalNumberWithString:object];
+                } else if ([object isBOOL]) {
+                    returnObject = [NSNumber numberWithBool:[object boolValue]];
+                }
+            }
+            @catch (NSException *exception) {
+                
+            }
+        }
+    }
+    return returnObject;
+}
+
 
 @end

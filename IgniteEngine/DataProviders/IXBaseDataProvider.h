@@ -44,7 +44,7 @@ extern NSString* IXBaseDataProviderDidUpdateNotification;
 @property (nonatomic,assign,getter = isPathLocal)    BOOL pathIsLocal;
 
 @property (nonatomic,strong) NSString* method;
-@property (nonatomic,strong) NSDictionary* body;
+@property (nonatomic,strong) id body;
 @property (nonatomic,strong) NSDictionary* queryParams;
 @property (nonatomic,strong) NSString* url;
 

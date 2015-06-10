@@ -41,6 +41,7 @@
 #import "IXAppManager.h"
 #import "UIViewController+IXAdditions.h"
 #import "NSDictionary+IXAdditions.h"
+#import "IXJSONUtils.h"
 
 //#import <RestKit/RestKit.h>
 
@@ -153,11 +154,10 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
     NSString* bodyString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_BODY defaultValue:nil];
     @try {
         if (bodyString.length > 0) {
-            NSError* __autoreleasing error = nil;
-            _body = [NSJSONSerialization JSONObjectWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error] ?: nil;
+            _body = [NSString ix_objectFromJSONString:bodyString];
         }
         if (_deriveValueTypes && [[[self attributeContainer] getStringValueForAttribute:kIXRequestType defaultValue:nil] isEqualToString:kIXRequestTypeJSON]) {
-            _body = [NSDictionary ix_dictionaryWithParsedValuesFromDictionary:_body];
+            _body = [NSObject ix_objectWithParsedValuesFromObject:_body];
         }
     }
     @catch (NSException *exception) {

@@ -52,40 +52,6 @@ static NSString *urlEncode(id object) {
     return queryStrings;
 }
 
-+(NSDictionary*)ix_dictionaryWithParsedValuesFromDictionary:(NSDictionary *)dictionary {
-    return [self deriveValueTypesRecursivelyForObject:(NSMutableDictionary*)[dictionary mutableCopy]];
-}
-
-// internal helpers
-
-+(id)deriveValueTypesRecursivelyForObject:(id)object {
-    id returnObject = [object mutableCopy];
-    if ([object isKindOfClass:[NSDictionary class]]) {
-        [object enumerateKeysAndObjectsUsingBlock:^(id key, id child, BOOL *stop) {
-            [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] forKey:key];
-        }];
-    } else if ([object isKindOfClass:[NSArray class]]) {
-        [[object allKeys] enumerateObjectsUsingBlock:^(id child, NSUInteger idx, BOOL *stop) {
-            [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] atIndex:idx];
-        }];
-    } else {
-        //This object is not a container you might be interested in it's value
-        if ([object isKindOfClass:[NSString class]]) {
-            @try {
-                if ([object isNumeric]) {
-                    returnObject = [NSDecimalNumber decimalNumberWithString:object];
-                } else if ([object isBOOL]) {
-                    returnObject = [NSNumber numberWithBool:[object boolValue]];
-                }
-            }
-            @catch (NSException *exception) {
-                
-            }
-        }
-    }
-    return returnObject;
-}
-
 +(NSString*)ix_urlEncodedQueryParamsStringFromDictionary:(NSDictionary*)dictionary {
     NSMutableArray *parts = [NSMutableArray array];
     for (id key in self) {
