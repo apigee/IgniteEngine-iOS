@@ -79,7 +79,7 @@
             [returnObject setObject:[self deriveValueTypesRecursivelyForObject:child] atIndex:idx];
         }];
     } else {
-        //This object is not a container you might be interested in it's value
+        //This object is not a container you might be interested in its value
         if ([object isKindOfClass:[NSString class]]) {
             @try {
                 if ([object isNumeric]) {

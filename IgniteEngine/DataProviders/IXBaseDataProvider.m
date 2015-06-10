@@ -151,6 +151,7 @@ IX_STATIC_CONST_STRING kIXFileAttachmentObjectNSCodingKey = @"fileAttachmentObje
 }
 
 -(void)buildBody {
+    _body = nil;
     NSString* bodyString = [[self attributeContainer] getStringValueForAttribute:kIX_DP_BODY defaultValue:nil];
     @try {
         if (bodyString.length > 0) {
