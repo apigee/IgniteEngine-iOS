@@ -89,13 +89,8 @@
             if( [propertiesDict isKindOfClass:[NSDictionary class]] )
             {
                 id dataProviderID = dataProviderJSONDict[kIX_ID];
-                if( dataProviderID )
-                {
-                    propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
-                    [propertiesDict setObject:dataProviderID forKey:kIX_ID];
-                }
                 id bodyObject = propertiesDict[kIX_DP_BODY];
-                if( bodyObject )
+                if( bodyObject || dataProviderID )
                 {
                     propertiesDict = [NSMutableDictionary dictionaryWithDictionary:propertiesDict];
                     if( dataProviderID ) {
