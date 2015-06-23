@@ -93,7 +93,7 @@ You can start building apps for iOS today; we're working hard to bring the platf
 	{
 	    "$app": {
 	        "attributes": {
-	            "view.index": "myView.json"
+	            "defaultView": "myView.json"
 	        }
 	    }
 	}
