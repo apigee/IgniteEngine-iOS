@@ -627,6 +627,11 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     {
         returnValue = [NSString stringWithFormat:@"%lf", _uploadProgress];
     }
+    else if( [propertyName hasSuffix:@".$count"] ) {
+        NSMutableArray* array = [[propertyName componentsSeparatedByString:kIX_PERIOD_SEPARATOR] mutableCopy];
+        [array removeLastObject];
+        returnValue = [NSString stringWithFormat:@"%lu", [self rowCount:[array componentsJoinedByString:kIX_PERIOD_SEPARATOR] usingPredicate:nil]];
+    }
     else if ([propertyName hasPrefix:kIXResponseBodyPrefix]) {
         NSString* prefix = [NSString stringWithFormat:@"%@%@", kIXResponseBodyPrefix, kIX_PERIOD_SEPARATOR];
         propertyName = [propertyName stringByReplacingOccurrencesOfString:prefix withString:kIX_EMPTY_STRING];
@@ -879,8 +884,9 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     {
         [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
     }
-    if (predicate != nil) {
-        return [[_rowDataResultsDict[dataRowBasePath] filteredArrayUsingPredicate:predicate] count];
+    NSPredicate* currentPredicate = (predicate != nil) ? predicate : [self predicate];
+    if (currentPredicate != nil) {
+        return [[_rowDataResultsDict[dataRowBasePath] filteredArrayUsingPredicate:currentPredicate] count];
     } else {
         return [_rowDataResultsDict[dataRowBasePath] count];
     }
