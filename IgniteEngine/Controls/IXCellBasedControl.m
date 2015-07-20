@@ -251,6 +251,9 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 
 -(void)configureFiltersAndSort {
 
+    [self setPredicate:nil];
+    [self setSortDescriptor:nil];
+    
     NSString* predicateFormat = [[self attributeContainer] getStringValueForAttribute:kIXPredicateFormat defaultValue:nil];
     NSArray* predicateArguments = [[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXPredicateArguments defaultValue:@[]];
     NSString* descriptorKey = [[self attributeContainer] getStringValueForAttribute:kIXSortKey defaultValue:nil];
