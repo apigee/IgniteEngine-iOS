@@ -82,7 +82,7 @@ IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // sort.order
 
 // Returns
 // TODO: Need to enhance this and include total item count, visible item count, number of items per section
-IX_STATIC_CONST_STRING kIXRowCount = @"data.count";
+IX_STATIC_CONST_STRING kIXRowCount = @"$count";
 
 // Functions
 IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pullToRefresh.start";
