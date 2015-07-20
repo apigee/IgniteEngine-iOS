@@ -76,12 +76,6 @@ IX_STATIC_CONST_STRING kIXMethodPOST = @"POST"; // kIXMethod
 IX_STATIC_CONST_STRING kIXMethodPUT = @"PUT"; // kIXMethod
 IX_STATIC_CONST_STRING kIXMethodDELETE = @"DELETE"; // kIXMethod
 
-//TODO: NOT IMPLEMENTED
-IX_STATIC_CONST_STRING kIXSortOrderNone = @"none"; // kIXSortOrder
-IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending"; // kIXSortOrder
-IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // kIXSortOrder
-//END TODO
-
 IX_STATIC_CONST_STRING kIXRequestTypeForm = @"form"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeJSON = @"json"; // kIXBodyEncoding
 IX_STATIC_CONST_STRING kIXRequestTypeMultipart = @"multipart"; // kIXBodyEncoding
@@ -449,6 +443,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
                     IX_LOG_ERROR(@"%@ attribute is not defined; cannot append pagination data", kIXPaginationAppendDataPath);
                 }
             }
+            
             [_response setResponseObject:responseObject];
             [self updatePaginationProperties];
         }
@@ -723,7 +718,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     NSString* index = [parameterContainer getStringValueForAttribute:kIXModifyIndex defaultValue:nil];
     id existingDataArray = [[IXJSONUtils objectForPath:existingDataPath container:_response.responseObject sandox:self.sandbox baseObject:self] mutableCopy];
     
-    
     if (newData != nil && ([functionName isEqualToString:kIXModifyPush] || [functionName isEqualToString:kIXModifyInsert])) {
         // newData is legit. We can do push and insert.
         if (existingDataArray == nil) {
@@ -774,6 +768,7 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
             }
         }
     }
+    
     if (wasModified) {
         [_response setResponseObject:modifiedResponseObject];
         
@@ -786,41 +781,6 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         });
         [[self actionContainer] executeActionsForEventNamed:kIXModifiedEvent];
     }
-
-// TODO: re-implement predicate filtering:
-// Recommend we perform predicate filtering on the retrieval of data, not constantly update the rowDataResultsDict saved copy.
-    
-//        NSString* modifyResponseType = [parameterContainer getStringPropertyValue:kIXModifyType defaultValue:nil];
-//        if( [modifyResponseType length] > 0 )
-//        {
-//            NSString* topLevelContainerPath = [parameterContainer getStringPropertyValue:kIXTopLevelContainer defaultValue:nil];
-//            id topLevelContainer = [IXJSONUtils objectForPath:topLevelContainerPath container:_response.responseObject sandox:self.sandbox baseObject:self];
-//
-//            if( [topLevelContainer isKindOfClass:[NSMutableArray class]] )
-//            {
-//                NSMutableArray* topLevelArray = (NSMutableArray*) topLevelContainer;
-//
-//                if( [modifyResponseType isEqualToString:kIXDelete] )
-//                {
-//                    NSString* predicateFormat = [parameterContainer getStringPropertyValue:kIXPredicateFormat defaultValue:nil];
-//                    NSArray* predicateArgumentsArray = [parameterContainer getCommaSeparatedArrayListValue:kIXPredicateArguments defaultValue:nil];
-//
-//                    if( [predicateFormat length] > 0 && [predicateArgumentsArray count] > 0 )
-//                    {
-//                        NSPredicate* predicate = [NSPredicate predicateWithFormat:predicateFormat argumentArray:predicateArgumentsArray];
-//                        if( predicate != nil )
-//                        {
-//                            NSArray* filteredArray = [topLevelContainer filteredArrayUsingPredicate:predicate];
-//                            [topLevelArray removeObjectsInArray:filteredArray];
-//                        }
-//                    }
-//                }
-//                else if( [modifyResponseType isEqualToString:kIXAppend] )
-//                {
-//                    id jsonToAppendObject = nil;
-//                }
-//            }
-//        }
 }
 
 - (void)updateDataRowData {
@@ -882,45 +842,36 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
         rowDataResults = [(NSMutableArray*)jsonObject mutableCopy];
         [[self rowDataResultsDict] setObject:rowDataResults forKey:(dataRowPath.length > 0) ? dataRowPath : kIXRowDataEmptyBasepathKey];
     }
-    
-// TODO: re-implement predicate filtering
-// Recommend we perform predicate filtering on the retrieval of data, not constantly update the rowDataResultsDict saved copy.
-    
-    /* predicate filtering has been disabled as of AFNetworking 2.0 implementation
-    if( rowDataResults.count > 0 && self.predicate != nil )
-    {
-        NSPredicate* predicate = [self predicate];
-        if( predicate )
-        {
-            rowDataResults = [[rowDataResultsArray filteredArrayUsingPredicate:predicate] mutableCopy];
-        }
-        NSSortDescriptor* sortDescriptor = [self sortDescriptor];
-        if( sortDescriptor )
-        {
-            rowDataResults = [[rowDataResultsArray sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
-        }
-    }*/
 }
 
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath usingPredicate:(NSPredicate*)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor
 {
     dataRowBasePath = [self determineCorrectDataRowBasePathForInstance:dataRowBasePath];
-    
-    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
+
+    NSString* returnValue = [super rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath usingPredicate:predicate sortDescriptor:sortDescriptor];
     if( keyPath && rowIndexPath )
     {
-        NSArray* dataRowContainer = [self rowDataResultsDict][dataRowBasePath];
-
-        if( dataRowContainer != nil )
-        {
-            NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
-            returnValue = [IXJSONUtils stringForPath:jsonKeyPath container:dataRowContainer sandox:self.sandbox baseObject:self];
+        NSMutableArray* dataRowContainer = [self rowDataResultsDict][dataRowBasePath];
+        if( dataRowContainer != nil ) {
+            NSPredicate* currentPredicate = (predicate != nil) ? predicate : [self predicate];
+            if (currentPredicate != nil) {
+                dataRowContainer = [[dataRowContainer filteredArrayUsingPredicate:currentPredicate] mutableCopy];
+            }
+            NSSortDescriptor* currentSortDescriptor = (sortDescriptor != nil) ? sortDescriptor : [self sortDescriptor];
+            if (currentSortDescriptor != nil) {
+                dataRowContainer = [[dataRowContainer sortedArrayUsingDescriptors:@[currentSortDescriptor]] mutableCopy];
+            }
+            if( dataRowContainer != nil )
+            {
+                NSString* jsonKeyPath = [NSString stringWithFormat:@"%li.%@",(long)rowIndexPath.row,keyPath];
+                returnValue = [IXJSONUtils stringForPath:jsonKeyPath container:dataRowContainer sandox:self.sandbox baseObject:self];
+            }
         }
     }
     return returnValue;
 }
 
--(NSUInteger)rowCount:(NSString *)dataRowBasePath
+-(NSUInteger)rowCount:(NSString *)dataRowBasePath usingPredicate:(NSPredicate*)predicate
 {
     dataRowBasePath = [self determineCorrectDataRowBasePathForInstance:dataRowBasePath];
     
@@ -928,8 +879,11 @@ IX_STATIC_CONST_STRING kIXLocationSuffixCache = @".cache";
     {
         [self calculateAndStoreDataRowResultsForDataRowPath:dataRowBasePath];
     }
-
-    return [[self rowDataResultsDict][dataRowBasePath] count];
+    if (predicate != nil) {
+        return [[_rowDataResultsDict[dataRowBasePath] filteredArrayUsingPredicate:predicate] count];
+    } else {
+        return [_rowDataResultsDict[dataRowBasePath] count];
+    }
 }
 
 -(NSString*)determineCorrectDataRowBasePathForInstance:(NSString*)dataRowBasePath {

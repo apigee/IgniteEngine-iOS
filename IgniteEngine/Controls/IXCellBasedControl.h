@@ -66,6 +66,7 @@
 -(NSUInteger)rowCountForSection:(NSInteger)section;
 
 -(void)reload;
+-(void)reloadUsingPredicate:(NSPredicate*)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor;
 -(void)dataProviderDidUpdate:(NSNotification*)notification;
 -(void)refreshControlActivated;
 

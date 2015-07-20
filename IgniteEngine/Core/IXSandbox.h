@@ -51,6 +51,8 @@ extern NSString* const kIXCustomContainerControlRef;
 @property (nonatomic,weak) IXDataRowDataProvider* dataProviderForRowData;
 @property (nonatomic,copy) NSString* dataRowBasePathForRowData;
 @property (nonatomic,strong) NSIndexPath* indexPathForRowData;
+@property (nonatomic,strong) NSPredicate* predicateForRowData;
+@property (nonatomic,strong) NSSortDescriptor* sortDescriptorForRowData;
 
 @property (nonatomic,copy) NSString* basePath;
 @property (nonatomic,copy) NSString* rootPath;

@@ -93,12 +93,8 @@ IX_STATIC_CONST_STRING kIXDataRow = @"$row.";
     NSSortDescriptor* sortDescriptor = nil;
     if( [[self sortDescriptorKey] length] > 0 && ![[self sortOrder] isEqualToString:kIXSortOrderNone])
     {
-        BOOL sortAscending = YES;
-        if ([self.sortOrder isEqualToString:kIXSortOrderDescending])
-            sortAscending = NO;
         sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self sortDescriptorKey]
-                                                       ascending:sortAscending
-                                                        selector:@selector(localizedCaseInsensitiveCompare:)];
+                                                       ascending:[self.sortOrder isEqualToString:kIXSortOrderAscending]];
     }
     return sortDescriptor;
 }
@@ -111,7 +107,6 @@ IX_STATIC_CONST_STRING kIXDataRow = @"$row.";
         if( [[self predicateFormat] length] > 0 && [predicateArgumentsArray count] > 0 )
         {
             predicate = [NSPredicate predicateWithFormat:[self predicateFormat] argumentArray:predicateArgumentsArray];
-            IX_LOG_VERBOSE(@"%@ : PREDICATE EQUALS : %@",THIS_FILE,[predicate description]);
         }
         return predicate;
     }
@@ -121,7 +116,7 @@ IX_STATIC_CONST_STRING kIXDataRow = @"$row.";
     }
 }
 
--(NSUInteger)rowCount:(NSString*)dataRowBasePath
+-(NSUInteger)rowCount:(NSString*)dataRowBasePath usingPredicate:(NSPredicate*)predicate
 {
     return 0;
 }
@@ -131,18 +126,18 @@ IX_STATIC_CONST_STRING kIXDataRow = @"$row.";
     return nil;
 }
 
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowPath
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath usingPredicate:(NSPredicate*)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor
 {
     return nil;
 }
 
--(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath
+-(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath usingPredicate:(NSPredicate *)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor
 {
-    NSInteger rowCount = [self rowCount:nil];
+    NSInteger rowCount = [self rowCount:nil usingPredicate:predicate];
     NSDecimalNumber* rowTotal = [NSDecimalNumber zero];
     for( int i = 0; i < rowCount; i++ )
     {
-        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath dataRowBasePath:self.dataRowBasePath];
+        NSString* rowDataForIndex = [self rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0] keyPath:keyPath dataRowBasePath:self.dataRowBasePath usingPredicate:predicate sortDescriptor:sortDescriptor];
         if( rowDataForIndex )
         {
             NSDecimalNumber* decimalNumber = [NSDecimalNumber decimalNumberWithString:rowDataForIndex];

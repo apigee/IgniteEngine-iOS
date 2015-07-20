@@ -67,11 +67,18 @@ IX_STATIC_CONST_STRING kIXDataRowBasePath = @"data.basepath";
 IX_STATIC_CONST_STRING kIXShowsScrollIndicators = @"scrollBars.enabled";
 IX_STATIC_CONST_STRING kIXShowsVScrollIndicators = @"scrollBars.v.enabled";
 IX_STATIC_CONST_STRING kIXShowsHScrollIndicators = @"scrollBars.h.enabled";
+IX_STATIC_CONST_STRING kIXPredicateFormat = @"predicate.format";            //e.g. "%K CONTAINS[c] %@"
+IX_STATIC_CONST_STRING kIXPredicateArguments = @"predicate.arguments";      //e.g. "email,[[inputbox.text]]"
+IX_STATIC_CONST_STRING kIXSortOrder = @"sort.order";
+IX_STATIC_CONST_STRING kIXSortKey = @"sort.key";                            //dataRow key to sort on
 
 // Attribute Accepted Values
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleBlack = @"black"; // scrollBars.style
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleWhite = @"white"; // scrollBars.style
 IX_STATIC_CONST_STRING kIXScrollIndicatorStyleDefault = @"default"; // scrollBars.style
+IX_STATIC_CONST_STRING kIXSortOrderNone = @"none"; // sort.order
+IX_STATIC_CONST_STRING kIXSortOrderAscending = @"ascending"; // sort.order
+IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // sort.order
 
 // Returns
 // TODO: Need to enhance this and include total item count, visible item count, number of items per section
@@ -108,6 +115,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 
 @property (nonatomic, weak) IXDataRowDataProvider* dataProvider;
 @property (nonatomic, copy) NSString* dataRowBasePathForDataProvider;
+@property (nonatomic, copy) NSPredicate* predicate;
+@property (nonatomic, copy) NSSortDescriptor* sortDescriptor;
 @property (nonatomic, assign) BOOL animateReload;
 @property (nonatomic, assign) CGFloat animateReloadDuration;
 @property (nonatomic, assign) CGFloat backgroundSwipeAdjustsBackgroundAlpha;
@@ -175,6 +184,9 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     }
 
     [self setDataRowBasePathForDataProvider:[[self attributeContainer] getStringValueForAttribute:kIXDataRowBasePath defaultValue:nil]];
+    
+    [self configureFiltersAndSort];
+    
     [self setBackgroundViewSwipeWidth:[[self attributeContainer] getFloatValueForAttribute:kIXBackgroundSwipeWidth defaultValue:100.0f]];
     [self setBackgroundSwipeAdjustsBackgroundAlpha:[[self attributeContainer] getBoolValueForAttribute:kIXBackgroundSwipeAdjustsBackgroundAlpha defaultValue:NO]];
     [self setBackgroundSlidesInFromSide:[[self attributeContainer] getBoolValueForAttribute:kIXBackgroundSlidesInFromSide defaultValue:NO]];
@@ -237,6 +249,32 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
     [self setSectionHeaderXPath:[[self attributeContainer] getStringValueForAttribute:kIXSectionHeaderXPath defaultValue:nil]];
 }
 
+-(void)configureFiltersAndSort {
+
+    NSString* predicateFormat = [[self attributeContainer] getStringValueForAttribute:kIXPredicateFormat defaultValue:nil];
+    NSArray* predicateArguments = [[self attributeContainer] getCommaSeparatedArrayOfValuesForAttribute:kIXPredicateArguments defaultValue:@[]];
+    NSString* descriptorKey = [[self attributeContainer] getStringValueForAttribute:kIXSortKey defaultValue:nil];
+    NSString* sortOrder = [[self attributeContainer] getStringValueForAttribute:kIXSortOrder defaultValue:nil];
+    
+    @try {
+        if (predicateFormat.length && predicateArguments.count > 0) {
+            [self setPredicate:[NSPredicate predicateWithFormat:predicateFormat argumentArray:predicateArguments]];
+        }
+    }
+    @catch (NSException *exception) {
+        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
+    }
+    
+    @try {
+        if (descriptorKey != nil && sortOrder != nil && ![sortOrder isEqualToString:kIXSortOrderNone]) {
+            [self setSortDescriptor:[NSSortDescriptor sortDescriptorWithKey:descriptorKey ascending:[sortOrder isEqualToString:kIXSortOrderAscending]]];
+        }
+    }
+    @catch (NSException *exception) {
+        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
+    }
+}
+
 -(void)applyFunction:(NSString *)functionName withParameters:(IXAttributeContainer *)parameterContainer
 {
     if( [functionName isEqualToString:kIXPullToRefreshEnd] )
@@ -294,9 +332,14 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
 
 -(void)reload
 {
+    [self reloadUsingPredicate:_predicate sortDescriptor:_sortDescriptor];
+}
+
+-(void)reloadUsingPredicate:(NSPredicate*)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor
+{
     NSMutableDictionary* sectionNumbersAndRowCount = [NSMutableDictionary dictionary];
 
-    int rowCount = (int)[[self dataProvider] rowCount:[self dataRowBasePathForDataProvider]];
+    int rowCount = (int)[[self dataProvider] rowCount:[self dataRowBasePathForDataProvider] usingPredicate:predicate];
     if( [[self sectionHeaderXPath] length] <= 0 )
     {
         [sectionNumbersAndRowCount setObject:[NSNumber numberWithInt:rowCount]
@@ -311,7 +354,9 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         {
             NSString* rowHeaderValue = [[self dataProvider] rowDataForIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
                                                                         keyPath:[self sectionHeaderXPath]
-                                                                dataRowBasePath:[self dataRowBasePathForDataProvider]];
+                                                                dataRowBasePath:[self dataRowBasePathForDataProvider]
+                                                                 usingPredicate:predicate
+                                                                 sortDescriptor:sortDescriptor];
             if( i == rowCount - 1 ) {
                 if( [rowHeaderValue isEqualToString:lastSectionHeaderValue] ) {
                     numberOfRowsInSection++;
@@ -478,6 +523,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [sectionHeaderSandbox setDataProviderForRowData:[self dataProvider]];
         [sectionHeaderSandbox setDataRowBasePathForRowData:[self dataRowBasePathForDataProvider]];
         [sectionHeaderSandbox setIndexPathForRowData:[NSIndexPath indexPathForRow:row inSection:0]];
+        [sectionHeaderSandbox setSortDescriptorForRowData:[self sortDescriptor]];
+        [sectionHeaderSandbox setPredicateForRowData:[self predicate]];
 
         [[self sectionHeaderSandboxes] setObject:sectionHeaderSandbox forKey:[NSNumber numberWithInt:row]];
 
@@ -549,6 +596,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         [[cellLayout sandbox] setDataProviderForRowData:[self dataProvider]];
         [[cellLayout sandbox] setDataRowBasePathForRowData:[self dataRowBasePathForDataProvider]];
         [[cellLayout sandbox] setIndexPathForRowData:indexPath];
+        [[cellLayout sandbox] setSortDescriptorForRowData:[self sortDescriptor]];
+        [[cellLayout sandbox] setPredicateForRowData:[self predicate]];
         
         NSArray* childrenThatAreCustomControls = [cellLayout childrenThatAreKindOfClass:[IXCustom class]];
         for( IXCustom* customControl in childrenThatAreCustomControls )
@@ -556,6 +605,8 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
             [[customControl sandbox] setDataProviderForRowData:[self dataProvider]];
             [[customControl sandbox] setDataRowBasePathForRowData:[self dataRowBasePathForDataProvider]];
             [[customControl sandbox] setIndexPathForRowData:indexPath];
+            [[customControl sandbox] setSortDescriptorForRowData:[self sortDescriptor]];
+            [[customControl sandbox] setPredicateForRowData:[self predicate]];
         }
         [cellLayout applySettings];
         

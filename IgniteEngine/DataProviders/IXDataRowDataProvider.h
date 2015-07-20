@@ -33,16 +33,11 @@ IX_STATIC_CONST_STRING kIXRowDataEmptyBasepathKey = @"kIXDataRowEmptyBasepathKey
 @interface IXDataRowDataProvider : IXBaseDataProvider
 
 @property (nonatomic,copy,readonly) NSString* dataRowBasePath;
-@property (nonatomic,copy,readonly) NSString* predicateFormat;
-@property (nonatomic,copy,readonly) NSString* predicateArguments;
-@property (nonatomic,copy,readonly) NSString* sortDescriptorKey;
-@property (nonatomic,copy,readonly) NSString* sortOrder;
-
 @property (nonatomic,readonly) NSPredicate* predicate;
 @property (nonatomic,readonly) NSSortDescriptor* sortDescriptor;
 
--(NSUInteger)rowCount:(NSString*)dataRowBasePath;
--(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath;
--(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath;
+-(NSUInteger)rowCount:(NSString*)dataRowBasePath usingPredicate:(NSPredicate*)predicate;
+-(NSString*)rowDataForIndexPath:(NSIndexPath*)rowIndexPath keyPath:(NSString*)keyPath dataRowBasePath:(NSString*)dataRowBasePath usingPredicate:(NSPredicate*)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor;
+-(NSString*)rowDataTotalForKeyPath:(NSString*)keyPath usingPredicate:(NSPredicate*)predicate sortDescriptor:(NSSortDescriptor*)sortDescriptor;
 
 @end

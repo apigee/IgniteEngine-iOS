@@ -59,7 +59,7 @@ static NSString* const kIXIndex = @"$index";
         }
         else
         {
-            returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath];
+            returnValue = [baseDP rowDataForIndexPath:rowIndexPath keyPath:keyPath dataRowBasePath:dataRowBasePath usingPredicate:[sandbox predicateForRowData]sortDescriptor:[sandbox sortDescriptorForRowData]];
         }
     }
     
