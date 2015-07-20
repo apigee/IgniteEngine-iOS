@@ -262,7 +262,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
+        IX_LOG_ERROR(@"Error: Malformed Predicate: %@", exception);
     }
     
     @try {
@@ -271,7 +271,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
+        IX_LOG_ERROR(@"Error: Malformed Sort Descriptor: %@", exception);
     }
 }
 
