@@ -82,7 +82,7 @@ IX_STATIC_CONST_STRING kIXSortOrderDescending = @"descending"; // sort.order
 
 // Returns
 // TODO: Need to enhance this and include total item count, visible item count, number of items per section
-IX_STATIC_CONST_STRING kIXRowCount = @"data.count";
+IX_STATIC_CONST_STRING kIXRowCount = @"$count";
 
 // Functions
 IX_STATIC_CONST_STRING kIXPullToRefreshBegin = @"pullToRefresh.start";
@@ -265,7 +265,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
+        IX_LOG_ERROR(@"Error: Malformed Predicate: %@", exception);
     }
     
     @try {
@@ -274,7 +274,7 @@ IX_STATIC_CONST_STRING kIXHorizontalScrollEnabled = @"scrolling.h.enabled";
         }
     }
     @catch (NSException *exception) {
-        IX_LOG_ERROR(@"ERROR - BAD PREDICATE: %@", exception);
+        IX_LOG_ERROR(@"Error: Malformed Sort Descriptor: %@", exception);
     }
 }
 
