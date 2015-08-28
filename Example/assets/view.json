@@ -1,7 +1,7 @@
 {
   "$view": {
     "attributes": {
-      "_id": "weather",
+      "_id": "myMainView",
       "statusBar.style": "hidden",
       "bg.color": "#cdcdcd"
     },
@@ -19,7 +19,7 @@
         },
         "controls": [
           {
-            "_id": "testText2",
+            "_id": "myLayout",
             "_type": "Layout",
             "attributes": {
               "color": "#ffffff",
@@ -30,7 +30,7 @@
             },
             "controls": [
               {
-                "_id": "testText2",
+                "_id": "textHello",
                 "_type": "Text",
                 "attributes": {
                   "color": "#000000",
@@ -42,7 +42,7 @@
                 }
               },
               {
-                "_id": "testText2",
+                "_id": "imageLogo",
                 "_type": "Image",
                 "attributes": {
                   "visible": true,
@@ -55,7 +55,7 @@
                 }
               },
               {
-                "_id": "testText2",
+                "_id": "textIgniteEngine",
                 "_type": "Text",
                 "attributes": {
                   "color": "#000000",

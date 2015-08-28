@@ -93,7 +93,7 @@ You can start building apps for iOS today; we're working hard to bring the platf
 	{
 	    "$app": {
 	        "attributes": {
-	            "view.index": "myView.json"
+	            "defaultView": "myView.json"
 	        }
 	    }
 	}
@@ -126,7 +126,14 @@ You can start building apps for iOS today; we're working hard to bring the platf
 
 6. Here you'll find everything you need to get started developing. Because this folder is a symbolic link to your project clone, modifications made inside the `Development Pods` folder will automagically update your git repo.
 
-7. We use the 'fork-and-pull' methodology, so please commit your changes to a branch on your personal fork and submit a pull request.
+7. We use the 'fork-and-pull' methodology, so please commit your changes to a branch (like `dev`) on your personal fork and submit a pull request. Accidents happen though, so we added a pre-commit script that you can use to block commits to `master`. Add it to your local repo like so:
+
+    ```
+    $ cd ~/Development/IgniteEngine-iOS/.git
+    $ mkdir hooks
+    $ cd hooks/
+    $ ln -s ../../.pre-commit.sh pre-commit
+    ```
 
 ## Dependencies
 
