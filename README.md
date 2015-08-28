@@ -119,14 +119,16 @@ You can start building apps for iOS today; we're working hard to bring the platf
     ```
     pod 'IgniteEngine', :path => '~/Development/IgniteEngine-iOS'
     ```
+    
+4. Run `pod install` to update your IgniteEngine pod
 
-4. Open `{MyApp}.xcworkspace` from inside your new `/MyigniteDevProject` folder.
+5. Open `{MyApp}.xcworkspace` from inside your new `/MyigniteDevProject` folder.
 
-5. From the project navigator, expand the `Pods` project and expand `Development Pods > IgniteEngine`.
+6. From the project navigator, expand the `Pods` project and expand `Development Pods > IgniteEngine`.
 
-6. Here you'll find everything you need to get started developing. Because this folder is a symbolic link to your project clone, modifications made inside the `Development Pods` folder will automagically update your git repo.
+7. Here you'll find everything you need to get started developing. Because this folder is a symbolic link to your project clone, modifications made inside the `Development Pods` folder will automagically update your git repo.
 
-7. We use the 'fork-and-pull' methodology, so please commit your changes to a branch (like `dev`) on your personal fork and submit a pull request. Accidents happen though, so we added a pre-commit script that you can use to block commits to `master`. Add it to your local repo like so:
+8. We use the 'fork-and-pull' methodology, so please commit your changes to a branch (like `dev`) on your personal fork and submit a pull request. Accidents happen though, so we added a pre-commit script that you can use to block commits to `master`. Add it to your local repo like so:
 
     ```
     $ cd ~/Development/IgniteEngine-iOS/.git
