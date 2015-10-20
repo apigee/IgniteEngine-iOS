@@ -168,6 +168,7 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
 {
     [super viewDidLoad];
     
+    [[_containerControl contentView] setFrame:self.view.frame];
     [self setView:[_containerControl contentView]];
     [[self view] setClipsToBounds:YES];
     
