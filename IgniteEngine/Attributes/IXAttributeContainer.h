@@ -30,6 +30,8 @@
 #import "IXConstants.h"
 #import "IXSize.h"
 
+@import UIKit;
+
 @class IXAttribute;
 @class IXBaseObject;
 @class IXSandbox;
