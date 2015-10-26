@@ -30,6 +30,10 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '8.0'
     s.documentation_url     = 'https://ignite.apigee.com'
 
+    s.xcconfig = {
+        'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/Headers/Public/ApigeeiOSSDK/ApigeeiOSSDK"'
+    }
+
     s.subspec 'Actions' do |ss|
         ss.dependency 'IgniteEngine/Core'
         ss.source_files = 'IgniteEngine/Actions/*.{h,m}'
