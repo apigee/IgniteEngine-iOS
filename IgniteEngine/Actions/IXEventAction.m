@@ -31,11 +31,16 @@
 
 #import "IXAttributeContainer.h"
 #import "IXActionContainer.h"
+#import "IXAppManager.h"
 
 #import "IXBaseObject.h"
 
 // IXEventAction Properties
 static NSString* const kIXEventName = @"eventName";
+
+@interface IXAppManager ()
+-(void)fireAppEventNamed:(NSString*)appEventName;
+@end
 
 @implementation IXEventAction
 
@@ -48,13 +53,17 @@ static NSString* const kIXEventName = @"eventName";
     
     if( objectIDs && eventName )
     {
-        IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
-        IXSandbox* sandbox = [ownerObject sandbox];
-        NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
-                                                                 withSelfObject:ownerObject];
-        for( IXBaseObject* baseObject in objectsWithID )
-        {
-            [[baseObject actionContainer] executeActionsForEventNamed:eventName];
+        if( [[objectIDs firstObject] isEqualToString:kIXAppRef] ) {
+            [[IXAppManager sharedAppManager] fireAppEventNamed:eventName];
+        } else {
+            IXBaseObject* ownerObject = [[self actionContainer] ownerObject];
+            IXSandbox* sandbox = [ownerObject sandbox];
+            NSArray* objectsWithID = [sandbox getAllControlsAndDataProvidersWithIDs:objectIDs
+                                                                     withSelfObject:ownerObject];
+            for( IXBaseObject* baseObject in objectsWithID )
+            {
+                [[baseObject actionContainer] executeActionsForEventNamed:eventName];
+            }
         }
     }
     

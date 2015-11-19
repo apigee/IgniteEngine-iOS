@@ -59,9 +59,9 @@ static NSString* const kIXSizeToFit = @"fitTextToWidth.enabled";
 
 -(CGSize)preferredSizeForSuggestedSize:(CGSize)size
 {
-    CGSize sizeThatFits = [[self label] sizeThatFits:size];
+    float width = ceilf([[self label] sizeThatFits:size].width);
     float height = ceilf([[self label] sizeForFixedWidth:size.width].height);
-    return CGSizeMake(sizeThatFits.width, height);
+    return CGSizeMake(width, height);
 }
 
 -(void)layoutControlContentsInRect:(CGRect)rect

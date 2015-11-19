@@ -48,6 +48,23 @@ static NSString* const kIXFloatFormat = @"%f";
     return [NSString stringWithFormat:kIXFloatFormat,floatValue];
 }
 
++(NSString*)ix_roundString:(NSString*)string decimalPlaces:(NSInteger)decimalPlaces
+{
+    if (string.length) {
+        NSString* formattedNumber;
+        
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        formatter.roundingMode = NSNumberFormatterRoundHalfUp;
+        formatter.maximumFractionDigits = decimalPlaces;
+        formattedNumber = [formatter stringFromNumber:[NSNumber numberWithFloat:[string floatValue]]];
+        
+        return formattedNumber ?: @"";
+    }
+    else
+        return string;
+}
+
 +(NSString*)ix_truncateString:(NSString*)string toIndex:(NSInteger)index
 {
     if (index > 0 && string.length > index)

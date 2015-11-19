@@ -51,6 +51,8 @@ IX_STATIC_CONST_STRING kIXLocation = @"location"; // Return format: lat:long
 IX_STATIC_CONST_STRING kIXLocationLat = @"location.lat";
 IX_STATIC_CONST_STRING kIXLocationLong = @"location.long";
 
+IX_STATIC_CONST_STRING kIXBluetoothState = @"bluetooth.state";
+
 @implementation IXDeviceEvaluation
 
 -(NSString *)evaluate
@@ -74,6 +76,10 @@ IX_STATIC_CONST_STRING kIXLocationLong = @"location.long";
         else if( [methodName isEqualToString:kIXScreenHeight] )
         {
             returnValue = [IXDeviceInfo screenHeight];
+        }
+        else if( [methodName isEqualToString:kIXBluetoothState] )
+        {
+            returnValue = [[IXAppManager sharedAppManager] bluetoothState];
         }
         else if( [methodName isEqualToString:kIXOSVersion] )
         {

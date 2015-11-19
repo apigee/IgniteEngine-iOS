@@ -56,6 +56,7 @@ IX_STATIC_CONST_STRING KIXDrawerAllowedStateNone = @"none"; // drawer
 // Events
 IX_STATIC_CONST_STRING kIXWillFirstAppear = @"willFirstAppear";
 IX_STATIC_CONST_STRING kIXWillAppear = @"willAppear";
+IX_STATIC_CONST_STRING kIXDidLoad = @"didLoad";
 IX_STATIC_CONST_STRING kIXDidAppear = @"didAppear";
 IX_STATIC_CONST_STRING kIXWillDisappear = @"willDisappear";
 IX_STATIC_CONST_STRING kIXDidDisappear = @"didDisappear";
@@ -171,7 +172,7 @@ NSString* IXViewControllerDidRecieveRemoteControlEventNotification = @"IXViewCon
     [[_containerControl contentView] setFrame:self.view.frame];
     [self setView:[_containerControl contentView]];
     [[self view] setClipsToBounds:YES];
-    
+    [self fireViewEventNamed:kIXDidLoad];
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
 }
 

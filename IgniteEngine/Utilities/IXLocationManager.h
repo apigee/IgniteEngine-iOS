@@ -44,6 +44,9 @@
 @property (nonatomic,assign,readonly) BOOL isAuthorized;
 @property (nonatomic,strong,readonly) CLLocation* lastKnownLocation;
 
+@property (nonatomic,assign) BOOL shouldTrackTripData;
+@property (nonatomic,readonly) NSString* tripDataJSON;
+
 +(instancetype)sharedLocationManager;
 
 -(BOOL)requestAccessToLocation;

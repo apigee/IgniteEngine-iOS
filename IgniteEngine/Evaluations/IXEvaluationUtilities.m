@@ -61,8 +61,9 @@ IX_STATIC_CONST_STRING kIXToUppercase = @"uppercase";               // [[?:to_up
 IX_STATIC_CONST_STRING kIXToLowercase = @"lowercase";               // [[?:to_lowercase]]                       -> String value in lowercase
 IX_STATIC_CONST_STRING kIXURLEncode = @"url.encode";                // [[?:url_encode]]                         -> URL encode string
 IX_STATIC_CONST_STRING kIXURLDecode = @"url.decode";                // [[?:url_decode]]                         -> URL decode string
-IX_STATIC_CONST_STRING kIXTimeFromSeconds = @"timeFromSeconds";     // [[?:timeFromSeconds]]                    -> Trucates the string to specified index
+IX_STATIC_CONST_STRING kIXTimeFromSeconds = @"timeFromSeconds";     // [[?:timeFromSeconds]]                    -> Gets a time string from seconds
 IX_STATIC_CONST_STRING kIXTruncate = @"truncate";                   // [[?:truncate(toIndex)]]                  -> Trucates the string to specified index
+IX_STATIC_CONST_STRING kIXRound = @"round";                         // [[?:round(roundingMask)]]                -> Rounds to the specified rounding mask
 IX_STATIC_CONST_STRING kIXStripHtml = @"stripHtml";
 IX_STATIC_CONST_STRING kIXRadiansToDegrees = @"degreesToRadians";
 IX_STATIC_CONST_STRING kIXDegreesToRadians = @"radiansToDegrees";
@@ -356,6 +357,10 @@ static IXBaseEvaluationUtility const kIXTimeFromSecondsUtility = ^NSString*(NSSt
     
 };
 
+static IXBaseEvaluationUtility const kIXRoundUtility = ^NSString*(NSString* stringToModify,NSArray* parameters){
+    return ([parameters firstObject] != nil) ? [NSString ix_roundString:stringToModify decimalPlaces:[[[parameters firstObject] attributeStringValue] intValue]] : @"0";
+};
+
 static IXBaseEvaluationUtility const kIXTruncateUtility = ^NSString*(NSString* stringToModify,NSArray* parameters){
     return ([parameters firstObject] != nil) ? [NSString ix_truncateString:stringToModify toIndex:[[[parameters firstObject] attributeStringValue] intValue]] : stringToModify;
 };
@@ -408,6 +413,7 @@ static IXBaseEvaluationUtility const kIXDegreesToRadiansUtility = ^NSString*(NSS
                                     kIXURLEncode:         [kIXURLEncodeUtility copy],
                                     kIXURLDecode:         [kIXURLDecodeUtility copy],
                                     kIXTimeFromSeconds:   [kIXTimeFromSecondsUtility copy],
+                                    kIXRound:             [kIXRoundUtility copy],
                                     kIXTruncate:          [kIXTruncateUtility copy],
                                     kIXStripHtml:         [kIXStripHtmlUtility copy],
                                     kIXDegreesToRadians:  [kIXDegreesToRadiansUtility copy],

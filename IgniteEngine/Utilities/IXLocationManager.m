@@ -33,9 +33,21 @@
 @property (nonatomic,strong) CLLocationManager* locationManager;
 @property (nonatomic,strong) CLLocation* lastKnownLocation;
 
+@property (nonatomic, strong) NSMutableArray *waypoints;
+@property (nonatomic, strong) NSDictionary *start;
+@property (nonatomic, strong) NSDictionary *stop;
+@property (nonatomic, strong) NSMutableDictionary *tripData;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier locationTrackingTask;
+
 @end
 
 @implementation IXLocationManager
+
+-(void)dealloc
+{
+    [_locationManager setDelegate:nil];
+    [_locationManager stopUpdatingLocation];
+}
 
 +(instancetype)sharedLocationManager
 {
@@ -52,9 +64,12 @@
     self = [super init];
     if( self != nil )
     {
+        _shouldTrackTripData = NO;
+        
         _locationManager = [[CLLocationManager alloc] init];
         [_locationManager setDelegate:self];
         [_locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+        [_locationManager setDistanceFilter:kCLDistanceFilterNone];
     }
     return self;
 }
@@ -91,14 +106,51 @@
     return didHaveAKey;
 }
 
+-(NSString*)tripDataJSON
+{
+    if( self.tripData != nil && [NSJSONSerialization isValidJSONObject:self.tripData] ) {
+        NSError* err;
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:self.tripData options:0 error:&err];
+        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    return nil;
+}
+
 -(void)beginLocationTracking
 {
+    self.start = nil;
+    self.stop = nil;
+    self.waypoints = [NSMutableArray array];
+    self.tripData = nil;
+
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9) {
+        _locationManager.allowsBackgroundLocationUpdates = YES;
+    }
     [[self locationManager] startUpdatingLocation];
 }
 
 -(void)stopTrackingLocation
 {
     [[self locationManager] stopUpdatingLocation];
+
+    if( [self shouldTrackTripData] ) {
+        if (self.waypoints != nil) {
+            [self.waypoints removeLastObject];
+        }
+
+        if (self.tripData == nil) {
+            self.tripData = [[NSMutableDictionary alloc]init];
+        }
+        if (self.start!=nil) {
+            [self.tripData setObject:self.start forKey:@"start"];
+        }
+        if (self.waypoints!=nil) {
+            [self.tripData setObject:self.waypoints forKey:@"waypoints"];
+        }
+        if (self.stop!=nil) {
+            [self.tripData setObject:self.stop forKey:@"stop"];
+        }
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
@@ -112,6 +164,31 @@
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *mostRecentLocation = [locations lastObject];
+
+    self.locationTrackingTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:self.locationTrackingTask];
+        self.locationTrackingTask = UIBackgroundTaskInvalid;
+    }];
+
+    if( [self shouldTrackTripData] ) {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
+        [formatter setMaximumFractionDigits:0];
+
+        NSDictionary *locationDict = @{@"latitude":[NSNumber numberWithDouble:mostRecentLocation.coordinate.latitude],
+                                       @"longitude":[NSNumber numberWithDouble:mostRecentLocation.coordinate.longitude],
+                                       @"timestamp":@([[NSString stringWithFormat:@"%.f",[[NSDate date] timeIntervalSince1970] * 1000] integerValue])};
+        
+
+        if (self.start == nil) {
+            self.start = locationDict;
+        } else {
+            [self.waypoints addObject:locationDict];
+        }
+        self.stop = locationDict;
+
+    }
+
     CLLocationDistance distance = [[self lastKnownLocation] distanceFromLocation:mostRecentLocation];
     if( [self lastKnownLocation] == nil || distance != 0 )
     {

@@ -74,7 +74,7 @@ IX_STATIC_CONST_STRING kIXIsAllowedMicrophone = @"isAllowed.microphone";
         }
         else
         {
-            returnValue = [[[IXAppManager sharedAppManager] appProperties] getStringValueForAttribute:methodName defaultValue:nil];
+            returnValue = [[IXAppManager sharedAppManager] getAppAttributeNamed:methodName];
         }
     }
     return returnValue;

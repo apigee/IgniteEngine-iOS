@@ -40,6 +40,7 @@ typedef enum {
 @class ApigeeClient;
 @class MMDrawerController;
 @class Reachability;
+@import CoreBluetooth.CBCentralManager;
 
 @interface IXAppManager : NSObject
 
@@ -55,6 +56,7 @@ typedef enum {
 @property (nonatomic,copy,readonly) NSString *appDefaultViewPath;
 @property (nonatomic,copy,readonly) NSString *appLeftDrawerViewPath;
 @property (nonatomic,copy,readonly) NSString *appRightDrawerViewPath;
+@property (nonatomic,copy,readonly) NSString *bluetoothState;
 
 @property (nonatomic,strong,readonly) IXAttributeContainer *deviceProperties;
 @property (nonatomic,strong,readonly) IXAttributeContainer *appProperties;
@@ -62,6 +64,7 @@ typedef enum {
 
 @property (nonatomic,strong,readonly) Reachability *reachabilty;
 @property (nonatomic,strong,readonly) ApigeeClient *apigeeClient;
+@property (nonatomic,readonly) CBCentralManager *bluetoothManager;
 
 @property (nonatomic,assign,readonly) BOOL accessToPushGranted;
 @property (nonatomic,assign,readonly) BOOL accessToMicrophoneGranted;
@@ -83,6 +86,8 @@ typedef enum {
  *  Applies the appProperties instance variable.
  */
 -(void)applyAppProperties;
+
+-(NSString*)getAppAttributeNamed:(NSString*)attributeName;
 
 /**
  *  Tells the manager when that the application has registered a device token.
