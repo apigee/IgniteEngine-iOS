@@ -52,6 +52,11 @@ IX_STATIC_CONST_STRING kIXAnnoationAccessoryLeftImage = @"pin.leftImage";
 IX_STATIC_CONST_STRING kIXAnnoationPinColor = @"pin.color";
 IX_STATIC_CONST_STRING kIXAnnoationPinAnimatesDrop = @"animatePinDrop.enabled";
 
+IX_STATIC_CONST_STRING kIXRouteEnabled = @"route.enabled";
+IX_STATIC_CONST_STRING kIXRouteFillColor = @"route.fillColor";
+IX_STATIC_CONST_STRING kIXRouteStrokeColor = @"route.strokeColor";
+IX_STATIC_CONST_STRING kIXRouteLineWidth = @"route.lineWidth";
+
 // kIXMapType Accepted Values
 IX_STATIC_CONST_STRING kIXMapTypeStandard = @"standard";
 IX_STATIC_CONST_STRING kIXMapTypeSatellite = @"satellite";
@@ -131,10 +136,12 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 
 @property (nonatomic,weak) IXDataRowDataProvider* dataProvider;
 @property (nonatomic,assign) BOOL usesDataProviderForAnnotationData;
+@property (nonatomic,assign) BOOL usesMapLines;
 
 @property (nonatomic,strong) MKMapView* mapView;
 @property (nonatomic,strong) NSMutableArray* annotations;
 @property (nonatomic,assign) CGPoint imageCenterOffset;
+@property (nonatomic,strong) MKPolyline *routeLine;
 
 @end
 
@@ -210,13 +217,72 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
                                                        object:[self dataProvider]];
         }
     }
-    
-    [self reloadMapAnnotations];
+
+    [self setUsesMapLines:[[self attributeContainer] getBoolValueForAttribute:kIXRouteEnabled defaultValue:NO]];
+    if( [self usesMapLines] ) {
+        [self reloadMapRoute];
+    } else {
+        [self reloadMapAnnotations];
+    }
 }
 
 -(void)dataProviderNotification:(NSNotification*)notification
 {
-    [self reloadMapAnnotations];
+    if( [self usesMapLines] ) {
+        [self reloadMapRoute];
+    } else {
+        [self reloadMapAnnotations];
+    }
+}
+
+-(void)reloadMapRoute
+{
+    [[self mapView] removeOverlay:self.routeLine];
+
+    NSUInteger rowCount = [[self dataProvider] rowCount:nil usingPredicate:nil];
+    if( rowCount > 0 )
+    {
+        NSIndexPath* currentSandboxIndexPath = [[self sandbox] indexPathForRowData];
+        IXDataRowDataProvider* currentSandboxDataProvider = [[self sandbox] dataProviderForRowData];
+
+        [[self sandbox] setDataProviderForRowData:[self dataProvider]];
+
+        CLLocationCoordinate2D *points = malloc((rowCount + 1) * sizeof(CLLocationCoordinate2D));
+
+        for( int i = 0; i < rowCount; i++ )
+        {
+            NSIndexPath* rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [[self sandbox] setIndexPathForRowData:rowIndexPath];
+
+            CGFloat latitude = [self.attributeContainer getFloatValueForAttribute:kIXAnnotationLatitude defaultValue:0.0f];
+            CGFloat longitude = [self.attributeContainer getFloatValueForAttribute:kIXAnnotationLongitude defaultValue:0.0f];
+            points[i] = CLLocationCoordinate2DMake(latitude, longitude);
+        }
+        points[rowCount-1] = CLLocationCoordinate2DMake(37.3382, -121.8863);
+
+        self.routeLine = [MKPolyline polylineWithCoordinates:points count:rowCount];
+        free(points);
+
+        [self.mapView addOverlay:self.routeLine];
+        [self.mapView setVisibleMapRect:[self.routeLine boundingMapRect]];
+
+        // Reset the Map controls sandbox values.
+        [[self sandbox] setIndexPathForRowData:currentSandboxIndexPath];
+        [[self sandbox] setDataProviderForRowData:currentSandboxDataProvider];
+    }
+}
+
+-(MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+{
+    if(overlay == self.routeLine)
+    {
+        MKPolylineView* routeLineView = [[MKPolylineView alloc] initWithPolyline:self.routeLine];
+        routeLineView.fillColor = [[self attributeContainer] getColorValueForAttribute:kIXRouteFillColor defaultValue:[UIColor redColor]];
+        routeLineView.strokeColor = [[self attributeContainer] getColorValueForAttribute:kIXRouteStrokeColor defaultValue:[UIColor redColor]];
+        routeLineView.lineWidth = [[self attributeContainer] getIntValueForAttribute:kIXRouteLineWidth defaultValue:5];
+        return routeLineView;
+    }
+    return nil;
 }
 
 -(void)reloadMapAnnotations
