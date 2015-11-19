@@ -247,7 +247,7 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
 
         [[self sandbox] setDataProviderForRowData:[self dataProvider]];
 
-        CLLocationCoordinate2D *points = malloc((rowCount + 1) * sizeof(CLLocationCoordinate2D));
+        CLLocationCoordinate2D *points = malloc(rowCount * sizeof(CLLocationCoordinate2D));
 
         for( int i = 0; i < rowCount; i++ )
         {
@@ -258,7 +258,6 @@ IX_STATIC_CONST_STRING kIXMapImageAnnotationIdentifier = @"kIXMapImageAnnotation
             CGFloat longitude = [self.attributeContainer getFloatValueForAttribute:kIXAnnotationLongitude defaultValue:0.0f];
             points[i] = CLLocationCoordinate2DMake(latitude, longitude);
         }
-        points[rowCount-1] = CLLocationCoordinate2DMake(37.3382, -121.8863);
 
         self.routeLine = [MKPolyline polylineWithCoordinates:points count:rowCount];
         free(points);
